@@ -1019,7 +1019,16 @@ public class AudioVideoNotesPlugin extends OsmandPlugin {
 		for (RecordingsListener listener : recordingsListeners) {
 			handled |= listener.onRecordingsAdded(recordings);
 		}
+		refreshAudioNotesLayer();
 		return handled;
+	}
+
+	private void refreshAudioNotesLayer() {
+		app.runInUIThread(() -> {
+			if (mapActivity != null) {
+				mapActivity.refreshMap();
+			}
+		});
 	}
 
 	private void cancelPendingRecordingListeners() {
