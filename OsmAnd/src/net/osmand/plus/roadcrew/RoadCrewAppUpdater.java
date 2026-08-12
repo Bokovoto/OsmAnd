@@ -36,7 +36,7 @@ public final class RoadCrewAppUpdater {
 	private static final String PREFS_NAME = "roadcrew_app_updater";
 	private static final String KEY_LAST_CHECK_MILLIS = "last_check_millis";
 	private static final String KEY_DISMISSED_TAG = "dismissed_tag";
-	private static final String CURRENT_RELEASE_TAG = "roadcrew-v0.1.0-test.6";
+	private static final String CURRENT_RELEASE_TAG = "roadcrew-v0.1.0-test.7";
 	private static final String LATEST_RELEASE_API =
 			"https://api.github.com/repos/Bokovoto/OsmAnd/releases/latest";
 	private static final String APK_ASSET_NAME = "RoadCrew.apk";
@@ -124,9 +124,11 @@ public final class RoadCrewAppUpdater {
 			for (int i = 0; i < assets.length(); i++) {
 				JSONObject asset = assets.getJSONObject(i);
 				if (APK_ASSET_NAME.equals(asset.optString("name"))) {
-					String url = asset.optString("browser_download_url");
-					if (!url.isEmpty()) {
-						return new UpdateInfo(tag, object.optString("name", tag), url, releasePageUrl);
+					String apiUrl = asset.optString("url");
+					String browserUrl = asset.optString("browser_download_url");
+					if (!apiUrl.isEmpty() || !browserUrl.isEmpty()) {
+						return new UpdateInfo(tag, object.optString("name", tag), apiUrl, browserUrl,
+								releasePageUrl, asset.optLong("size", -1));
 					}
 				}
 			}
@@ -195,21 +197,60 @@ public final class RoadCrewAppUpdater {
 			throw new IllegalStateException("Could not create update cache directory");
 		}
 		File apk = new File(directory, APK_ASSET_NAME);
-		HttpURLConnection connection = openConnection(update.apkUrl);
-		try (InputStream inputStream = connection.getInputStream();
-			 FileOutputStream outputStream = new FileOutputStream(apk)) {
-			if (connection.getResponseCode() < 200 || connection.getResponseCode() >= 300) {
-				throw new IllegalStateException("Unexpected download response: " + connection.getResponseCode());
+		Exception browserDownloadError = null;
+		if (!update.assetApiUrl.isEmpty()) {
+			try {
+				downloadApkFromUrl(update.assetApiUrl, apk, update.expectedSize, true);
+				return apk;
+			} catch (Exception e) {
+				browserDownloadError = e;
+				Log.w(TAG, "RoadCrew update API asset download failed", e);
 			}
-			byte[] buffer = new byte[64 * 1024];
-			int read;
-			while ((read = inputStream.read(buffer)) != -1) {
-				outputStream.write(buffer, 0, read);
+		}
+		if (!update.browserDownloadUrl.isEmpty()) {
+			try {
+				downloadApkFromUrl(update.browserDownloadUrl, apk, update.expectedSize, false);
+				return apk;
+			} catch (Exception e) {
+				browserDownloadError = e;
+				Log.w(TAG, "RoadCrew update browser asset download failed", e);
+			}
+		}
+		throw browserDownloadError != null ? browserDownloadError : new IllegalStateException("No APK download URL");
+	}
+
+	private static void downloadApkFromUrl(@NonNull String url, @NonNull File apk, long expectedSize,
+			boolean useApiHeaders) throws Exception {
+		HttpURLConnection connection = openConnection(url);
+		if (useApiHeaders) {
+			connection.setRequestProperty("Accept", "application/octet-stream");
+		}
+		try {
+			int responseCode = connection.getResponseCode();
+			if (responseCode < 200 || responseCode >= 300) {
+				throw new IllegalStateException("Unexpected download response: " + responseCode);
+			}
+			String contentType = connection.getContentType();
+			if (contentType != null && contentType.contains("text/html")) {
+				throw new IllegalStateException("Unexpected HTML response while downloading APK");
+			}
+			try (InputStream inputStream = connection.getInputStream();
+				 FileOutputStream outputStream = new FileOutputStream(apk)) {
+				byte[] buffer = new byte[64 * 1024];
+				int read;
+				while ((read = inputStream.read(buffer)) != -1) {
+					outputStream.write(buffer, 0, read);
+				}
+			}
+			if (apk.length() < 1024 * 1024) {
+				throw new IllegalStateException("Downloaded APK is too small: " + apk.length());
+			}
+			if (expectedSize > 0 && apk.length() != expectedSize) {
+				throw new IllegalStateException("Downloaded APK size mismatch: " + apk.length() + " != " + expectedSize);
 			}
 		} finally {
 			connection.disconnect();
 		}
-		return apk;
 	}
 
 	private static void openInstaller(@NonNull MapActivity activity, @NonNull File apk) {
@@ -253,15 +294,19 @@ public final class RoadCrewAppUpdater {
 	private static final class UpdateInfo {
 		final String tag;
 		final String title;
-		final String apkUrl;
+		final String assetApiUrl;
+		final String browserDownloadUrl;
 		final String releasePageUrl;
+		final long expectedSize;
 
-		UpdateInfo(@NonNull String tag, @NonNull String title, @NonNull String apkUrl,
-				@NonNull String releasePageUrl) {
+		UpdateInfo(@NonNull String tag, @NonNull String title, @NonNull String assetApiUrl,
+				@NonNull String browserDownloadUrl, @NonNull String releasePageUrl, long expectedSize) {
 			this.tag = tag;
 			this.title = title;
-			this.apkUrl = apkUrl;
+			this.assetApiUrl = assetApiUrl;
+			this.browserDownloadUrl = browserDownloadUrl;
 			this.releasePageUrl = releasePageUrl;
+			this.expectedSize = expectedSize;
 		}
 	}
 }
