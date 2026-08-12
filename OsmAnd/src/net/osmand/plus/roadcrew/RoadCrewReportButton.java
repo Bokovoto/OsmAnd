@@ -130,7 +130,7 @@ public class RoadCrewReportButton extends MapButton {
 		AlertDialog[] dialogHolder = new AlertDialog[1];
 		addMenuTile(grid, mapActivity.getString(R.string.roadcrew_report_type_help), R.drawable.roadcrew_menu_help,
 				() -> showHelpDetailsDialog(), dialogHolder);
-		addMenuTile(grid, RoadCrewReportType.DAI.getTitle(mapActivity), R.drawable.roadcrew_menu_police,
+		addMenuTile(grid, RoadCrewReportType.DAI.getTitle(mapActivity), R.drawable.roadcrew_menu_traffic_control,
 				() -> addReport(RoadCrewReportType.DAI, ""), dialogHolder);
 		addMenuTile(grid, RoadCrewReportType.POLICE.getTitle(mapActivity), R.drawable.roadcrew_menu_police,
 				() -> addReport(RoadCrewReportType.POLICE, ""), dialogHolder);
