@@ -23,6 +23,7 @@ import net.osmand.Location;
 import net.osmand.data.LatLon;
 import net.osmand.data.PointDescription;
 import net.osmand.data.RotatedTileBox;
+import net.osmand.plus.R;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.activities.MapActivity;
 import net.osmand.plus.roadcrew.RoadCrewReportsSync.RoadCrewChatMessage;
@@ -95,7 +96,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	public static void showNearbyHelpReports(@NonNull MapActivity mapActivity, @NonNull OsmandApplication app) {
 		if (activeLayer == null) {
-			app.showToastMessage("RoadCrew map layer is not ready.");
+			app.showToastMessage(R.string.roadcrew_layer_not_ready);
 			return;
 		}
 		activeLayer.showNearbyHelpReportsDialog(mapActivity);
@@ -223,7 +224,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	@Override
 	public PointDescription getObjectName(Object object) {
 		if (object instanceof RoadCrewReport report) {
-			return new PointDescription(PointDescription.POINT_TYPE_MARKER, report.getType().getTitle());
+			return new PointDescription(PointDescription.POINT_TYPE_MARKER, report.getType().getTitle(getApplication()));
 		}
 		return null;
 	}
@@ -324,7 +325,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	@NonNull
 	private LabelLayout calculateLabelLayout(@NonNull RoadCrewReport report, float x, float y, float canvasWidth,
 			@NonNull RectF outRect) {
-		String label = report.getType().getTitle() + " - " + formatAge(report);
+		String label = report.getType().getTitle(getApplication()) + " - " + formatAge(report);
 		float paddingX = dp(8);
 		float paddingY = dp(4);
 		float textWidth = textPaint.measureText(label);
@@ -348,19 +349,19 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			showHelpReportDetailsDialog(mapActivity, report);
 			return;
 		}
-		LinearLayout content = RoadCrewUi.createPanel(mapActivity, report.getType().getTitle());
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, report.getType().getTitle(mapActivity));
 		RoadCrewUi.addBody(mapActivity, content, createReportDetailsMessage(report));
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
 		if (report.hasLocalVote()) {
-			RoadCrewUi.addButton(mapActivity, buttons, "Close", true, v -> dialog.dismiss());
+			RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_close), true, v -> dialog.dismiss());
 		} else {
-			RoadCrewUi.addButton(mapActivity, buttons, "Gone", false, v -> {
+			RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_report_gone), false, v -> {
 				dialog.dismiss();
 				handleReportVote(report, false);
 			});
-			RoadCrewUi.addButton(mapActivity, buttons, "Close", false, v -> dialog.dismiss());
-			RoadCrewUi.addButton(mapActivity, buttons, "Still there", true, v -> {
+			RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_close), false, v -> dialog.dismiss());
+			RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_report_still_there), true, v -> {
 				dialog.dismiss();
 				handleReportVote(report, true);
 			});
@@ -369,7 +370,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	}
 
 	private void showHelpReportDetailsDialog(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report) {
-		LinearLayout content = RoadCrewUi.createPanel(mapActivity, report.getType().getTitle());
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, report.getType().getTitle(mapActivity));
 		RoadCrewUi.addBody(mapActivity, content, createReportDetailsMessage(report));
 
 		LinearLayout actions = new LinearLayout(mapActivity);
@@ -377,10 +378,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		content.addView(actions, new LinearLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-		RoadCrewUi.addSectionTitle(mapActivity, content, "Help chat");
+		RoadCrewUi.addSectionTitle(mapActivity, content, mapActivity.getString(R.string.roadcrew_help_chat_title));
 
 		TextView messagesView = new TextView(mapActivity);
-		messagesView.setText("Loading messages...");
+		messagesView.setText(mapActivity.getString(R.string.roadcrew_chat_loading));
 		RoadCrewUi.addMessageArea(mapActivity, content, messagesView, 260);
 
 		EditText input = createHelpChatInput(mapActivity);
@@ -388,8 +389,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, "Close", false, v -> dialog.dismiss());
-		Button sendButton = RoadCrewUi.addButton(mapActivity, buttons, "Send", true,
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_close), false, v -> dialog.dismiss());
+		Button sendButton = RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_send), true,
 				v -> sendHelpChatMessage(input, messagesView, report));
 		sendButton.setEnabled(false);
 
@@ -404,10 +405,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private void showNearbyHelpReportsDialog(@NonNull MapActivity mapActivity) {
 		List<RoadCrewReport> helpReports = getNearbyHelpReports();
 		if (helpReports.isEmpty()) {
-			getApplication().showToastMessage("No active Help requests nearby.");
+			getApplication().showToastMessage(R.string.roadcrew_nearby_help_empty);
 			return;
 		}
-		LinearLayout content = RoadCrewUi.createPanel(mapActivity, "Help requests nearby");
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, mapActivity.getString(R.string.roadcrew_nearby_help_title));
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		for (RoadCrewReport helpReport : helpReports) {
 			RoadCrewUi.addFullWidthButton(mapActivity, content, formatNearbyHelpListItem(helpReport),
@@ -417,7 +418,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 					});
 		}
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, "Close", true, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_close), true, v -> dialog.dismiss());
 		dialog.show();
 	}
 
@@ -448,7 +449,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 				.append(" - ")
 				.append(formatAge(report));
 		if (report.isHelpProbablyResolved()) {
-			builder.append(" - probably resolved");
+			builder.append(" - ").append(getContext().getString(R.string.roadcrew_nearby_help_probably_resolved));
 		}
 		if (!report.getDetails().isEmpty()) {
 			builder.append("\n").append(report.getDetails());
@@ -460,7 +461,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private String formatNearbyHelpDistance(@NonNull RoadCrewReport report) {
 		Location location = getApplication().getLocationProvider().getLastKnownLocation();
 		if (location == null) {
-			return "Distance unknown";
+			return getContext().getString(R.string.roadcrew_nearby_help_distance_unknown);
 		}
 		LatLon reportLocation = report.getLocation();
 		double distanceMeters = MapUtils.getDistance(location.getLatitude(), location.getLongitude(),
@@ -475,22 +476,22 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			@NonNull LinearLayout actions, @NonNull AlertDialog dialog) {
 		if (isReportAuthor(report) && !report.getId().startsWith("seed-")) {
 			if (report.isHelpProbablyResolved()) {
-				actions.addView(createActionButton(mapActivity, "Still need help", () -> {
+				actions.addView(createActionButton(mapActivity, mapActivity.getString(R.string.roadcrew_help_still_need_help), () -> {
 					dialog.dismiss();
 					handleReportVote(report, true);
 				}));
-				actions.addView(createActionButton(mapActivity, "Resolved", () -> {
+				actions.addView(createActionButton(mapActivity, mapActivity.getString(R.string.roadcrew_help_resolved), () -> {
 					dialog.dismiss();
 					confirmResolveHelpReport(mapActivity, report);
 				}));
 			} else {
-				actions.addView(createActionButton(mapActivity, "Resolved", () -> {
+				actions.addView(createActionButton(mapActivity, mapActivity.getString(R.string.roadcrew_help_resolved), () -> {
 					dialog.dismiss();
 					confirmResolveHelpReport(mapActivity, report);
 				}));
 			}
 		} else if (!report.hasLocalVote()) {
-			actions.addView(createActionButton(mapActivity, "Looks resolved", () -> {
+			actions.addView(createActionButton(mapActivity, mapActivity.getString(R.string.roadcrew_help_looks_resolved), () -> {
 				dialog.dismiss();
 				handleReportVote(report, false);
 			}));
@@ -517,36 +518,36 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private String createReportDetailsMessage(@NonNull RoadCrewReport report) {
 		String details = report.getDetails();
 		String detailsText = report.getType() == RoadCrewReportType.HELP && !details.isEmpty()
-				? "\nNeed: " + details
+				? "\n" + getContext().getString(R.string.roadcrew_report_details_need, details)
 				: "";
-		return "Reported: " + formatReportedAge(report)
+		return getContext().getString(R.string.roadcrew_report_details_reported, formatReportedAge(report))
 				+ detailsText
-				+ (isReportAuthor(report) ? "\nOwner: you" : "")
-				+ "\nStill there: " + report.getConfirmedCount()
-				+ "\nGone: " + report.getDeniedCount()
-				+ "\nYour vote: " + formatLocalVote(report)
-				+ "\nStatus: " + formatReportStatus(report);
+				+ (isReportAuthor(report) ? "\n" + getContext().getString(R.string.roadcrew_report_owner_you) : "")
+				+ "\n" + getContext().getString(R.string.roadcrew_report_details_still_there, report.getConfirmedCount())
+				+ "\n" + getContext().getString(R.string.roadcrew_report_details_gone, report.getDeniedCount())
+				+ "\n" + getContext().getString(R.string.roadcrew_report_details_your_vote, formatLocalVote(report))
+				+ "\n" + getContext().getString(R.string.roadcrew_report_details_status, formatReportStatus(report));
 	}
 
 	@NonNull
 	private String formatReportStatus(@NonNull RoadCrewReport report) {
 		if (report.shouldHideLocally()) {
-			return "Hidden";
+			return getContext().getString(R.string.roadcrew_report_status_hidden);
 		}
 		if (report.isHelpProbablyResolved()) {
-			return "Probably resolved - waiting for author";
+			return getContext().getString(R.string.roadcrew_report_status_probably_resolved);
 		}
-		return "Active";
+		return getContext().getString(R.string.roadcrew_report_status_active);
 	}
 
 	private void confirmResolveHelpReport(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report) {
-		LinearLayout content = RoadCrewUi.createPanel(mapActivity, "Mark Help resolved?");
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, mapActivity.getString(R.string.roadcrew_help_resolve_title));
 		RoadCrewUi.addBody(mapActivity, content,
-				"Nearby drivers will stop being notified. Joined drivers can still use the chat.");
+				mapActivity.getString(R.string.roadcrew_help_resolve_body));
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, "Cancel", false, v -> dialog.dismiss());
-		RoadCrewUi.addButton(mapActivity, buttons, "Resolved", true, v -> {
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_cancel), false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_help_resolved), true, v -> {
 			dialog.dismiss();
 			handleResolveHelpReport(report);
 		});
@@ -555,25 +556,25 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	private void handleResolveHelpReport(@NonNull RoadCrewReport report) {
 		if (report.getId().startsWith("seed-")) {
-			getApplication().showToastMessage("Demo Help report cannot be resolved.");
+			getApplication().showToastMessage(R.string.roadcrew_help_resolve_demo_failed);
 			return;
 		}
 		if (!isReportAuthor(report)) {
-			getApplication().showToastMessage("Only the Help author can resolve it.");
+			getApplication().showToastMessage(R.string.roadcrew_help_resolve_author_only);
 			return;
 		}
-		getApplication().showToastMessage("Resolving Help...");
+		getApplication().showToastMessage(R.string.roadcrew_help_resolving);
 		RoadCrewReportsSync.resolveHelpReport(getApplication(), report,
 				new RoadCrewReportsSync.HelpResolveCallback() {
 					@Override
 					public void onSuccess() {
 						getMapView().refreshMap();
-						getApplication().showToastMessage("Help marked resolved.");
+						getApplication().showToastMessage(R.string.roadcrew_help_resolved_done);
 					}
 
 					@Override
 					public void onError(@NonNull Exception error) {
-						getApplication().showToastMessage("Could not resolve Help.");
+						getApplication().showToastMessage(R.string.roadcrew_help_resolve_failed);
 					}
 				});
 	}
@@ -581,17 +582,17 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private void showProximityPrompt(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report) {
 		proximityPromptVisible = true;
 		promptedReportIds.add(report.getId());
-		LinearLayout content = RoadCrewUi.createPanel(mapActivity, "RoadCrew report");
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, mapActivity.getString(R.string.roadcrew_report_confirm_title));
 		RoadCrewUi.addBody(mapActivity, content,
-				"Is this " + report.getType().getTitle() + " still there?");
+				mapActivity.getString(R.string.roadcrew_report_confirm_still_there, report.getType().getTitle(mapActivity)));
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, "Gone", false, v -> {
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_report_gone), false, v -> {
 			dialog.dismiss();
 			handleReportVote(report, false);
 		});
-		RoadCrewUi.addButton(mapActivity, buttons, "Later", false, v -> dialog.dismiss());
-		RoadCrewUi.addButton(mapActivity, buttons, "Still there", true, v -> {
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_later), false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_report_still_there), true, v -> {
 			dialog.dismiss();
 			handleReportVote(report, true);
 		});
@@ -606,9 +607,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		getMapView().refreshMap();
 		if (saved) {
 			RoadCrewReportsSync.syncNow(getApplication());
-			getApplication().showToastMessage(confirmed ? "Thanks. Report confirmed." : "Thanks. Report marked gone.");
+			getApplication().showToastMessage(confirmed ? R.string.roadcrew_report_vote_confirmed : R.string.roadcrew_report_vote_gone);
 		} else {
-			getApplication().showToastMessage("You already voted on this report.");
+			getApplication().showToastMessage(R.string.roadcrew_report_vote_already);
 		}
 	}
 
@@ -675,12 +676,12 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		notificationPromptVisible = true;
 		dismissActiveNotificationDialog();
 		LinearLayout content = RoadCrewUi.createPanel(mapActivity,
-				notification.getTitle().isEmpty() ? "Driver needs help nearby" : notification.getTitle());
+				notification.getTitle().isEmpty() ? mapActivity.getString(R.string.roadcrew_push_help_nearby_title) : notification.getTitle());
 		RoadCrewUi.addBody(mapActivity, content, notification.getBody());
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, "Later", false, v -> dialog.dismiss());
-		RoadCrewUi.addButton(mapActivity, buttons, "Join chat", true, v -> {
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_later), false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_join_chat), true, v -> {
 			dialog.dismiss();
 			joinAndOpenHelpChat(mapActivity, notification.getReportId());
 		});
@@ -693,12 +694,12 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		notificationPromptVisible = true;
 		dismissActiveNotificationDialog();
 		LinearLayout content = RoadCrewUi.createPanel(mapActivity,
-				notification.getTitle().isEmpty() ? "Safety alert for your truck" : notification.getTitle());
+				notification.getTitle().isEmpty() ? mapActivity.getString(R.string.roadcrew_push_plate_alert_title) : notification.getTitle());
 		RoadCrewUi.addBody(mapActivity, content, notification.getBody());
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, "OK", false, v -> dialog.dismiss());
-		RoadCrewUi.addButton(mapActivity, buttons, "Open chat", true, v -> {
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_ok), false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_open_chat), true, v -> {
 			dialog.dismiss();
 			openPlateAlertChat(mapActivity, notification.getId());
 		});
@@ -711,12 +712,12 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		notificationPromptVisible = true;
 		dismissActiveNotificationDialog();
 		LinearLayout content = RoadCrewUi.createPanel(mapActivity,
-				notification.getTitle().isEmpty() ? "New driver chat message" : notification.getTitle());
+				notification.getTitle().isEmpty() ? mapActivity.getString(R.string.roadcrew_push_direct_chat_title) : notification.getTitle());
 		RoadCrewUi.addBody(mapActivity, content, notification.getBody());
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, "Later", false, v -> dialog.dismiss());
-		RoadCrewUi.addButton(mapActivity, buttons, "Open chat", true, v -> {
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_later), false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_open_chat), true, v -> {
 			dialog.dismiss();
 			showDirectChatDialog(mapActivity, notification.getReportId());
 		});
@@ -729,12 +730,12 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		notificationPromptVisible = true;
 		dismissActiveNotificationDialog();
 		LinearLayout content = RoadCrewUi.createPanel(mapActivity,
-				notification.getTitle().isEmpty() ? "New Help chat message" : notification.getTitle());
+				notification.getTitle().isEmpty() ? mapActivity.getString(R.string.roadcrew_push_help_chat_title) : notification.getTitle());
 		RoadCrewUi.addBody(mapActivity, content, notification.getBody());
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, "Later", false, v -> dialog.dismiss());
-		RoadCrewUi.addButton(mapActivity, buttons, "Open chat", true, v -> {
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_later), false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_open_chat), true, v -> {
 			dialog.dismiss();
 			joinAndOpenHelpChat(mapActivity, notification.getReportId());
 		});
@@ -782,7 +783,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 			@Override
 			public void onError(@NonNull Exception error) {
-				getApplication().showToastMessage("Could not open driver chat.");
+				getApplication().showToastMessage(R.string.roadcrew_driver_chat_open_failed);
 			}
 		});
 	}
@@ -796,7 +797,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 			@Override
 			public void onError(@NonNull Exception error) {
-				getApplication().showToastMessage("Could not open Help chat.");
+				getApplication().showToastMessage(R.string.roadcrew_help_chat_open_failed);
 			}
 		});
 	}
@@ -806,10 +807,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			joinAndOpenHelpChat(mapActivity, report.getId());
 		} else {
 			if (report.getId().startsWith("seed-")) {
-				getApplication().showToastMessage("Demo Help report has no chat.");
+				getApplication().showToastMessage(R.string.roadcrew_help_chat_demo_unavailable);
 				return;
 			}
-			getApplication().showToastMessage("Syncing Help report...");
+			getApplication().showToastMessage(R.string.roadcrew_help_chat_syncing);
 			RoadCrewReportsSync.syncHelpReportAndJoinChat(getApplication(), report,
 					new RoadCrewReportsSync.HelpReportChatCallback() {
 						@Override
@@ -820,17 +821,17 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 						@Override
 						public void onError(@NonNull Exception error) {
-							getApplication().showToastMessage("Could not open Help chat.");
+							getApplication().showToastMessage(R.string.roadcrew_help_chat_open_failed);
 						}
 					});
 		}
 	}
 
 	private void showHelpChatDialog(@NonNull MapActivity mapActivity, @NonNull String reportId) {
-		LinearLayout content = RoadCrewUi.createPanel(mapActivity, "Help chat");
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, mapActivity.getString(R.string.roadcrew_help_chat_title));
 
 		TextView messagesView = new TextView(mapActivity);
-		messagesView.setText("Loading messages...");
+		messagesView.setText(mapActivity.getString(R.string.roadcrew_chat_loading));
 		RoadCrewUi.addMessageArea(mapActivity, content, messagesView, 240);
 
 		EditText input = createHelpChatInput(mapActivity);
@@ -838,8 +839,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, "Close", false, v -> dialog.dismiss());
-		Button sendButton = RoadCrewUi.addButton(mapActivity, buttons, "Send", true,
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_close), false, v -> dialog.dismiss());
+		Button sendButton = RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_send), true,
 				v -> sendHelpChatMessage(input, messagesView, reportId, null));
 		sendButton.setOnClickListener(v -> sendHelpChatMessage(input, messagesView, reportId, sendButton));
 		openHelpReportIds.add(reportId);
@@ -851,13 +852,13 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	private void showDirectChatDialog(@NonNull MapActivity mapActivity, @NonNull String chatRoomId) {
 		if (chatRoomId.isEmpty()) {
-			getApplication().showToastMessage("Could not open driver chat.");
+			getApplication().showToastMessage(R.string.roadcrew_driver_chat_open_failed);
 			return;
 		}
-		LinearLayout content = RoadCrewUi.createPanel(mapActivity, "Driver chat");
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, mapActivity.getString(R.string.roadcrew_driver_chat_title));
 
 		TextView messagesView = new TextView(mapActivity);
-		messagesView.setText("Loading messages...");
+		messagesView.setText(mapActivity.getString(R.string.roadcrew_chat_loading));
 		RoadCrewUi.addMessageArea(mapActivity, content, messagesView, 240);
 
 		EditText input = createHelpChatInput(mapActivity);
@@ -865,8 +866,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, "Close", false, v -> dialog.dismiss());
-		Button sendButton = RoadCrewUi.addButton(mapActivity, buttons, "Send", true,
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_close), false, v -> dialog.dismiss());
+		Button sendButton = RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_send), true,
 				v -> sendDirectChatMessage(input, messagesView, chatRoomId, null));
 		sendButton.setOnClickListener(v -> sendDirectChatMessage(input, messagesView, chatRoomId, sendButton));
 		openDirectChatRoomIds.add(chatRoomId);
@@ -878,7 +879,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	@NonNull
 	private EditText createHelpChatInput(@NonNull MapActivity mapActivity) {
-		EditText input = RoadCrewUi.createInput(mapActivity, "Write a message", true);
+		EditText input = RoadCrewUi.createInput(mapActivity, mapActivity.getString(R.string.roadcrew_chat_input_hint), true);
 		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
 				| InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 		input.setFilters(new InputFilter[] {new InputFilter.LengthFilter(HELP_CHAT_MESSAGE_MAX_LENGTH)});
@@ -888,13 +889,13 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private void prepareHelpPanelChat(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report,
 			@NonNull TextView messagesView, @NonNull Button sendButton, @NonNull AlertDialog dialog) {
 		if (report.getId().startsWith("seed-")) {
-			messagesView.setText("Demo Help report has no chat.");
+			messagesView.setText(getContext().getString(R.string.roadcrew_help_chat_demo_unavailable));
 			return;
 		}
 		if (isRemoteReport(report)) {
 			joinHelpChatForPanel(report.getId(), messagesView, sendButton, dialog);
 		} else {
-			messagesView.setText("Syncing Help report...");
+			messagesView.setText(getContext().getString(R.string.roadcrew_help_chat_syncing));
 			RoadCrewReportsSync.syncHelpReportAndJoinChat(getApplication(), report,
 					new RoadCrewReportsSync.HelpReportChatCallback() {
 						@Override
@@ -905,7 +906,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 						@Override
 						public void onError(@NonNull Exception error) {
-							messagesView.setText("Could not open Help chat.");
+							messagesView.setText(getContext().getString(R.string.roadcrew_help_chat_open_failed));
 						}
 					});
 		}
@@ -926,7 +927,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 			@Override
 			public void onError(@NonNull Exception error) {
-				messagesView.setText("Could not open Help chat.");
+				messagesView.setText(getContext().getString(R.string.roadcrew_help_chat_open_failed));
 			}
 		});
 	}
@@ -937,7 +938,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		if (tag instanceof String reportId) {
 			sendHelpChatMessage(input, messagesView, reportId, null);
 		} else if (!report.getId().startsWith("seed-")) {
-			getApplication().showToastMessage("Help chat is still connecting.");
+			getApplication().showToastMessage(R.string.roadcrew_help_chat_connecting);
 		}
 	}
 
@@ -966,7 +967,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 						if (sendButton != null) {
 							sendButton.setEnabled(true);
 						}
-						getApplication().showToastMessage("Message not sent.");
+						getApplication().showToastMessage(R.string.roadcrew_chat_message_not_sent);
 					}
 				});
 	}
@@ -981,7 +982,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 					@Override
 					public void onError(@NonNull Exception error) {
-						messagesView.setText("Could not load messages.");
+						messagesView.setText(getContext().getString(R.string.roadcrew_chat_load_failed));
 					}
 				});
 	}
@@ -1011,7 +1012,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 						if (sendButton != null) {
 							sendButton.setEnabled(true);
 						}
-						getApplication().showToastMessage("Message not sent.");
+						getApplication().showToastMessage(R.string.roadcrew_chat_message_not_sent);
 					}
 				});
 	}
@@ -1026,7 +1027,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 					@Override
 					public void onError(@NonNull Exception error) {
-						messagesView.setText("Could not load messages.");
+						messagesView.setText(getContext().getString(R.string.roadcrew_chat_load_failed));
 					}
 				});
 	}
@@ -1056,7 +1057,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	@NonNull
 	private String formatHelpChatMessages(@NonNull List<RoadCrewChatMessage> messages) {
 		if (messages.isEmpty()) {
-			return "No messages yet.";
+			return getContext().getString(R.string.roadcrew_chat_no_messages);
 		}
 		String localDeviceId = RoadCrewReportsRepository.getLocalDeviceId(getApplication());
 		String localDisplayName = RoadCrewDriverProfile.load(getApplication()).getDisplayName();
@@ -1078,9 +1079,11 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			@NonNull String localDisplayName) {
 		String displayName = message.getDisplayName().trim();
 		if (localDeviceId.equals(message.getDeviceId())) {
-			return localDisplayName.isEmpty() ? "Me" : "Me (" + localDisplayName + ")";
+			return localDisplayName.isEmpty()
+					? getContext().getString(R.string.roadcrew_chat_author_me)
+					: getContext().getString(R.string.roadcrew_chat_author_me_named, localDisplayName);
 		}
-		return displayName.isEmpty() ? "Driver" : displayName;
+		return displayName.isEmpty() ? getContext().getString(R.string.roadcrew_chat_author_driver) : displayName;
 	}
 
 	private boolean isRemoteReport(@NonNull RoadCrewReport report) {
@@ -1099,39 +1102,39 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		long ageMillis = Math.max(0, System.currentTimeMillis() - report.getCreatedAtMillis());
 		long ageMinutes = ageMillis / (60 * 1000);
 		if (ageMinutes == 0) {
-			return "now";
+			return getContext().getString(R.string.roadcrew_time_now);
 		}
-		return ageMinutes + " min";
+		return getContext().getString(R.string.roadcrew_time_minutes, ageMinutes);
 	}
 
 	private String formatReportedAge(@NonNull RoadCrewReport report) {
 		long ageMillis = Math.max(0, System.currentTimeMillis() - report.getCreatedAtMillis());
 		long ageMinutes = ageMillis / (60 * 1000);
 		if (ageMinutes == 0) {
-			return "just now";
+			return getContext().getString(R.string.roadcrew_time_just_now);
 		}
-		return ageMinutes + " min ago";
+		return getContext().getString(R.string.roadcrew_time_minutes_ago, ageMinutes);
 	}
 
 	private String formatMessageAge(long createdAtMillis) {
 		long ageMillis = Math.max(0, System.currentTimeMillis() - createdAtMillis);
 		long ageMinutes = ageMillis / (60 * 1000);
 		if (ageMinutes == 0) {
-			return "now";
+			return getContext().getString(R.string.roadcrew_time_now);
 		}
-		return ageMinutes + " min ago";
+		return getContext().getString(R.string.roadcrew_time_minutes_ago, ageMinutes);
 	}
 
 	@NonNull
 	private String formatLocalVote(@NonNull RoadCrewReport report) {
 		switch (report.getLocalVote()) {
 			case CONFIRMED:
-				return "Still there";
+				return getContext().getString(R.string.roadcrew_report_still_there);
 			case DENIED:
-				return "Gone";
+				return getContext().getString(R.string.roadcrew_report_gone);
 			case NONE:
 			default:
-				return "Not yet";
+				return getContext().getString(R.string.roadcrew_report_vote_not_yet);
 		}
 	}
 

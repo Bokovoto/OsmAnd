@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import net.osmand.plus.OsmAndLocationProvider;
+import net.osmand.plus.R;
 import net.osmand.plus.activities.MapActivity;
 import net.osmand.plus.download.DownloadActivity;
 import net.osmand.plus.utils.AndroidUtils;
@@ -59,15 +60,15 @@ public final class RoadCrewStartupSetup {
 		dialogShowing = true;
 		preferences.edit().putLong(KEY_LAST_PROMPT_MILLIS, now).apply();
 
-		LinearLayout content = RoadCrewUi.createPanel(activity, "RoadCrew setup");
+		LinearLayout content = RoadCrewUi.createPanel(activity, activity.getString(R.string.roadcrew_setup_title));
 		RoadCrewUi.addBody(activity, content,
-				"RoadCrew needs location and notifications so reports, Help requests, warnings, and chats can work reliably.");
+				activity.getString(R.string.roadcrew_setup_intro));
 
 		if (needsLocationPermission) {
 			addSetupItem(activity, content,
-					"Location permission",
-					"Needed to place reports at your phone position.",
-					"Enable location",
+					activity.getString(R.string.roadcrew_setup_location_permission),
+					activity.getString(R.string.roadcrew_setup_location_permission_body),
+					activity.getString(R.string.roadcrew_setup_enable_location),
 					v -> ActivityCompat.requestPermissions(activity, new String[] {
 									Manifest.permission.ACCESS_FINE_LOCATION,
 									Manifest.permission.ACCESS_COARSE_LOCATION},
@@ -75,41 +76,41 @@ public final class RoadCrewStartupSetup {
 		}
 		if (needsDeviceLocation) {
 			addSetupItem(activity, content,
-					"Device location",
-					"Location services are switched off on this phone.",
-					"Open settings",
+					activity.getString(R.string.roadcrew_setup_device_location),
+					activity.getString(R.string.roadcrew_setup_device_location_body),
+					activity.getString(R.string.roadcrew_setup_open_settings),
 					v -> AndroidUtils.startActivityIfSafe(activity,
 							new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)));
 		}
 		if (needsNotifications) {
 			addSetupItem(activity, content,
-					"Notifications",
-					"Needed for Help requests, driver warnings, and chat alerts.",
-					"Enable notifications",
+					activity.getString(R.string.roadcrew_setup_notifications),
+					activity.getString(R.string.roadcrew_setup_notifications_body),
+					activity.getString(R.string.roadcrew_setup_enable_notifications),
 					v -> openNotificationPermission(activity));
 		}
 		if (needsOfflineMap) {
 			addSetupItem(activity, content,
-					"Offline map",
-					"Download the country map before driving so navigation and RoadCrew reports work reliably.",
-					"Download map",
+					activity.getString(R.string.roadcrew_setup_offline_map),
+					activity.getString(R.string.roadcrew_setup_offline_map_body),
+					activity.getString(R.string.roadcrew_setup_download_map),
 					v -> openMapDownload(activity));
 		}
 		if (needsDriverProfile) {
 			addSetupItem(activity, content,
-					"Driver profile",
-					"Add your name and truck/trailer number so other drivers can warn you if they see a problem.",
-					"Complete profile",
+					activity.getString(R.string.roadcrew_profile_title),
+					activity.getString(R.string.roadcrew_setup_driver_profile_body),
+					activity.getString(R.string.roadcrew_setup_complete_profile),
 					v -> RoadCrewDriverProfileDialog.show(activity, activity.getApp()));
 		}
 
 		RoadCrewUi.addBody(activity, content,
-				"Background alerts will be improved with server push notifications. For now, keep RoadCrew running when you want live nearby alerts.");
+				activity.getString(R.string.roadcrew_setup_push_note));
 
 		AlertDialog dialog = RoadCrewUi.createDialog(activity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(activity, content);
-		RoadCrewUi.addButton(activity, buttons, "Later", false, v -> dialog.dismiss());
-		RoadCrewUi.addButton(activity, buttons, "Done", true, v -> dialog.dismiss());
+		RoadCrewUi.addButton(activity, buttons, activity.getString(R.string.roadcrew_button_later), false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(activity, buttons, activity.getString(R.string.roadcrew_button_done), true, v -> dialog.dismiss());
 		dialog.setOnDismissListener(d -> dialogShowing = false);
 		dialog.show();
 		return true;

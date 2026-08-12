@@ -43,7 +43,7 @@ public class RoadCrewFirebaseMessagingService extends FirebaseMessagingService {
 		}
 		Map<String, String> data = message.getData();
 		String title = valueOrDefault(data.get("title"), "RoadCrew");
-		String body = valueOrDefault(data.get("body"), "New RoadCrew update.");
+		String body = valueOrDefault(data.get("body"), getString(R.string.roadcrew_push_default_body));
 		String kind = valueOrDefault(data.get("kind"), "ROADCREW_EVENT");
 		String referenceId = valueOrDefault(data.get("referenceId"), "");
 		showNotification(title, body, kind, referenceId);
@@ -87,9 +87,9 @@ public class RoadCrewFirebaseMessagingService extends FirebaseMessagingService {
 		}
 		NotificationChannel channel = new NotificationChannel(
 				CHANNEL_ID,
-				"RoadCrew sound alerts",
+				getString(R.string.roadcrew_notification_channel_name),
 				NotificationManager.IMPORTANCE_HIGH);
-		channel.setDescription("Help requests, driver warnings, and RoadCrew chat alerts.");
+		channel.setDescription(getString(R.string.roadcrew_notification_channel_description));
 		channel.enableVibration(true);
 		channel.setSound(defaultNotificationSound(), new AudioAttributes.Builder()
 				.setUsage(AudioAttributes.USAGE_NOTIFICATION)

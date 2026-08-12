@@ -5,4 +5,152 @@
     <string name="first_usage_wizard_desc">Let RoadCrew determine your location and suggest maps to download for that region.</string>
     <string name="about_osmand">About RoadCrew</string>
     <string name="backup_welcome_back_descr">Restore data on this device.</string>
+
+    <string name="roadcrew_report_type_traffic_police">Traffic police</string>
+    <string name="roadcrew_report_type_police">Police</string>
+    <string name="roadcrew_report_type_camera">Camera</string>
+    <string name="roadcrew_report_type_weigh_station">Weigh station</string>
+    <string name="roadcrew_report_type_danger">Danger</string>
+    <string name="roadcrew_report_type_help">Help</string>
+
+    <string name="roadcrew_report_button_content_description">RoadCrew report</string>
+    <string name="roadcrew_layer_not_ready">RoadCrew map layer is not ready.</string>
+    <string name="roadcrew_menu_title">What do you see?</string>
+    <string name="roadcrew_menu_warn_driver">Warn driver</string>
+    <string name="roadcrew_menu_check_update">Check update</string>
+    <string name="roadcrew_menu_driver_profile">Driver profile</string>
+
+    <string name="roadcrew_warn_driver_title">Warn driver</string>
+    <string name="roadcrew_warn_driver_search_hint">Search by truck or trailer number</string>
+    <string name="roadcrew_warn_driver_search_body">Search by truck or trailer number.</string>
+    <string name="roadcrew_warn_driver_empty_plate">Enter a truck or trailer number.</string>
+    <string name="roadcrew_warn_driver_problem_title">What is wrong?</string>
+    <string name="roadcrew_warn_driver_optional_message">Optional message</string>
+    <string name="roadcrew_warn_driver_add_message">Add message</string>
+    <string name="roadcrew_warn_driver_sent">Safety alert sent.</string>
+    <string name="roadcrew_warn_driver_no_driver">No opted-in driver found for this truck or trailer number.</string>
+
+    <string-array name="roadcrew_plate_alert_titles">
+        <item>Trailer door open</item>
+        <item>Loose strap / unsecured load</item>
+        <item>Tire issue</item>
+        <item>Smoke</item>
+        <item>Sparks</item>
+        <item>Load moving</item>
+        <item>Other safety issue</item>
+    </string-array>
+
+    <string name="roadcrew_help_request_title">Request help</string>
+    <string name="roadcrew_help_request_hint">What do you need? e.g. jack, tire, cables, accident help</string>
+    <string name="roadcrew_report_added">Report added: %1$s</string>
+    <string name="roadcrew_report_no_gps">No GPS position. Report added at map center.</string>
+    <string name="roadcrew_report_confirm_title">RoadCrew report</string>
+    <string name="roadcrew_report_confirm_still_there">Is this %1$s still there?</string>
+    <string name="roadcrew_report_still_there">Still there</string>
+    <string name="roadcrew_report_gone">Gone</string>
+    <string name="roadcrew_report_vote_confirmed">Thanks. Report confirmed.</string>
+    <string name="roadcrew_report_vote_gone">Thanks. Report marked gone.</string>
+    <string name="roadcrew_report_vote_already">You already voted on this report.</string>
+    <string name="roadcrew_report_vote_not_yet">Not yet</string>
+    <string name="roadcrew_report_owner_you">Owner: you</string>
+    <string name="roadcrew_report_details_reported">Reported: %1$s</string>
+    <string name="roadcrew_report_details_need">Need: %1$s</string>
+    <string name="roadcrew_report_details_still_there">Still there: %1$d</string>
+    <string name="roadcrew_report_details_gone">Gone: %1$d</string>
+    <string name="roadcrew_report_details_your_vote">Your vote: %1$s</string>
+    <string name="roadcrew_report_details_status">Status: %1$s</string>
+    <string name="roadcrew_report_status_hidden">Hidden</string>
+    <string name="roadcrew_report_status_probably_resolved">Probably resolved - waiting for author</string>
+    <string name="roadcrew_report_status_active">Active</string>
+    <string name="roadcrew_nearby_help_empty">No active Help requests nearby.</string>
+    <string name="roadcrew_nearby_help_title">Help requests nearby</string>
+    <string name="roadcrew_nearby_help_distance_unknown">Distance unknown</string>
+    <string name="roadcrew_nearby_help_probably_resolved">probably resolved</string>
+
+    <string name="roadcrew_profile_title">Driver profile</string>
+    <string name="roadcrew_profile_driver_name">Driver name</string>
+    <string name="roadcrew_profile_truck_number">Truck number</string>
+    <string name="roadcrew_profile_trailer_number">Trailer number</string>
+    <string name="roadcrew_profile_allow_plate_alerts">Allow safety alerts by truck/trailer number</string>
+    <string name="roadcrew_profile_saved">Driver profile saved.</string>
+
+    <string name="roadcrew_setup_title">RoadCrew setup</string>
+    <string name="roadcrew_setup_intro">RoadCrew needs location and notifications so reports, Help requests, warnings, and chats can work reliably.</string>
+    <string name="roadcrew_setup_location_permission">Location permission</string>
+    <string name="roadcrew_setup_location_permission_body">Needed to place reports at your phone position.</string>
+    <string name="roadcrew_setup_enable_location">Enable location</string>
+    <string name="roadcrew_setup_device_location">Device location</string>
+    <string name="roadcrew_setup_device_location_body">Location services are switched off on this phone.</string>
+    <string name="roadcrew_setup_open_settings">Open settings</string>
+    <string name="roadcrew_setup_notifications">Notifications</string>
+    <string name="roadcrew_setup_notifications_body">Needed for Help requests, driver warnings, and chat alerts.</string>
+    <string name="roadcrew_setup_enable_notifications">Enable notifications</string>
+    <string name="roadcrew_setup_offline_map">Offline map</string>
+    <string name="roadcrew_setup_offline_map_body">Download the country map before driving so navigation and RoadCrew reports work reliably.</string>
+    <string name="roadcrew_setup_download_map">Download map</string>
+    <string name="roadcrew_setup_driver_profile_body">Add your name and truck/trailer number so other drivers can warn you if they see a problem.</string>
+    <string name="roadcrew_setup_complete_profile">Complete profile</string>
+    <string name="roadcrew_setup_push_note">Background alerts will be improved with server push notifications. For now, keep RoadCrew running when you want live nearby alerts.</string>
+
+    <string name="roadcrew_update_checking">Checking for RoadCrew update...</string>
+    <string name="roadcrew_update_up_to_date">RoadCrew is up to date.</string>
+    <string name="roadcrew_update_check_failed">Could not check for RoadCrew update.</string>
+    <string name="roadcrew_update_title">RoadCrew update</string>
+    <string name="roadcrew_update_available">A new RoadCrew version is available: %1$s. Install it to get the latest fixes.</string>
+    <string name="roadcrew_update_allow_installs">Allow RoadCrew to install updates, then tap Update again.</string>
+    <string name="roadcrew_update_downloading">Downloading RoadCrew update...</string>
+    <string name="roadcrew_update_download_failed">Could not download RoadCrew update.</string>
+
+    <string name="roadcrew_help_chat_title">Help chat</string>
+    <string name="roadcrew_driver_chat_title">Driver chat</string>
+    <string name="roadcrew_chat_loading">Loading messages...</string>
+    <string name="roadcrew_chat_no_messages">No messages yet.</string>
+    <string name="roadcrew_chat_input_hint">Write a message</string>
+    <string name="roadcrew_chat_load_failed">Could not load messages.</string>
+    <string name="roadcrew_chat_message_not_sent">Message not sent.</string>
+    <string name="roadcrew_help_chat_connecting">Help chat is still connecting.</string>
+    <string name="roadcrew_help_chat_open_failed">Could not open Help chat.</string>
+    <string name="roadcrew_help_chat_demo_unavailable">Demo Help report has no chat.</string>
+    <string name="roadcrew_help_chat_syncing">Syncing Help report...</string>
+    <string name="roadcrew_driver_chat_open_failed">Could not open driver chat.</string>
+    <string name="roadcrew_chat_author_me">Me</string>
+    <string name="roadcrew_chat_author_me_named">Me (%1$s)</string>
+    <string name="roadcrew_chat_author_driver">Driver</string>
+
+    <string name="roadcrew_help_still_need_help">Still need help</string>
+    <string name="roadcrew_help_resolved">Resolved</string>
+    <string name="roadcrew_help_looks_resolved">Looks resolved</string>
+    <string name="roadcrew_help_resolve_title">Mark Help resolved?</string>
+    <string name="roadcrew_help_resolve_body">Nearby drivers will stop being notified. Joined drivers can still use the chat.</string>
+    <string name="roadcrew_help_resolve_demo_failed">Demo Help report cannot be resolved.</string>
+    <string name="roadcrew_help_resolve_author_only">Only the Help author can resolve it.</string>
+    <string name="roadcrew_help_resolving">Resolving Help...</string>
+    <string name="roadcrew_help_resolved_done">Help marked resolved.</string>
+    <string name="roadcrew_help_resolve_failed">Could not resolve Help.</string>
+
+    <string name="roadcrew_push_help_nearby_title">Driver needs help nearby</string>
+    <string name="roadcrew_push_plate_alert_title">Safety alert for your truck</string>
+    <string name="roadcrew_push_direct_chat_title">New driver chat message</string>
+    <string name="roadcrew_push_help_chat_title">New Help chat message</string>
+    <string name="roadcrew_push_default_body">New RoadCrew update.</string>
+    <string name="roadcrew_notification_channel_name">RoadCrew sound alerts</string>
+    <string name="roadcrew_notification_channel_description">Help requests, driver warnings, and RoadCrew chat alerts.</string>
+    <string name="roadcrew_button_join_chat">Join chat</string>
+    <string name="roadcrew_button_open_chat">Open chat</string>
+
+    <string name="roadcrew_button_cancel">Cancel</string>
+    <string name="roadcrew_button_next">Next</string>
+    <string name="roadcrew_button_skip">Skip</string>
+    <string name="roadcrew_button_send">Send</string>
+    <string name="roadcrew_button_save">Save</string>
+    <string name="roadcrew_button_later">Later</string>
+    <string name="roadcrew_button_done">Done</string>
+    <string name="roadcrew_button_update">Update</string>
+    <string name="roadcrew_button_close">Close</string>
+    <string name="roadcrew_button_ok">OK</string>
+
+    <string name="roadcrew_time_now">now</string>
+    <string name="roadcrew_time_minutes">%1$d min</string>
+    <string name="roadcrew_time_just_now">just now</string>
+    <string name="roadcrew_time_minutes_ago">%1$d min ago</string>
 </resources>

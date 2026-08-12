@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import net.osmand.plus.activities.MapActivity;
+import net.osmand.plus.R;
 import net.osmand.plus.utils.AndroidUtils;
 
 import org.json.JSONArray;
@@ -35,7 +36,7 @@ public final class RoadCrewAppUpdater {
 	private static final String PREFS_NAME = "roadcrew_app_updater";
 	private static final String KEY_LAST_CHECK_MILLIS = "last_check_millis";
 	private static final String KEY_DISMISSED_TAG = "dismissed_tag";
-	private static final String CURRENT_RELEASE_TAG = "roadcrew-v0.1.0-test.5";
+	private static final String CURRENT_RELEASE_TAG = "roadcrew-v0.1.0-test.6";
 	private static final String LATEST_RELEASE_API =
 			"https://api.github.com/repos/Bokovoto/OsmAnd/releases/latest";
 	private static final String APK_ASSET_NAME = "RoadCrew.apk";
@@ -67,7 +68,7 @@ public final class RoadCrewAppUpdater {
 		if (!RoadCrewReportsLayer.isEnabled(activity.getApp()) || dialogShowing) {
 			return;
 		}
-		activity.getApp().showToastMessage("Checking for RoadCrew update...");
+		activity.getApp().showToastMessage(R.string.roadcrew_update_checking);
 		SharedPreferences preferences = activity.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 		checkForUpdates(activity, preferences, true);
 	}
@@ -89,13 +90,13 @@ public final class RoadCrewAppUpdater {
 					activity.getApp().runInUIThread(() -> showUpdateDialog(activity, preferences, update));
 				} else if (forced) {
 					activity.getApp().runInUIThread(() ->
-							activity.getApp().showToastMessage("RoadCrew is up to date."));
+							activity.getApp().showToastMessage(R.string.roadcrew_update_up_to_date));
 				}
 			} catch (Exception e) {
 				Log.w(TAG, "RoadCrew update check failed", e);
 				if (forced) {
 					activity.getApp().runInUIThread(() ->
-							activity.getApp().showToastMessage("Could not check for RoadCrew update."));
+							activity.getApp().showToastMessage(R.string.roadcrew_update_check_failed));
 				}
 			} finally {
 				synchronized (RoadCrewAppUpdater.class) {
@@ -142,16 +143,16 @@ public final class RoadCrewAppUpdater {
 			return;
 		}
 		dialogShowing = true;
-		LinearLayout content = RoadCrewUi.createPanel(activity, "RoadCrew update");
+		LinearLayout content = RoadCrewUi.createPanel(activity, activity.getString(R.string.roadcrew_update_title));
 		RoadCrewUi.addBody(activity, content,
-				"A new RoadCrew version is available: " + update.title + ". Install it to get the latest fixes.");
+				activity.getString(R.string.roadcrew_update_available, update.title));
 		AlertDialog dialog = RoadCrewUi.createDialog(activity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(activity, content);
-		RoadCrewUi.addButton(activity, buttons, "Later", false, v -> {
+		RoadCrewUi.addButton(activity, buttons, activity.getString(R.string.roadcrew_button_later), false, v -> {
 			preferences.edit().putString(KEY_DISMISSED_TAG, update.tag).apply();
 			dialog.dismiss();
 		});
-		RoadCrewUi.addButton(activity, buttons, "Update", true, v -> {
+		RoadCrewUi.addButton(activity, buttons, activity.getString(R.string.roadcrew_button_update), true, v -> {
 			dialog.dismiss();
 			downloadAndInstall(activity, update);
 		});
@@ -165,10 +166,10 @@ public final class RoadCrewAppUpdater {
 			Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
 					.setData(Uri.parse("package:" + activity.getPackageName()));
 			AndroidUtils.startActivityIfSafe(activity, intent);
-			activity.getApp().showToastMessage("Allow RoadCrew to install updates, then tap Update again.");
+			activity.getApp().showToastMessage(R.string.roadcrew_update_allow_installs);
 			return;
 		}
-		activity.getApp().showToastMessage("Downloading RoadCrew update...");
+		activity.getApp().showToastMessage(R.string.roadcrew_update_downloading);
 		EXECUTOR.execute(() -> {
 			try {
 				File apk = downloadApk(activity, update);
@@ -176,7 +177,7 @@ public final class RoadCrewAppUpdater {
 			} catch (Exception e) {
 				Log.w(TAG, "RoadCrew update download failed", e);
 				activity.getApp().runInUIThread(() -> {
-					activity.getApp().showToastMessage("Could not download RoadCrew update.");
+					activity.getApp().showToastMessage(R.string.roadcrew_update_download_failed);
 					openReleasePage(activity, update);
 				});
 			}

@@ -38,15 +38,6 @@ public class RoadCrewReportButton extends MapButton {
 	private static final int HELP_DETAILS_MAX_LENGTH = 180;
 	private static final int PLATE_MAX_LENGTH = 20;
 	private static final int PLATE_ALERT_MESSAGE_MAX_LENGTH = 160;
-	private static final String[] PLATE_ALERT_TITLES = {
-			"Trailer door open",
-			"Loose strap / unsecured load",
-			"Tire issue",
-			"Smoke",
-			"Sparks",
-			"Load moving",
-			"Other safety issue"
-	};
 	private static final String[] PLATE_ALERT_CATEGORIES = {
 			"TRAILER_DOOR_OPEN",
 			"LOOSE_STRAP",
@@ -70,7 +61,7 @@ public class RoadCrewReportButton extends MapButton {
 	public RoadCrewReportButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		defaultPositionSize = createDefaultPositionSize();
-		setContentDescription("RoadCrew report");
+		setContentDescription(context.getString(R.string.roadcrew_report_button_content_description));
 		setAlwaysVisible(true);
 		setOnClickListener(v -> showReportTypeDialog());
 	}
@@ -126,7 +117,7 @@ public class RoadCrewReportButton extends MapButton {
 		if (mapActivity == null) {
 			return;
 		}
-		LinearLayout content = RoadCrewUi.createPanel(mapActivity, "What do you see?");
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, mapActivity.getString(R.string.roadcrew_menu_title));
 
 		GridLayout grid = new GridLayout(mapActivity);
 		grid.setColumnCount(3);
@@ -137,21 +128,21 @@ public class RoadCrewReportButton extends MapButton {
 		content.addView(grid, gridParams);
 
 		AlertDialog[] dialogHolder = new AlertDialog[1];
-		addMenuTile(grid, "Help", R.drawable.roadcrew_menu_help,
+		addMenuTile(grid, mapActivity.getString(R.string.roadcrew_report_type_help), R.drawable.roadcrew_menu_help,
 				() -> showHelpDetailsDialog(), dialogHolder);
-		addMenuTile(grid, "Traffic police", R.drawable.roadcrew_menu_police,
+		addMenuTile(grid, RoadCrewReportType.DAI.getTitle(mapActivity), R.drawable.roadcrew_menu_police,
 				() -> addReport(RoadCrewReportType.DAI, ""), dialogHolder);
-		addMenuTile(grid, "Weigh station", R.drawable.roadcrew_menu_scale,
+		addMenuTile(grid, RoadCrewReportType.WEIGH_STATION.getTitle(mapActivity), R.drawable.roadcrew_menu_scale,
 				() -> addReport(RoadCrewReportType.WEIGH_STATION, ""), dialogHolder);
-		addMenuTile(grid, "Danger", R.drawable.roadcrew_menu_danger,
+		addMenuTile(grid, RoadCrewReportType.DANGER.getTitle(mapActivity), R.drawable.roadcrew_menu_danger,
 				() -> addReport(RoadCrewReportType.DANGER, ""), dialogHolder);
-		addMenuTile(grid, "Camera", R.drawable.roadcrew_menu_camera,
+		addMenuTile(grid, RoadCrewReportType.CAMERA.getTitle(mapActivity), R.drawable.roadcrew_menu_camera,
 				() -> addReport(RoadCrewReportType.CAMERA, ""), dialogHolder);
-		addMenuTile(grid, "Warn driver", R.drawable.roadcrew_menu_warn_driver,
+		addMenuTile(grid, mapActivity.getString(R.string.roadcrew_menu_warn_driver), R.drawable.roadcrew_menu_warn_driver,
 				this::showPlateAlertNumberDialog, dialogHolder);
-		addMenuTile(grid, "Check update", R.drawable.roadcrew_menu_update,
+		addMenuTile(grid, mapActivity.getString(R.string.roadcrew_menu_check_update), R.drawable.roadcrew_menu_update,
 				() -> RoadCrewAppUpdater.checkForUpdatesNow(mapActivity), dialogHolder);
-		addMenuTile(grid, "Driver profile", R.drawable.roadcrew_menu_profile,
+		addMenuTile(grid, mapActivity.getString(R.string.roadcrew_menu_driver_profile), R.drawable.roadcrew_menu_profile,
 				this::showDriverProfileDialog, dialogHolder);
 
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
@@ -205,17 +196,17 @@ public class RoadCrewReportButton extends MapButton {
 		if (mapActivity == null) {
 			return;
 		}
-		EditText plateInput = createProfileInput("Search by truck or trailer number", PLATE_MAX_LENGTH);
-		LinearLayout content = RoadCrewUi.createPanel(mapActivity, "Warn driver");
-		RoadCrewUi.addBody(mapActivity, content, "Search by truck or trailer number.");
+		EditText plateInput = createProfileInput(mapActivity.getString(R.string.roadcrew_warn_driver_search_hint), PLATE_MAX_LENGTH);
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, mapActivity.getString(R.string.roadcrew_warn_driver_title));
+		RoadCrewUi.addBody(mapActivity, content, mapActivity.getString(R.string.roadcrew_warn_driver_search_body));
 		RoadCrewUi.addInput(mapActivity, content, plateInput);
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, "Cancel", false, v -> dialog.dismiss());
-		RoadCrewUi.addButton(mapActivity, buttons, "Next", true, v -> {
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_cancel), false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_next), true, v -> {
 			String normalizedPlate = RoadCrewDriverProfile.normalizePlateNumber(plateInput.getText().toString());
 			if (normalizedPlate.isEmpty()) {
-				app.showToastMessage("Enter a truck or trailer number.");
+				app.showToastMessage(R.string.roadcrew_warn_driver_empty_plate);
 				return;
 			}
 			dialog.dismiss();
@@ -228,17 +219,18 @@ public class RoadCrewReportButton extends MapButton {
 		if (mapActivity == null) {
 			return;
 		}
-		LinearLayout content = RoadCrewUi.createPanel(mapActivity, "What is wrong?");
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, mapActivity.getString(R.string.roadcrew_warn_driver_problem_title));
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
-		for (int i = 0; i < PLATE_ALERT_TITLES.length; i++) {
+		String[] plateAlertTitles = mapActivity.getResources().getStringArray(R.array.roadcrew_plate_alert_titles);
+		for (int i = 0; i < plateAlertTitles.length; i++) {
 			final int index = i;
-			RoadCrewUi.addFullWidthButton(mapActivity, content, PLATE_ALERT_TITLES[i], false, v -> {
+			RoadCrewUi.addFullWidthButton(mapActivity, content, plateAlertTitles[i], false, v -> {
 				dialog.dismiss();
 				showPlateAlertMessageDialog(normalizedPlate, PLATE_ALERT_CATEGORIES[index]);
 			});
 		}
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, "Cancel", false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_cancel), false, v -> dialog.dismiss());
 		dialog.show();
 	}
 
@@ -246,21 +238,21 @@ public class RoadCrewReportButton extends MapButton {
 		if (mapActivity == null) {
 			return;
 		}
-		EditText messageInput = createProfileInput("Optional message", PLATE_ALERT_MESSAGE_MAX_LENGTH);
+		EditText messageInput = createProfileInput(mapActivity.getString(R.string.roadcrew_warn_driver_optional_message), PLATE_ALERT_MESSAGE_MAX_LENGTH);
 		messageInput.setMinLines(2);
 		messageInput.setMaxLines(4);
 		messageInput.setInputType(InputType.TYPE_CLASS_TEXT
 				| InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
 				| InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-		LinearLayout content = RoadCrewUi.createPanel(mapActivity, "Add message");
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, mapActivity.getString(R.string.roadcrew_warn_driver_add_message));
 		RoadCrewUi.addInput(mapActivity, content, messageInput);
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, "Skip", false, v -> {
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_skip), false, v -> {
 			dialog.dismiss();
 			sendPlateSafetyAlert(normalizedPlate, category, "");
 		});
-		RoadCrewUi.addButton(mapActivity, buttons, "Send", true, v -> {
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_send), true, v -> {
 			dialog.dismiss();
 			sendPlateSafetyAlert(normalizedPlate, category, messageInput.getText().toString());
 		});
@@ -273,14 +265,14 @@ public class RoadCrewReportButton extends MapButton {
 				new RoadCrewReportsSync.HelpResolveCallback() {
 					@Override
 					public void onSuccess() {
-						app.showToastMessage("Safety alert sent.");
+						app.showToastMessage(R.string.roadcrew_warn_driver_sent);
 					}
 
 					@Override
 					public void onError(@NonNull Exception error) {
 						String errorMessage = error.getMessage();
 						app.showToastMessage(errorMessage == null || errorMessage.isEmpty()
-								? "No opted-in driver found for this truck or trailer number."
+								? mapActivity.getString(R.string.roadcrew_warn_driver_no_driver)
 								: errorMessage);
 					}
 				});
@@ -306,16 +298,16 @@ public class RoadCrewReportButton extends MapButton {
 			return;
 		}
 		EditText input = RoadCrewUi.createInput(mapActivity,
-				"What do you need? e.g. jack, tire, cables, accident help", true);
+				mapActivity.getString(R.string.roadcrew_help_request_hint), true);
 		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
 				| InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 		input.setFilters(new InputFilter[] {new InputFilter.LengthFilter(HELP_DETAILS_MAX_LENGTH)});
-		LinearLayout content = RoadCrewUi.createPanel(mapActivity, "Request help");
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, mapActivity.getString(R.string.roadcrew_help_request_title));
 		RoadCrewUi.addInput(mapActivity, content, input);
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, "Cancel", false, v -> dialog.dismiss());
-		RoadCrewUi.addButton(mapActivity, buttons, "Send", true, v -> {
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_cancel), false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_send), true, v -> {
 			dialog.dismiss();
 			addReport(RoadCrewReportType.HELP, input.getText().toString().trim());
 		});
@@ -335,9 +327,9 @@ public class RoadCrewReportButton extends MapButton {
 		RoadCrewReportsSync.syncNow(app);
 		getMapView().refreshMap();
 		if (usedGpsLocation) {
-			app.showToastMessage("Report added: " + type.getTitle());
+			app.showToastMessage(mapActivity.getString(R.string.roadcrew_report_added, type.getTitle(mapActivity)));
 		} else {
-			app.showToastMessage("No GPS position. Report added at map center.");
+			app.showToastMessage(R.string.roadcrew_report_no_gps);
 		}
 	}
 

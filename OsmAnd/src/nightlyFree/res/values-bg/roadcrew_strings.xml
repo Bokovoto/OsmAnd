@@ -2,7 +2,155 @@
 <resources>
     <string name="app_name_osmand">RoadCrew</string>
     <string name="hello">Навигационно приложение RoadCrew</string>
-    <string name="first_usage_wizard_desc">Нека RoadCrew определи вашето местоположение и да ви предложи карти за изтегляне.</string>
-    <string name="about_osmand">Относно RoadCrew</string>
+    <string name="first_usage_wizard_desc">Нека RoadCrew определи местоположението ви и предложи карти за изтегляне.</string>
+    <string name="about_osmand">За RoadCrew</string>
     <string name="backup_welcome_back_descr">Възстановяване на данните на това устройство.</string>
+
+    <string name="roadcrew_report_type_traffic_police">Пътна полиция</string>
+    <string name="roadcrew_report_type_police">Полиция</string>
+    <string name="roadcrew_report_type_camera">Камера</string>
+    <string name="roadcrew_report_type_weigh_station">Кантар</string>
+    <string name="roadcrew_report_type_danger">Опасност</string>
+    <string name="roadcrew_report_type_help">Помощ</string>
+
+    <string name="roadcrew_report_button_content_description">RoadCrew сигнал</string>
+    <string name="roadcrew_layer_not_ready">RoadCrew слоят на картата още не е готов.</string>
+    <string name="roadcrew_menu_title">Какво виждате?</string>
+    <string name="roadcrew_menu_warn_driver">Предупреди шофьор</string>
+    <string name="roadcrew_menu_check_update">Провери за обновяване</string>
+    <string name="roadcrew_menu_driver_profile">Профил на шофьора</string>
+
+    <string name="roadcrew_warn_driver_title">Предупреди шофьор</string>
+    <string name="roadcrew_warn_driver_search_hint">Търсене по номер на камион или ремарке</string>
+    <string name="roadcrew_warn_driver_search_body">Въведете номер на камион или ремарке, за да изпратите предупреждение.</string>
+    <string name="roadcrew_warn_driver_empty_plate">Въведете номер на камион или ремарке.</string>
+    <string name="roadcrew_warn_driver_problem_title">Какъв е проблемът?</string>
+    <string name="roadcrew_warn_driver_optional_message">Съобщение по избор</string>
+    <string name="roadcrew_warn_driver_add_message">Добави съобщение</string>
+    <string name="roadcrew_warn_driver_sent">Предупреждението е изпратено.</string>
+    <string name="roadcrew_warn_driver_no_driver">Не е намерен шофьор с включени предупреждения за този номер.</string>
+
+    <string-array name="roadcrew_plate_alert_titles">
+        <item>Отворена врата на ремаркето</item>
+        <item>Хлабав колан / необезопасен товар</item>
+        <item>Проблем с гума</item>
+        <item>Дим</item>
+        <item>Искри</item>
+        <item>Товарът се движи</item>
+        <item>Друг проблем с безопасността</item>
+    </string-array>
+
+    <string name="roadcrew_help_request_title">Заяви помощ</string>
+    <string name="roadcrew_help_request_hint">От какво имате нужда? напр. крик, гума, кабели, помощ при ПТП</string>
+    <string name="roadcrew_report_added">Сигналът е добавен: %1$s</string>
+    <string name="roadcrew_report_no_gps">Няма GPS позиция. Сигналът е добавен в центъра на картата.</string>
+    <string name="roadcrew_report_confirm_title">RoadCrew сигнал</string>
+    <string name="roadcrew_report_confirm_still_there">Този сигнал още ли е там: %1$s?</string>
+    <string name="roadcrew_report_still_there">Още е там</string>
+    <string name="roadcrew_report_gone">Няма го</string>
+    <string name="roadcrew_report_vote_confirmed">Благодаря. Сигналът е потвърден.</string>
+    <string name="roadcrew_report_vote_gone">Благодаря. Сигналът е отбелязан като изчезнал.</string>
+    <string name="roadcrew_report_vote_already">Вече сте гласували за този сигнал.</string>
+    <string name="roadcrew_report_vote_not_yet">Още не</string>
+    <string name="roadcrew_report_owner_you">Автор: вие</string>
+    <string name="roadcrew_report_details_reported">Подаден: %1$s</string>
+    <string name="roadcrew_report_details_need">Нужда: %1$s</string>
+    <string name="roadcrew_report_details_still_there">Още е там: %1$d</string>
+    <string name="roadcrew_report_details_gone">Няма го: %1$d</string>
+    <string name="roadcrew_report_details_your_vote">Вашият глас: %1$s</string>
+    <string name="roadcrew_report_details_status">Статус: %1$s</string>
+    <string name="roadcrew_report_status_hidden">Скрит</string>
+    <string name="roadcrew_report_status_probably_resolved">Вероятно е решено - чака се авторът</string>
+    <string name="roadcrew_report_status_active">Активен</string>
+    <string name="roadcrew_nearby_help_empty">Няма активни заявки за помощ наблизо.</string>
+    <string name="roadcrew_nearby_help_title">Заявки за помощ наблизо</string>
+    <string name="roadcrew_nearby_help_distance_unknown">Разстоянието не е известно</string>
+    <string name="roadcrew_nearby_help_probably_resolved">вероятно е решено</string>
+
+    <string name="roadcrew_profile_title">Профил на шофьора</string>
+    <string name="roadcrew_profile_driver_name">Име на шофьора</string>
+    <string name="roadcrew_profile_truck_number">Номер на камион</string>
+    <string name="roadcrew_profile_trailer_number">Номер на ремарке</string>
+    <string name="roadcrew_profile_allow_plate_alerts">Разреши предупреждения по номер на камион/ремарке</string>
+    <string name="roadcrew_profile_saved">Профилът е запазен.</string>
+
+    <string name="roadcrew_setup_title">Настройка на RoadCrew</string>
+    <string name="roadcrew_setup_intro">RoadCrew има нужда от местоположение и известия, за да работят надеждно сигналите, заявките за помощ, предупрежденията и чатовете.</string>
+    <string name="roadcrew_setup_location_permission">Достъп до местоположение</string>
+    <string name="roadcrew_setup_location_permission_body">Нужно е, за да се поставят сигналите на позицията на телефона.</string>
+    <string name="roadcrew_setup_enable_location">Разреши местоположение</string>
+    <string name="roadcrew_setup_device_location">Местоположение на телефона</string>
+    <string name="roadcrew_setup_device_location_body">Услугите за местоположение са изключени на този телефон.</string>
+    <string name="roadcrew_setup_open_settings">Отвори настройки</string>
+    <string name="roadcrew_setup_notifications">Известия</string>
+    <string name="roadcrew_setup_notifications_body">Нужни са за заявки за помощ, предупреждения към шофьори и чат известия.</string>
+    <string name="roadcrew_setup_enable_notifications">Разреши известия</string>
+    <string name="roadcrew_setup_offline_map">Офлайн карта</string>
+    <string name="roadcrew_setup_offline_map_body">Изтеглете картата на държавата преди път, за да работят надеждно навигацията и RoadCrew сигналите.</string>
+    <string name="roadcrew_setup_download_map">Изтегляне на карта</string>
+    <string name="roadcrew_setup_driver_profile_body">Добавете име и номер на камион/ремарке, за да могат други шофьори да ви предупредят при проблем.</string>
+    <string name="roadcrew_setup_complete_profile">Попълни профил</string>
+    <string name="roadcrew_setup_push_note">Известията във фон вече се използват за помощ, предупреждения и чат. За най-бърза реакция дръжте RoadCrew разрешен за известия.</string>
+
+    <string name="roadcrew_update_checking">Проверка за обновяване на RoadCrew...</string>
+    <string name="roadcrew_update_up_to_date">RoadCrew е с последната версия.</string>
+    <string name="roadcrew_update_check_failed">Неуспешна проверка за обновяване на RoadCrew.</string>
+    <string name="roadcrew_update_title">Обновяване на RoadCrew</string>
+    <string name="roadcrew_update_available">Налична е нова версия на RoadCrew: %1$s. Инсталирайте я, за да получите последните поправки.</string>
+    <string name="roadcrew_update_allow_installs">Разрешете на RoadCrew да инсталира обновявания, после натиснете Обновяване отново.</string>
+    <string name="roadcrew_update_downloading">Изтегляне на обновяване за RoadCrew...</string>
+    <string name="roadcrew_update_download_failed">Обновяването на RoadCrew не можа да се изтегли.</string>
+
+    <string name="roadcrew_help_chat_title">Чат за помощ</string>
+    <string name="roadcrew_driver_chat_title">Чат с шофьор</string>
+    <string name="roadcrew_chat_loading">Зареждане на съобщения...</string>
+    <string name="roadcrew_chat_no_messages">Все още няма съобщения.</string>
+    <string name="roadcrew_chat_input_hint">Напишете съобщение</string>
+    <string name="roadcrew_chat_load_failed">Съобщенията не можаха да се заредят.</string>
+    <string name="roadcrew_chat_message_not_sent">Съобщението не е изпратено.</string>
+    <string name="roadcrew_help_chat_connecting">Чатът за помощ още се свързва.</string>
+    <string name="roadcrew_help_chat_open_failed">Чатът за помощ не можа да се отвори.</string>
+    <string name="roadcrew_help_chat_demo_unavailable">Демо заявката за помощ няма чат.</string>
+    <string name="roadcrew_help_chat_syncing">Синхронизиране на заявката за помощ...</string>
+    <string name="roadcrew_driver_chat_open_failed">Чатът с шофьор не можа да се отвори.</string>
+    <string name="roadcrew_chat_author_me">Аз</string>
+    <string name="roadcrew_chat_author_me_named">Аз (%1$s)</string>
+    <string name="roadcrew_chat_author_driver">Шофьор</string>
+
+    <string name="roadcrew_help_still_need_help">Все още ми трябва помощ</string>
+    <string name="roadcrew_help_resolved">Решено</string>
+    <string name="roadcrew_help_looks_resolved">Изглежда решено</string>
+    <string name="roadcrew_help_resolve_title">Помощта решена ли е?</string>
+    <string name="roadcrew_help_resolve_body">Шофьорите наблизо няма повече да получават известие. Включилите се шофьори ще могат да ползват чата.</string>
+    <string name="roadcrew_help_resolve_demo_failed">Демо заявката за помощ не може да се приключи.</string>
+    <string name="roadcrew_help_resolve_author_only">Само авторът на заявката може да я приключи.</string>
+    <string name="roadcrew_help_resolving">Приключване на заявката за помощ...</string>
+    <string name="roadcrew_help_resolved_done">Заявката за помощ е приключена.</string>
+    <string name="roadcrew_help_resolve_failed">Заявката за помощ не можа да се приключи.</string>
+
+    <string name="roadcrew_push_help_nearby_title">Шофьор наблизо има нужда от помощ</string>
+    <string name="roadcrew_push_plate_alert_title">Предупреждение за вашия камион</string>
+    <string name="roadcrew_push_direct_chat_title">Ново съобщение от шофьор</string>
+    <string name="roadcrew_push_help_chat_title">Ново съобщение в чат за помощ</string>
+    <string name="roadcrew_push_default_body">Ново RoadCrew известие.</string>
+    <string name="roadcrew_notification_channel_name">RoadCrew известия със звук</string>
+    <string name="roadcrew_notification_channel_description">Заявки за помощ, предупреждения към шофьори и RoadCrew чат известия.</string>
+    <string name="roadcrew_button_join_chat">Включи се в чата</string>
+    <string name="roadcrew_button_open_chat">Отвори чата</string>
+
+    <string name="roadcrew_button_cancel">Отказ</string>
+    <string name="roadcrew_button_next">Следващ</string>
+    <string name="roadcrew_button_skip">Пропусни</string>
+    <string name="roadcrew_button_send">Изпращане</string>
+    <string name="roadcrew_button_save">Запазване</string>
+    <string name="roadcrew_button_later">По-късно</string>
+    <string name="roadcrew_button_done">Готово</string>
+    <string name="roadcrew_button_update">Обновяване</string>
+    <string name="roadcrew_button_close">Затваряне</string>
+    <string name="roadcrew_button_ok">Добре</string>
+
+    <string name="roadcrew_time_now">сега</string>
+    <string name="roadcrew_time_minutes">%1$d мин</string>
+    <string name="roadcrew_time_just_now">току-що</string>
+    <string name="roadcrew_time_minutes_ago">преди %1$d мин</string>
 </resources>
