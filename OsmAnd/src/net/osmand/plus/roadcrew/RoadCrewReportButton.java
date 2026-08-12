@@ -149,6 +149,8 @@ public class RoadCrewReportButton extends MapButton {
 				() -> addReport(RoadCrewReportType.CAMERA, ""), dialogHolder);
 		addMenuTile(grid, "Warn driver", R.drawable.roadcrew_menu_warn_driver,
 				this::showPlateAlertNumberDialog, dialogHolder);
+		addMenuTile(grid, "Check update", R.drawable.roadcrew_menu_update,
+				() -> RoadCrewAppUpdater.checkForUpdatesNow(mapActivity), dialogHolder);
 		addMenuTile(grid, "Driver profile", R.drawable.roadcrew_menu_profile,
 				this::showDriverProfileDialog, dialogHolder);
 

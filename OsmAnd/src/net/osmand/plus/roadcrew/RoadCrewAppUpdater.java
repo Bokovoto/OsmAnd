@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -34,7 +35,7 @@ public final class RoadCrewAppUpdater {
 	private static final String PREFS_NAME = "roadcrew_app_updater";
 	private static final String KEY_LAST_CHECK_MILLIS = "last_check_millis";
 	private static final String KEY_DISMISSED_TAG = "dismissed_tag";
-	private static final String CURRENT_RELEASE_TAG = "roadcrew-v0.1.0-test.2";
+	private static final String CURRENT_RELEASE_TAG = "roadcrew-v0.1.0-test.3";
 	private static final String LATEST_RELEASE_API =
 			"https://api.github.com/repos/Bokovoto/OsmAnd/releases/latest";
 	private static final String APK_ASSET_NAME = "RoadCrew.apk";
@@ -59,6 +60,20 @@ public final class RoadCrewAppUpdater {
 			return;
 		}
 		preferences.edit().putLong(KEY_LAST_CHECK_MILLIS, now).apply();
+		checkForUpdates(activity, preferences, false);
+	}
+
+	public static void checkForUpdatesNow(@NonNull MapActivity activity) {
+		if (!RoadCrewReportsLayer.isEnabled(activity.getApp()) || dialogShowing) {
+			return;
+		}
+		activity.getApp().showToastMessage("Checking for RoadCrew update...");
+		SharedPreferences preferences = activity.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+		checkForUpdates(activity, preferences, true);
+	}
+
+	private static void checkForUpdates(@NonNull MapActivity activity, @NonNull SharedPreferences preferences,
+			boolean forced) {
 		synchronized (RoadCrewAppUpdater.class) {
 			if (checkRunning) {
 				return;
@@ -70,11 +85,18 @@ public final class RoadCrewAppUpdater {
 				UpdateInfo update = fetchLatestRelease();
 				if (update != null
 						&& !CURRENT_RELEASE_TAG.equals(update.tag)
-						&& !update.tag.equals(preferences.getString(KEY_DISMISSED_TAG, ""))) {
+						&& (forced || !update.tag.equals(preferences.getString(KEY_DISMISSED_TAG, "")))) {
 					activity.getApp().runInUIThread(() -> showUpdateDialog(activity, preferences, update));
+				} else if (forced) {
+					activity.getApp().runInUIThread(() ->
+							activity.getApp().showToastMessage("RoadCrew is up to date."));
 				}
 			} catch (Exception e) {
 				Log.w(TAG, "RoadCrew update check failed", e);
+				if (forced) {
+					activity.getApp().runInUIThread(() ->
+							activity.getApp().showToastMessage("Could not check for RoadCrew update."));
+				}
 			} finally {
 				synchronized (RoadCrewAppUpdater.class) {
 					checkRunning = false;
@@ -93,6 +115,7 @@ public final class RoadCrewAppUpdater {
 			String body = readFully(connection.getInputStream());
 			JSONObject object = new JSONObject(body);
 			String tag = object.optString("tag_name");
+			String releasePageUrl = object.optString("html_url");
 			JSONArray assets = object.optJSONArray("assets");
 			if (tag.isEmpty() || assets == null) {
 				return null;
@@ -102,7 +125,7 @@ public final class RoadCrewAppUpdater {
 				if (APK_ASSET_NAME.equals(asset.optString("name"))) {
 					String url = asset.optString("browser_download_url");
 					if (!url.isEmpty()) {
-						return new UpdateInfo(tag, object.optString("name", tag), url);
+						return new UpdateInfo(tag, object.optString("name", tag), url, releasePageUrl);
 					}
 				}
 			}
@@ -152,15 +175,21 @@ public final class RoadCrewAppUpdater {
 				activity.getApp().runInUIThread(() -> openInstaller(activity, apk));
 			} catch (Exception e) {
 				Log.w(TAG, "RoadCrew update download failed", e);
-				activity.getApp().runInUIThread(() ->
-						activity.getApp().showToastMessage("Could not download RoadCrew update."));
+				activity.getApp().runInUIThread(() -> {
+					activity.getApp().showToastMessage("Could not download RoadCrew update.");
+					openReleasePage(activity, update);
+				});
 			}
 		});
 	}
 
 	@NonNull
 	private static File downloadApk(@NonNull Context context, @NonNull UpdateInfo update) throws Exception {
-		File directory = new File(context.getExternalCacheDir(), "roadcrew-updates");
+		File cacheDir = context.getExternalCacheDir();
+		if (cacheDir == null) {
+			cacheDir = context.getCacheDir();
+		}
+		File directory = new File(cacheDir, "roadcrew-updates");
 		if (!directory.exists() && !directory.mkdirs()) {
 			throw new IllegalStateException("Could not create update cache directory");
 		}
@@ -191,6 +220,14 @@ public final class RoadCrewAppUpdater {
 		AndroidUtils.startActivityIfSafe(activity, intent);
 	}
 
+	private static void openReleasePage(@NonNull MapActivity activity, @NonNull UpdateInfo update) {
+		if (update.releasePageUrl.isEmpty()) {
+			return;
+		}
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(update.releasePageUrl));
+		AndroidUtils.startActivityIfSafe(activity, intent);
+	}
+
 	@NonNull
 	private static HttpURLConnection openConnection(@NonNull String url) throws Exception {
 		HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -207,7 +244,7 @@ public final class RoadCrewAppUpdater {
 		byte[] buffer = new byte[16 * 1024];
 		int read;
 		while ((read = inputStream.read(buffer)) != -1) {
-			builder.append(new String(buffer, 0, read));
+			builder.append(new String(buffer, 0, read, StandardCharsets.UTF_8));
 		}
 		return builder.toString();
 	}
@@ -216,11 +253,14 @@ public final class RoadCrewAppUpdater {
 		final String tag;
 		final String title;
 		final String apkUrl;
+		final String releasePageUrl;
 
-		UpdateInfo(@NonNull String tag, @NonNull String title, @NonNull String apkUrl) {
+		UpdateInfo(@NonNull String tag, @NonNull String title, @NonNull String apkUrl,
+				@NonNull String releasePageUrl) {
 			this.tag = tag;
 			this.title = title;
 			this.apkUrl = apkUrl;
+			this.releasePageUrl = releasePageUrl;
 		}
 	}
 }
