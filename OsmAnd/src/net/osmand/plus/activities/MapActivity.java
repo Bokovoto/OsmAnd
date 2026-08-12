@@ -96,6 +96,7 @@ import net.osmand.plus.plugins.OsmandPlugin;
 import net.osmand.plus.plugins.PluginsHelper;
 import net.osmand.plus.plugins.accessibility.MapAccessibilityActions;
 import net.osmand.plus.plugins.audionotes.AudioVideoNoteRecordingMenu;
+import net.osmand.plus.roadcrew.RoadCrewAppUpdater;
 import net.osmand.plus.roadcrew.RoadCrewReportsLayer;
 import net.osmand.plus.roadcrew.RoadCrewStartupSetup;
 import net.osmand.plus.routepreparationmenu.MapRouteInfoMenu;
@@ -808,7 +809,9 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 		if (!showWelcomeScreen) {
 			app.runInUIThread(() -> {
 				if (!RoadCrewReportsLayer.handlePushIntent(this, getIntent())) {
-					RoadCrewStartupSetup.showIfNeeded(this);
+					if (!RoadCrewStartupSetup.showIfNeeded(this)) {
+						RoadCrewAppUpdater.checkForUpdatesIfNeeded(this);
+					}
 				}
 			}, 1600);
 		}

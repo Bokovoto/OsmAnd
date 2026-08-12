@@ -33,11 +33,11 @@ public final class RoadCrewStartupSetup {
 	private RoadCrewStartupSetup() {
 	}
 
-	public static void showIfNeeded(@NonNull MapActivity activity) {
+	public static boolean showIfNeeded(@NonNull MapActivity activity) {
 		if (shownThisSession || dialogShowing || activity.isFinishing()
 				|| (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && activity.isDestroyed())
 				|| !RoadCrewReportsLayer.isEnabled(activity.getApp())) {
-			return;
+			return false;
 		}
 		boolean needsLocationPermission = !OsmAndLocationProvider.isLocationPermissionAvailable(activity);
 		boolean needsDeviceLocation = !isDeviceLocationEnabled(activity);
@@ -48,12 +48,12 @@ public final class RoadCrewStartupSetup {
 		if (!needsLocationPermission && !needsDeviceLocation && !needsNotifications
 				&& !needsDriverProfile && !needsOfflineMap) {
 			preferences.edit().putBoolean(KEY_COMPLETED, true).apply();
-			return;
+			return false;
 		}
 		long now = System.currentTimeMillis();
 		if ((preferences.getBoolean(KEY_COMPLETED, false) && !needsDriverProfile)
 				|| now - preferences.getLong(KEY_LAST_PROMPT_MILLIS, 0) < PROMPT_THROTTLE_MILLIS) {
-			return;
+			return false;
 		}
 		shownThisSession = true;
 		dialogShowing = true;
@@ -112,6 +112,7 @@ public final class RoadCrewStartupSetup {
 		RoadCrewUi.addButton(activity, buttons, "Done", true, v -> dialog.dismiss());
 		dialog.setOnDismissListener(d -> dialogShowing = false);
 		dialog.show();
+		return true;
 	}
 
 	private static void addSetupItem(@NonNull MapActivity activity, @NonNull LinearLayout content,
