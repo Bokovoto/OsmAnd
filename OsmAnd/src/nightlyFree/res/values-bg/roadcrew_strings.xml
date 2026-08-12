@@ -6,7 +6,7 @@
     <string name="about_osmand">За RoadCrew</string>
     <string name="backup_welcome_back_descr">Възстановяване на данните на това устройство.</string>
 
-    <string name="roadcrew_report_type_traffic_police">Пътна полиция</string>
+    <string name="roadcrew_report_type_traffic_police">Трафик Контрол</string>
     <string name="roadcrew_report_type_police">Полиция</string>
     <string name="roadcrew_report_type_camera">Камера</string>
     <string name="roadcrew_report_type_weigh_station">Кантар</string>

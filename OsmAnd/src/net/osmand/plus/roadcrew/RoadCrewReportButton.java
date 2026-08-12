@@ -132,6 +132,8 @@ public class RoadCrewReportButton extends MapButton {
 				() -> showHelpDetailsDialog(), dialogHolder);
 		addMenuTile(grid, RoadCrewReportType.DAI.getTitle(mapActivity), R.drawable.roadcrew_menu_police,
 				() -> addReport(RoadCrewReportType.DAI, ""), dialogHolder);
+		addMenuTile(grid, RoadCrewReportType.POLICE.getTitle(mapActivity), R.drawable.roadcrew_menu_police,
+				() -> addReport(RoadCrewReportType.POLICE, ""), dialogHolder);
 		addMenuTile(grid, RoadCrewReportType.WEIGH_STATION.getTitle(mapActivity), R.drawable.roadcrew_menu_scale,
 				() -> addReport(RoadCrewReportType.WEIGH_STATION, ""), dialogHolder);
 		addMenuTile(grid, RoadCrewReportType.DANGER.getTitle(mapActivity), R.drawable.roadcrew_menu_danger,
