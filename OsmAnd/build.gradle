@@ -6,6 +6,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 
+if (file("google-services.json").exists()) {
+	apply plugin: 'com.google.gms.google-services'
+}
+
 // Global Parameters accepted
 // TARGET_APP_NAME    - app name
 // APK_NUMBER_VERSION - version number of apk
@@ -119,8 +123,8 @@ android {
 		// Version
 		nightlyFree {
 			dimension "version"
-			applicationId "net.osmand.dev"
-			resValue "string", "app_name", "OsmAnd Nightly"
+			applicationId "org.roadcrew.app"
+			resValue "string", "app_name", "RoadCrew"
 			resValue "string", "app_edition", System.getenv("APP_EDITION") ? System.getenv("APP_EDITION") : ""
 			// resConfig "en"
 		}
@@ -250,6 +254,8 @@ dependencies {
 	huaweiImplementation 'com.huawei.hms:appservice:6.8.0.300'
 
 	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
+	implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
+	implementation("com.google.firebase:firebase-messaging")
 }
 
 afterEvaluate {

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name_osmand">RoadCrew</string>
+    <string name="hello">Навигационно приложение RoadCrew</string>
+    <string name="first_usage_wizard_desc">Нека RoadCrew определи вашето местоположение и да ви предложи карти за изтегляне.</string>
+    <string name="about_osmand">Относно RoadCrew</string>
+    <string name="backup_welcome_back_descr">Възстановяване на данните на това устройство.</string>
+</resources>

@@ -27,6 +27,7 @@ import net.osmand.plus.plugins.PluginsHelper;
 import net.osmand.plus.plugins.rastermaps.OsmandRasterMapsPlugin;
 import net.osmand.plus.poi.PoiFiltersHelper;
 import net.osmand.plus.poi.PoiUIFilter;
+import net.osmand.plus.roadcrew.RoadCrewReportsLayer;
 import net.osmand.plus.render.RenderingIcons;
 import net.osmand.plus.resources.SQLiteTileSource;
 import net.osmand.plus.routing.RoutingHelper;
@@ -85,6 +86,7 @@ public class MapLayers {
 	private PointNavigationLayer navigationLayer;
 	private SelectLocationLayer selectLocationLayer;
 	private MapMarkersLayer mapMarkersLayer;
+	private RoadCrewReportsLayer roadCrewReportsLayer;
 	private ImpassableRoadsLayer impassableRoadsLayer;
 	private CoordinatesGridLayer coordinatesGridLayer;
 	private MapInfoLayer mapInfoLayer;
@@ -169,6 +171,11 @@ public class MapLayers {
 		// 7.3 map markers layer
 		mapMarkersLayer = new MapMarkersLayer(app);
 		mapView.addLayer(mapMarkersLayer, 7.3f);
+		// 8.5 RoadCrew demo reports layer
+		if (RoadCrewReportsLayer.isEnabled(app)) {
+			roadCrewReportsLayer = new RoadCrewReportsLayer(app);
+			mapView.addLayer(roadCrewReportsLayer, 8.5f);
+		}
 		// 7.5 Impassable roads
 		impassableRoadsLayer = new ImpassableRoadsLayer(app);
 		mapView.addLayer(impassableRoadsLayer, 7.5f);

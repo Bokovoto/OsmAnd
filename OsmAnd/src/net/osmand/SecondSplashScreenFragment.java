@@ -25,6 +25,7 @@ import net.osmand.plus.utils.ColorUtilities;
 
 public class SecondSplashScreenFragment extends BaseFullScreenFragment {
 
+	private static final String ROADCREW_PACKAGE = "org.roadcrew.app";
 	private static final int LOGO_ID = 1001;
 	private static final int TEXT_ID = 1002;
 	private static final int OSM_TEXT_ID = 1003;
@@ -64,7 +65,10 @@ public class SecondSplashScreenFragment extends BaseFullScreenFragment {
 
 		ImageView logo = new ImageView(getContext());
 		logo.setId(LOGO_ID);
-		if (Version.isFreeVersion(app)) {
+		boolean roadCrew = ROADCREW_PACKAGE.equals(app.getPackageName());
+		if (roadCrew) {
+			logo.setImageDrawable(AppCompatResources.getDrawable(activity, R.drawable.ic_logo_splash_roadcrew));
+		} else if (Version.isFreeVersion(app)) {
 			logo.setImageDrawable(AppCompatResources.getDrawable(activity, R.drawable.ic_logo_splash_osmand));
 		} else if (Version.isPaidVersion(app) || Version.isDeveloperVersion(app)) {
 			logo.setImageDrawable(AppCompatResources.getDrawable(activity, R.drawable.ic_logo_splash_osmand_plus));
@@ -80,7 +84,9 @@ public class SecondSplashScreenFragment extends BaseFullScreenFragment {
 		ImageView text = new ImageView(activity);
 		text.setId(TEXT_ID);
 		int textColorId = ColorUtilities.getTertiaryTextColorId(nightMode);
-		if (Version.isFreeVersion(app)) {
+		if (roadCrew) {
+			text.setVisibility(View.GONE);
+		} else if (Version.isFreeVersion(app)) {
 			if (InAppPurchaseUtils.isOsmAndProAvailable(app)) {
 				text.setImageDrawable(uiUtilities.getIcon(R.drawable.image_text_osmand_pro, textColorId));
 			} else if (InAppPurchaseUtils.isMapsPlusAvailable(app)) {
@@ -108,6 +114,7 @@ public class SecondSplashScreenFragment extends BaseFullScreenFragment {
 		ImageView osmText = new ImageView(activity);
 		osmText.setId(OSM_TEXT_ID);
 		osmText.setImageDrawable(uiUtilities.getIcon(R.drawable.image_text_openstreetmap, textColorId));
+		osmText.setVisibility(roadCrew ? View.GONE : View.VISIBLE);
 		RelativeLayout.LayoutParams osmTextLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 		osmTextLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		osmTextLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);

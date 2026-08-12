@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<style name="FirstSplashScreenNightlyFree" parent="SplashScreenBaseTheme">
+		<item name="android:windowBackground">@drawable/first_splash_screen_free_dev</item>
+		<item name="android:windowSplashScreenBackground">@color/splash_screen_background_color</item>
+		<item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_logo_splash_roadcrew_system</item>
+		<item name="android:windowSplashScreenIconBackgroundColor">@android:color/transparent</item>
+	</style>
+
+</resources>

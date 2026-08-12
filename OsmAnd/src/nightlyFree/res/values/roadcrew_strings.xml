@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name_osmand">RoadCrew</string>
+    <string name="hello">RoadCrew navigation app</string>
+    <string name="first_usage_wizard_desc">Let RoadCrew determine your location and suggest maps to download for that region.</string>
+    <string name="about_osmand">About RoadCrew</string>
+    <string name="backup_welcome_back_descr">Restore data on this device.</string>
+</resources>

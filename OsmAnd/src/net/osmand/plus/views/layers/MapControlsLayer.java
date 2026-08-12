@@ -25,6 +25,7 @@ import net.osmand.plus.R;
 import net.osmand.plus.activities.MapActivity;
 import net.osmand.plus.auto.NavigationSession;
 import net.osmand.plus.helpers.AndroidUiHelper;
+import net.osmand.plus.roadcrew.RoadCrewReportsLayer;
 import net.osmand.plus.routepreparationmenu.MapRouteInfoMenu;
 import net.osmand.plus.routing.RoutingHelper;
 import net.osmand.plus.settings.backend.OsmandSettings;
@@ -146,6 +147,9 @@ public class MapControlsLayer extends OsmandMapLayer {
 
 		addMapButton(createMapButton(inflater, R.layout.drawer_menu_button));
 		addMapButton(createMapButton(inflater, R.layout.navigation_menu_button));
+		if (RoadCrewReportsLayer.isEnabled(app)) {
+			addMapButton(createMapButton(inflater, R.layout.roadcrew_report_button));
+		}
 
 		MapButton button = createMapButton(inflater, R.layout.map_3d_button);
 		button.setUseCustomPosition(true);

@@ -96,6 +96,8 @@ import net.osmand.plus.plugins.OsmandPlugin;
 import net.osmand.plus.plugins.PluginsHelper;
 import net.osmand.plus.plugins.accessibility.MapAccessibilityActions;
 import net.osmand.plus.plugins.audionotes.AudioVideoNoteRecordingMenu;
+import net.osmand.plus.roadcrew.RoadCrewReportsLayer;
+import net.osmand.plus.roadcrew.RoadCrewStartupSetup;
 import net.osmand.plus.routepreparationmenu.MapRouteInfoMenu;
 import net.osmand.plus.routing.IRouteInformationListener;
 import net.osmand.plus.routing.RouteCalculationProgressListener;
@@ -520,6 +522,7 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		setIntent(intent);
+		app.runInUIThread(() -> RoadCrewReportsLayer.handlePushIntent(this, intent), 300);
 
 		importHelper.setUiActivity(this);
 		if (!intentHelper.parseLaunchIntents()) {
@@ -801,6 +804,13 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 				fragmentsHelper.dismissSecondSplashScreen();
 			}
 			applyScreenOrientation();
+		}
+		if (!showWelcomeScreen) {
+			app.runInUIThread(() -> {
+				if (!RoadCrewReportsLayer.handlePushIntent(this, getIntent())) {
+					RoadCrewStartupSetup.showIfNeeded(this);
+				}
+			}, 1600);
 		}
 
 		settings.MAP_SCREEN_ORIENTATION.addListener(mapScreenOrientationSettingListener);

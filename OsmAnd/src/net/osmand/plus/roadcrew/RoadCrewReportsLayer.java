@@ -1,0 +1,1150 @@
+package net.osmand.plus.roadcrew;
+
+import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PointF;
+import android.graphics.RectF;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+
+import net.osmand.Location;
+import net.osmand.data.LatLon;
+import net.osmand.data.PointDescription;
+import net.osmand.data.RotatedTileBox;
+import net.osmand.plus.OsmandApplication;
+import net.osmand.plus.activities.MapActivity;
+import net.osmand.plus.roadcrew.RoadCrewReportsSync.RoadCrewChatMessage;
+import net.osmand.plus.roadcrew.RoadCrewReportsSync.RoadCrewNotification;
+import net.osmand.plus.views.OsmandMapTileView;
+import net.osmand.plus.views.layers.ContextMenuLayer.IContextMenuProvider;
+import net.osmand.plus.views.layers.MapSelectionResult;
+import net.osmand.plus.views.layers.MapSelectionRules;
+import net.osmand.plus.views.layers.base.OsmandMapLayer;
+import net.osmand.util.MapUtils;
+
+import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+
+public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenuProvider {
+
+	private static final String ROADCREW_PACKAGE = "org.roadcrew.app";
+	private static final int MIN_ZOOM = 5;
+	private static final long PROXIMITY_CHECK_INTERVAL_MILLIS = 5 * 1000;
+	private static final long PROXIMITY_STARTUP_GRACE_MILLIS = 15 * 1000;
+	private static final long MIN_REPORT_AGE_FOR_PROMPT_MILLIS = 2 * 60 * 1000;
+	private static final long NOTIFICATION_CHECK_INTERVAL_MILLIS = 20 * 1000;
+	private static final long HELP_CHAT_REFRESH_INTERVAL_MILLIS = 2 * 1000;
+	private static final double PROMPT_RADIUS_METERS = 700;
+	private static final float MARKER_TOUCH_RADIUS_DP = 36;
+	private static final int HELP_CHAT_MESSAGE_MAX_LENGTH = 1000;
+	private static final String PUSH_KIND_EXTRA = "roadcrew_push_kind";
+	private static final String PUSH_REFERENCE_ID_EXTRA = "roadcrew_push_reference_id";
+
+	private final Paint markerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint markerStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint labelBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint labelStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Path markerPath = new Path();
+	private final RectF labelRect = new RectF();
+	private final RectF touchLabelRect = new RectF();
+	private final Set<String> promptedReportIds = new HashSet<>();
+	private final Set<String> shownNotificationIds = new HashSet<>();
+	private final Set<String> openHelpReportIds = new HashSet<>();
+	private final Set<String> openDirectChatRoomIds = new HashSet<>();
+	private static RoadCrewReportsLayer activeLayer;
+
+	private long lastProximityCheckMillis;
+	private long lastNotificationCheckMillis;
+	private boolean proximityPromptVisible;
+	private boolean notificationPromptVisible;
+	@Nullable
+	private AlertDialog activeNotificationDialog;
+	private final long createdAtMillis = System.currentTimeMillis();
+
+	public RoadCrewReportsLayer(@NonNull OsmandApplication app) {
+		super(app);
+	}
+
+	public static boolean isEnabled(@NonNull OsmandApplication app) {
+		return ROADCREW_PACKAGE.equals(app.getPackageName());
+	}
+
+	@Override
+	public void initLayer(@NonNull OsmandMapTileView view) {
+		super.initLayer(view);
+		activeLayer = this;
+		createResources();
+	}
+
+	public static void showNearbyHelpReports(@NonNull MapActivity mapActivity, @NonNull OsmandApplication app) {
+		if (activeLayer == null) {
+			app.showToastMessage("RoadCrew map layer is not ready.");
+			return;
+		}
+		activeLayer.showNearbyHelpReportsDialog(mapActivity);
+	}
+
+	public static boolean handlePushIntent(@NonNull MapActivity mapActivity, @Nullable Intent intent) {
+		if (activeLayer == null || intent == null) {
+			return false;
+		}
+		String kind = intent.getStringExtra(PUSH_KIND_EXTRA);
+		String referenceId = intent.getStringExtra(PUSH_REFERENCE_ID_EXTRA);
+		if (kind == null || kind.trim().isEmpty() || referenceId == null || referenceId.trim().isEmpty()) {
+			return false;
+		}
+		intent.removeExtra(PUSH_KIND_EXTRA);
+		intent.removeExtra(PUSH_REFERENCE_ID_EXTRA);
+		activeLayer.openPushReference(mapActivity, kind, referenceId);
+		return true;
+	}
+
+	@Override
+	protected void updateResources() {
+		super.updateResources();
+		createResources();
+	}
+
+	private void createResources() {
+		markerStrokePaint.setStyle(Paint.Style.STROKE);
+		markerStrokePaint.setStrokeWidth(dp(2));
+		markerStrokePaint.setColor(Color.WHITE);
+
+		textPaint.setColor(Color.WHITE);
+		textPaint.setTextAlign(Paint.Align.CENTER);
+		textPaint.setFakeBoldText(true);
+		textPaint.setTextSize(sp(12));
+
+		labelBackgroundPaint.setStyle(Paint.Style.FILL);
+		labelBackgroundPaint.setColor(Color.argb(230, 11, 31, 42));
+
+		labelStrokePaint.setStyle(Paint.Style.STROKE);
+		labelStrokePaint.setStrokeWidth(dp(1));
+		labelStrokePaint.setColor(Color.argb(210, 255, 255, 255));
+	}
+
+	@Override
+	public void onDraw(Canvas canvas, RotatedTileBox tileBox, DrawSettings settings) {
+		if (tileBox.getZoom() < MIN_ZOOM) {
+			return;
+		}
+		List<RoadCrewReport> reports = RoadCrewReportsRepository.getVisibleReports(getApplication());
+		RoadCrewReportsSync.syncPeriodically(getApplication());
+		checkHelpNotifications();
+		for (RoadCrewReport report : reports) {
+			LatLon latLon = report.getLocation();
+			if (!tileBox.containsLatLon(latLon)) {
+				continue;
+			}
+			float x = tileBox.getPixXFromLatLon(latLon.getLatitude(), latLon.getLongitude());
+			float y = tileBox.getPixYFromLatLon(latLon.getLatitude(), latLon.getLongitude());
+			drawReport(canvas, report, x, y);
+		}
+		checkNearbyReports(reports);
+	}
+
+	@Override
+	public void onPrepareBufferImage(Canvas canvas, RotatedTileBox tileBox, DrawSettings settings) {
+		super.onPrepareBufferImage(canvas, tileBox, settings);
+	}
+
+	@Override
+	public boolean drawInScreenPixels() {
+		return true;
+	}
+
+	@Override
+	public boolean onSingleTap(@NonNull PointF point, @NonNull RotatedTileBox tileBox) {
+		if (tileBox.getZoom() < MIN_ZOOM) {
+			return false;
+		}
+		RoadCrewReport report = findTappedReport(point, tileBox);
+		if (report == null) {
+			return false;
+		}
+		MapActivity mapActivity = getMapActivity();
+		if (mapActivity == null) {
+			return false;
+		}
+		showReportDetailsDialog(mapActivity, report);
+		return true;
+	}
+
+	@Override
+	public void collectObjectsFromPoint(@NonNull MapSelectionResult result, @NonNull MapSelectionRules rules) {
+		if (result.getTileBox().getZoom() < MIN_ZOOM) {
+			return;
+		}
+		RoadCrewReport report = findTappedReport(result.getPoint(), result.getTileBox());
+		if (report != null) {
+			result.collect(report, this);
+			result.setObjectLatLon(report.getLocation());
+		}
+	}
+
+	@Override
+	public boolean runExclusiveAction(@Nullable Object object, boolean unknownLocation) {
+		if (!(object instanceof RoadCrewReport report)) {
+			return false;
+		}
+		MapActivity mapActivity = getMapActivity();
+		if (mapActivity == null) {
+			return false;
+		}
+		showReportDetailsDialog(mapActivity, report);
+		return true;
+	}
+
+	@Override
+	public LatLon getObjectLocation(Object object) {
+		if (object instanceof RoadCrewReport report) {
+			return report.getLocation();
+		}
+		return null;
+	}
+
+	@Override
+	public PointDescription getObjectName(Object object) {
+		if (object instanceof RoadCrewReport report) {
+			return new PointDescription(PointDescription.POINT_TYPE_MARKER, report.getType().getTitle());
+		}
+		return null;
+	}
+
+	private void drawReport(@NonNull Canvas canvas, @NonNull RoadCrewReport report, float x, float y) {
+		float radius = dp(14);
+		float pointerHeight = dp(8);
+		float markerCenterY = y - pointerHeight;
+
+		markerPath.reset();
+		markerPath.addCircle(x, markerCenterY, radius, Path.Direction.CW);
+		markerPath.moveTo(x - dp(6), markerCenterY + radius - dp(2));
+		markerPath.lineTo(x, markerCenterY + radius + pointerHeight);
+		markerPath.lineTo(x + dp(6), markerCenterY + radius - dp(2));
+		markerPath.close();
+
+		markerPaint.setColor(report.isHelpProbablyResolved() ? Color.rgb(156, 163, 175) : report.getType().getColor());
+		canvas.drawPath(markerPath, markerPaint);
+		canvas.drawPath(markerPath, markerStrokePaint);
+		canvas.drawText(report.getType().getShortLabel(), x, markerCenterY + dp(5), textPaint);
+
+		drawLabel(canvas, report, x, markerCenterY - radius - dp(8));
+	}
+
+	private void drawLabel(@NonNull Canvas canvas, @NonNull RoadCrewReport report, float x, float y) {
+		LabelLayout layout = calculateLabelLayout(report, x, y, canvas.getWidth(), labelRect);
+		float cornerRadius = dp(6);
+		canvas.drawRoundRect(labelRect, cornerRadius, cornerRadius, labelBackgroundPaint);
+		canvas.drawRoundRect(labelRect, cornerRadius, cornerRadius, labelStrokePaint);
+		canvas.drawText(layout.label, layout.centerX, layout.textBaseline, textPaint);
+	}
+
+	private void checkNearbyReports(@NonNull List<RoadCrewReport> reports) {
+		long now = System.currentTimeMillis();
+		if (proximityPromptVisible
+				|| now - createdAtMillis < PROXIMITY_STARTUP_GRACE_MILLIS
+				|| now - lastProximityCheckMillis < PROXIMITY_CHECK_INTERVAL_MILLIS) {
+			return;
+		}
+		lastProximityCheckMillis = now;
+
+		MapActivity mapActivity = getMapActivity();
+		Location location = getApplication().getLocationProvider().getLastKnownLocation();
+		if (mapActivity == null || location == null) {
+			return;
+		}
+
+		RoadCrewReport nearestReport = null;
+		double nearestDistance = PROMPT_RADIUS_METERS;
+		for (RoadCrewReport report : reports) {
+			if (promptedReportIds.contains(report.getId())
+					|| report.hasLocalVote()
+					|| isReportAuthor(report)
+					|| report.isExpired(now)
+					|| now - report.getCreatedAtMillis() < MIN_REPORT_AGE_FOR_PROMPT_MILLIS) {
+				continue;
+			}
+			LatLon reportLocation = report.getLocation();
+			double distance = MapUtils.getDistance(location.getLatitude(), location.getLongitude(),
+					reportLocation.getLatitude(), reportLocation.getLongitude());
+			if (distance <= nearestDistance) {
+				nearestDistance = distance;
+				nearestReport = report;
+			}
+		}
+		if (nearestReport != null) {
+			showProximityPrompt(mapActivity, nearestReport);
+		}
+	}
+
+	private RoadCrewReport findTappedReport(@NonNull PointF point, @NonNull RotatedTileBox tileBox) {
+		List<RoadCrewReport> reports = RoadCrewReportsRepository.getVisibleReports(getApplication());
+		float touchRadius = dp(MARKER_TOUCH_RADIUS_DP);
+		RoadCrewReport nearestReport = null;
+		double nearestDistance = touchRadius;
+		for (int i = reports.size() - 1; i >= 0; i--) {
+			RoadCrewReport report = reports.get(i);
+			LatLon latLon = report.getLocation();
+			if (!tileBox.containsLatLon(latLon)) {
+				continue;
+			}
+			float x = tileBox.getPixXFromLatLon(latLon.getLatitude(), latLon.getLongitude());
+			float markerCenterY = tileBox.getPixYFromLatLon(latLon.getLatitude(), latLon.getLongitude()) - dp(8);
+			float labelY = markerCenterY - dp(14) - dp(8);
+			calculateLabelLayout(report, x, labelY, tileBox.getPixWidth(), touchLabelRect);
+			if (touchLabelRect.contains(point.x, point.y)) {
+				return report;
+			}
+			double distance = Math.hypot(point.x - x, point.y - markerCenterY);
+			if (distance <= nearestDistance) {
+				nearestDistance = distance;
+				nearestReport = report;
+			}
+		}
+		return nearestReport;
+	}
+
+	@NonNull
+	private LabelLayout calculateLabelLayout(@NonNull RoadCrewReport report, float x, float y, float canvasWidth,
+			@NonNull RectF outRect) {
+		String label = report.getType().getTitle() + " - " + formatAge(report);
+		float paddingX = dp(8);
+		float paddingY = dp(4);
+		float textWidth = textPaint.measureText(label);
+		Paint.FontMetrics metrics = textPaint.getFontMetrics();
+		float textHeight = metrics.descent - metrics.ascent;
+		float labelHalfWidth = textWidth / 2f + paddingX;
+		float edgePadding = dp(4);
+		float centerX = Math.max(labelHalfWidth + edgePadding,
+				Math.min(x, canvasWidth - labelHalfWidth - edgePadding));
+		outRect.set(
+				centerX - labelHalfWidth,
+				y - textHeight - paddingY,
+				centerX + labelHalfWidth,
+				y + paddingY
+		);
+		return new LabelLayout(label, centerX, y - textHeight / 2f - metrics.ascent / 2f);
+	}
+
+	private void showReportDetailsDialog(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report) {
+		if (report.getType() == RoadCrewReportType.HELP) {
+			showHelpReportDetailsDialog(mapActivity, report);
+			return;
+		}
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, report.getType().getTitle());
+		RoadCrewUi.addBody(mapActivity, content, createReportDetailsMessage(report));
+		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
+		if (report.hasLocalVote()) {
+			RoadCrewUi.addButton(mapActivity, buttons, "Close", true, v -> dialog.dismiss());
+		} else {
+			RoadCrewUi.addButton(mapActivity, buttons, "Gone", false, v -> {
+				dialog.dismiss();
+				handleReportVote(report, false);
+			});
+			RoadCrewUi.addButton(mapActivity, buttons, "Close", false, v -> dialog.dismiss());
+			RoadCrewUi.addButton(mapActivity, buttons, "Still there", true, v -> {
+				dialog.dismiss();
+				handleReportVote(report, true);
+			});
+		}
+		dialog.show();
+	}
+
+	private void showHelpReportDetailsDialog(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report) {
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, report.getType().getTitle());
+		RoadCrewUi.addBody(mapActivity, content, createReportDetailsMessage(report));
+
+		LinearLayout actions = new LinearLayout(mapActivity);
+		actions.setOrientation(LinearLayout.VERTICAL);
+		content.addView(actions, new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+		RoadCrewUi.addSectionTitle(mapActivity, content, "Help chat");
+
+		TextView messagesView = new TextView(mapActivity);
+		messagesView.setText("Loading messages...");
+		RoadCrewUi.addMessageArea(mapActivity, content, messagesView, 260);
+
+		EditText input = createHelpChatInput(mapActivity);
+		RoadCrewUi.addInput(mapActivity, content, input);
+
+		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
+		RoadCrewUi.addButton(mapActivity, buttons, "Close", false, v -> dialog.dismiss());
+		Button sendButton = RoadCrewUi.addButton(mapActivity, buttons, "Send", true,
+				v -> sendHelpChatMessage(input, messagesView, report));
+		sendButton.setEnabled(false);
+
+		addHelpPanelActions(mapActivity, report, actions, dialog);
+		dialog.setOnShowListener(d -> {
+			RoadCrewUi.applyWindow(dialog);
+			prepareHelpPanelChat(mapActivity, report, messagesView, sendButton, dialog);
+		});
+		dialog.show();
+	}
+
+	private void showNearbyHelpReportsDialog(@NonNull MapActivity mapActivity) {
+		List<RoadCrewReport> helpReports = getNearbyHelpReports();
+		if (helpReports.isEmpty()) {
+			getApplication().showToastMessage("No active Help requests nearby.");
+			return;
+		}
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, "Help requests nearby");
+		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		for (RoadCrewReport helpReport : helpReports) {
+			RoadCrewUi.addFullWidthButton(mapActivity, content, formatNearbyHelpListItem(helpReport),
+					false, v -> {
+						dialog.dismiss();
+						showHelpReportDetailsDialog(mapActivity, helpReport);
+					});
+		}
+		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
+		RoadCrewUi.addButton(mapActivity, buttons, "Close", true, v -> dialog.dismiss());
+		dialog.show();
+	}
+
+	@NonNull
+	private List<RoadCrewReport> getNearbyHelpReports() {
+		List<RoadCrewReport> helpReports = new ArrayList<>();
+		long now = System.currentTimeMillis();
+		for (RoadCrewReport report : RoadCrewReportsRepository.getVisibleReports(getApplication())) {
+			if (report.getType() == RoadCrewReportType.HELP && !report.isExpired(now)) {
+				helpReports.add(report);
+			}
+		}
+		Location location = getApplication().getLocationProvider().getLastKnownLocation();
+		if (location != null) {
+			Collections.sort(helpReports, Comparator.comparingDouble(report -> {
+				LatLon reportLocation = report.getLocation();
+				return MapUtils.getDistance(location.getLatitude(), location.getLongitude(),
+						reportLocation.getLatitude(), reportLocation.getLongitude());
+			}));
+		}
+		return helpReports;
+	}
+
+	@NonNull
+	private String formatNearbyHelpListItem(@NonNull RoadCrewReport report) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(formatNearbyHelpDistance(report))
+				.append(" - ")
+				.append(formatAge(report));
+		if (report.isHelpProbablyResolved()) {
+			builder.append(" - probably resolved");
+		}
+		if (!report.getDetails().isEmpty()) {
+			builder.append("\n").append(report.getDetails());
+		}
+		return builder.toString();
+	}
+
+	@NonNull
+	private String formatNearbyHelpDistance(@NonNull RoadCrewReport report) {
+		Location location = getApplication().getLocationProvider().getLastKnownLocation();
+		if (location == null) {
+			return "Distance unknown";
+		}
+		LatLon reportLocation = report.getLocation();
+		double distanceMeters = MapUtils.getDistance(location.getLatitude(), location.getLongitude(),
+				reportLocation.getLatitude(), reportLocation.getLongitude());
+		if (distanceMeters < 1000) {
+			return Math.round(distanceMeters) + " m";
+		}
+		return Math.round(distanceMeters / 100.0) / 10.0 + " km";
+	}
+
+	private void addHelpPanelActions(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report,
+			@NonNull LinearLayout actions, @NonNull AlertDialog dialog) {
+		if (isReportAuthor(report) && !report.getId().startsWith("seed-")) {
+			if (report.isHelpProbablyResolved()) {
+				actions.addView(createActionButton(mapActivity, "Still need help", () -> {
+					dialog.dismiss();
+					handleReportVote(report, true);
+				}));
+				actions.addView(createActionButton(mapActivity, "Resolved", () -> {
+					dialog.dismiss();
+					confirmResolveHelpReport(mapActivity, report);
+				}));
+			} else {
+				actions.addView(createActionButton(mapActivity, "Resolved", () -> {
+					dialog.dismiss();
+					confirmResolveHelpReport(mapActivity, report);
+				}));
+			}
+		} else if (!report.hasLocalVote()) {
+			actions.addView(createActionButton(mapActivity, "Looks resolved", () -> {
+				dialog.dismiss();
+				handleReportVote(report, false);
+			}));
+		}
+	}
+
+	@NonNull
+	private Button createActionButton(@NonNull MapActivity mapActivity, @NonNull String title, @NonNull Runnable action) {
+		Button button = new Button(mapActivity);
+		button.setText(title);
+		button.setAllCaps(false);
+		button.setTextColor(RoadCrewUi.TEXT);
+		button.setTextSize(14);
+		button.setBackground(RoadCrewUi.roundRect(RoadCrewUi.SURFACE_LIGHT, (int) dp(16)));
+		button.setOnClickListener(v -> action.run());
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, (int) dp(46));
+		params.topMargin = (int) dp(8);
+		button.setLayoutParams(params);
+		return button;
+	}
+
+	@NonNull
+	private String createReportDetailsMessage(@NonNull RoadCrewReport report) {
+		String details = report.getDetails();
+		String detailsText = report.getType() == RoadCrewReportType.HELP && !details.isEmpty()
+				? "\nNeed: " + details
+				: "";
+		return "Reported: " + formatReportedAge(report)
+				+ detailsText
+				+ (isReportAuthor(report) ? "\nOwner: you" : "")
+				+ "\nStill there: " + report.getConfirmedCount()
+				+ "\nGone: " + report.getDeniedCount()
+				+ "\nYour vote: " + formatLocalVote(report)
+				+ "\nStatus: " + formatReportStatus(report);
+	}
+
+	@NonNull
+	private String formatReportStatus(@NonNull RoadCrewReport report) {
+		if (report.shouldHideLocally()) {
+			return "Hidden";
+		}
+		if (report.isHelpProbablyResolved()) {
+			return "Probably resolved - waiting for author";
+		}
+		return "Active";
+	}
+
+	private void confirmResolveHelpReport(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report) {
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, "Mark Help resolved?");
+		RoadCrewUi.addBody(mapActivity, content,
+				"Nearby drivers will stop being notified. Joined drivers can still use the chat.");
+		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
+		RoadCrewUi.addButton(mapActivity, buttons, "Cancel", false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, "Resolved", true, v -> {
+			dialog.dismiss();
+			handleResolveHelpReport(report);
+		});
+		dialog.show();
+	}
+
+	private void handleResolveHelpReport(@NonNull RoadCrewReport report) {
+		if (report.getId().startsWith("seed-")) {
+			getApplication().showToastMessage("Demo Help report cannot be resolved.");
+			return;
+		}
+		if (!isReportAuthor(report)) {
+			getApplication().showToastMessage("Only the Help author can resolve it.");
+			return;
+		}
+		getApplication().showToastMessage("Resolving Help...");
+		RoadCrewReportsSync.resolveHelpReport(getApplication(), report,
+				new RoadCrewReportsSync.HelpResolveCallback() {
+					@Override
+					public void onSuccess() {
+						getMapView().refreshMap();
+						getApplication().showToastMessage("Help marked resolved.");
+					}
+
+					@Override
+					public void onError(@NonNull Exception error) {
+						getApplication().showToastMessage("Could not resolve Help.");
+					}
+				});
+	}
+
+	private void showProximityPrompt(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report) {
+		proximityPromptVisible = true;
+		promptedReportIds.add(report.getId());
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, "RoadCrew report");
+		RoadCrewUi.addBody(mapActivity, content,
+				"Is this " + report.getType().getTitle() + " still there?");
+		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
+		RoadCrewUi.addButton(mapActivity, buttons, "Gone", false, v -> {
+			dialog.dismiss();
+			handleReportVote(report, false);
+		});
+		RoadCrewUi.addButton(mapActivity, buttons, "Later", false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, "Still there", true, v -> {
+			dialog.dismiss();
+			handleReportVote(report, true);
+		});
+		dialog.setOnDismissListener(d -> proximityPromptVisible = false);
+		dialog.show();
+	}
+
+	private void handleReportVote(@NonNull RoadCrewReport report, boolean confirmed) {
+		boolean saved = confirmed
+				? RoadCrewReportsRepository.confirmReport(getApplication(), report.getId())
+				: RoadCrewReportsRepository.denyReport(getApplication(), report.getId());
+		getMapView().refreshMap();
+		if (saved) {
+			RoadCrewReportsSync.syncNow(getApplication());
+			getApplication().showToastMessage(confirmed ? "Thanks. Report confirmed." : "Thanks. Report marked gone.");
+		} else {
+			getApplication().showToastMessage("You already voted on this report.");
+		}
+	}
+
+	private boolean isReportAuthor(@NonNull RoadCrewReport report) {
+		return report.getCreatedBy().equals(RoadCrewReportsRepository.getLocalDeviceId(getApplication()));
+	}
+
+	private void checkHelpNotifications() {
+		long now = System.currentTimeMillis();
+		if (notificationPromptVisible || now - lastNotificationCheckMillis < NOTIFICATION_CHECK_INTERVAL_MILLIS) {
+			return;
+		}
+		MapActivity mapActivity = getMapActivity();
+		if (mapActivity == null) {
+			return;
+		}
+		lastNotificationCheckMillis = now;
+		RoadCrewReportsSync.fetchNotifications(getApplication(), new RoadCrewReportsSync.NotificationsCallback() {
+			@Override
+			public void onNotifications(@NonNull List<RoadCrewNotification> notifications) {
+				for (RoadCrewNotification notification : notifications) {
+					if ("HELP_NEARBY".equals(notification.getKind())
+							&& !shownNotificationIds.contains(notification.getId())) {
+						shownNotificationIds.add(notification.getId());
+						showHelpNotificationDialog(mapActivity, notification);
+						return;
+					}
+					if ("PLATE_SAFETY_ALERT".equals(notification.getKind())
+							&& !shownNotificationIds.contains(notification.getId())) {
+						shownNotificationIds.add(notification.getId());
+						showPlateSafetyAlertDialog(mapActivity, notification);
+						return;
+					}
+					if ("DIRECT_CHAT_MESSAGE".equals(notification.getKind())
+							&& !shownNotificationIds.contains(notification.getId())) {
+						shownNotificationIds.add(notification.getId());
+						if (openDirectChatRoomIds.contains(notification.getReportId())) {
+							continue;
+						}
+						showDirectChatNotificationDialog(mapActivity, notification);
+						return;
+					}
+					if ("HELP_CHAT_MESSAGE".equals(notification.getKind())
+							&& !shownNotificationIds.contains(notification.getId())) {
+						shownNotificationIds.add(notification.getId());
+						if (openHelpReportIds.contains(notification.getReportId())) {
+							continue;
+						}
+						showHelpChatMessageNotificationDialog(mapActivity, notification);
+						return;
+					}
+				}
+			}
+
+			@Override
+			public void onError(@NonNull Exception error) {
+				// Network failures are expected on the road; the next polling cycle will retry.
+			}
+		});
+	}
+
+	private void showHelpNotificationDialog(@NonNull MapActivity mapActivity,
+			@NonNull RoadCrewNotification notification) {
+		notificationPromptVisible = true;
+		dismissActiveNotificationDialog();
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity,
+				notification.getTitle().isEmpty() ? "Driver needs help nearby" : notification.getTitle());
+		RoadCrewUi.addBody(mapActivity, content, notification.getBody());
+		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
+		RoadCrewUi.addButton(mapActivity, buttons, "Later", false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, "Join chat", true, v -> {
+			dialog.dismiss();
+			joinAndOpenHelpChat(mapActivity, notification.getReportId());
+		});
+		setActiveNotificationDialog(dialog);
+		dialog.show();
+	}
+
+	private void showPlateSafetyAlertDialog(@NonNull MapActivity mapActivity,
+			@NonNull RoadCrewNotification notification) {
+		notificationPromptVisible = true;
+		dismissActiveNotificationDialog();
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity,
+				notification.getTitle().isEmpty() ? "Safety alert for your truck" : notification.getTitle());
+		RoadCrewUi.addBody(mapActivity, content, notification.getBody());
+		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
+		RoadCrewUi.addButton(mapActivity, buttons, "OK", false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, "Open chat", true, v -> {
+			dialog.dismiss();
+			openPlateAlertChat(mapActivity, notification.getId());
+		});
+		setActiveNotificationDialog(dialog);
+		dialog.show();
+	}
+
+	private void showDirectChatNotificationDialog(@NonNull MapActivity mapActivity,
+			@NonNull RoadCrewNotification notification) {
+		notificationPromptVisible = true;
+		dismissActiveNotificationDialog();
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity,
+				notification.getTitle().isEmpty() ? "New driver chat message" : notification.getTitle());
+		RoadCrewUi.addBody(mapActivity, content, notification.getBody());
+		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
+		RoadCrewUi.addButton(mapActivity, buttons, "Later", false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, "Open chat", true, v -> {
+			dialog.dismiss();
+			showDirectChatDialog(mapActivity, notification.getReportId());
+		});
+		setActiveNotificationDialog(dialog);
+		dialog.show();
+	}
+
+	private void showHelpChatMessageNotificationDialog(@NonNull MapActivity mapActivity,
+			@NonNull RoadCrewNotification notification) {
+		notificationPromptVisible = true;
+		dismissActiveNotificationDialog();
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity,
+				notification.getTitle().isEmpty() ? "New Help chat message" : notification.getTitle());
+		RoadCrewUi.addBody(mapActivity, content, notification.getBody());
+		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
+		RoadCrewUi.addButton(mapActivity, buttons, "Later", false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, "Open chat", true, v -> {
+			dialog.dismiss();
+			joinAndOpenHelpChat(mapActivity, notification.getReportId());
+		});
+		setActiveNotificationDialog(dialog);
+		dialog.show();
+	}
+
+	private void openPushReference(@NonNull MapActivity mapActivity, @NonNull String kind,
+			@NonNull String referenceId) {
+		dismissActiveNotificationDialog();
+		if ("HELP_NEARBY".equals(kind) || "HELP_CHAT_MESSAGE".equals(kind)) {
+			joinAndOpenHelpChat(mapActivity, referenceId);
+		} else if ("DIRECT_CHAT_MESSAGE".equals(kind)) {
+			showDirectChatDialog(mapActivity, referenceId);
+		} else if ("PLATE_SAFETY_ALERT".equals(kind)) {
+			openPlateAlertChat(mapActivity, referenceId);
+		}
+	}
+
+	private void setActiveNotificationDialog(@NonNull AlertDialog dialog) {
+		activeNotificationDialog = dialog;
+		dialog.setOnDismissListener(d -> {
+			if (activeNotificationDialog == dialog) {
+				activeNotificationDialog = null;
+			}
+			notificationPromptVisible = false;
+		});
+	}
+
+	private void dismissActiveNotificationDialog() {
+		AlertDialog dialog = activeNotificationDialog;
+		activeNotificationDialog = null;
+		notificationPromptVisible = false;
+		if (dialog != null && dialog.isShowing()) {
+			dialog.dismiss();
+		}
+	}
+
+	private void openPlateAlertChat(@NonNull MapActivity mapActivity, @NonNull String plateAlertId) {
+		RoadCrewReportsSync.openPlateAlertChat(getApplication(), plateAlertId, new RoadCrewReportsSync.HelpChatCallback() {
+			@Override
+			public void onSuccess(@NonNull String chatRoomId) {
+				showDirectChatDialog(mapActivity, chatRoomId);
+			}
+
+			@Override
+			public void onError(@NonNull Exception error) {
+				getApplication().showToastMessage("Could not open driver chat.");
+			}
+		});
+	}
+
+	private void joinAndOpenHelpChat(@NonNull MapActivity mapActivity, @NonNull String reportId) {
+		RoadCrewReportsSync.joinHelpChat(getApplication(), reportId, new RoadCrewReportsSync.HelpChatCallback() {
+			@Override
+			public void onSuccess(@NonNull String chatRoomId) {
+				showHelpChatDialog(mapActivity, reportId);
+			}
+
+			@Override
+			public void onError(@NonNull Exception error) {
+				getApplication().showToastMessage("Could not open Help chat.");
+			}
+		});
+	}
+
+	private void openHelpChatFromReport(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report) {
+		if (isRemoteReport(report)) {
+			joinAndOpenHelpChat(mapActivity, report.getId());
+		} else {
+			if (report.getId().startsWith("seed-")) {
+				getApplication().showToastMessage("Demo Help report has no chat.");
+				return;
+			}
+			getApplication().showToastMessage("Syncing Help report...");
+			RoadCrewReportsSync.syncHelpReportAndJoinChat(getApplication(), report,
+					new RoadCrewReportsSync.HelpReportChatCallback() {
+						@Override
+						public void onSuccess(@NonNull String reportId, @NonNull String chatRoomId) {
+							getMapView().refreshMap();
+							showHelpChatDialog(mapActivity, reportId);
+						}
+
+						@Override
+						public void onError(@NonNull Exception error) {
+							getApplication().showToastMessage("Could not open Help chat.");
+						}
+					});
+		}
+	}
+
+	private void showHelpChatDialog(@NonNull MapActivity mapActivity, @NonNull String reportId) {
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, "Help chat");
+
+		TextView messagesView = new TextView(mapActivity);
+		messagesView.setText("Loading messages...");
+		RoadCrewUi.addMessageArea(mapActivity, content, messagesView, 240);
+
+		EditText input = createHelpChatInput(mapActivity);
+		RoadCrewUi.addInput(mapActivity, content, input);
+
+		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
+		RoadCrewUi.addButton(mapActivity, buttons, "Close", false, v -> dialog.dismiss());
+		Button sendButton = RoadCrewUi.addButton(mapActivity, buttons, "Send", true,
+				v -> sendHelpChatMessage(input, messagesView, reportId, null));
+		sendButton.setOnClickListener(v -> sendHelpChatMessage(input, messagesView, reportId, sendButton));
+		openHelpReportIds.add(reportId);
+		dialog.setOnDismissListener(d -> openHelpReportIds.remove(reportId));
+		dialog.show();
+		fetchAndRenderHelpChatMessages(reportId, messagesView);
+		scheduleHelpChatRefresh(reportId, messagesView, dialog);
+	}
+
+	private void showDirectChatDialog(@NonNull MapActivity mapActivity, @NonNull String chatRoomId) {
+		if (chatRoomId.isEmpty()) {
+			getApplication().showToastMessage("Could not open driver chat.");
+			return;
+		}
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity, "Driver chat");
+
+		TextView messagesView = new TextView(mapActivity);
+		messagesView.setText("Loading messages...");
+		RoadCrewUi.addMessageArea(mapActivity, content, messagesView, 240);
+
+		EditText input = createHelpChatInput(mapActivity);
+		RoadCrewUi.addInput(mapActivity, content, input);
+
+		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
+		RoadCrewUi.addButton(mapActivity, buttons, "Close", false, v -> dialog.dismiss());
+		Button sendButton = RoadCrewUi.addButton(mapActivity, buttons, "Send", true,
+				v -> sendDirectChatMessage(input, messagesView, chatRoomId, null));
+		sendButton.setOnClickListener(v -> sendDirectChatMessage(input, messagesView, chatRoomId, sendButton));
+		openDirectChatRoomIds.add(chatRoomId);
+		dialog.setOnDismissListener(d -> openDirectChatRoomIds.remove(chatRoomId));
+		dialog.show();
+		fetchAndRenderDirectChatMessages(chatRoomId, messagesView);
+		scheduleDirectChatRefresh(chatRoomId, messagesView, dialog);
+	}
+
+	@NonNull
+	private EditText createHelpChatInput(@NonNull MapActivity mapActivity) {
+		EditText input = RoadCrewUi.createInput(mapActivity, "Write a message", true);
+		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+				| InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+		input.setFilters(new InputFilter[] {new InputFilter.LengthFilter(HELP_CHAT_MESSAGE_MAX_LENGTH)});
+		return input;
+	}
+
+	private void prepareHelpPanelChat(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report,
+			@NonNull TextView messagesView, @NonNull Button sendButton, @NonNull AlertDialog dialog) {
+		if (report.getId().startsWith("seed-")) {
+			messagesView.setText("Demo Help report has no chat.");
+			return;
+		}
+		if (isRemoteReport(report)) {
+			joinHelpChatForPanel(report.getId(), messagesView, sendButton, dialog);
+		} else {
+			messagesView.setText("Syncing Help report...");
+			RoadCrewReportsSync.syncHelpReportAndJoinChat(getApplication(), report,
+					new RoadCrewReportsSync.HelpReportChatCallback() {
+						@Override
+						public void onSuccess(@NonNull String reportId, @NonNull String chatRoomId) {
+							getMapView().refreshMap();
+							joinHelpChatForPanel(reportId, messagesView, sendButton, dialog);
+						}
+
+						@Override
+						public void onError(@NonNull Exception error) {
+							messagesView.setText("Could not open Help chat.");
+						}
+					});
+		}
+	}
+
+	private void joinHelpChatForPanel(@NonNull String reportId, @NonNull TextView messagesView,
+			@NonNull Button sendButton, @NonNull AlertDialog dialog) {
+		RoadCrewReportsSync.joinHelpChat(getApplication(), reportId, new RoadCrewReportsSync.HelpChatCallback() {
+			@Override
+			public void onSuccess(@NonNull String chatRoomId) {
+				messagesView.setTag(reportId);
+				openHelpReportIds.add(reportId);
+				dialog.setOnDismissListener(d -> openHelpReportIds.remove(reportId));
+				sendButton.setEnabled(true);
+				fetchAndRenderHelpChatMessages(reportId, messagesView);
+				scheduleHelpChatRefresh(reportId, messagesView, dialog);
+			}
+
+			@Override
+			public void onError(@NonNull Exception error) {
+				messagesView.setText("Could not open Help chat.");
+			}
+		});
+	}
+
+	private void sendHelpChatMessage(@NonNull EditText input, @NonNull TextView messagesView,
+			@NonNull RoadCrewReport report) {
+		Object tag = messagesView.getTag();
+		if (tag instanceof String reportId) {
+			sendHelpChatMessage(input, messagesView, reportId, null);
+		} else if (!report.getId().startsWith("seed-")) {
+			getApplication().showToastMessage("Help chat is still connecting.");
+		}
+	}
+
+	private void sendHelpChatMessage(@NonNull EditText input, @NonNull TextView messagesView,
+			@NonNull String reportId, @Nullable Button sendButton) {
+		String message = input.getText().toString().trim();
+		if (message.isEmpty()) {
+			return;
+		}
+		if (sendButton != null) {
+			sendButton.setEnabled(false);
+		}
+		RoadCrewReportsSync.sendHelpChatMessage(getApplication(), reportId, message,
+				new RoadCrewReportsSync.HelpChatCallback() {
+					@Override
+					public void onSuccess(@NonNull String chatRoomId) {
+						input.setText("");
+						if (sendButton != null) {
+							sendButton.setEnabled(true);
+						}
+						fetchAndRenderHelpChatMessages(reportId, messagesView);
+					}
+
+					@Override
+					public void onError(@NonNull Exception error) {
+						if (sendButton != null) {
+							sendButton.setEnabled(true);
+						}
+						getApplication().showToastMessage("Message not sent.");
+					}
+				});
+	}
+
+	private void fetchAndRenderHelpChatMessages(@NonNull String reportId, @NonNull TextView messagesView) {
+		RoadCrewReportsSync.fetchHelpChatMessages(getApplication(), reportId,
+				new RoadCrewReportsSync.HelpChatMessagesCallback() {
+					@Override
+					public void onMessages(@NonNull List<RoadCrewChatMessage> messages) {
+						messagesView.setText(formatHelpChatMessages(messages));
+					}
+
+					@Override
+					public void onError(@NonNull Exception error) {
+						messagesView.setText("Could not load messages.");
+					}
+				});
+	}
+
+	private void sendDirectChatMessage(@NonNull EditText input, @NonNull TextView messagesView,
+			@NonNull String chatRoomId, @Nullable Button sendButton) {
+		String message = input.getText().toString().trim();
+		if (message.isEmpty()) {
+			return;
+		}
+		if (sendButton != null) {
+			sendButton.setEnabled(false);
+		}
+		RoadCrewReportsSync.sendDirectChatMessage(getApplication(), chatRoomId, message,
+				new RoadCrewReportsSync.HelpChatCallback() {
+					@Override
+					public void onSuccess(@NonNull String returnedChatRoomId) {
+						input.setText("");
+						if (sendButton != null) {
+							sendButton.setEnabled(true);
+						}
+						fetchAndRenderDirectChatMessages(chatRoomId, messagesView);
+					}
+
+					@Override
+					public void onError(@NonNull Exception error) {
+						if (sendButton != null) {
+							sendButton.setEnabled(true);
+						}
+						getApplication().showToastMessage("Message not sent.");
+					}
+				});
+	}
+
+	private void fetchAndRenderDirectChatMessages(@NonNull String chatRoomId, @NonNull TextView messagesView) {
+		RoadCrewReportsSync.fetchDirectChatMessages(getApplication(), chatRoomId,
+				new RoadCrewReportsSync.HelpChatMessagesCallback() {
+					@Override
+					public void onMessages(@NonNull List<RoadCrewChatMessage> messages) {
+						messagesView.setText(formatHelpChatMessages(messages));
+					}
+
+					@Override
+					public void onError(@NonNull Exception error) {
+						messagesView.setText("Could not load messages.");
+					}
+				});
+	}
+
+	private void scheduleHelpChatRefresh(@NonNull String reportId, @NonNull TextView messagesView,
+			@NonNull AlertDialog dialog) {
+		getApplication().runInUIThread(() -> {
+			if (!dialog.isShowing()) {
+				return;
+			}
+			fetchAndRenderHelpChatMessages(reportId, messagesView);
+			scheduleHelpChatRefresh(reportId, messagesView, dialog);
+		}, HELP_CHAT_REFRESH_INTERVAL_MILLIS);
+	}
+
+	private void scheduleDirectChatRefresh(@NonNull String chatRoomId, @NonNull TextView messagesView,
+			@NonNull AlertDialog dialog) {
+		getApplication().runInUIThread(() -> {
+			if (!dialog.isShowing()) {
+				return;
+			}
+			fetchAndRenderDirectChatMessages(chatRoomId, messagesView);
+			scheduleDirectChatRefresh(chatRoomId, messagesView, dialog);
+		}, HELP_CHAT_REFRESH_INTERVAL_MILLIS);
+	}
+
+	@NonNull
+	private String formatHelpChatMessages(@NonNull List<RoadCrewChatMessage> messages) {
+		if (messages.isEmpty()) {
+			return "No messages yet.";
+		}
+		String localDeviceId = RoadCrewReportsRepository.getLocalDeviceId(getApplication());
+		String localDisplayName = RoadCrewDriverProfile.load(getApplication()).getDisplayName();
+		StringBuilder builder = new StringBuilder();
+		for (RoadCrewChatMessage message : messages) {
+			String author = formatChatAuthor(message, localDeviceId, localDisplayName);
+			builder.append(author)
+					.append(" - ")
+					.append(formatMessageAge(message.getCreatedAtMillis()))
+					.append('\n')
+					.append(message.getBody())
+					.append("\n\n");
+		}
+		return builder.toString().trim();
+	}
+
+	@NonNull
+	private String formatChatAuthor(@NonNull RoadCrewChatMessage message, @NonNull String localDeviceId,
+			@NonNull String localDisplayName) {
+		String displayName = message.getDisplayName().trim();
+		if (localDeviceId.equals(message.getDeviceId())) {
+			return localDisplayName.isEmpty() ? "Me" : "Me (" + localDisplayName + ")";
+		}
+		return displayName.isEmpty() ? "Driver" : displayName;
+	}
+
+	private boolean isRemoteReport(@NonNull RoadCrewReport report) {
+		return !report.getId().startsWith("local-") && !report.getId().startsWith("seed-");
+	}
+
+	private float dp(float value) {
+		return value * getContext().getResources().getDisplayMetrics().density * getTextScale();
+	}
+
+	private float sp(float value) {
+		return value * getContext().getResources().getDisplayMetrics().scaledDensity * getTextScale();
+	}
+
+	private String formatAge(@NonNull RoadCrewReport report) {
+		long ageMillis = Math.max(0, System.currentTimeMillis() - report.getCreatedAtMillis());
+		long ageMinutes = ageMillis / (60 * 1000);
+		if (ageMinutes == 0) {
+			return "now";
+		}
+		return ageMinutes + " min";
+	}
+
+	private String formatReportedAge(@NonNull RoadCrewReport report) {
+		long ageMillis = Math.max(0, System.currentTimeMillis() - report.getCreatedAtMillis());
+		long ageMinutes = ageMillis / (60 * 1000);
+		if (ageMinutes == 0) {
+			return "just now";
+		}
+		return ageMinutes + " min ago";
+	}
+
+	private String formatMessageAge(long createdAtMillis) {
+		long ageMillis = Math.max(0, System.currentTimeMillis() - createdAtMillis);
+		long ageMinutes = ageMillis / (60 * 1000);
+		if (ageMinutes == 0) {
+			return "now";
+		}
+		return ageMinutes + " min ago";
+	}
+
+	@NonNull
+	private String formatLocalVote(@NonNull RoadCrewReport report) {
+		switch (report.getLocalVote()) {
+			case CONFIRMED:
+				return "Still there";
+			case DENIED:
+				return "Gone";
+			case NONE:
+			default:
+				return "Not yet";
+		}
+	}
+
+	private static final class LabelLayout {
+		@NonNull
+		private final String label;
+		private final float centerX;
+		private final float textBaseline;
+
+		private LabelLayout(@NonNull String label, float centerX, float textBaseline) {
+			this.label = label;
+			this.centerX = centerX;
+			this.textBaseline = textBaseline;
+		}
+	}
+}
