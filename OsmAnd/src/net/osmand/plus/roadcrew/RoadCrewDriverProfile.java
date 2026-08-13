@@ -10,6 +10,11 @@ import net.osmand.plus.OsmandApplication;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 public final class RoadCrewDriverProfile {
 
@@ -99,8 +104,18 @@ public final class RoadCrewDriverProfile {
 	}
 
 	@NonNull
+	public List<String> getTruckPlateHashes() {
+		return plateHashesForLookup(truckNumber);
+	}
+
+	@NonNull
 	public String getTrailerPlateHash() {
 		return plateHash(trailerNumber);
+	}
+
+	@NonNull
+	public List<String> getTrailerPlateHashes() {
+		return plateHashesForLookup(trailerNumber);
 	}
 
 	@NonNull
@@ -127,6 +142,21 @@ public final class RoadCrewDriverProfile {
 	}
 
 	@NonNull
+	public static List<String> plateHashesForLookup(@NonNull String normalizedPlate) {
+		Set<String> hashes = new LinkedHashSet<>();
+		String canonicalHash = plateHash(normalizedPlate);
+		if (!canonicalHash.isEmpty()) {
+			hashes.add(canonicalHash);
+		}
+		String legacyCyrillicPlate = toLegacyCyrillicPlate(normalizedPlate);
+		String legacyHash = plateHash(legacyCyrillicPlate);
+		if (!legacyHash.isEmpty()) {
+			hashes.add(legacyHash);
+		}
+		return new ArrayList<>(hashes);
+	}
+
+	@NonNull
 	private static SharedPreferences getPreferences(@NonNull OsmandApplication app) {
 		return app.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 	}
@@ -139,6 +169,95 @@ public final class RoadCrewDriverProfile {
 
 	@NonNull
 	private static String normalizePlate(@NonNull String value) {
-		return cleanText(value.replaceAll("[^\\p{Alnum}]", "").toUpperCase(), MAX_PLATE_LENGTH);
+		String upperValue = value.toUpperCase(Locale.ROOT);
+		StringBuilder builder = new StringBuilder(upperValue.length());
+		for (int i = 0; i < upperValue.length(); i++) {
+			char c = upperValue.charAt(i);
+			if (Character.isLetterOrDigit(c)) {
+				builder.append(toCanonicalPlateChar(c));
+			}
+		}
+		return cleanText(builder.toString(), MAX_PLATE_LENGTH);
+	}
+
+	private static char toCanonicalPlateChar(char c) {
+		switch (c) {
+			case 'А':
+				return 'A';
+			case 'В':
+				return 'B';
+			case 'Е':
+				return 'E';
+			case 'К':
+				return 'K';
+			case 'М':
+				return 'M';
+			case 'Н':
+				return 'H';
+			case 'О':
+				return 'O';
+			case 'Р':
+				return 'P';
+			case 'С':
+				return 'C';
+			case 'Т':
+				return 'T';
+			case 'У':
+				return 'Y';
+			case 'Х':
+				return 'X';
+			default:
+				return c;
+		}
+	}
+
+	@NonNull
+	private static String toLegacyCyrillicPlate(@NonNull String normalizedPlate) {
+		StringBuilder builder = new StringBuilder(normalizedPlate.length());
+		for (int i = 0; i < normalizedPlate.length(); i++) {
+			char c = normalizedPlate.charAt(i);
+			switch (c) {
+				case 'A':
+					builder.append('А');
+					break;
+				case 'B':
+					builder.append('В');
+					break;
+				case 'E':
+					builder.append('Е');
+					break;
+				case 'K':
+					builder.append('К');
+					break;
+				case 'M':
+					builder.append('М');
+					break;
+				case 'H':
+					builder.append('Н');
+					break;
+				case 'O':
+					builder.append('О');
+					break;
+				case 'P':
+					builder.append('Р');
+					break;
+				case 'C':
+					builder.append('С');
+					break;
+				case 'T':
+					builder.append('Т');
+					break;
+				case 'Y':
+					builder.append('У');
+					break;
+				case 'X':
+					builder.append('Х');
+					break;
+				default:
+					builder.append(c);
+					break;
+			}
+		}
+		return builder.toString();
 	}
 }

@@ -288,6 +288,11 @@ public final class RoadCrewReportsSync {
 				String deviceId = RoadCrewReportsRepository.getLocalDeviceId(app);
 				JSONObject body = new JSONObject();
 				body.put("plateHash", plateHash);
+				JSONArray plateHashes = new JSONArray();
+				for (String hash : RoadCrewDriverProfile.plateHashesForLookup(normalizedPlate)) {
+					plateHashes.put(hash);
+				}
+				body.put("plateHashes", plateHashes);
 				body.put("category", category);
 				if (!message.trim().isEmpty()) {
 					body.put("body", message);
@@ -358,16 +363,16 @@ public final class RoadCrewReportsSync {
 		body.put("plateAlertsEnabled", profile.isPlateAlertsEnabled());
 		JSONArray plates = new JSONArray();
 		if (profile.isPlateAlertsEnabled()) {
-			if (!profile.getTruckPlateHash().isEmpty()) {
+			for (String truckHash : profile.getTruckPlateHashes()) {
 				JSONObject truck = new JSONObject();
 				truck.put("kind", "TRUCK");
-				truck.put("hash", profile.getTruckPlateHash());
+				truck.put("hash", truckHash);
 				plates.put(truck);
 			}
-			if (!profile.getTrailerPlateHash().isEmpty()) {
+			for (String trailerHash : profile.getTrailerPlateHashes()) {
 				JSONObject trailer = new JSONObject();
 				trailer.put("kind", "TRAILER");
-				trailer.put("hash", profile.getTrailerPlateHash());
+				trailer.put("hash", trailerHash);
 				plates.put(trailer);
 			}
 		}
