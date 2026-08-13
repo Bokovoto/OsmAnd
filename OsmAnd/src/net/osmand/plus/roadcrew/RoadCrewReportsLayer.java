@@ -77,6 +77,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private boolean notificationPromptVisible;
 	@Nullable
 	private AlertDialog activeNotificationDialog;
+	@Nullable
+	private RoadCrewVoiceAlerts voiceAlerts;
 	private final long createdAtMillis = System.currentTimeMillis();
 
 	public RoadCrewReportsLayer(@NonNull OsmandApplication app) {
@@ -91,7 +93,23 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	public void initLayer(@NonNull OsmandMapTileView view) {
 		super.initLayer(view);
 		activeLayer = this;
+		if (voiceAlerts != null) {
+			voiceAlerts.shutdown();
+		}
+		voiceAlerts = new RoadCrewVoiceAlerts(getApplication());
 		createResources();
+	}
+
+	@Override
+	public void destroyLayer() {
+		super.destroyLayer();
+		if (activeLayer == this) {
+			activeLayer = null;
+		}
+		if (voiceAlerts != null) {
+			voiceAlerts.shutdown();
+			voiceAlerts = null;
+		}
 	}
 
 	public static void showNearbyHelpReports(@NonNull MapActivity mapActivity, @NonNull OsmandApplication app) {
@@ -143,12 +161,14 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	@Override
 	public void onDraw(Canvas canvas, RotatedTileBox tileBox, DrawSettings settings) {
-		if (tileBox.getZoom() < MIN_ZOOM) {
-			return;
-		}
 		List<RoadCrewReport> reports = RoadCrewReportsRepository.getVisibleReports(getApplication());
 		RoadCrewReportsSync.syncPeriodically(getApplication());
 		checkHelpNotifications();
+		checkNearbyReports(reports);
+		checkVoiceAlerts(reports);
+		if (tileBox.getZoom() < MIN_ZOOM) {
+			return;
+		}
 		for (RoadCrewReport report : reports) {
 			LatLon latLon = report.getLocation();
 			if (!tileBox.containsLatLon(latLon)) {
@@ -158,7 +178,12 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			float y = tileBox.getPixYFromLatLon(latLon.getLatitude(), latLon.getLongitude());
 			drawReport(canvas, report, x, y);
 		}
-		checkNearbyReports(reports);
+	}
+
+	private void checkVoiceAlerts(@NonNull List<RoadCrewReport> reports) {
+		if (voiceAlerts != null) {
+			voiceAlerts.check(reports);
+		}
 	}
 
 	@Override
