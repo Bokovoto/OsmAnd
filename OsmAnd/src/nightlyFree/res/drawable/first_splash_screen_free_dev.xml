@@ -4,6 +4,5 @@
 	<item android:drawable="@color/splash_screen_background_color" />
 	<item
 		android:drawable="@drawable/ic_logo_splash_roadcrew"
-		android:gravity="center_horizontal|top"
-		android:top="@dimen/splash_screen_logo_top" />
+		android:gravity="center" />
 </layer-list>
