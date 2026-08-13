@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathDashPathEffect;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.text.InputFilter;
@@ -208,10 +209,23 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		restrictionRoadPaint.setStrokeCap(Paint.Cap.ROUND);
 		restrictionRoadPaint.setStrokeJoin(Paint.Join.ROUND);
 
-		restrictionRoadStripePaint.setStyle(Paint.Style.STROKE);
-		restrictionRoadStripePaint.setStrokeWidth(dp(6));
+		restrictionRoadStripePaint.setStyle(Paint.Style.FILL_AND_STROKE);
 		restrictionRoadStripePaint.setColor(Color.argb(225, 17, 24, 39));
-		restrictionRoadStripePaint.setStrokeCap(Paint.Cap.ROUND);
+		restrictionRoadStripePaint.setPathEffect(createWarningTapeStripeEffect());
+	}
+
+	@NonNull
+	private PathDashPathEffect createWarningTapeStripeEffect() {
+		float roadHalfWidth = dp(4.4f);
+		float stripeWidth = dp(4.8f);
+		float stripeLean = dp(6.2f);
+		Path stripe = new Path();
+		stripe.moveTo(-stripeWidth / 2f - stripeLean, -roadHalfWidth);
+		stripe.lineTo(stripeWidth / 2f - stripeLean, -roadHalfWidth);
+		stripe.lineTo(stripeWidth / 2f + stripeLean, roadHalfWidth);
+		stripe.lineTo(-stripeWidth / 2f + stripeLean, roadHalfWidth);
+		stripe.close();
+		return new PathDashPathEffect(stripe, dp(13), 0, PathDashPathEffect.Style.ROTATE);
 	}
 
 	@Override
@@ -323,46 +337,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 		canvas.drawPath(restrictionRoadPath, restrictionRoadHaloPaint);
 		canvas.drawPath(restrictionRoadPath, restrictionRoadPaint);
-		drawTruckRestrictionRoadStripes(canvas, tileBox, roadGeometry);
+		canvas.drawPath(restrictionRoadPath, restrictionRoadStripePaint);
 		return true;
-	}
-
-	private void drawTruckRestrictionRoadStripes(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
-			@NonNull List<LatLon> roadGeometry) {
-		float spacing = dp(16);
-		float stripeLength = dp(22);
-		float carriedDistance = 0;
-		for (int i = 1; i < roadGeometry.size(); i++) {
-			LatLon start = roadGeometry.get(i - 1);
-			LatLon end = roadGeometry.get(i);
-			float startX = tileBox.getPixXFromLatLon(start.getLatitude(), start.getLongitude());
-			float startY = tileBox.getPixYFromLatLon(start.getLatitude(), start.getLongitude());
-			float endX = tileBox.getPixXFromLatLon(end.getLatitude(), end.getLongitude());
-			float endY = tileBox.getPixYFromLatLon(end.getLatitude(), end.getLongitude());
-			float dx = endX - startX;
-			float dy = endY - startY;
-			float segmentLength = (float) Math.hypot(dx, dy);
-			if (segmentLength < 1) {
-				continue;
-			}
-			float unitX = dx / segmentLength;
-			float unitY = dy / segmentLength;
-			float normalX = -unitY;
-			float normalY = unitX;
-			float distance = spacing - carriedDistance;
-			while (distance < segmentLength) {
-				float centerX = startX + unitX * distance;
-				float centerY = startY + unitY * distance;
-				canvas.drawLine(
-						centerX - unitX * stripeLength * 0.38f - normalX * stripeLength * 0.55f,
-						centerY - unitY * stripeLength * 0.38f - normalY * stripeLength * 0.55f,
-						centerX + unitX * stripeLength * 0.38f + normalX * stripeLength * 0.55f,
-						centerY + unitY * stripeLength * 0.38f + normalY * stripeLength * 0.55f,
-						restrictionRoadStripePaint);
-				distance += spacing;
-			}
-			carriedDistance = (carriedDistance + segmentLength) % spacing;
-		}
 	}
 
 	private boolean isOverlappingExistingRestriction(@NonNull List<PointF> drawnCenters, float x, float y,
