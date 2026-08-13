@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.R;
 import net.osmand.plus.activities.MapActivity;
+import net.osmand.plus.settings.backend.preferences.CommonPreference;
 
 final class RoadCrewDriverProfileDialog {
 
@@ -48,16 +49,30 @@ final class RoadCrewDriverProfileDialog {
 		content.addView(plateAlertsEnabled, new LinearLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
+		CommonPreference<Boolean> showTruckRestrictionsPreference = RoadCrewSettings.showTruckRestrictions(app);
+		CheckBox showTruckRestrictions = new CheckBox(mapActivity);
+		showTruckRestrictions.setText(mapActivity.getString(R.string.roadcrew_profile_show_truck_restrictions));
+		showTruckRestrictions.setTextColor(RoadCrewUi.TEXT);
+		showTruckRestrictions.setChecked(showTruckRestrictionsPreference.get());
+		content.addView(showTruckRestrictions, new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		RoadCrewUi.addBody(mapActivity, content, mapActivity.getString(R.string.roadcrew_profile_show_truck_restrictions_body));
+
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
 		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_cancel), false, v -> dialog.dismiss());
 		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_save), true, v -> {
+			boolean restrictionsChanged = showTruckRestrictionsPreference.get() != showTruckRestrictions.isChecked();
 			RoadCrewDriverProfile.save(app,
 					driverName.getText().toString(),
 					truckNumber.getText().toString(),
 					trailerNumber.getText().toString(),
 					plateAlertsEnabled.isChecked());
+			showTruckRestrictionsPreference.set(showTruckRestrictions.isChecked());
 			RoadCrewReportsSync.syncNow(app);
+			if (restrictionsChanged) {
+				mapActivity.getMapView().refreshMap();
+			}
 			app.showToastMessage(R.string.roadcrew_profile_saved);
 			dialog.dismiss();
 		});

@@ -72,6 +72,8 @@
     <string name="roadcrew_profile_truck_number">Truck number</string>
     <string name="roadcrew_profile_trailer_number">Trailer number</string>
     <string name="roadcrew_profile_allow_plate_alerts">Allow safety alerts by truck/trailer number</string>
+    <string name="roadcrew_profile_show_truck_restrictions">Show truck restrictions on map</string>
+    <string name="roadcrew_profile_show_truck_restrictions_body">Shows local map signs for weight, height, width, length, HGV and ADR restrictions. Default: on for Truck, off for Car.</string>
     <string name="roadcrew_profile_saved">Driver profile saved.</string>
 
     <string name="roadcrew_setup_title">RoadCrew setup</string>

@@ -72,6 +72,8 @@
     <string name="roadcrew_profile_truck_number">Номер на камион</string>
     <string name="roadcrew_profile_trailer_number">Номер на ремарке</string>
     <string name="roadcrew_profile_allow_plate_alerts">Разреши предупреждения по номер на камион/ремарке</string>
+    <string name="roadcrew_profile_show_truck_restrictions">Показвай ограниченията за камиони на картата</string>
+    <string name="roadcrew_profile_show_truck_restrictions_body">Показва знаци от локалната карта за тегло, височина, ширина, дължина, забрана за камиони и ADR. По подразбиране: включено за Камион, изключено за Кола.</string>
     <string name="roadcrew_profile_saved">Профилът е запазен.</string>
 
     <string name="roadcrew_setup_title">Настройка на RoadCrew</string>

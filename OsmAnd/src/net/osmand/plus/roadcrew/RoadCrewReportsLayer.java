@@ -232,7 +232,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	}
 
 	private void drawTruckRestrictions(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox) {
-		if (truckRestrictionsProvider == null) {
+		if (truckRestrictionsProvider == null || !RoadCrewSettings.shouldShowTruckRestrictions(getApplication())) {
 			return;
 		}
 		List<RoadCrewTruckRestrictionsProvider.TruckRestriction> restrictions =
