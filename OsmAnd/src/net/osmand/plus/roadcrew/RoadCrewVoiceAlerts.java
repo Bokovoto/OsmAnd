@@ -21,7 +21,7 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	private static final long GLOBAL_COOLDOWN_MILLIS = 15 * 1000;
 	private static final double ANNOUNCE_RADIUS_METERS = 1800;
 	private static final double CLOSE_RADIUS_METERS = 700;
-	private static final double ROUTE_CORRIDOR_METERS = 500;
+	private static final double ROUTE_CORRIDOR_METERS = 200;
 	private static final double ROUTE_APPROACH_ALERT_METERS = 2000;
 	private static final double ROUTE_FINAL_ALERT_METERS = 900;
 	private static final double AHEAD_BEARING_DEGREES = 70;
