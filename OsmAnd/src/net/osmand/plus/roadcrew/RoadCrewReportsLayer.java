@@ -69,6 +69,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private final Paint restrictionSlashPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionRoadHaloPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionRoadPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint restrictionRoadStripePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Path restrictionRoadPath = new Path();
 	private final Path markerPath = new Path();
 	private final RectF labelRect = new RectF();
@@ -196,16 +197,21 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		restrictionSlashPaint.setStrokeCap(Paint.Cap.ROUND);
 
 		restrictionRoadHaloPaint.setStyle(Paint.Style.STROKE);
-		restrictionRoadHaloPaint.setStrokeWidth(dp(11));
-		restrictionRoadHaloPaint.setColor(Color.argb(210, 255, 255, 255));
+		restrictionRoadHaloPaint.setStrokeWidth(dp(13));
+		restrictionRoadHaloPaint.setColor(Color.argb(235, 255, 255, 255));
 		restrictionRoadHaloPaint.setStrokeCap(Paint.Cap.ROUND);
 		restrictionRoadHaloPaint.setStrokeJoin(Paint.Join.ROUND);
 
 		restrictionRoadPaint.setStyle(Paint.Style.STROKE);
-		restrictionRoadPaint.setStrokeWidth(dp(7));
-		restrictionRoadPaint.setColor(Color.argb(220, 239, 68, 68));
+		restrictionRoadPaint.setStrokeWidth(dp(9));
+		restrictionRoadPaint.setColor(Color.argb(235, 250, 204, 21));
 		restrictionRoadPaint.setStrokeCap(Paint.Cap.ROUND);
 		restrictionRoadPaint.setStrokeJoin(Paint.Join.ROUND);
+
+		restrictionRoadStripePaint.setStyle(Paint.Style.STROKE);
+		restrictionRoadStripePaint.setStrokeWidth(dp(3));
+		restrictionRoadStripePaint.setColor(Color.argb(225, 17, 24, 39));
+		restrictionRoadStripePaint.setStrokeCap(Paint.Cap.ROUND);
 	}
 
 	@Override
@@ -317,7 +323,46 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 		canvas.drawPath(restrictionRoadPath, restrictionRoadHaloPaint);
 		canvas.drawPath(restrictionRoadPath, restrictionRoadPaint);
+		drawTruckRestrictionRoadStripes(canvas, tileBox, roadGeometry);
 		return true;
+	}
+
+	private void drawTruckRestrictionRoadStripes(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
+			@NonNull List<LatLon> roadGeometry) {
+		float spacing = dp(22);
+		float stripeLength = dp(12);
+		float carriedDistance = 0;
+		for (int i = 1; i < roadGeometry.size(); i++) {
+			LatLon start = roadGeometry.get(i - 1);
+			LatLon end = roadGeometry.get(i);
+			float startX = tileBox.getPixXFromLatLon(start.getLatitude(), start.getLongitude());
+			float startY = tileBox.getPixYFromLatLon(start.getLatitude(), start.getLongitude());
+			float endX = tileBox.getPixXFromLatLon(end.getLatitude(), end.getLongitude());
+			float endY = tileBox.getPixYFromLatLon(end.getLatitude(), end.getLongitude());
+			float dx = endX - startX;
+			float dy = endY - startY;
+			float segmentLength = (float) Math.hypot(dx, dy);
+			if (segmentLength < 1) {
+				continue;
+			}
+			float unitX = dx / segmentLength;
+			float unitY = dy / segmentLength;
+			float normalX = -unitY;
+			float normalY = unitX;
+			float distance = spacing - carriedDistance;
+			while (distance < segmentLength) {
+				float centerX = startX + unitX * distance;
+				float centerY = startY + unitY * distance;
+				canvas.drawLine(
+						centerX - unitX * stripeLength * 0.35f - normalX * stripeLength * 0.5f,
+						centerY - unitY * stripeLength * 0.35f - normalY * stripeLength * 0.5f,
+						centerX + unitX * stripeLength * 0.35f + normalX * stripeLength * 0.5f,
+						centerY + unitY * stripeLength * 0.35f + normalY * stripeLength * 0.5f,
+						restrictionRoadStripePaint);
+				distance += spacing;
+			}
+			carriedDistance = (carriedDistance + segmentLength) % spacing;
+		}
 	}
 
 	private boolean isOverlappingExistingRestriction(@NonNull List<PointF> drawnCenters, float x, float y,
