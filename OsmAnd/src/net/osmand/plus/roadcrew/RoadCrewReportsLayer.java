@@ -197,19 +197,19 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		restrictionSlashPaint.setStrokeCap(Paint.Cap.ROUND);
 
 		restrictionRoadHaloPaint.setStyle(Paint.Style.STROKE);
-		restrictionRoadHaloPaint.setStrokeWidth(dp(13));
+		restrictionRoadHaloPaint.setStrokeWidth(dp(15));
 		restrictionRoadHaloPaint.setColor(Color.argb(235, 255, 255, 255));
 		restrictionRoadHaloPaint.setStrokeCap(Paint.Cap.ROUND);
 		restrictionRoadHaloPaint.setStrokeJoin(Paint.Join.ROUND);
 
 		restrictionRoadPaint.setStyle(Paint.Style.STROKE);
-		restrictionRoadPaint.setStrokeWidth(dp(9));
+		restrictionRoadPaint.setStrokeWidth(dp(11));
 		restrictionRoadPaint.setColor(Color.argb(235, 250, 204, 21));
 		restrictionRoadPaint.setStrokeCap(Paint.Cap.ROUND);
 		restrictionRoadPaint.setStrokeJoin(Paint.Join.ROUND);
 
 		restrictionRoadStripePaint.setStyle(Paint.Style.STROKE);
-		restrictionRoadStripePaint.setStrokeWidth(dp(3));
+		restrictionRoadStripePaint.setStrokeWidth(dp(6));
 		restrictionRoadStripePaint.setColor(Color.argb(225, 17, 24, 39));
 		restrictionRoadStripePaint.setStrokeCap(Paint.Cap.ROUND);
 	}
@@ -329,8 +329,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	private void drawTruckRestrictionRoadStripes(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
 			@NonNull List<LatLon> roadGeometry) {
-		float spacing = dp(22);
-		float stripeLength = dp(12);
+		float spacing = dp(16);
+		float stripeLength = dp(22);
 		float carriedDistance = 0;
 		for (int i = 1; i < roadGeometry.size(); i++) {
 			LatLon start = roadGeometry.get(i - 1);
@@ -354,10 +354,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 				float centerX = startX + unitX * distance;
 				float centerY = startY + unitY * distance;
 				canvas.drawLine(
-						centerX - unitX * stripeLength * 0.35f - normalX * stripeLength * 0.5f,
-						centerY - unitY * stripeLength * 0.35f - normalY * stripeLength * 0.5f,
-						centerX + unitX * stripeLength * 0.35f + normalX * stripeLength * 0.5f,
-						centerY + unitY * stripeLength * 0.35f + normalY * stripeLength * 0.5f,
+						centerX - unitX * stripeLength * 0.38f - normalX * stripeLength * 0.55f,
+						centerY - unitY * stripeLength * 0.38f - normalY * stripeLength * 0.55f,
+						centerX + unitX * stripeLength * 0.38f + normalX * stripeLength * 0.55f,
+						centerY + unitY * stripeLength * 0.38f + normalY * stripeLength * 0.55f,
 						restrictionRoadStripePaint);
 				distance += spacing;
 			}
@@ -378,9 +378,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private void drawTruckRestrictionSign(@NonNull Canvas canvas,
 			@NonNull RoadCrewTruckRestrictionsProvider.TruckRestriction restriction, float x, float y) {
 		String label = restriction.label;
-		float textSize = label.length() > 5 ? sp(9) : label.length() > 4 ? sp(10) : sp(11);
+		float textSize = label.length() > 5 ? sp(8) : label.length() > 4 ? sp(9) : sp(10);
 		restrictionTextPaint.setTextSize(textSize);
-		float radius = Math.max(dp(17), restrictionTextPaint.measureText(label) / 2f + dp(6));
+		float radius = Math.max(dp(14), restrictionTextPaint.measureText(label) / 2f + dp(5));
 		float shadowOffset = dp(2);
 
 		canvas.drawCircle(x + shadowOffset, y + shadowOffset, radius + dp(1), restrictionShadowPaint);
