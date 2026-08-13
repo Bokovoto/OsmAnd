@@ -66,12 +66,14 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private final Paint restrictionFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint restrictionIconPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionShadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionSlashPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionRoadHaloPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionRoadPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionRoadStripePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Path restrictionRoadPath = new Path();
+	private final Path restrictionTruckPath = new Path();
 	private final Path markerPath = new Path();
 	private final RectF labelRect = new RectF();
 	private final RectF touchLabelRect = new RectF();
@@ -188,6 +190,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		restrictionTextPaint.setColor(Color.rgb(17, 24, 39));
 		restrictionTextPaint.setTextAlign(Paint.Align.CENTER);
 		restrictionTextPaint.setFakeBoldText(true);
+
+		restrictionIconPaint.setStyle(Paint.Style.FILL);
+		restrictionIconPaint.setColor(Color.rgb(17, 24, 39));
 
 		restrictionShadowPaint.setStyle(Paint.Style.FILL);
 		restrictionShadowPaint.setColor(Color.argb(82, 0, 0, 0));
@@ -353,6 +358,11 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	private void drawTruckRestrictionSign(@NonNull Canvas canvas,
 			@NonNull RoadCrewTruckRestrictionsProvider.TruckRestriction restriction, float x, float y) {
+		if (restriction.kind == RoadCrewTruckRestrictionsProvider.RestrictionKind.HGV_NO) {
+			drawTruckNoEntrySign(canvas, x, y);
+			return;
+		}
+
 		String label = restriction.label;
 		float textSize = label.length() > 5 ? sp(8) : label.length() > 4 ? sp(9) : sp(10);
 		restrictionTextPaint.setTextSize(textSize);
@@ -367,11 +377,54 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		float baseline = y - (metrics.ascent + metrics.descent) / 2f;
 		canvas.drawText(label, x, baseline, restrictionTextPaint);
 
-		if (restriction.kind == RoadCrewTruckRestrictionsProvider.RestrictionKind.HGV_NO
-				|| restriction.kind == RoadCrewTruckRestrictionsProvider.RestrictionKind.HAZMAT_NO) {
+		if (restriction.kind == RoadCrewTruckRestrictionsProvider.RestrictionKind.HAZMAT_NO) {
 			canvas.drawLine(x - radius * 0.58f, y + radius * 0.58f,
 					x + radius * 0.58f, y - radius * 0.58f, restrictionSlashPaint);
 		}
+	}
+
+	private void drawTruckNoEntrySign(@NonNull Canvas canvas, float x, float y) {
+		float radius = dp(14);
+		float shadowOffset = dp(2);
+		canvas.drawCircle(x + shadowOffset, y + shadowOffset, radius + dp(1), restrictionShadowPaint);
+		canvas.drawCircle(x, y, radius, restrictionFillPaint);
+		canvas.drawCircle(x, y, radius, restrictionBorderPaint);
+
+		float truckLeft = x - radius * 0.63f;
+		float truckRight = x + radius * 0.58f;
+		float truckTop = y - radius * 0.22f;
+		float truckBottom = y + radius * 0.26f;
+		float cargoLeft = x - radius * 0.06f;
+		float cargoBottom = y + radius * 0.18f;
+		canvas.drawRect(cargoLeft, truckTop, truckRight, cargoBottom, restrictionIconPaint);
+
+		restrictionTruckPath.reset();
+		restrictionTruckPath.moveTo(truckLeft, cargoBottom);
+		restrictionTruckPath.lineTo(truckLeft, y - radius * 0.02f);
+		restrictionTruckPath.lineTo(x - radius * 0.43f, truckTop);
+		restrictionTruckPath.lineTo(cargoLeft - radius * 0.06f, truckTop);
+		restrictionTruckPath.lineTo(cargoLeft - radius * 0.06f, cargoBottom);
+		restrictionTruckPath.close();
+		canvas.drawPath(restrictionTruckPath, restrictionIconPaint);
+
+		restrictionTruckPath.reset();
+		restrictionTruckPath.moveTo(x - radius * 0.48f, y - radius * 0.13f);
+		restrictionTruckPath.lineTo(x - radius * 0.37f, truckTop + radius * 0.06f);
+		restrictionTruckPath.lineTo(x - radius * 0.16f, truckTop + radius * 0.06f);
+		restrictionTruckPath.lineTo(x - radius * 0.16f, y - radius * 0.04f);
+		restrictionTruckPath.close();
+		canvas.drawPath(restrictionTruckPath, restrictionFillPaint);
+
+		canvas.drawRect(truckLeft, cargoBottom, truckRight, truckBottom, restrictionIconPaint);
+		drawTruckWheel(canvas, x - radius * 0.39f, y + radius * 0.29f, radius);
+		drawTruckWheel(canvas, x + radius * 0.36f, y + radius * 0.29f, radius);
+	}
+
+	private void drawTruckWheel(@NonNull Canvas canvas, float x, float y, float signRadius) {
+		float outer = signRadius * 0.15f;
+		float inner = signRadius * 0.07f;
+		canvas.drawCircle(x, y, outer, restrictionIconPaint);
+		canvas.drawCircle(x, y, inner, restrictionFillPaint);
 	}
 
 	@Override
