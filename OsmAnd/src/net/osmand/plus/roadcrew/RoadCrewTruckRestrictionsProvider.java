@@ -8,6 +8,7 @@ import net.osmand.binary.BinaryMapIndexReader;
 import net.osmand.binary.BinaryMapRouteReaderAdapter.RouteRegion;
 import net.osmand.binary.BinaryMapRouteReaderAdapter.RouteSubregion;
 import net.osmand.binary.RouteDataObject;
+import net.osmand.data.LatLon;
 import net.osmand.data.QuadRect;
 import net.osmand.data.RotatedTileBox;
 import net.osmand.plus.OsmandApplication;
@@ -16,6 +17,7 @@ import net.osmand.util.MapUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -129,20 +131,21 @@ final class RoadCrewTruckRestrictionsProvider {
 			return;
 		}
 		int middlePoint = object.getPointsLength() / 2;
-		collectRouteRestriction(unique, object, middlePoint, "maxweight:hgv", RestrictionKind.WEIGHT);
-		collectRouteRestriction(unique, object, middlePoint, "maxweight", RestrictionKind.WEIGHT);
-		collectRouteRestriction(unique, object, middlePoint, "maxweightrating:hgv", RestrictionKind.WEIGHT);
-		collectRouteRestriction(unique, object, middlePoint, "maxweightrating", RestrictionKind.WEIGHT);
-		collectRouteRestriction(unique, object, middlePoint, "maxheight", RestrictionKind.HEIGHT);
-		collectRouteRestriction(unique, object, middlePoint, "maxheight:forward", RestrictionKind.HEIGHT);
-		collectRouteRestriction(unique, object, middlePoint, "maxheight:backward", RestrictionKind.HEIGHT);
-		collectRouteRestriction(unique, object, middlePoint, "maxheight:physical", RestrictionKind.HEIGHT);
-		collectRouteRestriction(unique, object, middlePoint, "maxwidth", RestrictionKind.WIDTH);
-		collectRouteRestriction(unique, object, middlePoint, "maxwidth:physical", RestrictionKind.WIDTH);
-		collectRouteRestriction(unique, object, middlePoint, "maxlength", RestrictionKind.LENGTH);
-		collectAccessRestriction(unique, object, middlePoint, "hgv", "no", RestrictionKind.HGV_NO, "HGV");
-		collectAccessRestriction(unique, object, middlePoint, "goods", "no", RestrictionKind.HGV_NO, "GOODS");
-		collectAccessRestriction(unique, object, middlePoint, "hazmat", "no", RestrictionKind.HAZMAT_NO, "ADR");
+		List<LatLon> roadGeometry = buildRoadGeometry(object);
+		collectRouteRestriction(unique, object, middlePoint, "maxweight:hgv", RestrictionKind.WEIGHT, roadGeometry);
+		collectRouteRestriction(unique, object, middlePoint, "maxweight", RestrictionKind.WEIGHT, roadGeometry);
+		collectRouteRestriction(unique, object, middlePoint, "maxweightrating:hgv", RestrictionKind.WEIGHT, roadGeometry);
+		collectRouteRestriction(unique, object, middlePoint, "maxweightrating", RestrictionKind.WEIGHT, roadGeometry);
+		collectRouteRestriction(unique, object, middlePoint, "maxheight", RestrictionKind.HEIGHT, roadGeometry);
+		collectRouteRestriction(unique, object, middlePoint, "maxheight:forward", RestrictionKind.HEIGHT, roadGeometry);
+		collectRouteRestriction(unique, object, middlePoint, "maxheight:backward", RestrictionKind.HEIGHT, roadGeometry);
+		collectRouteRestriction(unique, object, middlePoint, "maxheight:physical", RestrictionKind.HEIGHT, roadGeometry);
+		collectRouteRestriction(unique, object, middlePoint, "maxwidth", RestrictionKind.WIDTH, roadGeometry);
+		collectRouteRestriction(unique, object, middlePoint, "maxwidth:physical", RestrictionKind.WIDTH, roadGeometry);
+		collectRouteRestriction(unique, object, middlePoint, "maxlength", RestrictionKind.LENGTH, roadGeometry);
+		collectAccessRestriction(unique, object, middlePoint, "hgv", "no", RestrictionKind.HGV_NO, "HGV", roadGeometry);
+		collectAccessRestriction(unique, object, middlePoint, "goods", "no", RestrictionKind.HGV_NO, "GOODS", roadGeometry);
+		collectAccessRestriction(unique, object, middlePoint, "hazmat", "no", RestrictionKind.HAZMAT_NO, "ADR", roadGeometry);
 
 		for (int point = 0; point < object.getPointsLength(); point++) {
 			collectPointRestriction(unique, object, point, "maxweight", RestrictionKind.WEIGHT);
@@ -158,22 +161,23 @@ final class RoadCrewTruckRestrictionsProvider {
 	}
 
 	private void collectRouteRestriction(@NonNull Map<String, TruckRestriction> unique,
-			@NonNull RouteDataObject object, int point, @NonNull String tag, @NonNull RestrictionKind kind) {
+			@NonNull RouteDataObject object, int point, @NonNull String tag, @NonNull RestrictionKind kind,
+			@NonNull List<LatLon> roadGeometry) {
 		String value = object.getValue(tag);
-		addRestriction(unique, object, point, tag, kind, value);
+		addRestriction(unique, object, point, tag, kind, value, roadGeometry);
 	}
 
 	private void collectPointRestriction(@NonNull Map<String, TruckRestriction> unique,
 			@NonNull RouteDataObject object, int point, @NonNull String tag, @NonNull RestrictionKind kind) {
 		String value = object.getValue(point, tag);
-		addRestriction(unique, object, point, tag, kind, value);
+		addRestriction(unique, object, point, tag, kind, value, Collections.emptyList());
 	}
 
 	private void collectAccessRestriction(@NonNull Map<String, TruckRestriction> unique,
 			@NonNull RouteDataObject object, int point, @NonNull String tag, @NonNull String expectedValue,
-			@NonNull RestrictionKind kind, @NonNull String label) {
+			@NonNull RestrictionKind kind, @NonNull String label, @NonNull List<LatLon> roadGeometry) {
 		if (expectedValue.equalsIgnoreCase(object.getValue(tag))) {
-			add(unique, object, point, tag, kind, label);
+			add(unique, object, point, tag, kind, label, roadGeometry);
 		}
 	}
 
@@ -181,27 +185,43 @@ final class RoadCrewTruckRestrictionsProvider {
 			@NonNull RouteDataObject object, int point, @NonNull String tag, @NonNull String expectedValue,
 			@NonNull RestrictionKind kind, @NonNull String label) {
 		if (expectedValue.equalsIgnoreCase(object.getValue(point, tag))) {
-			add(unique, object, point, tag, kind, label);
+			add(unique, object, point, tag, kind, label, Collections.emptyList());
 		}
 	}
 
 	private void addRestriction(@NonNull Map<String, TruckRestriction> unique, @NonNull RouteDataObject object,
-			int point, @NonNull String tag, @NonNull RestrictionKind kind, @Nullable String value) {
+			int point, @NonNull String tag, @NonNull RestrictionKind kind, @Nullable String value,
+			@NonNull List<LatLon> roadGeometry) {
 		String label = formatLabel(kind, value);
 		if (!Algorithms.isEmpty(label)) {
-			add(unique, object, point, tag, kind, label);
+			add(unique, object, point, tag, kind, label, roadGeometry);
 		}
 	}
 
 	private void add(@NonNull Map<String, TruckRestriction> unique, @NonNull RouteDataObject object,
-			int point, @NonNull String tag, @NonNull RestrictionKind kind, @NonNull String label) {
+			int point, @NonNull String tag, @NonNull RestrictionKind kind, @NonNull String label,
+			@NonNull List<LatLon> roadGeometry) {
 		if (unique.size() >= MAX_RESTRICTIONS || point >= object.getPointsLength()) {
 			return;
 		}
 		double latitude = MapUtils.get31LatitudeY(object.getPoint31YTile(point));
 		double longitude = MapUtils.get31LongitudeX(object.getPoint31XTile(point));
 		String key = object.getId() + ":" + point + ":" + tag + ":" + label;
-		unique.put(key, new TruckRestriction(latitude, longitude, kind, label));
+		unique.put(key, new TruckRestriction(latitude, longitude, kind, label, key, roadGeometry));
+	}
+
+	@NonNull
+	private List<LatLon> buildRoadGeometry(@NonNull RouteDataObject object) {
+		if (object.getPointsLength() < 2) {
+			return Collections.emptyList();
+		}
+		List<LatLon> geometry = new ArrayList<>(object.getPointsLength());
+		for (int point = 0; point < object.getPointsLength(); point++) {
+			geometry.add(new LatLon(
+					MapUtils.get31LatitudeY(object.getPoint31YTile(point)),
+					MapUtils.get31LongitudeX(object.getPoint31XTile(point))));
+		}
+		return geometry;
 	}
 
 	@Nullable
@@ -255,12 +275,17 @@ final class RoadCrewTruckRestrictionsProvider {
 		final double longitude;
 		final RestrictionKind kind;
 		final String label;
+		final String geometryKey;
+		final List<LatLon> roadGeometry;
 
-		TruckRestriction(double latitude, double longitude, @NonNull RestrictionKind kind, @NonNull String label) {
+		TruckRestriction(double latitude, double longitude, @NonNull RestrictionKind kind, @NonNull String label,
+				@NonNull String geometryKey, @NonNull List<LatLon> roadGeometry) {
 			this.latitude = latitude;
 			this.longitude = longitude;
 			this.kind = kind;
 			this.label = label;
+			this.geometryKey = geometryKey;
+			this.roadGeometry = roadGeometry;
 		}
 	}
 }

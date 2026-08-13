@@ -67,6 +67,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private final Paint restrictionTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionShadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionSlashPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint restrictionRoadHaloPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint restrictionRoadPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Path restrictionRoadPath = new Path();
 	private final Path markerPath = new Path();
 	private final RectF labelRect = new RectF();
 	private final RectF touchLabelRect = new RectF();
@@ -191,6 +194,18 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		restrictionSlashPaint.setStrokeWidth(dp(3));
 		restrictionSlashPaint.setColor(Color.rgb(220, 38, 38));
 		restrictionSlashPaint.setStrokeCap(Paint.Cap.ROUND);
+
+		restrictionRoadHaloPaint.setStyle(Paint.Style.STROKE);
+		restrictionRoadHaloPaint.setStrokeWidth(dp(11));
+		restrictionRoadHaloPaint.setColor(Color.argb(210, 255, 255, 255));
+		restrictionRoadHaloPaint.setStrokeCap(Paint.Cap.ROUND);
+		restrictionRoadHaloPaint.setStrokeJoin(Paint.Join.ROUND);
+
+		restrictionRoadPaint.setStyle(Paint.Style.STROKE);
+		restrictionRoadPaint.setStrokeWidth(dp(7));
+		restrictionRoadPaint.setColor(Color.argb(220, 239, 68, 68));
+		restrictionRoadPaint.setStrokeCap(Paint.Cap.ROUND);
+		restrictionRoadPaint.setStrokeJoin(Paint.Join.ROUND);
 	}
 
 	@Override
@@ -240,6 +255,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		if (restrictions.isEmpty()) {
 			return;
 		}
+		drawTruckRestrictionRoads(canvas, tileBox, restrictions);
 		List<PointF> drawnCenters = new ArrayList<>();
 		float minimumGap = dp(46);
 		int drawn = 0;
@@ -259,6 +275,49 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 				break;
 			}
 		}
+	}
+
+	private void drawTruckRestrictionRoads(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
+			@NonNull List<RoadCrewTruckRestrictionsProvider.TruckRestriction> restrictions) {
+		Set<String> drawnRoads = new HashSet<>();
+		int drawn = 0;
+		for (RoadCrewTruckRestrictionsProvider.TruckRestriction restriction : restrictions) {
+			if (restriction.roadGeometry.size() < 2 || !drawnRoads.add(restriction.geometryKey)) {
+				continue;
+			}
+			if (drawTruckRestrictionRoad(canvas, tileBox, restriction.roadGeometry)) {
+				drawn++;
+			}
+			if (drawn >= 80) {
+				break;
+			}
+		}
+	}
+
+	private boolean drawTruckRestrictionRoad(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
+			@NonNull List<LatLon> roadGeometry) {
+		restrictionRoadPath.reset();
+		boolean pathStarted = false;
+		boolean hasVisiblePoint = false;
+		for (LatLon latLon : roadGeometry) {
+			float x = tileBox.getPixXFromLatLon(latLon.getLatitude(), latLon.getLongitude());
+			float y = tileBox.getPixYFromLatLon(latLon.getLatitude(), latLon.getLongitude());
+			if (tileBox.containsLatLon(latLon)) {
+				hasVisiblePoint = true;
+			}
+			if (pathStarted) {
+				restrictionRoadPath.lineTo(x, y);
+			} else {
+				restrictionRoadPath.moveTo(x, y);
+				pathStarted = true;
+			}
+		}
+		if (!pathStarted || !hasVisiblePoint) {
+			return false;
+		}
+		canvas.drawPath(restrictionRoadPath, restrictionRoadHaloPaint);
+		canvas.drawPath(restrictionRoadPath, restrictionRoadPaint);
+		return true;
 	}
 
 	private boolean isOverlappingExistingRestriction(@NonNull List<PointF> drawnCenters, float x, float y,
