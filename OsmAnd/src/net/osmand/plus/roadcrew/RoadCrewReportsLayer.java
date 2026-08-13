@@ -62,6 +62,11 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private final Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint labelBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint labelStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint restrictionFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint restrictionBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint restrictionTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint restrictionShadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint restrictionSlashPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Path markerPath = new Path();
 	private final RectF labelRect = new RectF();
 	private final RectF touchLabelRect = new RectF();
@@ -79,6 +84,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private AlertDialog activeNotificationDialog;
 	@Nullable
 	private RoadCrewVoiceAlerts voiceAlerts;
+	@Nullable
+	private RoadCrewTruckRestrictionsProvider truckRestrictionsProvider;
 	private final long createdAtMillis = System.currentTimeMillis();
 
 	public RoadCrewReportsLayer(@NonNull OsmandApplication app) {
@@ -97,6 +104,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			voiceAlerts.shutdown();
 		}
 		voiceAlerts = new RoadCrewVoiceAlerts(getApplication());
+		if (truckRestrictionsProvider != null) {
+			truckRestrictionsProvider.shutdown();
+		}
+		truckRestrictionsProvider = new RoadCrewTruckRestrictionsProvider(getApplication());
 		createResources();
 	}
 
@@ -109,6 +120,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		if (voiceAlerts != null) {
 			voiceAlerts.shutdown();
 			voiceAlerts = null;
+		}
+		if (truckRestrictionsProvider != null) {
+			truckRestrictionsProvider.shutdown();
+			truckRestrictionsProvider = null;
 		}
 	}
 
@@ -157,6 +172,25 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		labelStrokePaint.setStyle(Paint.Style.STROKE);
 		labelStrokePaint.setStrokeWidth(dp(1));
 		labelStrokePaint.setColor(Color.argb(210, 255, 255, 255));
+
+		restrictionFillPaint.setStyle(Paint.Style.FILL);
+		restrictionFillPaint.setColor(Color.WHITE);
+
+		restrictionBorderPaint.setStyle(Paint.Style.STROKE);
+		restrictionBorderPaint.setStrokeWidth(dp(2));
+		restrictionBorderPaint.setColor(Color.rgb(220, 38, 38));
+
+		restrictionTextPaint.setColor(Color.rgb(17, 24, 39));
+		restrictionTextPaint.setTextAlign(Paint.Align.CENTER);
+		restrictionTextPaint.setFakeBoldText(true);
+
+		restrictionShadowPaint.setStyle(Paint.Style.FILL);
+		restrictionShadowPaint.setColor(Color.argb(82, 0, 0, 0));
+
+		restrictionSlashPaint.setStyle(Paint.Style.STROKE);
+		restrictionSlashPaint.setStrokeWidth(dp(3));
+		restrictionSlashPaint.setColor(Color.rgb(220, 38, 38));
+		restrictionSlashPaint.setStrokeCap(Paint.Cap.ROUND);
 	}
 
 	@Override
@@ -169,6 +203,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		if (tileBox.getZoom() < MIN_ZOOM) {
 			return;
 		}
+		drawTruckRestrictions(canvas, tileBox);
 		for (RoadCrewReport report : reports) {
 			LatLon latLon = report.getLocation();
 			if (!tileBox.containsLatLon(latLon)) {
@@ -194,6 +229,69 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	@Override
 	public boolean drawInScreenPixels() {
 		return true;
+	}
+
+	private void drawTruckRestrictions(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox) {
+		if (truckRestrictionsProvider == null) {
+			return;
+		}
+		List<RoadCrewTruckRestrictionsProvider.TruckRestriction> restrictions =
+				truckRestrictionsProvider.getRestrictions(tileBox);
+		if (restrictions.isEmpty()) {
+			return;
+		}
+		List<PointF> drawnCenters = new ArrayList<>();
+		float minimumGap = dp(46);
+		int drawn = 0;
+		for (RoadCrewTruckRestrictionsProvider.TruckRestriction restriction : restrictions) {
+			if (!tileBox.containsLatLon(restriction.latitude, restriction.longitude)) {
+				continue;
+			}
+			float x = tileBox.getPixXFromLatLon(restriction.latitude, restriction.longitude);
+			float y = tileBox.getPixYFromLatLon(restriction.latitude, restriction.longitude);
+			if (isOverlappingExistingRestriction(drawnCenters, x, y, minimumGap)) {
+				continue;
+			}
+			drawTruckRestrictionSign(canvas, restriction, x, y);
+			drawnCenters.add(new PointF(x, y));
+			drawn++;
+			if (drawn >= 80) {
+				break;
+			}
+		}
+	}
+
+	private boolean isOverlappingExistingRestriction(@NonNull List<PointF> drawnCenters, float x, float y,
+			float minimumGap) {
+		for (PointF center : drawnCenters) {
+			if (Math.hypot(center.x - x, center.y - y) < minimumGap) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void drawTruckRestrictionSign(@NonNull Canvas canvas,
+			@NonNull RoadCrewTruckRestrictionsProvider.TruckRestriction restriction, float x, float y) {
+		String label = restriction.label;
+		float textSize = label.length() > 5 ? sp(9) : label.length() > 4 ? sp(10) : sp(11);
+		restrictionTextPaint.setTextSize(textSize);
+		float radius = Math.max(dp(17), restrictionTextPaint.measureText(label) / 2f + dp(6));
+		float shadowOffset = dp(2);
+
+		canvas.drawCircle(x + shadowOffset, y + shadowOffset, radius + dp(1), restrictionShadowPaint);
+		canvas.drawCircle(x, y, radius, restrictionFillPaint);
+		canvas.drawCircle(x, y, radius, restrictionBorderPaint);
+
+		Paint.FontMetrics metrics = restrictionTextPaint.getFontMetrics();
+		float baseline = y - (metrics.ascent + metrics.descent) / 2f;
+		canvas.drawText(label, x, baseline, restrictionTextPaint);
+
+		if (restriction.kind == RoadCrewTruckRestrictionsProvider.RestrictionKind.HGV_NO
+				|| restriction.kind == RoadCrewTruckRestrictionsProvider.RestrictionKind.HAZMAT_NO) {
+			canvas.drawLine(x - radius * 0.58f, y + radius * 0.58f,
+					x + radius * 0.58f, y - radius * 0.58f, restrictionSlashPaint);
+		}
 	}
 
 	@Override
