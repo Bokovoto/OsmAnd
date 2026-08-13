@@ -22,6 +22,8 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	private static final double ANNOUNCE_RADIUS_METERS = 1800;
 	private static final double CLOSE_RADIUS_METERS = 700;
 	private static final double ROUTE_CORRIDOR_METERS = 500;
+	private static final double ROUTE_APPROACH_ALERT_METERS = 2000;
+	private static final double ROUTE_FINAL_ALERT_METERS = 900;
 	private static final double AHEAD_BEARING_DEGREES = 70;
 	private static final float MIN_HEADING_SPEED_MPS = 2.0f;
 	private static final long OLD_REPORT_MIN_AGE_MILLIS = 20 * 60 * 1000;
@@ -30,7 +32,7 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 
 	private final OsmandApplication app;
 	private final TextToSpeech textToSpeech;
-	private final Set<String> announcedReportIds = new HashSet<>();
+	private final Set<String> announcedAlertKeys = new HashSet<>();
 
 	private long lastCheckMillis;
 	private long lastSpokenMillis;
@@ -91,13 +93,18 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 				continue;
 			}
 			double alertDistance = routeMatch != null ? routeMatch.routeDistanceMeters : distance;
+			AlertStage stage = getAlertStage(alertDistance, routeMatch != null);
+			if (announcedAlertKeys.contains(getAlertKey(report, stage))) {
+				continue;
+			}
 			if (bestCandidate == null || alertDistance < bestCandidate.distanceMeters) {
-				bestCandidate = new Candidate(report, alertDistance, ahead, routeMatch != null, isUncertain(report, now));
+				bestCandidate = new Candidate(report, alertDistance, ahead, routeMatch != null, stage,
+						isUncertain(report, now));
 			}
 		}
 
 		if (bestCandidate != null) {
-			announcedReportIds.add(bestCandidate.report.getId());
+			announcedAlertKeys.add(getAlertKey(bestCandidate.report, bestCandidate.stage));
 			lastSpokenMillis = now;
 			speak(buildMessage(bestCandidate));
 		}
@@ -109,13 +116,31 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	}
 
 	private boolean isEligible(@NonNull RoadCrewReport report, @NonNull String localDeviceId, long now) {
-		return !announcedReportIds.contains(report.getId())
-				&& !report.getId().startsWith("seed-")
+		return !report.getId().startsWith("seed-")
 				&& !report.getCreatedBy().equals(localDeviceId)
 				&& !report.hasLocalVote()
 				&& !report.shouldHideLocally()
 				&& !report.isHelpProbablyResolved()
 				&& !report.isExpired(now);
+	}
+
+	@NonNull
+	private AlertStage getAlertStage(double distanceMeters, boolean routeAlert) {
+		if (!routeAlert) {
+			return distanceMeters <= CLOSE_RADIUS_METERS ? AlertStage.NEAR_FINAL : AlertStage.NEAR_EARLY;
+		}
+		if (distanceMeters <= ROUTE_FINAL_ALERT_METERS) {
+			return AlertStage.ROUTE_FINAL;
+		}
+		if (distanceMeters <= ROUTE_APPROACH_ALERT_METERS) {
+			return AlertStage.ROUTE_APPROACH;
+		}
+		return AlertStage.ROUTE_EARLY;
+	}
+
+	@NonNull
+	private String getAlertKey(@NonNull RoadCrewReport report, @NonNull AlertStage stage) {
+		return report.getId() + ":" + stage.name();
 	}
 
 	private boolean hasUsefulHeading(@NonNull Location location) {
@@ -203,6 +228,9 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 		if (bulgarianVoice) {
 			return buildBulgarianMessage(candidate);
 		}
+		if (candidate.stage == AlertStage.ROUTE_FINAL || candidate.stage == AlertStage.NEAR_FINAL) {
+			return getEnglishFinalMessage(candidate);
+		}
 		if (candidate.routeAlert) {
 			return getEnglishPrefix(candidate) + " on your route in "
 					+ formatDistance(candidate.distanceMeters) + ".";
@@ -216,6 +244,13 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	private String buildBulgarianMessage(@NonNull Candidate candidate) {
 		String distance = formatBulgarianDistance(candidate.distanceMeters);
 		String type = getBulgarianTypePhrase(candidate.report.getType());
+		if (candidate.stage == AlertStage.ROUTE_FINAL || candidate.stage == AlertStage.NEAR_FINAL) {
+			if (candidate.uncertain) {
+				return "Бъдете внимателни. След " + distance
+						+ " наближавате стар маркиран пост: " + type + ".";
+			}
+			return "След " + distance + ": " + type + ".";
+		}
 		if (candidate.uncertain) {
 			if (candidate.routeAlert) {
 				return "Бъдете внимателни. По маршрута след " + distance + " има стар маркиран пост: " + type + ".";
@@ -227,6 +262,16 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 		}
 		String place = candidate.ahead ? "напред" : "наблизо";
 		return type + " " + place + " след " + distance + ".";
+	}
+
+	@NonNull
+	private String getEnglishFinalMessage(@NonNull Candidate candidate) {
+		if (candidate.uncertain) {
+			return "Be careful. In " + formatDistance(candidate.distanceMeters)
+					+ " you are approaching an older marked " + getEnglishTypePhrase(candidate.report.getType()) + ".";
+		}
+		return "In " + formatDistance(candidate.distanceMeters) + ": "
+				+ getEnglishTypePhrase(candidate.report.getType()) + ".";
 	}
 
 	@NonNull
@@ -313,16 +358,26 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 		private final double distanceMeters;
 		private final boolean ahead;
 		private final boolean routeAlert;
+		private final AlertStage stage;
 		private final boolean uncertain;
 
 		private Candidate(@NonNull RoadCrewReport report, double distanceMeters, boolean ahead, boolean routeAlert,
-				boolean uncertain) {
+				@NonNull AlertStage stage, boolean uncertain) {
 			this.report = report;
 			this.distanceMeters = distanceMeters;
 			this.ahead = ahead;
 			this.routeAlert = routeAlert;
+			this.stage = stage;
 			this.uncertain = uncertain;
 		}
+	}
+
+	private enum AlertStage {
+		ROUTE_EARLY,
+		ROUTE_APPROACH,
+		ROUTE_FINAL,
+		NEAR_EARLY,
+		NEAR_FINAL
 	}
 
 	private static final class RouteMatch {
