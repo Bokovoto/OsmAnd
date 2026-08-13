@@ -36,7 +36,7 @@ public final class RoadCrewAppUpdater {
 	private static final String PREFS_NAME = "roadcrew_app_updater";
 	private static final String KEY_LAST_CHECK_MILLIS = "last_check_millis";
 	private static final String KEY_DISMISSED_TAG = "dismissed_tag";
-	private static final String CURRENT_RELEASE_TAG = "roadcrew-v0.1.0-test.24";
+	private static final String CURRENT_RELEASE_TAG = "roadcrew-v0.1.0-test.25";
 	private static final String LATEST_RELEASE_API =
 			"https://api.github.com/repos/Bokovoto/OsmAnd/releases/latest";
 	private static final String APK_ASSET_NAME = "RoadCrew.apk";
