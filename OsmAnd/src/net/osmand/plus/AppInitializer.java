@@ -68,6 +68,7 @@ import net.osmand.plus.render.NativeOsmandLibrary;
 import net.osmand.plus.render.RendererRegistry;
 import net.osmand.plus.render.TravelRendererHelper;
 import net.osmand.plus.resources.ResourceManager;
+import net.osmand.plus.roadcrew.RoadCrewDefaultProfiles;
 import net.osmand.plus.routepreparationmenu.RoutingOptionsHelper;
 import net.osmand.plus.routing.RoutingHelper;
 import net.osmand.plus.routing.TransportRoutingHelper;
@@ -174,6 +175,7 @@ public class AppInitializer implements IProgress {
 		String name = getLocalClassName(app.getAppCustomization().getMapActivity().getName());
 		startPrefs = app.getSharedPreferences(name, Context.MODE_PRIVATE);
 		ApplicationMode.onApplicationStart(app);
+		RoadCrewDefaultProfiles.apply(app);
 		appVersionUpgrade.upgradeVersion(startPrefs, LAST_APP_VERSION);
 		initSettings = true;
 	}
