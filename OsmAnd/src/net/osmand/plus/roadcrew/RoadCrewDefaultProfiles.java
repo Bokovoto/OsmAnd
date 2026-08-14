@@ -14,6 +14,8 @@ public final class RoadCrewDefaultProfiles {
 	private static final String ROADCREW_PACKAGE = "org.roadcrew.app";
 	private static final String PREFS_NAME = "roadcrew_default_profiles";
 	private static final String KEY_APPLIED = "applied";
+	private static final String KEY_APPLIED_VERSION = "applied_version";
+	private static final int CURRENT_VERSION = 2;
 	private static final String ROADCREW_DEFAULT_MODES = "car,truck,";
 
 	private RoadCrewDefaultProfiles() {
@@ -24,7 +26,7 @@ public final class RoadCrewDefaultProfiles {
 			return;
 		}
 		SharedPreferences preferences = app.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-		if (preferences.getBoolean(KEY_APPLIED, false)) {
+		if (preferences.getInt(KEY_APPLIED_VERSION, 0) >= CURRENT_VERSION) {
 			return;
 		}
 		OsmandSettings settings = app.getSettings();
@@ -34,6 +36,9 @@ public final class RoadCrewDefaultProfiles {
 		if (!ApplicationMode.getModesForRouting(app).contains(settings.APPLICATION_MODE.get())) {
 			settings.setApplicationMode(ApplicationMode.TRUCK);
 		}
-		preferences.edit().putBoolean(KEY_APPLIED, true).apply();
+		preferences.edit()
+				.putBoolean(KEY_APPLIED, true)
+				.putInt(KEY_APPLIED_VERSION, CURRENT_VERSION)
+				.apply();
 	}
 }
