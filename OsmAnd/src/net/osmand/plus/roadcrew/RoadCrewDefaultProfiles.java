@@ -15,7 +15,7 @@ public final class RoadCrewDefaultProfiles {
 	private static final String PREFS_NAME = "roadcrew_default_profiles";
 	private static final String KEY_APPLIED = "applied";
 	private static final String KEY_APPLIED_VERSION = "applied_version";
-	private static final int CURRENT_VERSION = 2;
+	private static final int CURRENT_VERSION = 3;
 	private static final String ROADCREW_DEFAULT_MODES = "car,truck,";
 
 	private RoadCrewDefaultProfiles() {

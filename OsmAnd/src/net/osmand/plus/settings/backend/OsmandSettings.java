@@ -60,6 +60,7 @@ import net.osmand.map.TileSourceManager;
 import net.osmand.map.TileSourceManager.TileSourceTemplate;
 import net.osmand.osm.MapPoiTypes;
 import net.osmand.osm.io.NetworkUtils;
+import net.osmand.plus.BuildConfig;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.R;
 import net.osmand.plus.Version;
@@ -129,6 +130,10 @@ import java.util.*;
 public class OsmandSettings {
 
 	private static final Log LOG = PlatformUtil.getLog(OsmandSettings.class.getName());
+	private static final boolean ROADCREW_BUILD = "org.roadcrew.app".equals(BuildConfig.APPLICATION_ID);
+	private static final String DEFAULT_AVAILABLE_APP_MODES = ROADCREW_BUILD
+			? "car,truck,"
+			: "car,bicycle,pedestrian,public_transport,";
 
 	public static final int VERSION = 1;
 
@@ -1000,7 +1005,7 @@ public class OsmandSettings {
 
 	public final CommonPreference<Integer> NUMBER_OF_STARTS_FIRST_XMAS_SHOWN = new IntPreference(this, "number_of_starts_first_xmas_shown", 0).makeGlobal();
 
-	public final OsmandPreference<String> AVAILABLE_APP_MODES = new StringPreference(this, "available_application_modes", "car,bicycle,pedestrian,public_transport,") {
+	public final OsmandPreference<String> AVAILABLE_APP_MODES = new StringPreference(this, "available_application_modes", DEFAULT_AVAILABLE_APP_MODES) {
 
 		@Override
 		public void readFromJson(JSONObject json, ApplicationMode appMode) throws JSONException {
@@ -1025,7 +1030,8 @@ public class OsmandSettings {
 
 	public final OsmandPreference<String> LAST_USED_APPLICATION_MODE = new StringPreference(this, "last_used_application_mode", ApplicationMode.DEFAULT.getStringKey()).makeGlobal().makeShared();
 
-	public final OsmandPreference<ApplicationMode> DEFAULT_APPLICATION_MODE = new CommonPreference<ApplicationMode>(this, "default_application_mode_string", ApplicationMode.DEFAULT) {
+	public final OsmandPreference<ApplicationMode> DEFAULT_APPLICATION_MODE = new CommonPreference<ApplicationMode>(this, "default_application_mode_string",
+			ROADCREW_BUILD ? ApplicationMode.TRUCK : ApplicationMode.DEFAULT) {
 
 		@Override
 		public ApplicationMode getValue(@NonNull Object prefs, ApplicationMode defaultValue) {
@@ -1083,7 +1089,8 @@ public class OsmandSettings {
 
 	}.makeGlobal().makeShared();
 
-	public final OsmandPreference<ApplicationMode> LAST_ROUTE_APPLICATION_MODE = new CommonPreference<ApplicationMode>(this, "last_route_application_mode_backup_string", ApplicationMode.DEFAULT) {
+	public final OsmandPreference<ApplicationMode> LAST_ROUTE_APPLICATION_MODE = new CommonPreference<ApplicationMode>(this, "last_route_application_mode_backup_string",
+			ROADCREW_BUILD ? ApplicationMode.TRUCK : ApplicationMode.DEFAULT) {
 
 		@Override
 		public ApplicationMode getValue(@NonNull Object prefs, ApplicationMode defaultValue) {
