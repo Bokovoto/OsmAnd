@@ -34,12 +34,19 @@ public class BinaryMapReaderResource {
 
 	@Nullable
 	public BinaryMapIndexReader getReader(BinaryMapReaderResourceType type) {
+		return getReader(type, true);
+	}
+
+	@Nullable
+	public BinaryMapIndexReader getReader(BinaryMapReaderResourceType type, boolean useSharedIndexes) {
 		BinaryMapIndexReader r = readers.get(type.ordinal());
 		BinaryMapIndexReader initialReader = this.initialReader;
 		if (r == null && initialReader != null) {
 			try {
 				RandomAccessFile raf = new RandomAccessFile(file, "r");
-				r = new BinaryMapIndexReader(raf, initialReader);
+				r = useSharedIndexes
+						? new BinaryMapIndexReader(raf, initialReader)
+						: new BinaryMapIndexReader(raf, file);
 				readers.set(type.ordinal(), r);
 			} catch (Exception e) {
 				log.error("Fail to initialize " + file.getName(), e);

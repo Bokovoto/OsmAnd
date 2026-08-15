@@ -3,6 +3,7 @@ package net.osmand.plus.roadcrew;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import net.osmand.PlatformUtil;
 import net.osmand.ResultMatcher;
 import net.osmand.binary.BinaryMapIndexReader;
 import net.osmand.binary.BinaryMapRouteReaderAdapter.RouteRegion;
@@ -12,8 +13,12 @@ import net.osmand.data.LatLon;
 import net.osmand.data.QuadRect;
 import net.osmand.data.RotatedTileBox;
 import net.osmand.plus.OsmandApplication;
+import net.osmand.plus.resources.BinaryMapReaderResource;
+import net.osmand.plus.resources.ResourceManager.BinaryMapReaderResourceType;
 import net.osmand.util.Algorithms;
 import net.osmand.util.MapUtils;
+
+import org.apache.commons.logging.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +32,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 final class RoadCrewTruckRestrictionsProvider {
+
+	private static final Log LOG = PlatformUtil.getLog(RoadCrewTruckRestrictionsProvider.class);
 
 	private static final int MIN_ZOOM = 12;
 	private static final int MAX_RESTRICTIONS = 160;
@@ -80,7 +87,12 @@ final class RoadCrewTruckRestrictionsProvider {
 					MapUtils.get31TileNumberY(bounds.top),
 					MapUtils.get31TileNumberY(bounds.bottom),
 					null);
-			for (BinaryMapIndexReader reader : app.getResourceManager().getRoutingMapFiles()) {
+			for (BinaryMapReaderResource resource : app.getResourceManager().getFileReaders()) {
+				if (!resource.isUseForRouting()) {
+					continue;
+				}
+				BinaryMapIndexReader reader = resource.getReader(
+						BinaryMapReaderResourceType.ROADCREW_TRUCK_RESTRICTIONS, false);
 				if (reader == null || !reader.containsRouteData()) {
 					continue;
 				}
@@ -119,7 +131,7 @@ final class RoadCrewTruckRestrictionsProvider {
 				cachedRequestKey = requestKey;
 			}
 		} catch (IOException | RuntimeException e) {
-			// Keep the last good cache. The map can be reloaded while the user pans.
+			LOG.error("Failed to load truck restrictions; keeping the last good cache", e);
 		} finally {
 			loading.set(false);
 		}
