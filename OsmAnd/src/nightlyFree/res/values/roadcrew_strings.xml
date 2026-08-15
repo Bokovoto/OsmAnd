@@ -74,6 +74,11 @@
     <string name="roadcrew_profile_allow_plate_alerts">Allow safety alerts by truck/trailer number</string>
     <string name="roadcrew_profile_show_truck_restrictions">Show truck restrictions on map</string>
     <string name="roadcrew_profile_show_truck_restrictions_body">Shows local map signs for weight, height, width, length, HGV and ADR restrictions. Default: on for Truck, off for Car.</string>
+    <string name="roadcrew_profile_vehicle_parameters">Vehicle parameters</string>
+    <string name="roadcrew_profile_vehicle_parameters_ready">Status: Ready</string>
+    <string name="roadcrew_profile_vehicle_parameters_incomplete">Status: Incomplete</string>
+    <string name="roadcrew_profile_vehicle_parameters_body">Set the Truck profile weight, full-load weight, axle load, height, width and length. These values are used directly for route calculation.</string>
+    <string name="roadcrew_profile_vehicle_parameters_button">Configure truck</string>
     <string name="roadcrew_profile_saved">Driver profile saved.</string>
 
     <string name="roadcrew_setup_title">RoadCrew setup</string>
