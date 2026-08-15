@@ -1,11 +1,8 @@
 package net.osmand.plus.roadcrew;
 
-import static net.osmand.router.GeneralRouter.MAX_AXLE_LOAD;
 import static net.osmand.router.GeneralRouter.VEHICLE_HEIGHT;
 import static net.osmand.router.GeneralRouter.VEHICLE_LENGTH;
 import static net.osmand.router.GeneralRouter.VEHICLE_WEIGHT;
-import static net.osmand.router.GeneralRouter.VEHICLE_WIDTH;
-import static net.osmand.router.GeneralRouter.WEIGHT_RATING;
 
 import android.text.InputFilter;
 import android.text.InputType;
@@ -37,11 +34,8 @@ final class RoadCrewDriverProfileDialog {
 	private static final int DRIVER_NAME_MAX_LENGTH = 60;
 	private static final int PLATE_MAX_LENGTH = 20;
 	private static final String[] REQUIRED_TRUCK_PARAMETERS = {
-			VEHICLE_WEIGHT,
-			WEIGHT_RATING,
-			MAX_AXLE_LOAD,
 			VEHICLE_HEIGHT,
-			VEHICLE_WIDTH,
+			VEHICLE_WEIGHT,
 			VEHICLE_LENGTH
 	};
 
