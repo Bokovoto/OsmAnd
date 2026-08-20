@@ -74,6 +74,11 @@
     <string name="roadcrew_profile_allow_plate_alerts">Разреши предупреждения по номер на камион/ремарке</string>
     <string name="roadcrew_profile_show_truck_restrictions">Показвай ограниченията за камиони на картата</string>
     <string name="roadcrew_profile_show_truck_restrictions_body">Показва знаци от локалната карта за тегло, височина, ширина, дължина, забрана за камиони и ADR. По подразбиране: включено за Камион, изключено за Кола.</string>
+    <string name="roadcrew_profile_setup_status">Разрешения и настройка</string>
+    <string name="roadcrew_profile_setup_ready">Състояние: Готово</string>
+    <string name="roadcrew_profile_setup_incomplete">Състояние: Непълно. Липсва: %1$s</string>
+    <string name="roadcrew_profile_setup_body">Проверява достъпа до местоположение, местоположението на телефона, известията и наличието на изтеглена офлайн карта. Отворете първоначалната настройка, за да прегледате или поправите всяка стъпка.</string>
+    <string name="roadcrew_profile_setup_button">Отвори първоначалната настройка</string>
     <string name="roadcrew_profile_vehicle_parameters">Параметри на превозното средство</string>
     <string name="roadcrew_profile_vehicle_parameters_ready">Състояние: Готово</string>
     <string name="roadcrew_profile_vehicle_parameters_incomplete">Състояние: Непълно</string>
@@ -83,6 +88,10 @@
 
     <string name="roadcrew_setup_title">Настройка на RoadCrew</string>
     <string name="roadcrew_setup_intro">RoadCrew има нужда от местоположение и известия, за да работят надеждно сигналите, заявките за помощ, предупрежденията и чатовете.</string>
+    <string name="roadcrew_setup_step">Стъпка %1$d от %2$d</string>
+    <string name="roadcrew_setup_status_ready">Състояние: Готово</string>
+    <string name="roadcrew_setup_status_incomplete">Състояние: Непълно</string>
+    <string name="roadcrew_setup_complete_current_step">Изпълнете тази стъпка, преди да продължите.</string>
     <string name="roadcrew_setup_location_permission">Достъп до местоположение</string>
     <string name="roadcrew_setup_location_permission_body">Нужно е, за да се поставят сигналите на позицията на телефона.</string>
     <string name="roadcrew_setup_enable_location">Разреши местоположение</string>
@@ -146,6 +155,7 @@
     <string name="roadcrew_button_open_chat">Отвори чата</string>
 
     <string name="roadcrew_button_cancel">Отказ</string>
+    <string name="roadcrew_button_back">Назад</string>
     <string name="roadcrew_button_next">Следващ</string>
     <string name="roadcrew_button_skip">Пропусни</string>
     <string name="roadcrew_button_send">Изпращане</string>

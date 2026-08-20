@@ -74,6 +74,11 @@
     <string name="roadcrew_profile_allow_plate_alerts">Allow safety alerts by truck/trailer number</string>
     <string name="roadcrew_profile_show_truck_restrictions">Show truck restrictions on map</string>
     <string name="roadcrew_profile_show_truck_restrictions_body">Shows local map signs for weight, height, width, length, HGV and ADR restrictions. Default: on for Truck, off for Car.</string>
+    <string name="roadcrew_profile_setup_status">Permissions and setup</string>
+    <string name="roadcrew_profile_setup_ready">Status: Ready</string>
+    <string name="roadcrew_profile_setup_incomplete">Status: Incomplete. Missing: %1$s</string>
+    <string name="roadcrew_profile_setup_body">Checks location access, device location, notifications, and an installed offline map. Open the setup wizard to fix or review each item.</string>
+    <string name="roadcrew_profile_setup_button">Open setup wizard</string>
     <string name="roadcrew_profile_vehicle_parameters">Vehicle parameters</string>
     <string name="roadcrew_profile_vehicle_parameters_ready">Status: Ready</string>
     <string name="roadcrew_profile_vehicle_parameters_incomplete">Status: Incomplete</string>
@@ -83,6 +88,10 @@
 
     <string name="roadcrew_setup_title">RoadCrew setup</string>
     <string name="roadcrew_setup_intro">RoadCrew needs location and notifications so reports, Help requests, warnings, and chats can work reliably.</string>
+    <string name="roadcrew_setup_step">Step %1$d of %2$d</string>
+    <string name="roadcrew_setup_status_ready">Status: Ready</string>
+    <string name="roadcrew_setup_status_incomplete">Status: Incomplete</string>
+    <string name="roadcrew_setup_complete_current_step">Complete this step before continuing.</string>
     <string name="roadcrew_setup_location_permission">Location permission</string>
     <string name="roadcrew_setup_location_permission_body">Needed to place reports at your phone position.</string>
     <string name="roadcrew_setup_enable_location">Enable location</string>
@@ -146,6 +155,7 @@
     <string name="roadcrew_button_open_chat">Open chat</string>
 
     <string name="roadcrew_button_cancel">Cancel</string>
+    <string name="roadcrew_button_back">Back</string>
     <string name="roadcrew_button_next">Next</string>
     <string name="roadcrew_button_skip">Skip</string>
     <string name="roadcrew_button_send">Send</string>

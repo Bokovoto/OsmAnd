@@ -1,9 +1,5 @@
 package net.osmand.plus.roadcrew;
 
-import static net.osmand.router.GeneralRouter.VEHICLE_HEIGHT;
-import static net.osmand.router.GeneralRouter.VEHICLE_LENGTH;
-import static net.osmand.router.GeneralRouter.VEHICLE_WEIGHT;
-
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.ViewGroup;
@@ -13,36 +9,30 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.R;
 import net.osmand.plus.activities.MapActivity;
-import net.osmand.plus.routing.RoutingHelperUtils;
 import net.osmand.plus.settings.backend.ApplicationMode;
 import net.osmand.plus.settings.backend.preferences.CommonPreference;
 import net.osmand.plus.settings.fragments.BaseSettingsFragment;
 import net.osmand.plus.settings.fragments.SettingsScreenType;
-import net.osmand.router.GeneralRouter;
-import net.osmand.router.GeneralRouter.RoutingParameter;
-import net.osmand.util.Algorithms;
-
-import java.util.Map;
 
 final class RoadCrewDriverProfileDialog {
 
 	private static final int DRIVER_NAME_MAX_LENGTH = 60;
 	private static final int PLATE_MAX_LENGTH = 20;
-	private static final String[] REQUIRED_TRUCK_PARAMETERS = {
-			VEHICLE_HEIGHT,
-			VEHICLE_WEIGHT,
-			VEHICLE_LENGTH
-	};
-
 	private RoadCrewDriverProfileDialog() {
 	}
 
 	static void show(@NonNull MapActivity mapActivity, @NonNull OsmandApplication app) {
+		show(mapActivity, app, null);
+	}
+
+	static void show(@NonNull MapActivity mapActivity, @NonNull OsmandApplication app,
+			@Nullable Runnable onClosed) {
 		RoadCrewDriverProfile profile = RoadCrewDriverProfile.load(app);
 		LinearLayout content = RoadCrewUi.createPanel(mapActivity, mapActivity.getString(R.string.roadcrew_profile_title));
 
@@ -78,6 +68,7 @@ final class RoadCrewDriverProfileDialog {
 		RoadCrewUi.addBody(mapActivity, content, mapActivity.getString(R.string.roadcrew_profile_show_truck_restrictions_body));
 
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		boolean[] openingSettings = {false};
 		Runnable saveProfile = () -> {
 			boolean restrictionsChanged = showTruckRestrictionsPreference.get() != showTruckRestrictions.isChecked();
 			RoadCrewDriverProfile.save(app,
@@ -93,8 +84,27 @@ final class RoadCrewDriverProfileDialog {
 		};
 
 		RoadCrewUi.addSectionTitle(mapActivity, content,
+				mapActivity.getString(R.string.roadcrew_profile_setup_status));
+		boolean phoneSetupComplete = RoadCrewSetupStatus.isPhoneSetupReady(mapActivity, app);
+		String setupStatusText = phoneSetupComplete
+				? mapActivity.getString(R.string.roadcrew_profile_setup_ready)
+				: mapActivity.getString(R.string.roadcrew_profile_setup_incomplete,
+						getMissingSetupItems(mapActivity, app));
+		TextView setupStatus = RoadCrewUi.addBody(mapActivity, content, setupStatusText);
+		setupStatus.setTextColor(phoneSetupComplete ? RoadCrewUi.PRIMARY : RoadCrewUi.DANGER);
+		RoadCrewUi.addBody(mapActivity, content,
+				mapActivity.getString(R.string.roadcrew_profile_setup_body));
+		RoadCrewUi.addFullWidthButton(mapActivity, content,
+				mapActivity.getString(R.string.roadcrew_profile_setup_button), true, v -> {
+					saveProfile.run();
+					openingSettings[0] = true;
+					dialog.dismiss();
+					RoadCrewStartupSetup.showManually(mapActivity);
+				});
+
+		RoadCrewUi.addSectionTitle(mapActivity, content,
 				mapActivity.getString(R.string.roadcrew_profile_vehicle_parameters));
-		boolean vehicleParametersComplete = areTruckVehicleParametersComplete(app);
+		boolean vehicleParametersComplete = RoadCrewSetupStatus.areTruckVehicleParametersReady(app);
 		TextView vehicleStatus = RoadCrewUi.addBody(mapActivity, content, mapActivity.getString(
 				vehicleParametersComplete
 						? R.string.roadcrew_profile_vehicle_parameters_ready
@@ -105,7 +115,11 @@ final class RoadCrewDriverProfileDialog {
 		RoadCrewUi.addFullWidthButton(mapActivity, content,
 				mapActivity.getString(R.string.roadcrew_profile_vehicle_parameters_button), true, v -> {
 					saveProfile.run();
+					openingSettings[0] = true;
 					dialog.dismiss();
+					if (onClosed != null) {
+						RoadCrewStartupSetup.runAfterVehicleSettingsClosed(mapActivity, onClosed);
+					}
 					BaseSettingsFragment.showInstance(mapActivity,
 							SettingsScreenType.VEHICLE_PARAMETERS, ApplicationMode.TRUCK);
 				});
@@ -117,39 +131,36 @@ final class RoadCrewDriverProfileDialog {
 			app.showToastMessage(R.string.roadcrew_profile_saved);
 			dialog.dismiss();
 		});
+		dialog.setOnDismissListener(d -> {
+			if (onClosed != null && !openingSettings[0]) {
+				onClosed.run();
+			}
+		});
 		dialog.show();
 	}
 
-	private static boolean areTruckVehicleParametersComplete(@NonNull OsmandApplication app) {
-		GeneralRouter router = app.getRouter(ApplicationMode.TRUCK);
-		if (router == null) {
-			return false;
-		}
-		Map<String, RoutingParameter> parameters = RoutingHelperUtils.getParametersForDerivedProfile(
-				ApplicationMode.TRUCK, router);
-		for (String parameterId : REQUIRED_TRUCK_PARAMETERS) {
-			RoutingParameter parameter = parameters.get(parameterId);
-			if (parameter == null) {
-				return false;
-			}
-			String value = app.getSettings()
-					.getCustomRoutingProperty(parameterId, parameter.getDefaultString())
-					.getModeValue(ApplicationMode.TRUCK);
-			if (!isPositiveNumber(value)) {
-				return false;
-			}
-		}
-		return true;
+	@NonNull
+	private static String getMissingSetupItems(@NonNull MapActivity activity,
+			@NonNull OsmandApplication app) {
+		StringBuilder missing = new StringBuilder();
+		appendMissing(missing, RoadCrewSetupStatus.isLocationPermissionReady(activity),
+				activity.getString(R.string.roadcrew_setup_location_permission));
+		appendMissing(missing, RoadCrewSetupStatus.isDeviceLocationReady(activity),
+				activity.getString(R.string.roadcrew_setup_device_location));
+		appendMissing(missing, RoadCrewSetupStatus.areNotificationsReady(activity),
+				activity.getString(R.string.roadcrew_setup_notifications));
+		appendMissing(missing, RoadCrewSetupStatus.isOfflineMapReady(app),
+				activity.getString(R.string.roadcrew_setup_offline_map));
+		return missing.toString();
 	}
 
-	private static boolean isPositiveNumber(String value) {
-		if (Algorithms.isEmpty(value) || "-".equals(value)) {
-			return false;
-		}
-		try {
-			return Double.parseDouble(value) > 0;
-		} catch (NumberFormatException e) {
-			return false;
+	private static void appendMissing(@NonNull StringBuilder missing, boolean ready,
+			@NonNull String title) {
+		if (!ready) {
+			if (missing.length() > 0) {
+				missing.append(", ");
+			}
+			missing.append(title);
 		}
 	}
 

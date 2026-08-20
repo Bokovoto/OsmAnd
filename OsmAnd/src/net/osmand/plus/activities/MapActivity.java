@@ -746,7 +746,8 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 		}
 		boolean showWelcomeScreen = ((app.getAppInitializer().isFirstTime() && Version.isDeveloperVersion(app)) || !app.getResourceManager().isAnyMapInstalled())
 				&& settings.SHOW_OSMAND_WELCOME_SCREEN.get()
-				&& showOsmAndWelcomeScreen && !showStorageMigrationScreen;
+				&& showOsmAndWelcomeScreen && !showStorageMigrationScreen
+				&& !ROADCREW_PACKAGE.equals(app.getPackageName());
 
 		if (!showWelcomeScreen && !MapPermissionsResultCallback.permissionDone && !app.getAppInitializer().isFirstTime()) {
 			if (!permissionsResultCallback.permissionAsked) {
@@ -1585,6 +1586,9 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 		permissionsResultCallback.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (ROADCREW_PACKAGE.equals(app.getPackageName())) {
+			app.runInUIThread(() -> RoadCrewStartupSetup.showIfNeeded(this), 350);
+		}
 	}
 
 	@Override

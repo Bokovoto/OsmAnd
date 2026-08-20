@@ -4,152 +4,336 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.Fragment;
 
 import net.osmand.plus.OsmAndLocationProvider;
 import net.osmand.plus.R;
 import net.osmand.plus.activities.MapActivity;
 import net.osmand.plus.download.DownloadActivity;
+import net.osmand.plus.settings.backend.ApplicationMode;
+import net.osmand.plus.settings.fragments.BaseSettingsFragment;
+import net.osmand.plus.settings.fragments.SettingsScreenType;
 import net.osmand.plus.utils.AndroidUtils;
 
 public final class RoadCrewStartupSetup {
 
 	private static final String PREFS_NAME = "roadcrew_startup_setup";
 	private static final String KEY_COMPLETED = "completed";
-	private static final String KEY_LAST_PROMPT_MILLIS = "last_prompt_millis";
-	private static final long PROMPT_THROTTLE_MILLIS = 24 * 60 * 60 * 1000L;
+	private static final String KEY_CURRENT_STEP = "current_step";
+	private static final int STEP_COUNT = 6;
 
-	private static boolean shownThisSession;
 	private static boolean dialogShowing;
+	private static boolean manualReview;
+	private static AlertDialog currentDialog;
 
 	private RoadCrewStartupSetup() {
 	}
 
 	public static boolean showIfNeeded(@NonNull MapActivity activity) {
-		if (shownThisSession || dialogShowing || activity.isFinishing()
-				|| (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && activity.isDestroyed())
-				|| !RoadCrewReportsLayer.isEnabled(activity.getApp())) {
+		if (!canShow(activity)) {
 			return false;
 		}
-		boolean needsLocationPermission = !OsmAndLocationProvider.isLocationPermissionAvailable(activity);
-		boolean needsDeviceLocation = !isDeviceLocationEnabled(activity);
-		boolean needsNotifications = !areNotificationsReady(activity);
-		boolean needsDriverProfile = !isDriverProfileReady(activity);
-		boolean needsOfflineMap = !activity.getApp().getResourceManager().isAnyMapInstalled();
-		SharedPreferences preferences = activity.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-		if (!needsLocationPermission && !needsDeviceLocation && !needsNotifications
-				&& !needsDriverProfile && !needsOfflineMap) {
-			preferences.edit().putBoolean(KEY_COMPLETED, true).apply();
+		if (dialogShowing) {
+			return true;
+		}
+		SharedPreferences preferences = getPreferences(activity);
+		if (areAllStepsReady(activity)) {
+			preferences.edit()
+					.putBoolean(KEY_COMPLETED, true)
+					.putInt(KEY_CURRENT_STEP, 0)
+					.apply();
 			return false;
 		}
-		long now = System.currentTimeMillis();
-		if ((preferences.getBoolean(KEY_COMPLETED, false) && !needsDriverProfile)
-				|| now - preferences.getLong(KEY_LAST_PROMPT_MILLIS, 0) < PROMPT_THROTTLE_MILLIS) {
-			return false;
-		}
-		shownThisSession = true;
-		dialogShowing = true;
-		preferences.edit().putLong(KEY_LAST_PROMPT_MILLIS, now).apply();
-
-		LinearLayout content = RoadCrewUi.createPanel(activity, activity.getString(R.string.roadcrew_setup_title));
-		RoadCrewUi.addBody(activity, content,
-				activity.getString(R.string.roadcrew_setup_intro));
-
-		if (needsLocationPermission) {
-			addSetupItem(activity, content,
-					activity.getString(R.string.roadcrew_setup_location_permission),
-					activity.getString(R.string.roadcrew_setup_location_permission_body),
-					activity.getString(R.string.roadcrew_setup_enable_location),
-					v -> ActivityCompat.requestPermissions(activity, new String[] {
-									Manifest.permission.ACCESS_FINE_LOCATION,
-									Manifest.permission.ACCESS_COARSE_LOCATION},
-							OsmAndLocationProvider.REQUEST_LOCATION_PERMISSION));
-		}
-		if (needsDeviceLocation) {
-			addSetupItem(activity, content,
-					activity.getString(R.string.roadcrew_setup_device_location),
-					activity.getString(R.string.roadcrew_setup_device_location_body),
-					activity.getString(R.string.roadcrew_setup_open_settings),
-					v -> AndroidUtils.startActivityIfSafe(activity,
-							new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)));
-		}
-		if (needsNotifications) {
-			addSetupItem(activity, content,
-					activity.getString(R.string.roadcrew_setup_notifications),
-					activity.getString(R.string.roadcrew_setup_notifications_body),
-					activity.getString(R.string.roadcrew_setup_enable_notifications),
-					v -> openNotificationPermission(activity));
-		}
-		if (needsOfflineMap) {
-			addSetupItem(activity, content,
-					activity.getString(R.string.roadcrew_setup_offline_map),
-					activity.getString(R.string.roadcrew_setup_offline_map_body),
-					activity.getString(R.string.roadcrew_setup_download_map),
-					v -> openMapDownload(activity));
-		}
-		if (needsDriverProfile) {
-			addSetupItem(activity, content,
-					activity.getString(R.string.roadcrew_profile_title),
-					activity.getString(R.string.roadcrew_setup_driver_profile_body),
-					activity.getString(R.string.roadcrew_setup_complete_profile),
-					v -> RoadCrewDriverProfileDialog.show(activity, activity.getApp()));
-		}
-
-		RoadCrewUi.addBody(activity, content,
-				activity.getString(R.string.roadcrew_setup_push_note));
-
-		AlertDialog dialog = RoadCrewUi.createDialog(activity, content);
-		LinearLayout buttons = RoadCrewUi.addButtonRow(activity, content);
-		RoadCrewUi.addButton(activity, buttons, activity.getString(R.string.roadcrew_button_later), false, v -> dialog.dismiss());
-		RoadCrewUi.addButton(activity, buttons, activity.getString(R.string.roadcrew_button_done), true, v -> dialog.dismiss());
-		dialog.setOnDismissListener(d -> dialogShowing = false);
-		dialog.show();
+		preferences.edit().putBoolean(KEY_COMPLETED, false).apply();
+		int savedStep = clampStep(preferences.getInt(KEY_CURRENT_STEP, 0));
+		int firstIncompleteStep = findFirstIncompleteStep(activity);
+		showStep(activity, Math.min(savedStep, firstIncompleteStep), false);
 		return true;
 	}
 
-	private static void addSetupItem(@NonNull MapActivity activity, @NonNull LinearLayout content,
-			@NonNull String title, @NonNull String body, @NonNull String buttonTitle,
-			@NonNull android.view.View.OnClickListener listener) {
-		RoadCrewUi.addSectionTitle(activity, content, title);
-		RoadCrewUi.addBody(activity, content, body);
-		RoadCrewUi.addFullWidthButton(activity, content, buttonTitle, true, listener);
+	static void showManually(@NonNull MapActivity activity) {
+		if (!canShow(activity) || dialogShowing) {
+			return;
+		}
+		showStep(activity, 0, true);
 	}
 
-	private static boolean areNotificationsReady(@NonNull Context context) {
-		return AndroidUtils.hasPostNotificationPermission(context)
-				&& NotificationManagerCompat.from(context).areNotificationsEnabled();
+	private static void showStep(@NonNull MapActivity activity, int step, boolean reviewMode) {
+		dialogShowing = true;
+		manualReview = reviewMode;
+		getPreferences(activity).edit().putInt(KEY_CURRENT_STEP, step).apply();
+
+		LinearLayout content = RoadCrewUi.createPanel(activity,
+				activity.getString(R.string.roadcrew_setup_title));
+		TextView progress = RoadCrewUi.addBody(activity, content,
+				activity.getString(R.string.roadcrew_setup_step, step + 1, STEP_COUNT));
+		progress.setTextColor(RoadCrewUi.SECONDARY_TEXT);
+		RoadCrewUi.addSectionTitle(activity, content, getStepTitle(activity, step));
+		RoadCrewUi.addBody(activity, content, getStepBody(activity, step));
+
+		boolean ready = isStepReady(activity, step);
+		TextView status = RoadCrewUi.addBody(activity, content, activity.getString(
+				ready ? R.string.roadcrew_setup_status_ready : R.string.roadcrew_setup_status_incomplete));
+		status.setTextColor(ready ? RoadCrewUi.PRIMARY : RoadCrewUi.DANGER);
+		RoadCrewUi.addFullWidthButton(activity, content, getStepActionTitle(activity, step), true,
+				v -> performStepAction(activity, step));
+
+		AlertDialog dialog = RoadCrewUi.createDialog(activity, content);
+		currentDialog = dialog;
+		LinearLayout buttons = RoadCrewUi.addButtonRow(activity, content);
+		if (step > 0) {
+			RoadCrewUi.addButton(activity, buttons, activity.getString(R.string.roadcrew_button_back), false,
+					v -> moveToStep(activity, dialog, step - 1));
+		}
+		Button next = RoadCrewUi.addButton(activity, buttons, activity.getString(
+				step == STEP_COUNT - 1 ? R.string.roadcrew_button_done : R.string.roadcrew_button_next),
+				true, v -> {
+					if (!isStepReady(activity, step)) {
+						activity.getApp().showToastMessage(R.string.roadcrew_setup_complete_current_step);
+						return;
+					}
+					if (step < STEP_COUNT - 1) {
+						moveToStep(activity, dialog, step + 1);
+					} else if (areAllStepsReady(activity)) {
+						getPreferences(activity).edit()
+								.putBoolean(KEY_COMPLETED, true)
+								.putInt(KEY_CURRENT_STEP, 0)
+								.apply();
+						dialog.dismiss();
+						RoadCrewAppUpdater.checkForUpdatesIfNeeded(activity);
+					}
+				});
+		next.setEnabled(ready);
+		next.setAlpha(ready ? 1.0f : 0.45f);
+		dialog.setCancelable(false);
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.setOnDismissListener(d -> {
+			dialogShowing = false;
+			if (currentDialog == dialog) {
+				currentDialog = null;
+			}
+		});
+		dialog.show();
 	}
 
-	private static boolean isDeviceLocationEnabled(@NonNull Context context) {
-		LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-		if (locationManager == null) {
-			return false;
+	private static void moveToStep(@NonNull MapActivity activity, @NonNull AlertDialog dialog, int step) {
+		boolean reviewMode = manualReview;
+		dialog.setOnDismissListener(null);
+		dialog.dismiss();
+		dialogShowing = false;
+		currentDialog = null;
+		showStep(activity, clampStep(step), reviewMode);
+	}
+
+	private static void performStepAction(@NonNull MapActivity activity, int step) {
+		if (currentDialog != null) {
+			currentDialog.setOnDismissListener(null);
+			currentDialog.dismiss();
+			currentDialog = null;
 		}
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-			return locationManager.isLocationEnabled();
-		}
-		try {
-			return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-					|| locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-		} catch (Exception e) {
-			return false;
+		dialogShowing = false;
+		switch (step) {
+			case 0:
+				ActivityCompat.requestPermissions(activity, new String[] {
+						Manifest.permission.ACCESS_FINE_LOCATION,
+						Manifest.permission.ACCESS_COARSE_LOCATION},
+						OsmAndLocationProvider.REQUEST_LOCATION_PERMISSION);
+				break;
+			case 1:
+				AndroidUtils.startActivityIfSafe(activity,
+						new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+				break;
+			case 2:
+				openNotificationPermission(activity);
+				break;
+			case 3:
+				openMapDownload(activity);
+				break;
+			case 4:
+				RoadCrewDriverProfileDialog.show(activity, activity.getApp(),
+						() -> activity.getApp().runInUIThread(() -> reopenCurrentStep(activity), 250));
+				break;
+			case 5:
+				runAfterVehicleSettingsClosed(activity, () -> reopenCurrentStep(activity));
+				BaseSettingsFragment.showInstance(activity,
+						SettingsScreenType.VEHICLE_PARAMETERS, ApplicationMode.TRUCK);
+				break;
+			default:
+				break;
 		}
 	}
 
-	private static boolean isDriverProfileReady(@NonNull MapActivity activity) {
-		RoadCrewDriverProfile profile = RoadCrewDriverProfile.load(activity.getApp());
-		return !profile.getDisplayName().isEmpty()
-				&& profile.hasPlateIdentity()
-				&& profile.isPlateAlertsEnabled();
+	static void runAfterVehicleSettingsClosed(@NonNull MapActivity activity,
+			@NonNull Runnable onClosed) {
+		activity.getApp().runInUIThread(new Runnable() {
+			private boolean settingsSeen;
+			private int attempts;
+
+			@Override
+			public void run() {
+				if (!canShow(activity)) {
+					return;
+				}
+				Fragment fragment = activity.getSupportFragmentManager().findFragmentByTag(
+						SettingsScreenType.VEHICLE_PARAMETERS.fragmentName);
+				if (fragment != null) {
+					settingsSeen = true;
+				} else if (settingsSeen || attempts >= 20) {
+					onClosed.run();
+					return;
+				}
+				attempts++;
+				activity.getApp().runInUIThread(this, 400);
+			}
+		}, 400);
+	}
+
+	private static void reopenCurrentStep(@NonNull MapActivity activity) {
+		if (!canShow(activity) || dialogShowing) {
+			return;
+		}
+		int step = clampStep(getPreferences(activity).getInt(KEY_CURRENT_STEP, 0));
+		showStep(activity, step, manualReview);
+	}
+
+	private static boolean canShow(@NonNull MapActivity activity) {
+		return !activity.isFinishing()
+				&& (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1 || !activity.isDestroyed())
+				&& RoadCrewReportsLayer.isEnabled(activity.getApp());
+	}
+
+	private static boolean areAllStepsReady(@NonNull MapActivity activity) {
+		for (int step = 0; step < STEP_COUNT; step++) {
+			if (!isStepReady(activity, step)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static int findFirstIncompleteStep(@NonNull MapActivity activity) {
+		for (int step = 0; step < STEP_COUNT; step++) {
+			if (!isStepReady(activity, step)) {
+				return step;
+			}
+		}
+		return STEP_COUNT - 1;
+	}
+
+	private static boolean isStepReady(@NonNull MapActivity activity, int step) {
+		switch (step) {
+			case 0:
+				return RoadCrewSetupStatus.isLocationPermissionReady(activity);
+			case 1:
+				return RoadCrewSetupStatus.isDeviceLocationReady(activity);
+			case 2:
+				return RoadCrewSetupStatus.areNotificationsReady(activity);
+			case 3:
+				return RoadCrewSetupStatus.isOfflineMapReady(activity.getApp());
+			case 4:
+				return RoadCrewSetupStatus.isDriverProfileReady(activity.getApp());
+			case 5:
+				return RoadCrewSetupStatus.areTruckVehicleParametersReady(activity.getApp());
+			default:
+				return false;
+		}
+	}
+
+	@NonNull
+	private static String getStepTitle(@NonNull MapActivity activity, int step) {
+		int stringId;
+		switch (step) {
+			case 0:
+				stringId = R.string.roadcrew_setup_location_permission;
+				break;
+			case 1:
+				stringId = R.string.roadcrew_setup_device_location;
+				break;
+			case 2:
+				stringId = R.string.roadcrew_setup_notifications;
+				break;
+			case 3:
+				stringId = R.string.roadcrew_setup_offline_map;
+				break;
+			case 4:
+				stringId = R.string.roadcrew_profile_title;
+				break;
+			default:
+				stringId = R.string.roadcrew_profile_vehicle_parameters;
+				break;
+		}
+		return activity.getString(stringId);
+	}
+
+	@NonNull
+	private static String getStepBody(@NonNull MapActivity activity, int step) {
+		int stringId;
+		switch (step) {
+			case 0:
+				stringId = R.string.roadcrew_setup_location_permission_body;
+				break;
+			case 1:
+				stringId = R.string.roadcrew_setup_device_location_body;
+				break;
+			case 2:
+				stringId = R.string.roadcrew_setup_notifications_body;
+				break;
+			case 3:
+				stringId = R.string.roadcrew_setup_offline_map_body;
+				break;
+			case 4:
+				stringId = R.string.roadcrew_setup_driver_profile_body;
+				break;
+			default:
+				stringId = R.string.roadcrew_profile_vehicle_parameters_body;
+				break;
+		}
+		return activity.getString(stringId);
+	}
+
+	@NonNull
+	private static String getStepActionTitle(@NonNull MapActivity activity, int step) {
+		int stringId;
+		switch (step) {
+			case 0:
+				stringId = R.string.roadcrew_setup_enable_location;
+				break;
+			case 1:
+				stringId = R.string.roadcrew_setup_open_settings;
+				break;
+			case 2:
+				stringId = R.string.roadcrew_setup_enable_notifications;
+				break;
+			case 3:
+				stringId = R.string.roadcrew_setup_download_map;
+				break;
+			case 4:
+				stringId = R.string.roadcrew_setup_complete_profile;
+				break;
+			default:
+				stringId = R.string.roadcrew_profile_vehicle_parameters_button;
+				break;
+		}
+		return activity.getString(stringId);
+	}
+
+	private static int clampStep(int step) {
+		return Math.max(0, Math.min(STEP_COUNT - 1, step));
+	}
+
+	@NonNull
+	private static SharedPreferences getPreferences(@NonNull Context context) {
+		return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 	}
 
 	private static void openNotificationPermission(@NonNull MapActivity activity) {
