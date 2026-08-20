@@ -57,6 +57,7 @@ import net.osmand.plus.exploreplaces.ExplorePlacesFragment;
 import net.osmand.plus.mapcontextmenu.MapContextMenu;
 import net.osmand.plus.myplaces.favorites.FavoriteGroup;
 import net.osmand.plus.plugins.PluginsHelper;
+import net.osmand.plus.roadcrew.RoadCrewReportsLayer;
 import net.osmand.plus.plugins.accessibility.AccessibilityAssistant;
 import net.osmand.plus.plugins.accessibility.NavigationInfo;
 import net.osmand.plus.poi.PoiUIFilter;
@@ -562,6 +563,9 @@ public class QuickSearchDialogFragment extends BaseFullScreenDialogFragment impl
 		updateClearButtonAndHint();
 		updateClearButtonVisibility(true);
 		addMainSearchFragment();
+		if (isRoadCrewRouteSearch()) {
+			tabToolbarView.setVisibility(View.GONE);
+		}
 
 		if (centerLatLon == null) {
 			openKeyboard();
@@ -1667,7 +1671,9 @@ public class QuickSearchDialogFragment extends BaseFullScreenDialogFragment impl
 			searchEditText.setHint(getString(R.string.dist_away_from_my_location, dist));
 			clearButton.setImageDrawable(getIcon(R.drawable.ic_action_get_my_location, R.color.color_myloc_distance));
 		} else {
-			if (addressSearch) {
+			if (isRoadCrewRouteSearch()) {
+				searchEditText.setHint(R.string.roadcrew_route_search_hint);
+			} else if (addressSearch) {
 				searchEditText.setHint(R.string.type_address);
 			} else {
 				searchEditText.setHint(R.string.search_poi_category_hint);
@@ -1687,7 +1693,7 @@ public class QuickSearchDialogFragment extends BaseFullScreenDialogFragment impl
 	private void updateTabBarVisibility(boolean show) {
 		tabBarHidden = !show;
 		if (show) {
-			tabToolbarView.setVisibility(View.VISIBLE);
+			tabToolbarView.setVisibility(isRoadCrewRouteSearch() ? View.GONE : View.VISIBLE);
 			setButtonToolbarVisible(false);
 			tabsView.setVisibility(View.VISIBLE);
 			searchView.setVisibility(View.GONE);
@@ -2638,7 +2644,14 @@ public class QuickSearchDialogFragment extends BaseFullScreenDialogFragment impl
 		if (!paused && mainSearchFragment != null) {
 			List<QuickSearchListItem> rows = new ArrayList<>();
 			if (res != null && !res.getCurrentSearchResults().isEmpty()) {
-				for (SearchResult sr : res.getCurrentSearchResults()) {
+				List<SearchResult> results = new ArrayList<>(res.getCurrentSearchResults());
+				if (isRoadCrewRouteSearch() && isSimpleSettlementQuery(searchQuery)) {
+					results.sort((first, second) -> Boolean.compare(
+							isExactSettlementResult(second, searchQuery),
+							isExactSettlementResult(first, searchQuery)));
+					append = false;
+				}
+				for (SearchResult sr : results) {
 					rows.add(new QuickSearchListItem(app, sr));
 				}
 				updateSendEmptySearchBottomBar(false);
@@ -2646,6 +2659,42 @@ public class QuickSearchDialogFragment extends BaseFullScreenDialogFragment impl
 			mainSearchFragment.updateListAdapter(rows, append, false);
 			updateTopFilterChips();
 		}
+	}
+
+	private boolean isRoadCrewRouteSearch() {
+		return searchType.isTargetPoint() && RoadCrewReportsLayer.isEnabled(app);
+	}
+
+	private boolean isSimpleSettlementQuery(@Nullable String query) {
+		if (Algorithms.isEmpty(query)) {
+			return false;
+		}
+		String value = query.trim();
+		return !value.isEmpty() && value.indexOf(',') < 0 && value.chars().noneMatch(Character::isDigit);
+	}
+
+	private boolean isExactSettlementResult(@NonNull SearchResult result, @Nullable String query) {
+		if (result.objectType != ObjectType.CITY && result.objectType != ObjectType.VILLAGE) {
+			return false;
+		}
+		String normalizedQuery = normalizeRoadCrewSearchText(query);
+		if (normalizedQuery.equals(normalizeRoadCrewSearchText(result.localeName))
+				|| normalizedQuery.equals(normalizeRoadCrewSearchText(result.alternateName))) {
+			return true;
+		}
+		if (result.otherNames != null) {
+			for (String name : result.otherNames) {
+				if (normalizedQuery.equals(normalizeRoadCrewSearchText(name))) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@NonNull
+	private String normalizeRoadCrewSearchText(@Nullable String text) {
+		return text == null ? "" : text.trim().replaceAll("\\s+", " ").toLowerCase(Locale.ROOT);
 	}
 
 	private void updateAdvancedCoordinatesCard() {

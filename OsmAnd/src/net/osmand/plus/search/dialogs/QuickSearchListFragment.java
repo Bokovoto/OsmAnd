@@ -32,6 +32,7 @@ import net.osmand.plus.download.DownloadIndexesThread;
 import net.osmand.plus.download.DownloadValidationManager;
 import net.osmand.plus.download.IndexItem;
 import net.osmand.plus.routepreparationmenu.MapRouteInfoMenu;
+import net.osmand.plus.roadcrew.RoadCrewReportsLayer;
 import net.osmand.plus.search.dialogs.QuickSearchDialogFragment.QuickSearchType;
 import net.osmand.plus.search.history.SearchHistoryHelper;
 import net.osmand.plus.search.listitems.QuickSearchBottomShadowListItem;
@@ -126,7 +127,11 @@ public abstract class QuickSearchListFragment extends BaseNestedListFragment {
 					}
 				} else if (item.getType() == QuickSearchListItemType.SEARCH_RESULT) {
 					SearchResult sr = item.getSearchResult();
-					if (sr.objectType == POI
+					boolean roadCrewSettlement = dialogFragment.getSearchType().isTargetPoint()
+							&& RoadCrewReportsLayer.isEnabled(app)
+							&& (sr.objectType == CITY || sr.objectType == VILLAGE);
+					if (roadCrewSettlement
+							|| sr.objectType == POI
 							|| sr.objectType == LOCATION
 							|| sr.objectType == HOUSE
 							|| sr.objectType == FAVORITE

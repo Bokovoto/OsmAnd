@@ -49,6 +49,7 @@ import net.osmand.plus.myplaces.favorites.FavoriteFolderFormatter;
 import net.osmand.plus.myplaces.favorites.FavoritesListener;
 import net.osmand.plus.myplaces.favorites.FavouritesHelper;
 import net.osmand.plus.routepreparationmenu.data.PointType;
+import net.osmand.plus.roadcrew.RoadCrewReportsLayer;
 import net.osmand.plus.search.ShowQuickSearchMode;
 import net.osmand.plus.search.dialogs.QuickSearchDialogFragment.QuickSearchTab;
 import net.osmand.plus.settings.enums.FavoritesSortMode;
@@ -481,6 +482,14 @@ public class AddPointBottomSheetDialog extends MenuBottomSheetDialogFragment {
 			@NonNull PointType pointType, boolean usedOnMap) {
 		if (mapActivity.isActivityDestroyed()) {
 			return false;
+		}
+		if (RoadCrewReportsLayer.isEnabled(mapActivity.getApp())
+				&& (pointType == PointType.TARGET || pointType == PointType.INTERMEDIATE)) {
+			ShowQuickSearchMode searchMode = pointType == PointType.TARGET
+					? ShowQuickSearchMode.DESTINATION_SELECTION
+					: ShowQuickSearchMode.INTERMEDIATE_SELECTION;
+			mapActivity.getFragmentsHelper().showQuickSearch(searchMode, QuickSearchTab.HISTORY);
+			return true;
 		}
 		FragmentManager fragmentManager = mapActivity.getSupportFragmentManager();
 		if (AndroidUtils.isFragmentCanBeAdded(fragmentManager, TAG)) {

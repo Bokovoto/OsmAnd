@@ -92,6 +92,7 @@
     <string name="roadcrew_button_save_continue">Запази и продължи</string>
     <string name="roadcrew_route_plan">План на маршрута</string>
     <string name="roadcrew_route_plan_empty">Добавете или пренаредете спирки</string>
+    <string name="roadcrew_route_search_hint">Град или пълен адрес</string>
     <string name="roadcrew_profile_saved">Профилът е запазен.</string>
 
     <string name="roadcrew_setup_title">Настройка на RoadCrew</string>

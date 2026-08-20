@@ -198,13 +198,17 @@ public class WaypointsFragment extends BaseFullScreenFragment implements IContex
 		addButton.setOnClickListener(v -> {
 			MapActivity activity = getMapActivity();
 			if (activity != null) {
-				Bundle arguments = new Bundle();
-				arguments.putString(AddPointBottomSheetDialog.POINT_TYPE_KEY, PointType.INTERMEDIATE.name());
-				AddPointBottomSheetDialog fragment = new AddPointBottomSheetDialog();
-				fragment.setArguments(arguments);
-				fragment.setUsedOnMap(true);
-				fragment.setListener(WaypointsFragment.this);
-				fragment.show(activity.getSupportFragmentManager(), AddPointBottomSheetDialog.TAG);
+				if (RoadCrewReportsLayer.isEnabled(activity.getApp())) {
+					AddPointBottomSheetDialog.showInstance(activity, PointType.INTERMEDIATE);
+				} else {
+					Bundle arguments = new Bundle();
+					arguments.putString(AddPointBottomSheetDialog.POINT_TYPE_KEY, PointType.INTERMEDIATE.name());
+					AddPointBottomSheetDialog fragment = new AddPointBottomSheetDialog();
+					fragment.setArguments(arguments);
+					fragment.setUsedOnMap(true);
+					fragment.setListener(WaypointsFragment.this);
+					fragment.show(activity.getSupportFragmentManager(), AddPointBottomSheetDialog.TAG);
+				}
 			}
 		});
 
