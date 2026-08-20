@@ -1176,6 +1176,11 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 		ProgressBar progressBar = mainView.findViewById(R.id.progress_bar_button);
 		boolean publicTransportMode = helper.isPublicTransportMode();
 		boolean routeCalculated = isRouteCalculated();
+		boolean roadCrewEnabled = RoadCrewReportsLayer.isEnabled(app);
+		boolean routeCalculating = routeCalculationInProgress
+				|| helper.isRouteBeingCalculated()
+				|| app.getTransportRoutingHelper().isRouteBeingCalculated();
+		boolean roadCrewRouteReady = routeCalculated && !routeCalculating;
 		boolean currentLocationNotFound = OsmAndLocationProvider.isLocationPermissionAvailable(mapActivity)
 				&& targetHelper.getPointToStart() == null && targetHelper.getPointToNavigate() != null;
 		boolean hasCalculatedMissingMaps = hasCalculatedMissingMaps(app);
@@ -1194,7 +1199,10 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 			color2 = color1;
 		} else {
 			color1 = ColorUtilities.getActiveButtonsAndLinksTextColorId(nightMode);
-			if (routeCalculated || currentLocationNotFound && !helper.isRouteBeingCalculated() && !hasCalculatedMissingMaps) {
+			boolean buttonActive = roadCrewEnabled
+					? roadCrewRouteReady
+					: routeCalculated || currentLocationNotFound && !helper.isRouteBeingCalculated() && !hasCalculatedMissingMaps;
+			if (buttonActive) {
 				AndroidUtils.setBackgroundColor(app, startButton, ColorUtilities.getActiveColorId(nightMode));
 				color2 = color1;
 			} else {
@@ -1205,7 +1213,9 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 		setupRouteCalculationButtonProgressBar(progressBar, startButtonText, color1, color2);
 
 		startButtonText.setCompoundDrawablesWithIntrinsicBounds(app.getUIUtilities().getIcon(iconId, color2), null, null, null);
-		if (publicTransportMode) {
+		if (roadCrewEnabled && routeCalculating) {
+			startButtonText.setText(R.string.calculating_indication_message);
+		} else if (publicTransportMode) {
 			startButtonText.setText(R.string.shared_string_show_on_map);
 		} else if (helper.isFollowingMode() || helper.isPauseNavigation()) {
 			startButtonText.setText(R.string.shared_string_resume);
@@ -1213,13 +1223,18 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 			startButtonText.setText(R.string.shared_string_control_start);
 		}
 
-		boolean startButtonEnabled = routeCalculated || !hasCalculatedMissingMaps;
+		boolean startButtonEnabled = roadCrewEnabled
+				? roadCrewRouteReady
+				: routeCalculated || !hasCalculatedMissingMaps;
 		startButton.setClickable(startButtonEnabled);
 		startButton.setEnabled(startButtonEnabled);
+		startButtonText.setEnabled(startButtonEnabled);
 
 		startButton.setOnClickListener(v -> clickRouteGo());
-		startButton.setFocusable(true);
-		startButton.requestFocus();
+		startButton.setFocusable(startButtonEnabled);
+		if (startButtonEnabled) {
+			startButton.requestFocus();
+		}
 		View cancelButton = mainView.findViewById(R.id.cancel_button);
 		TextView cancelButtonText = mainView.findViewById(R.id.cancel_button_descr);
 		if (helper.isRouteCalculated() || helper.isRouteBeingCalculated() || isTransportRouteCalculated()) {
@@ -1609,7 +1624,15 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 		MapActivity mapActivity = getMapActivity();
 		if (mapActivity != null) {
 			OsmandApplication app = mapActivity.getApp();
-			if (app.getRoutingHelper().isPublicTransportMode()) {
+			RoutingHelper routingHelper = app.getRoutingHelper();
+			boolean routeCalculating = routeCalculationInProgress
+					|| routingHelper.isRouteBeingCalculated()
+					|| app.getTransportRoutingHelper().isRouteBeingCalculated();
+			if (RoadCrewReportsLayer.isEnabled(app) && (routeCalculating || !isRouteCalculated())) {
+				app.showShortToastMessage(R.string.waiting_for_route_calculation);
+				return;
+			}
+			if (routingHelper.isPublicTransportMode()) {
 				if (isTransportRouteCalculated() && hasTransportRoutes()) {
 					showRouteOnMap(mapActivity, app.getTransportRoutingHelper().getCurrentRoute());
 				}
