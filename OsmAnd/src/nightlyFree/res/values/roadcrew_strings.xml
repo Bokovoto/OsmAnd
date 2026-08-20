@@ -90,6 +90,8 @@
     <string name="roadcrew_vehicle_weight_t">Weight (t)</string>
     <string name="roadcrew_vehicle_length_m">Length (m)</string>
     <string name="roadcrew_button_save_continue">Save and continue</string>
+    <string name="roadcrew_route_plan">Route plan</string>
+    <string name="roadcrew_route_plan_empty">Add or reorder stops</string>
     <string name="roadcrew_profile_saved">Driver profile saved.</string>
 
     <string name="roadcrew_setup_title">RoadCrew setup</string>

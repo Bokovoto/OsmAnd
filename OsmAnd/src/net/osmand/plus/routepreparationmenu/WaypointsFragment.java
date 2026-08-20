@@ -42,6 +42,7 @@ import net.osmand.plus.helpers.WaypointDialogHelper;
 import net.osmand.plus.helpers.WaypointHelper;
 import net.osmand.plus.helpers.LocationPointWrapper;
 import net.osmand.plus.routepreparationmenu.data.PointType;
+import net.osmand.plus.roadcrew.RoadCrewReportsLayer;
 import net.osmand.plus.settings.enums.ThemeUsageContext;
 import net.osmand.plus.utils.AndroidUtils;
 import net.osmand.plus.utils.ColorUtilities;
@@ -536,7 +537,9 @@ public class WaypointsFragment extends BaseFullScreenFragment implements IContex
 		if (isAdded()) {
 			TextViewEx title = view.findViewById(R.id.title);
 			int pointsSize = targetPointsHelper.getAllPoints().size();
-			String text = getString(R.string.shared_string_target_points);
+			String text = getString(RoadCrewReportsLayer.isEnabled(app)
+					? R.string.roadcrew_route_plan
+					: R.string.shared_string_target_points);
 			String countText = "(" + (pointsSize != 0 ? pointsSize : 1) + ")";
 			text = getString(R.string.ltr_or_rtl_combine_via_space, text, countText);
 			title.setText(text);

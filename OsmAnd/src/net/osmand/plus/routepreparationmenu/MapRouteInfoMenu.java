@@ -82,6 +82,7 @@ import net.osmand.plus.measurementtool.MeasurementToolFragment;
 import net.osmand.plus.myplaces.favorites.FavoritesListener;
 import net.osmand.plus.poi.PoiUIFilter;
 import net.osmand.plus.profiles.ConfigureAppModesBottomSheetDialogFragment;
+import net.osmand.plus.roadcrew.RoadCrewReportsLayer;
 import net.osmand.plus.routepreparationmenu.cards.*;
 import net.osmand.plus.routepreparationmenu.cards.BaseCard.CardListener;
 import net.osmand.plus.routing.GPXRouteParams.GPXRouteParamsBuilder;
@@ -1662,7 +1663,8 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 
 		String viaDescription = generateViaDescription();
 		GPXRouteParamsBuilder routeParams = app.getRoutingHelper().getCurrentGPXRoute();
-		if (routeParams == null && Algorithms.isEmpty(viaDescription)) {
+		boolean roadCrewRoutePlan = routeParams == null && RoadCrewReportsLayer.isEnabled(app);
+		if (!roadCrewRoutePlan && routeParams == null && Algorithms.isEmpty(viaDescription)) {
 			AndroidUiHelper.updateVisibility(viaLayout, false);
 			return;
 		} else {
@@ -1681,8 +1683,8 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 				}
 			});
 		} else {
-			viaLayout.setClickable(false);
-			viaLayout.setOnClickListener(null);
+			viaLayout.setClickable(roadCrewRoutePlan);
+			viaLayout.setOnClickListener(roadCrewRoutePlan ? v -> openRoadCrewRoutePlan() : null);
 		}
 		setupViaText(mainView);
 
@@ -1726,6 +1728,14 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 		updateViaIcon(mainView);
 	}
 
+	private void openRoadCrewRoutePlan() {
+		MapActivity activity = getMapActivity();
+		if (activity != null && activity.getApp().getTargetPointsHelper().checkPointToNavigateShort()) {
+			hide();
+			WaypointsFragment.showInstance(activity, true);
+		}
+	}
+
 	private void setupViaText(View view) {
 		MapActivity mapActivity = getMapActivity();
 		if (mapActivity != null) {
@@ -1752,10 +1762,22 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 				description.setText(R.string.follow_track);
 				buttonDescription.setText(R.string.shared_string_add);
 			} else {
-				title.setText(via);
-				buttonDescription.setText(R.string.shared_string_edit);
-				description.setText(app.getString(R.string.intermediate_destinations) + " (" +
-						app.getTargetPointsHelper().getIntermediatePoints().size() + ")");
+				int intermediateCount = app.getTargetPointsHelper().getIntermediatePoints().size();
+				if (RoadCrewReportsLayer.isEnabled(app)) {
+					title.setText(Algorithms.isEmpty(via)
+							? app.getString(R.string.roadcrew_route_plan_empty)
+							: via);
+					buttonDescription.setText(intermediateCount == 0
+							? R.string.shared_string_add
+							: R.string.shared_string_edit);
+					description.setText(app.getString(R.string.roadcrew_route_plan) + " (" +
+							intermediateCount + ")");
+				} else {
+					title.setText(via);
+					buttonDescription.setText(R.string.shared_string_edit);
+					description.setText(app.getString(R.string.intermediate_destinations) + " (" +
+							intermediateCount + ")");
+				}
 			}
 		}
 	}
