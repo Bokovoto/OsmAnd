@@ -51,20 +51,20 @@ public class RoadCrewRouteActivityView extends View {
 		super(context, attrs, defStyleAttr);
 		setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
 
-		backgroundPaint.setColor(Color.rgb(8, 14, 17));
-		borderPaint.setColor(Color.rgb(35, 93, 73));
+		backgroundPaint.setColor(Color.BLACK);
+		borderPaint.setColor(Color.rgb(72, 72, 72));
 		borderPaint.setStyle(Paint.Style.STROKE);
 		borderPaint.setStrokeWidth(dp(1));
 
-		railPaint.setColor(Color.rgb(48, 230, 157));
+		railPaint.setColor(Color.WHITE);
 		railPaint.setStrokeWidth(dp(2));
 		railPaint.setStrokeCap(Paint.Cap.SQUARE);
 
-		progressPaint.setColor(Color.rgb(48, 230, 157));
+		progressPaint.setColor(Color.WHITE);
 		progressPaint.setTextSize(dp(13));
 		progressPaint.setTypeface(android.graphics.Typeface.MONOSPACE);
 
-		mutedPaint.setColor(Color.rgb(92, 119, 111));
+		mutedPaint.setColor(Color.rgb(145, 145, 145));
 		mutedPaint.setTextSize(dp(13));
 		mutedPaint.setTypeface(android.graphics.Typeface.MONOSPACE);
 	}
