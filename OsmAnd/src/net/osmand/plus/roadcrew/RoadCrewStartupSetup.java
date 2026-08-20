@@ -124,6 +124,29 @@ public final class RoadCrewStartupSetup {
 			}
 		});
 		dialog.show();
+		if (step == 3 && !ready) {
+			monitorOfflineMapStep(activity, dialog, status, next);
+		}
+	}
+
+	private static void monitorOfflineMapStep(@NonNull MapActivity activity, @NonNull AlertDialog dialog,
+			@NonNull TextView status, @NonNull Button next) {
+		activity.getApp().runInUIThread(new Runnable() {
+			@Override
+			public void run() {
+				if (!canShow(activity) || currentDialog != dialog || !dialog.isShowing()) {
+					return;
+				}
+				if (RoadCrewSetupStatus.isOfflineMapReady(activity.getApp())) {
+					status.setText(R.string.roadcrew_setup_status_ready);
+					status.setTextColor(RoadCrewUi.PRIMARY);
+					next.setEnabled(true);
+					next.setAlpha(1.0f);
+					return;
+				}
+				activity.getApp().runInUIThread(this, 1000);
+			}
+		}, 1000);
 	}
 
 	private static void moveToStep(@NonNull MapActivity activity, @NonNull AlertDialog dialog, int step) {
@@ -160,16 +183,36 @@ public final class RoadCrewStartupSetup {
 				openMapDownload(activity);
 				break;
 			case 4:
-				RoadCrewDriverProfileDialog.show(activity, activity.getApp(),
-						() -> activity.getApp().runInUIThread(() -> reopenCurrentStep(activity), 250));
+				RoadCrewDriverProfileDialog.showForSetup(activity, activity.getApp(),
+						() -> activity.getApp().runInUIThread(
+								() -> continueAfterStepAction(activity, step), 250));
 				break;
 			case 5:
-				runAfterVehicleSettingsClosed(activity, () -> reopenCurrentStep(activity));
-				BaseSettingsFragment.showInstance(activity,
-						SettingsScreenType.VEHICLE_PARAMETERS, ApplicationMode.TRUCK);
+				RoadCrewVehicleParametersDialog.show(activity, activity.getApp(),
+						() -> activity.getApp().runInUIThread(
+								() -> continueAfterStepAction(activity, step), 250));
 				break;
 			default:
 				break;
+		}
+	}
+
+	private static void continueAfterStepAction(@NonNull MapActivity activity, int step) {
+		if (!canShow(activity) || dialogShowing) {
+			return;
+		}
+		if (!isStepReady(activity, step)) {
+			showStep(activity, step, manualReview);
+			return;
+		}
+		if (step < STEP_COUNT - 1) {
+			showStep(activity, step + 1, manualReview);
+		} else if (areAllStepsReady(activity)) {
+			getPreferences(activity).edit()
+					.putBoolean(KEY_COMPLETED, true)
+					.putInt(KEY_CURRENT_STEP, 0)
+					.apply();
+			RoadCrewAppUpdater.checkForUpdatesIfNeeded(activity);
 		}
 	}
 

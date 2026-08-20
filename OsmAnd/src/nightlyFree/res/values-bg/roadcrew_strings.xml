@@ -82,8 +82,14 @@
     <string name="roadcrew_profile_vehicle_parameters">Параметри на превозното средство</string>
     <string name="roadcrew_profile_vehicle_parameters_ready">Състояние: Готово</string>
     <string name="roadcrew_profile_vehicle_parameters_incomplete">Състояние: Непълно</string>
-    <string name="roadcrew_profile_vehicle_parameters_body">За състояние „Готово“ задайте височина, маса и дължина за профила Камион. Тези стойности се използват директно при изчисляване на маршрута. Останалите параметри са по избор.</string>
+    <string name="roadcrew_profile_vehicle_parameters_body">За състояние „Готово“ задайте височина, ширина, маса и дължина за профила Камион. Тези стойности се използват директно при изчисляване на маршрута. Останалите параметри са по избор.</string>
     <string name="roadcrew_profile_vehicle_parameters_button">Настрой параметрите</string>
+    <string name="roadcrew_setup_vehicle_parameters_body">Въведете действителните размери на камиона. И четирите стойности са задължителни и се използват директно при изчисляване на маршрута.</string>
+    <string name="roadcrew_vehicle_height_m">Височина (м)</string>
+    <string name="roadcrew_vehicle_width_m">Ширина (м)</string>
+    <string name="roadcrew_vehicle_weight_t">Маса (т)</string>
+    <string name="roadcrew_vehicle_length_m">Дължина (м)</string>
+    <string name="roadcrew_button_save_continue">Запази и продължи</string>
     <string name="roadcrew_profile_saved">Профилът е запазен.</string>
 
     <string name="roadcrew_setup_title">Настройка на RoadCrew</string>

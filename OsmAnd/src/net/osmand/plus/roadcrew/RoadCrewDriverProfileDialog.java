@@ -2,7 +2,9 @@ package net.osmand.plus.roadcrew;
 
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Editable;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,6 +21,7 @@ import net.osmand.plus.settings.backend.ApplicationMode;
 import net.osmand.plus.settings.backend.preferences.CommonPreference;
 import net.osmand.plus.settings.fragments.BaseSettingsFragment;
 import net.osmand.plus.settings.fragments.SettingsScreenType;
+import net.osmand.plus.widgets.tools.SimpleTextWatcher;
 
 final class RoadCrewDriverProfileDialog {
 
@@ -33,6 +36,16 @@ final class RoadCrewDriverProfileDialog {
 
 	static void show(@NonNull MapActivity mapActivity, @NonNull OsmandApplication app,
 			@Nullable Runnable onClosed) {
+		show(mapActivity, app, onClosed, false);
+	}
+
+	static void showForSetup(@NonNull MapActivity mapActivity, @NonNull OsmandApplication app,
+			@Nullable Runnable onClosed) {
+		show(mapActivity, app, onClosed, true);
+	}
+
+	private static void show(@NonNull MapActivity mapActivity, @NonNull OsmandApplication app,
+			@Nullable Runnable onClosed, boolean setupMode) {
 		RoadCrewDriverProfile profile = RoadCrewDriverProfile.load(app);
 		LinearLayout content = RoadCrewUi.createPanel(mapActivity, mapActivity.getString(R.string.roadcrew_profile_title));
 
@@ -59,30 +72,82 @@ final class RoadCrewDriverProfileDialog {
 				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
 		CommonPreference<Boolean> showTruckRestrictionsPreference = RoadCrewSettings.showTruckRestrictions(app);
-		CheckBox showTruckRestrictions = new CheckBox(mapActivity);
-		showTruckRestrictions.setText(mapActivity.getString(R.string.roadcrew_profile_show_truck_restrictions));
-		showTruckRestrictions.setTextColor(RoadCrewUi.TEXT);
-		showTruckRestrictions.setChecked(showTruckRestrictionsPreference.get());
-		content.addView(showTruckRestrictions, new LinearLayout.LayoutParams(
-				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-		RoadCrewUi.addBody(mapActivity, content, mapActivity.getString(R.string.roadcrew_profile_show_truck_restrictions_body));
+		CheckBox showTruckRestrictions = setupMode ? null : new CheckBox(mapActivity);
+		if (showTruckRestrictions != null) {
+			showTruckRestrictions.setText(mapActivity.getString(R.string.roadcrew_profile_show_truck_restrictions));
+			showTruckRestrictions.setTextColor(RoadCrewUi.TEXT);
+			showTruckRestrictions.setChecked(showTruckRestrictionsPreference.get());
+			content.addView(showTruckRestrictions, new LinearLayout.LayoutParams(
+					ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+			RoadCrewUi.addBody(mapActivity, content,
+					mapActivity.getString(R.string.roadcrew_profile_show_truck_restrictions_body));
+		}
 
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		boolean[] openingSettings = {false};
 		Runnable saveProfile = () -> {
-			boolean restrictionsChanged = showTruckRestrictionsPreference.get() != showTruckRestrictions.isChecked();
+			boolean restrictionsChanged = showTruckRestrictions != null
+					&& showTruckRestrictionsPreference.get() != showTruckRestrictions.isChecked();
 			RoadCrewDriverProfile.save(app,
 					driverName.getText().toString(),
 					truckNumber.getText().toString(),
 					trailerNumber.getText().toString(),
 					plateAlertsEnabled.isChecked());
-			showTruckRestrictionsPreference.set(showTruckRestrictions.isChecked());
+			if (showTruckRestrictions != null) {
+				showTruckRestrictionsPreference.set(showTruckRestrictions.isChecked());
+			}
 			RoadCrewReportsSync.syncNow(app);
 			if (restrictionsChanged) {
 				mapActivity.getMapView().refreshMap();
 			}
 		};
 
+		if (!setupMode) {
+			addAdvancedSections(mapActivity, app, content, dialog, openingSettings, saveProfile, onClosed);
+		}
+
+		Button saveButton;
+		if (setupMode) {
+			saveButton = RoadCrewUi.addFullWidthButton(mapActivity, content,
+					mapActivity.getString(R.string.roadcrew_button_save_continue), true, v -> {
+						saveProfile.run();
+						app.showToastMessage(R.string.roadcrew_profile_saved);
+						dialog.dismiss();
+					});
+			SimpleTextWatcher watcher = new SimpleTextWatcher() {
+				@Override
+				public void afterTextChanged(Editable s) {
+					updateSetupSaveButton(saveButton, driverName, truckNumber, trailerNumber, plateAlertsEnabled);
+				}
+			};
+			driverName.addTextChangedListener(watcher);
+			truckNumber.addTextChangedListener(watcher);
+			trailerNumber.addTextChangedListener(watcher);
+			plateAlertsEnabled.setOnCheckedChangeListener((buttonView, isChecked) ->
+					updateSetupSaveButton(saveButton, driverName, truckNumber, trailerNumber, plateAlertsEnabled));
+			updateSetupSaveButton(saveButton, driverName, truckNumber, trailerNumber, plateAlertsEnabled);
+		} else {
+			LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
+			RoadCrewUi.addButton(mapActivity, buttons,
+					mapActivity.getString(R.string.roadcrew_button_cancel), false, v -> dialog.dismiss());
+			saveButton = RoadCrewUi.addButton(mapActivity, buttons,
+					mapActivity.getString(R.string.roadcrew_button_save), true, v -> {
+						saveProfile.run();
+						app.showToastMessage(R.string.roadcrew_profile_saved);
+						dialog.dismiss();
+					});
+		}
+		dialog.setOnDismissListener(d -> {
+			if (onClosed != null && !openingSettings[0]) {
+				onClosed.run();
+			}
+		});
+		dialog.show();
+	}
+
+	private static void addAdvancedSections(@NonNull MapActivity mapActivity, @NonNull OsmandApplication app,
+			@NonNull LinearLayout content, @NonNull AlertDialog dialog, @NonNull boolean[] openingSettings,
+			@NonNull Runnable saveProfile, @Nullable Runnable onClosed) {
 		RoadCrewUi.addSectionTitle(mapActivity, content,
 				mapActivity.getString(R.string.roadcrew_profile_setup_status));
 		boolean phoneSetupComplete = RoadCrewSetupStatus.isPhoneSetupReady(mapActivity, app);
@@ -123,20 +188,17 @@ final class RoadCrewDriverProfileDialog {
 					BaseSettingsFragment.showInstance(mapActivity,
 							SettingsScreenType.VEHICLE_PARAMETERS, ApplicationMode.TRUCK);
 				});
+	}
 
-		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_cancel), false, v -> dialog.dismiss());
-		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_save), true, v -> {
-			saveProfile.run();
-			app.showToastMessage(R.string.roadcrew_profile_saved);
-			dialog.dismiss();
-		});
-		dialog.setOnDismissListener(d -> {
-			if (onClosed != null && !openingSettings[0]) {
-				onClosed.run();
-			}
-		});
-		dialog.show();
+	private static void updateSetupSaveButton(@NonNull Button saveButton, @NonNull EditText driverName,
+			@NonNull EditText truckNumber, @NonNull EditText trailerNumber,
+			@NonNull CheckBox plateAlertsEnabled) {
+		boolean hasName = !driverName.getText().toString().trim().isEmpty();
+		boolean hasPlate = !RoadCrewDriverProfile.normalizePlateNumber(truckNumber.getText().toString()).isEmpty()
+				|| !RoadCrewDriverProfile.normalizePlateNumber(trailerNumber.getText().toString()).isEmpty();
+		boolean enabled = hasName && hasPlate && plateAlertsEnabled.isChecked();
+		saveButton.setEnabled(enabled);
+		saveButton.setAlpha(enabled ? 1.0f : 0.45f);
 	}
 
 	@NonNull

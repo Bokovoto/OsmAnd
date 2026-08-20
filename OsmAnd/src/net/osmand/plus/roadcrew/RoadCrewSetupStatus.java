@@ -3,6 +3,7 @@ package net.osmand.plus.roadcrew;
 import static net.osmand.router.GeneralRouter.VEHICLE_HEIGHT;
 import static net.osmand.router.GeneralRouter.VEHICLE_LENGTH;
 import static net.osmand.router.GeneralRouter.VEHICLE_WEIGHT;
+import static net.osmand.router.GeneralRouter.VEHICLE_WIDTH;
 
 import android.content.Context;
 import android.location.LocationManager;
@@ -26,6 +27,7 @@ final class RoadCrewSetupStatus {
 
 	private static final String[] REQUIRED_TRUCK_PARAMETERS = {
 			VEHICLE_HEIGHT,
+			VEHICLE_WIDTH,
 			VEHICLE_WEIGHT,
 			VEHICLE_LENGTH
 	};
