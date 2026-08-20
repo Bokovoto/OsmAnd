@@ -3905,5 +3905,17 @@
     <string name="amount_of_total_used">Използвани %1$s от %2$s</string>
     <string name="delete_data">Изтриване на данни</string>
     <string name="rendering_attr_highway_class_service_name">Служебна</string>
-    <string name="shared_string_osm_link">Препратка от OSM</string>
+	<string name="shared_string_osm_link">Препратка от OSM</string>
+	<string name="roadcrew_route_console_title">ROUTECREW // ROUTE ENGINE</string>
+	<string name="roadcrew_route_console_source_offline">[OK] ИЗТОЧНИК // ОФЛАЙН КАРТИ</string>
+	<string name="roadcrew_route_console_source_ready">[OK] ИЗТОЧНИК // ГОТОВ</string>
+	<string name="roadcrew_route_console_profile_truck">[OK] ПРОФИЛ // КАМИОН</string>
+	<string name="roadcrew_route_console_profile_car">[OK] ПРОФИЛ // КОЛА</string>
+	<string name="roadcrew_route_console_restrictions_active">[OK] ОГРАНИЧЕНИЯ ЗА КАМИОН // АКТИВНИ</string>
+	<string name="roadcrew_route_console_restrictions_na">[--] ОГРАНИЧЕНИЯ ЗА КАМИОН // НЯМА</string>
+	<string name="roadcrew_route_console_route_graph">[RUN] ПЪТНА МРЕЖА // %1$d%%</string>
+	<string name="roadcrew_route_console_final_waiting">[WAIT] ФИНАЛЕН РЕЗУЛТАТ</string>
+	<string name="roadcrew_route_console_finalizing">[RUN] ФИНАЛЕН РЕЗУЛТАТ // ПРОВЕРКА</string>
+	<string name="roadcrew_route_console_task_calculating">&gt; Изчисляване на пътната мрежа...</string>
+	<string name="roadcrew_route_console_task_finalizing">&gt; Финализиране на маршрута...</string>
 </resources>

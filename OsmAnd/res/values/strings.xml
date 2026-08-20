@@ -5759,5 +5759,17 @@ Download tile maps directly, or copy them as SQLite database files to OsmAnd\'s 
     <string name="routing_attr_difficulty_preference_name">Preferred difficulty</string>
     <string name="routing_attr_difficulty_preference_description">Prefer routes of this difficulty, although routing over harder or easier pistes is still possible if shorter.</string>
     <string name="routing_attr_freeride_policy_name">Off-piste</string>
-    <string name="routing_attr_freeride_policy_description">\'Freeride\' and \'Off-piste\' are unofficial routes and passages. Typically ungroomed, unmaintained and not checked in the evening. Enter at your own risk.</string>
+	<string name="routing_attr_freeride_policy_description">\'Freeride\' and \'Off-piste\' are unofficial routes and passages. Typically ungroomed, unmaintained and not checked in the evening. Enter at your own risk.</string>
+	<string name="roadcrew_route_console_title">ROUTECREW // ROUTE ENGINE</string>
+	<string name="roadcrew_route_console_source_offline">[OK] ROUTING SOURCE // OFFLINE MAPS</string>
+	<string name="roadcrew_route_console_source_ready">[OK] ROUTING SOURCE // READY</string>
+	<string name="roadcrew_route_console_profile_truck">[OK] PROFILE // TRUCK</string>
+	<string name="roadcrew_route_console_profile_car">[OK] PROFILE // CAR</string>
+	<string name="roadcrew_route_console_restrictions_active">[OK] TRUCK RESTRICTIONS // ACTIVE</string>
+	<string name="roadcrew_route_console_restrictions_na">[--] TRUCK RESTRICTIONS // N/A</string>
+	<string name="roadcrew_route_console_route_graph">[RUN] ROUTE GRAPH // %1$d%%</string>
+	<string name="roadcrew_route_console_final_waiting">[WAIT] FINAL RESULT</string>
+	<string name="roadcrew_route_console_finalizing">[RUN] FINAL RESULT // VALIDATING</string>
+	<string name="roadcrew_route_console_task_calculating">&gt; Calculating road network...</string>
+	<string name="roadcrew_route_console_task_finalizing">&gt; Finalizing route...</string>
 </resources>

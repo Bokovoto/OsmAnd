@@ -137,6 +137,8 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 	private final Stack<MapRouteMenuStateHolder> menuBackStack = new Stack<>();
 
 	private boolean routeCalculationInProgress;
+	private int routeCalculationProgress;
+	private long routeCalculationStartedAtMillis;
 
 	private SelectNavigationPointController selectNavPointController;
 	private int cachedMenuState = MenuState.HEADER_ONLY;
@@ -346,6 +348,8 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 	public void routeCalculationStarted() {
 		lastIsFastRouting = null;
 		lastFastRoutingComplication = null;
+		routeCalculationProgress = 0;
+		routeCalculationStartedAtMillis = System.currentTimeMillis();
 		setRouteCalculationInProgress(true);
 		WeakReference<MapRouteInfoMenuFragment> fragmentRef = findMenuFragment();
 		MapRouteInfoMenuFragment fragment = fragmentRef != null ? fragmentRef.get() : null;
@@ -357,6 +361,10 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 	}
 
 	public void updateRouteCalculationProgress(int progress) {
+		if (!routeCalculationInProgress || routeCalculationStartedAtMillis == 0) {
+			routeCalculationStartedAtMillis = System.currentTimeMillis();
+		}
+		routeCalculationProgress = Math.max(0, Math.min(100, progress));
 		WeakReference<MapRouteInfoMenuFragment> fragmentRef = findMenuFragment();
 		MapRouteInfoMenuFragment fragment = fragmentRef != null ? fragmentRef.get() : null;
 		if (fragmentRef != null && fragment.isVisible()) {
@@ -365,7 +373,17 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 				fragment.updateInfo();
 			}
 			fragment.updateRouteCalculationProgress(progress);
+			updateRoadCrewRouteCalculationCard(routeCalculationProgress);
 			catchFastRoutingComplications();
+		}
+	}
+
+	private void updateRoadCrewRouteCalculationCard(int progress) {
+		for (BaseCard card : menuCards) {
+			if (card instanceof RoadCrewRouteCalculationCard calculationCard) {
+				calculationCard.setProgress(progress);
+				break;
+			}
 		}
 	}
 
@@ -544,7 +562,23 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 		List<BaseCard> menuCards = new ArrayList<>();
 
 		boolean bottomShadowVisible = true;
-		if (isBasicRouteCalculated()) {
+		boolean roadCrewCalculationCard = RoadCrewReportsLayer.isEnabled(app)
+				&& routeCalculationInProgress
+				&& !routingHelper.isPublicTransportMode()
+				&& !routingHelper.isBoatMode();
+		if (roadCrewCalculationCard) {
+			menuCards.add(new RoadCrewRouteCalculationCard(mapActivity, routeCalculationProgress,
+					routeCalculationStartedAtMillis));
+			RouteCalculationCardState state = getRouteCalculationCardState(app, hasCalculatedMissingMaps);
+			if (state != null) {
+				menuCards.add(new MissingMapsWarningCard(mapActivity, state));
+			} else if (hasCurrentMissingMaps(app)) {
+				menuCards.add(new MissingMapsWarningCard(mapActivity));
+			} else if (targetPointsHelper.hasTooLongDistanceToNavigate() && !hasCalculatedMissingMaps) {
+				menuCards.add(new LongDistanceWarningCard(mapActivity));
+			}
+			bottomShadowVisible = false;
+		} else if (isBasicRouteCalculated()) {
 			GpxFile gpx = GpxUiHelper.makeGpxFromRoute(routingHelper.getRoute(), app);
 			SimpleRouteCard simpleRouteCard = new SimpleRouteCard(mapActivity, gpx);
 			simpleRouteCard.setListener(this);

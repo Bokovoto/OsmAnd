@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="244dp"
+	android:layout_marginStart="12dp"
+	android:layout_marginTop="12dp"
+	android:layout_marginEnd="12dp">
+
+	<net.osmand.plus.routepreparationmenu.cards.RoadCrewRouteActivityView
+		android:id="@+id/roadcrew_route_activity"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:paddingStart="28dp"
+		android:paddingTop="18dp"
+		android:paddingEnd="28dp"
+		android:paddingBottom="44dp">
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:fontFamily="monospace"
+			android:text="@string/roadcrew_route_console_title"
+			android:textColor="#30E69D"
+			android:textSize="15sp"
+			android:textStyle="bold" />
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_marginTop="9dp"
+			android:layout_marginBottom="10dp"
+			android:background="#245D49" />
+
+		<TextView
+			android:id="@+id/roadcrew_console_source"
+			style="@style/RoadCrewRouteConsoleLine"
+			tools:text="[OK] ROUTING SOURCE // OFFLINE MAPS" />
+
+		<TextView
+			android:id="@+id/roadcrew_console_profile"
+			style="@style/RoadCrewRouteConsoleLine"
+			tools:text="[OK] PROFILE // TRUCK" />
+
+		<TextView
+			android:id="@+id/roadcrew_console_restrictions"
+			style="@style/RoadCrewRouteConsoleLine"
+			tools:text="[OK] TRUCK RESTRICTIONS // ACTIVE" />
+
+		<TextView
+			android:id="@+id/roadcrew_console_route_graph"
+			style="@style/RoadCrewRouteConsoleLine"
+			tools:text="[RUN] ROUTE GRAPH // 74%" />
+
+		<TextView
+			android:id="@+id/roadcrew_console_final_result"
+			style="@style/RoadCrewRouteConsoleLine"
+			android:textColor="#91A8A0"
+			tools:text="[WAIT] FINAL RESULT" />
+
+		<TextView
+			android:id="@+id/roadcrew_console_current_task"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:ellipsize="end"
+			android:fontFamily="monospace"
+			android:maxLines="1"
+			android:textColor="#F4C95D"
+			android:textSize="13sp"
+			tools:text="&gt; Calculating road network..." />
+
+	</LinearLayout>
+
+</FrameLayout>
