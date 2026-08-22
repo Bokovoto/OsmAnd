@@ -20,17 +20,38 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import net.osmand.Location;
 import net.osmand.plus.R;
 import net.osmand.plus.activities.MapActivity;
+import net.osmand.plus.routing.NextDirectionInfo;
+import net.osmand.plus.routing.RoutingHelper;
+import net.osmand.plus.utils.FormattedValue;
+import net.osmand.plus.utils.OsmAndFormatter;
+import net.osmand.plus.utils.OsmAndFormatterParams;
 import net.osmand.plus.views.controls.MapHudLayout;
+import net.osmand.plus.views.mapwidgets.TurnDrawable;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public final class RoadCrewNeonHud {
 
 	private static final String HUD_TAG = "roadcrew_neon_beta_hud";
+	private static final String HEADER_TAG = "roadcrew_neon_header";
 	private static final String NAV_ICON_TAG_PREFIX = "roadcrew_neon_nav_icon_";
 	private static final String NAV_TEXT_TAG_PREFIX = "roadcrew_neon_nav_text_";
 	private static final String LIVE_STATUS_TAG = "roadcrew_live_truck_map_status";
 	private static final String FOOTER_TAG = "roadcrew_neon_footer";
+	private static final String LEFT_RAIL_TAG = "roadcrew_landscape_left_rail";
+	private static final String RIGHT_RAIL_TAG = "roadcrew_landscape_right_rail";
+	private static final String TURN_ICON_TAG = "roadcrew_landscape_turn_icon";
+	private static final String TURN_DISTANCE_TAG = "roadcrew_landscape_turn_distance";
+	private static final String CURRENT_SPEED_TAG = "roadcrew_landscape_current_speed";
+	private static final String CURRENT_SPEED_UNIT_TAG = "roadcrew_landscape_current_speed_unit";
+	private static final String SPEED_LIMIT_TAG = "roadcrew_landscape_speed_limit";
+	private static final String DISTANCE_LEFT_TAG = "roadcrew_landscape_distance_left";
+	private static final String TIME_LEFT_TAG = "roadcrew_landscape_time_left";
+	private static final String LIVE_DOT_TAG = "roadcrew_landscape_live_dot";
 	private static final int BACKGROUND = 0xf213171a;
 	private static final int SURFACE = 0xf21c2226;
 	private static final int PRIMARY = 0xff75d02c;
@@ -89,6 +110,7 @@ public final class RoadCrewNeonHud {
 		root.setFocusable(false);
 
 		LinearLayout header = createHeader(activity, landscape);
+		header.setTag(HEADER_TAG);
 		FrameLayout.LayoutParams headerParams = new FrameLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT, dp(activity, landscape ? 44 : 58), Gravity.TOP);
 		headerParams.setMargins(dp(activity, landscape ? 8 : 10), dp(activity, landscape ? 4 : 6),
@@ -100,7 +122,128 @@ public final class RoadCrewNeonHud {
 		FrameLayout.LayoutParams footerParams = new FrameLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT, dp(activity, landscape ? 50 : 68), Gravity.BOTTOM);
 		root.addView(footer, footerParams);
+
+		if (landscape) {
+			root.addView(createLeftCockpitRail(activity), cockpitRailParams(activity, Gravity.START));
+			root.addView(createRightCockpitRail(activity), cockpitRailParams(activity, Gravity.END));
+		}
 		return root;
+	}
+
+	@NonNull
+	private static FrameLayout.LayoutParams cockpitRailParams(@NonNull MapActivity activity, int horizontalGravity) {
+		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+				dp(activity, 86), ViewGroup.LayoutParams.WRAP_CONTENT,
+				Gravity.CENTER_VERTICAL | horizontalGravity);
+		params.setMargins(dp(activity, 8), dp(activity, 4), dp(activity, 8), dp(activity, 4));
+		return params;
+	}
+
+	@NonNull
+	private static LinearLayout createLeftCockpitRail(@NonNull MapActivity activity) {
+		LinearLayout rail = createCockpitRail(activity);
+		rail.setTag(LEFT_RAIL_TAG);
+
+		ImageView turnIcon = new ImageView(activity);
+		turnIcon.setTag(TURN_ICON_TAG);
+		turnIcon.setContentDescription(activity.getString(R.string.map_widget_next_turn));
+		rail.addView(turnIcon, centeredParams(activity, 48, 48));
+
+		TextView turnDistance = cockpitText(activity, 16, Typeface.BOLD, TEXT);
+		turnDistance.setTag(TURN_DISTANCE_TAG);
+		rail.addView(turnDistance, matchWrapParams(activity, 0, 2));
+
+		View divider = new View(activity);
+		divider.setBackgroundColor(0x553d6f22);
+		LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, dp(activity, 1));
+		dividerParams.setMargins(dp(activity, 8), dp(activity, 5), dp(activity, 8), dp(activity, 5));
+		rail.addView(divider, dividerParams);
+
+		TextView speed = cockpitText(activity, 24, Typeface.BOLD, TEXT);
+		speed.setTag(CURRENT_SPEED_TAG);
+		rail.addView(speed, matchWrapParams(activity, 0, 0));
+
+		TextView speedUnit = cockpitText(activity, 9, Typeface.NORMAL, SECONDARY_TEXT);
+		speedUnit.setTag(CURRENT_SPEED_UNIT_TAG);
+		rail.addView(speedUnit, matchWrapParams(activity, 0, 2));
+
+		TextView speedLimit = cockpitText(activity, 15, Typeface.BOLD, Color.BLACK);
+		speedLimit.setTag(SPEED_LIMIT_TAG);
+		speedLimit.setGravity(Gravity.CENTER);
+		speedLimit.setBackground(circle(Color.WHITE, 0xffd32f2f, dp(activity, 3)));
+		LinearLayout.LayoutParams limitParams = centeredParams(activity, 40, 40);
+		limitParams.topMargin = dp(activity, 5);
+		rail.addView(speedLimit, limitParams);
+		return rail;
+	}
+
+	@NonNull
+	private static LinearLayout createRightCockpitRail(@NonNull MapActivity activity) {
+		LinearLayout rail = createCockpitRail(activity);
+		rail.setTag(RIGHT_RAIL_TAG);
+
+		TextView liveDot = new TextView(activity);
+		liveDot.setTag(LIVE_DOT_TAG);
+		liveDot.setContentDescription(activity.getString(R.string.roadcrew_live_truck_map_indicator_off));
+		rail.addView(liveDot, centeredParams(activity, 12, 12));
+
+		TextView distanceLeft = cockpitText(activity, 14, Typeface.BOLD, TEXT);
+		distanceLeft.setTag(DISTANCE_LEFT_TAG);
+		LinearLayout.LayoutParams distanceParams = matchWrapParams(activity, 3, 0);
+		rail.addView(distanceLeft, distanceParams);
+
+		TextView timeLeft = cockpitText(activity, 12, Typeface.NORMAL, SECONDARY_TEXT);
+		timeLeft.setTag(TIME_LEFT_TAG);
+		rail.addView(timeLeft, matchWrapParams(activity, 2, 5));
+
+		ImageButton report = iconButton(activity, R.drawable.ic_roadcrew_report,
+				activity.getString(R.string.roadcrew_report_button_content_description),
+				v -> showReports(activity), 10);
+		report.setBackground(roundRect(0xff0b6b3b, dp(activity, 24), 0xff75d02c));
+		rail.addView(report, centeredParams(activity, 48, 48));
+		return rail;
+	}
+
+	@NonNull
+	private static LinearLayout createCockpitRail(@NonNull MapActivity activity) {
+		LinearLayout rail = new LinearLayout(activity);
+		rail.setOrientation(LinearLayout.VERTICAL);
+		rail.setGravity(Gravity.CENTER);
+		rail.setPadding(dp(activity, 7), dp(activity, 8), dp(activity, 7), dp(activity, 8));
+		rail.setBackground(roundRect(0xe613171a, dp(activity, 6), 0xff3d6f22));
+		rail.setVisibility(View.GONE);
+		return rail;
+	}
+
+	@NonNull
+	private static TextView cockpitText(@NonNull MapActivity activity, int sizeSp, int style, int color) {
+		TextView text = new TextView(activity);
+		text.setTextColor(color);
+		text.setTextSize(sizeSp);
+		text.setTypeface(Typeface.DEFAULT, style);
+		text.setGravity(Gravity.CENTER);
+		text.setMaxLines(2);
+		return text;
+	}
+
+	@NonNull
+	private static LinearLayout.LayoutParams centeredParams(@NonNull MapActivity activity,
+			int widthDp, int heightDp) {
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				dp(activity, widthDp), dp(activity, heightDp));
+		params.gravity = Gravity.CENTER_HORIZONTAL;
+		return params;
+	}
+
+	@NonNull
+	private static LinearLayout.LayoutParams matchWrapParams(@NonNull MapActivity activity,
+			int topMarginDp, int bottomMarginDp) {
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		params.topMargin = dp(activity, topMarginDp);
+		params.bottomMargin = dp(activity, bottomMarginDp);
+		return params;
 	}
 
 	@NonNull
@@ -280,14 +423,130 @@ public final class RoadCrewNeonHud {
 			return;
 		}
 		boolean landscape = isLandscape(activity);
-		boolean hideFooter = landscape && activity.getRoutingHelper().isFollowingMode();
+		boolean cockpitMode = landscape && activity.getRoutingHelper().isFollowingMode();
+		View header = root.findViewWithTag(HEADER_TAG);
 		View footer = root.findViewWithTag(FOOTER_TAG);
+		View leftRail = root.findViewWithTag(LEFT_RAIL_TAG);
+		View rightRail = root.findViewWithTag(RIGHT_RAIL_TAG);
+		if (header != null) {
+			header.setVisibility(cockpitMode ? View.GONE : View.VISIBLE);
+		}
 		if (footer != null) {
-			footer.setVisibility(hideFooter ? View.GONE : View.VISIBLE);
+			footer.setVisibility(cockpitMode ? View.GONE : View.VISIBLE);
+		}
+		if (leftRail != null) {
+			leftRail.setVisibility(cockpitMode ? View.VISIBLE : View.GONE);
+		}
+		if (rightRail != null) {
+			rightRail.setVisibility(cockpitMode ? View.VISIBLE : View.GONE);
+		}
+		if (root instanceof NeonHudRoot) {
+			((NeonHudRoot) root).setCockpitMode(cockpitMode);
 		}
 		MapHudLayout mapHud = activity.findViewById(R.id.map_hud_layout);
 		if (mapHud != null) {
-			setNativeHudOffsets(mapHud, true, landscape, hideFooter);
+			setNativeHudOffsets(mapHud, !cockpitMode, landscape, cockpitMode);
+		}
+		if (cockpitMode) {
+			updateCockpitData(root, activity);
+		}
+	}
+
+	private static void updateCockpitData(@NonNull View root, @NonNull MapActivity activity) {
+		RoutingHelper routingHelper = activity.getRoutingHelper();
+		NextDirectionInfo direction = routingHelper.getNextRouteDirectionInfo(new NextDirectionInfo(), true);
+		ImageView turnIcon = root.findViewWithTag(TURN_ICON_TAG);
+		TextView turnDistance = root.findViewWithTag(TURN_DISTANCE_TAG);
+		if (direction != null && direction.directionInfo != null) {
+			if (turnIcon != null) {
+				TurnDrawable drawable = turnIcon.getDrawable() instanceof TurnDrawable
+						? (TurnDrawable) turnIcon.getDrawable()
+						: createTurnDrawable(activity);
+				drawable.setTurnType(direction.directionInfo.getTurnType());
+				drawable.setTurnImminent(direction.imminent, routingHelper.isDeviatedFromRoute());
+				turnIcon.setImageDrawable(drawable);
+				turnIcon.setVisibility(View.VISIBLE);
+			}
+			if (turnDistance != null) {
+				turnDistance.setText(OsmAndFormatter.getFormattedDistance(direction.distanceTo,
+						activity.getApp(), OsmAndFormatterParams.USE_LOWER_BOUNDS));
+			}
+		} else {
+			if (turnIcon != null) {
+				turnIcon.setVisibility(View.INVISIBLE);
+			}
+			if (turnDistance != null) {
+				turnDistance.setText("-");
+			}
+		}
+
+		Location location = activity.getApp().getLocationProvider().getLastKnownLocation();
+		FormattedValue speed = OsmAndFormatter.getFormattedSpeedValue(
+				location != null && location.hasSpeed() ? location.getSpeed() : 0, activity.getApp());
+		setText(root, CURRENT_SPEED_TAG, speed.value);
+		setText(root, CURRENT_SPEED_UNIT_TAG, speed.unit);
+
+		float speedLimitMetersPerSecond = routingHelper.getCurrentMaxSpeed();
+		String speedLimit = "-";
+		if (speedLimitMetersPerSecond > 0 && !Float.isInfinite(speedLimitMetersPerSecond)
+				&& !Float.isNaN(speedLimitMetersPerSecond)) {
+			speedLimit = OsmAndFormatter.getFormattedSpeedValue(
+					speedLimitMetersPerSecond, activity.getApp()).value;
+		}
+		setText(root, SPEED_LIMIT_TAG, speedLimit);
+		setText(root, DISTANCE_LEFT_TAG, OsmAndFormatter.getFormattedDistance(
+				routingHelper.getLeftDistance(), activity.getApp(), OsmAndFormatterParams.USE_LOWER_BOUNDS));
+		setText(root, TIME_LEFT_TAG, OsmAndFormatter.getFormattedDuration(
+				routingHelper.getLeftTime(), activity.getApp()));
+		updateCockpitLiveDot(root, activity);
+	}
+
+	@NonNull
+	private static TurnDrawable createTurnDrawable(@NonNull MapActivity activity) {
+		TurnDrawable drawable = new TurnDrawable(activity, false);
+		drawable.setBounds(0, 0, dp(activity, 48), dp(activity, 48));
+		drawable.updateColors(true);
+		return drawable;
+	}
+
+	private static void updateCockpitLiveDot(@NonNull View root, @NonNull MapActivity activity) {
+		View liveDot = root.findViewWithTag(LIVE_DOT_TAG);
+		if (liveDot == null) {
+			return;
+		}
+		RoadCrewMapObservationCoordinator.StatusSnapshot snapshot =
+				RoadCrewMapObservationCoordinator.getStatus(activity.getApp());
+		int color;
+		int description;
+		switch (snapshot.status) {
+			case ACTIVE:
+				color = PRIMARY;
+				description = R.string.roadcrew_live_truck_map_indicator_active;
+				break;
+			case WAITING_FOR_GPS:
+			case PAUSED:
+			case TRUCK_PROFILE_REQUIRED:
+				color = WAITING;
+				description = R.string.roadcrew_live_truck_map_indicator_waiting;
+				break;
+			case UPLOAD_ERROR:
+				color = ERROR;
+				description = R.string.roadcrew_live_truck_map_indicator_error;
+				break;
+			case OFF:
+			default:
+				color = SECONDARY_TEXT;
+				description = R.string.roadcrew_live_truck_map_indicator_off;
+				break;
+		}
+		liveDot.setBackground(circle(color, Color.WHITE, dp(activity, 1)));
+		liveDot.setContentDescription(activity.getString(description));
+	}
+
+	private static void setText(@NonNull View root, @NonNull String tag, @NonNull String value) {
+		TextView text = root.findViewWithTag(tag);
+		if (text != null) {
+			text.setText(value);
 		}
 	}
 
@@ -340,6 +599,17 @@ public final class RoadCrewNeonHud {
 		return drawable;
 	}
 
+	@NonNull
+	private static GradientDrawable circle(int color, int strokeColor, int strokeWidth) {
+		GradientDrawable drawable = new GradientDrawable();
+		drawable.setShape(GradientDrawable.OVAL);
+		drawable.setColor(color);
+		if (strokeColor != 0 && strokeWidth > 0) {
+			drawable.setStroke(strokeWidth, strokeColor);
+		}
+		return drawable;
+	}
+
 	private static int dp(@NonNull View view, float value) {
 		return (int) (value * view.getResources().getDisplayMetrics().density);
 	}
@@ -359,11 +629,30 @@ public final class RoadCrewNeonHud {
 
 	private static final class NeonHudRoot extends FrameLayout {
 		private static final long THEME_CHECK_INTERVAL_MS = 60_000L;
-		private static final long STATUS_CHECK_INTERVAL_MS = 2_000L;
+		private static final long STATUS_CHECK_INTERVAL_MS = 1_000L;
+		private static final int[] COCKPIT_HIDDEN_VIEW_IDS = {
+				R.id.top_widgets_panel,
+				R.id.map_left_widgets_panel,
+				R.id.map_right_widgets_panel,
+				R.id.map_bottom_widgets_panel,
+				R.id.speedometer_widget,
+				R.id.map_zoom_in_button,
+				R.id.map_zoom_out_button,
+				R.id.roadcrew_report_button,
+				R.id.map_layers_button,
+				R.id.map_search_button,
+				R.id.map_compass_button,
+				R.id.map_my_location_button,
+				R.id.map_menu_button,
+				R.id.map_route_info_button,
+				R.id.map_3d_button
+		};
 
 		private final MapActivity activity;
 		private final boolean nightMode;
 		private final boolean landscape;
+		private final Map<View, Integer> savedNativeVisibility = new LinkedHashMap<>();
+		private boolean cockpitMode;
 		private final Runnable themeCheck = new Runnable() {
 			@Override
 			public void run() {
@@ -396,6 +685,37 @@ public final class RoadCrewNeonHud {
 			this.landscape = landscape;
 		}
 
+		private void setCockpitMode(boolean enabled) {
+			if (enabled) {
+				if (!cockpitMode) {
+					savedNativeVisibility.clear();
+					cockpitMode = true;
+				}
+				for (int id : COCKPIT_HIDDEN_VIEW_IDS) {
+					View view = activity.findViewById(id);
+					if (view != null && !savedNativeVisibility.containsKey(view)) {
+						savedNativeVisibility.put(view, view.getVisibility());
+					}
+				}
+				for (View view : savedNativeVisibility.keySet()) {
+					view.setVisibility(View.GONE);
+				}
+			} else {
+				restoreNativeVisibility();
+			}
+		}
+
+		private void restoreNativeVisibility() {
+			if (!cockpitMode) {
+				return;
+			}
+			for (Map.Entry<View, Integer> entry : savedNativeVisibility.entrySet()) {
+				entry.getKey().setVisibility(entry.getValue());
+			}
+			savedNativeVisibility.clear();
+			cockpitMode = false;
+		}
+
 		@Override
 		protected void onAttachedToWindow() {
 			super.onAttachedToWindow();
@@ -407,6 +727,7 @@ public final class RoadCrewNeonHud {
 		protected void onDetachedFromWindow() {
 			removeCallbacks(themeCheck);
 			removeCallbacks(statusCheck);
+			restoreNativeVisibility();
 			super.onDetachedFromWindow();
 		}
 	}
