@@ -17,10 +17,8 @@ public abstract class MultiColoringGeometryWayContext extends CommonGeometryWayC
 
 	private final Paint borderPaint;
 	private final Paint customOutlinePaint;
-	private final Paint customGlowPaint;
 	private final Paint circlePaint;
 	private boolean customOutlineEnabled;
-	private boolean customGlowEnabled;
 
 	private final Bitmap specialArrowBitmap;
 
@@ -28,7 +26,6 @@ public abstract class MultiColoringGeometryWayContext extends CommonGeometryWayC
 		super(ctx, density);
 		borderPaint = createBorderPaint();
 		customOutlinePaint = createBorderPaint();
-		customGlowPaint = createBorderPaint();
 		circlePaint = createCirclePaint();
 		float scale = getApp().getOsmandMap().getCarDensityScaleCoef();
 		Bitmap specialArrowBitmap = AndroidUtils.drawableToBitmap(ContextCompat.getDrawable(ctx, R.drawable.mm_special_arrow_up));
@@ -83,36 +80,17 @@ public abstract class MultiColoringGeometryWayContext extends CommonGeometryWayC
 		customOutlineEnabled = true;
 	}
 
-	public void setCustomGlow(int color, float width) {
-		customGlowPaint.setColor(color);
-		customGlowPaint.setStrokeWidth(width);
-		customGlowEnabled = true;
-	}
-
 	public void clearCustomOutline() {
 		customOutlineEnabled = false;
-	}
-
-	public void clearCustomGlow() {
-		customGlowEnabled = false;
 	}
 
 	public boolean isCustomOutlineEnabled() {
 		return customOutlineEnabled;
 	}
 
-	public boolean isCustomGlowEnabled() {
-		return customGlowEnabled;
-	}
-
 	@NonNull
 	public Paint getCustomOutlinePaint() {
 		return customOutlinePaint;
-	}
-
-	@NonNull
-	public Paint getCustomGlowPaint() {
-		return customGlowPaint;
 	}
 
 	public Bitmap getSpecialArrowBitmap() {

@@ -505,11 +505,9 @@ public class RouteLayer extends BaseRouteLayer implements IContextMenuProvider {
 					? Math.max(nativeRouteLineWidth * 0.62f, density * 3.5f)
 					: nativeRouteLineWidth;
 			boolean shouldShowDirectionArrows = shouldShowDirectionArrows();
-			routeGeometry.setCustomLayers(
+			routeGeometry.setCustomOutline(
 					neonDay ? RoadCrewVisualStyle.getNeonDayRouteOutlineColor() : null,
-					routeLineWidth + density * 2.5f,
-					neonDay ? RoadCrewVisualStyle.getNeonDayRouteGlowColor() : null,
-					routeLineWidth + density * 9f);
+					routeLineWidth + density * 3.5f);
 			routeGeometry.setRouteStyleParams(routeLineColor, routeLineWidth, shouldShowDirectionArrows,
 					neonDay ? RoadCrewVisualStyle.getNeonDayRouteArrowColor() : getDirectionArrowsColor(),
 					actualColoringType, routeInfoAttribute, routeGradientPalette);

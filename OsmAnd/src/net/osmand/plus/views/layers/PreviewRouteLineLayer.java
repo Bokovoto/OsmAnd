@@ -143,11 +143,9 @@ public class PreviewRouteLineLayer extends BaseRouteLayer {
 		float routeLineWidth = neonDay
 				? Math.max(nativeRouteLineWidth * 0.62f, density * 3.5f)
 				: nativeRouteLineWidth;
-		previewLineGeometry.setCustomLayers(
+		previewLineGeometry.setCustomOutline(
 				neonDay ? RoadCrewVisualStyle.getNeonDayRouteOutlineColor() : null,
-				routeLineWidth + density * 2.5f,
-				neonDay ? RoadCrewVisualStyle.getNeonDayRouteGlowColor() : null,
-				routeLineWidth + density * 9f);
+				routeLineWidth + density * 3.5f);
 		previewLineGeometry.setRouteStyleParams(getRouteLineColor(), routeLineWidth,
 				shouldShowDirectionArrows(),
 				neonDay ? RoadCrewVisualStyle.getNeonDayRouteArrowColor() : getDirectionArrowsColor(),

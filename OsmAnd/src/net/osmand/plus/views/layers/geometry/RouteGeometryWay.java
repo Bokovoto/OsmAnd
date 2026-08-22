@@ -93,17 +93,11 @@ public class RouteGeometryWay extends
 		this.gradientPalette = gradientPalette;
 	}
 
-	public void setCustomLayers(@Nullable @ColorInt Integer outlineColor, float outlineWidth,
-	                            @Nullable @ColorInt Integer glowColor, float glowWidth) {
-		if (outlineColor == null) {
+	public void setCustomOutline(@Nullable @ColorInt Integer color, float width) {
+		if (color == null) {
 			getContext().clearCustomOutline();
 		} else {
-			getContext().setCustomOutline(outlineColor, outlineWidth);
-		}
-		if (glowColor == null) {
-			getContext().clearCustomGlow();
-		} else {
-			getContext().setCustomGlow(glowColor, glowWidth);
+			getContext().setCustomOutline(color, width);
 		}
 	}
 
