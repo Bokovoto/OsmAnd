@@ -9,7 +9,7 @@ import java.io.File;
 
 final class RoadCrewMapObservationConsent {
 
-	static final int CURRENT_CONSENT_VERSION = 1;
+	static final int CURRENT_CONSENT_VERSION = 2;
 	private static final String PREFS_NAME = "roadcrew_live_truck_map";
 	private static final String KEY_ENABLED = "observation_enabled";
 	private static final String KEY_CONSENT_VERSION = "consent_version";

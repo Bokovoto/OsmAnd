@@ -51,6 +51,8 @@ final class RoadCrewMapObservationCoordinator implements OsmAndLocationListener 
 
 	@Nullable
 	private RoadCrewObservationPipeline pipeline;
+	@Nullable
+	private RoadCrewObservationOutbox outbox;
 	private volatile boolean enabled;
 	private volatile boolean listening;
 	private double loadedLatitude = Double.NaN;
@@ -142,9 +144,13 @@ final class RoadCrewMapObservationCoordinator implements OsmAndLocationListener 
 					return;
 				}
 			}
-			currentPipeline.accept(new RoadCrewSegmentMatcher.GpsFix(sample.latitude, sample.longitude,
-					sample.accuracyMeters, sample.speedMetersPerSecond, sample.bearingDegrees),
+			RoadCrewObservationPipeline.ProcessingResult result = currentPipeline.accept(
+					new RoadCrewSegmentMatcher.GpsFix(sample.latitude, sample.longitude,
+							sample.accuracyMeters, sample.speedMetersPerSecond, sample.bearingDegrees),
 					sample.elapsedRealtimeMillis, sample.wallTimeMillis);
+			if (result.wasQueued() && outbox != null) {
+				RoadCrewMapObservationUploader.schedule(app, outbox);
+			}
 		} catch (IOException | RuntimeException e) {
 			LOG.error("RoadCrew Live Truck Map observation failed closed", e);
 			resetPipeline();
@@ -154,8 +160,9 @@ final class RoadCrewMapObservationCoordinator implements OsmAndLocationListener 
 	@NonNull
 	private RoadCrewObservationPipeline ensurePipeline() throws IOException {
 		if (pipeline == null) {
-			pipeline = new RoadCrewObservationPipeline(RoadCrewObservationOutbox.open(
-					RoadCrewMapObservationConsent.getOutboxFile(app)));
+			outbox = RoadCrewObservationOutbox.open(RoadCrewMapObservationConsent.getOutboxFile(app));
+			pipeline = new RoadCrewObservationPipeline(outbox);
+			RoadCrewMapObservationUploader.schedule(app, outbox);
 		}
 		return pipeline;
 	}
@@ -205,6 +212,7 @@ final class RoadCrewMapObservationCoordinator implements OsmAndLocationListener 
 			pipeline.reset();
 			pipeline = null;
 		}
+		outbox = null;
 		loadedLatitude = Double.NaN;
 		loadedLongitude = Double.NaN;
 		loadedAtElapsedMillis = 0;
