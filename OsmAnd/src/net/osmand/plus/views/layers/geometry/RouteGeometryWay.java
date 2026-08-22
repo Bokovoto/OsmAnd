@@ -93,6 +93,14 @@ public class RouteGeometryWay extends
 		this.gradientPalette = gradientPalette;
 	}
 
+	public void setCustomOutline(@Nullable @ColorInt Integer color, float width) {
+		if (color == null) {
+			getContext().clearCustomOutline();
+		} else {
+			getContext().setCustomOutline(color, width);
+		}
+	}
+
 	@Override
 	protected void updatePaints(@Nullable Float width, @NonNull ColoringType routeColoringType) {
 		super.updatePaints(width, routeColoringType);

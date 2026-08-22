@@ -20,6 +20,7 @@ import net.osmand.PlatformUtil;
 import net.osmand.data.QuadPoint;
 import net.osmand.data.RotatedTileBox;
 import net.osmand.plus.OsmandApplication;
+import net.osmand.plus.roadcrew.RoadCrewVisualStyle;
 import net.osmand.plus.routing.PreviewRouteLineInfo;
 import net.osmand.plus.utils.AndroidUtils;
 import net.osmand.plus.utils.ColorUtilities;
@@ -136,8 +137,15 @@ public class PreviewRouteLineLayer extends BaseRouteLayer {
 		points.add(new GeometryWayPoint(points.size(), centerX, endY));
 		points.add(new GeometryWayPoint(points.size(), endX, endY));
 
-		previewLineGeometry.setRouteStyleParams(getRouteLineColor(), getRouteLineWidth(tileBox),
-				shouldShowDirectionArrows(), getDirectionArrowsColor(), routeColoringType, routeInfoAttribute, routeGradientPalette);
+		float routeLineWidth = getRouteLineWidth(tileBox);
+		boolean neonDay = RoadCrewVisualStyle.isNeonDay(getContext());
+		previewLineGeometry.setCustomOutline(neonDay
+				? RoadCrewVisualStyle.getNeonDayRouteGlowColor() : null,
+				routeLineWidth + previewWayContext.getDensity() * 6f);
+		previewLineGeometry.setRouteStyleParams(getRouteLineColor(), routeLineWidth,
+				shouldShowDirectionArrows(),
+				neonDay ? RoadCrewVisualStyle.getNeonDayRouteArrowColor() : getDirectionArrowsColor(),
+				routeColoringType, routeInfoAttribute, routeGradientPalette);
 		fillPreviewLineArrays(points);
 		canvas.rotate(+tileBox.getRotate(), tileBox.getCenterPixelX(), tileBox.getCenterPixelY());
 		previewLineGeometry.drawRouteSegment(tileBox, canvas, points, 0);

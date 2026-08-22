@@ -46,7 +46,7 @@ public class MultiColoringGeometryWayDrawer<T extends MultiColoringGeometryWayCo
 					fullPath.addPath(data.path);
 				}
 			}
-			canvas.drawPath(fullPath, getContext().getBorderPaint());
+			canvas.drawPath(fullPath, getBorderPaint());
 		}
 	}
 
@@ -84,9 +84,10 @@ public class MultiColoringGeometryWayDrawer<T extends MultiColoringGeometryWayCo
 	                              int lineId, int baseOrder, boolean shouldDrawArrows, boolean approximationEnabled,
 	                              @NonNull GeometryWayStyle<?> style,
 	                              @NonNull List<DrawPathData31> pathsData) {
-		Paint borderPaint = getContext().getBorderPaint();
-		int borderColor = coloringType.isGradient() ? borderPaint.getColor() : 0;
-		float borderWidth = coloringType.isGradient() ? borderPaint.getStrokeWidth() : 0;
+		Paint borderPaint = getBorderPaint();
+		boolean drawBorder = coloringType.isGradient() || getContext().isCustomOutlineEnabled();
+		int borderColor = drawBorder ? borderPaint.getColor() : 0;
+		float borderWidth = drawBorder ? borderPaint.getStrokeWidth() : 0;
 
 		PathPoint arrowPathPointSample = getArrowPathPointSample(style, false);
 		arrowPathPointSample.scaled = false;
@@ -182,13 +183,21 @@ public class MultiColoringGeometryWayDrawer<T extends MultiColoringGeometryWayCo
 	protected void drawSegmentBorder(@NonNull Canvas canvas, int zoom, @NonNull DrawPathData pathData) {
 		if (DRAW_BORDER && zoom >= BORDER_TYPE_ZOOM_THRESHOLD && requireDrawingBorder()) {
 			if (pathData.style.color != 0) {
-				canvas.drawPath(pathData.path, getContext().getBorderPaint());
+				canvas.drawPath(pathData.path, getBorderPaint());
 			}
 		}
 	}
 
 	private boolean requireDrawingBorder() {
-		return coloringType.isGradient() || coloringType.isRouteInfoAttribute();
+		return coloringType.isGradient() || coloringType.isRouteInfoAttribute()
+				|| getContext().isCustomOutlineEnabled();
+	}
+
+	@NonNull
+	private Paint getBorderPaint() {
+		return getContext().isCustomOutlineEnabled()
+				? getContext().getCustomOutlinePaint()
+				: getContext().getBorderPaint();
 	}
 
 	@Override

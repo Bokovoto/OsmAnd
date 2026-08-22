@@ -83,6 +83,7 @@ import net.osmand.plus.myplaces.favorites.FavoritesListener;
 import net.osmand.plus.poi.PoiUIFilter;
 import net.osmand.plus.profiles.ConfigureAppModesBottomSheetDialogFragment;
 import net.osmand.plus.roadcrew.RoadCrewReportsLayer;
+import net.osmand.plus.roadcrew.RoadCrewVisualStyle;
 import net.osmand.plus.routepreparationmenu.cards.*;
 import net.osmand.plus.routepreparationmenu.cards.BaseCard.CardListener;
 import net.osmand.plus.routing.GPXRouteParams.GPXRouteParamsBuilder;
@@ -1237,7 +1238,11 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 					? roadCrewRouteReady
 					: routeCalculated || currentLocationNotFound && !helper.isRouteBeingCalculated() && !hasCalculatedMissingMaps;
 			if (buttonActive) {
-				AndroidUtils.setBackgroundColor(app, startButton, ColorUtilities.getActiveColorId(nightMode));
+				if (RoadCrewVisualStyle.isNeonDay(app)) {
+					startButton.setBackgroundColor(RoadCrewVisualStyle.getNeonDayRouteColor());
+				} else {
+					AndroidUtils.setBackgroundColor(app, startButton, ColorUtilities.getActiveColorId(nightMode));
+				}
 				color2 = color1;
 			} else {
 				AndroidUtils.setBackgroundColor(app, startButton, ColorUtilities.getActivityBgColorId(nightMode));

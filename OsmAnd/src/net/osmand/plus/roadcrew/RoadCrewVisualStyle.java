@@ -24,7 +24,9 @@ public final class RoadCrewVisualStyle {
 	private static final String KEY_PREVIOUS_ROUTE_COLOR_DAY_PREFIX = "previous_route_color_day_";
 	private static final String KEY_PREVIOUS_ROUTE_COLOR_NIGHT_PREFIX = "previous_route_color_night_";
 	private static final String KEY_PREVIOUS_ROUTE_COLORING_PREFIX = "previous_route_coloring_";
-	private static final int NEON_DAY_ROUTE_COLOR = 0xff76ff03;
+	private static final int NEON_DAY_ROUTE_COLOR = 0xffa1ff3d;
+	private static final int NEON_DAY_ROUTE_GLOW_COLOR = 0x8076ff03;
+	private static final int NEON_DAY_ROUTE_ARROW_COLOR = 0xff17351a;
 
 	private RoadCrewVisualStyle() {
 	}
@@ -72,6 +74,22 @@ public final class RoadCrewVisualStyle {
 		}
 		int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 		return hour < 7 || hour >= 19;
+	}
+
+	public static boolean isNeonDay(@NonNull Context context) {
+		return isNeonBeta(context) && !isNeonNight(context);
+	}
+
+	public static int getNeonDayRouteColor() {
+		return NEON_DAY_ROUTE_COLOR;
+	}
+
+	public static int getNeonDayRouteGlowColor() {
+		return NEON_DAY_ROUTE_GLOW_COLOR;
+	}
+
+	public static int getNeonDayRouteArrowColor() {
+		return NEON_DAY_ROUTE_ARROW_COLOR;
 	}
 
 	private static boolean applyNeonTheme(@NonNull OsmandApplication app,
