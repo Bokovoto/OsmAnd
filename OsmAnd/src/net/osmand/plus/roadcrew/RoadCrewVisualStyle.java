@@ -42,20 +42,8 @@ public final class RoadCrewVisualStyle {
 		OsmandApplication app = (OsmandApplication) appContext;
 		OsmandSettings settings = app.getSettings();
 		SharedPreferences preferences = preferences(app);
-		if (isNeonBeta(app)) {
-			ApplicationMode mode = settings.getApplicationMode();
-			String previousKey = previousDayNightKey(mode);
-			if (!preferences.contains(previousKey)) {
-				preferences.edit().putString(previousKey,
-						settings.DAYNIGHT_MODE.getModeValue(mode).name()).apply();
-			}
-			if (settings.DAYNIGHT_MODE.getModeValue(mode) != DayNightMode.NIGHT) {
-				settings.DAYNIGHT_MODE.setModeValue(mode, DayNightMode.NIGHT);
-				return true;
-			}
-			return false;
-		}
-
+		// Test 41 forced NIGHT while Neon was enabled. Restore each profile once,
+		// then let OsmAnd's normal day/night setting control both map variants.
 		boolean changed = false;
 		SharedPreferences.Editor editor = preferences.edit();
 		for (ApplicationMode mode : ApplicationMode.allPossibleValues()) {

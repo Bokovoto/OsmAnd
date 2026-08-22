@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 
 import net.osmand.plus.R;
 import net.osmand.plus.activities.MapActivity;
+import net.osmand.plus.settings.enums.ThemeUsageContext;
 import net.osmand.plus.views.controls.MapHudLayout;
 
 public final class RoadCrewNeonHud {
@@ -55,8 +56,15 @@ public final class RoadCrewNeonHud {
 			}
 			return;
 		}
+		boolean nightMode = activity.getApp().getDaynightHelper()
+				.isNightMode(ThemeUsageContext.MAP);
+		if (existing != null && (!(existing instanceof NeonHudRoot)
+				|| ((NeonHudRoot) existing).nightMode != nightMode)) {
+			mapHud.removeView(existing);
+			existing = null;
+		}
 		if (existing == null) {
-			mapHud.addView(createHud(activity), new FrameLayout.LayoutParams(
+			mapHud.addView(createHud(activity, nightMode), new FrameLayout.LayoutParams(
 					ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 		}
 		setNativeHudOffsets(mapHud, true);
@@ -67,8 +75,8 @@ public final class RoadCrewNeonHud {
 	}
 
 	@NonNull
-	private static View createHud(@NonNull MapActivity activity) {
-		FrameLayout root = new FrameLayout(activity);
+	private static View createHud(@NonNull MapActivity activity, boolean nightMode) {
+		FrameLayout root = new NeonHudRoot(activity, nightMode);
 		root.setTag(HUD_TAG);
 		root.setClickable(false);
 		root.setFocusable(false);
@@ -267,5 +275,14 @@ public final class RoadCrewNeonHud {
 
 	private static int dpValue(float value) {
 		return Math.max(1, (int) value);
+	}
+
+	private static final class NeonHudRoot extends FrameLayout {
+		private final boolean nightMode;
+
+		private NeonHudRoot(@NonNull MapActivity activity, boolean nightMode) {
+			super(activity);
+			this.nightMode = nightMode;
+		}
 	}
 }
