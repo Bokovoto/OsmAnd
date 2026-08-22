@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 
 import net.osmand.plus.OsmandApplication;
+import net.osmand.plus.settings.backend.ApplicationMode;
+import net.osmand.plus.settings.backend.OsmandSettings;
+import net.osmand.plus.settings.enums.DayNightMode;
 
 public final class RoadCrewVisualStyle {
 
@@ -13,6 +16,7 @@ public final class RoadCrewVisualStyle {
 	private static final String KEY_STYLE = "selected_style";
 	private static final String STYLE_CLASSIC = "CLASSIC";
 	private static final String STYLE_NEON_BETA = "NEON_BETA";
+	private static final String KEY_PREVIOUS_DAY_NIGHT_PREFIX = "previous_day_night_";
 
 	private RoadCrewVisualStyle() {
 	}
@@ -25,6 +29,63 @@ public final class RoadCrewVisualStyle {
 		preferences(context).edit()
 				.putString(KEY_STYLE, enabled ? STYLE_NEON_BETA : STYLE_CLASSIC)
 				.apply();
+		syncMapTheme(context);
+	}
+
+	public static boolean syncMapTheme(@NonNull Context context) {
+		Context appContext = context instanceof OsmandApplication
+				? context
+				: context.getApplicationContext();
+		if (!(appContext instanceof OsmandApplication)) {
+			return false;
+		}
+		OsmandApplication app = (OsmandApplication) appContext;
+		OsmandSettings settings = app.getSettings();
+		SharedPreferences preferences = preferences(app);
+		if (isNeonBeta(app)) {
+			ApplicationMode mode = settings.getApplicationMode();
+			String previousKey = previousDayNightKey(mode);
+			if (!preferences.contains(previousKey)) {
+				preferences.edit().putString(previousKey,
+						settings.DAYNIGHT_MODE.getModeValue(mode).name()).apply();
+			}
+			if (settings.DAYNIGHT_MODE.getModeValue(mode) != DayNightMode.NIGHT) {
+				settings.DAYNIGHT_MODE.setModeValue(mode, DayNightMode.NIGHT);
+				return true;
+			}
+			return false;
+		}
+
+		boolean changed = false;
+		SharedPreferences.Editor editor = preferences.edit();
+		for (ApplicationMode mode : ApplicationMode.allPossibleValues()) {
+			String previousKey = previousDayNightKey(mode);
+			String storedMode = preferences.getString(previousKey, null);
+			if (storedMode != null) {
+				DayNightMode previousMode = parseDayNightMode(storedMode);
+				if (settings.DAYNIGHT_MODE.getModeValue(mode) != previousMode) {
+					settings.DAYNIGHT_MODE.setModeValue(mode, previousMode);
+					changed = true;
+				}
+				editor.remove(previousKey);
+			}
+		}
+		editor.apply();
+		return changed;
+	}
+
+	@NonNull
+	private static DayNightMode parseDayNightMode(@NonNull String value) {
+		try {
+			return DayNightMode.valueOf(value);
+		} catch (IllegalArgumentException ignored) {
+			return DayNightMode.AUTO;
+		}
+	}
+
+	@NonNull
+	private static String previousDayNightKey(@NonNull ApplicationMode mode) {
+		return KEY_PREVIOUS_DAY_NIGHT_PREFIX + mode.getStringKey();
 	}
 
 	private static SharedPreferences preferences(@NonNull Context context) {

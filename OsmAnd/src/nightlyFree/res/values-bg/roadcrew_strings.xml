@@ -178,6 +178,7 @@
 	<string name="roadcrew_neon_nav_route">Маршрут</string>
 	<string name="roadcrew_neon_nav_reports">Сигнали</string>
 	<string name="roadcrew_neon_nav_profile">Профил</string>
+	<string name="roadcrew_neon_nav_more">Още</string>
 	<string name="roadcrew_neon_report_title">Какво виждате?</string>
 
 	<string name="roadcrew_button_cancel">Отказ</string>

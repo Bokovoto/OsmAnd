@@ -26,6 +26,8 @@ import net.osmand.plus.views.controls.MapHudLayout;
 public final class RoadCrewNeonHud {
 
 	private static final String HUD_TAG = "roadcrew_neon_beta_hud";
+	private static final String NAV_ICON_TAG_PREFIX = "roadcrew_neon_nav_icon_";
+	private static final String NAV_TEXT_TAG_PREFIX = "roadcrew_neon_nav_text_";
 	private static final int BACKGROUND = 0xf213171a;
 	private static final int SURFACE = 0xf21c2226;
 	private static final int PRIMARY = 0xff75d02c;
@@ -40,6 +42,7 @@ public final class RoadCrewNeonHud {
 		if (mapHud == null) {
 			return;
 		}
+		boolean mapThemeChanged = RoadCrewVisualStyle.syncMapTheme(activity);
 		View existing = mapHud.findViewWithTag(HUD_TAG);
 		boolean enabled = RoadCrewVisualStyle.isNeonBeta(activity);
 		if (!enabled) {
@@ -47,6 +50,9 @@ public final class RoadCrewNeonHud {
 				mapHud.removeView(existing);
 			}
 			setNativeHudOffsets(mapHud, false);
+			if (mapThemeChanged) {
+				activity.updateMapSettings(true);
+			}
 			return;
 		}
 		if (existing == null) {
@@ -54,6 +60,10 @@ public final class RoadCrewNeonHud {
 					ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 		}
 		setNativeHudOffsets(mapHud, true);
+		updateNavigationSelection(mapHud.findViewWithTag(HUD_TAG), activity);
+		if (mapThemeChanged) {
+			activity.updateMapSettings(true);
+		}
 	}
 
 	@NonNull
@@ -111,7 +121,7 @@ public final class RoadCrewNeonHud {
 		betaParams.rightMargin = dp(activity, 4);
 		header.addView(beta, betaParams);
 
-		header.addView(iconButton(activity, R.drawable.ic_action_notification,
+		header.addView(iconButton(activity, R.drawable.ic_action_help,
 				activity.getString(R.string.roadcrew_nearby_help_title),
 				v -> RoadCrewReportsLayer.showNearbyHelpReports(activity, activity.getApp())),
 				new LinearLayout.LayoutParams(dp(activity, 44), dp(activity, 44)));
@@ -129,23 +139,29 @@ public final class RoadCrewNeonHud {
 		footer.setPadding(dp(activity, 4), dp(activity, 3), dp(activity, 4), dp(activity, 3));
 		footer.setBackground(roundRect(BACKGROUND, 0, 0xff3d6f22));
 
-		addNavigationItem(footer, activity, R.drawable.ic_action_map_outlined,
-				R.string.roadcrew_neon_nav_map, true, v -> activity.hideContextAndRouteInfoMenues());
-		addNavigationItem(footer, activity, R.drawable.ic_action_map_routes,
-				R.string.roadcrew_neon_nav_route, false, v -> activity.getMapActions()
-					.enterRoutePlanningModeGivenGpx(null, null, null, true, true));
-		addNavigationItem(footer, activity, R.drawable.ic_roadcrew_report,
-				R.string.roadcrew_neon_nav_reports, false, v -> showReports(activity));
-		addNavigationItem(footer, activity, R.drawable.ic_action_user_account,
-				R.string.roadcrew_neon_nav_profile, false,
+		addNavigationItem(footer, activity, 0, R.drawable.ic_action_map_outlined,
+				R.string.roadcrew_neon_nav_map, v -> {
+					setNavigationSelection(footer, 0);
+					activity.hideContextAndRouteInfoMenues();
+				});
+		addNavigationItem(footer, activity, 1, R.drawable.ic_action_map_routes,
+				R.string.roadcrew_neon_nav_route, v -> {
+					setNavigationSelection(footer, 1);
+					activity.getMapActions().enterRoutePlanningModeGivenGpx(null, null, null, true, true);
+				});
+		addNavigationItem(footer, activity, 2, R.drawable.ic_roadcrew_report,
+				R.string.roadcrew_neon_nav_reports, v -> showReports(activity));
+		addNavigationItem(footer, activity, 3, R.drawable.ic_action_user_account,
+				R.string.roadcrew_neon_nav_profile,
 				v -> RoadCrewDriverProfileDialog.show(activity, activity.getApp()));
-		addNavigationItem(footer, activity, R.drawable.ic_overflow_menu_white,
-				R.string.shared_string_more, false, v -> activity.openDrawer());
+		addNavigationItem(footer, activity, 4, R.drawable.ic_overflow_menu_white,
+				R.string.roadcrew_neon_nav_more, v -> activity.openDrawer());
+		updateNavigationSelection(footer, activity);
 		return footer;
 	}
 
 	private static void addNavigationItem(@NonNull LinearLayout footer, @NonNull MapActivity activity,
-			@DrawableRes int iconRes, int titleRes, boolean active, @NonNull View.OnClickListener listener) {
+			int index, @DrawableRes int iconRes, int titleRes, @NonNull View.OnClickListener listener) {
 		LinearLayout item = new LinearLayout(activity);
 		item.setOrientation(LinearLayout.VERTICAL);
 		item.setGravity(Gravity.CENTER);
@@ -154,13 +170,13 @@ public final class RoadCrewNeonHud {
 
 		ImageView icon = new ImageView(activity);
 		icon.setImageResource(iconRes);
-		icon.setColorFilter(active ? PRIMARY : TEXT);
+		icon.setTag(NAV_ICON_TAG_PREFIX + index);
 		item.addView(icon, new LinearLayout.LayoutParams(dp(activity, 25), dp(activity, 25)));
 
 		TextView title = new TextView(activity);
 		title.setText(titleRes);
-		title.setTextColor(active ? PRIMARY : SECONDARY_TEXT);
-		title.setTextSize(11);
+		title.setTag(NAV_TEXT_TAG_PREFIX + index);
+		title.setTextSize(10);
 		title.setGravity(Gravity.CENTER);
 		title.setMaxLines(1);
 		LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
@@ -170,6 +186,28 @@ public final class RoadCrewNeonHud {
 
 		footer.addView(item, new LinearLayout.LayoutParams(0,
 				ViewGroup.LayoutParams.MATCH_PARENT, 1f));
+	}
+
+	private static void updateNavigationSelection(@Nullable View root, @NonNull MapActivity activity) {
+		if (root != null) {
+			boolean routeActive = activity.getRoutingHelper().isFollowingMode()
+					|| activity.getRoutingHelper().isRoutePlanningMode();
+			setNavigationSelection(root, routeActive ? 1 : 0);
+		}
+	}
+
+	private static void setNavigationSelection(@NonNull View root, int activeIndex) {
+		for (int index = 0; index < 5; index++) {
+			ImageView icon = root.findViewWithTag(NAV_ICON_TAG_PREFIX + index);
+			TextView text = root.findViewWithTag(NAV_TEXT_TAG_PREFIX + index);
+			boolean active = index == activeIndex;
+			if (icon != null) {
+				icon.setColorFilter(active ? PRIMARY : TEXT);
+			}
+			if (text != null) {
+				text.setTextColor(active ? PRIMARY : SECONDARY_TEXT);
+			}
+		}
 	}
 
 	private static void showReports(@NonNull MapActivity activity) {

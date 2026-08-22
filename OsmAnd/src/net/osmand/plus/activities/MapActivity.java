@@ -682,6 +682,7 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 					}
 				});
 				updateApplicationModeSettings();
+				RoadCrewNeonHud.apply(this);
 			}
 		});
 		settings.APPLICATION_MODE.addListener(applicationModeListener);

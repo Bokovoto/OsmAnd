@@ -178,6 +178,7 @@
 	<string name="roadcrew_neon_nav_route">Route</string>
 	<string name="roadcrew_neon_nav_reports">Reports</string>
 	<string name="roadcrew_neon_nav_profile">Profile</string>
+	<string name="roadcrew_neon_nav_more">More</string>
 	<string name="roadcrew_neon_report_title">What do you see?</string>
 
 	<string name="roadcrew_button_cancel">Cancel</string>
