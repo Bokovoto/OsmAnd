@@ -22,6 +22,7 @@ public enum LocationIcon {
 	STATIC_CAR(R.drawable.map_location_car, R.drawable.map_location_car_view_angle, "model_map_car_location"),
 	STATIC_BICYCLE(R.drawable.map_location_bicycle, R.drawable.map_location_bicycle_view_angle, "model_map_bicycle_location"),
 	MOVEMENT_DEFAULT(R.drawable.map_navigation_default, "model_map_car_bearing"),
+	MOVEMENT_ROADCREW_NEON(R.drawable.map_navigation_roadcrew_neon, "model_map_car_bearing"),
 	MOVEMENT_NAUTICAL(R.drawable.map_navigation_nautical, "model_map_navigation_nautical"),
 	MOVEMENT_CAR(R.drawable.map_navigation_car, "model_map_navigation_car"),
 	MODEL();

@@ -25,8 +25,10 @@ public final class RoadCrewVisualStyle {
 	private static final String KEY_PREVIOUS_ROUTE_COLOR_NIGHT_PREFIX = "previous_route_color_night_";
 	private static final String KEY_PREVIOUS_ROUTE_COLORING_PREFIX = "previous_route_coloring_";
 	private static final int NEON_DAY_ROUTE_COLOR = 0xffa1ff3d;
-	private static final int NEON_DAY_ROUTE_GLOW_COLOR = 0x8076ff03;
+	private static final int NEON_DAY_ROUTE_OUTLINE_COLOR = 0xe612351b;
+	private static final int NEON_DAY_ROUTE_GLOW_COLOR = 0x5276ff03;
 	private static final int NEON_DAY_ROUTE_ARROW_COLOR = 0xff17351a;
+	private static final int NEON_DAY_CONTROL_COLOR = 0xff146b3a;
 
 	private RoadCrewVisualStyle() {
 	}
@@ -88,8 +90,16 @@ public final class RoadCrewVisualStyle {
 		return NEON_DAY_ROUTE_GLOW_COLOR;
 	}
 
+	public static int getNeonDayRouteOutlineColor() {
+		return NEON_DAY_ROUTE_OUTLINE_COLOR;
+	}
+
 	public static int getNeonDayRouteArrowColor() {
 		return NEON_DAY_ROUTE_ARROW_COLOR;
+	}
+
+	public static int getNeonDayControlColor() {
+		return NEON_DAY_CONTROL_COLOR;
 	}
 
 	private static boolean applyNeonTheme(@NonNull OsmandApplication app,

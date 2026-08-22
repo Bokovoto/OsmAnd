@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import net.osmand.core.jni.QListFColorARGB;
+import net.osmand.core.jni.QListVectorLine;
+import net.osmand.core.jni.VectorLine;
 import net.osmand.core.jni.VectorLinesCollection;
 import net.osmand.plus.utils.AndroidUtils;
 import net.osmand.plus.utils.NativeUtilities;
@@ -24,6 +26,7 @@ public class MultiColoringGeometryWayDrawer<T extends MultiColoringGeometryWayCo
 
 	private static final int BORDER_TYPE_ZOOM_THRESHOLD = MapTileLayer.DEFAULT_MAX_ZOOM + MapTileLayer.OVERZOOM_IN;
 	private static final boolean DRAW_BORDER = true;
+	private static final int GLOW_LINE_ID_OFFSET = 1_000_000;
 
 	@NonNull
 	protected ColoringType coloringType;
@@ -45,6 +48,9 @@ public class MultiColoringGeometryWayDrawer<T extends MultiColoringGeometryWayCo
 				if (data.style != null && data.style.color != 0) {
 					fullPath.addPath(data.path);
 				}
+			}
+			if (getContext().isCustomGlowEnabled()) {
+				canvas.drawPath(fullPath, getContext().getCustomGlowPaint());
 			}
 			canvas.drawPath(fullPath, getBorderPaint());
 		}
@@ -111,6 +117,17 @@ public class MultiColoringGeometryWayDrawer<T extends MultiColoringGeometryWayCo
 		}
 
 		Pair<QListFColorARGB, QListFColorARGB> mappings = getColorizationMappings(pathsData);
+		if (getContext().isCustomGlowEnabled()) {
+			Paint glowPaint = getContext().getCustomGlowPaint();
+			int glowLineId = getGlowLineId(lineId);
+			buildVectorLine(collection, baseOrder, glowLineId,
+					glowPaint.getColor(), glowPaint.getStrokeWidth(), 0, 0, style.getDashPattern(),
+					approximationEnabled, false, null, null, 0, 0, true,
+					null, null, style.getColorizationScheme(), pathsData);
+			setLineHidden(collection, glowLineId, false);
+		} else {
+			hideGlowLines(collection);
+		}
 
 		buildVectorLine(collection, baseOrder, lineId,
 				style.getColor(0), style.getWidth(0), borderColor, borderWidth, style.getDashPattern(),
@@ -183,6 +200,9 @@ public class MultiColoringGeometryWayDrawer<T extends MultiColoringGeometryWayCo
 	protected void drawSegmentBorder(@NonNull Canvas canvas, int zoom, @NonNull DrawPathData pathData) {
 		if (DRAW_BORDER && zoom >= BORDER_TYPE_ZOOM_THRESHOLD && requireDrawingBorder()) {
 			if (pathData.style.color != 0) {
+				if (getContext().isCustomGlowEnabled()) {
+					canvas.drawPath(pathData.path, getContext().getCustomGlowPaint());
+				}
 				canvas.drawPath(pathData.path, getBorderPaint());
 			}
 		}
@@ -198,6 +218,53 @@ public class MultiColoringGeometryWayDrawer<T extends MultiColoringGeometryWayCo
 		return getContext().isCustomOutlineEnabled()
 				? getContext().getCustomOutlinePaint()
 				: getContext().getBorderPaint();
+	}
+
+	@Override
+	public void updatePath(@NonNull VectorLinesCollection collection, int lineId, float startingDistance) {
+		if (!getContext().isCustomGlowEnabled()) {
+			hideGlowLines(collection);
+			super.updatePath(collection, lineId, startingDistance);
+			return;
+		}
+		QListVectorLine lines = collection.getLines();
+		int glowLineId = getGlowLineId(lineId);
+		for (int i = 0; i < lines.size(); i++) {
+			VectorLine line = lines.get(i);
+			int currentId = line.getLineId();
+			if (currentId == lineId || currentId == glowLineId) {
+				line.setStartingDistance(startingDistance);
+			}
+			if (currentId < lineId
+					|| currentId >= GLOW_LINE_ID_OFFSET && currentId < glowLineId) {
+				line.setIsHidden(true);
+			}
+		}
+	}
+
+	private int getGlowLineId(int lineId) {
+		return GLOW_LINE_ID_OFFSET + lineId;
+	}
+
+	private void setLineHidden(@NonNull VectorLinesCollection collection, int lineId, boolean hidden) {
+		QListVectorLine lines = collection.getLines();
+		for (int i = 0; i < lines.size(); i++) {
+			VectorLine line = lines.get(i);
+			if (line.getLineId() == lineId) {
+				line.setIsHidden(hidden);
+				return;
+			}
+		}
+	}
+
+	private void hideGlowLines(@NonNull VectorLinesCollection collection) {
+		QListVectorLine lines = collection.getLines();
+		for (int i = 0; i < lines.size(); i++) {
+			VectorLine line = lines.get(i);
+			if (line.getLineId() >= GLOW_LINE_ID_OFFSET) {
+				line.setIsHidden(true);
+			}
+		}
 	}
 
 	@Override

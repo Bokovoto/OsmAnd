@@ -1239,7 +1239,7 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 					: routeCalculated || currentLocationNotFound && !helper.isRouteBeingCalculated() && !hasCalculatedMissingMaps;
 			if (buttonActive) {
 				if (RoadCrewVisualStyle.isNeonDay(app)) {
-					startButton.setBackgroundColor(RoadCrewVisualStyle.getNeonDayRouteColor());
+					startButton.setBackgroundColor(RoadCrewVisualStyle.getNeonDayControlColor());
 				} else {
 					AndroidUtils.setBackgroundColor(app, startButton, ColorUtilities.getActiveColorId(nightMode));
 				}

@@ -137,11 +137,17 @@ public class PreviewRouteLineLayer extends BaseRouteLayer {
 		points.add(new GeometryWayPoint(points.size(), centerX, endY));
 		points.add(new GeometryWayPoint(points.size(), endX, endY));
 
-		float routeLineWidth = getRouteLineWidth(tileBox);
 		boolean neonDay = RoadCrewVisualStyle.isNeonDay(getContext());
-		previewLineGeometry.setCustomOutline(neonDay
-				? RoadCrewVisualStyle.getNeonDayRouteGlowColor() : null,
-				routeLineWidth + previewWayContext.getDensity() * 6f);
+		float density = previewWayContext.getDensity();
+		float nativeRouteLineWidth = getRouteLineWidth(tileBox);
+		float routeLineWidth = neonDay
+				? Math.max(nativeRouteLineWidth * 0.62f, density * 3.5f)
+				: nativeRouteLineWidth;
+		previewLineGeometry.setCustomLayers(
+				neonDay ? RoadCrewVisualStyle.getNeonDayRouteOutlineColor() : null,
+				routeLineWidth + density * 2.5f,
+				neonDay ? RoadCrewVisualStyle.getNeonDayRouteGlowColor() : null,
+				routeLineWidth + density * 9f);
 		previewLineGeometry.setRouteStyleParams(getRouteLineColor(), routeLineWidth,
 				shouldShowDirectionArrows(),
 				neonDay ? RoadCrewVisualStyle.getNeonDayRouteArrowColor() : getDirectionArrowsColor(),

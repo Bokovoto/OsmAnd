@@ -48,6 +48,7 @@ import net.osmand.plus.activities.MapActivity;
 import net.osmand.plus.base.MapViewTrackingUtilities;
 import net.osmand.plus.helpers.Model3dHelper;
 import net.osmand.plus.profiles.LocationIcon;
+import net.osmand.plus.roadcrew.RoadCrewVisualStyle;
 import net.osmand.plus.profiles.ProfileIconColors;
 import net.osmand.plus.routing.RoutingHelper;
 import net.osmand.plus.routing.RoutingHelperUtils;
@@ -832,9 +833,10 @@ public class PointLocationLayer extends OsmandMapLayer
 				}
 				navigationIcon = null;
 			} else {
-				int navigationIconId = LocationIcon.fromName(navigationIconName, false).getIconId();
+				LocationIcon navigationIconType = LocationIcon.fromName(navigationIconName, false);
+				int navigationIconId = navigationIconType.getIconId();
 				navigationIcon = (LayerDrawable) AppCompatResources.getDrawable(ctx, navigationIconId);
-				if (navigationIcon != null) {
+				if (navigationIcon != null && navigationIconType != LocationIcon.MOVEMENT_ROADCREW_NEON) {
 					DrawableCompat.setTint(navigationIcon.getDrawable(1), profileColor);
 				}
 				navigationModel = null;
@@ -927,6 +929,9 @@ public class PointLocationLayer extends OsmandMapLayer
 
 	@NonNull
 	private String getNavigationIconName(@NonNull ApplicationMode appMode) {
+		if (RoadCrewVisualStyle.isNeonDay(getContext())) {
+			return LocationIcon.MOVEMENT_ROADCREW_NEON.name();
+		}
 		boolean hasMapRenderer = hasMapRenderer();
 		String navigationIconName = appMode.getNavigationIcon();
 		if (hasMapRenderer && LocationIcon.isModelRepresented(navigationIconName)) {
