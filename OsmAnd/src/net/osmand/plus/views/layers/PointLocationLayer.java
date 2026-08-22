@@ -929,7 +929,7 @@ public class PointLocationLayer extends OsmandMapLayer
 
 	@NonNull
 	private String getNavigationIconName(@NonNull ApplicationMode appMode) {
-		if (RoadCrewVisualStyle.isNeonDay(getContext())) {
+		if (RoadCrewVisualStyle.isNeonBeta(getContext())) {
 			return LocationIcon.MOVEMENT_ROADCREW_NEON.name();
 		}
 		boolean hasMapRenderer = hasMapRenderer();
