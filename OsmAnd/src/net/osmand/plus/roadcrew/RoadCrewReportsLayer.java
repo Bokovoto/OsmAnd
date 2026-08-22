@@ -117,11 +117,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			truckRestrictionsProvider.shutdown();
 		}
 		truckRestrictionsProvider = new RoadCrewTruckRestrictionsProvider(getApplication());
-		if (mapObservationCoordinator != null) {
-			mapObservationCoordinator.shutdown();
-		}
-		mapObservationCoordinator = new RoadCrewMapObservationCoordinator(getApplication());
-		mapObservationCoordinator.start();
+		RoadCrewMapObservationCoordinator.ensureStarted(getApplication());
+		mapObservationCoordinator = RoadCrewMapObservationCoordinator.getInstance(getApplication());
 		createResources();
 	}
 
@@ -140,18 +137,12 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			truckRestrictionsProvider = null;
 		}
 		if (mapObservationCoordinator != null) {
-			mapObservationCoordinator.shutdown();
 			mapObservationCoordinator = null;
 		}
 	}
 
 	static void setMapObservationEnabled(@NonNull OsmandApplication app, boolean enabled) {
-		RoadCrewMapObservationConsent.setEnabled(app, enabled);
-		if (activeLayer != null && activeLayer.mapObservationCoordinator != null) {
-			activeLayer.mapObservationCoordinator.setEnabled(enabled);
-		} else if (!enabled) {
-			RoadCrewMapObservationConsent.deleteLocalObservations(app);
-		}
+		RoadCrewMapObservationCoordinator.setEnabledForApp(app, enabled);
 	}
 
 	public static void showNearbyHelpReports(@NonNull MapActivity mapActivity, @NonNull OsmandApplication app) {

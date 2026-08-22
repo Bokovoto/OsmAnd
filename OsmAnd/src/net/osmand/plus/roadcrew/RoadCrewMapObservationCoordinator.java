@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import net.osmand.Location;
 import net.osmand.PlatformUtil;
 import net.osmand.binary.BinaryMapIndexReader;
+import net.osmand.plus.NavigationService;
 import net.osmand.plus.OsmAndLocationProvider.OsmAndLocationListener;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.resources.BinaryMapReaderResource;
@@ -31,16 +32,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Foreground-only bridge from accepted GPS fixes to the local, aggregate
- * RoadCrew passage outbox. Raw fixes never leave this coordinator.
+ * Bridge from accepted GPS fixes to the local, aggregate RoadCrew passage
+ * outbox. Background collection is limited to active truck navigation. Raw
+ * fixes never leave this coordinator.
  */
-final class RoadCrewMapObservationCoordinator implements OsmAndLocationListener {
+public final class RoadCrewMapObservationCoordinator implements OsmAndLocationListener {
 
 	private static final Log LOG = PlatformUtil.getLog(RoadCrewMapObservationCoordinator.class);
+	private static final String ROADCREW_PACKAGE = "org.roadcrew.app";
+	private static final Object INSTANCE_LOCK = new Object();
+	private static final long ACTIVE_FIX_TIMEOUT_MILLIS = 20_000;
 	private static final double LOAD_RADIUS_METERS = 900;
 	private static final double RELOAD_DISTANCE_METERS = 350;
 	private static final long RELOAD_INTERVAL_MILLIS = 60_000;
 	private static final int MAX_ROUTE_OBJECTS = 8_000;
+	@Nullable
+	private static RoadCrewMapObservationCoordinator instance;
 
 	private final OsmandApplication app;
 	private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -58,9 +65,71 @@ final class RoadCrewMapObservationCoordinator implements OsmAndLocationListener 
 	private double loadedLatitude = Double.NaN;
 	private double loadedLongitude = Double.NaN;
 	private long loadedAtElapsedMillis;
+	private volatile long lastEligibleFixAtMillis;
 
 	RoadCrewMapObservationCoordinator(@NonNull OsmandApplication app) {
 		this.app = app;
+	}
+
+	public static void ensureStarted(@NonNull OsmandApplication app) {
+		if (!ROADCREW_PACKAGE.equals(app.getPackageName())) {
+			return;
+		}
+		getInstance(app).start();
+	}
+
+	static void setEnabledForApp(@NonNull OsmandApplication app, boolean enabled) {
+		RoadCrewMapObservationConsent.setEnabled(app, enabled);
+		if (!ROADCREW_PACKAGE.equals(app.getPackageName())) {
+			return;
+		}
+		getInstance(app).setEnabled(enabled);
+	}
+
+	@NonNull
+	static StatusSnapshot getStatus(@NonNull OsmandApplication app) {
+		boolean consentEnabled = RoadCrewMapObservationConsent.isEnabled(app);
+		RoadCrewMapObservationCoordinator coordinator;
+		synchronized (INSTANCE_LOCK) {
+			coordinator = instance;
+		}
+		boolean truckProfile = coordinator != null
+				? coordinator.isTruckProfileActive()
+				: app.getSettings().getApplicationMode()
+						.isDerivedRoutingFrom(ApplicationMode.TRUCK);
+		boolean collectionContext = coordinator != null && coordinator.isCollectionContextActive();
+		boolean backgroundNavigation = coordinator != null && coordinator.isActiveTruckNavigation()
+				&& !app.getSettings().MAP_ACTIVITY_ENABLED;
+		CollectionStatus status;
+		if (!consentEnabled) {
+			status = CollectionStatus.OFF;
+		} else if (!truckProfile) {
+			status = CollectionStatus.TRUCK_PROFILE_REQUIRED;
+		} else if (!collectionContext) {
+			status = CollectionStatus.PAUSED;
+		} else if (RoadCrewMapObservationConsent.hasUploadError(app)) {
+			status = CollectionStatus.UPLOAD_ERROR;
+		} else if (coordinator != null && System.currentTimeMillis()
+				- coordinator.lastEligibleFixAtMillis <= ACTIVE_FIX_TIMEOUT_MILLIS) {
+			status = CollectionStatus.ACTIVE;
+		} else {
+			status = CollectionStatus.WAITING_FOR_GPS;
+		}
+		return new StatusSnapshot(status, backgroundNavigation,
+				RoadCrewMapObservationConsent.hasCommunityRoutingAccess(app),
+				RoadCrewMapObservationConsent.getLastUploadAt(app),
+				RoadCrewMapObservationConsent.getUploadedObservationCount(app),
+				RoadCrewMapObservationConsent.getPendingObservationCount(app));
+	}
+
+	@NonNull
+	static RoadCrewMapObservationCoordinator getInstance(@NonNull OsmandApplication app) {
+		synchronized (INSTANCE_LOCK) {
+			if (instance == null) {
+				instance = new RoadCrewMapObservationCoordinator(app);
+			}
+			return instance;
+		}
 	}
 
 	void start() {
@@ -79,6 +148,7 @@ final class RoadCrewMapObservationCoordinator implements OsmAndLocationListener 
 		} else {
 			stopListening();
 			latestSample.set(null);
+			lastEligibleFixAtMillis = 0;
 			cancelled.set(true);
 			executor.execute(() -> {
 				resetPipeline();
@@ -89,23 +159,15 @@ final class RoadCrewMapObservationCoordinator implements OsmAndLocationListener 
 		}
 	}
 
-	void shutdown() {
-		stateGeneration.incrementAndGet();
-		enabled = false;
-		cancelled.set(true);
-		stopListening();
-		latestSample.set(null);
-		executor.shutdownNow();
-	}
-
 	@Override
 	public void updateLocation(Location location) {
 		if (!enabled || location == null || !location.hasAccuracy()
 				|| !location.hasSpeed() || !location.hasBearing()
 				|| app.getLocationProvider().getLocationSimulation().isRouteAnimating()
-				|| !app.getSettings().getApplicationMode().isDerivedRoutingFrom(ApplicationMode.TRUCK)) {
+				|| !isCollectionContextActive() || !isTruckProfileActive()) {
 			return;
 		}
+		lastEligibleFixAtMillis = System.currentTimeMillis();
 		LocationSample sample = new LocationSample(location.getLatitude(), location.getLongitude(),
 				location.getAccuracy(), location.getSpeed(), location.getBearing(),
 				SystemClock.elapsedRealtime(), System.currentTimeMillis());
@@ -149,6 +211,7 @@ final class RoadCrewMapObservationCoordinator implements OsmAndLocationListener 
 							sample.accuracyMeters, sample.speedMetersPerSecond, sample.bearingDegrees),
 					sample.elapsedRealtimeMillis, sample.wallTimeMillis);
 			if (result.wasQueued() && outbox != null) {
+				RoadCrewMapObservationConsent.recordPendingCount(app, outbox.snapshot().size());
 				RoadCrewMapObservationUploader.schedule(app, outbox);
 			}
 		} catch (IOException | RuntimeException e) {
@@ -161,10 +224,32 @@ final class RoadCrewMapObservationCoordinator implements OsmAndLocationListener 
 	private RoadCrewObservationPipeline ensurePipeline() throws IOException {
 		if (pipeline == null) {
 			outbox = RoadCrewObservationOutbox.open(RoadCrewMapObservationConsent.getOutboxFile(app));
+			RoadCrewMapObservationConsent.recordPendingCount(app, outbox.snapshot().size());
 			pipeline = new RoadCrewObservationPipeline(outbox);
 			RoadCrewMapObservationUploader.schedule(app, outbox);
 		}
 		return pipeline;
+	}
+
+	private boolean isCollectionContextActive() {
+		return app.getSettings().MAP_ACTIVITY_ENABLED || isActiveTruckNavigation();
+	}
+
+	private boolean isTruckProfileActive() {
+		ApplicationMode mode = isActiveTruckNavigation()
+				? app.getRoutingHelper().getAppMode()
+				: app.getSettings().getApplicationMode();
+		return mode != null && mode.isDerivedRoutingFrom(ApplicationMode.TRUCK);
+	}
+
+	private boolean isActiveTruckNavigation() {
+		NavigationService service = app.getNavigationService();
+		ApplicationMode routeMode = app.getRoutingHelper().getAppMode();
+		return service != null
+				&& service.isUsedBy(NavigationService.USED_BY_NAVIGATION)
+				&& app.getRoutingHelper().isFollowingMode()
+				&& routeMode != null
+				&& routeMode.isDerivedRoutingFrom(ApplicationMode.TRUCK);
 	}
 
 	private boolean needsRoadReload(@NonNull LocationSample sample) {
@@ -244,6 +329,35 @@ final class RoadCrewMapObservationCoordinator implements OsmAndLocationListener 
 			this.bearingDegrees = bearingDegrees;
 			this.elapsedRealtimeMillis = elapsedRealtimeMillis;
 			this.wallTimeMillis = wallTimeMillis;
+		}
+	}
+
+	enum CollectionStatus {
+		OFF,
+		PAUSED,
+		TRUCK_PROFILE_REQUIRED,
+		WAITING_FOR_GPS,
+		ACTIVE,
+		UPLOAD_ERROR
+	}
+
+	static final class StatusSnapshot {
+		final CollectionStatus status;
+		final boolean backgroundNavigation;
+		final boolean communityRoutingAccess;
+		final long lastUploadAtMillis;
+		final int uploadedObservationCount;
+		final int pendingObservationCount;
+
+		StatusSnapshot(@NonNull CollectionStatus status, boolean backgroundNavigation,
+				boolean communityRoutingAccess, long lastUploadAtMillis,
+				int uploadedObservationCount, int pendingObservationCount) {
+			this.status = status;
+			this.backgroundNavigation = backgroundNavigation;
+			this.communityRoutingAccess = communityRoutingAccess;
+			this.lastUploadAtMillis = lastUploadAtMillis;
+			this.uploadedObservationCount = uploadedObservationCount;
+			this.pendingObservationCount = pendingObservationCount;
 		}
 	}
 }

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import net.osmand.PlatformUtil;
 import net.osmand.plus.OsmandApplication;
+import net.osmand.plus.roadcrew.RoadCrewMapObservationConsent;
 import net.osmand.plus.settings.backend.ApplicationMode;
 import net.osmand.router.RoadCrewRoutingOverlay;
 
@@ -28,7 +29,9 @@ public final class RoadCrewRoutingOverlayStore {
 	@NonNull
 	public static RoadCrewRoutingOverlay.Snapshot load(@NonNull OsmandApplication app,
 			@NonNull ApplicationMode mode) {
-		if (!ROADCREW_PACKAGE.equals(app.getPackageName()) || !mode.isDerivedRoutingFrom(ApplicationMode.TRUCK)) {
+		if (!ROADCREW_PACKAGE.equals(app.getPackageName())
+				|| !mode.isDerivedRoutingFrom(ApplicationMode.TRUCK)
+				|| !RoadCrewMapObservationConsent.hasCommunityRoutingAccess(app)) {
 			return RoadCrewRoutingOverlay.EMPTY;
 		}
 		File file = new File(app.getFilesDir(), FILE_NAME);

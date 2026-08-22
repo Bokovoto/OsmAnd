@@ -28,11 +28,14 @@ public final class RoadCrewNeonHud {
 	private static final String HUD_TAG = "roadcrew_neon_beta_hud";
 	private static final String NAV_ICON_TAG_PREFIX = "roadcrew_neon_nav_icon_";
 	private static final String NAV_TEXT_TAG_PREFIX = "roadcrew_neon_nav_text_";
+	private static final String LIVE_STATUS_TAG = "roadcrew_live_truck_map_status";
 	private static final int BACKGROUND = 0xf213171a;
 	private static final int SURFACE = 0xf21c2226;
 	private static final int PRIMARY = 0xff75d02c;
 	private static final int TEXT = 0xfff4f7f5;
 	private static final int SECONDARY_TEXT = 0xffb5bcb8;
+	private static final int WAITING = 0xffffb020;
+	private static final int ERROR = 0xffef5350;
 
 	private RoadCrewNeonHud() {
 	}
@@ -67,6 +70,7 @@ public final class RoadCrewNeonHud {
 		}
 		setNativeHudOffsets(mapHud, true);
 		updateNavigationSelection(mapHud.findViewWithTag(HUD_TAG), activity);
+		updateLiveMapStatus(mapHud.findViewWithTag(HUD_TAG), activity);
 		if (mapThemeChanged) {
 			activity.updateMapSettings(true);
 		}
@@ -116,16 +120,17 @@ public final class RoadCrewNeonHud {
 				ViewGroup.LayoutParams.MATCH_PARENT, 1f);
 		header.addView(brand, brandParams);
 
-		TextView beta = new TextView(activity);
-		beta.setText(R.string.roadcrew_visual_style_beta_badge);
-		beta.setTextColor(PRIMARY);
-		beta.setTextSize(11);
-		beta.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-		beta.setGravity(Gravity.CENTER);
-		beta.setBackground(roundRect(0x0013171a, dp(activity, 4), PRIMARY));
-		LinearLayout.LayoutParams betaParams = new LinearLayout.LayoutParams(dp(activity, 48), dp(activity, 28));
-		betaParams.rightMargin = dp(activity, 4);
-		header.addView(beta, betaParams);
+		TextView liveStatus = new TextView(activity);
+		liveStatus.setTag(LIVE_STATUS_TAG);
+		liveStatus.setTextSize(10);
+		liveStatus.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+		liveStatus.setGravity(Gravity.CENTER);
+		liveStatus.setOnClickListener(v ->
+				RoadCrewDriverProfileDialog.show(activity, activity.getApp()));
+		LinearLayout.LayoutParams statusParams = new LinearLayout.LayoutParams(
+				dp(activity, 64), dp(activity, 30));
+		statusParams.rightMargin = dp(activity, 4);
+		header.addView(liveStatus, statusParams);
 
 		header.addView(iconButton(activity, R.drawable.ic_action_help,
 				activity.getString(R.string.roadcrew_nearby_help_title),
@@ -216,6 +221,48 @@ public final class RoadCrewNeonHud {
 		}
 	}
 
+	private static void updateLiveMapStatus(@Nullable View root, @NonNull MapActivity activity) {
+		if (root == null) {
+			return;
+		}
+		TextView statusView = root.findViewWithTag(LIVE_STATUS_TAG);
+		if (statusView == null) {
+			return;
+		}
+		RoadCrewMapObservationCoordinator.StatusSnapshot snapshot =
+				RoadCrewMapObservationCoordinator.getStatus(activity.getApp());
+		int textRes;
+		int color;
+		switch (snapshot.status) {
+			case ACTIVE:
+				textRes = R.string.roadcrew_live_truck_map_indicator_active;
+				color = PRIMARY;
+				break;
+			case WAITING_FOR_GPS:
+			case PAUSED:
+				textRes = R.string.roadcrew_live_truck_map_indicator_waiting;
+				color = WAITING;
+				break;
+			case TRUCK_PROFILE_REQUIRED:
+				textRes = R.string.roadcrew_live_truck_map_indicator_truck;
+				color = WAITING;
+				break;
+			case UPLOAD_ERROR:
+				textRes = R.string.roadcrew_live_truck_map_indicator_error;
+				color = ERROR;
+				break;
+			case OFF:
+			default:
+				textRes = R.string.roadcrew_live_truck_map_indicator_off;
+				color = SECONDARY_TEXT;
+				break;
+		}
+		statusView.setText(textRes);
+		statusView.setTextColor(color);
+		statusView.setBackground(roundRect(0x0013171a, dp(activity, 4), color));
+		statusView.setContentDescription(activity.getString(textRes));
+	}
+
 	private static void showReports(@NonNull MapActivity activity) {
 		View reportButton = activity.findViewById(R.id.roadcrew_report_button);
 		if (reportButton instanceof RoadCrewReportButton) {
@@ -277,6 +324,7 @@ public final class RoadCrewNeonHud {
 
 	private static final class NeonHudRoot extends FrameLayout {
 		private static final long THEME_CHECK_INTERVAL_MS = 60_000L;
+		private static final long STATUS_CHECK_INTERVAL_MS = 2_000L;
 
 		private final MapActivity activity;
 		private final boolean nightMode;
@@ -293,6 +341,16 @@ public final class RoadCrewNeonHud {
 				}
 			}
 		};
+		private final Runnable statusCheck = new Runnable() {
+			@Override
+			public void run() {
+				if (!isAttachedToWindow()) {
+					return;
+				}
+				updateLiveMapStatus(NeonHudRoot.this, activity);
+				postDelayed(this, STATUS_CHECK_INTERVAL_MS);
+			}
+		};
 
 		private NeonHudRoot(@NonNull MapActivity activity, boolean nightMode) {
 			super(activity);
@@ -304,11 +362,13 @@ public final class RoadCrewNeonHud {
 		protected void onAttachedToWindow() {
 			super.onAttachedToWindow();
 			postDelayed(themeCheck, THEME_CHECK_INTERVAL_MS);
+			post(statusCheck);
 		}
 
 		@Override
 		protected void onDetachedFromWindow() {
 			removeCallbacks(themeCheck);
+			removeCallbacks(statusCheck);
 			super.onDetachedFromWindow();
 		}
 	}

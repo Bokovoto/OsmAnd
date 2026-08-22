@@ -27,6 +27,7 @@ import net.osmand.plus.helpers.LocationCallback;
 import net.osmand.plus.helpers.LocationServiceHelper;
 import net.osmand.plus.notifications.NotificationHelper;
 import net.osmand.plus.notifications.OsmandNotification.NotificationType;
+import net.osmand.plus.roadcrew.RoadCrewMapObservationCoordinator;
 import net.osmand.plus.routing.RoutingHelper;
 import net.osmand.plus.settings.backend.OsmandSettings;
 import net.osmand.plus.settings.enums.LocationSource;
@@ -141,6 +142,7 @@ public class NavigationService extends Service {
 		locationProvider = app.getLocationProvider();
 		locationServiceHelper = app.createLocationServiceHelper();
 		app.setNavigationService(this);
+		RoadCrewMapObservationCoordinator.ensureStarted(app);
 
 		NotificationType type = isUsedBy(USED_BY_NAVIGATION) ? NAVIGATION : isUsedBy(USED_BY_GPX) ? GPX : AIS;
 		NotificationHelper notificationHelper = app.getNotificationHelper();

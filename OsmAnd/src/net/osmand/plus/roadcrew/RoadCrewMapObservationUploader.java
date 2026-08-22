@@ -88,6 +88,7 @@ final class RoadCrewMapObservationUploader {
 			long now = System.currentTimeMillis();
 			List<RoadCrewObservationOutbox.Record> batch = outbox.getEligibleBatch(now, BATCH_SIZE);
 			if (batch.isEmpty()) {
+				RoadCrewMapObservationConsent.recordPendingCount(app, outbox.snapshot().size());
 				return;
 			}
 			List<String> attemptedIds = recordIds(batch);
@@ -100,6 +101,8 @@ final class RoadCrewMapObservationUploader {
 					throw new IOException("RoadCrew server did not acknowledge the complete observation batch");
 				}
 				outbox.markUploaded(acceptedIds);
+				RoadCrewMapObservationConsent.recordUploadSuccess(app, acceptedIds.size(),
+						outbox.snapshot().size());
 			} catch (IOException | JSONException e) {
 				Log.w(TAG, "Live Truck Map upload failed; observations remain queued", e);
 				if (!RoadCrewMapObservationConsent.isEnabled(app)) {
@@ -107,6 +110,8 @@ final class RoadCrewMapObservationUploader {
 				}
 				try {
 					outbox.markFailed(attemptedIds, now);
+					RoadCrewMapObservationConsent.recordUploadFailure(app,
+							outbox.snapshot().size());
 				} catch (IOException persistError) {
 					Log.e(TAG, "Cannot persist Live Truck Map retry state", persistError);
 				}

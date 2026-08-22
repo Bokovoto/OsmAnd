@@ -25,6 +25,9 @@ import net.osmand.plus.settings.fragments.BaseSettingsFragment;
 import net.osmand.plus.settings.fragments.SettingsScreenType;
 import net.osmand.plus.widgets.tools.SimpleTextWatcher;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 final class RoadCrewDriverProfileDialog {
 
 	private static final int DRIVER_NAME_MAX_LENGTH = 60;
@@ -220,26 +223,86 @@ final class RoadCrewDriverProfileDialog {
 		RoadCrewUi.addSectionTitle(mapActivity, content,
 				mapActivity.getString(R.string.roadcrew_live_truck_map_title));
 		boolean observationEnabled = RoadCrewMapObservationConsent.isEnabled(app);
-		TextView observationStatus = RoadCrewUi.addBody(mapActivity, content, mapActivity.getString(
-				observationEnabled
-						? R.string.roadcrew_live_truck_map_status_enabled
-						: R.string.roadcrew_live_truck_map_status_disabled));
-		observationStatus.setTextColor(observationEnabled ? RoadCrewUi.PRIMARY : RoadCrewUi.SECONDARY_TEXT);
+		TextView observationStatus = RoadCrewUi.addBody(mapActivity, content, "");
+		TextView routingAccess = RoadCrewUi.addBody(mapActivity, content, "");
+		TextView contribution = RoadCrewUi.addBody(mapActivity, content, "");
+		TextView lastUpload = RoadCrewUi.addBody(mapActivity, content, "");
 		RoadCrewUi.addBody(mapActivity, content,
 				mapActivity.getString(R.string.roadcrew_live_truck_map_profile_body));
 		CheckBox observationConsent = new CheckBox(mapActivity);
 		observationConsent.setText(R.string.roadcrew_live_truck_map_consent);
 		observationConsent.setTextColor(RoadCrewUi.TEXT);
 		observationConsent.setChecked(observationEnabled);
+		Runnable updateObservationStatus = () -> updateLiveTruckMapStatus(mapActivity, app,
+				observationStatus, routingAccess, contribution, lastUpload);
 		observationConsent.setOnCheckedChangeListener((buttonView, isChecked) -> {
 			RoadCrewReportsLayer.setMapObservationEnabled(app, isChecked);
-			observationStatus.setText(isChecked
-					? R.string.roadcrew_live_truck_map_status_enabled
-					: R.string.roadcrew_live_truck_map_status_disabled);
-			observationStatus.setTextColor(isChecked ? RoadCrewUi.PRIMARY : RoadCrewUi.SECONDARY_TEXT);
+			updateObservationStatus.run();
 		});
 		content.addView(observationConsent, new LinearLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		updateObservationStatus.run();
+	}
+
+	private static void updateLiveTruckMapStatus(@NonNull MapActivity activity,
+			@NonNull OsmandApplication app, @NonNull TextView status,
+			@NonNull TextView access, @NonNull TextView contribution,
+			@NonNull TextView lastUpload) {
+		RoadCrewMapObservationCoordinator.StatusSnapshot snapshot =
+				RoadCrewMapObservationCoordinator.getStatus(app);
+		status.setText(getLiveTruckMapStatusText(snapshot.status));
+		status.setTextColor(getLiveTruckMapStatusColor(snapshot.status));
+		access.setText(snapshot.communityRoutingAccess
+				? R.string.roadcrew_live_truck_map_access_enabled
+				: R.string.roadcrew_live_truck_map_access_disabled);
+		access.setTextColor(snapshot.communityRoutingAccess
+				? RoadCrewUi.PRIMARY : RoadCrewUi.SECONDARY_TEXT);
+		contribution.setText(activity.getString(R.string.roadcrew_live_truck_map_contribution,
+				snapshot.uploadedObservationCount, snapshot.pendingObservationCount));
+		if (snapshot.lastUploadAtMillis > 0) {
+			String formatted = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+					.format(new Date(snapshot.lastUploadAtMillis));
+			lastUpload.setText(activity.getString(R.string.roadcrew_live_truck_map_last_upload,
+					formatted));
+		} else {
+			lastUpload.setText(R.string.roadcrew_live_truck_map_last_upload_none);
+		}
+	}
+
+	private static int getLiveTruckMapStatusText(
+			@NonNull RoadCrewMapObservationCoordinator.CollectionStatus status) {
+		switch (status) {
+			case ACTIVE:
+				return R.string.roadcrew_live_truck_map_status_active;
+			case WAITING_FOR_GPS:
+				return R.string.roadcrew_live_truck_map_status_waiting_gps;
+			case TRUCK_PROFILE_REQUIRED:
+				return R.string.roadcrew_live_truck_map_status_truck_required;
+			case PAUSED:
+				return R.string.roadcrew_live_truck_map_status_paused;
+			case UPLOAD_ERROR:
+				return R.string.roadcrew_live_truck_map_status_upload_error;
+			case OFF:
+			default:
+				return R.string.roadcrew_live_truck_map_status_disabled;
+		}
+	}
+
+	private static int getLiveTruckMapStatusColor(
+			@NonNull RoadCrewMapObservationCoordinator.CollectionStatus status) {
+		switch (status) {
+			case ACTIVE:
+				return RoadCrewUi.PRIMARY;
+			case UPLOAD_ERROR:
+				return RoadCrewUi.DANGER;
+			case WAITING_FOR_GPS:
+			case TRUCK_PROFILE_REQUIRED:
+				return 0xffffb020;
+			case PAUSED:
+			case OFF:
+			default:
+				return RoadCrewUi.SECONDARY_TEXT;
+		}
 	}
 
 	@NonNull

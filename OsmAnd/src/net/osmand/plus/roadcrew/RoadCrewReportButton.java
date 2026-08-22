@@ -7,6 +7,9 @@ import static net.osmand.shared.grid.ButtonPositionSize.POS_BOTTOM;
 import static net.osmand.shared.grid.ButtonPositionSize.POS_RIGHT;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.AttributeSet;
@@ -49,8 +52,21 @@ public class RoadCrewReportButton extends MapButton {
 			"LOAD_MOVING",
 			"OTHER"
 	};
+	private static final long LIVE_STATUS_REFRESH_MILLIS = 2_000L;
 
 	private final ButtonPositionSize defaultPositionSize;
+	private final Paint liveStatusPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint liveStatusStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Runnable liveStatusRefresh = new Runnable() {
+		@Override
+		public void run() {
+			if (!isAttachedToWindow()) {
+				return;
+			}
+			invalidate();
+			postDelayed(this, LIVE_STATUS_REFRESH_MILLIS);
+		}
+	};
 
 	public RoadCrewReportButton(@NonNull Context context) {
 		this(context, null);
@@ -66,6 +82,54 @@ public class RoadCrewReportButton extends MapButton {
 		setContentDescription(context.getString(R.string.roadcrew_report_button_content_description));
 		setAlwaysVisible(true);
 		setOnClickListener(v -> showReportTypeDialog());
+		liveStatusPaint.setStyle(Paint.Style.FILL);
+		liveStatusStrokePaint.setStyle(Paint.Style.STROKE);
+		liveStatusStrokePaint.setStrokeWidth(dp(2));
+		liveStatusStrokePaint.setColor(Color.WHITE);
+	}
+
+	@Override
+	protected void dispatchDraw(@NonNull Canvas canvas) {
+		super.dispatchDraw(canvas);
+		RoadCrewMapObservationCoordinator.CollectionStatus status =
+				RoadCrewMapObservationCoordinator.getStatus(app).status;
+		int color;
+		switch (status) {
+			case ACTIVE:
+				color = 0xff75d02c;
+				break;
+			case WAITING_FOR_GPS:
+			case TRUCK_PROFILE_REQUIRED:
+			case PAUSED:
+				color = 0xffffb020;
+				break;
+			case UPLOAD_ERROR:
+				color = 0xffef5350;
+				break;
+			case OFF:
+			default:
+				color = 0xff8b9490;
+				break;
+		}
+		float radius = dp(5);
+		float centerX = getWidth() - dp(9);
+		float centerY = dp(9);
+		liveStatusPaint.setColor(color);
+		canvas.drawCircle(centerX, centerY, radius + dp(1), liveStatusStrokePaint);
+		canvas.drawCircle(centerX, centerY, radius, liveStatusPaint);
+	}
+
+	@Override
+	public void onViewAttachedToWindow(@NonNull View view) {
+		super.onViewAttachedToWindow(view);
+		removeCallbacks(liveStatusRefresh);
+		post(liveStatusRefresh);
+	}
+
+	@Override
+	public void onViewDetachedFromWindow(@NonNull View view) {
+		removeCallbacks(liveStatusRefresh);
+		super.onViewDetachedFromWindow(view);
 	}
 
 	@NonNull
