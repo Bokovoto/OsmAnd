@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 
 import net.osmand.plus.R;
 import net.osmand.plus.activities.MapActivity;
-import net.osmand.plus.settings.enums.ThemeUsageContext;
 import net.osmand.plus.views.controls.MapHudLayout;
 
 public final class RoadCrewNeonHud {
@@ -56,8 +55,7 @@ public final class RoadCrewNeonHud {
 			}
 			return;
 		}
-		boolean nightMode = activity.getApp().getDaynightHelper()
-				.isNightMode(ThemeUsageContext.MAP);
+		boolean nightMode = RoadCrewVisualStyle.isNeonNight(activity);
 		if (existing != null && (!(existing instanceof NeonHudRoot)
 				|| ((NeonHudRoot) existing).nightMode != nightMode)) {
 			mapHud.removeView(existing);
@@ -278,11 +276,40 @@ public final class RoadCrewNeonHud {
 	}
 
 	private static final class NeonHudRoot extends FrameLayout {
+		private static final long THEME_CHECK_INTERVAL_MS = 60_000L;
+
+		private final MapActivity activity;
 		private final boolean nightMode;
+		private final Runnable themeCheck = new Runnable() {
+			@Override
+			public void run() {
+				if (!isAttachedToWindow()) {
+					return;
+				}
+				if (nightMode != RoadCrewVisualStyle.isNeonNight(activity)) {
+					RoadCrewNeonHud.apply(activity);
+				} else {
+					postDelayed(this, THEME_CHECK_INTERVAL_MS);
+				}
+			}
+		};
 
 		private NeonHudRoot(@NonNull MapActivity activity, boolean nightMode) {
 			super(activity);
+			this.activity = activity;
 			this.nightMode = nightMode;
+		}
+
+		@Override
+		protected void onAttachedToWindow() {
+			super.onAttachedToWindow();
+			postDelayed(themeCheck, THEME_CHECK_INTERVAL_MS);
+		}
+
+		@Override
+		protected void onDetachedFromWindow() {
+			removeCallbacks(themeCheck);
+			super.onDetachedFromWindow();
 		}
 	}
 }

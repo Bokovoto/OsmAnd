@@ -9,6 +9,10 @@ import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.settings.backend.ApplicationMode;
 import net.osmand.plus.settings.backend.OsmandSettings;
 import net.osmand.plus.settings.enums.DayNightMode;
+import net.osmand.shared.routing.ColoringType;
+import net.osmand.util.SunriseSunset;
+
+import java.util.Calendar;
 
 public final class RoadCrewVisualStyle {
 
@@ -17,6 +21,10 @@ public final class RoadCrewVisualStyle {
 	private static final String STYLE_CLASSIC = "CLASSIC";
 	private static final String STYLE_NEON_BETA = "NEON_BETA";
 	private static final String KEY_PREVIOUS_DAY_NIGHT_PREFIX = "previous_day_night_";
+	private static final String KEY_PREVIOUS_ROUTE_COLOR_DAY_PREFIX = "previous_route_color_day_";
+	private static final String KEY_PREVIOUS_ROUTE_COLOR_NIGHT_PREFIX = "previous_route_color_night_";
+	private static final String KEY_PREVIOUS_ROUTE_COLORING_PREFIX = "previous_route_coloring_";
+	private static final int NEON_DAY_ROUTE_COLOR = 0xff76ff03;
 
 	private RoadCrewVisualStyle() {
 	}
@@ -29,7 +37,6 @@ public final class RoadCrewVisualStyle {
 		preferences(context).edit()
 				.putString(KEY_STYLE, enabled ? STYLE_NEON_BETA : STYLE_CLASSIC)
 				.apply();
-		syncMapTheme(context);
 	}
 
 	public static boolean syncMapTheme(@NonNull Context context) {
@@ -42,11 +49,87 @@ public final class RoadCrewVisualStyle {
 		OsmandApplication app = (OsmandApplication) appContext;
 		OsmandSettings settings = app.getSettings();
 		SharedPreferences preferences = preferences(app);
-		// Test 41 forced NIGHT while Neon was enabled. Restore each profile once,
-		// then let OsmAnd's normal day/night setting control both map variants.
+		if (isNeonBeta(app)) {
+			return applyNeonTheme(app, settings, preferences);
+		}
+		return restoreClassicTheme(settings, preferences);
+	}
+
+	public static boolean isNeonNight(@NonNull Context context) {
+		Context appContext = context instanceof OsmandApplication
+				? context
+				: context.getApplicationContext();
+		if (appContext instanceof OsmandApplication) {
+			try {
+				SunriseSunset sunriseSunset = ((OsmandApplication) appContext)
+						.getDaynightHelper().getSunriseSunset();
+				if (sunriseSunset != null) {
+					return !sunriseSunset.isDaytime();
+				}
+			} catch (RuntimeException ignored) {
+				// Fall back to local time when location is unavailable.
+			}
+		}
+		int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+		return hour < 7 || hour >= 19;
+	}
+
+	private static boolean applyNeonTheme(@NonNull OsmandApplication app,
+			@NonNull OsmandSettings settings, @NonNull SharedPreferences preferences) {
+		ApplicationMode mode = settings.getApplicationMode();
+		String modeKey = mode.getStringKey();
+		SharedPreferences.Editor editor = preferences.edit();
+		if (!preferences.contains(previousDayNightKey(mode))) {
+			editor.putString(previousDayNightKey(mode),
+					settings.DAYNIGHT_MODE.getModeValue(mode).name());
+		}
+		if (!preferences.contains(previousRouteColorDayKey(modeKey))) {
+			editor.putInt(previousRouteColorDayKey(modeKey),
+					settings.CUSTOM_ROUTE_COLOR_DAY.getModeValue(mode));
+		}
+		if (!preferences.contains(previousRouteColorNightKey(modeKey))) {
+			editor.putInt(previousRouteColorNightKey(modeKey),
+					settings.CUSTOM_ROUTE_COLOR_NIGHT.getModeValue(mode));
+		}
+		if (!preferences.contains(previousRouteColoringKey(modeKey))) {
+			editor.putString(previousRouteColoringKey(modeKey),
+					settings.ROUTE_COLORING_TYPE.getModeValue(mode).name());
+		}
+		editor.apply();
+
+		boolean changed = false;
+		if (settings.DAYNIGHT_MODE.getModeValue(mode) != DayNightMode.NIGHT) {
+			settings.DAYNIGHT_MODE.setModeValue(mode, DayNightMode.NIGHT);
+			changed = true;
+		}
+
+		boolean actualNight = isNeonNight(app);
+		ColoringType desiredColoring = actualNight
+				? ColoringType.DEFAULT
+				: ColoringType.CUSTOM_COLOR;
+		if (settings.ROUTE_COLORING_TYPE.getModeValue(mode) != desiredColoring) {
+			settings.ROUTE_COLORING_TYPE.setModeValue(mode, desiredColoring);
+			changed = true;
+		}
+		if (!actualNight) {
+			if (settings.CUSTOM_ROUTE_COLOR_DAY.getModeValue(mode) != NEON_DAY_ROUTE_COLOR) {
+				settings.CUSTOM_ROUTE_COLOR_DAY.setModeValue(mode, NEON_DAY_ROUTE_COLOR);
+				changed = true;
+			}
+			if (settings.CUSTOM_ROUTE_COLOR_NIGHT.getModeValue(mode) != NEON_DAY_ROUTE_COLOR) {
+				settings.CUSTOM_ROUTE_COLOR_NIGHT.setModeValue(mode, NEON_DAY_ROUTE_COLOR);
+				changed = true;
+			}
+		}
+		return changed;
+	}
+
+	private static boolean restoreClassicTheme(@NonNull OsmandSettings settings,
+			@NonNull SharedPreferences preferences) {
 		boolean changed = false;
 		SharedPreferences.Editor editor = preferences.edit();
 		for (ApplicationMode mode : ApplicationMode.allPossibleValues()) {
+			String modeKey = mode.getStringKey();
 			String previousKey = previousDayNightKey(mode);
 			String storedMode = preferences.getString(previousKey, null);
 			if (storedMode != null) {
@@ -56,6 +139,36 @@ public final class RoadCrewVisualStyle {
 					changed = true;
 				}
 				editor.remove(previousKey);
+			}
+			String colorDayKey = previousRouteColorDayKey(modeKey);
+			if (preferences.contains(colorDayKey)) {
+				int color = preferences.getInt(colorDayKey,
+						settings.CUSTOM_ROUTE_COLOR_DAY.getModeValue(mode));
+				if (settings.CUSTOM_ROUTE_COLOR_DAY.getModeValue(mode) != color) {
+					settings.CUSTOM_ROUTE_COLOR_DAY.setModeValue(mode, color);
+					changed = true;
+				}
+				editor.remove(colorDayKey);
+			}
+			String colorNightKey = previousRouteColorNightKey(modeKey);
+			if (preferences.contains(colorNightKey)) {
+				int color = preferences.getInt(colorNightKey,
+						settings.CUSTOM_ROUTE_COLOR_NIGHT.getModeValue(mode));
+				if (settings.CUSTOM_ROUTE_COLOR_NIGHT.getModeValue(mode) != color) {
+					settings.CUSTOM_ROUTE_COLOR_NIGHT.setModeValue(mode, color);
+					changed = true;
+				}
+				editor.remove(colorNightKey);
+			}
+			String coloringKey = previousRouteColoringKey(modeKey);
+			String storedColoring = preferences.getString(coloringKey, null);
+			if (storedColoring != null) {
+				ColoringType coloringType = parseColoringType(storedColoring);
+				if (settings.ROUTE_COLORING_TYPE.getModeValue(mode) != coloringType) {
+					settings.ROUTE_COLORING_TYPE.setModeValue(mode, coloringType);
+					changed = true;
+				}
+				editor.remove(coloringKey);
 			}
 		}
 		editor.apply();
@@ -72,8 +185,32 @@ public final class RoadCrewVisualStyle {
 	}
 
 	@NonNull
+	private static ColoringType parseColoringType(@NonNull String value) {
+		try {
+			return ColoringType.valueOf(value);
+		} catch (IllegalArgumentException ignored) {
+			return ColoringType.DEFAULT;
+		}
+	}
+
+	@NonNull
 	private static String previousDayNightKey(@NonNull ApplicationMode mode) {
 		return KEY_PREVIOUS_DAY_NIGHT_PREFIX + mode.getStringKey();
+	}
+
+	@NonNull
+	private static String previousRouteColorDayKey(@NonNull String modeKey) {
+		return KEY_PREVIOUS_ROUTE_COLOR_DAY_PREFIX + modeKey;
+	}
+
+	@NonNull
+	private static String previousRouteColorNightKey(@NonNull String modeKey) {
+		return KEY_PREVIOUS_ROUTE_COLOR_NIGHT_PREFIX + modeKey;
+	}
+
+	@NonNull
+	private static String previousRouteColoringKey(@NonNull String modeKey) {
+		return KEY_PREVIOUS_ROUTE_COLORING_PREFIX + modeKey;
 	}
 
 	private static SharedPreferences preferences(@NonNull Context context) {
