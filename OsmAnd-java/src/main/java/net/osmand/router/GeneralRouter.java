@@ -346,6 +346,13 @@ public class GeneralRouter implements VehicleRouter {
 		}
 		return impassableRoads.toArray();
 	}
+
+	public void addImpassableRoad(long roadId) {
+		if (impassableRoads == null) {
+			impassableRoads = new TLongHashSet();
+		}
+		impassableRoads.add(roadId);
+	}
 	
 	public int registerTagValueAttribute(String tag, String value) {
 		String key = tag +"$"+value;

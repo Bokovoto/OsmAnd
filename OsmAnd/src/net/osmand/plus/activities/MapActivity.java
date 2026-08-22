@@ -97,6 +97,7 @@ import net.osmand.plus.plugins.PluginsHelper;
 import net.osmand.plus.plugins.accessibility.MapAccessibilityActions;
 import net.osmand.plus.plugins.audionotes.AudioVideoNoteRecordingMenu;
 import net.osmand.plus.roadcrew.RoadCrewAppUpdater;
+import net.osmand.plus.roadcrew.RoadCrewNeonHud;
 import net.osmand.plus.roadcrew.RoadCrewReportsLayer;
 import net.osmand.plus.roadcrew.RoadCrewStartupSetup;
 import net.osmand.plus.routepreparationmenu.MapRouteInfoMenu;
@@ -289,6 +290,7 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 		mapView.setAccessibilityActions(new MapAccessibilityActions(this));
 		getMapViewTrackingUtilities().setMapView(mapView);
 		getMapLayers().createAdditionalLayers(this);
+		RoadCrewNeonHud.apply(this);
 
 		createProgressBarForRouting();
 		updateStatusBarColor();
@@ -829,6 +831,7 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 		settings.ACCESSIBILITY_PINCH_ZOOM_MAGNIFICATION.addListener(pinchZoomMagnificationListener);
 
 		extendedMapActivity.onResume(this);
+		RoadCrewNeonHud.apply(this);
 
 		getMapView().getAnimatedDraggingThread().toggleAnimations();
 	}

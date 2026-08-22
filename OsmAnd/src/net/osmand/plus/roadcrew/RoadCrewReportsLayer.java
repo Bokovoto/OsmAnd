@@ -93,6 +93,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private RoadCrewVoiceAlerts voiceAlerts;
 	@Nullable
 	private RoadCrewTruckRestrictionsProvider truckRestrictionsProvider;
+	@Nullable
+	private RoadCrewMapObservationCoordinator mapObservationCoordinator;
 	private final long createdAtMillis = System.currentTimeMillis();
 
 	public RoadCrewReportsLayer(@NonNull OsmandApplication app) {
@@ -115,6 +117,11 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			truckRestrictionsProvider.shutdown();
 		}
 		truckRestrictionsProvider = new RoadCrewTruckRestrictionsProvider(getApplication());
+		if (mapObservationCoordinator != null) {
+			mapObservationCoordinator.shutdown();
+		}
+		mapObservationCoordinator = new RoadCrewMapObservationCoordinator(getApplication());
+		mapObservationCoordinator.start();
 		createResources();
 	}
 
@@ -131,6 +138,19 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		if (truckRestrictionsProvider != null) {
 			truckRestrictionsProvider.shutdown();
 			truckRestrictionsProvider = null;
+		}
+		if (mapObservationCoordinator != null) {
+			mapObservationCoordinator.shutdown();
+			mapObservationCoordinator = null;
+		}
+	}
+
+	static void setMapObservationEnabled(@NonNull OsmandApplication app, boolean enabled) {
+		RoadCrewMapObservationConsent.setEnabled(app, enabled);
+		if (activeLayer != null && activeLayer.mapObservationCoordinator != null) {
+			activeLayer.mapObservationCoordinator.setEnabled(enabled);
+		} else if (!enabled) {
+			RoadCrewMapObservationConsent.deleteLocalObservations(app);
 		}
 	}
 

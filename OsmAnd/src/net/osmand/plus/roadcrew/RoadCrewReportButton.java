@@ -11,9 +11,11 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -113,10 +115,18 @@ public class RoadCrewReportButton extends MapButton {
 		return position;
 	}
 
-	private void showReportTypeDialog() {
+	public void showReportTypeDialog() {
 		if (mapActivity == null) {
 			return;
 		}
+		if (RoadCrewVisualStyle.isNeonBeta(mapActivity)) {
+			showNeonReportTypeDialog();
+		} else {
+			showClassicReportTypeDialog();
+		}
+	}
+
+	private void showClassicReportTypeDialog() {
 		LinearLayout content = RoadCrewUi.createPanel(mapActivity, mapActivity.getString(R.string.roadcrew_menu_title));
 
 		GridLayout grid = new GridLayout(mapActivity);
@@ -150,6 +160,120 @@ public class RoadCrewReportButton extends MapButton {
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		dialogHolder[0] = dialog;
 		dialog.show();
+	}
+
+	private void showNeonReportTypeDialog() {
+		LinearLayout content = new LinearLayout(mapActivity);
+		content.setOrientation(LinearLayout.VERTICAL);
+		content.setPadding(dp(14), dp(8), dp(14), dp(22));
+		content.setBackground(RoadCrewUi.roundRect(0xff171b1f, dp(24), 0xff3c4449, dp(1)));
+
+		View handle = new View(mapActivity);
+		handle.setBackground(RoadCrewUi.roundRect(0xff737a7f, dp(3)));
+		LinearLayout.LayoutParams handleParams = new LinearLayout.LayoutParams(dp(54), dp(5));
+		handleParams.gravity = Gravity.CENTER_HORIZONTAL;
+		content.addView(handle, handleParams);
+
+		LinearLayout titleRow = new LinearLayout(mapActivity);
+		titleRow.setGravity(Gravity.CENTER_VERTICAL);
+		titleRow.setOrientation(LinearLayout.HORIZONTAL);
+		LinearLayout.LayoutParams titleRowParams = new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, dp(58));
+		content.addView(titleRow, titleRowParams);
+
+		View titleSpacer = new View(mapActivity);
+		titleRow.addView(titleSpacer, new LinearLayout.LayoutParams(dp(44), 1));
+
+		TextView title = new TextView(mapActivity);
+		title.setText(R.string.roadcrew_neon_report_title);
+		title.setTextColor(RoadCrewUi.TEXT);
+		title.setTextSize(23);
+		title.setGravity(Gravity.CENTER);
+		title.setTypeface(title.getTypeface(), android.graphics.Typeface.BOLD);
+		titleRow.addView(title, new LinearLayout.LayoutParams(0,
+				ViewGroup.LayoutParams.MATCH_PARENT, 1f));
+
+		ImageButton close = new ImageButton(mapActivity);
+		close.setImageResource(R.drawable.ic_action_close);
+		close.setColorFilter(RoadCrewUi.TEXT);
+		close.setContentDescription(mapActivity.getString(R.string.shared_string_close));
+		close.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+		close.setPadding(dp(10), dp(10), dp(10), dp(10));
+		titleRow.addView(close, new LinearLayout.LayoutParams(dp(44), dp(44)));
+
+		GridLayout grid = new GridLayout(mapActivity);
+		grid.setColumnCount(3);
+		grid.setUseDefaultMargins(false);
+		content.addView(grid, new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+		AlertDialog[] dialogHolder = new AlertDialog[1];
+		addNeonMenuTile(grid, RoadCrewReportType.POLICE.getTitle(mapActivity), R.drawable.roadcrew_menu_police,
+				() -> addReport(RoadCrewReportType.POLICE, ""), dialogHolder);
+		addNeonMenuTile(grid, RoadCrewReportType.DAI.getTitle(mapActivity), R.drawable.roadcrew_menu_traffic_control,
+				() -> addReport(RoadCrewReportType.DAI, ""), dialogHolder);
+		addNeonMenuTile(grid, RoadCrewReportType.WEIGH_STATION.getTitle(mapActivity), R.drawable.roadcrew_menu_scale,
+				() -> addReport(RoadCrewReportType.WEIGH_STATION, ""), dialogHolder);
+		addNeonMenuTile(grid, RoadCrewReportType.CAMERA.getTitle(mapActivity), R.drawable.roadcrew_menu_camera,
+				() -> addReport(RoadCrewReportType.CAMERA, ""), dialogHolder);
+		addNeonMenuTile(grid, RoadCrewReportType.DANGER.getTitle(mapActivity), R.drawable.roadcrew_menu_danger,
+				() -> addReport(RoadCrewReportType.DANGER, ""), dialogHolder);
+		addNeonMenuTile(grid, mapActivity.getString(R.string.roadcrew_report_type_help), R.drawable.roadcrew_menu_help,
+				this::showHelpDetailsDialog, dialogHolder);
+		addNeonMenuTile(grid, mapActivity.getString(R.string.roadcrew_menu_warn_driver), R.drawable.roadcrew_menu_warn_driver,
+				this::showPlateAlertNumberDialog, dialogHolder);
+		addNeonMenuTile(grid, mapActivity.getString(R.string.roadcrew_menu_check_update), R.drawable.roadcrew_menu_update,
+				() -> RoadCrewAppUpdater.checkForUpdatesNow(mapActivity), dialogHolder);
+		addNeonMenuTile(grid, mapActivity.getString(R.string.roadcrew_menu_driver_profile), R.drawable.roadcrew_menu_profile,
+				this::showDriverProfileDialog, dialogHolder);
+
+		AlertDialog dialog = RoadCrewUi.createBottomDialog(mapActivity, content);
+		dialogHolder[0] = dialog;
+		close.setOnClickListener(v -> dialog.dismiss());
+		dialog.show();
+	}
+
+	private void addNeonMenuTile(@NonNull GridLayout grid, @NonNull String label, int iconRes,
+			@NonNull Runnable action, @NonNull AlertDialog[] dialogHolder) {
+		LinearLayout tile = new LinearLayout(mapActivity);
+		tile.setOrientation(LinearLayout.VERTICAL);
+		tile.setGravity(Gravity.CENTER);
+		tile.setPadding(dp(3), dp(4), dp(3), dp(5));
+		tile.setMinimumHeight(dp(116));
+		tile.setOnClickListener(v -> {
+			if (dialogHolder[0] != null) {
+				dialogHolder[0].dismiss();
+			}
+			action.run();
+		});
+
+		ImageView icon = new ImageView(mapActivity);
+		icon.setImageResource(iconRes);
+		icon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+		icon.setBackground(RoadCrewUi.oval(0xff262c31));
+		icon.setPadding(dp(4), dp(4), dp(4), dp(4));
+		LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(dp(72), dp(72));
+		iconParams.gravity = Gravity.CENTER_HORIZONTAL;
+		tile.addView(icon, iconParams);
+
+		TextView text = new TextView(mapActivity);
+		text.setText(label);
+		text.setTextColor(RoadCrewUi.TEXT);
+		text.setTextSize(13);
+		text.setGravity(Gravity.CENTER);
+		text.setTypeface(text.getTypeface(), android.graphics.Typeface.BOLD);
+		text.setMaxLines(2);
+		LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		textParams.topMargin = dp(4);
+		tile.addView(text, textParams);
+
+		GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+		params.width = 0;
+		params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+		params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+		params.setMargins(dp(2), dp(2), dp(2), dp(3));
+		grid.addView(tile, params);
 	}
 
 	private void addMenuTile(@NonNull GridLayout grid, @NonNull String label, int iconRes,

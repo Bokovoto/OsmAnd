@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -149,6 +151,32 @@ final class RoadCrewDriverProfileDialog {
 			@NonNull LinearLayout content, @NonNull AlertDialog dialog, @NonNull boolean[] openingSettings,
 			@NonNull Runnable saveProfile, @Nullable Runnable onClosed) {
 		RoadCrewUi.addSectionTitle(mapActivity, content,
+				mapActivity.getString(R.string.roadcrew_visual_style_title));
+		RoadCrewUi.addBody(mapActivity, content,
+				mapActivity.getString(R.string.roadcrew_visual_style_body));
+		RadioGroup visualStyles = new RadioGroup(mapActivity);
+		visualStyles.setOrientation(RadioGroup.VERTICAL);
+		RadioButton classicStyle = createStyleOption(mapActivity,
+				R.string.roadcrew_visual_style_classic);
+		RadioButton neonStyle = createStyleOption(mapActivity,
+				R.string.roadcrew_visual_style_neon_beta);
+		visualStyles.addView(classicStyle);
+		visualStyles.addView(neonStyle);
+		if (RoadCrewVisualStyle.isNeonBeta(app)) {
+			neonStyle.setChecked(true);
+		} else {
+			classicStyle.setChecked(true);
+		}
+		visualStyles.setOnCheckedChangeListener((group, checkedId) -> {
+			boolean neonEnabled = checkedId == neonStyle.getId();
+			RoadCrewVisualStyle.setNeonBeta(app, neonEnabled);
+			RoadCrewNeonHud.apply(mapActivity);
+			mapActivity.getMapView().refreshMap();
+		});
+		content.addView(visualStyles, new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+		RoadCrewUi.addSectionTitle(mapActivity, content,
 				mapActivity.getString(R.string.roadcrew_profile_setup_status));
 		boolean phoneSetupComplete = RoadCrewSetupStatus.isPhoneSetupReady(mapActivity, app);
 		String setupStatusText = phoneSetupComplete
@@ -188,6 +216,41 @@ final class RoadCrewDriverProfileDialog {
 					BaseSettingsFragment.showInstance(mapActivity,
 							SettingsScreenType.VEHICLE_PARAMETERS, ApplicationMode.TRUCK);
 				});
+
+		RoadCrewUi.addSectionTitle(mapActivity, content,
+				mapActivity.getString(R.string.roadcrew_live_truck_map_title));
+		boolean observationEnabled = RoadCrewMapObservationConsent.isEnabled(app);
+		TextView observationStatus = RoadCrewUi.addBody(mapActivity, content, mapActivity.getString(
+				observationEnabled
+						? R.string.roadcrew_live_truck_map_status_enabled
+						: R.string.roadcrew_live_truck_map_status_disabled));
+		observationStatus.setTextColor(observationEnabled ? RoadCrewUi.PRIMARY : RoadCrewUi.SECONDARY_TEXT);
+		RoadCrewUi.addBody(mapActivity, content,
+				mapActivity.getString(R.string.roadcrew_live_truck_map_profile_body));
+		CheckBox observationConsent = new CheckBox(mapActivity);
+		observationConsent.setText(R.string.roadcrew_live_truck_map_consent);
+		observationConsent.setTextColor(RoadCrewUi.TEXT);
+		observationConsent.setChecked(observationEnabled);
+		observationConsent.setOnCheckedChangeListener((buttonView, isChecked) -> {
+			RoadCrewReportsLayer.setMapObservationEnabled(app, isChecked);
+			observationStatus.setText(isChecked
+					? R.string.roadcrew_live_truck_map_status_enabled
+					: R.string.roadcrew_live_truck_map_status_disabled);
+			observationStatus.setTextColor(isChecked ? RoadCrewUi.PRIMARY : RoadCrewUi.SECONDARY_TEXT);
+		});
+		content.addView(observationConsent, new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+	}
+
+	@NonNull
+	private static RadioButton createStyleOption(@NonNull MapActivity mapActivity, int titleRes) {
+		RadioButton option = new RadioButton(mapActivity);
+		option.setId(android.view.View.generateViewId());
+		option.setText(titleRes);
+		option.setTextColor(RoadCrewUi.TEXT);
+		option.setTextSize(15);
+		option.setMinHeight(RoadCrewUi.dp(mapActivity, 48));
+		return option;
 	}
 
 	private static void updateSetupSaveButton(@NonNull Button saveButton, @NonNull EditText driverName,

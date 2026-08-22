@@ -9,6 +9,8 @@ import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -179,6 +181,26 @@ final class RoadCrewUi {
 				.setView(scrollView)
 				.create();
 		dialog.setOnShowListener(d -> applyWindow(dialog));
+		return dialog;
+	}
+
+	@NonNull
+	static AlertDialog createBottomDialog(@NonNull Context context, @NonNull View content) {
+		AlertDialog dialog = new AlertDialog.Builder(context)
+				.setView(content)
+				.create();
+		dialog.setOnShowListener(d -> {
+			applyWindow(dialog);
+			Window window = dialog.getWindow();
+			if (window != null) {
+				window.setGravity(Gravity.BOTTOM);
+				window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+				window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+				WindowManager.LayoutParams attributes = window.getAttributes();
+				attributes.dimAmount = 0.68f;
+				window.setAttributes(attributes);
+			}
+		});
 		return dialog;
 	}
 

@@ -84,6 +84,13 @@
     <string name="roadcrew_profile_vehicle_parameters_incomplete">Status: Incomplete</string>
     <string name="roadcrew_profile_vehicle_parameters_body">For Ready status, set the Truck profile height, width, weight and length. These values are used directly for route calculation. The remaining parameters are optional.</string>
     <string name="roadcrew_profile_vehicle_parameters_button">Configure truck</string>
+    <string name="roadcrew_live_truck_map_title">Live Truck Map</string>
+    <string name="roadcrew_live_truck_map_status_enabled">Status: Enabled</string>
+    <string name="roadcrew_live_truck_map_status_disabled">Status: Disabled</string>
+    <string name="roadcrew_live_truck_map_optional">Optional. Leaving this disabled does not block setup or navigation.</string>
+    <string name="roadcrew_live_truck_map_consent">Help improve truck routes</string>
+    <string name="roadcrew_live_truck_map_wizard_body">With your permission, RoadCrew can learn which road segments are actually used by trucks and later help drivers choose more reliable routes. Analysis runs only while RoadCrew is open, the Truck profile is active and the vehicle is moving. This version stores only a road-segment key, a 15-minute time bucket and aggregate match quality on this phone. It does not store your GPS trail, exact passage time, name, truck or trailer number, and it does not upload observations to a server.</string>
+    <string name="roadcrew_live_truck_map_profile_body">Optional local participation in the RoadCrew truck map. It runs only while RoadCrew is open, the Truck profile is active and the vehicle is moving. Only aggregate segment evidence is kept locally; no GPS trail, exact passage time, name, truck or trailer number is stored or uploaded. Turning this off stops observation and deletes pending local observations.</string>
     <string name="roadcrew_setup_vehicle_parameters_body">Enter the actual truck dimensions. All four values are required and are used directly for route calculation.</string>
     <string name="roadcrew_vehicle_height_m">Height (m)</string>
     <string name="roadcrew_vehicle_width_m">Width (m)</string>
@@ -161,9 +168,19 @@
     <string name="roadcrew_notification_channel_name">RoadCrew sound alerts</string>
     <string name="roadcrew_notification_channel_description">Help requests, driver warnings, and RoadCrew chat alerts.</string>
     <string name="roadcrew_button_join_chat">Join chat</string>
-    <string name="roadcrew_button_open_chat">Open chat</string>
+	<string name="roadcrew_button_open_chat">Open chat</string>
+	<string name="roadcrew_visual_style_title">Appearance</string>
+	<string name="roadcrew_visual_style_body">Classic keeps the current interface. RoadCrew Neon is an optional beta skin for the map controls and report menu; it does not change navigation, reports, chats or your data.</string>
+	<string name="roadcrew_visual_style_classic">Classic</string>
+	<string name="roadcrew_visual_style_neon_beta">RoadCrew Neon (Beta)</string>
+	<string name="roadcrew_visual_style_beta_badge">BETA</string>
+	<string name="roadcrew_neon_nav_map">Map</string>
+	<string name="roadcrew_neon_nav_route">Route</string>
+	<string name="roadcrew_neon_nav_reports">Reports</string>
+	<string name="roadcrew_neon_nav_profile">Profile</string>
+	<string name="roadcrew_neon_report_title">What do you see?</string>
 
-    <string name="roadcrew_button_cancel">Cancel</string>
+	<string name="roadcrew_button_cancel">Cancel</string>
     <string name="roadcrew_button_back">Back</string>
     <string name="roadcrew_button_next">Next</string>
     <string name="roadcrew_button_skip">Skip</string>

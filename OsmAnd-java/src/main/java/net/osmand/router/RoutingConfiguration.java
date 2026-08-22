@@ -96,6 +96,17 @@ public class RoutingConfiguration {
 		return directionPoints;
 	}
 
+	public void addDirectionPoint(Node node) {
+		if (directionPoints == null) {
+			QuadRect rect = new QuadRect(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
+			directionPoints = new QuadTree<>(rect, 14, 0.5f);
+		}
+		DirectionPoint point = new DirectionPoint(node);
+		int x = MapUtils.get31TileNumberX(point.getLongitude());
+		int y = MapUtils.get31TileNumberY(point.getLatitude());
+		directionPoints.insert(point, new QuadRect(x, y, x, y));
+	}
+
 	public static class DirectionPoint extends Node {
 		private static final long serialVersionUID = -7496599771204656505L;
 		public double distance = Double.MAX_VALUE;

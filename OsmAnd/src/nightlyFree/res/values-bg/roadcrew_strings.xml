@@ -84,6 +84,13 @@
     <string name="roadcrew_profile_vehicle_parameters_incomplete">Състояние: Непълно</string>
     <string name="roadcrew_profile_vehicle_parameters_body">За състояние „Готово“ задайте височина, ширина, маса и дължина за профила Камион. Тези стойности се използват директно при изчисляване на маршрута. Останалите параметри са по избор.</string>
     <string name="roadcrew_profile_vehicle_parameters_button">Настрой параметрите</string>
+    <string name="roadcrew_live_truck_map_title">Live Truck Map</string>
+    <string name="roadcrew_live_truck_map_status_enabled">Състояние: Включено</string>
+    <string name="roadcrew_live_truck_map_status_disabled">Състояние: Изключено</string>
+    <string name="roadcrew_live_truck_map_optional">По избор. Ако оставите тази отметка изключена, настройката и навигацията продължават нормално.</string>
+    <string name="roadcrew_live_truck_map_consent">Помагай за по-точни маршрути за камиони</string>
+    <string name="roadcrew_live_truck_map_wizard_body">С ваше разрешение RoadCrew може да научава кои пътни сегменти реално се използват от камиони и по-късно да помага на шофьорите с по-надеждни маршрути. Анализът работи само докато RoadCrew е отворен, активен е профилът Камион и превозното средство се движи. Тази версия пази на телефона само ключ на пътния сегмент, 15-минутен времеви интервал и обобщено качество на съвпадението. Не се пазят GPS следа, точен час на преминаване, име, номер на камион или ремарке и нищо не се изпраща към сървър.</string>
+    <string name="roadcrew_live_truck_map_profile_body">Доброволно локално участие в камионската карта на RoadCrew. Работи само докато RoadCrew е отворен, активен е профилът Камион и превозното средство се движи. Пазят се само обобщени данни за пътния сегмент; не се пазят и не се изпращат GPS следа, точен час, име, номер на камион или ремарке. Изключването спира наблюдението и изтрива чакащите локални наблюдения.</string>
     <string name="roadcrew_setup_vehicle_parameters_body">Въведете действителните размери на камиона. И четирите стойности са задължителни и се използват директно при изчисляване на маршрута.</string>
     <string name="roadcrew_vehicle_height_m">Височина (м)</string>
     <string name="roadcrew_vehicle_width_m">Ширина (м)</string>
@@ -161,9 +168,19 @@
     <string name="roadcrew_notification_channel_name">RoadCrew известия със звук</string>
     <string name="roadcrew_notification_channel_description">Заявки за помощ, предупреждения към шофьори и RoadCrew чат известия.</string>
     <string name="roadcrew_button_join_chat">Включи се в чата</string>
-    <string name="roadcrew_button_open_chat">Отвори чата</string>
+	<string name="roadcrew_button_open_chat">Отвори чата</string>
+	<string name="roadcrew_visual_style_title">Външен вид</string>
+	<string name="roadcrew_visual_style_body">Classic запазва сегашния интерфейс. RoadCrew Neon е незадължителен бета скин за контролите на картата и менюто със сигнали; не променя навигацията, сигналите, чатовете или данните ви.</string>
+	<string name="roadcrew_visual_style_classic">Classic</string>
+	<string name="roadcrew_visual_style_neon_beta">RoadCrew Neon (Beta)</string>
+	<string name="roadcrew_visual_style_beta_badge">BETA</string>
+	<string name="roadcrew_neon_nav_map">Карта</string>
+	<string name="roadcrew_neon_nav_route">Маршрут</string>
+	<string name="roadcrew_neon_nav_reports">Сигнали</string>
+	<string name="roadcrew_neon_nav_profile">Профил</string>
+	<string name="roadcrew_neon_report_title">Какво виждате?</string>
 
-    <string name="roadcrew_button_cancel">Отказ</string>
+	<string name="roadcrew_button_cancel">Отказ</string>
     <string name="roadcrew_button_back">Назад</string>
     <string name="roadcrew_button_next">Следващ</string>
     <string name="roadcrew_button_skip">Пропусни</string>

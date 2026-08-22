@@ -7,7 +7,9 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -87,6 +89,9 @@ public final class RoadCrewStartupSetup {
 		status.setTextColor(ready ? RoadCrewUi.PRIMARY : RoadCrewUi.DANGER);
 		RoadCrewUi.addFullWidthButton(activity, content, getStepActionTitle(activity, step), true,
 				v -> performStepAction(activity, step));
+		if (step == STEP_COUNT - 1) {
+			addOptionalLiveTruckMapConsent(activity, content);
+		}
 
 		AlertDialog dialog = RoadCrewUi.createDialog(activity, content);
 		currentDialog = dialog;
@@ -127,6 +132,25 @@ public final class RoadCrewStartupSetup {
 		if (step == 3 && !ready) {
 			monitorOfflineMapStep(activity, dialog, status, next);
 		}
+	}
+
+	private static void addOptionalLiveTruckMapConsent(@NonNull MapActivity activity,
+			@NonNull LinearLayout content) {
+		RoadCrewUi.addSectionTitle(activity, content,
+				activity.getString(R.string.roadcrew_live_truck_map_title));
+		RoadCrewUi.addBody(activity, content,
+				activity.getString(R.string.roadcrew_live_truck_map_wizard_body));
+		CheckBox consent = new CheckBox(activity);
+		consent.setText(R.string.roadcrew_live_truck_map_consent);
+		consent.setTextColor(RoadCrewUi.TEXT);
+		consent.setChecked(RoadCrewMapObservationConsent.isEnabled(activity));
+		consent.setOnCheckedChangeListener((buttonView, isChecked) ->
+				RoadCrewReportsLayer.setMapObservationEnabled(activity.getApp(), isChecked));
+		content.addView(consent, new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		TextView optional = RoadCrewUi.addBody(activity, content,
+				activity.getString(R.string.roadcrew_live_truck_map_optional));
+		optional.setTextColor(RoadCrewUi.SECONDARY_TEXT);
 	}
 
 	private static void monitorOfflineMapStep(@NonNull MapActivity activity, @NonNull AlertDialog dialog,

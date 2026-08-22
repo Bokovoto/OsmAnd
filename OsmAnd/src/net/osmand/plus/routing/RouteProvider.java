@@ -27,6 +27,7 @@ import net.osmand.plus.onlinerouting.OnlineRoutingHelper;
 import net.osmand.plus.onlinerouting.engine.OnlineRoutingEngine;
 import net.osmand.plus.onlinerouting.engine.OnlineRoutingEngine.OnlineRoutingResponse;
 import net.osmand.plus.render.NativeOsmandLibrary;
+import net.osmand.plus.roadcrew.routing.RoadCrewRoutingOverlayStore;
 import net.osmand.plus.routing.GPXRouteParams.GPXRouteParamsBuilder;
 import net.osmand.plus.settings.backend.ApplicationMode;
 import net.osmand.plus.settings.backend.OsmandSettings;
@@ -296,20 +297,21 @@ public class RouteProvider {
 		RoutePlannerFrontEnd router = new RoutePlannerFrontEnd();
 
 		OsmandSettings settings = params.ctx.getSettings();
+		RoadCrewRoutingOverlay.Snapshot roadCrewOverlay = RoadCrewRoutingOverlayStore.load(params.ctx, params.mode);
 
 		RoutePlannerFrontEnd.CALCULATE_MISSING_MAPS = !OsmandSettings.IGNORE_MISSING_MAPS;
 		RoutePlannerFrontEnd.CONTINUE_ON_MISSING_MAPS = !OsmandSettings.STOP_ON_MISSING_MAPS;
 
 		RouteCalculationMethod method = settings.ROUTE_CALCULATION_METHOD.getModeValue(params.mode);
 
-		if (method.isFastRoutingPossible(params.mode)) {
+		if (method.isFastRoutingPossible(params.mode) && roadCrewOverlay.isEmpty()) {
 			router.setDefaultHHRoutingConfig();
 		} else {
 			router.setHHRoutingConfig(null);
 		}
 
 		router.setHHRouteCpp(!settings.SAFE_MODE.get());
-		router.setUseOnlyHHRouting(method.isFastRoutingOnly(params.mode));
+		router.setUseOnlyHHRouting(method.isFastRoutingOnly(params.mode) && roadCrewOverlay.isEmpty());
 
 		ApproximationType approximationType = settings.APPROXIMATION_TYPE.getModeValue(params.mode);
 		router.setUseNativeApproximation(approximationType.isNativeApproximation());
@@ -320,7 +322,7 @@ public class RouteProvider {
 		if (generalRouter == null) {
 			return null;
 		}
-		RoutingConfiguration cf = initOsmAndRoutingConfig(config, params, settings, generalRouter);
+		RoutingConfiguration cf = initOsmAndRoutingConfig(config, params, settings, generalRouter, roadCrewOverlay);
 		if (cf == null) {
 			return null;
 		}
@@ -401,7 +403,8 @@ public class RouteProvider {
 	}
 
 	private RoutingConfiguration initOsmAndRoutingConfig(Builder builder, RouteCalculationParams params, OsmandSettings settings,
-	                                                     GeneralRouter generalRouter) {
+	                                                     GeneralRouter generalRouter,
+	                                                     RoadCrewRoutingOverlay.Snapshot roadCrewOverlay) {
 		Map<String, String> paramsR = new LinkedHashMap<String, String>();
 		for (Map.Entry<String, RoutingParameter> e : RoutingHelperUtils.getParametersForDerivedProfile(params.mode, generalRouter).entrySet()) {
 			String key = e.getKey();
@@ -450,6 +453,11 @@ public class RouteProvider {
 		Double direction = params.start.hasBearing() ? params.start.getBearing() / 180d * Math.PI : null;
 
 		RoutingConfiguration configuration = builder.build(routingProfile, direction, memoryLimits, paramsR);
+		int roadCrewOverrideCount = roadCrewOverlay.applyTo(configuration);
+		if (roadCrewOverrideCount > 0) {
+			log.info("Applied RoadCrew routing overlay " + roadCrewOverlay.getRevision()
+					+ " with " + roadCrewOverrideCount + " restrictive overrides; HH routing disabled");
+		}
 		if (settings.ENABLE_TIME_CONDITIONAL_ROUTING.getModeValue(params.mode)) {
 			configuration.routeCalculationTime = System.currentTimeMillis();
 		}
