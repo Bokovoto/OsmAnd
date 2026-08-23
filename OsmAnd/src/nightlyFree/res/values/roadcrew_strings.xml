@@ -97,6 +97,10 @@
     <string name="roadcrew_live_truck_map_contribution">Shared observations: %1$d · Waiting to upload: %2$d</string>
     <string name="roadcrew_live_truck_map_last_upload">Last successful upload: %1$s</string>
     <string name="roadcrew_live_truck_map_last_upload_none">Last successful upload: None yet</string>
+    <string name="roadcrew_live_truck_map_shadow_snapshot">Shadow layer: %1$d segments · Collecting: %2$d · Candidates: %3$d · Mature: %4$d · Updated: %5$s</string>
+    <string name="roadcrew_live_truck_map_shadow_snapshot_none">Shadow layer: No downloaded data yet</string>
+    <string name="roadcrew_live_truck_map_shadow_route_diagnostic">Last Shadow route diagnostic: evaluated %1$s km of %2$s km · Exact evidence: %3$d%% · Mature: %4$d%% · Confidence score: %5$d%% · Exact segments: %6$d/%7$d · Evaluated: %8$s</string>
+    <string name="roadcrew_live_truck_map_shadow_route_diagnostic_none">Last Shadow route diagnostic: No eligible truck route has been evaluated yet</string>
     <string name="roadcrew_live_truck_map_background_active">Background collection is active during truck navigation.</string>
     <string name="roadcrew_live_truck_map_optional">Optional for setup and standard navigation. Community-validated truck routing is available only while anonymous segment sharing is enabled.</string>
     <string name="roadcrew_live_truck_map_consent">Share anonymous truck passages</string>

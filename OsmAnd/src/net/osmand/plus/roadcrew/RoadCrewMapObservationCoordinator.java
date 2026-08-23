@@ -200,6 +200,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 
 	private void process(@NonNull LocationSample sample) {
 		try {
+			RoadCrewShadowSnapshotDownloader.schedule(app, sample.latitude, sample.longitude);
 			RoadCrewObservationPipeline currentPipeline = ensurePipeline();
 			if (needsRoadReload(sample)) {
 				if (!reloadRoads(currentPipeline, sample)) {

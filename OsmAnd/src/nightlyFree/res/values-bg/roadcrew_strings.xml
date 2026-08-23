@@ -97,6 +97,10 @@
     <string name="roadcrew_live_truck_map_contribution">Споделени наблюдения: %1$d · За изпращане: %2$d</string>
     <string name="roadcrew_live_truck_map_last_upload">Последно успешно изпращане: %1$s</string>
     <string name="roadcrew_live_truck_map_last_upload_none">Последно успешно изпращане: Все още няма</string>
+    <string name="roadcrew_live_truck_map_shadow_snapshot">Shadow слой: %1$d сегмента · Събиране: %2$d · Кандидати: %3$d · Зрели: %4$d · Обновен: %5$s</string>
+    <string name="roadcrew_live_truck_map_shadow_snapshot_none">Shadow слой: Все още няма изтеглени данни</string>
+    <string name="roadcrew_live_truck_map_shadow_route_diagnostic">Последна Shadow диагностика: оценени %1$s км от %2$s км · Точно покритие: %3$d%% · Зряло: %4$d%% · Confidence резултат: %5$d%% · Точни сегменти: %6$d/%7$d · Оценено: %8$s</string>
+    <string name="roadcrew_live_truck_map_shadow_route_diagnostic_none">Последна Shadow диагностика: Все още няма оценен подходящ камионски маршрут</string>
     <string name="roadcrew_live_truck_map_background_active">Фоновото събиране е активно по време на камионска навигация.</string>
     <string name="roadcrew_live_truck_map_optional">По избор за настройката и стандартната навигация. Общностната камионска маршрутизация е достъпна само при включено анонимно споделяне на сегменти.</string>
     <string name="roadcrew_live_truck_map_consent">Споделяй анонимни преминавания с камион</string>

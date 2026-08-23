@@ -27,6 +27,7 @@ import net.osmand.plus.widgets.tools.SimpleTextWatcher;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 final class RoadCrewDriverProfileDialog {
 
@@ -227,6 +228,8 @@ final class RoadCrewDriverProfileDialog {
 		TextView routingAccess = RoadCrewUi.addBody(mapActivity, content, "");
 		TextView contribution = RoadCrewUi.addBody(mapActivity, content, "");
 		TextView lastUpload = RoadCrewUi.addBody(mapActivity, content, "");
+		TextView shadowSnapshot = RoadCrewUi.addBody(mapActivity, content, "");
+		TextView shadowRouteDiagnostic = RoadCrewUi.addBody(mapActivity, content, "");
 		RoadCrewUi.addBody(mapActivity, content,
 				mapActivity.getString(R.string.roadcrew_live_truck_map_profile_body));
 		CheckBox observationConsent = new CheckBox(mapActivity);
@@ -234,7 +237,8 @@ final class RoadCrewDriverProfileDialog {
 		observationConsent.setTextColor(RoadCrewUi.TEXT);
 		observationConsent.setChecked(observationEnabled);
 		Runnable updateObservationStatus = () -> updateLiveTruckMapStatus(mapActivity, app,
-				observationStatus, routingAccess, contribution, lastUpload);
+				observationStatus, routingAccess, contribution, lastUpload, shadowSnapshot,
+				shadowRouteDiagnostic);
 		observationConsent.setOnCheckedChangeListener((buttonView, isChecked) -> {
 			RoadCrewReportsLayer.setMapObservationEnabled(app, isChecked);
 			updateObservationStatus.run();
@@ -247,7 +251,8 @@ final class RoadCrewDriverProfileDialog {
 	private static void updateLiveTruckMapStatus(@NonNull MapActivity activity,
 			@NonNull OsmandApplication app, @NonNull TextView status,
 			@NonNull TextView access, @NonNull TextView contribution,
-			@NonNull TextView lastUpload) {
+			@NonNull TextView lastUpload, @NonNull TextView shadowSnapshot,
+			@NonNull TextView shadowRouteDiagnostic) {
 		RoadCrewMapObservationCoordinator.StatusSnapshot snapshot =
 				RoadCrewMapObservationCoordinator.getStatus(app);
 		status.setText(getLiveTruckMapStatusText(snapshot.status));
@@ -266,6 +271,37 @@ final class RoadCrewDriverProfileDialog {
 					formatted));
 		} else {
 			lastUpload.setText(R.string.roadcrew_live_truck_map_last_upload_none);
+		}
+		RoadCrewShadowSnapshotDownloader.Summary shadow =
+				RoadCrewShadowSnapshotDownloader.getCachedSummary(app);
+		if (shadow.available && snapshot.communityRoutingAccess) {
+			String formatted = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+					.format(new Date(shadow.generatedAtMillis));
+			shadowSnapshot.setText(activity.getString(R.string.roadcrew_live_truck_map_shadow_snapshot,
+					shadow.totalCount, shadow.collectingCount, shadow.candidateCount,
+					shadow.matureCount, formatted));
+		} else {
+			shadowSnapshot.setText(R.string.roadcrew_live_truck_map_shadow_snapshot_none);
+		}
+		RoadCrewShadowRouteDiagnostics.Summary diagnostic =
+				RoadCrewShadowRouteDiagnostics.getLastSummary(app);
+		if (diagnostic.available && snapshot.communityRoutingAccess) {
+			String evaluatedAt = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+					.format(new Date(diagnostic.evaluatedAtMillis));
+			String evaluatedKilometers = String.format(Locale.getDefault(), "%.1f",
+					diagnostic.evaluatedDistanceMeters / 1000.0);
+			String routeKilometers = String.format(Locale.getDefault(), "%.1f",
+					diagnostic.routeDistanceMeters / 1000.0);
+			shadowRouteDiagnostic.setText(activity.getString(
+					R.string.roadcrew_live_truck_map_shadow_route_diagnostic,
+					evaluatedKilometers, routeKilometers,
+					Math.round(diagnostic.exactCoverage * 100),
+					Math.round(diagnostic.matureCoverage * 100),
+					Math.round(diagnostic.confidenceCoverage * 100),
+					diagnostic.exactMatchCount, diagnostic.evaluatedSegmentCount, evaluatedAt));
+		} else {
+			shadowRouteDiagnostic.setText(
+					R.string.roadcrew_live_truck_map_shadow_route_diagnostic_none);
 		}
 	}
 
