@@ -424,28 +424,31 @@ public final class RoadCrewNeonHud {
 		}
 		boolean landscape = isLandscape(activity);
 		boolean cockpitMode = landscape && activity.getRoutingHelper().isFollowingMode();
-		View header = root.findViewWithTag(HEADER_TAG);
-		View footer = root.findViewWithTag(FOOTER_TAG);
-		View leftRail = root.findViewWithTag(LEFT_RAIL_TAG);
-		View rightRail = root.findViewWithTag(RIGHT_RAIL_TAG);
-		if (header != null) {
-			header.setVisibility(cockpitMode ? View.GONE : View.VISIBLE);
-		}
-		if (footer != null) {
-			footer.setVisibility(cockpitMode ? View.GONE : View.VISIBLE);
-		}
-		if (leftRail != null) {
-			leftRail.setVisibility(cockpitMode ? View.VISIBLE : View.GONE);
-		}
-		if (rightRail != null) {
-			rightRail.setVisibility(cockpitMode ? View.VISIBLE : View.GONE);
-		}
+		boolean layoutChanged = true;
 		if (root instanceof NeonHudRoot) {
-			((NeonHudRoot) root).setCockpitMode(cockpitMode);
+			layoutChanged = ((NeonHudRoot) root).setCockpitMode(cockpitMode);
 		}
-		MapHudLayout mapHud = activity.findViewById(R.id.map_hud_layout);
-		if (mapHud != null) {
-			setNativeHudOffsets(mapHud, !cockpitMode, landscape, cockpitMode);
+		if (layoutChanged) {
+			View header = root.findViewWithTag(HEADER_TAG);
+			View footer = root.findViewWithTag(FOOTER_TAG);
+			View leftRail = root.findViewWithTag(LEFT_RAIL_TAG);
+			View rightRail = root.findViewWithTag(RIGHT_RAIL_TAG);
+			if (header != null) {
+				header.setVisibility(cockpitMode ? View.GONE : View.VISIBLE);
+			}
+			if (footer != null) {
+				footer.setVisibility(cockpitMode ? View.GONE : View.VISIBLE);
+			}
+			if (leftRail != null) {
+				leftRail.setVisibility(cockpitMode ? View.VISIBLE : View.GONE);
+			}
+			if (rightRail != null) {
+				rightRail.setVisibility(cockpitMode ? View.VISIBLE : View.GONE);
+			}
+			MapHudLayout mapHud = activity.findViewById(R.id.map_hud_layout);
+			if (mapHud != null) {
+				setNativeHudOffsets(mapHud, !cockpitMode, landscape, cockpitMode);
+			}
 		}
 		if (cockpitMode) {
 			updateCockpitData(root, activity);
@@ -651,8 +654,9 @@ public final class RoadCrewNeonHud {
 		private final MapActivity activity;
 		private final boolean nightMode;
 		private final boolean landscape;
-		private final Map<View, Integer> savedNativeVisibility = new LinkedHashMap<>();
+		private final Map<View, NativeViewState> savedNativeViewState = new LinkedHashMap<>();
 		private boolean cockpitMode;
+		private boolean cockpitModeInitialized;
 		private final Runnable themeCheck = new Runnable() {
 			@Override
 			public void run() {
@@ -685,35 +689,65 @@ public final class RoadCrewNeonHud {
 			this.landscape = landscape;
 		}
 
-		private void setCockpitMode(boolean enabled) {
+		private boolean setCockpitMode(boolean enabled) {
+			if (cockpitModeInitialized && cockpitMode == enabled) {
+				return false;
+			}
+			cockpitModeInitialized = true;
 			if (enabled) {
-				if (!cockpitMode) {
-					savedNativeVisibility.clear();
-					cockpitMode = true;
-				}
+				savedNativeViewState.clear();
+				cockpitMode = true;
 				for (int id : COCKPIT_HIDDEN_VIEW_IDS) {
 					View view = activity.findViewById(id);
-					if (view != null && !savedNativeVisibility.containsKey(view)) {
-						savedNativeVisibility.put(view, view.getVisibility());
+					if (view != null && !savedNativeViewState.containsKey(view)) {
+						savedNativeViewState.put(view, new NativeViewState(view));
+						view.setVisibility(View.INVISIBLE);
+						view.setAlpha(0f);
+						view.setTranslationX(-Math.max(getResources().getDisplayMetrics().widthPixels * 2f,
+								dp(this, 2000)));
+						view.setClickable(false);
+						view.setEnabled(false);
 					}
-				}
-				for (View view : savedNativeVisibility.keySet()) {
-					view.setVisibility(View.GONE);
 				}
 			} else {
 				restoreNativeVisibility();
 			}
+			return true;
 		}
 
 		private void restoreNativeVisibility() {
 			if (!cockpitMode) {
 				return;
 			}
-			for (Map.Entry<View, Integer> entry : savedNativeVisibility.entrySet()) {
-				entry.getKey().setVisibility(entry.getValue());
+			for (Map.Entry<View, NativeViewState> entry : savedNativeViewState.entrySet()) {
+				entry.getValue().restore(entry.getKey());
 			}
-			savedNativeVisibility.clear();
+			savedNativeViewState.clear();
 			cockpitMode = false;
+		}
+
+		private static final class NativeViewState {
+			private final int visibility;
+			private final float alpha;
+			private final float translationX;
+			private final boolean clickable;
+			private final boolean enabled;
+
+			private NativeViewState(@NonNull View view) {
+				visibility = view.getVisibility();
+				alpha = view.getAlpha();
+				translationX = view.getTranslationX();
+				clickable = view.isClickable();
+				enabled = view.isEnabled();
+			}
+
+			private void restore(@NonNull View view) {
+				view.setAlpha(alpha);
+				view.setTranslationX(translationX);
+				view.setClickable(clickable);
+				view.setEnabled(enabled);
+				view.setVisibility(visibility);
+			}
 		}
 
 		@Override

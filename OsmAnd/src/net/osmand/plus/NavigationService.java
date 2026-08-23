@@ -247,7 +247,13 @@ public class NavigationService extends Service {
 						NavigationCarAppService navigationCarAppService = getApp().getNavigationCarAppService();
 						lastTimeGPSLocationFixed = System.currentTimeMillis();
 						if (!settings.MAP_ACTIVITY_ENABLED && navigationCarAppService == null) {
+							NavigationSession carSession = getApp().getCarNavigationSession();
+							boolean providerNotifiesListeners = carSession != null && carSession.hasStarted();
 							locationProvider.setLocationFromService(location);
+							if (!providerNotifiesListeners) {
+								RoadCrewMapObservationCoordinator.updateLocationFromNavigationService(
+										getApp(), location);
+							}
 						}
 					}
 				}

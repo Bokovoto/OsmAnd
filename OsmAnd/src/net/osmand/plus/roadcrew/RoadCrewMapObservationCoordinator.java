@@ -78,6 +78,20 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 		getInstance(app).start();
 	}
 
+	/**
+	 * Receives the foreground navigation service fix while MapActivity is in the
+	 * background. OsmAnd keeps routing current through this service path, but it
+	 * does not notify general location listeners unless an Android Auto session
+	 * is active.
+	 */
+	public static void updateLocationFromNavigationService(@NonNull OsmandApplication app,
+			@NonNull Location location) {
+		if (!ROADCREW_PACKAGE.equals(app.getPackageName())) {
+			return;
+		}
+		getInstance(app).updateLocation(location);
+	}
+
 	static void setEnabledForApp(@NonNull OsmandApplication app, boolean enabled) {
 		RoadCrewMapObservationConsent.setEnabled(app, enabled);
 		if (!ROADCREW_PACKAGE.equals(app.getPackageName())) {
