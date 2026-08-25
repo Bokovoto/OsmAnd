@@ -18,7 +18,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -28,9 +30,10 @@ import java.util.UUID;
  */
 public final class RoadCrewObservationOutbox {
 
-	public static final int SCHEMA_VERSION = 1;
+	public static final int SCHEMA_VERSION = 2;
 	public static final long OBSERVATION_BUCKET_MILLIS = 15 * 60 * 1_000L;
 	public static final int DEFAULT_MAX_RECORDS = 2_000;
+	public static final int DEFAULT_MAX_ACKNOWLEDGED_KEYS = 4_000;
 	public static final long DEFAULT_MAX_AGE_MILLIS = 14L * 24 * 60 * 60 * 1_000;
 	public static final long RETRY_BASE_DELAY_MILLIS = 30_000;
 	public static final long RETRY_MAX_DELAY_MILLIS = 6L * 60 * 60 * 1_000;
@@ -50,6 +53,7 @@ public final class RoadCrewObservationOutbox {
 	private final int maxRecords;
 	private final long maxAgeMillis;
 	private final List<Record> records;
+	private final LinkedHashMap<String, Long> acknowledgedKeys;
 
 	private RoadCrewObservationOutbox(File file, Clock clock, IdGenerator idGenerator,
 			int maxRecords, long maxAgeMillis, LoadResult loadResult) throws IOException {
@@ -61,6 +65,7 @@ public final class RoadCrewObservationOutbox {
 		this.maxRecords = maxRecords;
 		this.maxAgeMillis = maxAgeMillis;
 		this.records = new ArrayList<>(loadResult.records);
+		this.acknowledgedKeys = new LinkedHashMap<>(loadResult.acknowledgedKeys);
 
 		if (loadResult.recovered) {
 			repairPrimary();
@@ -113,6 +118,12 @@ public final class RoadCrewObservationOutbox {
 				}
 				return new EnqueueResult(EnqueueStatus.DEDUPLICATED, merged);
 			}
+		}
+		if (acknowledgedKeys.containsKey(observationKey(key, bucket))) {
+			if (pruned) {
+				persist();
+			}
+			return new EnqueueResult(EnqueueStatus.ALREADY_UPLOADED, null);
 		}
 
 		String id = idGenerator.nextId();
@@ -170,12 +181,16 @@ public final class RoadCrewObservationOutbox {
 		}
 		int removed = 0;
 		for (Iterator<Record> iterator = records.iterator(); iterator.hasNext(); ) {
-			if (selected.contains(iterator.next().id)) {
+			Record record = iterator.next();
+			if (selected.contains(record.id)) {
+				acknowledgedKeys.put(observationKey(record.segmentKey,
+						record.observedAtBucketMillis), record.observedAtBucketMillis);
 				iterator.remove();
 				removed++;
 			}
 		}
 		if (removed > 0) {
+			pruneAcknowledged(clock.nowMillis());
 			persist();
 		}
 		return removed;
@@ -200,12 +215,32 @@ public final class RoadCrewObservationOutbox {
 			records.subList(0, removeCount).clear();
 			changed = true;
 		}
+		changed |= pruneAcknowledged(nowMillis);
+		return changed;
+	}
+
+	private boolean pruneAcknowledged(long nowMillis) {
+		boolean changed = false;
+		long oldestAllowed = Math.max(0, nowMillis - maxAgeMillis);
+		for (Iterator<Map.Entry<String, Long>> iterator = acknowledgedKeys.entrySet().iterator();
+				iterator.hasNext(); ) {
+			if (iterator.next().getValue() < oldestAllowed) {
+				iterator.remove();
+				changed = true;
+			}
+		}
+		while (acknowledgedKeys.size() > DEFAULT_MAX_ACKNOWLEDGED_KEYS) {
+			Iterator<String> iterator = acknowledgedKeys.keySet().iterator();
+			iterator.next();
+			iterator.remove();
+			changed = true;
+		}
 		return changed;
 	}
 
 	private void persist() throws IOException {
 		ensureParentDirectory();
-		writeSnapshot(temporaryFile, records);
+		writeSnapshot(temporaryFile, records, acknowledgedKeys);
 		boolean rotatedPrimary = false;
 		if (file.exists()) {
 			if (backupFile.exists() && !backupFile.delete()) {
@@ -226,7 +261,7 @@ public final class RoadCrewObservationOutbox {
 
 	private void repairPrimary() throws IOException {
 		ensureParentDirectory();
-		writeSnapshot(temporaryFile, records);
+		writeSnapshot(temporaryFile, records, acknowledgedKeys);
 		if (file.exists() && !file.delete()) {
 			throw new IOException("Cannot replace corrupt RoadCrew observation outbox: " + file);
 		}
@@ -254,13 +289,15 @@ public final class RoadCrewObservationOutbox {
 			candidates.add(temporary);
 		}
 		if (candidates.isEmpty()) {
-			return new LoadResult(Collections.emptyList(), false);
+			return new LoadResult(Collections.emptyList(), Collections.emptyMap(), false);
 		}
 
 		IOException failure = null;
 		for (File candidate : candidates) {
 			try {
-				return new LoadResult(readSnapshot(candidate), !candidate.equals(primary));
+				SnapshotJson snapshot = readSnapshot(candidate);
+				return new LoadResult(snapshot.records, snapshot.acknowledgedKeys,
+						!candidate.equals(primary));
 			} catch (IOException e) {
 				if (failure == null) {
 					failure = new IOException("No valid RoadCrew observation outbox snapshot");
@@ -271,11 +308,12 @@ public final class RoadCrewObservationOutbox {
 		throw failure;
 	}
 
-	private static List<Record> readSnapshot(File source) throws IOException {
+	private static SnapshotJson readSnapshot(File source) throws IOException {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
 				new FileInputStream(source), StandardCharsets.UTF_8))) {
 			RootJson root = GSON.fromJson(reader, RootJson.class);
-			if (root == null || root.schemaVersion != SCHEMA_VERSION || root.records == null) {
+			if (root == null || (root.schemaVersion != 1 && root.schemaVersion != SCHEMA_VERSION)
+					|| root.records == null) {
 				throw new IOException("Unsupported RoadCrew observation outbox schema: " + source);
 			}
 			List<Record> loaded = new ArrayList<>();
@@ -287,18 +325,37 @@ public final class RoadCrewObservationOutbox {
 				}
 				loaded.add(record);
 			}
-			return loaded;
+			LinkedHashMap<String, Long> acknowledged = new LinkedHashMap<>();
+			if (root.schemaVersion >= 2 && root.acknowledgedKeys != null) {
+				for (AcknowledgedKeyJson json : root.acknowledgedKeys) {
+					if (json == null || json.key == null || json.key.isEmpty()
+							|| json.observedAtBucketMillis <= 0
+							|| json.observedAtBucketMillis % OBSERVATION_BUCKET_MILLIS != 0) {
+						throw new IOException("Invalid acknowledged RoadCrew observation key");
+					}
+					acknowledged.put(json.key, json.observedAtBucketMillis);
+				}
+			}
+			return new SnapshotJson(loaded, acknowledged);
 		} catch (JsonParseException | IllegalArgumentException e) {
 			throw new IOException("Invalid RoadCrew observation outbox: " + source, e);
 		}
 	}
 
-	private static void writeSnapshot(File destination, List<Record> records) throws IOException {
+	private static void writeSnapshot(File destination, List<Record> records,
+			Map<String, Long> acknowledgedKeys) throws IOException {
 		RootJson root = new RootJson();
 		root.schemaVersion = SCHEMA_VERSION;
 		root.records = new ArrayList<>();
 		for (Record record : records) {
 			root.records.add(record.toJson());
+		}
+		root.acknowledgedKeys = new ArrayList<>();
+		for (Map.Entry<String, Long> entry : acknowledgedKeys.entrySet()) {
+			AcknowledgedKeyJson acknowledged = new AcknowledgedKeyJson();
+			acknowledged.key = entry.getKey();
+			acknowledged.observedAtBucketMillis = entry.getValue();
+			root.acknowledgedKeys.add(acknowledged);
 		}
 		FileOutputStream stream = new FileOutputStream(destination, false);
 		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8))) {
@@ -357,6 +414,10 @@ public final class RoadCrewObservationOutbox {
 		return delay;
 	}
 
+	private static String observationKey(RoadCrewSegmentIdentity.SegmentKey key, long bucket) {
+		return key.getCanonicalId() + ":" + key.getGeometryFingerprint() + ":" + bucket;
+	}
+
 	public interface Clock {
 		long nowMillis();
 	}
@@ -367,7 +428,8 @@ public final class RoadCrewObservationOutbox {
 
 	public enum EnqueueStatus {
 		ADDED,
-		DEDUPLICATED
+		DEDUPLICATED,
+		ALREADY_UPLOADED
 	}
 
 	public static final class EnqueueResult {
@@ -571,17 +633,36 @@ public final class RoadCrewObservationOutbox {
 
 	private static final class LoadResult {
 		private final List<Record> records;
+		private final Map<String, Long> acknowledgedKeys;
 		private final boolean recovered;
 
-		private LoadResult(List<Record> records, boolean recovered) {
+		private LoadResult(List<Record> records, Map<String, Long> acknowledgedKeys,
+				boolean recovered) {
 			this.records = records;
+			this.acknowledgedKeys = acknowledgedKeys;
 			this.recovered = recovered;
+		}
+	}
+
+	private static final class SnapshotJson {
+		private final List<Record> records;
+		private final Map<String, Long> acknowledgedKeys;
+
+		private SnapshotJson(List<Record> records, Map<String, Long> acknowledgedKeys) {
+			this.records = records;
+			this.acknowledgedKeys = acknowledgedKeys;
 		}
 	}
 
 	private static final class RootJson {
 		int schemaVersion;
 		List<RecordJson> records;
+		List<AcknowledgedKeyJson> acknowledgedKeys;
+	}
+
+	private static final class AcknowledgedKeyJson {
+		String key;
+		long observedAtBucketMillis;
 	}
 
 	private static final class RecordJson {

@@ -75,7 +75,8 @@ public final class RoadCrewObservationPipeline {
 		}
 
 		public boolean wasQueued() {
-			return enqueue != null;
+			return enqueue != null
+					&& enqueue.getStatus() != RoadCrewObservationOutbox.EnqueueStatus.ALREADY_UPLOADED;
 		}
 	}
 }

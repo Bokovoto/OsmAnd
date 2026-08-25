@@ -107,6 +107,24 @@ public class RoadCrewObservationOutboxTest {
 	}
 
 	@Test
+	public void acknowledgedSegmentBucketIsNotQueuedAgainAfterRestart() throws Exception {
+		File file = observationFile("acknowledged.json");
+		MutableClock clock = new MutableClock(BASE_TIME);
+		RoadCrewPassageDetector.PassageEvidence evidence = evidence(3006, 43.0);
+		RoadCrewObservationOutbox outbox = open(file, clock, new CounterIds());
+		String id = outbox.enqueue(evidence, BASE_TIME + 1_000).getRecord().getId();
+
+		Assert.assertEquals(1, outbox.markUploaded(Collections.singleton(id)));
+		RoadCrewObservationOutbox reopened = open(file, clock, new CounterIds());
+		RoadCrewObservationOutbox.EnqueueResult duplicate = reopened.enqueue(
+				evidence, BASE_TIME + 50_000);
+
+		Assert.assertEquals(RoadCrewObservationOutbox.EnqueueStatus.ALREADY_UPLOADED,
+				duplicate.getStatus());
+		Assert.assertTrue(reopened.snapshot().isEmpty());
+	}
+
+	@Test
 	public void enforcesCountAndAgeRetention() throws Exception {
 		File file = observationFile("retention.json");
 		MutableClock clock = new MutableClock(BASE_TIME);
