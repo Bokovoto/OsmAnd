@@ -45,6 +45,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	private static final double LOAD_RADIUS_METERS = 900;
 	private static final double RELOAD_DISTANCE_METERS = 350;
 	private static final long RELOAD_INTERVAL_MILLIS = 60_000;
+	private static final long FOREGROUND_RETRY_COOLDOWN_MILLIS = 30_000;
 	private static final int MAX_ROUTE_OBJECTS = 8_000;
 	@Nullable
 	private static RoadCrewMapObservationCoordinator instance;
@@ -66,6 +67,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	private double loadedLongitude = Double.NaN;
 	private long loadedAtElapsedMillis;
 	private volatile long lastEligibleFixAtMillis;
+	private volatile long lastForegroundRetryAtMillis;
 
 	RoadCrewMapObservationCoordinator(@NonNull OsmandApplication app) {
 		this.app = app;
@@ -76,6 +78,13 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			return;
 		}
 		getInstance(app).start();
+	}
+
+	public static void onMapActivityAvailable(@NonNull OsmandApplication app) {
+		if (!ROADCREW_PACKAGE.equals(app.getPackageName())) {
+			return;
+		}
+		getInstance(app).retryPendingOnForeground();
 	}
 
 	/**
@@ -123,6 +132,8 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			status = CollectionStatus.PAUSED;
 		} else if (RoadCrewMapObservationConsent.hasUploadError(app)) {
 			status = CollectionStatus.UPLOAD_ERROR;
+		} else if (RoadCrewMapObservationConsent.hasUploadWarning(app)) {
+			status = CollectionStatus.UPLOAD_WARNING;
 		} else if (coordinator != null && System.currentTimeMillis()
 				- coordinator.lastEligibleFixAtMillis <= ACTIVE_FIX_TIMEOUT_MILLIS) {
 			status = CollectionStatus.ACTIVE;
@@ -149,6 +160,27 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 
 	void start() {
 		setEnabled(RoadCrewMapObservationConsent.isEnabled(app));
+	}
+
+	private void retryPendingOnForeground() {
+		long now = System.currentTimeMillis();
+		if (!enabled || now - lastForegroundRetryAtMillis < FOREGROUND_RETRY_COOLDOWN_MILLIS) {
+			return;
+		}
+		lastForegroundRetryAtMillis = now;
+		executor.execute(() -> {
+			if (!enabled) {
+				return;
+			}
+			try {
+				ensurePipeline();
+				if (outbox != null) {
+					RoadCrewMapObservationUploader.retryNow(app, outbox);
+				}
+			} catch (IOException | RuntimeException e) {
+				LOG.warn("Cannot retry queued RoadCrew observations on foreground", e);
+			}
+		});
 	}
 
 	void setEnabled(boolean enabled) {
@@ -354,6 +386,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 		TRUCK_PROFILE_REQUIRED,
 		WAITING_FOR_GPS,
 		ACTIVE,
+		UPLOAD_WARNING,
 		UPLOAD_ERROR
 	}
 

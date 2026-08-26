@@ -317,6 +317,8 @@ final class RoadCrewDriverProfileDialog {
 				return R.string.roadcrew_live_truck_map_status_truck_required;
 			case PAUSED:
 				return R.string.roadcrew_live_truck_map_status_paused;
+			case UPLOAD_WARNING:
+				return R.string.roadcrew_live_truck_map_status_upload_warning;
 			case UPLOAD_ERROR:
 				return R.string.roadcrew_live_truck_map_status_upload_error;
 			case OFF:
@@ -330,6 +332,8 @@ final class RoadCrewDriverProfileDialog {
 		switch (status) {
 			case ACTIVE:
 				return RoadCrewUi.PRIMARY;
+			case UPLOAD_WARNING:
+				return 0xffffb020;
 			case UPLOAD_ERROR:
 				return RoadCrewUi.DANGER;
 			case WAITING_FOR_GPS:

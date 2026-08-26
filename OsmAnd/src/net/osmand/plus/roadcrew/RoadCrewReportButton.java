@@ -101,6 +101,7 @@ public class RoadCrewReportButton extends MapButton {
 			case WAITING_FOR_GPS:
 			case TRUCK_PROFILE_REQUIRED:
 			case PAUSED:
+			case UPLOAD_WARNING:
 				color = 0xffffb020;
 				break;
 			case UPLOAD_ERROR:

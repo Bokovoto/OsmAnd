@@ -2,6 +2,8 @@ package net.osmand.plus.roadcrew;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -60,8 +62,17 @@ final class RoadCrewMapObservationUploader {
 			Executors.newSingleThreadScheduledExecutor();
 	private static boolean running;
 	private static ScheduledFuture<?> scheduled;
+	private static long scheduledAtMillis = Long.MAX_VALUE;
 	private static OsmandApplication pendingApp;
 	private static RoadCrewObservationOutbox pendingOutbox;
+	private static boolean networkCallbackRegistered;
+	private static final ConnectivityManager.NetworkCallback NETWORK_CALLBACK =
+			new ConnectivityManager.NetworkCallback() {
+				@Override
+				public void onAvailable(@NonNull Network network) {
+					retryPendingAfterNetworkAvailable();
+				}
+			};
 
 	private RoadCrewMapObservationUploader() {
 	}
@@ -70,29 +81,47 @@ final class RoadCrewMapObservationUploader {
 			@NonNull RoadCrewObservationOutbox outbox) {
 		pendingApp = app;
 		pendingOutbox = outbox;
+		ensureNetworkCallback(app);
 		if (running) {
 			return;
 		}
-		boolean immediate = outbox.snapshot().size() >= IMMEDIATE_BATCH_THRESHOLD
-				|| needsQueueRecovery(app, outbox);
+		RoadCrewObservationOutbox.Snapshot snapshot = outbox.snapshot();
+		if (snapshot.isEmpty()) {
+			return;
+		}
+		long now = System.currentTimeMillis();
+		long delay = uploadDelayMillis(app, outbox, snapshot, now);
+		long targetAtMillis = now > Long.MAX_VALUE - delay ? Long.MAX_VALUE : now + delay;
 		if (scheduled != null && !scheduled.isDone()) {
-			if (!immediate) {
+			if (scheduledAtMillis <= targetAtMillis) {
 				return;
 			}
 			scheduled.cancel(false);
 		}
-		long delay = immediate ? 0 : NORMAL_FLUSH_DELAY_MILLIS;
+		scheduledAtMillis = targetAtMillis;
 		scheduled = EXECUTOR.schedule(RoadCrewMapObservationUploader::runScheduled,
 				delay, TimeUnit.MILLISECONDS);
+	}
+
+	static void retryNow(@NonNull OsmandApplication app,
+			@NonNull RoadCrewObservationOutbox outbox) {
+		try {
+			outbox.makeRetryRecordsEligibleNow();
+		} catch (IOException e) {
+			Log.w(TAG, "Cannot make queued Live Truck Map observations eligible", e);
+		}
+		flushNow(app, outbox);
 	}
 
 	static synchronized void flushNow(@NonNull OsmandApplication app,
 			@NonNull RoadCrewObservationOutbox outbox) {
 		pendingApp = app;
 		pendingOutbox = outbox;
+		ensureNetworkCallback(app);
 		if (scheduled != null && !scheduled.isDone()) {
 			scheduled.cancel(false);
 		}
+		scheduledAtMillis = Long.MAX_VALUE;
 		if (!running) {
 			scheduled = EXECUTOR.schedule(RoadCrewMapObservationUploader::runScheduled,
 					0, TimeUnit.MILLISECONDS);
@@ -104,6 +133,7 @@ final class RoadCrewMapObservationUploader {
 		RoadCrewObservationOutbox outbox;
 		synchronized (RoadCrewMapObservationUploader.class) {
 			scheduled = null;
+			scheduledAtMillis = Long.MAX_VALUE;
 			if (running) {
 				return;
 			}
@@ -124,6 +154,50 @@ final class RoadCrewMapObservationUploader {
 					&& RoadCrewMapObservationConsent.isEnabled(app)) {
 				schedule(app, outbox);
 			}
+		}
+	}
+
+	private static long uploadDelayMillis(@NonNull OsmandApplication app,
+			@NonNull RoadCrewObservationOutbox outbox,
+			@NonNull RoadCrewObservationOutbox.Snapshot snapshot, long now) {
+		if (snapshot.size() >= IMMEDIATE_BATCH_THRESHOLD || needsQueueRecovery(app, outbox)) {
+			return 0;
+		}
+		long delay = NORMAL_FLUSH_DELAY_MILLIS;
+		for (RoadCrewObservationOutbox.Record record : snapshot.getRecords()) {
+			if (record.getAttemptCount() > 0) {
+				delay = Math.min(delay, Math.max(0, record.getNextAttemptAtMillis() - now));
+			}
+		}
+		return delay;
+	}
+
+	private static synchronized void ensureNetworkCallback(@NonNull OsmandApplication app) {
+		if (networkCallbackRegistered) {
+			return;
+		}
+		ConnectivityManager manager = (ConnectivityManager) app.getSystemService(
+				Context.CONNECTIVITY_SERVICE);
+		if (manager == null) {
+			return;
+		}
+		try {
+			manager.registerDefaultNetworkCallback(NETWORK_CALLBACK);
+			networkCallbackRegistered = true;
+		} catch (RuntimeException e) {
+			Log.w(TAG, "Cannot observe network recovery for Live Truck Map", e);
+		}
+	}
+
+	private static void retryPendingAfterNetworkAvailable() {
+		OsmandApplication app;
+		RoadCrewObservationOutbox outbox;
+		synchronized (RoadCrewMapObservationUploader.class) {
+			app = pendingApp;
+			outbox = pendingOutbox;
+		}
+		if (app != null && outbox != null && RoadCrewMapObservationConsent.isEnabled(app)) {
+			EXECUTOR.execute(() -> retryNow(app, outbox));
 		}
 	}
 

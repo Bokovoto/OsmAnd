@@ -36,7 +36,7 @@ public final class RoadCrewObservationOutbox {
 	public static final int DEFAULT_MAX_ACKNOWLEDGED_KEYS = 4_000;
 	public static final long DEFAULT_MAX_AGE_MILLIS = 14L * 24 * 60 * 60 * 1_000;
 	public static final long RETRY_BASE_DELAY_MILLIS = 30_000;
-	public static final long RETRY_MAX_DELAY_MILLIS = 6L * 60 * 60 * 1_000;
+	public static final long RETRY_MAX_DELAY_MILLIS = 15L * 60 * 1_000;
 
 	private static final int MAX_ID_LENGTH = 128;
 	private static final int MAX_ATTEMPT_COUNT = 100_000;
@@ -158,6 +158,21 @@ public final class RoadCrewObservationOutbox {
 			Record record = records.get(i);
 			if (record.attemptCount > 0 || record.nextAttemptAtMillis > 0) {
 				records.set(i, record.retryNow());
+				changed++;
+			}
+		}
+		if (changed > 0) {
+			persist();
+		}
+		return changed;
+	}
+
+	public synchronized int makeRetryRecordsEligibleNow() throws IOException {
+		int changed = 0;
+		for (int i = 0; i < records.size(); i++) {
+			Record record = records.get(i);
+			if (record.attemptCount > 0 && record.nextAttemptAtMillis > 0) {
+				records.set(i, record.retryEligibleNow());
 				changed++;
 			}
 		}
@@ -606,6 +621,12 @@ public final class RoadCrewObservationOutbox {
 			return new Record(id, segmentKey, observedAtBucketMillis, fixCount, durationMillis,
 					forwardMovementMeters, maximumDistanceMeters, maximumHeadingDifferenceDegrees,
 					0, 0);
+		}
+
+		private Record retryEligibleNow() {
+			return new Record(id, segmentKey, observedAtBucketMillis, fixCount, durationMillis,
+					forwardMovementMeters, maximumDistanceMeters, maximumHeadingDifferenceDegrees,
+					attemptCount, 0);
 		}
 
 		private RecordJson toJson() {

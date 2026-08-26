@@ -406,6 +406,10 @@ public final class RoadCrewNeonHud {
 				textRes = R.string.roadcrew_live_truck_map_indicator_truck;
 				color = WAITING;
 				break;
+			case UPLOAD_WARNING:
+				textRes = R.string.roadcrew_live_truck_map_indicator_sync;
+				color = WAITING;
+				break;
 			case UPLOAD_ERROR:
 				textRes = R.string.roadcrew_live_truck_map_indicator_error;
 				color = ERROR;
@@ -533,8 +537,11 @@ public final class RoadCrewNeonHud {
 			case WAITING_FOR_GPS:
 			case PAUSED:
 			case TRUCK_PROFILE_REQUIRED:
+			case UPLOAD_WARNING:
 				color = WAITING;
-				description = R.string.roadcrew_live_truck_map_indicator_waiting;
+				description = snapshot.status == RoadCrewMapObservationCoordinator.CollectionStatus.UPLOAD_WARNING
+						? R.string.roadcrew_live_truck_map_indicator_sync
+						: R.string.roadcrew_live_truck_map_indicator_waiting;
 				break;
 			case UPLOAD_ERROR:
 				color = ERROR;

@@ -20,6 +20,7 @@ public final class RoadCrewMapObservationConsent {
 	private static final String KEY_PENDING_OBSERVATION_COUNT = "pending_observation_count";
 	private static final String OUTBOX_FILE_NAME = "roadcrew-map-observations.json";
 	private static final String SHADOW_SNAPSHOT_FILE_NAME = "roadcrew-shadow-snapshot.json";
+	private static final long UPLOAD_ERROR_GRACE_MILLIS = 15L * 60 * 1_000;
 
 	private RoadCrewMapObservationConsent() {
 	}
@@ -40,6 +41,7 @@ public final class RoadCrewMapObservationConsent {
 				.putInt(KEY_CONSENT_VERSION, CURRENT_CONSENT_VERSION);
 		if (!enabled) {
 			editor.putInt(KEY_PENDING_OBSERVATION_COUNT, 0);
+			editor.putLong(KEY_LAST_UPLOAD_FAILURE_AT, 0);
 		}
 		editor.apply();
 	}
@@ -57,10 +59,16 @@ public final class RoadCrewMapObservationConsent {
 	}
 
 	static void recordUploadFailure(@NonNull Context context, int pendingCount) {
-		preferences(context).edit()
-				.putLong(KEY_LAST_UPLOAD_FAILURE_AT, System.currentTimeMillis())
-				.putInt(KEY_PENDING_OBSERVATION_COUNT, Math.max(0, pendingCount))
-				.apply();
+		SharedPreferences preferences = preferences(context);
+		long now = System.currentTimeMillis();
+		long failureAt = preferences.getLong(KEY_LAST_UPLOAD_FAILURE_AT, 0);
+		long lastUploadAt = preferences.getLong(KEY_LAST_UPLOAD_AT, 0);
+		SharedPreferences.Editor editor = preferences.edit()
+				.putInt(KEY_PENDING_OBSERVATION_COUNT, Math.max(0, pendingCount));
+		if (failureAt <= lastUploadAt || failureAt > now) {
+			editor.putLong(KEY_LAST_UPLOAD_FAILURE_AT, now);
+		}
+		editor.apply();
 	}
 
 	static void recordRejectedObservations(@NonNull Context context, int rejectedCount,
@@ -86,9 +94,22 @@ public final class RoadCrewMapObservationConsent {
 	}
 
 	static boolean hasUploadError(@NonNull Context context) {
+		long failureAt = getActiveUploadFailureAt(context);
+		return failureAt > 0
+				&& System.currentTimeMillis() - failureAt >= UPLOAD_ERROR_GRACE_MILLIS;
+	}
+
+	static boolean hasUploadWarning(@NonNull Context context) {
+		long failureAt = getActiveUploadFailureAt(context);
+		return failureAt > 0
+				&& System.currentTimeMillis() - failureAt < UPLOAD_ERROR_GRACE_MILLIS;
+	}
+
+	private static long getActiveUploadFailureAt(@NonNull Context context) {
 		SharedPreferences preferences = preferences(context);
-		return preferences.getLong(KEY_LAST_UPLOAD_FAILURE_AT, 0)
-				> preferences.getLong(KEY_LAST_UPLOAD_AT, 0);
+		long failureAt = preferences.getLong(KEY_LAST_UPLOAD_FAILURE_AT, 0);
+		long lastUploadAt = preferences.getLong(KEY_LAST_UPLOAD_AT, 0);
+		return failureAt > lastUploadAt ? failureAt : 0;
 	}
 
 	static int getUploadedObservationCount(@NonNull Context context) {

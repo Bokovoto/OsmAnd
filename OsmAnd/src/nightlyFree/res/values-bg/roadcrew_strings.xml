@@ -91,6 +91,7 @@
     <string name="roadcrew_live_truck_map_status_waiting_gps">Състояние: Изчаква се валиден GPS</string>
     <string name="roadcrew_live_truck_map_status_truck_required">Състояние: Изберете профил Камион</string>
     <string name="roadcrew_live_truck_map_status_paused">Състояние: На пауза</string>
+	<string name="roadcrew_live_truck_map_status_upload_warning">Състояние: Повторен опит за синхронизация; данните са запазени</string>
     <string name="roadcrew_live_truck_map_status_upload_error">Състояние: Проблем при изпращане; данните изчакват</string>
     <string name="roadcrew_live_truck_map_access_enabled">Достъп до общностна маршрутизация: Наличен</string>
     <string name="roadcrew_live_truck_map_access_disabled">Достъп до общностна маршрутизация: Само стандартна навигация</string>
@@ -111,6 +112,7 @@
     <string name="roadcrew_live_truck_map_indicator_truck">КАМИОН</string>
     <string name="roadcrew_live_truck_map_indicator_off">ИЗКЛ.</string>
     <string name="roadcrew_live_truck_map_indicator_error">ГРЕШКА</string>
+	<string name="roadcrew_live_truck_map_indicator_sync">СИНХ.</string>
     <string name="roadcrew_setup_vehicle_parameters_body">Въведете действителните размери на камиона. И четирите стойности са задължителни и се използват директно при изчисляване на маршрута.</string>
     <string name="roadcrew_vehicle_height_m">Височина (м)</string>
     <string name="roadcrew_vehicle_width_m">Ширина (м)</string>

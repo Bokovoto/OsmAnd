@@ -118,6 +118,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 		truckRestrictionsProvider = new RoadCrewTruckRestrictionsProvider(getApplication());
 		RoadCrewMapObservationCoordinator.ensureStarted(getApplication());
+		RoadCrewMapObservationCoordinator.onMapActivityAvailable(getApplication());
 		RoadCrewShadowRouteDiagnostics.ensureStarted(getApplication());
 		mapObservationCoordinator = RoadCrewMapObservationCoordinator.getInstance(getApplication());
 		createResources();

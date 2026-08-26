@@ -91,6 +91,7 @@
     <string name="roadcrew_live_truck_map_status_waiting_gps">Status: Waiting for valid GPS</string>
     <string name="roadcrew_live_truck_map_status_truck_required">Status: Select the Truck profile</string>
     <string name="roadcrew_live_truck_map_status_paused">Status: Paused</string>
+	<string name="roadcrew_live_truck_map_status_upload_warning">Status: Retrying sync; observations are safely queued</string>
     <string name="roadcrew_live_truck_map_status_upload_error">Status: Upload problem; observations are queued</string>
     <string name="roadcrew_live_truck_map_access_enabled">Community routing access: Available</string>
     <string name="roadcrew_live_truck_map_access_disabled">Community routing access: Standard navigation only</string>
@@ -111,6 +112,7 @@
     <string name="roadcrew_live_truck_map_indicator_truck">TRUCK</string>
     <string name="roadcrew_live_truck_map_indicator_off">OFF</string>
     <string name="roadcrew_live_truck_map_indicator_error">ERROR</string>
+	<string name="roadcrew_live_truck_map_indicator_sync">SYNC</string>
     <string name="roadcrew_setup_vehicle_parameters_body">Enter the actual truck dimensions. All four values are required and are used directly for route calculation.</string>
     <string name="roadcrew_vehicle_height_m">Height (m)</string>
     <string name="roadcrew_vehicle_width_m">Width (m)</string>

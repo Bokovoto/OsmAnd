@@ -109,6 +109,41 @@ public class RoadCrewObservationOutboxTest {
 	}
 
 	@Test
+	public void immediateConnectivityRetryPreservesBackoffHistory() throws Exception {
+		File file = observationFile("retry-connectivity.json");
+		MutableClock clock = new MutableClock(BASE_TIME);
+		RoadCrewObservationOutbox outbox = open(file, clock, new CounterIds());
+		String id = outbox.enqueue(evidence(3010, 43.0), BASE_TIME).getRecord().getId();
+		outbox.markFailed(Collections.singleton(id), BASE_TIME);
+
+		Assert.assertEquals(1, outbox.makeRetryRecordsEligibleNow());
+		RoadCrewObservationOutbox.Record record = open(file, clock, new CounterIds())
+				.snapshot().getRecords().get(0);
+		Assert.assertEquals(1, record.getAttemptCount());
+		Assert.assertEquals(0, record.getNextAttemptAtMillis());
+	}
+
+	@Test
+	public void retryBackoffIsCappedAtFifteenMinutes() throws Exception {
+		File file = observationFile("retry-cap.json");
+		MutableClock clock = new MutableClock(BASE_TIME);
+		RoadCrewObservationOutbox outbox = open(file, clock, new CounterIds());
+		String id = outbox.enqueue(evidence(3011, 43.0), BASE_TIME).getRecord().getId();
+		long failedAt = BASE_TIME;
+
+		for (int attempt = 1; attempt <= 12; attempt++) {
+			outbox.markFailed(Collections.singleton(id), failedAt);
+			RoadCrewObservationOutbox.Record record = outbox.snapshot().getRecords().get(0);
+			long delay = record.getNextAttemptAtMillis() - failedAt;
+			Assert.assertTrue(delay <= RoadCrewObservationOutbox.RETRY_MAX_DELAY_MILLIS);
+			if (attempt >= 6) {
+				Assert.assertEquals(RoadCrewObservationOutbox.RETRY_MAX_DELAY_MILLIS, delay);
+			}
+			failedAt = record.getNextAttemptAtMillis();
+		}
+	}
+
+	@Test
 	public void uploadedRecordsAreRemovedDurably() throws Exception {
 		File file = observationFile("uploaded.json");
 		MutableClock clock = new MutableClock(BASE_TIME);
