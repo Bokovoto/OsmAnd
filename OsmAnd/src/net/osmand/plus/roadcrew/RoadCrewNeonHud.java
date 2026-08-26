@@ -25,6 +25,8 @@ import net.osmand.plus.R;
 import net.osmand.plus.activities.MapActivity;
 import net.osmand.plus.routing.NextDirectionInfo;
 import net.osmand.plus.routing.RoutingHelper;
+import net.osmand.plus.search.ShowQuickSearchMode;
+import net.osmand.plus.settings.enums.CompassMode;
 import net.osmand.plus.utils.FormattedValue;
 import net.osmand.plus.utils.OsmAndFormatter;
 import net.osmand.plus.utils.OsmAndFormatterParams;
@@ -288,8 +290,9 @@ public final class RoadCrewNeonHud {
 				v -> RoadCrewReportsLayer.showNearbyHelpReports(activity, activity.getApp()), landscape ? 8 : 11),
 				new LinearLayout.LayoutParams(dp(activity, landscape ? 36 : 44),
 						dp(activity, landscape ? 36 : 44)));
-		header.addView(iconButton(activity, R.drawable.ic_overflow_menu_white,
-				activity.getString(R.string.shared_string_more), v -> activity.openDrawer(), landscape ? 8 : 11),
+		header.addView(iconButton(activity, R.drawable.ic_action_compass_north,
+				activity.getString(CompassMode.NORTH_IS_UP.getTitleId()),
+				v -> resetMapNorth(activity), landscape ? 8 : 11),
 				new LinearLayout.LayoutParams(dp(activity, landscape ? 36 : 44),
 						dp(activity, landscape ? 36 : 44)));
 		return header;
@@ -318,8 +321,9 @@ public final class RoadCrewNeonHud {
 		addNavigationItem(footer, activity, landscape, 3, R.drawable.ic_action_user_account,
 				R.string.roadcrew_neon_nav_profile,
 				v -> RoadCrewDriverProfileDialog.show(activity, activity.getApp()));
-		addNavigationItem(footer, activity, landscape, 4, R.drawable.ic_overflow_menu_white,
-				R.string.roadcrew_neon_nav_more, v -> activity.openDrawer());
+		addNavigationItem(footer, activity, landscape, 4, R.drawable.ic_action_search_dark,
+				R.string.shared_string_search,
+				v -> activity.getFragmentsHelper().showQuickSearch(ShowQuickSearchMode.NEW_IF_EXPIRED, false));
 		updateNavigationSelection(footer, activity);
 		return footer;
 	}
@@ -562,13 +566,50 @@ public final class RoadCrewNeonHud {
 
 	private static void setNativeHudOffsets(@NonNull MapHudLayout mapHud, boolean enabled,
 			boolean landscape, boolean footerHidden) {
+		applyNativeHudOffsets(mapHud, enabled, landscape, footerHidden);
+		if (enabled) {
+			mapHud.post(() -> applyNativeHudOffsets(mapHud, true, landscape, footerHidden));
+		}
+	}
+
+	private static void applyNativeHudOffsets(@NonNull MapHudLayout mapHud, boolean enabled,
+			boolean landscape, boolean footerHidden) {
 		float topOffset = enabled ? dp(mapHud, landscape ? 52 : 68) : 0;
 		float bottomOffset = enabled && !footerHidden ? -dp(mapHud, landscape ? 50 : 68) : 0;
-		setTranslationY(mapHud.findViewById(R.id.top_widgets_panel), topOffset);
-		setTranslationY(mapHud.findViewById(R.id.map_left_widgets_panel), topOffset);
+		View topWidgets = mapHud.findViewById(R.id.top_widgets_panel);
+		setTranslationY(topWidgets, topOffset);
+		float topWidgetsHeight = topWidgets != null && topWidgets.getVisibility() == View.VISIBLE
+				? topWidgets.getHeight() : 0;
+		float leftControlsOffset = enabled && !landscape
+				? topOffset + Math.max(topWidgetsHeight, dp(mapHud, 88)) + dp(mapHud, 8)
+				: topOffset;
+		setTranslationY(mapHud.findViewById(R.id.map_left_widgets_panel), leftControlsOffset);
+		setTranslationY(mapHud.findViewById(R.id.map_route_info_button), leftControlsOffset);
+		setTranslationY(mapHud.findViewById(R.id.map_search_button), leftControlsOffset);
+		setTranslationY(mapHud.findViewById(R.id.map_compass_button), leftControlsOffset);
 		setTranslationY(mapHud.findViewById(R.id.map_right_widgets_panel), topOffset);
 		setTranslationY(mapHud.findViewById(R.id.MapHudButtonsOverlayBottom), bottomOffset);
 		setTranslationY(mapHud.findViewById(R.id.map_bottom_widgets_panel), bottomOffset);
+		float zoomOffset = enabled && !footerHidden ? -dp(mapHud, landscape ? 48 : 58) : 0;
+		setTranslationY(mapHud.findViewById(R.id.map_zoom_in_button), zoomOffset);
+		setTranslationY(mapHud.findViewById(R.id.map_zoom_out_button), zoomOffset);
+		float reportOffset = enabled && !footerHidden ? zoomOffset * 2 : 0;
+		setTranslationY(mapHud.findViewById(R.id.roadcrew_report_button), reportOffset);
+	}
+
+	public static void resetRoutePreviewNorth(@NonNull MapActivity activity) {
+		if (RoadCrewVisualStyle.isNeonBeta(activity)
+				&& activity.getRoutingHelper().isRoutePlanningMode()
+				&& !activity.getRoutingHelper().isFollowingMode()) {
+			activity.getMapView().setRotate(0, true);
+			activity.refreshMap();
+		}
+	}
+
+	private static void resetMapNorth(@NonNull MapActivity activity) {
+		activity.getApp().getSettings().setCompassMode(CompassMode.NORTH_IS_UP);
+		activity.getMapView().setRotate(0, true);
+		activity.refreshMap();
 	}
 
 	private static void setTranslationY(@Nullable View view, float translation) {

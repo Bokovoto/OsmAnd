@@ -1673,7 +1673,10 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 		refreshMap();
 		RoutingHelper rh = app.getRoutingHelper();
 		if (newRoute && rh.isRoutePlanningMode() && !getMapView().isCarView()) {
-			app.runInUIThread(this::fitCurrentRouteToMap, 300);
+			app.runInUIThread(() -> {
+				fitCurrentRouteToMap();
+				app.runInUIThread(() -> RoadCrewNeonHud.resetRoutePreviewNorth(this), 100);
+			}, 300);
 		}
 		if (app.getSettings().simulateNavigation) {
 			OsmAndLocationSimulation sim = app.getLocationProvider().getLocationSimulation();

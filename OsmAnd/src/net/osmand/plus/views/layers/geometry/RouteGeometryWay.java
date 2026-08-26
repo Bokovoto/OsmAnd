@@ -39,7 +39,7 @@ import java.util.Map.Entry;
 import gnu.trove.list.array.TByteArrayList;
 
 public class RouteGeometryWay extends
-		MultiColoringGeometryWay<RouteGeometryWayContext, MultiColoringGeometryWayDrawer<RouteGeometryWayContext>> {
+		MultiColoringGeometryWay<RouteGeometryWayContext, RouteGeometryWayDrawer> {
 
 	public static final int MIN_COLOR_SQUARE_DISTANCE = 15_000;
 
@@ -58,9 +58,13 @@ public class RouteGeometryWay extends
 	private Segment currentCachedSegment = null;
 
 	public RouteGeometryWay(RouteGeometryWayContext context) {
-		super(context, new MultiColoringGeometryWayDrawer<>(context));
+		super(context, new RouteGeometryWayDrawer(context));
 		this.helper = context.getApp().getRoutingHelper();
 		this.linesPriority = Long.MAX_VALUE;
+	}
+
+	public void setCustomOutline(@Nullable @ColorInt Integer color, float width) {
+		getDrawer().setCustomOutline(color, width);
 	}
 
 	public void setRouteStyleParams(int pathColor,

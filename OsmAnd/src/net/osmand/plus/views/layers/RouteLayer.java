@@ -27,6 +27,7 @@ import net.osmand.plus.ChartPointsHelper;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.R;
 import net.osmand.plus.base.MapViewTrackingUtilities;
+import net.osmand.plus.roadcrew.RoadCrewVisualStyle;
 import net.osmand.plus.charts.TrackChartPoints;
 import net.osmand.plus.routing.*;
 import net.osmand.plus.settings.backend.OsmandSettings;
@@ -497,10 +498,19 @@ public class RouteLayer extends BaseRouteLayer implements IContextMenuProvider {
 			ColoringType actualColoringType = isColoringAvailable(routeColoringType, routeInfoAttribute) ?
 					routeColoringType : ColoringType.DEFAULT;
 			int routeLineColor = getRouteLineColor();
-			float routeLineWidth = getRouteLineWidth(tileBox);
+			boolean neonDay = RoadCrewVisualStyle.isNeonDay(getContext());
+			float density = routeWayContext.getDensity();
+			float nativeRouteLineWidth = getRouteLineWidth(tileBox);
+			float routeLineWidth = neonDay
+					? Math.max(nativeRouteLineWidth * 0.68f, density * 3.5f)
+					: nativeRouteLineWidth;
 			boolean shouldShowDirectionArrows = shouldShowDirectionArrows();
+			routeGeometry.setCustomOutline(
+					neonDay ? RoadCrewVisualStyle.getNeonDayRouteOutlineColor() : null,
+					routeLineWidth + density * 4f);
 			routeGeometry.setRouteStyleParams(routeLineColor, routeLineWidth, shouldShowDirectionArrows,
-					getDirectionArrowsColor(), actualColoringType, routeInfoAttribute, routeGradientPalette);
+					neonDay ? RoadCrewVisualStyle.getNeonDayRouteArrowColor() : getDirectionArrowsColor(),
+					actualColoringType, routeInfoAttribute, routeGradientPalette);
 			boolean routeUpdated = routeGeometry.updateRoute(tileBox, route);
 			boolean shouldShowTurnArrows = shouldShowTurnArrows();
 

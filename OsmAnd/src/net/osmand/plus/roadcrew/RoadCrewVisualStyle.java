@@ -25,7 +25,7 @@ public final class RoadCrewVisualStyle {
 	private static final String KEY_PREVIOUS_ROUTE_COLOR_NIGHT_PREFIX = "previous_route_color_night_";
 	private static final String KEY_PREVIOUS_ROUTE_COLORING_PREFIX = "previous_route_coloring_";
 	private static final int NEON_DAY_ROUTE_COLOR = 0xffa1ff3d;
-	private static final int NEON_DAY_ROUTE_OUTLINE_COLOR = 0xe612351b;
+	private static final int NEON_DAY_ROUTE_OUTLINE_COLOR = 0x6676ff03;
 	private static final int NEON_DAY_ROUTE_ARROW_COLOR = 0xff17351a;
 	private static final int NEON_DAY_CONTROL_COLOR = 0xff146b3a;
 
