@@ -94,6 +94,21 @@ public class RoadCrewObservationOutboxTest {
 	}
 
 	@Test
+	public void resetRetryScheduleMakesBlockedRecordsImmediatelyEligible() throws Exception {
+		File file = observationFile("retry-reset.json");
+		MutableClock clock = new MutableClock(BASE_TIME);
+		RoadCrewObservationOutbox outbox = open(file, clock, new CounterIds());
+		String id = outbox.enqueue(evidence(3009, 43.0), BASE_TIME).getRecord().getId();
+		outbox.markFailed(Collections.singleton(id), BASE_TIME);
+		Assert.assertTrue(outbox.getEligibleBatch(BASE_TIME, 10).isEmpty());
+
+		Assert.assertEquals(1, outbox.resetRetrySchedule());
+		RoadCrewObservationOutbox reopened = open(file, clock, new CounterIds());
+		Assert.assertEquals(1, reopened.getEligibleBatch(BASE_TIME, 10).size());
+		Assert.assertEquals(0, reopened.snapshot().getRecords().get(0).getAttemptCount());
+	}
+
+	@Test
 	public void uploadedRecordsAreRemovedDurably() throws Exception {
 		File file = observationFile("uploaded.json");
 		MutableClock clock = new MutableClock(BASE_TIME);
@@ -104,6 +119,27 @@ public class RoadCrewObservationOutboxTest {
 		Assert.assertEquals(1, outbox.markUploaded(Collections.singleton(first)));
 		Assert.assertEquals(1, outbox.snapshot().size());
 		Assert.assertEquals(1, open(file, clock, new CounterIds()).snapshot().size());
+	}
+
+	@Test
+	public void rejectedRecordDoesNotBlockOrRequeueSameEvidence() throws Exception {
+		File file = observationFile("rejected.json");
+		MutableClock clock = new MutableClock(BASE_TIME);
+		RoadCrewPassageDetector.PassageEvidence rejectedEvidence = evidence(3007, 43.0);
+		RoadCrewObservationOutbox outbox = open(file, clock, new CounterIds());
+		String rejectedId = outbox.enqueue(rejectedEvidence, BASE_TIME + 1_000)
+				.getRecord().getId();
+		outbox.enqueue(evidence(3008, 43.001), BASE_TIME + 1_000);
+
+		Assert.assertEquals(1, outbox.markRejected(Collections.singleton(rejectedId)));
+		Assert.assertEquals(1, outbox.snapshot().size());
+		RoadCrewObservationOutbox reopened = open(file, clock, new CounterIds());
+		RoadCrewObservationOutbox.EnqueueResult duplicate = reopened.enqueue(
+				rejectedEvidence, BASE_TIME + 50_000);
+
+		Assert.assertEquals(RoadCrewObservationOutbox.EnqueueStatus.ALREADY_UPLOADED,
+				duplicate.getStatus());
+		Assert.assertEquals(1, reopened.snapshot().size());
 	}
 
 	@Test

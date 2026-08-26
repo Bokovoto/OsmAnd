@@ -94,7 +94,7 @@
     <string name="roadcrew_live_truck_map_status_upload_error">Status: Upload problem; observations are queued</string>
     <string name="roadcrew_live_truck_map_access_enabled">Community routing access: Available</string>
     <string name="roadcrew_live_truck_map_access_disabled">Community routing access: Standard navigation only</string>
-    <string name="roadcrew_live_truck_map_contribution">Shared observations: %1$d · Waiting to upload: %2$d</string>
+	<string name="roadcrew_live_truck_map_contribution">Shared observations: %1$d · Waiting to upload: %2$d · Rejected locally: %3$d</string>
     <string name="roadcrew_live_truck_map_last_upload">Last successful upload: %1$s</string>
     <string name="roadcrew_live_truck_map_last_upload_none">Last successful upload: None yet</string>
     <string name="roadcrew_live_truck_map_shadow_snapshot">Shadow layer: %1$d segments · Collecting: %2$d · Candidates: %3$d · Mature: %4$d · Updated: %5$s</string>

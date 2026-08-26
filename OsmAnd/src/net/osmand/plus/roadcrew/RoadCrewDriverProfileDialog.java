@@ -263,7 +263,8 @@ final class RoadCrewDriverProfileDialog {
 		access.setTextColor(snapshot.communityRoutingAccess
 				? RoadCrewUi.PRIMARY : RoadCrewUi.SECONDARY_TEXT);
 		contribution.setText(activity.getString(R.string.roadcrew_live_truck_map_contribution,
-				snapshot.uploadedObservationCount, snapshot.pendingObservationCount));
+				snapshot.uploadedObservationCount, snapshot.pendingObservationCount,
+				snapshot.rejectedObservationCount));
 		if (snapshot.lastUploadAtMillis > 0) {
 			String formatted = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
 					.format(new Date(snapshot.lastUploadAtMillis));

@@ -16,6 +16,7 @@ public final class RoadCrewMapObservationConsent {
 	private static final String KEY_LAST_UPLOAD_AT = "last_upload_at";
 	private static final String KEY_LAST_UPLOAD_FAILURE_AT = "last_upload_failure_at";
 	private static final String KEY_UPLOADED_OBSERVATION_COUNT = "uploaded_observation_count";
+	private static final String KEY_REJECTED_OBSERVATION_COUNT = "rejected_observation_count";
 	private static final String KEY_PENDING_OBSERVATION_COUNT = "pending_observation_count";
 	private static final String OUTBOX_FILE_NAME = "roadcrew-map-observations.json";
 	private static final String SHADOW_SNAPSHOT_FILE_NAME = "roadcrew-shadow-snapshot.json";
@@ -62,6 +63,18 @@ public final class RoadCrewMapObservationConsent {
 				.apply();
 	}
 
+	static void recordRejectedObservations(@NonNull Context context, int rejectedCount,
+			int pendingCount) {
+		SharedPreferences preferences = preferences(context);
+		preferences.edit()
+				.putLong(KEY_LAST_UPLOAD_FAILURE_AT, 0)
+				.putInt(KEY_REJECTED_OBSERVATION_COUNT,
+						preferences.getInt(KEY_REJECTED_OBSERVATION_COUNT, 0)
+								+ Math.max(0, rejectedCount))
+				.putInt(KEY_PENDING_OBSERVATION_COUNT, Math.max(0, pendingCount))
+				.apply();
+	}
+
 	static void recordPendingCount(@NonNull Context context, int pendingCount) {
 		preferences(context).edit()
 				.putInt(KEY_PENDING_OBSERVATION_COUNT, Math.max(0, pendingCount))
@@ -84,6 +97,10 @@ public final class RoadCrewMapObservationConsent {
 
 	static int getPendingObservationCount(@NonNull Context context) {
 		return preferences(context).getInt(KEY_PENDING_OBSERVATION_COUNT, 0);
+	}
+
+	static int getRejectedObservationCount(@NonNull Context context) {
+		return preferences(context).getInt(KEY_REJECTED_OBSERVATION_COUNT, 0);
 	}
 
 	@NonNull

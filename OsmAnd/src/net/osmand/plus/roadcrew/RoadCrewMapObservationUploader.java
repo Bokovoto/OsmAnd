@@ -46,6 +46,8 @@ final class RoadCrewMapObservationUploader {
 			"https://roadcrew-api.galin-b-vasilev1.workers.dev/v2/truck-map/chunks";
 	private static final String PREFERENCES = "roadcrew_truck_map_ingest_v2";
 	private static final String INSTALLATION_TOKEN = "installation_token";
+	private static final String QUEUE_RECOVERY_VERSION = "queue_recovery_version";
+	private static final int CURRENT_QUEUE_RECOVERY_VERSION = 1;
 	private static final int SCHEMA_VERSION = 2;
 	private static final int BATCH_SIZE = 100;
 	private static final int IMMEDIATE_BATCH_THRESHOLD = 100;
@@ -71,7 +73,8 @@ final class RoadCrewMapObservationUploader {
 		if (running) {
 			return;
 		}
-		boolean immediate = outbox.snapshot().size() >= IMMEDIATE_BATCH_THRESHOLD;
+		boolean immediate = outbox.snapshot().size() >= IMMEDIATE_BATCH_THRESHOLD
+				|| needsQueueRecovery(app, outbox);
 		if (scheduled != null && !scheduled.isDone()) {
 			if (!immediate) {
 				return;
@@ -110,6 +113,7 @@ final class RoadCrewMapObservationUploader {
 		}
 		try {
 			if (app != null && outbox != null && RoadCrewMapObservationConsent.isEnabled(app)) {
+				prepareQueueRecovery(app, outbox);
 				uploadAvailable(app, outbox);
 			}
 		} finally {
@@ -120,6 +124,32 @@ final class RoadCrewMapObservationUploader {
 					&& RoadCrewMapObservationConsent.isEnabled(app)) {
 				schedule(app, outbox);
 			}
+		}
+	}
+
+	private static boolean needsQueueRecovery(@NonNull OsmandApplication app,
+			@NonNull RoadCrewObservationOutbox outbox) {
+		return !outbox.snapshot().isEmpty()
+				&& app.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
+						.getInt(QUEUE_RECOVERY_VERSION, 0) < CURRENT_QUEUE_RECOVERY_VERSION;
+	}
+
+	private static void prepareQueueRecovery(@NonNull OsmandApplication app,
+			@NonNull RoadCrewObservationOutbox outbox) {
+		SharedPreferences preferences = app.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+		if (preferences.getInt(QUEUE_RECOVERY_VERSION, 0) >= CURRENT_QUEUE_RECOVERY_VERSION) {
+			return;
+		}
+		try {
+			int resetCount = outbox.resetRetrySchedule();
+			preferences.edit().putInt(QUEUE_RECOVERY_VERSION,
+					CURRENT_QUEUE_RECOVERY_VERSION).apply();
+			if (resetCount > 0) {
+				Log.i(TAG, "Reset retry schedule for " + resetCount
+						+ " queued Live Truck Map observations");
+			}
+		} catch (IOException e) {
+			Log.w(TAG, "Cannot prepare queued Live Truck Map recovery", e);
 		}
 	}
 
@@ -137,16 +167,28 @@ final class RoadCrewMapObservationUploader {
 			}
 			List<String> attemptedIds = recordIds(batch);
 			try {
-				Set<String> acceptedIds = postBatch(app, batch);
+				UploadBatchResult result = postBatchRecoveringPermanentFailures(app, batch);
 				if (!RoadCrewMapObservationConsent.isEnabled(app)) {
 					return;
 				}
-				if (acceptedIds.size() != attemptedIds.size() || !acceptedIds.containsAll(attemptedIds)) {
+				Set<String> completedIds = new HashSet<>(result.acceptedIds);
+				completedIds.addAll(result.rejectedIds);
+				if (completedIds.size() != attemptedIds.size()
+						|| !completedIds.containsAll(attemptedIds)) {
 					throw new IOException("RoadCrew server did not acknowledge the complete observation chunk");
 				}
-				outbox.markUploaded(acceptedIds);
-				RoadCrewMapObservationConsent.recordUploadSuccess(app, acceptedIds.size(),
-						outbox.snapshot().size());
+				if (!result.acceptedIds.isEmpty()) {
+					outbox.markUploaded(result.acceptedIds);
+					RoadCrewMapObservationConsent.recordUploadSuccess(app,
+							result.acceptedIds.size(), outbox.snapshot().size());
+				}
+				if (!result.rejectedIds.isEmpty()) {
+					outbox.markRejected(result.rejectedIds);
+					RoadCrewMapObservationConsent.recordRejectedObservations(app,
+							result.rejectedIds.size(), outbox.snapshot().size());
+					Log.w(TAG, "Quarantined " + result.rejectedIds.size()
+							+ " permanently rejected Live Truck Map observations");
+				}
 			} catch (IOException | JSONException e) {
 				Log.w(TAG, "Live Truck Map chunk upload failed; observations remain queued", e);
 				if (!RoadCrewMapObservationConsent.isEnabled(app)) {
@@ -161,6 +203,42 @@ final class RoadCrewMapObservationUploader {
 				return;
 			}
 		}
+	}
+
+	@NonNull
+	private static UploadBatchResult postBatchRecoveringPermanentFailures(
+			@NonNull OsmandApplication app,
+			@NonNull List<RoadCrewObservationOutbox.Record> records)
+			throws IOException, JSONException {
+		try {
+			Set<String> acceptedIds = postBatch(app, records);
+			List<String> attemptedIds = recordIds(records);
+			if (acceptedIds.size() != attemptedIds.size()
+					|| !acceptedIds.containsAll(attemptedIds)) {
+				throw new IOException("RoadCrew server did not acknowledge the complete observation chunk");
+			}
+			return UploadBatchResult.accepted(acceptedIds);
+		} catch (HttpStatusException e) {
+			if (!isPermanentRecordFailure(e.responseCode)) {
+				throw e;
+			}
+			if (records.size() == 1) {
+				Log.w(TAG, "Live Truck Map observation rejected permanently: "
+						+ records.get(0).getId() + " (HTTP " + e.responseCode + ")");
+				return UploadBatchResult.rejected(records.get(0).getId());
+			}
+			int middle = records.size() / 2;
+			UploadBatchResult first = postBatchRecoveringPermanentFailures(app,
+					records.subList(0, middle));
+			UploadBatchResult second = postBatchRecoveringPermanentFailures(app,
+					records.subList(middle, records.size()));
+			return first.combine(second);
+		}
+	}
+
+	private static boolean isPermanentRecordFailure(int responseCode) {
+		return responseCode == HttpURLConnection.HTTP_BAD_REQUEST
+				|| responseCode == HttpURLConnection.HTTP_ENTITY_TOO_LARGE;
 	}
 
 	@NonNull
@@ -199,8 +277,7 @@ final class RoadCrewMapObservationUploader {
 				continue;
 			}
 			if (responseCode < 200 || responseCode >= 300) {
-				throw new IOException("RoadCrew truck map API failed with HTTP "
-						+ responseCode + ": " + responseBody);
+				throw new HttpStatusException(responseCode, responseBody);
 			}
 			JSONArray accepted = new JSONObject(responseBody).optJSONArray("acceptedIds");
 			if (accepted == null) {
@@ -216,6 +293,48 @@ final class RoadCrewMapObservationUploader {
 			return acceptedIds;
 		}
 		throw new IOException("RoadCrew installation authentication failed");
+	}
+
+	private static final class HttpStatusException extends IOException {
+		private final int responseCode;
+
+		private HttpStatusException(int responseCode, @NonNull String responseBody) {
+			super("RoadCrew truck map API failed with HTTP " + responseCode + ": "
+					+ responseBody);
+			this.responseCode = responseCode;
+		}
+	}
+
+	private static final class UploadBatchResult {
+		private final Set<String> acceptedIds;
+		private final Set<String> rejectedIds;
+
+		private UploadBatchResult(@NonNull Set<String> acceptedIds,
+				@NonNull Set<String> rejectedIds) {
+			this.acceptedIds = acceptedIds;
+			this.rejectedIds = rejectedIds;
+		}
+
+		@NonNull
+		private static UploadBatchResult accepted(@NonNull Set<String> ids) {
+			return new UploadBatchResult(new HashSet<>(ids), new HashSet<>());
+		}
+
+		@NonNull
+		private static UploadBatchResult rejected(@NonNull String id) {
+			Set<String> ids = new HashSet<>();
+			ids.add(id);
+			return new UploadBatchResult(new HashSet<>(), ids);
+		}
+
+		@NonNull
+		private UploadBatchResult combine(@NonNull UploadBatchResult other) {
+			Set<String> accepted = new HashSet<>(acceptedIds);
+			accepted.addAll(other.acceptedIds);
+			Set<String> rejected = new HashSet<>(rejectedIds);
+			rejected.addAll(other.rejectedIds);
+			return new UploadBatchResult(accepted, rejected);
+		}
 	}
 
 	@NonNull

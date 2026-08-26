@@ -133,7 +133,8 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 				RoadCrewMapObservationConsent.hasCommunityRoutingAccess(app),
 				RoadCrewMapObservationConsent.getLastUploadAt(app),
 				RoadCrewMapObservationConsent.getUploadedObservationCount(app),
-				RoadCrewMapObservationConsent.getPendingObservationCount(app));
+				RoadCrewMapObservationConsent.getPendingObservationCount(app),
+				RoadCrewMapObservationConsent.getRejectedObservationCount(app));
 	}
 
 	@NonNull
@@ -363,16 +364,19 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 		final long lastUploadAtMillis;
 		final int uploadedObservationCount;
 		final int pendingObservationCount;
+		final int rejectedObservationCount;
 
 		StatusSnapshot(@NonNull CollectionStatus status, boolean backgroundNavigation,
 				boolean communityRoutingAccess, long lastUploadAtMillis,
-				int uploadedObservationCount, int pendingObservationCount) {
+				int uploadedObservationCount, int pendingObservationCount,
+				int rejectedObservationCount) {
 			this.status = status;
 			this.backgroundNavigation = backgroundNavigation;
 			this.communityRoutingAccess = communityRoutingAccess;
 			this.lastUploadAtMillis = lastUploadAtMillis;
 			this.uploadedObservationCount = uploadedObservationCount;
 			this.pendingObservationCount = pendingObservationCount;
+			this.rejectedObservationCount = rejectedObservationCount;
 		}
 	}
 }

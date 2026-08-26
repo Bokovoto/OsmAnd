@@ -94,7 +94,7 @@
     <string name="roadcrew_live_truck_map_status_upload_error">Състояние: Проблем при изпращане; данните изчакват</string>
     <string name="roadcrew_live_truck_map_access_enabled">Достъп до общностна маршрутизация: Наличен</string>
     <string name="roadcrew_live_truck_map_access_disabled">Достъп до общностна маршрутизация: Само стандартна навигация</string>
-    <string name="roadcrew_live_truck_map_contribution">Споделени наблюдения: %1$d · За изпращане: %2$d</string>
+	<string name="roadcrew_live_truck_map_contribution">Споделени наблюдения: %1$d · За изпращане: %2$d · Отделени невалидни: %3$d</string>
     <string name="roadcrew_live_truck_map_last_upload">Последно успешно изпращане: %1$s</string>
     <string name="roadcrew_live_truck_map_last_upload_none">Последно успешно изпращане: Все още няма</string>
     <string name="roadcrew_live_truck_map_shadow_snapshot">Shadow слой: %1$d сегмента · Събиране: %2$d · Кандидати: %3$d · Зрели: %4$d · Обновен: %5$s</string>

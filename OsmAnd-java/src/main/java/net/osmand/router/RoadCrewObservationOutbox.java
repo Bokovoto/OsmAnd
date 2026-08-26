@@ -152,6 +152,21 @@ public final class RoadCrewObservationOutbox {
 		return Collections.unmodifiableList(eligible);
 	}
 
+	public synchronized int resetRetrySchedule() throws IOException {
+		int changed = 0;
+		for (int i = 0; i < records.size(); i++) {
+			Record record = records.get(i);
+			if (record.attemptCount > 0 || record.nextAttemptAtMillis > 0) {
+				records.set(i, record.retryNow());
+				changed++;
+			}
+		}
+		if (changed > 0) {
+			persist();
+		}
+		return changed;
+	}
+
 	public synchronized int markFailed(Iterable<String> ids, long nowMillis) throws IOException {
 		if (nowMillis < 0) {
 			throw new IllegalArgumentException("Retry wall time must not be negative");
@@ -175,6 +190,18 @@ public final class RoadCrewObservationOutbox {
 	}
 
 	public synchronized int markUploaded(Iterable<String> ids) throws IOException {
+		return removeAcknowledged(ids);
+	}
+
+	/**
+	 * Removes observations that the server has permanently rejected while retaining
+	 * their segment/bucket keys so the same evidence is not enqueued again.
+	 */
+	public synchronized int markRejected(Iterable<String> ids) throws IOException {
+		return removeAcknowledged(ids);
+	}
+
+	private int removeAcknowledged(Iterable<String> ids) throws IOException {
 		Set<String> selected = normalizedIds(ids);
 		if (selected.isEmpty()) {
 			return 0;
@@ -573,6 +600,12 @@ public final class RoadCrewObservationOutbox {
 			return new Record(id, segmentKey, observedAtBucketMillis, fixCount, durationMillis,
 					forwardMovementMeters, maximumDistanceMeters, maximumHeadingDifferenceDegrees,
 					nextAttemptCount, nextAttempt);
+		}
+
+		private Record retryNow() {
+			return new Record(id, segmentKey, observedAtBucketMillis, fixCount, durationMillis,
+					forwardMovementMeters, maximumDistanceMeters, maximumHeadingDifferenceDegrees,
+					0, 0);
 		}
 
 		private RecordJson toJson() {
