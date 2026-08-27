@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="roadcrew_validation_title">Проверка на пътен участък</string>
+    <string name="roadcrew_validation_context">%1$s · %2$d м\nПреминаване около %3$s</string>
+    <string name="roadcrew_validation_question">Подходящ ли беше маркираният участък за вашия камион?</string>
+    <string name="roadcrew_validation_remember">Отговорете само ако си спомняте участъка. Отговорът е сведение за проверка, а не разрешение за преминаване.</string>
+    <string name="roadcrew_validation_suitable">Да, подходящ е</string>
+    <string name="roadcrew_validation_problem">Има ограничение или проблем</string>
+    <string name="roadcrew_validation_unsure">Не съм сигурен</string>
+    <string name="roadcrew_validation_later">По-късно</string>
+    <string name="roadcrew_validation_unnamed">Пътен участък</string>
+    <string name="roadcrew_validation_map_description">Офлайн карта на точния участък със стрелка в посоката на преминаването.</string>
+    <string name="roadcrew_validation_loading">Проверяват се участъците за потвърждение…</string>
+    <string name="roadcrew_validation_none">Все още няма скорошен участък за потвърждение.</string>
+    <string name="roadcrew_validation_stop_first">Приключете навигацията и останете в покой 30 секунди с валиден GPS сигнал.</string>
+    <string name="roadcrew_validation_consent_required">Първо включете участието в Live Truck Map.</string>
+    <string name="roadcrew_validation_map_unavailable">Точният участък не е разпознат в офлайн картата. Не се изисква отговор.</string>
+    <string name="roadcrew_validation_queued">Отговорът е запазен на телефона и чака изпращане.</string>
+    <string name="roadcrew_validation_sent">Отговорът е получен. Благодарим.</string>
+    <string name="roadcrew_validation_expired">Този отговор вече не може да бъде приет. Не е отчетен.</string>
+    <string name="roadcrew_validation_offline">В момента проверката е недостъпна. Запазените отговори остават на телефона.</string>
+</resources>

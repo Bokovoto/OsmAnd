@@ -42,6 +42,7 @@ public final class RoadCrewMapObservationConsent {
 		if (!enabled) {
 			editor.putInt(KEY_PENDING_OBSERVATION_COUNT, 0);
 			editor.putLong(KEY_LAST_UPLOAD_FAILURE_AT, 0);
+			RoadCrewValidationController.clearLocalAnswers(context);
 		}
 		editor.apply();
 	}

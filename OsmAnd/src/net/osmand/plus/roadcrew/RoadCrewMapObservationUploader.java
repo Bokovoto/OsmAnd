@@ -48,6 +48,10 @@ final class RoadCrewMapObservationUploader {
 			"https://roadcrew-api.galin-b-vasilev1.workers.dev/v2/truck-map/chunks";
 	private static final String PREFERENCES = "roadcrew_truck_map_ingest_v2";
 	private static final String INSTALLATION_TOKEN = "installation_token";
+
+	static String getExistingInstallationToken(OsmandApplication app) {
+		return app.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE).getString(INSTALLATION_TOKEN, "");
+	}
 	private static final String QUEUE_RECOVERY_VERSION = "queue_recovery_version";
 	private static final int CURRENT_QUEUE_RECOVERY_VERSION = 1;
 	private static final int SCHEMA_VERSION = 2;

@@ -95,6 +95,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private RoadCrewTruckRestrictionsProvider truckRestrictionsProvider;
 	@Nullable
 	private RoadCrewMapObservationCoordinator mapObservationCoordinator;
+	private RoadCrewValidationController validationController;
 	private final long createdAtMillis = System.currentTimeMillis();
 
 	public RoadCrewReportsLayer(@NonNull OsmandApplication app) {
@@ -121,11 +122,15 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		RoadCrewMapObservationCoordinator.onMapActivityAvailable(getApplication());
 		RoadCrewShadowRouteDiagnostics.ensureStarted(getApplication());
 		mapObservationCoordinator = RoadCrewMapObservationCoordinator.getInstance(getApplication());
+		if (validationController != null) { validationController.close(); }
+		validationController = new RoadCrewValidationController(getApplication(), this::getMapActivity,
+				() -> notificationPromptVisible || proximityPromptVisible);
 		createResources();
 	}
 
 	@Override
 	public void destroyLayer() {
+		if (validationController != null) { validationController.close(); validationController = null; }
 		super.destroyLayer();
 		if (activeLayer == this) {
 			activeLayer = null;
@@ -145,6 +150,12 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	static void setMapObservationEnabled(@NonNull OsmandApplication app, boolean enabled) {
 		RoadCrewMapObservationCoordinator.setEnabledForApp(app, enabled);
+	}
+
+	static void requestSegmentValidation() {
+		if (activeLayer != null && activeLayer.validationController != null) {
+			activeLayer.validationController.requestManually();
+		}
 	}
 
 	public static void showNearbyHelpReports(@NonNull MapActivity mapActivity, @NonNull OsmandApplication app) {
@@ -250,8 +261,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	public void onDraw(Canvas canvas, RotatedTileBox tileBox, DrawSettings settings) {
 		List<RoadCrewReport> reports = RoadCrewReportsRepository.getVisibleReports(getApplication());
 		RoadCrewReportsSync.syncPeriodically(getApplication());
-		checkHelpNotifications();
-		checkNearbyReports(reports);
+		if (validationController == null || !validationController.isShowing()) {
+			checkHelpNotifications();
+			checkNearbyReports(reports);
+		}
 		checkVoiceAlerts(reports);
 		if (tileBox.getZoom() < MIN_ZOOM) {
 			return;

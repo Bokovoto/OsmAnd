@@ -223,6 +223,13 @@ final class RoadCrewDriverProfileDialog {
 
 		RoadCrewUi.addSectionTitle(mapActivity, content,
 				mapActivity.getString(R.string.roadcrew_live_truck_map_title));
+		RoadCrewUi.addFullWidthButton(mapActivity, content,
+				mapActivity.getString(R.string.roadcrew_validation_title), false, v -> {
+					saveProfile.run();
+					openingSettings[0] = true;
+					dialog.dismiss();
+					RoadCrewReportsLayer.requestSegmentValidation();
+				});
 		boolean observationEnabled = RoadCrewMapObservationConsent.isEnabled(app);
 		TextView observationStatus = RoadCrewUi.addBody(mapActivity, content, "");
 		TextView routingAccess = RoadCrewUi.addBody(mapActivity, content, "");

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="roadcrew_validation_title">Check a road section</string>
+    <string name="roadcrew_validation_context">%1$s · %2$d m\nPassed around %3$s</string>
+    <string name="roadcrew_validation_question">Was the highlighted section suitable for your truck?</string>
+    <string name="roadcrew_validation_remember">Answer only if you remember this section. Your answer is evidence for review, not permission to use the road.</string>
+    <string name="roadcrew_validation_suitable">Yes, suitable</string>
+    <string name="roadcrew_validation_problem">Restriction or problem</string>
+    <string name="roadcrew_validation_unsure">Not sure</string>
+    <string name="roadcrew_validation_later">Later</string>
+    <string name="roadcrew_validation_unnamed">Road section</string>
+    <string name="roadcrew_validation_map_description">Offline map of the exact road section, with an arrow in the direction you travelled.</string>
+    <string name="roadcrew_validation_loading">Checking for a road section to review…</string>
+    <string name="roadcrew_validation_none">No recent road section is available to review yet.</string>
+    <string name="roadcrew_validation_stop_first">End navigation and remain stopped for 30 seconds with a valid GPS signal.</string>
+    <string name="roadcrew_validation_consent_required">Enable Live Truck Map participation first.</string>
+    <string name="roadcrew_validation_map_unavailable">The exact section could not be matched to your offline map. No answer is requested.</string>
+    <string name="roadcrew_validation_queued">Answer saved on this phone. Waiting to send.</string>
+    <string name="roadcrew_validation_sent">Answer received. Thank you.</string>
+    <string name="roadcrew_validation_expired">This answer could no longer be accepted. It was not counted.</string>
+    <string name="roadcrew_validation_offline">Unable to check now. Saved answers remain on this phone.</string>
+</resources>
