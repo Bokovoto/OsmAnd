@@ -99,10 +99,12 @@ import net.osmand.plus.plugins.audionotes.AudioVideoNoteRecordingMenu;
 import net.osmand.plus.roadcrew.RoadCrewAppUpdater;
 import net.osmand.plus.roadcrew.RoadCrewNeonHud;
 import net.osmand.plus.roadcrew.RoadCrewReportsLayer;
+import net.osmand.plus.roadcrew.RoadCrewRoutePreview;
 import net.osmand.plus.roadcrew.RoadCrewStartupSetup;
 import net.osmand.plus.routepreparationmenu.MapRouteInfoMenu;
 import net.osmand.plus.routing.IRouteInformationListener;
 import net.osmand.plus.routing.RouteCalculationProgressListener;
+import net.osmand.plus.routing.RouteCalculationResult;
 import net.osmand.plus.routing.RouteService;
 import net.osmand.plus.routing.RoutingHelper;
 import net.osmand.plus.routing.TransportRoutingHelper.TransportRouteCalculationProgressCallback;
@@ -1672,10 +1674,14 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 		}
 		refreshMap();
 		RoutingHelper rh = app.getRoutingHelper();
-		if (newRoute && rh.isRoutePlanningMode() && !getMapView().isCarView()) {
+		if (rh.isRoutePlanningMode() && !getMapView().isCarView()
+				&& (newRoute || !rh.isPublicTransportMode())) {
+			final RouteCalculationResult calculatedRoute = rh.getRoute();
 			app.runInUIThread(() -> {
-				fitCurrentRouteToMap();
-				app.runInUIThread(() -> RoadCrewNeonHud.resetRoutePreviewNorth(this), 100);
+				if (!isFinishing() && !mIsDestroyed && rh.isRoutePlanningMode()
+						&& rh.getRoute() == calculatedRoute && !mapRouteInfoMenu.isSelectFromMap()) {
+					fitCurrentRouteToMap();
+				}
 			}, 300);
 		}
 		if (app.getSettings().simulateNavigation) {
@@ -1690,6 +1696,10 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 	}
 
 	private void fitCurrentRouteToMap() {
+		if (!app.getRoutingHelper().isPublicTransportMode()) {
+			RoadCrewRoutePreview.fit(this);
+			return;
+		}
 		boolean portrait = true;
 		int leftBottomPaddingPx = 0;
 		WeakReference<?> fragmentRef = mapRouteInfoMenu.findMenuFragment();

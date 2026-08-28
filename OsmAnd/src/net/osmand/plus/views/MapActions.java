@@ -38,6 +38,7 @@ import net.osmand.plus.routing.RoutingHelper;
 import net.osmand.plus.search.dialogs.QuickSearchDialogFragment.QuickSearchType;
 import net.osmand.plus.settings.backend.ApplicationMode;
 import net.osmand.plus.settings.backend.OsmandSettings;
+import net.osmand.plus.settings.enums.CompassMode;
 import net.osmand.plus.simulation.OsmAndLocationSimulation;
 import net.osmand.plus.utils.AndroidUtils;
 import net.osmand.router.GeneralRouter;
@@ -492,10 +493,8 @@ public class MapActions {
 		if (settings.getApplicationMode() != routingHelper.getAppMode()) {
 			settings.setApplicationMode(routingHelper.getAppMode(), false);
 		}
-		float elevationAngle = settings.getLastKnownMapElevation();
-		AnimateDraggingMapThread animateDraggingMapThread = app.getOsmandMap().getMapView().getAnimatedDraggingThread();
-		animateDraggingMapThread.startTilting(elevationAngle, 0);
 		if (routingHelper.isFollowingMode()) {
+			prepareNavigationMap();
 			switchToRouteFollowingLayout();
 		} else {
 			MapActivity activity = getMapActivity();
@@ -505,6 +504,7 @@ public class MapActions {
 				}
 			} else {
 				app.logEvent("start_navigation");
+				prepareNavigationMap();
 				mapTrackingUtilities.backToLocationImpl(17, true);
 				settings.FOLLOW_THE_ROUTE.set(true);
 				routingHelper.setFollowingMode(true);
@@ -524,6 +524,18 @@ public class MapActions {
 				}
 			}
 		}
+	}
+
+	private void prepareNavigationMap() {
+		OsmandMapTileView mapView = app.getOsmandMap().getMapView();
+		ApplicationMode mode = routingHelper.getAppMode();
+		if (!mapView.isCarView() && (mode.isDerivedRoutingFrom(ApplicationMode.CAR)
+				|| mode.isDerivedRoutingFrom(ApplicationMode.TRUCK))) {
+			// Start/Continue leaves the north-up overview; GPS controls rotation again.
+			settings.setCompassMode(CompassMode.MOVEMENT_DIRECTION, mode);
+		}
+		float elevationAngle = settings.getLastKnownMapElevation();
+		mapView.getAnimatedDraggingThread().startTilting(elevationAngle, 0);
 	}
 
 	public void selectAddress(String name, double latitude, double longitude,

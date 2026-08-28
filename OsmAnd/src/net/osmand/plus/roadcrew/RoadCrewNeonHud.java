@@ -604,17 +604,23 @@ public final class RoadCrewNeonHud {
 		setTranslationY(mapHud.findViewById(R.id.roadcrew_report_button), reportOffset);
 	}
 
-	public static void resetRoutePreviewNorth(@NonNull MapActivity activity) {
-		if (RoadCrewVisualStyle.isNeonBeta(activity)
-				&& activity.getRoutingHelper().isRoutePlanningMode()
-				&& !activity.getRoutingHelper().isFollowingMode()) {
-			activity.getMapView().setRotate(0, true);
-			activity.refreshMap();
+	@NonNull
+	public static Map<Integer, View> getRoutePreviewPanels(@NonNull MapActivity activity) {
+		Map<Integer, View> panels = new LinkedHashMap<>();
+		View mapHud = activity.findViewById(R.id.map_hud_layout);
+		if (mapHud != null) {
+			panels.put(Gravity.TOP, mapHud.findViewWithTag(HEADER_TAG));
+			panels.put(Gravity.BOTTOM, mapHud.findViewWithTag(FOOTER_TAG));
+			panels.put(Gravity.LEFT, mapHud.findViewWithTag(LEFT_RAIL_TAG));
+			panels.put(Gravity.RIGHT, mapHud.findViewWithTag(RIGHT_RAIL_TAG));
 		}
+		return panels;
 	}
 
 	private static void resetMapNorth(@NonNull MapActivity activity) {
-		activity.getApp().getSettings().setCompassMode(CompassMode.NORTH_IS_UP);
+		if (!activity.getRoutingHelper().isRoutePlanningMode()) {
+			activity.getApp().getSettings().setCompassMode(CompassMode.NORTH_IS_UP);
+		}
 		activity.getMapView().setRotate(0, true);
 		activity.refreshMap();
 	}

@@ -427,9 +427,18 @@ public class MapViewTrackingUtilities implements OsmAndLocationListener, IMapLoc
 
 	public void switchRoutePlanningMode() {
 		routePlanningMode = routingHelper.isRoutePlanningMode();
+		followingMode = routingHelper.isFollowingMode();
 		updateSettings();
 		if (!routePlanningMode && followingMode) {
 			backToLocationImpl();
+		}
+	}
+
+	public void prepareRoutePreview() {
+		if (routingHelper.isRoutePlanningMode()) {
+			// Synchronize planning without restoring the previous navigation bearing.
+			routePlanningMode = true;
+			setMapLinkedToLocation(false);
 		}
 	}
 
@@ -542,7 +551,8 @@ public class MapViewTrackingUtilities implements OsmAndLocationListener, IMapLoc
 
 	private void backToLocationWithDelay(int delay) {
 		app.runInUIThreadAndCancelPrevious(AUTO_FOLLOW_MSG_ID, () -> {
-			if (mapView != null && !isMapLinkedToLocation() && contextMenu == null) {
+			if (mapView != null && !isMapLinkedToLocation() && contextMenu == null
+					&& !routingHelper.isRoutePlanningMode()) {
 				app.showToastMessage(R.string.auto_follow_location_enabled);
 				backToLocationImpl(15, false);
 			}

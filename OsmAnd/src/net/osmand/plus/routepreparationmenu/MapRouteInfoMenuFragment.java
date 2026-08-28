@@ -23,6 +23,7 @@ import net.osmand.plus.activities.MapActivity;
 import net.osmand.plus.base.ContextMenuFragment;
 import net.osmand.plus.download.DownloadIndexesThread.DownloadEvents;
 import net.osmand.plus.helpers.AndroidUiHelper;
+import net.osmand.plus.roadcrew.RoadCrewRoutePreview;
 import net.osmand.plus.routing.RoutingHelper;
 import net.osmand.plus.track.fragments.TrackSelectSegmentBottomSheet.OnSegmentSelectedListener;
 import net.osmand.plus.utils.AndroidUtils;
@@ -291,7 +292,10 @@ public class MapRouteInfoMenuFragment extends ContextMenuFragment
 
 		RoutingHelper rh = app.getRoutingHelper();
 		if (rh.isRoutePlanningMode()) {
-			mapActivity.getMapView();
+			if (!rh.isPublicTransportMode()) {
+				RoadCrewRoutePreview.fit(mapActivity, this, y);
+				return;
+			}
 			QuadRect r = menu.getRouteRect(mapActivity);
 			RotatedTileBox tb = mapActivity.getMapView().getRotatedTileBox();
 			int tileBoxWidthPx = 0;

@@ -508,8 +508,9 @@ public class RouteLayer extends BaseRouteLayer implements IContextMenuProvider {
 			routeGeometry.setCustomOutline(
 					neonDay ? RoadCrewVisualStyle.getNeonDayRouteOutlineColor() : null,
 					routeLineWidth + density * 4f);
+			// Keep both branches boxed: null means native arrows, not a color to unbox.
 			routeGeometry.setRouteStyleParams(routeLineColor, routeLineWidth, shouldShowDirectionArrows,
-					neonDay ? RoadCrewVisualStyle.getNeonDayRouteArrowColor() : getDirectionArrowsColor(),
+					neonDay ? Integer.valueOf(RoadCrewVisualStyle.getNeonDayRouteArrowColor()) : getDirectionArrowsColor(),
 					actualColoringType, routeInfoAttribute, routeGradientPalette);
 			boolean routeUpdated = routeGeometry.updateRoute(tileBox, route);
 			boolean shouldShowTurnArrows = shouldShowTurnArrows();
