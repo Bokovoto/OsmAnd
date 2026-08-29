@@ -224,7 +224,7 @@ final class RoadCrewDriverProfileDialog {
 		RoadCrewUi.addSectionTitle(mapActivity, content,
 				mapActivity.getString(R.string.roadcrew_live_truck_map_title));
 		RoadCrewUi.addFullWidthButton(mapActivity, content,
-				mapActivity.getString(R.string.roadcrew_validation_title), false, v -> {
+				mapActivity.getString(R.string.roadcrew_trip_review_title), true, v -> {
 					saveProfile.run();
 					openingSettings[0] = true;
 					dialog.dismiss();
@@ -239,6 +239,7 @@ final class RoadCrewDriverProfileDialog {
 		TextView shadowRouteDiagnostic = RoadCrewUi.addBody(mapActivity, content, "");
 		RoadCrewUi.addBody(mapActivity, content,
 				mapActivity.getString(R.string.roadcrew_live_truck_map_profile_body));
+		RoadCrewUi.addBody(mapActivity, content, mapActivity.getString(R.string.roadcrew_trip_review_privacy));
 		CheckBox observationConsent = new CheckBox(mapActivity);
 		observationConsent.setText(R.string.roadcrew_live_truck_map_consent);
 		observationConsent.setTextColor(RoadCrewUi.TEXT);
@@ -271,7 +272,9 @@ final class RoadCrewDriverProfileDialog {
 				? RoadCrewUi.PRIMARY : RoadCrewUi.SECONDARY_TEXT);
 		contribution.setText(activity.getString(R.string.roadcrew_live_truck_map_contribution,
 				snapshot.uploadedObservationCount, snapshot.pendingObservationCount,
-				snapshot.rejectedObservationCount));
+				snapshot.rejectedObservationCount) + "\n\n" + activity.getString(R.string.roadcrew_trip_review_pending,
+				RoadCrewTripJournal.stagedCount(app), RoadCrewTripJournal.waitingCount(app))
+				+ (RoadCrewTripJournal.isFull(app) ? "\n" + activity.getString(R.string.roadcrew_trip_review_full) : ""));
 		if (snapshot.lastUploadAtMillis > 0) {
 			String formatted = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
 					.format(new Date(snapshot.lastUploadAtMillis));

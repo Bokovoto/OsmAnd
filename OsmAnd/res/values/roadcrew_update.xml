@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="roadcrew_update_progress">#38D994</color>
+    <color name="roadcrew_update_button">#126B46</color>
+    <color name="roadcrew_update_track">#303936</color>
+    <color name="roadcrew_update_secondary">#BDCCC5</color>
+    <color name="roadcrew_update_error">#FF8585</color>
+</resources>

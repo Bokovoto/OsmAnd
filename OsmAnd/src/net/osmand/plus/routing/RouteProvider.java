@@ -28,6 +28,8 @@ import net.osmand.plus.onlinerouting.engine.OnlineRoutingEngine;
 import net.osmand.plus.onlinerouting.engine.OnlineRoutingEngine.OnlineRoutingResponse;
 import net.osmand.plus.render.NativeOsmandLibrary;
 import net.osmand.plus.roadcrew.routing.RoadCrewRoutingOverlayStore;
+import net.osmand.plus.roadcrew.RoadCrewRoutePreferenceStore;
+import net.osmand.router.RoadCrewRoutePreferences;
 import net.osmand.plus.routing.GPXRouteParams.GPXRouteParamsBuilder;
 import net.osmand.plus.settings.backend.ApplicationMode;
 import net.osmand.plus.settings.backend.OsmandSettings;
@@ -298,20 +300,36 @@ public class RouteProvider {
 
 		OsmandSettings settings = params.ctx.getSettings();
 		RoadCrewRoutingOverlay.Snapshot roadCrewOverlay = RoadCrewRoutingOverlayStore.load(params.ctx, params.mode);
+		RoadCrewRoutePreferences preferences = calcGPXRoute ? RoadCrewRoutePreferences.EMPTY
+				: RoadCrewRoutePreferenceStore.load(params.ctx, params.mode);
+		double minLat = Math.min(params.start.getLatitude(), params.end.getLatitude());
+		double maxLat = Math.max(params.start.getLatitude(), params.end.getLatitude());
+		double minLon = Math.min(params.start.getLongitude(), params.end.getLongitude());
+		double maxLon = Math.max(params.start.getLongitude(), params.end.getLongitude());
+		if (params.intermediates != null) {
+			for (LatLon point : params.intermediates) {
+				minLat = Math.min(minLat, point.getLatitude());
+				maxLat = Math.max(maxLat, point.getLatitude());
+				minLon = Math.min(minLon, point.getLongitude());
+				maxLon = Math.max(maxLon, point.getLongitude());
+			}
+		}
+		preferences = preferences.within(minLat - 0.2, maxLat + 0.2, minLon - 0.3, maxLon + 0.3);
+		boolean communityRanking = !preferences.isEmpty();
 
 		RoutePlannerFrontEnd.CALCULATE_MISSING_MAPS = !OsmandSettings.IGNORE_MISSING_MAPS;
 		RoutePlannerFrontEnd.CONTINUE_ON_MISSING_MAPS = !OsmandSettings.STOP_ON_MISSING_MAPS;
 
 		RouteCalculationMethod method = settings.ROUTE_CALCULATION_METHOD.getModeValue(params.mode);
 
-		if (method.isFastRoutingPossible(params.mode) && roadCrewOverlay.isEmpty()) {
+		if (method.isFastRoutingPossible(params.mode) && roadCrewOverlay.isEmpty() && !communityRanking) {
 			router.setDefaultHHRoutingConfig();
 		} else {
 			router.setHHRoutingConfig(null);
 		}
 
 		router.setHHRouteCpp(!settings.SAFE_MODE.get());
-		router.setUseOnlyHHRouting(method.isFastRoutingOnly(params.mode) && roadCrewOverlay.isEmpty());
+		router.setUseOnlyHHRouting(method.isFastRoutingOnly(params.mode) && roadCrewOverlay.isEmpty() && !communityRanking);
 
 		ApproximationType approximationType = settings.APPROXIMATION_TYPE.getModeValue(params.mode);
 		router.setUseNativeApproximation(approximationType.isNativeApproximation());
@@ -325,6 +343,10 @@ public class RouteProvider {
 		RoutingConfiguration cf = initOsmAndRoutingConfig(config, params, settings, generalRouter, roadCrewOverlay);
 		if (cf == null) {
 			return null;
+		}
+		cf.roadCrewPreferences = preferences;
+		if (communityRanking) {
+			log.info("RoadCrew directed soft ranking: " + preferences.size() + " validated sections, Java A*");
 		}
 		PrecalculatedRouteDirection precalculated = null;
 		if (calcGPXRoute) {
@@ -360,6 +382,10 @@ public class RouteProvider {
 		topY = Math.min(MapUtils.get31TileNumberY(l.getLatitude()), topY);
 
 		params.ctx.getResourceManager().getRenderer().checkInitialized(15, lib, leftX, rightX, bottomY, topY);
+		// Native/HH routing cannot consume these edge preferences. Never disable the map renderer.
+		if (communityRanking) {
+			lib = null;
+		}
 
 		RoutingContext ctx = router.buildRoutingContext(cf, lib, files, RouteCalculationMode.NORMAL);
 		ctx.leftSideNavigation = params.leftSide;
@@ -367,14 +393,14 @@ public class RouteProvider {
 		ctx.publicTransport = params.inPublicTransportMode;
 		ctx.startTransportStop = params.startTransportStop;
 		ctx.targetTransportStop = params.targetTransportStop;
-		if (params.previousToRecalculate != null && params.onlyStartPointChanged) {
+		if (params.previousToRecalculate != null && params.onlyStartPointChanged && !communityRanking) {
 			int currentRoute = params.previousToRecalculate.getCurrentRoute();
 			List<RouteSegmentResult> originalRoute = params.previousToRecalculate.getOriginalRoute();
 			if (originalRoute != null && currentRoute < originalRoute.size()) {
 				ctx.previouslyCalculatedRoute = originalRoute.subList(currentRoute, originalRoute.size());
 			}
 		}
-		boolean complex = !skipComplex && params.mode.isDerivedRoutingFrom(ApplicationMode.CAR)
+		boolean complex = !skipComplex && !communityRanking && params.mode.isDerivedRoutingFrom(ApplicationMode.CAR)
 				// Setting using RoutingType A_STAR_CLASSIC/A_STAR_2_PHASE is deprecated
 				&& precalculated == null && router.getRecalculationEnd(ctx) == null;
 

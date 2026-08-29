@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 final class RoadCrewValidationApi {
@@ -23,8 +24,17 @@ final class RoadCrewValidationApi {
 	}
 
 	static JSONObject request(String token, JSONObject answer) throws IOException, JSONException {
+		return request(token, answer, "");
+	}
+
+	static JSONObject requestQuestion(String token, String segmentId, long bucket) throws IOException, JSONException {
+		return request(token, null, "?segmentId=" + URLEncoder.encode(segmentId, "UTF-8")
+				+ "&observedAtBucketMillis=" + bucket);
+	}
+
+	private static JSONObject request(String token, JSONObject answer, String query) throws IOException, JSONException {
 		HttpURLConnection connection = (HttpURLConnection) new URL(API
-				+ (answer == null ? "validation-question" : "validation-responses")).openConnection();
+				+ (answer == null ? "validation-question" : "validation-responses") + query).openConnection();
 		try {
 			connection.setConnectTimeout(10_000);
 			connection.setReadTimeout(20_000);

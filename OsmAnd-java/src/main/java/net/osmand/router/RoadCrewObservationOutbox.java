@@ -242,6 +242,38 @@ public final class RoadCrewObservationOutbox {
 		return new Snapshot(records);
 	}
 
+	/** Transfer only after a separate, durable vehicle-use confirmation. Never evict queued data. */
+	public synchronized int importConfirmed(List<Record> confirmed) throws IOException {
+		if (confirmed == null) {
+			throw new IllegalArgumentException("Missing confirmed observation");
+		}
+		for (Record record : confirmed) {
+			if (record == null) { throw new IllegalArgumentException("Missing confirmed observation"); }
+		}
+		int originalSize = records.size();
+		int accepted = 0;
+		Set<String> known = new HashSet<>(acknowledgedKeys.keySet());
+		for (Record record : records) {
+			known.add(observationKey(record.segmentKey, record.observedAtBucketMillis));
+		}
+		for (Record record : confirmed) {
+			String key = observationKey(record.segmentKey, record.observedAtBucketMillis);
+			if (!known.contains(key)) {
+				if (records.size() >= maxRecords) { break; }
+				records.add(record.retryNow());
+				known.add(key);
+			}
+			accepted++;
+		}
+		try {
+			if (records.size() > originalSize) { persist(); }
+		} catch (IOException e) {
+			records.subList(originalSize, records.size()).clear();
+			throw e;
+		}
+		return accepted;
+	}
+
 	private boolean prune(long nowMillis) {
 		boolean changed = false;
 		long oldestAllowed = Math.max(0, nowMillis - maxAgeMillis);
@@ -549,6 +581,25 @@ public final class RoadCrewObservationOutbox {
 					evidence.getDurationMillis(), evidence.getForwardMovementMeters(),
 					evidence.getMaximumDistanceMeters(),
 					evidence.getMaximumHeadingDifferenceDegrees(), 0, 0);
+		}
+
+		public static Record capture(RoadCrewPassageDetector.PassageEvidence evidence, long observedAtMillis) {
+			validateEvidence(evidence);
+			if (observedAtMillis < OBSERVATION_BUCKET_MILLIS) {
+				throw new IllegalArgumentException("Invalid observation time");
+			}
+			return fromEvidence(UUID.randomUUID().toString(),
+					observedAtMillis - observedAtMillis % OBSERVATION_BUCKET_MILLIS, evidence);
+		}
+
+		public String encode() { return GSON.toJson(toJson()); }
+
+		public static Record decode(String value) throws IOException {
+			try {
+				return fromJson(GSON.fromJson(value, RecordJson.class));
+			} catch (JsonParseException | IllegalArgumentException e) {
+				throw new IOException("Invalid staged observation", e);
+			}
 		}
 
 		private static Record fromJson(RecordJson json) throws IOException {

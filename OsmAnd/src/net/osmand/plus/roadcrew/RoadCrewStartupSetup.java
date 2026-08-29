@@ -140,6 +140,8 @@ public final class RoadCrewStartupSetup {
 				activity.getString(R.string.roadcrew_live_truck_map_title));
 		RoadCrewUi.addBody(activity, content,
 				activity.getString(R.string.roadcrew_live_truck_map_wizard_body));
+		RoadCrewUi.addBody(activity, content,
+				activity.getString(R.string.roadcrew_trip_review_privacy));
 		CheckBox consent = new CheckBox(activity);
 		consent.setText(R.string.roadcrew_live_truck_map_consent);
 		consent.setTextColor(RoadCrewUi.TEXT);

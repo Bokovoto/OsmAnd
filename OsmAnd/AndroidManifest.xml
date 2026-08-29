@@ -1141,6 +1141,12 @@
 			android:process=":restart"
 			android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
+		<service
+			android:name="net.osmand.plus.roadcrew.RoadCrewRecordingService"
+			android:exported="false"
+			android:foregroundServiceType="location"
+			android:stopWithTask="false" />
+
 		<!-- keep android:process on a separate line !! -->
 		<service
 			android:process="${applicationId}"

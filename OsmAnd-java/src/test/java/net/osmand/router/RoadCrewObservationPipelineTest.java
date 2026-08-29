@@ -10,12 +10,41 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class RoadCrewObservationPipelineTest {
 
 	@Rule
 	public final TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+	@Test
+	public void reviewSinkReceivesExactMatchedRoadWithoutUploading() throws Exception {
+		RoadCrewObservationOutbox outbox = outbox("review.json");
+		RouteDataObject first = road(4100, 43.0);
+		RouteDataObject duplicate = road(4100, 44.0);
+		List<RoadCrewObservationOutbox.Record> staged = new ArrayList<>();
+		RoadCrewObservationPipeline pipeline = new RoadCrewObservationPipeline((evidence, at, source, binding) -> {
+			Assert.assertSame(first, source);
+			Assert.assertEquals(first.getId(), binding.getRoadId());
+			Assert.assertEquals(evidence.getSegmentKey().getGeometryFingerprint(), binding.getKey().getGeometryFingerprint());
+			staged.add(RoadCrewObservationOutbox.Record.capture(evidence, at));
+		});
+		pipeline.replaceRoads(Arrays.asList(first, duplicate));
+		pipeline.accept(fix(43.0, 27.0020), 1_000, 9_000_000);
+		pipeline.accept(fix(43.0, 27.0022), 2_000, 9_001_000);
+		Assert.assertTrue(staged.isEmpty());
+		RoadCrewObservationPipeline.ProcessingResult result = pipeline.accept(fix(43.0, 27.0024), 3_000, 9_002_000);
+		Assert.assertTrue(result.getDetection().isConfirmed());
+		Assert.assertFalse(result.wasQueued());
+		Assert.assertTrue(outbox.snapshot().isEmpty());
+		Assert.assertEquals(1, staged.size());
+		pipeline.reset();
+		pipeline.accept(fix(43.0, 27.0026), 4_000, 9_003_000);
+		Assert.assertEquals(1, staged.size());
+	}
 
 	@Test
 	public void queuesOnlyAfterConfirmedPassage() throws Exception {

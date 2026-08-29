@@ -32,7 +32,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/** Downloads bounded, read-only community evidence without touching routing. */
+/** Downloads bounded evidence; routing separately consumes only validated, exact preferences. */
 final class RoadCrewShadowSnapshotDownloader {
 
 	private static final String TAG = "RoadCrewShadow";

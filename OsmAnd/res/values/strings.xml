@@ -1,5 +1,47 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
+    <string name="roadcrew_recording_channel">Truck passage recording</string>
+    <string name="roadcrew_recording_notification_active">Recording truck passages. Review your journeys in the profile before sharing.</string>
+    <string name="roadcrew_trip_review_summary">Recorded passages: approximately %1$s to %2$s\nRecorded sections: %3$s km</string>
+    <string name="roadcrew_trip_review_request_check">Request a separate restriction check for this section</string>
+    <string name="roadcrew_trip_review_not_approval">This confirms truck use, not legal access or road suitability.</string>
+    <string name="roadcrew_trip_review_none">No completed journeys await review.</string>
+    <string name="roadcrew_update_connecting">Connecting to download…</string>
+    <string name="roadcrew_update_download_in_progress">Downloading update</string>
+    <string name="roadcrew_update_verifying">Download finished. Checking the file…</string>
+    <string name="roadcrew_update_ready">The update is ready to install.</string>
+    <string name="roadcrew_update_cancelling">Stopping download…</string>
+    <string name="roadcrew_update_transfer_failed">Download failed or the file could not be verified. Try again.</string>
+    <string name="roadcrew_update_interrupted">The previous download was interrupted. Try again.</string>
+    <string name="roadcrew_update_installer_failed">Could not open the installer. Try again.</string>
+    <string name="roadcrew_update_permission_needed">Allow RoadCrew to install updates in Android settings.</string>
+    <string name="roadcrew_update_open_settings">Open settings</string>
+    <string name="roadcrew_update_install">Install</string>
+    <string name="roadcrew_update_retry">Try again</string>
+    <string name="roadcrew_update_bytes_total">%1$s · %2$s / %3$s</string>
+    <string name="roadcrew_update_bytes_unknown">%1$s downloaded · Total size unknown</string>
+    <string name="roadcrew_update_poster_description">RoadCrew truck. By Galin Vasilev.</string>
+    <string name="roadcrew_trip_review_title">Review truck journey</string>
+    <string name="roadcrew_trip_review_counts">Selected: %1$d / %2$d sections</string>
+    <string name="roadcrew_trip_review_legend">Green: with the truck · Red: excluded</string>
+    <string name="roadcrew_trip_review_confirm">I drove the green sections with the truck</string>
+    <string name="roadcrew_trip_review_save">Confirm truck sections</string>
+    <string name="roadcrew_trip_review_discard">None were with the truck</string>
+    <string name="roadcrew_trip_review_discard_confirm">Discard this journey?</string>
+    <string name="roadcrew_trip_review_saved">Truck sections saved for upload. Excluded sections were removed.</string>
+    <string name="roadcrew_trip_review_section">Section %1$d / %2$d · %3$s\n%4$s · %5$d m</string>
+    <string name="roadcrew_trip_review_included">With the truck</string>
+    <string name="roadcrew_trip_review_before">Exclude earlier sections</string>
+    <string name="roadcrew_trip_review_after">Exclude later sections</string>
+    <string name="roadcrew_trip_review_overview">Whole journey</string>
+    <string name="roadcrew_trip_review_map">Recorded road sections with journey start and end marked.</string>
+    <string name="roadcrew_trip_review_start">Start</string>
+    <string name="roadcrew_trip_review_end">End</string>
+    <string name="roadcrew_trip_review_ambiguous">Several sections overlap here. Zoom in or select a section from the list.</string>
+    <string name="roadcrew_trip_review_pending">Awaiting vehicle review: %1$d · Confirmed, waiting for transfer: %2$d</string>
+    <string name="roadcrew_trip_review_full">Local review storage is full. Review or discard pending journeys to resume collection.</string>
+    <string name="roadcrew_trip_review_privacy">New observations stay on this phone until you confirm which sections were driven with the truck. Car and excluded sections are not uploaded. Unreviewed data expires after 14 days. Confirming truck use does not approve road access or remove restrictions.</string>
+    <string name="roadcrew_trip_review_error">Could not save the review. No unconfirmed data will be uploaded.</string>
 <!--
 	README:
 	- The preferred way to help with translations is via https://hosted.weblate.org/engage/osmand/

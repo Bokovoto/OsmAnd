@@ -457,7 +457,9 @@ public class BinaryRoutePlanner {
 		if (heightObstacle < 0) {
 			return -1;
 		}
-		return obstacle + heightObstacle + distTimeOnRoadToPass;
+		// Ranking only, after all hard constraints. Reverse search uses actual travel direction.
+		return obstacle + heightObstacle + distTimeOnRoadToPass
+				* ctx.roadCrewPreferenceMatcher.costFactor(road, prevSegmentInd, segmentInd);
 
 	}
 

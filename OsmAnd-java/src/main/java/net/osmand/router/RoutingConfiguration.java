@@ -52,6 +52,7 @@ public class RoutingConfiguration {
 	// 1.3 Router specific coefficients and restrictions
 	// use GeneralRouter and not interface to simplify native access !
 	public GeneralRouter router = new GeneralRouter(GeneralRouterProfile.CAR, new LinkedHashMap<String, String>());
+	public RoadCrewRoutePreferences roadCrewPreferences = RoadCrewRoutePreferences.EMPTY;
 	public String routerName = "";
 	
 	// 1.4 Used to calculate route in movement

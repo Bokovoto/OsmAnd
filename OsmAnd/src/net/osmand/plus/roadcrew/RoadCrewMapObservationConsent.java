@@ -40,6 +40,7 @@ public final class RoadCrewMapObservationConsent {
 				.putBoolean(KEY_ENABLED, enabled)
 				.putInt(KEY_CONSENT_VERSION, CURRENT_CONSENT_VERSION);
 		if (!enabled) {
+			RoadCrewTripJournal.revoke(context);
 			editor.putInt(KEY_PENDING_OBSERVATION_COUNT, 0);
 			editor.putLong(KEY_LAST_UPLOAD_FAILURE_AT, 0);
 			RoadCrewValidationController.clearLocalAnswers(context);

@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,6 +25,63 @@ public class RoadCrewObservationOutboxTest {
 
 	@Rule
 	public final TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+	@Test
+	public void localCaptureDoesNotQueueUntilConfirmedAndReplaysIdempotently() throws Exception {
+		File file = observationFile("confirmed-import.json");
+		MutableClock clock = new MutableClock(BASE_TIME);
+		RoadCrewObservationOutbox outbox = open(file, clock, new CounterIds());
+		RoadCrewObservationOutbox.Record local = RoadCrewObservationOutbox.Record.capture(
+				evidence(3100, 43.0), BASE_TIME + 42_000);
+		RoadCrewObservationOutbox.Record restored = RoadCrewObservationOutbox.Record.decode(local.encode());
+		Assert.assertEquals(local.getId(), restored.getId());
+		Assert.assertEquals(BASE_TIME, restored.getObservedAtBucketMillis());
+		Assert.assertTrue(outbox.snapshot().isEmpty());
+		Assert.assertEquals(1, outbox.importConfirmed(Collections.singletonList(restored)));
+		Assert.assertEquals(1, outbox.importConfirmed(Collections.singletonList(restored)));
+		Assert.assertEquals(1, outbox.snapshot().size());
+		outbox.markUploaded(Collections.singleton(restored.getId()));
+		RoadCrewObservationOutbox reopened = open(file, clock, new CounterIds());
+		Assert.assertEquals(1, reopened.importConfirmed(Collections.singletonList(restored)));
+		Assert.assertTrue(reopened.snapshot().isEmpty());
+	}
+
+	@Test
+	public void confirmedBatchStopsAtCapacityWithoutEvictionAndPreservesRetryState() throws Exception {
+		File file = observationFile("confirmed-capacity.json");
+		MutableClock clock = new MutableClock(BASE_TIME);
+		RoadCrewObservationOutbox outbox = RoadCrewObservationOutbox.open(file, clock, new CounterIds(), 2, 86400_000);
+		RoadCrewObservationOutbox.Record first = RoadCrewObservationOutbox.Record.capture(evidence(3101, 43.0), BASE_TIME);
+		RoadCrewObservationOutbox.Record second = RoadCrewObservationOutbox.Record.capture(evidence(3102, 43.0), BASE_TIME);
+		RoadCrewObservationOutbox.Record third = RoadCrewObservationOutbox.Record.capture(evidence(3103, 43.0), BASE_TIME);
+		Assert.assertEquals(2, outbox.importConfirmed(Arrays.asList(first, second, third)));
+		outbox.markFailed(Collections.singleton(first.getId()), BASE_TIME);
+		Assert.assertEquals(1, outbox.importConfirmed(Collections.singletonList(first)));
+		Assert.assertEquals(1, outbox.snapshot().getRecords().stream()
+				.filter(record -> first.getId().equals(record.getId()))
+				.findFirst().orElseThrow(AssertionError::new).getAttemptCount());
+		Assert.assertEquals(0, outbox.importConfirmed(Collections.singletonList(third)));
+		Assert.assertTrue(outbox.snapshot().getRecords().stream()
+				.anyMatch(record -> first.getId().equals(record.getId())));
+		outbox.markUploaded(Collections.singleton(first.getId()));
+		Assert.assertEquals(1, outbox.importConfirmed(Collections.singletonList(third)));
+		Assert.assertEquals(2, open(file, clock, new CounterIds()).snapshot().size());
+	}
+
+	@Test
+	public void confirmedBatchRejectsNullAtomicallyAndDeduplicatesDifferentIds() throws Exception {
+		RoadCrewObservationOutbox outbox = open(observationFile("confirmed-validation.json"), new MutableClock(BASE_TIME), new CounterIds());
+		RoadCrewObservationOutbox.Record first = RoadCrewObservationOutbox.Record.capture(evidence(3104, 43.0), BASE_TIME);
+		RoadCrewObservationOutbox.Record duplicate = RoadCrewObservationOutbox.Record.capture(evidence(3104, 43.0), BASE_TIME + 1000);
+		try {
+			outbox.importConfirmed(Arrays.asList(first, null));
+			Assert.fail("Null batch entry must fail closed");
+		} catch (IllegalArgumentException expected) {
+			Assert.assertTrue(outbox.snapshot().isEmpty());
+		}
+		Assert.assertEquals(2, outbox.importConfirmed(Arrays.asList(first, duplicate)));
+		Assert.assertEquals(1, outbox.snapshot().size());
+	}
 
 	@Test
 	public void persistsMinimalEvidenceAcrossRestart() throws Exception {

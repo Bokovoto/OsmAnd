@@ -17,6 +17,7 @@ import net.osmand.plus.settings.backend.ApplicationMode;
 import net.osmand.router.RoadCrewObfSegmentLoader;
 import net.osmand.router.RoadCrewObservationOutbox;
 import net.osmand.router.RoadCrewObservationPipeline;
+import net.osmand.router.RoadCrewRecordingPolicy;
 import net.osmand.router.RoadCrewSegmentMatcher;
 import net.osmand.util.MapUtils;
 
@@ -30,11 +31,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 /**
- * Bridge from accepted GPS fixes to the local, aggregate RoadCrew passage
- * outbox. Background collection is limited to active truck navigation. Raw
- * fixes never leave this coordinator.
+ * Bridge from accepted GPS fixes to the local vehicle-review journal. Only
+ * user-confirmed truck sections enter the upload outbox. Background collection
+ * uses a visible foreground service, with or without navigation; raw fixes never
+ * leave this coordinator.
  */
 public final class RoadCrewMapObservationCoordinator implements OsmAndLocationListener {
 
@@ -68,6 +71,11 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	private long loadedAtElapsedMillis;
 	private volatile long lastEligibleFixAtMillis;
 	private volatile long lastForegroundRetryAtMillis;
+	private final AtomicInteger collectionGeneration = new AtomicInteger();
+	private int appliedCollectionGeneration;
+	private boolean previousCollectionContext;
+	private volatile boolean navigationSessionActive;
+	private long lastTransferElapsed;
 
 	RoadCrewMapObservationCoordinator(@NonNull OsmandApplication app) {
 		this.app = app;
@@ -85,6 +93,118 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			return;
 		}
 		getInstance(app).retryPendingOnForeground();
+		RoadCrewRecordingService.refreshFromForeground(app);
+	}
+
+	static void recordingContextChanged(@NonNull OsmandApplication app) {
+		getInstance(app).observeTripContext();
+		getInstance(app).lastEligibleFixAtMillis = 0;
+	}
+
+	static void observeTripContext(OsmandApplication app) {
+		getInstance(app).observeTripContext();
+	}
+
+	public static void onNavigationStarted(@NonNull OsmandApplication app) {
+		if (ROADCREW_PACKAGE.equals(app.getPackageName())) { getInstance(app).beginNavigationSession(); }
+	}
+
+	public static void onNavigationFinished(@NonNull OsmandApplication app) {
+		if (ROADCREW_PACKAGE.equals(app.getPackageName())) { getInstance(app).endNavigationSession(); }
+	}
+
+	private synchronized void beginNavigationSession() {
+		if (!enabled || navigationSessionActive || !isTruckProfileActive()
+				|| app.getLocationProvider().getLocationSimulation().isRouteAnimating()) { return; }
+		navigationSessionActive = true;
+		queueTripBoundary(() -> RoadCrewTripJournal.get(app).navigationStarted());
+	}
+
+	private synchronized void endNavigationSession() {
+		if (!navigationSessionActive) { return; }
+		navigationSessionActive = false;
+		queueTripBoundary(() -> RoadCrewTripJournal.get(app).navigationFinished());
+	}
+
+	private void queueTripBoundary(Runnable boundary) {
+		int generation = collectionGeneration.incrementAndGet();
+		latestSample.set(null);
+		executor.execute(() -> {
+			try {
+				boundary.run();
+				appliedCollectionGeneration = generation;
+			} catch (RuntimeException e) {
+				// Do not attach new fixes to the previous course after a failed boundary write.
+				appliedCollectionGeneration = -1;
+				LOG.warn("Could not update trip boundary", e);
+			} finally { resetPipeline(); }
+		});
+	}
+
+	private synchronized void observeTripContext() {
+		boolean context = enabled && isCollectionContextActive() && isTruckProfileActive();
+		// Also handles consent enabled during an already active navigation session.
+		if (app.getRoutingHelper().isFollowingMode()) { beginNavigationSession(); }
+		if (previousCollectionContext && !context) {
+			queueTripBoundary(() -> RoadCrewTripJournal.get(app).collectionPaused());
+		}
+		previousCollectionContext = context;
+		long elapsed = SystemClock.elapsedRealtime();
+		if (enabled && elapsed - lastTransferElapsed >= 60_000) {
+			lastTransferElapsed = elapsed;
+			transferConfirmed();
+		}
+	}
+
+	RoadCrewTripJournal.Trip prepareTripReview(boolean manual) throws Exception {
+		return executor.submit(() -> {
+			if (!enabled) { return null; }
+			RoadCrewTripJournal journal = RoadCrewTripJournal.get(app);
+			if (manual && !navigationSessionActive) { journal.collectionPaused(); resetPipeline(); }
+			return journal.review(manual);
+		}).get();
+	}
+
+	boolean hasNavigationSession() { return navigationSessionActive; }
+
+	void markTripReviewShown(String tripId) {
+		executor.execute(() -> {
+			try { if (enabled) { RoadCrewTripJournal.get(app).markPresented(tripId); } }
+			catch (RuntimeException e) { LOG.warn("Could not mark trip review shown", e); }
+		});
+	}
+
+	void saveTripReview(String tripId, long[] included, long[] questions, boolean confirm, boolean discard,
+			Consumer<Boolean> completed) {
+		// This executor outlives MapActivity, so rotation cannot lose the user's selection.
+		executor.execute(() -> {
+			boolean saved = false;
+			try {
+				if (enabled) {
+					RoadCrewTripJournal journal = RoadCrewTripJournal.get(app);
+					if (confirm) { journal.confirm(tripId, included, questions, discard); }
+					else { journal.saveDraft(tripId, included, questions); journal.snooze(tripId); }
+					saved = true;
+					if (confirm) { transferConfirmed(); }
+				}
+			} catch (RuntimeException e) { LOG.warn("Could not save trip review", e); }
+			boolean result = saved;
+			app.runInUIThread(() -> completed.accept(result));
+		});
+	}
+
+	void transferConfirmed() {
+		executor.execute(() -> {
+			if (!enabled) { return; }
+			try {
+				ensurePipeline();
+				RoadCrewTripJournal.get(app).transferConfirmed(outbox);
+				RoadCrewMapObservationConsent.recordPendingCount(app, outbox.snapshot().size());
+				RoadCrewMapObservationUploader.schedule(app, outbox);
+			} catch (IOException | RuntimeException e) {
+				LOG.warn("Confirmed trip transfer deferred", e);
+			}
+		});
 	}
 
 	/**
@@ -107,6 +227,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			return;
 		}
 		getInstance(app).setEnabled(enabled);
+		RoadCrewRecordingService.refreshFromForeground(app);
 	}
 
 	@NonNull
@@ -121,7 +242,8 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 				: app.getSettings().getApplicationMode()
 						.isDerivedRoutingFrom(ApplicationMode.TRUCK);
 		boolean collectionContext = coordinator != null && coordinator.isCollectionContextActive();
-		boolean backgroundNavigation = coordinator != null && coordinator.isActiveTruckNavigation()
+		boolean backgroundNavigation = coordinator != null
+				&& (RoadCrewRecordingService.isRunning() || coordinator.isActiveTruckNavigation())
 				&& !app.getSettings().MAP_ACTIVITY_ENABLED;
 		CollectionStatus status;
 		if (!consentEnabled) {
@@ -193,14 +315,19 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 				app.getLocationProvider().addLocationListener(this);
 			}
 		} else {
+			navigationSessionActive = false;
+			int collection = collectionGeneration.incrementAndGet();
 			stopListening();
 			latestSample.set(null);
 			lastEligibleFixAtMillis = 0;
 			cancelled.set(true);
 			executor.execute(() -> {
 				resetPipeline();
+				appliedCollectionGeneration = collection;
 				if (!this.enabled && stateGeneration.get() == generation) {
+					RoadCrewTripJournal.get(app).clear();
 					RoadCrewMapObservationConsent.deleteLocalObservations(app);
+					outbox = null;
 				}
 			});
 		}
@@ -208,16 +335,19 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 
 	@Override
 	public void updateLocation(Location location) {
+		observeTripContext();
 		if (!enabled || location == null || !location.hasAccuracy()
 				|| !location.hasSpeed() || !location.hasBearing()
 				|| app.getLocationProvider().getLocationSimulation().isRouteAnimating()
-				|| !isCollectionContextActive() || !isTruckProfileActive()) {
+				|| !isCollectionContextActive() || !isTruckProfileActive()
+				|| System.currentTimeMillis() - location.getTime() < 0
+				|| System.currentTimeMillis() - location.getTime() > 10_000) {
 			return;
 		}
 		lastEligibleFixAtMillis = System.currentTimeMillis();
 		LocationSample sample = new LocationSample(location.getLatitude(), location.getLongitude(),
 				location.getAccuracy(), location.getSpeed(), location.getBearing(),
-				SystemClock.elapsedRealtime(), System.currentTimeMillis());
+				SystemClock.elapsedRealtime(), location.getTime(), collectionGeneration.get());
 		latestSample.set(sample);
 		scheduleDrain();
 	}
@@ -247,6 +377,8 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 
 	private void process(@NonNull LocationSample sample) {
 		try {
+			if (sample.generation != collectionGeneration.get() || sample.generation != appliedCollectionGeneration || !enabled
+					|| !isCollectionContextActive() || !isTruckProfileActive()) { return; }
 			RoadCrewShadowSnapshotDownloader.schedule(app, sample.latitude, sample.longitude);
 			RoadCrewObservationPipeline currentPipeline = ensurePipeline();
 			if (needsRoadReload(sample)) {
@@ -254,14 +386,12 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 					return;
 				}
 			}
-			RoadCrewObservationPipeline.ProcessingResult result = currentPipeline.accept(
+			if (sample.generation != collectionGeneration.get() || sample.generation != appliedCollectionGeneration || !enabled
+					|| !isCollectionContextActive() || !isTruckProfileActive()) { return; }
+			currentPipeline.accept(
 					new RoadCrewSegmentMatcher.GpsFix(sample.latitude, sample.longitude,
 							sample.accuracyMeters, sample.speedMetersPerSecond, sample.bearingDegrees),
 					sample.elapsedRealtimeMillis, sample.wallTimeMillis);
-			if (result.wasQueued() && outbox != null) {
-				RoadCrewMapObservationConsent.recordPendingCount(app, outbox.snapshot().size());
-				RoadCrewMapObservationUploader.schedule(app, outbox);
-			}
 		} catch (IOException | RuntimeException e) {
 			LOG.error("RoadCrew Live Truck Map observation failed closed", e);
 			resetPipeline();
@@ -270,20 +400,29 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 
 	@NonNull
 	private RoadCrewObservationPipeline ensurePipeline() throws IOException {
-		if (pipeline == null) {
+		if (outbox == null) {
 			outbox = RoadCrewObservationOutbox.open(RoadCrewMapObservationConsent.getOutboxFile(app));
 			RoadCrewMapObservationConsent.recordPendingCount(app, outbox.snapshot().size());
-			pipeline = new RoadCrewObservationPipeline(outbox);
 			RoadCrewMapObservationUploader.schedule(app, outbox);
+		}
+		if (pipeline == null) {
+			pipeline = new RoadCrewObservationPipeline((evidence, observedAt, road, binding) -> {
+				if (enabled && isCollectionContextActive() && isTruckProfileActive()) {
+					RoadCrewTripJournal.get(app).capture(evidence, observedAt, road, binding);
+				}
+			});
 		}
 		return pipeline;
 	}
 
 	private boolean isCollectionContextActive() {
-		return app.getSettings().MAP_ACTIVITY_ENABLED || isActiveTruckNavigation();
+		return RoadCrewRecordingPolicy.canCollect(enabled, isTruckProfileActive(),
+				app.getLocationProvider().getLocationSimulation().isRouteAnimating(),
+				app.getSettings().MAP_ACTIVITY_ENABLED,
+				RoadCrewRecordingService.isRunning() || isActiveTruckNavigation());
 	}
 
-	private boolean isTruckProfileActive() {
+	boolean isTruckProfileActive() {
 		ApplicationMode mode = isActiveTruckNavigation()
 				? app.getRoutingHelper().getAppMode()
 				: app.getSettings().getApplicationMode();
@@ -345,7 +484,6 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			pipeline.reset();
 			pipeline = null;
 		}
-		outbox = null;
 		loadedLatitude = Double.NaN;
 		loadedLongitude = Double.NaN;
 		loadedAtElapsedMillis = 0;
@@ -366,10 +504,11 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 		private final double bearingDegrees;
 		private final long elapsedRealtimeMillis;
 		private final long wallTimeMillis;
+		private final int generation;
 
 		private LocationSample(double latitude, double longitude, double accuracyMeters,
 				double speedMetersPerSecond, double bearingDegrees,
-				long elapsedRealtimeMillis, long wallTimeMillis) {
+				long elapsedRealtimeMillis, long wallTimeMillis, int generation) {
 			this.latitude = latitude;
 			this.longitude = longitude;
 			this.accuracyMeters = accuracyMeters;
@@ -377,6 +516,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			this.bearingDegrees = bearingDegrees;
 			this.elapsedRealtimeMillis = elapsedRealtimeMillis;
 			this.wallTimeMillis = wallTimeMillis;
+			this.generation = generation;
 		}
 	}
 

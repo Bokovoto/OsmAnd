@@ -45,6 +45,11 @@ final class RoadCrewValidationMapView extends View {
 
 	static MapData load(OsmandApplication app, RoadCrewValidationApi.Question question,
 			BooleanSupplier cancelled) throws IOException {
+		return load(app, question.key, cancelled);
+	}
+
+	static MapData load(OsmandApplication app, RoadCrewSegmentIdentity.SegmentKey key,
+			BooleanSupplier cancelled) throws IOException {
 		List<BinaryMapIndexReader> readers = new ArrayList<>();
 		for (BinaryMapReaderResource resource : app.getResourceManager().getFileReaders()) {
 			if (resource.isUseForRouting()) {
@@ -54,7 +59,6 @@ final class RoadCrewValidationMapView extends View {
 				}
 			}
 		}
-		RoadCrewSegmentIdentity.SegmentKey key = question.key;
 		RoadCrewObfSegmentLoader.LoadResult result = RoadCrewObfSegmentLoader.load(
 				readers.toArray(new BinaryMapIndexReader[0]),
 				(key.getFromLatitude() + key.getToLatitude()) / 2,

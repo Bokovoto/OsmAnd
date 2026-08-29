@@ -212,6 +212,7 @@ public class RoutingHelper {
 		isPausedOnAADisconnect = false;
 		isFollowingMode = follow;
 		isPauseNavigation = false;
+		if (follow) { net.osmand.plus.roadcrew.RoadCrewMapObservationCoordinator.onNavigationStarted(app); }
 		if (!follow) {
 			if (app.getNavigationService() != null) {
 				app.getNavigationService().stopIfNeeded(app, NavigationService.USED_BY_NAVIGATION);
@@ -270,6 +271,8 @@ public class RoutingHelper {
 			// clear last fixed location
 			this.lastProjection = null;
 			setFollowingMode(false);
+			// A final arrival or explicit Stop ends the course; recalculation and pause do not.
+			net.osmand.plus.roadcrew.RoadCrewMapObservationCoordinator.onNavigationFinished(app);
 		}
 		transportRoutingHelper.clearCurrentRoute(newFinalLocation);
 	}

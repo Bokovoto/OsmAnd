@@ -713,6 +713,7 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 		}
 
 		settings.MAP_ACTIVITY_ENABLED = true;
+		net.osmand.plus.roadcrew.RoadCrewMapObservationCoordinator.onMapActivityAvailable(app);
 		LOG.info(">>>> MAP_ACTIVITY_ENABLED = true");
 
 		mapView.showAndHideMapPosition();
@@ -821,7 +822,7 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 		}
 		if (!showWelcomeScreen) {
 			app.runInUIThread(() -> {
-				if (!RoadCrewReportsLayer.handlePushIntent(this, getIntent())) {
+				if (!RoadCrewAppUpdater.isUpdateInProgress() && !RoadCrewReportsLayer.handlePushIntent(this, getIntent())) {
 					if (!RoadCrewStartupSetup.showIfNeeded(this)) {
 						RoadCrewAppUpdater.checkForUpdatesIfNeeded(this);
 					}
@@ -835,6 +836,7 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 
 		extendedMapActivity.onResume(this);
 		RoadCrewNeonHud.apply(this);
+		RoadCrewAppUpdater.onResume(this);
 
 		getMapView().getAnimatedDraggingThread().toggleAnimations();
 	}
@@ -1131,6 +1133,7 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 	@Override
 	protected void onPause() {
 		super.onPause();
+		RoadCrewAppUpdater.onPause(this);
 		settings.LAST_MAP_ACTIVITY_PAUSED_TIME.set(System.currentTimeMillis());
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInMultiWindowMode()) {
 			pendingPause = true;
