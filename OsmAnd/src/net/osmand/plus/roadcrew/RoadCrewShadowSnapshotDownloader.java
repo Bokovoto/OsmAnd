@@ -129,8 +129,8 @@ final class RoadCrewShadowSnapshotDownloader {
 	@NonNull
 	static RoadCrewShadowIndex parseSnapshot(@NonNull String body) throws JSONException {
 		JSONObject root = new JSONObject(body);
-		if (!root.has("truncated") || root.getBoolean("truncated")) {
-			throw new JSONException("Incomplete RoadCrew Shadow snapshot");
+		if (!root.has("truncated")) {
+			throw new JSONException("Missing RoadCrew Shadow completeness flag");
 		}
 		JSONArray segments = root.optJSONArray("segments");
 		if (segments == null || segments.length() > SEGMENT_LIMIT) {

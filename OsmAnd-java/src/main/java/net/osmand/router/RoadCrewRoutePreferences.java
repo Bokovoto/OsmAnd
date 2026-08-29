@@ -20,6 +20,7 @@ public final class RoadCrewRoutePreferences {
 	public static final String POLICY = "MATURE_VALIDATED_SOFT_V1";
 	public static final long MAX_AGE_MILLIS = 30L * 24 * 60 * 60 * 1000;
 	public static final double ORDINARY_COST_FACTOR = 1.05;
+	private static final int MAX_PREFERENCES = 20_000;
 	public static final RoadCrewRoutePreferences EMPTY = new RoadCrewRoutePreferences(Collections.emptyList());
 	private final List<RoadCrewSegmentIdentity.SegmentKey> keys;
 	private final Map<Long, List<RoadCrewSegmentIdentity.SegmentKey>> byWay = new HashMap<>();
@@ -36,7 +37,7 @@ public final class RoadCrewRoutePreferences {
 		if (doc == null || !doc.ok || doc.schemaVersion != 1 || !Boolean.FALSE.equals(doc.truncated)
 				|| !POLICY.equals(doc.routingPreferencePolicy) || doc.generatedAt <= 0
 				|| doc.generatedAt > now || now - doc.generatedAt > MAX_AGE_MILLIS
-				|| doc.routingPreferenceValidUntil < now || doc.segments == null || doc.segments.size() > 500) {
+				|| doc.routingPreferenceValidUntil < now || doc.segments == null || doc.segments.size() > MAX_PREFERENCES) {
 			return EMPTY;
 		}
 		List<RoadCrewSegmentIdentity.SegmentKey> keys = new ArrayList<>();

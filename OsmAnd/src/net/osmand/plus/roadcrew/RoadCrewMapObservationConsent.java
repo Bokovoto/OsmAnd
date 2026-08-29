@@ -20,6 +20,7 @@ public final class RoadCrewMapObservationConsent {
 	private static final String KEY_PENDING_OBSERVATION_COUNT = "pending_observation_count";
 	private static final String OUTBOX_FILE_NAME = "roadcrew-map-observations.json";
 	private static final String SHADOW_SNAPSHOT_FILE_NAME = "roadcrew-shadow-snapshot.json";
+	private static final String ROUTING_PREFERENCES_FILE_NAME = "roadcrew-routing-preferences.json";
 	private static final long UPLOAD_ERROR_GRACE_MILLIS = 15L * 60 * 1_000;
 
 	private RoadCrewMapObservationConsent() {
@@ -136,6 +137,11 @@ public final class RoadCrewMapObservationConsent {
 		return new File(context.getFilesDir(), SHADOW_SNAPSHOT_FILE_NAME);
 	}
 
+	@NonNull
+	static File getRoutingPreferencesFile(@NonNull Context context) {
+		return new File(context.getFilesDir(), ROUTING_PREFERENCES_FILE_NAME);
+	}
+
 	static void deleteLocalObservations(@NonNull Context context) {
 		RoadCrewShadowRouteDiagnostics.clear(context);
 		File outbox = getOutboxFile(context);
@@ -146,6 +152,10 @@ public final class RoadCrewMapObservationConsent {
 		deleteIfPresent(snapshot);
 		deleteIfPresent(new File(snapshot.getPath() + ".bak"));
 		deleteIfPresent(new File(snapshot.getPath() + ".tmp"));
+		File preferences = getRoutingPreferencesFile(context);
+		deleteIfPresent(preferences);
+		deleteIfPresent(new File(preferences.getPath() + ".bak"));
+		deleteIfPresent(new File(preferences.getPath() + ".tmp"));
 	}
 
 	private static void deleteIfPresent(@NonNull File file) {

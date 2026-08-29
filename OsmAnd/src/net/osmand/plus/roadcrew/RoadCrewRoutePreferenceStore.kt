@@ -16,8 +16,8 @@ object RoadCrewRoutePreferenceStore {
             || !RoadCrewMapObservationConsent.hasCommunityRoutingAccess(app)) {
             return RoadCrewRoutePreferences.EMPTY
         }
-        val file = RoadCrewMapObservationConsent.getShadowSnapshotFile(app)
-        if (!file.isFile || file.length() > 2_000_000) return RoadCrewRoutePreferences.EMPTY
+        val file = RoadCrewMapObservationConsent.getRoutingPreferencesFile(app)
+        if (!file.isFile || file.length() > 16_000_000) return RoadCrewRoutePreferences.EMPTY
         return try {
             // Re-read each calculation so expiry and revocations are not hidden by memory caching.
             file.bufferedReader(Charsets.UTF_8).use {

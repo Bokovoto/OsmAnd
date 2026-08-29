@@ -13,6 +13,7 @@ import net.osmand.ResultMatcher;
 import net.osmand.plus.settings.enums.RouteCalculationMethod;
 import net.osmand.plus.shared.SharedUtil;
 import net.osmand.binary.BinaryMapIndexReader;
+import net.osmand.binary.RouteDataObject;
 import net.osmand.data.LatLon;
 import net.osmand.gpx.GPXFile;
 import net.osmand.plus.OsmandApplication;
@@ -27,6 +28,7 @@ import net.osmand.plus.onlinerouting.OnlineRoutingHelper;
 import net.osmand.plus.onlinerouting.engine.OnlineRoutingEngine;
 import net.osmand.plus.onlinerouting.engine.OnlineRoutingEngine.OnlineRoutingResponse;
 import net.osmand.plus.render.NativeOsmandLibrary;
+import net.osmand.plus.roadcrew.RoadCrewRoutePreferenceDownloader;
 import net.osmand.plus.roadcrew.routing.RoadCrewRoutingOverlayStore;
 import net.osmand.plus.roadcrew.RoadCrewRoutePreferenceStore;
 import net.osmand.router.RoadCrewRoutePreferences;
@@ -295,13 +297,21 @@ public class RouteProvider {
 	}
 
 	protected RoutingEnvironment calculateRoutingEnvironment(RouteCalculationParams params, boolean calcGPXRoute, boolean skipComplex) throws IOException {
+		return calculateRoutingEnvironment(params, calcGPXRoute, skipComplex,
+				RoadCrewRoutePreferences.EMPTY, null);
+	}
+
+	private RoutingEnvironment calculateRoutingEnvironment(RouteCalculationParams params, boolean calcGPXRoute,
+			boolean skipComplex, RoadCrewRoutePreferences preferences,
+			PrecalculatedRouteDirection suppliedPrecalculated) throws IOException {
 		BinaryMapIndexReader[] files = params.ctx.getResourceManager().getRoutingMapFiles();
 		RoutePlannerFrontEnd router = new RoutePlannerFrontEnd();
 
 		OsmandSettings settings = params.ctx.getSettings();
 		RoadCrewRoutingOverlay.Snapshot roadCrewOverlay = RoadCrewRoutingOverlayStore.load(params.ctx, params.mode);
-		RoadCrewRoutePreferences preferences = calcGPXRoute ? RoadCrewRoutePreferences.EMPTY
-				: RoadCrewRoutePreferenceStore.load(params.ctx, params.mode);
+		if (calcGPXRoute) {
+			preferences = RoadCrewRoutePreferences.EMPTY;
+		}
 		double minLat = Math.min(params.start.getLatitude(), params.end.getLatitude());
 		double maxLat = Math.max(params.start.getLatitude(), params.end.getLatitude());
 		double minLon = Math.min(params.start.getLongitude(), params.end.getLongitude());
@@ -314,7 +324,9 @@ public class RouteProvider {
 				maxLon = Math.max(maxLon, point.getLongitude());
 			}
 		}
-		preferences = preferences.within(minLat - 0.2, maxLat + 0.2, minLon - 0.3, maxLon + 0.3);
+		if (suppliedPrecalculated == null) {
+			preferences = preferences.within(minLat - 0.2, maxLat + 0.2, minLon - 0.3, maxLon + 0.3);
+		}
 		boolean communityRanking = !preferences.isEmpty();
 
 		RoutePlannerFrontEnd.CALCULATE_MISSING_MAPS = !OsmandSettings.IGNORE_MISSING_MAPS;
@@ -348,8 +360,8 @@ public class RouteProvider {
 		if (communityRanking) {
 			log.info("RoadCrew directed soft ranking: " + preferences.size() + " validated sections, Java A*");
 		}
-		PrecalculatedRouteDirection precalculated = null;
-		if (calcGPXRoute) {
+		PrecalculatedRouteDirection precalculated = suppliedPrecalculated;
+		if (calcGPXRoute && precalculated == null) {
 			ArrayList<Location> sublist = findStartAndEndLocationsFromRoute(params.gpxRoute.points,
 					params.start, params.end, null, null);
 			LatLon[] latLon = new LatLon[sublist.size()];
@@ -425,7 +437,65 @@ public class RouteProvider {
 		if (params.intermediates != null) {
 			inters = new ArrayList<>(params.intermediates);
 		}
-		return calcOfflineRouteImpl(params, env.getRouter(), env.getCtx(), env.getComplexCtx(), st, en, inters, env.getPrecalculated());
+		RouteCalculationResult baseResult = calcOfflineRouteImpl(params, env.getRouter(), env.getCtx(),
+				env.getComplexCtx(), st, en, inters, env.getPrecalculated());
+		if (calcGPXRoute || !baseResult.isCalculated()) {
+			return baseResult;
+		}
+		List<RouteSegmentResult> baseRoute = baseResult.getOriginalRoute();
+		if (Algorithms.isEmpty(baseRoute)) {
+			return baseResult;
+		}
+
+		// Keep global route discovery on HH/native. Only the second, base-route-guided pass
+		// uses Java A* so validated RoadCrew preferences can affect nearby alternatives.
+		RoadCrewRoutePreferenceDownloader.refreshForRouteBlocking(params.ctx, baseRoute);
+		RoadCrewRoutePreferences preferences = RoadCrewRoutePreferenceStore.load(params.ctx, params.mode);
+		double[] routeBounds = routeBounds(baseRoute);
+		if (routeBounds != null) {
+			preferences = preferences.within(routeBounds[0] - 0.15, routeBounds[1] + 0.15,
+					routeBounds[2] - 0.15, routeBounds[3] + 0.15);
+		}
+		if (preferences.isEmpty()) {
+			return baseResult;
+		}
+		PrecalculatedRouteDirection routeDirection = PrecalculatedRouteDirection.build(
+				baseRoute, 0, env.getCtx().getRouter().getMaxSpeed());
+		if (routeDirection == null) {
+			return baseResult;
+		}
+		RoutingEnvironment refinedEnv = calculateRoutingEnvironment(params, false, true,
+				preferences, routeDirection);
+		if (refinedEnv == null) {
+			return baseResult;
+		}
+		RouteCalculationResult refinedResult = calcOfflineRouteImpl(params, refinedEnv.getRouter(),
+				refinedEnv.getCtx(), null, st, en, inters, refinedEnv.getPrecalculated());
+		return refinedResult.isCalculated() ? refinedResult : baseResult;
+	}
+
+	private double[] routeBounds(@NonNull List<RouteSegmentResult> route) {
+		double minLat = Double.POSITIVE_INFINITY;
+		double maxLat = Double.NEGATIVE_INFINITY;
+		double minLon = Double.POSITIVE_INFINITY;
+		double maxLon = Double.NEGATIVE_INFINITY;
+		for (RouteSegmentResult segment : route) {
+			RouteDataObject road = segment.getObject();
+			int step = segment.getStartPointIndex() <= segment.getEndPointIndex() ? 1 : -1;
+			for (int index = segment.getStartPointIndex(); ; index += step) {
+				double latitude = MapUtils.get31LatitudeY(road.getPoint31YTile(index));
+				double longitude = MapUtils.get31LongitudeX(road.getPoint31XTile(index));
+				minLat = Math.min(minLat, latitude);
+				maxLat = Math.max(maxLat, latitude);
+				minLon = Math.min(minLon, longitude);
+				maxLon = Math.max(maxLon, longitude);
+				if (index == segment.getEndPointIndex()) {
+					break;
+				}
+			}
+		}
+		return Double.isFinite(minLat) && Double.isFinite(minLon)
+				? new double[]{minLat, maxLat, minLon, maxLon} : null;
 	}
 
 	private RoutingConfiguration initOsmAndRoutingConfig(Builder builder, RouteCalculationParams params, OsmandSettings settings,

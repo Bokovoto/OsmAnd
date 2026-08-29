@@ -83,6 +83,19 @@ public class RoadCrewRoutePreferencesTest {
     }
 
     @Test
+    public void completePreferenceCacheCanContainMoreThanOneServerPage() {
+        JsonObject d = document(road(100, 0, 0, 0, 1));
+        JsonArray segments = new JsonArray();
+        for (int index = 0; index < 501; index++) {
+            JsonObject item = document(road(100 + index, 0, 0, 0, 1))
+                    .getAsJsonArray("segments").get(0).getAsJsonObject();
+            segments.add(item);
+        }
+        d.add("segments", segments);
+        Assert.assertEquals(501, parse(d).size());
+    }
+
+    @Test
     public void realAStarPrefersCloseAlternativeButNotLargeDetourOrForbiddenRoad() throws Exception {
         Assert.assertTrue(search(false, false, .7, false).contains(102L << 6));
         Assert.assertTrue(search(true, false, .7, false).contains(103L << 6));
