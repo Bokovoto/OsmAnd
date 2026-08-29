@@ -1145,7 +1145,7 @@
 			android:name="net.osmand.plus.roadcrew.RoadCrewRecordingService"
 			android:exported="false"
 			android:foregroundServiceType="location"
-			android:stopWithTask="false" />
+			android:stopWithTask="true" />
 
 		<!-- keep android:process on a separate line !! -->
 		<service

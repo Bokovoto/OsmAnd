@@ -69,7 +69,11 @@ test('independent location service hands over GPS without changing navigation or
   const manifest = read('../AndroidManifest.xml');
   const activity = read('../src/net/osmand/plus/activities/MapActivity.java');
   const nav = read('../src/net/osmand/plus/NavigationService.java');
-  assert.match(manifest, /<service\s+android:name="net.osmand.plus.roadcrew.RoadCrewRecordingService"\s+android:exported="false"\s+android:foregroundServiceType="location"\s+android:stopWithTask="false"\s*\/>/);
+  assert.match(manifest, /<service\s+android:name="net.osmand.plus.roadcrew.RoadCrewRecordingService"\s+android:exported="false"\s+android:foregroundServiceType="location"\s+android:stopWithTask="true"\s*\/>/);
+  const navigationServiceStart = manifest.indexOf('android:name="net.osmand.plus.NavigationService"');
+  const navigationService = manifest.slice(navigationServiceStart, manifest.indexOf('</service>', navigationServiceStart));
+  assert.ok(navigationServiceStart >= 0);
+  assert.match(navigationService, /android:stopWithTask="false"/);
   assert.match(activity, /settings.MAP_ACTIVITY_ENABLED = true;\s*net.osmand.plus.roadcrew.RoadCrewMapObservationCoordinator.onMapActivityAvailable\(app\);/);
   assert.match(service, /startForeground\(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION\)/);
   assert.match(service, /return START_NOT_STICKY/);
