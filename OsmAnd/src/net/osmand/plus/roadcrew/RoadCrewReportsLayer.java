@@ -95,6 +95,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private RoadCrewTruckRestrictionsProvider truckRestrictionsProvider;
 	@Nullable
 	private RoadCrewMapObservationCoordinator mapObservationCoordinator;
+	@Nullable
+	private RoadCrewPlacesController placesController;
 	private RoadCrewValidationController validationController;
 	private final long createdAtMillis = System.currentTimeMillis();
 
@@ -122,6 +124,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		RoadCrewMapObservationCoordinator.onMapActivityAvailable(getApplication());
 		RoadCrewShadowRouteDiagnostics.ensureStarted(getApplication());
 		mapObservationCoordinator = RoadCrewMapObservationCoordinator.getInstance(getApplication());
+		placesController = new RoadCrewPlacesController(getApplication(), this::getMapActivity, this::getMapView);
 		if (validationController != null) { validationController.close(); }
 		validationController = new RoadCrewValidationController(getApplication(), this::getMapActivity,
 				() -> notificationPromptVisible || proximityPromptVisible);
@@ -146,6 +149,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		if (mapObservationCoordinator != null) {
 			mapObservationCoordinator = null;
 		}
+		placesController = null;
 	}
 
 	static void setMapObservationEnabled(@NonNull OsmandApplication app, boolean enabled) {
@@ -155,6 +159,12 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	static void requestSegmentValidation() {
 		if (activeLayer != null && activeLayer.validationController != null) {
 			activeLayer.validationController.requestManually();
+		}
+	}
+
+	static void showPlaceChannels() {
+		if (activeLayer != null && activeLayer.placesController != null) {
+			activeLayer.placesController.showHome();
 		}
 	}
 
@@ -270,6 +280,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			return;
 		}
 		drawTruckRestrictions(canvas, tileBox);
+		if (placesController != null) {
+			placesController.draw(canvas, tileBox);
+		}
 		for (RoadCrewReport report : reports) {
 			LatLon latLon = report.getLocation();
 			if (!tileBox.containsLatLon(latLon)) {
@@ -458,6 +471,11 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		if (tileBox.getZoom() < MIN_ZOOM) {
 			return false;
 		}
+		RoadCrewPlace place = placesController == null ? null : placesController.findTapped(point, tileBox);
+		if (place != null) {
+			placesController.showPlace(place);
+			return true;
+		}
 		RoadCrewReport report = findTappedReport(point, tileBox);
 		if (report == null) {
 			return false;
@@ -475,6 +493,12 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		if (result.getTileBox().getZoom() < MIN_ZOOM) {
 			return;
 		}
+		RoadCrewPlace place = placesController == null ? null : placesController.findTapped(result.getPoint(), result.getTileBox());
+		if (place != null) {
+			result.collect(place, this);
+			result.setObjectLatLon(place.getLocation());
+			return;
+		}
 		RoadCrewReport report = findTappedReport(result.getPoint(), result.getTileBox());
 		if (report != null) {
 			result.collect(report, this);
@@ -484,6 +508,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	@Override
 	public boolean runExclusiveAction(@Nullable Object object, boolean unknownLocation) {
+		if (object instanceof RoadCrewPlace place && placesController != null) {
+			placesController.showPlace(place);
+			return true;
+		}
 		if (!(object instanceof RoadCrewReport report)) {
 			return false;
 		}
@@ -497,6 +525,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	@Override
 	public LatLon getObjectLocation(Object object) {
+		if (object instanceof RoadCrewPlace place) {
+			return place.getLocation();
+		}
 		if (object instanceof RoadCrewReport report) {
 			return report.getLocation();
 		}
@@ -505,6 +536,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	@Override
 	public PointDescription getObjectName(Object object) {
+		if (object instanceof RoadCrewPlace place) {
+			return new PointDescription(PointDescription.POINT_TYPE_MARKER, place.getName());
+		}
 		if (object instanceof RoadCrewReport report) {
 			return new PointDescription(PointDescription.POINT_TYPE_MARKER, report.getType().getTitle(getApplication()));
 		}

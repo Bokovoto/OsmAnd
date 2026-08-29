@@ -221,6 +221,8 @@ public class RoadCrewReportButton extends MapButton {
 				() -> RoadCrewAppUpdater.checkForUpdatesNow(mapActivity), dialogHolder);
 		addMenuTile(grid, mapActivity.getString(R.string.roadcrew_menu_driver_profile), R.drawable.roadcrew_menu_profile,
 				this::showDriverProfileDialog, dialogHolder);
+		addMenuTile(grid, mapActivity.getString(R.string.roadcrew_places_title), R.drawable.ic_action_parking_dark,
+				RoadCrewReportsLayer::showPlaceChannels, dialogHolder);
 
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		dialogHolder[0] = dialog;
@@ -291,6 +293,8 @@ public class RoadCrewReportButton extends MapButton {
 				() -> RoadCrewAppUpdater.checkForUpdatesNow(mapActivity), dialogHolder);
 		addNeonMenuTile(grid, mapActivity.getString(R.string.roadcrew_menu_driver_profile), R.drawable.roadcrew_menu_profile,
 				this::showDriverProfileDialog, dialogHolder);
+		addNeonMenuTile(grid, mapActivity.getString(R.string.roadcrew_places_title), R.drawable.ic_action_parking_dark,
+				RoadCrewReportsLayer::showPlaceChannels, dialogHolder);
 
 		AlertDialog dialog = RoadCrewUi.createBottomDialog(mapActivity, content);
 		dialogHolder[0] = dialog;
