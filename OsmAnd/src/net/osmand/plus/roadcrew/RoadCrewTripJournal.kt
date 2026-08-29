@@ -62,6 +62,7 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
             // A process restart is an uncertain boundary, never proof of continued truck use.
             db.execSQL("UPDATE trips SET closed = 1 WHERE closed = 0")
             initialized = true
+            updateSummary(db)
         }
         return db
     }
@@ -129,10 +130,12 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
 
     private fun finish(offerReview: Boolean) {
         val id = activeTrip ?: return
-        database().execSQL("UPDATE trips SET closed = 1, auto_review = ?, ended_at = ? WHERE id = ?",
+        val db = database()
+        db.execSQL("UPDATE trips SET closed = 1, auto_review = ?, ended_at = ? WHERE id = ?",
             arrayOf(if (offerReview) 1 else 0, System.currentTimeMillis(), id))
         activeTrip = null
         lastPassageAt = 0
+        updateSummary(db)
     }
 
     @Synchronized
@@ -141,21 +144,31 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
         prune(db)
         updateSummary(db)
         val now = System.currentTimeMillis()
-        val id = db.rawQuery(REVIEW_SQL, arrayOf(if (manual) "1" else "0", startOfDay(now).toString(), now.toString()))
+        val id = db.rawQuery(REVIEW_SQL, arrayOf(if (manual) "1" else "0", startOfDay(now).toString()))
             .use { if (it.moveToFirst()) it.getString(0) else null }
             ?: return null
         return Trip(id, readRows(db, "trip_id = ? AND state = 'STAGED'", arrayOf(id)))
     }
 
     @Synchronized
-    fun markPresented(trip: String) {
-        database().execSQL("UPDATE trips SET prompted = 1 WHERE id = ? AND closed = 1", arrayOf(trip))
+    fun pendingTrips(limit: Int = 20): List<PendingTrip> {
+        val db = database()
+        prune(db)
+        updateSummary(db)
+        val result = ArrayList<PendingTrip>()
+        db.rawQuery(PENDING_TRIPS_SQL, arrayOf(limit.coerceIn(1, 50).toString())).use { c ->
+            while (c.moveToNext()) result.add(PendingTrip(c.getString(0), c.getLong(1), c.getInt(2)))
+        }
+        return result
     }
 
     @Synchronized
-    fun snooze(trip: String) {
-        markPresented(trip)
-        database().execSQL("UPDATE trips SET snooze_until = ? WHERE id = ?", arrayOf(Long.MAX_VALUE, trip))
+    fun review(tripId: String): Trip? {
+        val db = database()
+        val available = db.rawQuery("""SELECT 1 FROM trips WHERE id = ? AND closed = 1 AND reviewed = 0
+            AND EXISTS(SELECT 1 FROM sections WHERE trip_id = trips.id AND state = 'STAGED')""",
+            arrayOf(tripId)).use { it.moveToFirst() }
+        return if (available) Trip(tripId, readRows(db, "trip_id = ? AND state = 'STAGED'", arrayOf(tripId))) else null
     }
 
     @Synchronized
@@ -268,6 +281,8 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
         app.getSharedPreferences(SUMMARY, Context.MODE_PRIVATE).edit()
             .putInt("staged", count(db, "SELECT COUNT(*) FROM sections WHERE state = 'STAGED'"))
             .putInt("confirmed", count(db, "SELECT COUNT(*) FROM sections WHERE state = 'CONFIRMED'"))
+            .putInt("pending_trips", count(db, """SELECT COUNT(*) FROM trips WHERE closed = 1 AND reviewed = 0
+                AND EXISTS(SELECT 1 FROM sections WHERE trip_id = trips.id AND state = 'STAGED')"""))
             .putBoolean("full", full || count(db, "SELECT COUNT(*) FROM sections") >= MAX_SECTIONS).apply()
     }
 
@@ -290,6 +305,7 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
               @JvmField val record: RoadCrewObservationOutbox.Record, @JvmField val geometry: String,
               @JvmField val name: String, @JvmField var included: Boolean, @JvmField var question: Boolean)
     class Trip(@JvmField val id: String, @JvmField val rows: List<Row>)
+    class PendingTrip(@JvmField val id: String, @JvmField val endedAt: Long, @JvmField val sectionCount: Int)
 
     companion object {
         private const val MAX_SECTIONS = 8000
@@ -299,18 +315,25 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
             instance ?: RoadCrewTripJournal(app).also { instance = it }
         @JvmStatic fun stagedCount(context: Context): Int = context.getSharedPreferences(SUMMARY, Context.MODE_PRIVATE).getInt("staged", 0)
         @JvmStatic fun waitingCount(context: Context): Int = context.getSharedPreferences(SUMMARY, Context.MODE_PRIVATE).getInt("confirmed", 0)
+        @JvmStatic fun pendingTripCount(context: Context): Int = context.getSharedPreferences(SUMMARY, Context.MODE_PRIVATE).getInt("pending_trips", 0)
         @JvmStatic fun isFull(context: Context): Boolean = context.getSharedPreferences(SUMMARY, Context.MODE_PRIVATE).getBoolean("full", false)
         @JvmStatic fun revoke(context: Context) {
             context.getSharedPreferences(SUMMARY, Context.MODE_PRIVATE).edit()
                 .putString("generation", UUID.randomUUID().toString())
-                .putInt("staged", 0).putInt("confirmed", 0).putBoolean("full", false).apply()
+                .putInt("staged", 0).putInt("confirmed", 0).putInt("pending_trips", 0)
+                .putBoolean("full", false).apply()
         }
 
         // These exact statements are exercised by the standalone SQLite regression test.
         private val REVIEW_SQL = """SELECT id FROM trips WHERE closed = 1 AND reviewed = 0
-            AND (? = '1' OR (auto_review = 1 AND prompted = 0 AND ended_at >= ? AND snooze_until <= ?))
+            AND (? = '1' OR (auto_review = 1 AND ended_at >= ?))
             AND EXISTS(SELECT 1 FROM sections WHERE trip_id = trips.id AND state = 'STAGED')
             ORDER BY ended_at DESC, rowid DESC LIMIT 1
+        """
+        private val PENDING_TRIPS_SQL = """SELECT trips.id, trips.ended_at, COUNT(sections.seq)
+            FROM trips JOIN sections ON sections.trip_id = trips.id AND sections.state = 'STAGED'
+            WHERE trips.closed = 1 AND trips.reviewed = 0
+            GROUP BY trips.id ORDER BY trips.ended_at DESC, trips.rowid DESC LIMIT ?
         """
         private val NEXT_QUESTION_SQL = """SELECT seq FROM sections
             WHERE state = 'TRANSFERRED' AND question = 1 AND bucket BETWEEN ? AND ? AND retry_at <= ?

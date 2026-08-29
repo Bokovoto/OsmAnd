@@ -25,6 +25,7 @@ import org.apache.commons.logging.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -123,7 +124,10 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	private synchronized void endNavigationSession() {
 		if (!navigationSessionActive) { return; }
 		navigationSessionActive = false;
-		queueTripBoundary(() -> RoadCrewTripJournal.get(app).navigationFinished());
+		queueTripBoundary(() -> {
+			RoadCrewTripJournal.get(app).navigationFinished();
+			app.runInUIThread(() -> RoadCrewValidationController.onNavigationFinished(app));
+		});
 	}
 
 	private void queueTripBoundary(Runnable boundary) {
@@ -165,14 +169,16 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 		}).get();
 	}
 
-	boolean hasNavigationSession() { return navigationSessionActive; }
-
-	void markTripReviewShown(String tripId) {
-		executor.execute(() -> {
-			try { if (enabled) { RoadCrewTripJournal.get(app).markPresented(tripId); } }
-			catch (RuntimeException e) { LOG.warn("Could not mark trip review shown", e); }
-		});
+	List<RoadCrewTripJournal.PendingTrip> preparePendingTrips() throws Exception {
+		return executor.<List<RoadCrewTripJournal.PendingTrip>>submit(() -> enabled
+				? RoadCrewTripJournal.get(app).pendingTrips(20) : Collections.emptyList()).get();
 	}
+
+	RoadCrewTripJournal.Trip prepareTripReview(String tripId) throws Exception {
+		return executor.submit(() -> enabled ? RoadCrewTripJournal.get(app).review(tripId) : null).get();
+	}
+
+	boolean hasNavigationSession() { return navigationSessionActive; }
 
 	void saveTripReview(String tripId, long[] included, long[] questions, boolean confirm, boolean discard,
 			Consumer<Boolean> completed) {
@@ -183,7 +189,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 				if (enabled) {
 					RoadCrewTripJournal journal = RoadCrewTripJournal.get(app);
 					if (confirm) { journal.confirm(tripId, included, questions, discard); }
-					else { journal.saveDraft(tripId, included, questions); journal.snooze(tripId); }
+					else { journal.saveDraft(tripId, included, questions); }
 					saved = true;
 					if (confirm) { transferConfirmed(); }
 				}

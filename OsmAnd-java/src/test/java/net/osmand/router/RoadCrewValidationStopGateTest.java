@@ -5,37 +5,21 @@ import static org.junit.Assert.*;
 
 public class RoadCrewValidationStopGateTest {
 
-	@Test public void waitsForContinuousStop() {
+	@Test public void allowsImmediatelyAfterNavigationEnds() {
 		RoadCrewValidationStopGate gate = new RoadCrewValidationStopGate();
-		for (long time = 0; time < 30_000; time += 1000) {
-			assertFalse(gate.update(time, true, 1000, true, 0, true, 5));
-		}
-		assertFalse(gate.update(29_999, true, 1000, true, 0, true, 5));
-		assertTrue(gate.update(30_000, true, 1000, true, 0, true, 5));
-		assertFalse(gate.update(31_000, true, 1000, true, 1, true, 5));
-		assertFalse(gate.update(32_000, true, 1000, true, 0, true, 5));
+		assertTrue(gate.update(0, true, Long.MAX_VALUE, false, 0, false, 0));
+		assertTrue(gate.update(1000, true, 1000, true, 5, true, 100));
 	}
 
-	@Test public void doesNotCountSuspendedTimeAsConfirmedStandstill() {
+	@Test public void gpsDriftAndSuspensionDoNotDelayFinishedCourse() {
 		RoadCrewValidationStopGate gate = new RoadCrewValidationStopGate();
-		for (long time = 0; time <= 30_000; time += 1000) {
-			gate.update(time, true, 1000, true, 0, true, 5);
-		}
-		assertTrue(gate.update(31_000, true, 1000, true, 0, true, 5));
-		assertFalse(gate.update(120_000, true, 1000, true, 0, true, 5));
-		for (long time = 121_000; time < 150_000; time += 1000) {
-			assertFalse(gate.update(time, true, 1000, true, 0, true, 5));
-		}
-		assertTrue(gate.update(150_000, true, 1000, true, 0, true, 5));
+		assertTrue(gate.update(0, true, 1000, true, 0, true, 5));
+		assertTrue(gate.update(120_000, true, 1000, true, 2, true, 50));
 	}
 
-	@Test public void rejectsStaleUnknownAndSimulatedFixes() {
+	@Test public void rejectsOnlyIneligibleApplicationState() {
 		RoadCrewValidationStopGate gate = new RoadCrewValidationStopGate();
-		assertFalse(gate.update(0, true, 1000, true, 0, true, 5));
-		assertFalse(gate.update(31_000, true, 11_000, true, 0, true, 5));
-		assertFalse(gate.update(62_000, true, -1, true, 0, true, 5));
-		assertFalse(gate.update(93_000, true, 1000, false, 0, true, 5));
-		assertFalse(gate.update(124_000, true, 1000, true, 0, true, Float.NaN));
-		assertFalse(gate.update(155_000, false, 1000, true, 0, true, 5));
+		assertFalse(gate.update(0, false, 1000, true, 0, true, 5));
+		assertTrue(gate.update(1000, true, -1, false, Float.NaN, false, Float.NaN));
 	}
 }

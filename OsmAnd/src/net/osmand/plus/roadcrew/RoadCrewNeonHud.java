@@ -43,6 +43,8 @@ public final class RoadCrewNeonHud {
 	private static final String NAV_ICON_TAG_PREFIX = "roadcrew_neon_nav_icon_";
 	private static final String NAV_TEXT_TAG_PREFIX = "roadcrew_neon_nav_text_";
 	private static final String LIVE_STATUS_TAG = "roadcrew_live_truck_map_status";
+	private static final String PENDING_REVIEW_TAG = "roadcrew_pending_trip_reviews";
+	private static final String PENDING_REVIEW_COUNT_TAG = "roadcrew_pending_trip_review_count";
 	private static final String FOOTER_TAG = "roadcrew_neon_footer";
 	private static final String LEFT_RAIL_TAG = "roadcrew_landscape_left_rail";
 	private static final String RIGHT_RAIL_TAG = "roadcrew_landscape_right_rail";
@@ -285,6 +287,26 @@ public final class RoadCrewNeonHud {
 		statusParams.rightMargin = dp(activity, 4);
 		header.addView(liveStatus, statusParams);
 
+		FrameLayout pendingReviews = new FrameLayout(activity);
+		pendingReviews.setTag(PENDING_REVIEW_TAG);
+		ImageButton pendingButton = iconButton(activity, R.drawable.ic_action_message,
+				activity.getString(R.string.roadcrew_trip_pending_title),
+				v -> RoadCrewReportsLayer.showPendingTripReviews(), landscape ? 8 : 11);
+		pendingReviews.addView(pendingButton, new FrameLayout.LayoutParams(
+				dp(activity, landscape ? 36 : 44), dp(activity, landscape ? 36 : 44)));
+		TextView pendingCount = new TextView(activity);
+		pendingCount.setTag(PENDING_REVIEW_COUNT_TAG);
+		pendingCount.setTextColor(Color.WHITE);
+		pendingCount.setTextSize(9);
+		pendingCount.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+		pendingCount.setGravity(Gravity.CENTER);
+		pendingCount.setBackground(circle(ERROR, Color.WHITE, dp(activity, 1)));
+		FrameLayout.LayoutParams badgeParams = new FrameLayout.LayoutParams(dp(activity, 18), dp(activity, 18),
+				Gravity.TOP | Gravity.END);
+		pendingReviews.addView(pendingCount, badgeParams);
+		header.addView(pendingReviews, new LinearLayout.LayoutParams(
+				dp(activity, landscape ? 36 : 44), dp(activity, landscape ? 36 : 44)));
+
 		header.addView(iconButton(activity, R.drawable.ic_action_help,
 				activity.getString(R.string.roadcrew_nearby_help_title),
 				v -> RoadCrewReportsLayer.showNearbyHelpReports(activity, activity.getApp()), landscape ? 8 : 11),
@@ -424,6 +446,15 @@ public final class RoadCrewNeonHud {
 		statusView.setTextColor(color);
 		statusView.setBackground(roundRect(0x0013171a, dp(activity, 4), color));
 		statusView.setContentDescription(activity.getString(textRes));
+		View pendingReviews = root.findViewWithTag(PENDING_REVIEW_TAG);
+		TextView pendingCount = root.findViewWithTag(PENDING_REVIEW_COUNT_TAG);
+		if (pendingReviews != null && pendingCount != null) {
+			int count = RoadCrewTripJournal.pendingTripCount(activity);
+			pendingReviews.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+			pendingCount.setText(count > 99 ? "99+" : String.valueOf(count));
+			pendingReviews.setContentDescription(activity.getString(
+					R.string.roadcrew_trip_pending_content_description, count));
+		}
 	}
 
 	private static void updateResponsiveLayout(@Nullable View root, @NonNull MapActivity activity) {

@@ -163,7 +163,7 @@ test('an unavailable explicitly requested check cannot starve other requested ch
 });
 
 const closeCourse = statement('UPDATE trips SET closed = 1, auto_review = ?, ended_at = ? WHERE id = ?');
-const presented = statement('UPDATE trips SET prompted = 1 WHERE id = ? AND closed = 1');
+const presented = 'UPDATE trips SET prompted = 1 WHERE id = ? AND closed = 1';
 
 test('automatic review selects each ended navigation, not free driving, active courses or yesterday', t => {
   const db = database(t);
@@ -174,29 +174,30 @@ test('automatic review selects each ended navigation, not free driving, active c
   db.prepare(closeCourse).run(1, 1000, 'yesterday');
   db.prepare(closeCourse).run(1, 2100, 'first');
   const review = db.prepare(schema('REVIEW_SQL'));
-  assert.equal(review.get('0', 2000, 4000).id, 'first');
+  assert.equal(review.get('0', 2000).id, 'first');
   db.prepare(presented).run('first');
-  assert.equal(review.get('0', 2000, 4000), undefined);
+  assert.equal(review.get('0', 2000).id, 'first');
+  db.prepare(reviewed).run('first');
   db.prepare(closeCourse).run(1, 3100, 'second');
-  assert.equal(review.get('0', 2000, 4000).id, 'second');
+  assert.equal(review.get('0', 2000).id, 'second');
   db.prepare(presented).run('second');
-  assert.equal(review.get('0', 2000, 50000000), undefined);
-  // Manual review still offers a dismissed course and does not need an internet timestamp.
-  assert.equal(review.get('1', 2000, 4000).id, 'second');
+  assert.equal(review.get('0', 2000).id, 'second');
+  // Manual review still offers any unconfirmed course and does not need an internet timestamp.
+  assert.equal(review.get('1', 2000).id, 'second');
   db.prepare(reviewed).run('second');
-  assert.equal(review.get('1', 2000, 4000).id, 'free');
+  assert.equal(review.get('1', 2000).id, 'free');
 });
 
-test('Later retains selections and does not re-prompt automatically after twenty minutes', t => {
+test('an interrupted draft retains selections and remains pending until answered', t => {
   const db = database(t);
   trip(db, 'a'); const id = section(db, 'a', 'car');
   db.prepare(closeCourse).run(1, 2000, 'a');
   db.prepare(exclude).run('a');
   db.prepare(presented).run('a');
-  db.prepare(statement('UPDATE trips SET snooze_until = ? WHERE id = ?')).run(9223372036854775807n, 'a');
+  db.prepare('UPDATE trips SET snooze_until = ? WHERE id = ?').run(9223372036854775807n, 'a');
   const review = db.prepare(schema('REVIEW_SQL'));
-  assert.equal(review.get('0', 0, 999999999999), undefined);
-  assert.equal(review.get('1', 0, 999999999999).id, 'a');
+  assert.equal(review.get('0', 0).id, 'a');
+  assert.equal(review.get('1', 0).id, 'a');
   assert.equal(row(db, id).included, 0);
   assert.equal(row(db, id).state, 'STAGED');
 });
@@ -232,5 +233,5 @@ test('v1 migration preserves pending courses but removes old automatically selec
   assert.equal(data.auto_review, 0); assert.equal(data.prompted, 0); assert.equal(data.ended_at, 0);
   assert.equal(row(db, id).state, 'CONFIRMED');
   assert.equal(row(db, id).question, 0);
-  assert.equal(db.prepare(schema('REVIEW_SQL')).get('0', 0, 999999), undefined);
+  assert.equal(db.prepare(schema('REVIEW_SQL')).get('0', 0), undefined);
 });

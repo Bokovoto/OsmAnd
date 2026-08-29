@@ -10,6 +10,8 @@ const coordinator = read('../src/net/osmand/plus/roadcrew/RoadCrewMapObservation
 const controller = read('../src/net/osmand/plus/roadcrew/RoadCrewValidationController.java');
 const journal = read('../src/net/osmand/plus/roadcrew/RoadCrewTripJournal.kt');
 const ui = read('../src/net/osmand/plus/roadcrew/RoadCrewTripReview.kt');
+const hud = read('../src/net/osmand/plus/roadcrew/RoadCrewNeonHud.java');
+const background = read('../src/net/osmand/plus/roadcrew/RoadCrewTripMapBackground.java');
 
 function method(source, signature) {
   const at = source.indexOf(signature); assert.notEqual(at, -1, signature);
@@ -42,7 +44,7 @@ test('navigation boundaries are real Start / Stop / final arrival, never pause o
   assert.doesNotMatch(boundary, /finally \{[^}]*appliedCollectionGeneration = generation/);
 });
 
-test('safe local review is not throttled by network retry or a once-per-day preference', () => {
+test('finished-course review is immediate, mandatory and not throttled by network retry', () => {
   const tick = method(controller, 'private void tick()');
   const work = method(controller, 'private void work(');
   assert.match(tick, /boolean review = canPrompt && \(manual \|\| SystemClock.elapsedRealtime\(\) >= nextReviewElapsed\)/);
@@ -52,8 +54,12 @@ test('safe local review is not throttled by network retry or a once-per-day pref
   assert.match(method(controller, 'private boolean updateSafety()'), /!app.getRoutingHelper\(\).isPauseNavigation\(\)/);
   assert.match(method(controller, 'private boolean updateSafety()'), /!RoadCrewMapObservationCoordinator.getInstance\(app\).hasNavigationSession\(\)/);
   const show = method(controller, 'private void showTrip(');
-  assert.ok(show.indexOf('markTripReviewShown') > show.indexOf('dialog.show()'));
+  assert.match(show, /dialog\.setCancelable\(false\)/);
+  assert.match(show, /dialog\.setCanceledOnTouchOutside\(false\)/);
+  assert.doesNotMatch(show, /markTripReviewShown/);
   assert.match(show, /selectedIds\(\), editor\[0\].questionIds\(\), false, false/);
+  assert.doesNotMatch(ui, /roadcrew_validation_later/);
+  assert.match(method(coordinator, 'private synchronized void endNavigationSession()'), /onNavigationFinished\(app\)/);
 });
 
 test('whole recorded course is the initial viewport; selected car legs do not become checks', () => {
@@ -65,7 +71,17 @@ test('whole recorded course is the initial viewport; selected car legs do not be
   assert.doesNotMatch(ui, /calculatedRoute|routingHelper.*route/);
 });
 
-test('actual lifecycle and stop gate preserve long courses and require a safe thirty-second stop', () => {
+test('pending trips are visible and whole-course review uses the installed offline map', () => {
+  assert.match(hud, /PENDING_REVIEW_COUNT_TAG/);
+  assert.match(hud, /RoadCrewTripJournal\.pendingTripCount\(activity\)/);
+  assert.match(hud, /RoadCrewReportsLayer\.showPendingTripReviews\(\)/);
+  assert.match(background, /updateRendererMap\(requested,[\s\S]*true\)/);
+  assert.match(background, /renderer\.getBitmap\(\)/);
+  assert.match(ui, /getPixXFromLatLon/);
+  assert.match(ui, /canvas\.drawBitmap\(bitmap/);
+});
+
+test('actual lifecycle preserves long courses and prompts immediately after navigation ends', () => {
   const core = name => read(`../../OsmAnd-java/src/main/java/net/osmand/router/${name}.java`)
     .replace(/^package .*;\s*/m, '');
   const input = `${core('RoadCrewTripLifecycle')}
@@ -86,13 +102,8 @@ class Checks {
     check(course.startNavigation(), "Next course was ignored");
     course.reset(); check(!course.isNavigating(), "Revocation leaked active course");
     RoadCrewValidationStopGate gate = new RoadCrewValidationStopGate();
-    for (long t = 0; t < 30000; t += 1000) {
-      check(!gate.update(t, true, 100, true, 0, true, 5), "Prompt before safe 30 seconds");
-    }
-    check(gate.update(30000, true, 100, true, 0, true, 5), "No prompt at safe stop");
-    check(!gate.update(31000, true, 100, true, 5, true, 5), "Movement did not close prompt");
-    check(!gate.update(62000, true, 15000, true, 0, true, 5), "Stale GPS allowed prompt");
-    check(!gate.update(63000, true, 100, true, 0, true, 100), "Bad accuracy allowed prompt");
+    check(gate.update(0, true, Long.MAX_VALUE, false, 0, false, 0), "Finished course did not prompt immediately");
+    check(gate.update(30000, true, 15000, true, 5, true, 100), "GPS drift blocked finished course");
     check(!gate.update(64000, false, 100, true, 0, true, 5), "Background/navigation allowed prompt");
   }
 }

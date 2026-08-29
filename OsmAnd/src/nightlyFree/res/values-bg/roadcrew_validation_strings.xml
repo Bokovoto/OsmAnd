@@ -12,11 +12,15 @@
     <string name="roadcrew_validation_map_description">Офлайн карта на точния участък със стрелка в посоката на преминаването.</string>
     <string name="roadcrew_validation_loading">Проверяват се участъците за потвърждение…</string>
     <string name="roadcrew_validation_none">Все още няма скорошен участък за потвърждение.</string>
-    <string name="roadcrew_validation_stop_first">Приключете навигацията и останете в покой 30 секунди с валиден GPS сигнал.</string>
+    <string name="roadcrew_validation_stop_first">Първо приключете активната навигация.</string>
     <string name="roadcrew_validation_consent_required">Първо включете участието в Live Truck Map.</string>
     <string name="roadcrew_validation_map_unavailable">Точният участък не е разпознат в офлайн картата. Не се изисква отговор.</string>
     <string name="roadcrew_validation_queued">Отговорът е запазен на телефона и чака изпращане.</string>
     <string name="roadcrew_validation_sent">Отговорът е получен. Благодарим.</string>
     <string name="roadcrew_validation_expired">Този отговор вече не може да бъде приет. Не е отчетен.</string>
     <string name="roadcrew_validation_offline">В момента проверката е недостъпна. Запазените отговори остават на телефона.</string>
+    <string name="roadcrew_trip_pending_title">Непотвърдени курсове</string>
+    <string name="roadcrew_trip_pending_empty">Няма непотвърдени курсове.</string>
+    <string name="roadcrew_trip_pending_item">%1$s · %2$d участъка</string>
+    <string name="roadcrew_trip_pending_content_description">Непотвърдени курсове: %1$d</string>
 </resources>

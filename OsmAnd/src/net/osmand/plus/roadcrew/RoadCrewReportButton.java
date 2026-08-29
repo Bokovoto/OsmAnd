@@ -57,6 +57,7 @@ public class RoadCrewReportButton extends MapButton {
 	private final ButtonPositionSize defaultPositionSize;
 	private final Paint liveStatusPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint liveStatusStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint pendingTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Runnable liveStatusRefresh = new Runnable() {
 		@Override
 		public void run() {
@@ -86,6 +87,10 @@ public class RoadCrewReportButton extends MapButton {
 		liveStatusStrokePaint.setStyle(Paint.Style.STROKE);
 		liveStatusStrokePaint.setStrokeWidth(dp(2));
 		liveStatusStrokePaint.setColor(Color.WHITE);
+		pendingTextPaint.setColor(Color.WHITE);
+		pendingTextPaint.setTextAlign(Paint.Align.CENTER);
+		pendingTextPaint.setFakeBoldText(true);
+		pendingTextPaint.setTextSize(dp(9));
 	}
 
 	@Override
@@ -118,6 +123,18 @@ public class RoadCrewReportButton extends MapButton {
 		liveStatusPaint.setColor(color);
 		canvas.drawCircle(centerX, centerY, radius + dp(1), liveStatusStrokePaint);
 		canvas.drawCircle(centerX, centerY, radius, liveStatusPaint);
+		int pending = RoadCrewTripJournal.pendingTripCount(getContext());
+		if (pending > 0) {
+			float badgeX = dp(10);
+			float badgeY = dp(10);
+			float badgeRadius = dp(9);
+			liveStatusPaint.setColor(0xffef5350);
+			canvas.drawCircle(badgeX, badgeY, badgeRadius + dp(1), liveStatusStrokePaint);
+			canvas.drawCircle(badgeX, badgeY, badgeRadius, liveStatusPaint);
+			String value = pending > 99 ? "99+" : String.valueOf(pending);
+			canvas.drawText(value, badgeX, badgeY - (pendingTextPaint.ascent() + pendingTextPaint.descent()) / 2,
+					pendingTextPaint);
+		}
 	}
 
 	@Override
@@ -223,6 +240,8 @@ public class RoadCrewReportButton extends MapButton {
 				this::showDriverProfileDialog, dialogHolder);
 		addMenuTile(grid, mapActivity.getString(R.string.roadcrew_places_title), R.drawable.ic_action_parking_dark,
 				RoadCrewReportsLayer::showPlaceChannels, dialogHolder);
+		addMenuTile(grid, pendingReviewLabel(), R.drawable.ic_action_message,
+				RoadCrewReportsLayer::showPendingTripReviews, dialogHolder);
 
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		dialogHolder[0] = dialog;
@@ -295,6 +314,8 @@ public class RoadCrewReportButton extends MapButton {
 				this::showDriverProfileDialog, dialogHolder);
 		addNeonMenuTile(grid, mapActivity.getString(R.string.roadcrew_places_title), R.drawable.ic_action_parking_dark,
 				RoadCrewReportsLayer::showPlaceChannels, dialogHolder);
+		addNeonMenuTile(grid, pendingReviewLabel(), R.drawable.ic_action_message,
+				RoadCrewReportsLayer::showPendingTripReviews, dialogHolder);
 
 		AlertDialog dialog = RoadCrewUi.createBottomDialog(mapActivity, content);
 		dialogHolder[0] = dialog;
@@ -343,6 +364,13 @@ public class RoadCrewReportButton extends MapButton {
 		params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
 		params.setMargins(dp(2), dp(2), dp(2), dp(3));
 		grid.addView(tile, params);
+	}
+
+	@NonNull
+	private String pendingReviewLabel() {
+		int count = RoadCrewTripJournal.pendingTripCount(mapActivity);
+		return count > 0 ? mapActivity.getString(R.string.roadcrew_trip_pending_content_description, count)
+				: mapActivity.getString(R.string.roadcrew_trip_pending_title);
 	}
 
 	private void addMenuTile(@NonNull GridLayout grid, @NonNull String label, int iconRes,

@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
-import net.osmand.Location;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.R;
 import net.osmand.plus.activities.MapActivity;
@@ -26,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -37,6 +37,7 @@ final class RoadCrewValidationController {
 
 	private static final String PREFS = "roadcrew_segment_validation";
 	private static final long RETRY_MILLIS = 15 * 60_000L;
+	private static RoadCrewValidationController active;
 	private final OsmandApplication app;
 	private final Supplier<MapActivity> activitySupplier;
 	private final BooleanSupplier otherPrompt;
@@ -60,6 +61,7 @@ final class RoadCrewValidationController {
 		this.activitySupplier = activitySupplier;
 		this.otherPrompt = otherPrompt;
 		prefs = app.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+		active = this;
 		handler.post(tick);
 	}
 
@@ -67,7 +69,17 @@ final class RoadCrewValidationController {
 		closed = true;
 		handler.removeCallbacksAndMessages(null);
 		if (dialog != null) { dialog.dismiss(); }
+		if (active == this) { active = null; }
 		executor.shutdownNow();
+	}
+
+	static void onNavigationFinished(OsmandApplication app) {
+		RoadCrewValidationController controller = active;
+		if (controller != null && controller.app == app && !controller.closed) {
+			controller.nextReviewElapsed = 0;
+			controller.handler.removeCallbacks(controller.tick);
+			controller.handler.post(controller.tick);
+		}
 	}
 
 	boolean isShowing() {
@@ -90,6 +102,31 @@ final class RoadCrewValidationController {
 		}
 		manualUntil = System.currentTimeMillis() + 2 * 60_000;
 		app.showToastMessage(safe ? R.string.roadcrew_validation_loading : R.string.roadcrew_validation_stop_first);
+	}
+
+	void requestPendingTrips() {
+		if (!RoadCrewMapObservationConsent.isEnabled(app)) {
+			app.showToastMessage(R.string.roadcrew_validation_consent_required);
+			return;
+		}
+		if (!updateSafety()) {
+			app.showToastMessage(R.string.roadcrew_validation_stop_first);
+			return;
+		}
+		if (busy || isShowing()) { return; }
+		busy = true;
+		executor.execute(() -> {
+			try {
+				List<RoadCrewTripJournal.PendingTrip> trips = RoadCrewMapObservationCoordinator
+						.getInstance(app).preparePendingTrips();
+				handler.post(() -> showPendingTrips(trips));
+			} catch (Exception e) {
+				Log.w("RoadCrewValidation", "Could not load pending trips", e);
+				notifyUser(R.string.roadcrew_trip_review_error);
+			} finally {
+				handler.post(() -> busy = false);
+			}
+		});
 	}
 
 	private void tick() {
@@ -122,7 +159,6 @@ final class RoadCrewValidationController {
 
 	private boolean updateSafety() {
 		MapActivity activity = activitySupplier.get();
-		Location location = app.getLocationProvider().getLastKnownLocation();
 		boolean eligible = !closed && RoadCrewMapObservationConsent.isEnabled(app)
 				&& activity != null && !activity.isFinishing() && !activity.isDestroyed()
 				&& app.getSettings().MAP_ACTIVITY_ENABLED
@@ -131,10 +167,51 @@ final class RoadCrewValidationController {
 				&& !RoadCrewMapObservationCoordinator.getInstance(app).hasNavigationSession()
 				&& !app.getRoutingHelper().isRouteBeingCalculated()
 				&& !app.getLocationProvider().getLocationSimulation().isRouteAnimating();
-		return stopGate.update(SystemClock.elapsedRealtime(), eligible,
-				location == null ? Long.MAX_VALUE : System.currentTimeMillis() - location.getTime(),
-				location != null && location.hasSpeed(), location == null ? 0 : location.getSpeed(),
-				location != null && location.hasAccuracy(), location == null ? 0 : location.getAccuracy());
+		return stopGate.update(SystemClock.elapsedRealtime(), eligible, 0, false, 0, false, 0);
+	}
+
+	private void showPendingTrips(List<RoadCrewTripJournal.PendingTrip> trips) {
+		MapActivity activity = activitySupplier.get();
+		if (closed || activity == null || activity.isFinishing() || !updateSafety()) { return; }
+		if (trips.isEmpty()) {
+			app.showToastMessage(R.string.roadcrew_trip_pending_empty);
+			return;
+		}
+		LinearLayout content = RoadCrewUi.createPanel(activity,
+				activity.getString(R.string.roadcrew_trip_pending_title));
+		DateFormat format = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+		AlertDialog picker = RoadCrewUi.createDialog(activity, content);
+		for (RoadCrewTripJournal.PendingTrip trip : trips) {
+			String label = activity.getString(R.string.roadcrew_trip_pending_item,
+					format.format(new Date(trip.endedAt)), trip.sectionCount);
+			fitButton(RoadCrewUi.addFullWidthButton(activity, content, label, true, v -> {
+				picker.dismiss();
+				loadPendingTrip(trip.id);
+			}));
+		}
+		dialog = picker;
+		picker.setOnDismissListener(d -> { if (dialog == picker) { dialog = null; } });
+		picker.show();
+	}
+
+	private void loadPendingTrip(String tripId) {
+		if (busy || closed) { return; }
+		busy = true;
+		executor.execute(() -> {
+			try {
+				RoadCrewTripJournal.Trip trip = RoadCrewMapObservationCoordinator.getInstance(app)
+						.prepareTripReview(tripId);
+				handler.post(() -> {
+					MapActivity activity = activitySupplier.get();
+					if (trip != null && !closed && activity != null && updateSafety()) { showTrip(activity, trip); }
+				});
+			} catch (Exception e) {
+				Log.w("RoadCrewValidation", "Could not load pending trip", e);
+				notifyUser(R.string.roadcrew_trip_review_error);
+			} finally {
+				handler.post(() -> busy = false);
+			}
+		});
 	}
 
 	private void work(String token, boolean pending, boolean manual, boolean review, boolean checkQuestion) {
@@ -258,6 +335,8 @@ final class RoadCrewValidationController {
 			}, 300);
 		});
 		dialog = editor[0].dialog;
+		dialog.setCancelable(false);
+		dialog.setCanceledOnTouchOutside(false);
 		dialog.setOnDismissListener(d -> {
 			tripMapRequest.incrementAndGet();
 			if (!saving[0]) {
@@ -269,7 +348,6 @@ final class RoadCrewValidationController {
 			if (dialog == editor[0].dialog) { dialog = null; }
 		});
 		dialog.show();
-		RoadCrewMapObservationCoordinator.getInstance(app).markTripReviewShown(trip.id);
 	}
 
 	private void show(MapActivity activity, RoadCrewValidationApi.Question question,

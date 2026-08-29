@@ -162,6 +162,12 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 	}
 
+	static void showPendingTripReviews() {
+		if (activeLayer != null && activeLayer.validationController != null) {
+			activeLayer.validationController.requestPendingTrips();
+		}
+	}
+
 	static void showPlaceChannels() {
 		if (activeLayer != null && activeLayer.placesController != null) {
 			activeLayer.placesController.showHome();

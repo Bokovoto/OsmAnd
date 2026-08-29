@@ -12,11 +12,15 @@
     <string name="roadcrew_validation_map_description">Offline map of the exact road section, with an arrow in the direction you travelled.</string>
     <string name="roadcrew_validation_loading">Checking for a road section to review…</string>
     <string name="roadcrew_validation_none">No recent road section is available to review yet.</string>
-    <string name="roadcrew_validation_stop_first">End navigation and remain stopped for 30 seconds with a valid GPS signal.</string>
+    <string name="roadcrew_validation_stop_first">End the active navigation first.</string>
     <string name="roadcrew_validation_consent_required">Enable Live Truck Map participation first.</string>
     <string name="roadcrew_validation_map_unavailable">The exact section could not be matched to your offline map. No answer is requested.</string>
     <string name="roadcrew_validation_queued">Answer saved on this phone. Waiting to send.</string>
     <string name="roadcrew_validation_sent">Answer received. Thank you.</string>
     <string name="roadcrew_validation_expired">This answer could no longer be accepted. It was not counted.</string>
     <string name="roadcrew_validation_offline">Unable to check now. Saved answers remain on this phone.</string>
+    <string name="roadcrew_trip_pending_title">Unconfirmed trips</string>
+    <string name="roadcrew_trip_pending_empty">No unconfirmed trips.</string>
+    <string name="roadcrew_trip_pending_item">%1$s · %2$d sections</string>
+    <string name="roadcrew_trip_pending_content_description">Unconfirmed trips: %1$d</string>
 </resources>
