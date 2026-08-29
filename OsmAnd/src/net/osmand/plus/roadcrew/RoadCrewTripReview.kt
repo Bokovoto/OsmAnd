@@ -59,7 +59,7 @@ internal class RoadCrewTripReview(
             java.text.NumberFormat.getNumberInstance().apply { maximumFractionDigits = 1 }
                 .format(rows.sumOf { it.record.segmentKey.lengthMeters } / 1000)))
         RoadCrewUi.addBody(activity, content, activity.getString(R.string.roadcrew_trip_review_legend))
-        content.addView(map, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, RoadCrewUi.dp(activity, 240)))
+        content.addView(map, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, RoadCrewUi.dp(activity, 240f)))
         val labels = rows.mapIndexed { i, row -> activity.getString(R.string.roadcrew_trip_review_section,
             i + 1, rows.size, time.format(Date(row.record.observedAtBucketMillis)),
             row.name.ifEmpty { activity.getString(R.string.roadcrew_validation_unnamed) }, row.record.segmentKey.lengthMeters.toInt()) }
@@ -70,8 +70,8 @@ internal class RoadCrewTripReview(
                     (it as TextView).setTextColor(RoadCrewUi.TEXT)
                     it.setSingleLine(false)
                     it.textSize = 14f
-                    it.setPadding(RoadCrewUi.dp(activity, 8), RoadCrewUi.dp(activity, 12),
-                        RoadCrewUi.dp(activity, 8), RoadCrewUi.dp(activity, 12))
+                    it.setPadding(RoadCrewUi.dp(activity, 8f), RoadCrewUi.dp(activity, 12f),
+                        RoadCrewUi.dp(activity, 8f), RoadCrewUi.dp(activity, 12f))
                 }
         }.apply { setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
         content.addView(spinner, LinearLayout.LayoutParams(-1, -2))
@@ -89,7 +89,7 @@ internal class RoadCrewTripReview(
         }
         checkbox.setText(R.string.roadcrew_trip_review_included)
         checkbox.setTextColor(RoadCrewUi.TEXT)
-        checkbox.minHeight = RoadCrewUi.dp(activity, 48)
+        checkbox.minHeight = RoadCrewUi.dp(activity, 48f)
         content.addView(checkbox)
         checkbox.setOnCheckedChangeListener { _, checked ->
             if (!refreshing && !busy && safe.asBoolean) {
@@ -100,7 +100,7 @@ internal class RoadCrewTripReview(
         }
         roadCheck.setText(R.string.roadcrew_trip_review_request_check)
         roadCheck.setTextColor(RoadCrewUi.TEXT)
-        roadCheck.minHeight = RoadCrewUi.dp(activity, 48)
+        roadCheck.minHeight = RoadCrewUi.dp(activity, 48f)
         content.addView(roadCheck)
         roadCheck.setOnCheckedChangeListener { _, checked ->
             if (!refreshing && !busy && safe.asBoolean) {
@@ -180,7 +180,7 @@ internal class RoadCrewTripReview(
     private fun button(activity: MapActivity, resource: Int, primary: Boolean, action: () -> Unit): Button =
         RoadCrewUi.addFullWidthButton(activity, content, activity.getString(resource), primary) { if (!busy) action() }.apply {
             setSingleLine(false)
-            minHeight = RoadCrewUi.dp(activity, 48)
+            minHeight = RoadCrewUi.dp(activity, 48f)
             layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
         }
 }

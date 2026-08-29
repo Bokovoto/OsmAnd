@@ -73,7 +73,7 @@ class RoadCrewUpdateProgressDialog(
         val details = LinearLayout(context).apply { orientation = LinearLayout.VERTICAL }
         val scroll = ScrollView(context).apply {
             isFillViewport = true
-            addView(details, ScrollView.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
+            addView(details, android.widget.FrameLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
         }
         controls.addView(scroll, LinearLayout.LayoutParams(MATCH_PARENT, 0, 1f))
         title.setTypeface(title.typeface, android.graphics.Typeface.BOLD)
@@ -184,5 +184,5 @@ class RoadCrewUpdateProgressDialog(
 
     private fun dot(tint: Int) = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(tint) }
     private fun color(id: Int) = ContextCompat.getColor(context, id)
-    private fun dp(value: Int) = RoadCrewUi.dp(context, value)
+    private fun dp(value: Int) = RoadCrewUi.dp(context, value.toFloat())
 }
