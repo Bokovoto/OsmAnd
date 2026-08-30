@@ -63,7 +63,7 @@ test('finished-course review is immediate, mandatory and not throttled by networ
 
 test('whole recorded course is shown with a binary truck-suitability review', () => {
   assert.match(ui, /rows\.forEach \{ it\.included = true; it\.question = false \}/);
-  assert.match(ui, /map\.post \{[\s\S]*map\.overview\(\)[\s\S]*focus\.accept\(rows\.first\(\)\)/);
+  assert.match(ui, /map\.post \{[\s\S]*map\.overview\(\)[\s\S]*map\.requestOverviewContexts\(\)/);
   assert.match(ui, /fun questionIds\(\): LongArray = longArrayOf\(\)/);
   assert.match(ui, /sectionSelectionEnabled = false/);
   assert.doesNotMatch(ui, /Spinner|CheckBox|roadcrew_trip_review_before|roadcrew_trip_review_after/);
@@ -76,9 +76,13 @@ test('pending trips are visible and trip maps remain vector while zooming', () =
   assert.match(hud, /RoadCrewTripJournal\.pendingTripCount\(activity\)/);
   assert.match(hud, /RoadCrewReportsLayer\.showPendingTripReviews\(\)/);
   assert.match(ui, /contextCache/);
+  assert.match(ui, /CONTEXT_SAMPLE_METERS/);
+  assert.match(ui, /requestVisibleContext\(\)/);
+  assert.match(ui, /distinctBy \{ it\.id \}/);
   assert.match(ui, /canvas\.drawPath\(path/);
   assert.doesNotMatch(ui, /drawBitmap|RoadCrewTripMapBackground/);
   assert.match(controller, /RoadCrewValidationMapView\.loadTripContext\(app,/);
+  assert.match(controller, /requestedContexts\.add\(section\.seq\)/);
 });
 
 test('actual lifecycle preserves long courses and prompts immediately after navigation ends', () => {

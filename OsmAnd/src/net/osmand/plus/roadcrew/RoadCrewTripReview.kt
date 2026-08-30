@@ -24,6 +24,7 @@ import java.util.Date
 import java.util.function.BooleanSupplier
 import java.util.function.Consumer
 import kotlin.math.abs
+import kotlin.math.ceil
 import kotlin.math.cos
 import kotlin.math.hypot
 import kotlin.math.min
@@ -52,6 +53,7 @@ internal class RoadCrewTripReview(
             activity.getString(R.string.roadcrew_trip_review_simple_question))
         content.addView(map, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, RoadCrewUi.dp(activity, 240f)))
         map.sectionSelectionEnabled = false
+        map.onContextNeeded = { focus.accept(rows[it]) }
         button(activity, R.string.roadcrew_trip_review_save, true) {
             if (safe.asBoolean) {
                 rows.forEach { it.included = true; it.question = false }
@@ -66,7 +68,7 @@ internal class RoadCrewTripReview(
         }
         map.post {
             map.overview()
-            focus.accept(rows.first())
+            map.requestOverviewContexts()
         }
     }
 
@@ -95,7 +97,11 @@ internal class RoadCrewTripReview(
 /** Exact OBF road geometry captured with each observation; never joins gaps with invented roads. */
 private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJournal.Row>) : View(context) {
     private data class GeoPoint(val latitude: Double, val longitude: Double)
+    private data class ContextRoad(
+        val id: Long, val points: List<GeoPoint>, val name: String, val major: Boolean
+    )
     var onSection: (Int, Boolean) -> Unit = { _, _ -> }
+    var onContextNeeded: (Int) -> Unit = { }
     var sectionSelectionEnabled = true
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val centerLat = rows.map { it.record.segmentKey.fromLatitude }.average()
@@ -116,12 +122,12 @@ private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJo
     private var offsetX = 0f
     private var offsetY = 0f
     private var selected = -1
-    private var contextRoads: List<Pair<List<GeoPoint>, String>> = emptyList()
-    private val contextCache = object : LinkedHashMap<Long, List<Pair<List<GeoPoint>, String>>>(
+    private var contextRoads: List<ContextRoad> = emptyList()
+    private val contextCache = object : LinkedHashMap<Long, List<ContextRoad>>(
         MAX_CONTEXT_CACHE_SIZE, 0.75f, true
     ) {
         override fun removeEldestEntry(
-            eldest: MutableMap.MutableEntry<Long, List<Pair<List<GeoPoint>, String>>>?
+            eldest: MutableMap.MutableEntry<Long, List<ContextRoad>>?
         ): Boolean = size > MAX_CONTEXT_CACHE_SIZE
     }
     private var downX = 0f
@@ -149,10 +155,15 @@ private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJo
 
     fun overview() {
         selected = -1
-        contextRoads = contextCache.values.flatten()
+        contextRoads = mergedContextRoads()
         fit(lines.flatten())
         invalidate()
     }
+
+    fun requestOverviewContexts() {
+        contextSampleIndices().forEach(onContextNeeded)
+    }
+
     fun focus(index: Int) {
         selected = index
         contextRoads = contextCache[rows[index].seq] ?: emptyList()
@@ -163,16 +174,53 @@ private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJo
 
     fun setContext(seq: Long, data: RoadCrewValidationMapView.MapData?) {
         if (data == null) return
-        val roads = data.roads.map { road ->
-            List(road.pointsLength) { i -> GeoPoint(
-                MapUtils.get31LatitudeY(road.getPoint31YTile(i)),
-                MapUtils.get31LongitudeX(road.getPoint31XTile(i)))
-            } to (road.name ?: "")
-        }
+        val roads = data.roads.asSequence()
+            .sortedBy { roadPriority(it.id, it.highway, it.name, data.selected.id) }
+            .take(MAX_CONTEXT_ROADS)
+            .map { road ->
+                val highway = road.highway ?: ""
+                ContextRoad(road.id, List(road.pointsLength) { i -> GeoPoint(
+                    MapUtils.get31LatitudeY(road.getPoint31YTile(i)),
+                    MapUtils.get31LongitudeX(road.getPoint31XTile(i)))
+                }, road.name ?: "", highway in MAJOR_HIGHWAYS)
+            }.toList()
         contextCache[seq] = roads
         if (selected >= 0 && rows[selected].seq == seq) contextRoads = roads
-        else if (selected < 0) contextRoads = contextCache.values.flatten()
+        else if (selected < 0) contextRoads = mergedContextRoads()
         invalidate()
+    }
+
+    private fun mergedContextRoads(): List<ContextRoad> =
+        contextCache.values.asSequence().flatten().distinctBy { it.id }.toList()
+
+    private fun contextSampleIndices(): List<Int> {
+        if (rows.size == 1) return listOf(0)
+        val lengths = rows.map { it.record.segmentKey.lengthMeters.toDouble().coerceAtLeast(0.0) }
+        val total = lengths.sum()
+        if (total <= 0) return listOf(0, rows.lastIndex)
+        val samples = (ceil(total / CONTEXT_SAMPLE_METERS).toInt() + 1)
+            .coerceIn(2, MAX_OVERVIEW_CONTEXTS)
+        val result = LinkedHashSet<Int>()
+        var index = 0
+        var distance = lengths[0]
+        for (sample in 0 until samples) {
+            val target = total * sample / (samples - 1)
+            while (index < rows.lastIndex && distance < target) {
+                index++
+                distance += lengths[index]
+            }
+            result.add(index)
+        }
+        result.add(0)
+        result.add(rows.lastIndex)
+        return result.toList().sorted()
+    }
+
+    private fun roadPriority(id: Long, highway: String?, name: String?, selectedId: Long): Int = when {
+        id == selectedId -> 0
+        highway in MAJOR_HIGHWAYS -> 1
+        !name.isNullOrEmpty() -> 2
+        else -> 3
     }
 
     private fun fit(points: List<PointF>) {
@@ -193,10 +241,13 @@ private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJo
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         val displayedLines = lines
-        val displayedContext = contextRoads.map { (points, name) ->
-            points.map { point -> PointF(((point.longitude - centerLon) * longitudeScale).toFloat(),
-                ((centerLat - point.latitude) * 111320).toFloat()) } to name
-        }
+        val detailed = zoom >= DETAIL_CONTEXT_ZOOM
+        val displayedContext = contextRoads.asSequence()
+            .filter { detailed || it.major }
+            .map { road -> road.points.map { point ->
+                PointF(((point.longitude - centerLon) * longitudeScale).toFloat(),
+                    ((centerLat - point.latitude) * 111320).toFloat())
+            } to road.name }.toList()
         paint.style = Paint.Style.STROKE
         paint.strokeJoin = Paint.Join.ROUND
         paint.strokeCap = Paint.Cap.ROUND
@@ -275,6 +326,8 @@ private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJo
                 if (!moved) {
                     if (sectionSelectionEnabled) pick(event.x, event.y)
                     performClick()
+                } else {
+                    requestVisibleContext()
                 }
             }
             MotionEvent.ACTION_CANCEL -> parent.requestDisallowInterceptTouchEvent(false)
@@ -283,6 +336,20 @@ private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJo
     }
 
     override fun performClick(): Boolean { super.performClick(); return true }
+
+    private fun requestVisibleContext() {
+        if (width == 0 || height == 0 || zoom <= 0) return
+        val centerX = (width / 2f - offsetX) / zoom
+        val centerY = (height / 2f - offsetY) / zoom
+        val nearest = lines.mapIndexed { index, points ->
+            index to (points.minOfOrNull { point ->
+                val dx = point.x - centerX
+                val dy = point.y - centerY
+                dx * dx + dy * dy
+            } ?: Float.MAX_VALUE)
+        }.minByOrNull { it.second }?.first ?: return
+        if (!contextCache.containsKey(rows[nearest].seq)) onContextNeeded(nearest)
+    }
 
     private fun pick(x: Float, y: Float) {
         val displayedLines = lines
@@ -307,6 +374,14 @@ private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJo
     private fun dp(value: Float): Float = value * resources.displayMetrics.density
 
     private companion object {
-        const val MAX_CONTEXT_CACHE_SIZE = 3
+        const val MAX_CONTEXT_CACHE_SIZE = 28
+        const val MAX_CONTEXT_ROADS = 1_800
+        const val MAX_OVERVIEW_CONTEXTS = 24
+        const val CONTEXT_SAMPLE_METERS = 7_000.0
+        const val DETAIL_CONTEXT_ZOOM = 0.02f
+        val MAJOR_HIGHWAYS = setOf(
+            "motorway", "motorway_link", "trunk", "trunk_link", "primary", "primary_link",
+            "secondary", "secondary_link", "tertiary", "tertiary_link", "unclassified"
+        )
     }
 }

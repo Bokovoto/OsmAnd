@@ -26,6 +26,8 @@ import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -301,6 +303,8 @@ final class RoadCrewValidationController {
 	private void showTrip(MapActivity activity, RoadCrewTripJournal.Trip trip) {
 		RoadCrewTripReview[] editor = new RoadCrewTripReview[1];
 		boolean[] saving = {false};
+		int mapRequest = tripMapRequest.incrementAndGet();
+		Set<Long> requestedContexts = ConcurrentHashMap.newKeySet();
 		editor[0] = new RoadCrewTripReview(activity, trip, this::updateSafety, discard -> {
 			if (saving[0] || !updateSafety()) { return; }
 			saving[0] = true;
@@ -317,16 +321,16 @@ final class RoadCrewValidationController {
 				notifyUser(saved ? R.string.roadcrew_trip_review_saved : R.string.roadcrew_trip_review_error);
 			});
 		}, section -> {
-			int request = tripMapRequest.incrementAndGet();
+			if (!requestedContexts.add(section.seq)) { return; }
 			handler.postDelayed(() -> {
-				if (closed || request != tripMapRequest.get() || !editor[0].dialog.isShowing()) { return; }
+				if (closed || mapRequest != tripMapRequest.get() || !editor[0].dialog.isShowing()) { return; }
 				executor.execute(() -> {
 					try {
 						RoadCrewValidationMapView.MapData map = RoadCrewValidationMapView.loadTripContext(app,
-								section.record.getSegmentKey(), () -> closed || request != tripMapRequest.get()
+								section.record.getSegmentKey(), () -> closed || mapRequest != tripMapRequest.get()
 										|| !RoadCrewMapObservationConsent.isEnabled(app));
 						handler.post(() -> {
-							if (!closed && request == tripMapRequest.get() && editor[0].dialog.isShowing()) {
+							if (!closed && mapRequest == tripMapRequest.get() && editor[0].dialog.isShowing()) {
 								editor[0].setMapContext(section.seq, map);
 							}
 						});
