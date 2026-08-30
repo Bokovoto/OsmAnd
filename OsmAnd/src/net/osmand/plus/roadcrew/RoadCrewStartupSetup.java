@@ -142,10 +142,15 @@ public final class RoadCrewStartupSetup {
 				activity.getString(R.string.roadcrew_live_truck_map_wizard_body));
 		RoadCrewUi.addBody(activity, content,
 				activity.getString(R.string.roadcrew_trip_review_privacy));
+		boolean observationEnabled = RoadCrewMapObservationConsent.isEnabled(activity);
+		if (!manualReview && !RoadCrewMapObservationConsent.hasStoredChoice(activity)) {
+			RoadCrewReportsLayer.setMapObservationEnabled(activity.getApp(), true);
+			observationEnabled = true;
+		}
 		CheckBox consent = new CheckBox(activity);
 		consent.setText(R.string.roadcrew_live_truck_map_consent);
 		consent.setTextColor(RoadCrewUi.TEXT);
-		consent.setChecked(RoadCrewMapObservationConsent.isEnabled(activity));
+		consent.setChecked(observationEnabled);
 		consent.setOnCheckedChangeListener((buttonView, isChecked) ->
 				RoadCrewReportsLayer.setMapObservationEnabled(activity.getApp(), isChecked));
 		content.addView(consent, new LinearLayout.LayoutParams(

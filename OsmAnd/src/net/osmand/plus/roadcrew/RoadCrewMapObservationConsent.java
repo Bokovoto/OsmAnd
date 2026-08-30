@@ -32,6 +32,10 @@ public final class RoadCrewMapObservationConsent {
 				&& preferences.getInt(KEY_CONSENT_VERSION, 0) == CURRENT_CONSENT_VERSION;
 	}
 
+	static boolean hasStoredChoice(@NonNull Context context) {
+		return preferences(context).contains(KEY_ENABLED);
+	}
+
 	public static boolean hasCommunityRoutingAccess(@NonNull Context context) {
 		return isEnabled(context);
 	}

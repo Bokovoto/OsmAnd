@@ -8,6 +8,7 @@ const read = path => readFileSync(new URL(path, import.meta.url), 'utf8');
 const service = read('../src/net/osmand/plus/roadcrew/RoadCrewRecordingService.kt');
 const coordinator = read('../src/net/osmand/plus/roadcrew/RoadCrewMapObservationCoordinator.java');
 const consent = read('../src/net/osmand/plus/roadcrew/RoadCrewMapObservationConsent.java');
+const startup = read('../src/net/osmand/plus/roadcrew/RoadCrewStartupSetup.java');
 
 test('actual policy records only during active truck navigation, in foreground or background', () => {
   const policy = read('../../OsmAnd-java/src/main/java/net/osmand/router/RoadCrewRecordingPolicy.java')
@@ -64,6 +65,13 @@ test('no unrequested recording Stop/Resume control, pause preference or consent 
     const xml = read(path);
     assert.doesNotMatch(xml, /name="roadcrew_recording_(?:stop|resume|stopped|permissions|background_ready|foreground_only)"/);
   }
+});
+
+test('first setup enables observation by default without overriding a stored choice', () => {
+  assert.match(consent, /hasStoredChoice/);
+  assert.match(startup, /!manualReview && !RoadCrewMapObservationConsent\.hasStoredChoice\(activity\)/);
+  assert.match(startup, /setMapObservationEnabled\(activity\.getApp\(\), true\)/);
+  assert.match(startup, /consent\.setChecked\(observationEnabled\)/);
 });
 
 test('independent location service hands over GPS without changing navigation or GPX', () => {
