@@ -9,22 +9,22 @@ const service = read('../src/net/osmand/plus/roadcrew/RoadCrewRecordingService.k
 const coordinator = read('../src/net/osmand/plus/roadcrew/RoadCrewMapObservationCoordinator.java');
 const consent = read('../src/net/osmand/plus/roadcrew/RoadCrewMapObservationConsent.java');
 
-test('actual policy records without a route in foreground and background, with existing eligibility', () => {
+test('actual policy records only during active truck navigation, in foreground or background', () => {
   const policy = read('../../OsmAnd-java/src/main/java/net/osmand/router/RoadCrewRecordingPolicy.java')
     .replace(/^package .*;\s*/m, '');
   const input = `${policy}
 class Checks {
   static void check(boolean value, String message) { if (!value) throw new AssertionError(message); }
   static void run() {
-    for (int flags = 0; flags < 32; flags++) {
+    for (int flags = 0; flags < 64; flags++) {
       boolean consent = (flags & 1) != 0, truck = (flags & 2) != 0;
-      boolean simulation = (flags & 4) != 0, visible = (flags & 8) != 0;
-      boolean service = (flags & 16) != 0;
-      check(RoadCrewRecordingPolicy.canCollect(consent, truck, simulation, visible, service)
-        == (consent && truck && !simulation && (visible || service)), "Collection " + flags);
+      boolean simulation = (flags & 4) != 0, navigation = (flags & 8) != 0;
+      boolean visible = (flags & 16) != 0, service = (flags & 32) != 0;
+      check(RoadCrewRecordingPolicy.canCollect(consent, truck, simulation, navigation, visible, service)
+        == (consent && truck && !simulation && navigation && (visible || service)), "Collection " + flags);
       for (boolean permission : new boolean[]{false, true}) {
-        check(RoadCrewRecordingPolicy.canStartService(consent, truck, simulation, visible, permission)
-          == (consent && truck && !simulation && visible && permission), "Service start " + flags);
+        check(RoadCrewRecordingPolicy.canStartService(consent, truck, simulation, navigation, visible, permission)
+          == (consent && truck && !simulation && navigation && visible && permission), "Service start " + flags);
       }
     }
     for (boolean active : new boolean[]{false, true}) {
@@ -35,10 +35,11 @@ class Checks {
         }
       }
     }
-    check(RoadCrewRecordingPolicy.canCollect(true, true, false, false, true), "No-route background denied");
+    check(!RoadCrewRecordingPolicy.canCollect(true, true, false, false, true, true), "No-route collection allowed");
+    check(RoadCrewRecordingPolicy.canCollect(true, true, false, true, false, true), "Navigation background denied");
     check(!RoadCrewRecordingPolicy.needsOwnGps(true, false, true), "Duplicate navigation GPS");
-    check(RoadCrewRecordingPolicy.needsOwnGps(true, false, false), "No GPS after navigation stops");
-    check(RoadCrewRecordingPolicy.canCollect(true, true, false, false, true), "Navigation stop ended collection");
+    check(RoadCrewRecordingPolicy.needsOwnGps(true, false, false), "Navigation service handover lost GPS");
+    check(!RoadCrewRecordingPolicy.canCollect(true, true, false, false, false, true), "Navigation stop kept collection");
   }
 }
 try { Checks.run(); System.out.println("RECORDING_POLICY_OK"); } catch (Throwable e) { System.out.println("RECORDING_POLICY_FAILED " + e); }
@@ -88,10 +89,14 @@ test('independent location service hands over GPS without changing navigation or
   assert.doesNotMatch(service, /USED_BY_|stopService\(|\.setEnabled\(|\.setConsent\(|TripJournal.*(?:clear|revoke)/);
 });
 
-test('navigation end keeps collection eligible and the same confirmed-passage pipeline', () => {
+test('navigation end stops collection while keeping the confirmed-passage pipeline', () => {
   const end = coordinator.split('private synchronized void endNavigationSession()')[1].split('private void queueTripBoundary')[0];
   assert.match(end, /navigationFinished\(\)/);
-  assert.doesNotMatch(end, /RecordingService|setEnabled|stopListening|enabled = false/);
+  assert.doesNotMatch(end, /setEnabled|stopListening|enabled = false/);
+  assert.match(end, /navigationSessionActive = false/);
+  assert.match(coordinator, /boolean isNavigationRecordingActive\(\)/);
+  assert.match(coordinator, /!app\.getRoutingHelper\(\)\.isPauseNavigation\(\)/);
+  assert.match(coordinator, /canCollect\(enabled, isTruckProfileActive\(\),[\s\S]*isNavigationRecordingActive\(\)/);
   assert.match(coordinator, /RoadCrewRecordingService.isRunning\(\) \|\| isActiveTruckNavigation\(\)/);
   assert.match(coordinator, /ApplicationMode mode = isActiveTruckNavigation\(\)\s*\? app.getRoutingHelper\(\).getAppMode\(\)\s*: app.getSettings\(\).getApplicationMode\(\)/);
   assert.match(coordinator, /RoadCrewTripJournal.get\(app\).capture\(evidence, observedAt, road, binding\)/);

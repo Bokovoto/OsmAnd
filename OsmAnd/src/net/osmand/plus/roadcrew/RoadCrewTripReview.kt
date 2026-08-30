@@ -10,12 +10,8 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.CheckBox
 import android.widget.LinearLayout
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -32,125 +28,50 @@ import kotlin.math.cos
 import kotlin.math.hypot
 import kotlin.math.min
 
-/** Whole-course vehicle-use review; exact road checks are only queued when explicitly requested. */
+/** Simple whole-course review. A rejected course never enters positive truck evidence. */
 internal class RoadCrewTripReview(
     activity: MapActivity, @JvmField val trip: RoadCrewTripJournal.Trip,
     private val safe: BooleanSupplier, confirm: Consumer<Boolean>, focus: Consumer<RoadCrewTripJournal.Row>
 ) {
     private val rows = trip.rows
-    private var selected = 0
-    private var refreshing = false
     private var busy = false
     private val content = RoadCrewUi.createPanel(activity, activity.getString(R.string.roadcrew_trip_review_title))
-    private val count = RoadCrewUi.addBody(activity, content, "")
     private val map = JourneyMap(activity, rows)
-    private val checkbox = CheckBox(activity)
-    private val roadCheck = CheckBox(activity)
-    private val consent = CheckBox(activity)
-    private lateinit var save: Button
     @JvmField val dialog: AlertDialog = RoadCrewUi.createDialog(activity, content)
 
     init {
         (content.getChildAt(0) as TextView).textSize = 22f
+        rows.forEach { it.included = true; it.question = false }
         val time = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
         RoadCrewUi.addBody(activity, content, activity.getString(R.string.roadcrew_trip_review_summary,
             time.format(Date(rows.first().record.observedAtBucketMillis)),
             time.format(Date(rows.last().record.observedAtBucketMillis)),
             java.text.NumberFormat.getNumberInstance().apply { maximumFractionDigits = 1 }
                 .format(rows.sumOf { it.record.segmentKey.lengthMeters } / 1000)))
-        RoadCrewUi.addBody(activity, content, activity.getString(R.string.roadcrew_trip_review_legend))
+        RoadCrewUi.addSectionTitle(activity, content,
+            activity.getString(R.string.roadcrew_trip_review_simple_question))
         content.addView(map, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, RoadCrewUi.dp(activity, 240f)))
-        val labels = rows.mapIndexed { i, row -> activity.getString(R.string.roadcrew_trip_review_section,
-            i + 1, rows.size, time.format(Date(row.record.observedAtBucketMillis)),
-            row.name.ifEmpty { activity.getString(R.string.roadcrew_validation_unnamed) }, row.record.segmentKey.lengthMeters.toInt()) }
-        val spinner = Spinner(activity)
-        spinner.adapter = object : ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, labels) {
-            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View =
-                super.getView(position, convertView, parent).also {
-                    (it as TextView).setTextColor(RoadCrewUi.TEXT)
-                    it.setSingleLine(false)
-                    it.textSize = 14f
-                    it.setPadding(RoadCrewUi.dp(activity, 8f), RoadCrewUi.dp(activity, 12f),
-                        RoadCrewUi.dp(activity, 8f), RoadCrewUi.dp(activity, 12f))
-                }
-        }.apply { setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
-        content.addView(spinner, LinearLayout.LayoutParams(-1, -2))
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                // Spinner's initial callback must not zoom the whole course into its first 100 m.
-                if (selected != position) {
-                    selected = position
-                    map.focus(position)
-                    focus.accept(rows[position])
-                }
-                refresh()
+        map.sectionSelectionEnabled = false
+        button(activity, R.string.roadcrew_trip_review_save, true) {
+            if (safe.asBoolean) {
+                rows.forEach { it.included = true; it.question = false }
+                confirm.accept(false)
             }
         }
-        checkbox.setText(R.string.roadcrew_trip_review_included)
-        checkbox.setTextColor(RoadCrewUi.TEXT)
-        checkbox.minHeight = RoadCrewUi.dp(activity, 48f)
-        content.addView(checkbox)
-        checkbox.setOnCheckedChangeListener { _, checked ->
-            if (!refreshing && !busy && safe.asBoolean) {
-                rows[selected].included = checked
-                consent.isChecked = false
-                refresh()
-            }
-        }
-        roadCheck.setText(R.string.roadcrew_trip_review_request_check)
-        roadCheck.setTextColor(RoadCrewUi.TEXT)
-        roadCheck.minHeight = RoadCrewUi.dp(activity, 48f)
-        content.addView(roadCheck)
-        roadCheck.setOnCheckedChangeListener { _, checked ->
-            if (!refreshing && !busy && safe.asBoolean) {
-                rows[selected].question = checked && rows[selected].included
-                consent.isChecked = false
-            }
-        }
-        map.onSection = { index, toggle ->
-            if (!busy && safe.asBoolean) {
-                selected = index
-                if (toggle) rows[index].included = !rows[index].included
-                consent.isChecked = false
-                spinner.setSelection(index)
-                map.select(index)
-                focus.accept(rows[index])
-                refresh()
-            }
-        }
-        button(activity, R.string.roadcrew_trip_review_overview, false) { map.overview() }
-        button(activity, R.string.roadcrew_trip_review_before, false) {
-            if (safe.asBoolean) { rows.take(selected).forEach { it.included = false }; consent.isChecked = false; refresh() }
-        }
-        button(activity, R.string.roadcrew_trip_review_after, false) {
-            if (safe.asBoolean) { rows.drop(selected + 1).forEach { it.included = false }; consent.isChecked = false; refresh() }
-        }
-        consent.setText(R.string.roadcrew_trip_review_confirm)
-        consent.setTextColor(RoadCrewUi.TEXT)
-        content.addView(consent)
-        RoadCrewUi.addBody(activity, content, activity.getString(R.string.roadcrew_trip_review_not_approval))
-        save = button(activity, R.string.roadcrew_trip_review_save, true) {
-            if (safe.asBoolean && consent.isChecked) confirm.accept(rows.none { it.included })
-        }
-        consent.setOnCheckedChangeListener { _, checked -> save.isEnabled = !busy && checked }
         button(activity, R.string.roadcrew_trip_review_discard, false) {
             if (safe.asBoolean) {
-                rows.forEach { it.included = false }
-                consent.isChecked = false
-                refresh()
+                rows.forEach { it.included = false; it.question = false }
+                confirm.accept(true)
             }
         }
-        refresh()
         map.post {
             map.overview()
-            // Load nearby offline roads without replacing or zooming the whole-course overview.
-            focus.accept(rows[selected])
+            focus.accept(rows.first())
         }
     }
 
     fun selectedIds(): LongArray = rows.filter { it.included }.map { it.seq }.toLongArray()
-    fun questionIds(): LongArray = rows.filter { it.included && it.question }.map { it.seq }.toLongArray()
+    fun questionIds(): LongArray = longArrayOf()
 
     fun setMapContext(seq: Long, data: RoadCrewValidationMapView.MapData?) { map.setContext(seq, data) }
 
@@ -161,23 +82,6 @@ internal class RoadCrewTripReview(
             if (view is ViewGroup) for (i in 0 until view.childCount) disable(view.getChildAt(i))
         }
         disable(content)
-    }
-
-    private fun refresh() {
-        refreshing = true
-        rows.filter { !it.included }.forEach { it.question = false }
-        checkbox.isChecked = rows[selected].included
-        roadCheck.isEnabled = !busy && rows[selected].included
-        roadCheck.isChecked = rows[selected].question
-        val empty = rows.none { it.included }
-        consent.setText(if (empty) R.string.roadcrew_trip_review_discard_confirm else R.string.roadcrew_trip_review_confirm)
-        if (::save.isInitialized) {
-            save.setText(if (empty) R.string.roadcrew_trip_review_discard else R.string.roadcrew_trip_review_save)
-            save.isEnabled = !busy && consent.isChecked
-        }
-        count.text = content.context.getString(R.string.roadcrew_trip_review_counts, rows.count { it.included }, rows.size)
-        map.invalidate()
-        refreshing = false
     }
 
     private fun button(activity: MapActivity, resource: Int, primary: Boolean, action: () -> Unit): Button =
@@ -192,6 +96,7 @@ internal class RoadCrewTripReview(
 private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJournal.Row>) : View(context) {
     private data class GeoPoint(val latitude: Double, val longitude: Double)
     var onSection: (Int, Boolean) -> Unit = { _, _ -> }
+    var sectionSelectionEnabled = true
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val centerLat = rows.map { it.record.segmentKey.fromLatitude }.average()
     private val centerLon = rows.map { it.record.segmentKey.fromLongitude }.average()
@@ -367,7 +272,10 @@ private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJo
             }
             MotionEvent.ACTION_UP -> {
                 parent.requestDisallowInterceptTouchEvent(false)
-                if (!moved) { pick(event.x, event.y); performClick() }
+                if (!moved) {
+                    if (sectionSelectionEnabled) pick(event.x, event.y)
+                    performClick()
+                }
             }
             MotionEvent.ACTION_CANCEL -> parent.requestDisallowInterceptTouchEvent(false)
         }

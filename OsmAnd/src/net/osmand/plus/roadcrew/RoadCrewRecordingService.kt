@@ -180,7 +180,7 @@ class RoadCrewRecordingService : Service() {
 
         private fun eligible(app: OsmandApplication): Boolean =
             app.packageName == "org.roadcrew.app" && RoadCrewMapObservationConsent.isEnabled(app) &&
-                isTruck(app) &&
+                isTruck(app) && RoadCrewMapObservationCoordinator.getInstance(app).isNavigationRecordingActive &&
                 !app.locationProvider.locationSimulation.isRouteAnimating
 
         private fun hasLocationPermission(context: Context): Boolean =
@@ -203,6 +203,7 @@ class RoadCrewRecordingService : Service() {
                 if (startRequested || !RoadCrewRecordingPolicy.canStartService(
                         RoadCrewMapObservationConsent.isEnabled(app),
                         isTruck(app), app.locationProvider.locationSimulation.isRouteAnimating,
+                        RoadCrewMapObservationCoordinator.getInstance(app).isNavigationRecordingActive,
                         app.settings.MAP_ACTIVITY_ENABLED, hasLocationPermission(app))) return@runInUIThread
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     app.getSystemService(NotificationManager::class.java).createNotificationChannel(

@@ -61,11 +61,12 @@ test('finished-course review is immediate, mandatory and not throttled by networ
   assert.match(method(coordinator, 'private synchronized void endNavigationSession()'), /onNavigationFinished\(app\)/);
 });
 
-test('whole recorded course is the initial viewport; selected car legs do not become checks', () => {
-  assert.match(ui, /if \(selected != position\) \{\s*selected = position\s*map.focus\(position\)/);
-  assert.match(ui, /map\.post \{[\s\S]*map\.overview\(\)[\s\S]*focus\.accept\(rows\[selected\]\)/);
-  assert.match(ui, /rows.filter \{ it.included && it.question \}/);
-  assert.match(ui, /rows.filter \{ !it.included \}.forEach \{ it.question = false \}/);
+test('whole recorded course is shown with a binary truck-suitability review', () => {
+  assert.match(ui, /rows\.forEach \{ it\.included = true; it\.question = false \}/);
+  assert.match(ui, /map\.post \{[\s\S]*map\.overview\(\)[\s\S]*focus\.accept\(rows\.first\(\)\)/);
+  assert.match(ui, /fun questionIds\(\): LongArray = longArrayOf\(\)/);
+  assert.match(ui, /sectionSelectionEnabled = false/);
+  assert.doesNotMatch(ui, /Spinner|CheckBox|roadcrew_trip_review_before|roadcrew_trip_review_after/);
   assert.match(ui, /if \(i == 0\) moveTo\(x, y\) else lineTo\(x, y\)/);
   assert.doesNotMatch(ui, /calculatedRoute|routingHelper.*route/);
 });

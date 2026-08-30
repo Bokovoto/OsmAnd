@@ -36,9 +36,9 @@ import java.util.function.Consumer;
 
 /**
  * Bridge from accepted GPS fixes to the local vehicle-review journal. Only
- * user-confirmed truck sections enter the upload outbox. Background collection
- * uses a visible foreground service, with or without navigation; raw fixes never
- * leave this coordinator.
+ * user-confirmed truck sections enter the upload outbox. Collection starts only
+ * with truck navigation and may continue through its foreground service; raw
+ * fixes never leave this coordinator.
  */
 public final class RoadCrewMapObservationCoordinator implements OsmAndLocationListener {
 
@@ -119,11 +119,13 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 				|| app.getLocationProvider().getLocationSimulation().isRouteAnimating()) { return; }
 		navigationSessionActive = true;
 		queueTripBoundary(() -> RoadCrewTripJournal.get(app).navigationStarted());
+		RoadCrewRecordingService.refreshFromForeground(app);
 	}
 
 	private synchronized void endNavigationSession() {
 		if (!navigationSessionActive) { return; }
 		navigationSessionActive = false;
+		RoadCrewRecordingService.refreshFromForeground(app);
 		queueTripBoundary(() -> {
 			RoadCrewTripJournal.get(app).navigationFinished();
 			app.runInUIThread(() -> RoadCrewValidationController.onNavigationFinished(app));
@@ -179,6 +181,15 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	}
 
 	boolean hasNavigationSession() { return navigationSessionActive; }
+
+	boolean isNavigationRecordingActive() {
+		ApplicationMode mode = app.getRoutingHelper().getAppMode();
+		return navigationSessionActive
+				&& app.getRoutingHelper().isFollowingMode()
+				&& !app.getRoutingHelper().isPauseNavigation()
+				&& mode != null
+				&& mode.isDerivedRoutingFrom(ApplicationMode.TRUCK);
+	}
 
 	void saveTripReview(String tripId, long[] included, long[] questions, boolean confirm, boolean discard,
 			Consumer<Boolean> completed) {
@@ -424,6 +435,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	private boolean isCollectionContextActive() {
 		return RoadCrewRecordingPolicy.canCollect(enabled, isTruckProfileActive(),
 				app.getLocationProvider().getLocationSimulation().isRouteAnimating(),
+				isNavigationRecordingActive(),
 				app.getSettings().MAP_ACTIVITY_ENABLED,
 				RoadCrewRecordingService.isRunning() || isActiveTruckNavigation());
 	}

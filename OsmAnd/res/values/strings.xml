@@ -31,14 +31,15 @@
     <string name="roadcrew_update_bytes_total">%1$s · %2$s / %3$s</string>
     <string name="roadcrew_update_bytes_unknown">%1$s downloaded · Total size unknown</string>
     <string name="roadcrew_update_poster_description">RoadCrew truck. By Galin Vasilev.</string>
-    <string name="roadcrew_trip_review_title">Review truck journey</string>
+    <string name="roadcrew_trip_review_title">Confirm the road</string>
+    <string name="roadcrew_trip_review_simple_question">Is the shown driven road suitable for a truck?</string>
     <string name="roadcrew_trip_review_counts">Selected: %1$d / %2$d sections</string>
     <string name="roadcrew_trip_review_legend">Green: with the truck · Red: excluded</string>
     <string name="roadcrew_trip_review_confirm">I drove the green sections with the truck</string>
-    <string name="roadcrew_trip_review_save">Confirm truck sections</string>
-    <string name="roadcrew_trip_review_discard">None were with the truck</string>
+    <string name="roadcrew_trip_review_save">Confirm: the road is suitable for a truck</string>
+    <string name="roadcrew_trip_review_discard">The road is not suitable for a truck</string>
     <string name="roadcrew_trip_review_discard_confirm">Discard this journey?</string>
-    <string name="roadcrew_trip_review_saved">Truck sections saved for upload. Excluded sections were removed.</string>
+    <string name="roadcrew_trip_review_saved">The road response was saved.</string>
     <string name="roadcrew_trip_review_section">Section %1$d / %2$d · %3$s\n%4$s · %5$d m</string>
     <string name="roadcrew_trip_review_included">With the truck</string>
     <string name="roadcrew_trip_review_before">Exclude earlier sections</string>
@@ -50,7 +51,7 @@
     <string name="roadcrew_trip_review_ambiguous">Several sections overlap here. Zoom in or select a section from the list.</string>
     <string name="roadcrew_trip_review_pending">Awaiting vehicle review: %1$d · Confirmed, waiting for transfer: %2$d</string>
     <string name="roadcrew_trip_review_full">Local review storage is full. Review or discard pending journeys to resume collection.</string>
-    <string name="roadcrew_trip_review_privacy">New observations stay on this phone until you confirm which sections were driven with the truck. Car and excluded sections are not uploaded. Unreviewed data expires after 14 days. Confirming truck use does not approve road access or remove restrictions.</string>
+    <string name="roadcrew_trip_review_privacy">New observations stay on this phone until the journey is reviewed. A confirmed journey is uploaded as truck passage evidence; a rejected journey does not enter positive evidence. Unreviewed data expires after 14 days.</string>
     <string name="roadcrew_trip_review_error">Could not save the review. No unconfirmed data will be uploaded.</string>
 <!--
 	README:
