@@ -433,6 +433,8 @@ public final class RoadCrewReportsSync {
 					object.getLong("expiresAt"),
 					object.optString("createdBy", ""),
 					object.optString("details", ""),
+					RoadCrewReportDirection.parse(object.optString("direction", RoadCrewReportDirection.UNKNOWN.name())),
+					object.has("directionBearing") ? (float) object.optDouble("directionBearing", Double.NaN) : Float.NaN,
 					RoadCrewReportSyncState.SYNCED,
 					object.optInt("confirmedCount", 0),
 					object.optInt("deniedCount", 0),
@@ -453,6 +455,10 @@ public final class RoadCrewReportsSync {
 		body.put("lat", location.getLatitude());
 		body.put("lon", location.getLongitude());
 		body.put("details", report.getDetails());
+		body.put("direction", report.getDirection().name());
+		if (report.hasDirectionBearing()) {
+			body.put("directionBearing", report.getDirectionBearing());
+		}
 
 		JSONObject response = postJson("/v1/reports", deviceId, body);
 		String remoteReportId = response.getString("reportId");

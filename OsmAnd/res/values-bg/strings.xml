@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="roadcrew_report_direction_title">За коя посока?</string>
+    <string name="roadcrew_report_direction_body">Изберете за коя посока важи сигналът „%1$s“.</string>
+    <string name="roadcrew_report_direction_mine">↑ Моята посока</string>
+    <string name="roadcrew_report_direction_opposite">↓ Насрещната посока</string>
+    <string name="roadcrew_report_direction_both">↕ И двете посоки</string>
+    <string name="roadcrew_report_direction_unknown">Без определена посока</string>
+    <string name="roadcrew_report_direction_no_heading">GPS няма надеждна посока на движение. Отбележете двете посоки или изпратете без посока.</string>
+    <string name="roadcrew_report_direction_detail_one">Посока: по стрелката на картата</string>
+    <string name="roadcrew_report_direction_detail_both">Посока: и в двете посоки</string>
+    <string name="roadcrew_report_direction_detail_unknown">Посока: не е отбелязана</string>
     <string name="roadcrew_recording_channel">Запис на преминавания с камион</string>
     <string name="roadcrew_recording_notification_active">Записват се преминавания с камион. Прегледайте курсовете в профила преди споделяне.</string>
     <string name="roadcrew_trip_review_summary">Записани преминавания: приблизително от %1$s до %2$s\nЗаписани участъци: %3$s км</string>

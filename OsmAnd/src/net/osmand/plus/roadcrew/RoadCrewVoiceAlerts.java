@@ -77,7 +77,8 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 		String localDeviceId = RoadCrewReportsRepository.getLocalDeviceId(app);
 		Candidate bestCandidate = null;
 		for (RoadCrewReport report : reports) {
-			if (!isEligible(report, localDeviceId, now)) {
+			if (!isEligible(report, localDeviceId, now)
+					|| (location.hasBearing() && !report.appliesToBearing(location.getBearing()))) {
 				continue;
 			}
 			LatLon reportLocation = report.getLocation();

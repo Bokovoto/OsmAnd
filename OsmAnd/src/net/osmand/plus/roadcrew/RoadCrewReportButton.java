@@ -538,6 +538,52 @@ public class RoadCrewReportButton extends MapButton {
 	}
 
 	private void addReport(@NonNull RoadCrewReportType type, @NonNull String details) {
+		if (type == RoadCrewReportType.HELP) {
+			saveReport(type, details, RoadCrewReportDirection.UNKNOWN, Float.NaN);
+			return;
+		}
+		Location gps = app.getLocationProvider().getLastKnownLocation();
+		float heading = gps != null && gps.hasBearing() ? normalizeBearing(gps.getBearing()) : Float.NaN;
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity,
+				mapActivity.getString(R.string.roadcrew_report_direction_title));
+		String directionMessage = Float.isFinite(heading)
+				? mapActivity.getString(R.string.roadcrew_report_direction_body, type.getTitle(mapActivity))
+				: mapActivity.getString(R.string.roadcrew_report_direction_no_heading);
+		RoadCrewUi.addBody(mapActivity, content, directionMessage);
+		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		if (Float.isFinite(heading)) {
+			RoadCrewUi.addFullWidthButton(mapActivity, content,
+					mapActivity.getString(R.string.roadcrew_report_direction_mine), true, v -> {
+						dialog.dismiss();
+						saveReport(type, details, RoadCrewReportDirection.ONE_DIRECTION, heading);
+					});
+			RoadCrewUi.addFullWidthButton(mapActivity, content,
+					mapActivity.getString(R.string.roadcrew_report_direction_opposite), false, v -> {
+						dialog.dismiss();
+						saveReport(type, details, RoadCrewReportDirection.ONE_DIRECTION,
+								normalizeBearing(heading + 180));
+					});
+		}
+		RoadCrewUi.addFullWidthButton(mapActivity, content,
+				mapActivity.getString(R.string.roadcrew_report_direction_both), false, v -> {
+					dialog.dismiss();
+					saveReport(type, details, RoadCrewReportDirection.BOTH_DIRECTIONS, heading);
+				});
+		if (!Float.isFinite(heading)) {
+			RoadCrewUi.addFullWidthButton(mapActivity, content,
+					mapActivity.getString(R.string.roadcrew_report_direction_unknown), false, v -> {
+						dialog.dismiss();
+						saveReport(type, details, RoadCrewReportDirection.UNKNOWN, Float.NaN);
+					});
+		}
+		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_cancel),
+				false, v -> dialog.dismiss());
+		dialog.show();
+	}
+
+	private void saveReport(@NonNull RoadCrewReportType type, @NonNull String details,
+			@NonNull RoadCrewReportDirection direction, float directionBearing) {
 		boolean usedGpsLocation = true;
 		LatLon location = getPhoneLocation();
 		if (location == null) {
@@ -546,7 +592,8 @@ public class RoadCrewReportButton extends MapButton {
 			location = tileBox.getCenterLatLon();
 		}
 		RoadCrewReportsRepository.addReport(app, RoadCrewReport.createLocal(type, location,
-				System.currentTimeMillis(), RoadCrewReportsRepository.getLocalDeviceId(app), details));
+				System.currentTimeMillis(), RoadCrewReportsRepository.getLocalDeviceId(app), details,
+				direction, directionBearing));
 		RoadCrewReportsSync.syncNow(app);
 		getMapView().refreshMap();
 		if (usedGpsLocation) {
@@ -554,6 +601,10 @@ public class RoadCrewReportButton extends MapButton {
 		} else {
 			app.showToastMessage(R.string.roadcrew_report_no_gps);
 		}
+	}
+
+	private float normalizeBearing(float bearing) {
+		return (bearing % 360 + 360) % 360;
 	}
 
 	@Nullable

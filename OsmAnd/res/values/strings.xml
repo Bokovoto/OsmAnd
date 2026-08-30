@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
+    <string name="roadcrew_report_direction_title">Which direction?</string>
+    <string name="roadcrew_report_direction_body">Choose where this %1$s report applies.</string>
+    <string name="roadcrew_report_direction_mine">↑ My direction</string>
+    <string name="roadcrew_report_direction_opposite">↓ Opposite direction</string>
+    <string name="roadcrew_report_direction_both">↕ Both directions</string>
+    <string name="roadcrew_report_direction_unknown">Direction not specified</string>
+    <string name="roadcrew_report_direction_no_heading">GPS has no reliable travel direction. Mark both directions or send without a direction.</string>
+    <string name="roadcrew_report_direction_detail_one">Direction: follow the arrow on the map</string>
+    <string name="roadcrew_report_direction_detail_both">Direction: both directions</string>
+    <string name="roadcrew_report_direction_detail_unknown">Direction: not specified</string>
     <string name="roadcrew_recording_channel">Truck passage recording</string>
     <string name="roadcrew_recording_notification_active">Recording truck passages. Review your journeys in the profile before sharing.</string>
     <string name="roadcrew_trip_review_summary">Recorded passages: approximately %1$s to %2$s\nRecorded sections: %3$s km</string>

@@ -18,6 +18,8 @@ public class RoadCrewReport {
 	private final long expiresAtMillis;
 	private final String createdBy;
 	private final String details;
+	private final RoadCrewReportDirection direction;
+	private final float directionBearing;
 	private final RoadCrewReportSyncState syncState;
 	private final int confirmedCount;
 	private final int deniedCount;
@@ -29,6 +31,16 @@ public class RoadCrewReport {
 			@NonNull String details, @NonNull RoadCrewReportSyncState syncState,
 			int confirmedCount, int deniedCount, @NonNull RoadCrewReportLocalVote localVote,
 			long probablyResolvedAtMillis) {
+		this(id, type, location, createdAtMillis, expiresAtMillis, createdBy, details,
+				RoadCrewReportDirection.UNKNOWN, Float.NaN, syncState, confirmedCount, deniedCount,
+				localVote, probablyResolvedAtMillis);
+	}
+
+	public RoadCrewReport(@NonNull String id, @NonNull RoadCrewReportType type, @NonNull LatLon location,
+			long createdAtMillis, long expiresAtMillis, @NonNull String createdBy,
+			@NonNull String details, @NonNull RoadCrewReportDirection direction, float directionBearing,
+			@NonNull RoadCrewReportSyncState syncState, int confirmedCount, int deniedCount,
+			@NonNull RoadCrewReportLocalVote localVote, long probablyResolvedAtMillis) {
 		this.id = id;
 		this.type = type;
 		this.location = location;
@@ -36,6 +48,8 @@ public class RoadCrewReport {
 		this.expiresAtMillis = expiresAtMillis;
 		this.createdBy = createdBy;
 		this.details = details;
+		this.direction = direction;
+		this.directionBearing = normalizeBearing(directionBearing);
 		this.syncState = syncState;
 		this.confirmedCount = confirmedCount;
 		this.deniedCount = deniedCount;
@@ -52,6 +66,14 @@ public class RoadCrewReport {
 	@NonNull
 	public static RoadCrewReport createLocal(@NonNull RoadCrewReportType type, @NonNull LatLon location,
 			long createdAtMillis, @NonNull String localDeviceId, @NonNull String details) {
+		return createLocal(type, location, createdAtMillis, localDeviceId, details,
+				RoadCrewReportDirection.UNKNOWN, Float.NaN);
+	}
+
+	@NonNull
+	public static RoadCrewReport createLocal(@NonNull RoadCrewReportType type, @NonNull LatLon location,
+			long createdAtMillis, @NonNull String localDeviceId, @NonNull String details,
+			@NonNull RoadCrewReportDirection direction, float directionBearing) {
 		return new RoadCrewReport(
 				"local-" + UUID.randomUUID(),
 				type,
@@ -60,6 +82,8 @@ public class RoadCrewReport {
 				createdAtMillis + type.getDefaultLifetimeMillis(),
 				localDeviceId,
 				details,
+				direction,
+				directionBearing,
 				RoadCrewReportSyncState.PENDING_CREATE,
 				0,
 				0,
@@ -102,6 +126,28 @@ public class RoadCrewReport {
 	}
 
 	@NonNull
+	public RoadCrewReportDirection getDirection() {
+		return direction;
+	}
+
+	public float getDirectionBearing() {
+		return directionBearing;
+	}
+
+	public boolean hasDirectionBearing() {
+		return Float.isFinite(directionBearing);
+	}
+
+	public boolean appliesToBearing(float bearing) {
+		if (direction != RoadCrewReportDirection.ONE_DIRECTION || !hasDirectionBearing()
+				|| !Float.isFinite(bearing)) {
+			return true;
+		}
+		float difference = Math.abs(normalizeSignedDegrees(bearing - directionBearing));
+		return difference <= 90;
+	}
+
+	@NonNull
 	public RoadCrewReportSyncState getSyncState() {
 		return syncState;
 	}
@@ -140,6 +186,8 @@ public class RoadCrewReport {
 				expiresAtMillis,
 				createdBy,
 				details,
+				direction,
+				directionBearing,
 				syncState == RoadCrewReportSyncState.PENDING_CREATE
 						? RoadCrewReportSyncState.PENDING_CREATE
 						: RoadCrewReportSyncState.PENDING_UPDATE,
@@ -162,6 +210,8 @@ public class RoadCrewReport {
 				syncedExpiresAtMillis,
 				createdBy,
 				details,
+				direction,
+				directionBearing,
 				RoadCrewReportSyncState.SYNCED,
 				confirmedCount,
 				deniedCount,
@@ -180,6 +230,8 @@ public class RoadCrewReport {
 				expiresAtMillis,
 				createdBy,
 				details,
+				direction,
+				directionBearing,
 				syncState,
 				confirmedCount,
 				deniedCount,
@@ -198,6 +250,8 @@ public class RoadCrewReport {
 				expiresAtMillis,
 				createdBy,
 				details,
+				direction,
+				directionBearing,
 				syncState,
 				confirmedCount,
 				deniedCount,
@@ -221,5 +275,16 @@ public class RoadCrewReport {
 		return type != RoadCrewReportType.HELP
 				&& deniedCount >= MIN_DENIED_COUNT_TO_HIDE
 				&& deniedCount > confirmedCount;
+	}
+
+	private static float normalizeBearing(float bearing) {
+		if (!Float.isFinite(bearing)) {
+			return Float.NaN;
+		}
+		return (bearing % 360 + 360) % 360;
+	}
+
+	private static float normalizeSignedDegrees(float value) {
+		return (value % 360 + 540) % 360 - 180;
 	}
 }

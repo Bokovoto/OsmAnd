@@ -63,6 +63,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private final Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint labelBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint labelStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint directionBadgePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint directionArrowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -75,6 +77,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private final Path restrictionRoadPath = new Path();
 	private final Path restrictionTruckPath = new Path();
 	private final Path markerPath = new Path();
+	private final Path directionArrowPath = new Path();
 	private final RectF labelRect = new RectF();
 	private final RectF touchLabelRect = new RectF();
 	private final Set<String> promptedReportIds = new HashSet<>();
@@ -220,6 +223,15 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		labelStrokePaint.setStrokeWidth(dp(1));
 		labelStrokePaint.setColor(Color.argb(210, 255, 255, 255));
 
+		directionBadgePaint.setStyle(Paint.Style.FILL);
+		directionBadgePaint.setColor(Color.rgb(11, 31, 42));
+
+		directionArrowPaint.setStyle(Paint.Style.STROKE);
+		directionArrowPaint.setStrokeWidth(dp(1.6f));
+		directionArrowPaint.setStrokeCap(Paint.Cap.ROUND);
+		directionArrowPaint.setStrokeJoin(Paint.Join.ROUND);
+		directionArrowPaint.setColor(Color.WHITE);
+
 		restrictionFillPaint.setStyle(Paint.Style.FILL);
 		restrictionFillPaint.setColor(Color.WHITE);
 
@@ -296,7 +308,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			}
 			float x = tileBox.getPixXFromLatLon(latLon.getLatitude(), latLon.getLongitude());
 			float y = tileBox.getPixYFromLatLon(latLon.getLatitude(), latLon.getLongitude());
-			drawReport(canvas, report, x, y);
+			drawReport(canvas, tileBox, report, x, y);
 		}
 	}
 
@@ -551,7 +563,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		return null;
 	}
 
-	private void drawReport(@NonNull Canvas canvas, @NonNull RoadCrewReport report, float x, float y) {
+	private void drawReport(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
+			@NonNull RoadCrewReport report, float x, float y) {
 		float radius = dp(14);
 		float pointerHeight = dp(8);
 		float markerCenterY = y - pointerHeight;
@@ -567,8 +580,53 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		canvas.drawPath(markerPath, markerPaint);
 		canvas.drawPath(markerPath, markerStrokePaint);
 		canvas.drawText(report.getType().getShortLabel(), x, markerCenterY + dp(5), textPaint);
+		drawDirectionBadge(canvas, tileBox, report, x, markerCenterY);
 
 		drawLabel(canvas, report, x, markerCenterY - radius - dp(8));
+	}
+
+	private void drawDirectionBadge(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
+			@NonNull RoadCrewReport report, float x, float markerCenterY) {
+		if (report.getDirection() == RoadCrewReportDirection.UNKNOWN) {
+			return;
+		}
+		float badgeX = x + dp(11);
+		float badgeY = markerCenterY + dp(10);
+		float badgeRadius = dp(7);
+		canvas.drawCircle(badgeX, badgeY, badgeRadius, directionBadgePaint);
+		canvas.drawCircle(badgeX, badgeY, badgeRadius, markerStrokePaint);
+
+		float angle = 0;
+		if (report.hasDirectionBearing()) {
+			float startY = tileBox.getPixYFromLatLon(report.getLocation().getLatitude(),
+					report.getLocation().getLongitude());
+			LatLon end = MapUtils.rhumbDestinationPoint(report.getLocation(), 30,
+					report.getDirectionBearing());
+			float endX = tileBox.getPixXFromLatLon(end.getLatitude(), end.getLongitude());
+			float endY = tileBox.getPixYFromLatLon(end.getLatitude(), end.getLongitude());
+			angle = (float) Math.toDegrees(Math.atan2(endY - startY, endX - x));
+		}
+		canvas.save();
+		canvas.translate(badgeX, badgeY);
+		canvas.rotate(angle);
+		directionArrowPath.reset();
+		float tail = dp(3.7f);
+		float head = dp(4.1f);
+		float wing = dp(2.2f);
+		directionArrowPath.moveTo(-tail, 0);
+		directionArrowPath.lineTo(head, 0);
+		directionArrowPath.moveTo(head, 0);
+		directionArrowPath.lineTo(head - wing, -wing);
+		directionArrowPath.moveTo(head, 0);
+		directionArrowPath.lineTo(head - wing, wing);
+		if (report.getDirection() == RoadCrewReportDirection.BOTH_DIRECTIONS) {
+			directionArrowPath.moveTo(-tail, 0);
+			directionArrowPath.lineTo(-tail + wing, -wing);
+			directionArrowPath.moveTo(-tail, 0);
+			directionArrowPath.lineTo(-tail + wing, wing);
+		}
+		canvas.drawPath(directionArrowPath, directionArrowPaint);
+		canvas.restore();
 	}
 
 	private void drawLabel(@NonNull Canvas canvas, @NonNull RoadCrewReport report, float x, float y) {
@@ -597,6 +655,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		RoadCrewReport nearestReport = null;
 		double nearestDistance = PROMPT_RADIUS_METERS;
 		for (RoadCrewReport report : reports) {
+			if (location.hasBearing() && !report.appliesToBearing(location.getBearing())) {
+				continue;
+			}
 			if (promptedReportIds.contains(report.getId())
 					|| report.hasLocalVote()
 					|| isReportAuthor(report)
@@ -844,11 +905,21 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 				: "";
 		return getContext().getString(R.string.roadcrew_report_details_reported, formatReportedAge(report))
 				+ detailsText
+				+ "\n" + formatReportDirection(report)
 				+ (isReportAuthor(report) ? "\n" + getContext().getString(R.string.roadcrew_report_owner_you) : "")
 				+ "\n" + getContext().getString(R.string.roadcrew_report_details_still_there, report.getConfirmedCount())
 				+ "\n" + getContext().getString(R.string.roadcrew_report_details_gone, report.getDeniedCount())
 				+ "\n" + getContext().getString(R.string.roadcrew_report_details_your_vote, formatLocalVote(report))
 				+ "\n" + getContext().getString(R.string.roadcrew_report_details_status, formatReportStatus(report));
+	}
+
+	@NonNull
+	private String formatReportDirection(@NonNull RoadCrewReport report) {
+		return switch (report.getDirection()) {
+			case ONE_DIRECTION -> getContext().getString(R.string.roadcrew_report_direction_detail_one);
+			case BOTH_DIRECTIONS -> getContext().getString(R.string.roadcrew_report_direction_detail_both);
+			case UNKNOWN -> getContext().getString(R.string.roadcrew_report_direction_detail_unknown);
+		};
 	}
 
 	@NonNull

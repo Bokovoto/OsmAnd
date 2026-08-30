@@ -191,6 +191,8 @@ public final class RoadCrewReportsRepository {
 				&& first.getExpiresAtMillis() == second.getExpiresAtMillis()
 				&& first.getCreatedBy().equals(second.getCreatedBy())
 				&& first.getDetails().equals(second.getDetails())
+				&& first.getDirection() == second.getDirection()
+				&& Float.compare(first.getDirectionBearing(), second.getDirectionBearing()) == 0
 				&& first.getSyncState() == second.getSyncState()
 				&& first.getConfirmedCount() == second.getConfirmedCount()
 				&& first.getDeniedCount() == second.getDeniedCount()
@@ -205,6 +207,8 @@ public final class RoadCrewReportsRepository {
 				&& first.getCreatedAtMillis() == second.getCreatedAtMillis()
 				&& first.getCreatedBy().equals(second.getCreatedBy())
 				&& first.getDetails().equals(second.getDetails())
+				&& first.getDirection() == second.getDirection()
+				&& Float.compare(first.getDirectionBearing(), second.getDirectionBearing()) == 0
 				&& firstLocation.getLatitude() == secondLocation.getLatitude()
 				&& firstLocation.getLongitude() == secondLocation.getLongitude();
 	}
@@ -282,6 +286,10 @@ public final class RoadCrewReportsRepository {
 			object.put("expiresAtMillis", report.getExpiresAtMillis());
 			object.put("createdBy", report.getCreatedBy());
 			object.put("details", report.getDetails());
+			object.put("direction", report.getDirection().name());
+			if (report.hasDirectionBearing()) {
+				object.put("directionBearing", report.getDirectionBearing());
+			}
 			object.put("syncState", report.getSyncState().name());
 			object.put("confirmedCount", report.getConfirmedCount());
 			object.put("deniedCount", report.getDeniedCount());
@@ -318,6 +326,8 @@ public final class RoadCrewReportsRepository {
 					object.optLong("expiresAtMillis", createdAtMillis + type.getDefaultLifetimeMillis()),
 					createdBy,
 					object.optString("details", ""),
+					RoadCrewReportDirection.parse(object.optString("direction", RoadCrewReportDirection.UNKNOWN.name())),
+					object.has("directionBearing") ? (float) object.optDouble("directionBearing", Double.NaN) : Float.NaN,
 					syncState,
 					confirmedCount,
 					deniedCount,
