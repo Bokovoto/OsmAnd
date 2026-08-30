@@ -11,7 +11,6 @@ const controller = read('../src/net/osmand/plus/roadcrew/RoadCrewValidationContr
 const journal = read('../src/net/osmand/plus/roadcrew/RoadCrewTripJournal.kt');
 const ui = read('../src/net/osmand/plus/roadcrew/RoadCrewTripReview.kt');
 const hud = read('../src/net/osmand/plus/roadcrew/RoadCrewNeonHud.java');
-const background = read('../src/net/osmand/plus/roadcrew/RoadCrewTripMapBackground.java');
 
 function method(source, signature) {
   const at = source.indexOf(signature); assert.notEqual(at, -1, signature);
@@ -64,21 +63,20 @@ test('finished-course review is immediate, mandatory and not throttled by networ
 
 test('whole recorded course is the initial viewport; selected car legs do not become checks', () => {
   assert.match(ui, /if \(selected != position\) \{\s*selected = position\s*map.focus\(position\)/);
-  assert.match(ui, /map.post \{ map.overview\(\) \}/);
+  assert.match(ui, /map\.post \{[\s\S]*map\.overview\(\)[\s\S]*focus\.accept\(rows\[selected\]\)/);
   assert.match(ui, /rows.filter \{ it.included && it.question \}/);
   assert.match(ui, /rows.filter \{ !it.included \}.forEach \{ it.question = false \}/);
   assert.match(ui, /if \(i == 0\) moveTo\(x, y\) else lineTo\(x, y\)/);
   assert.doesNotMatch(ui, /calculatedRoute|routingHelper.*route/);
 });
 
-test('pending trips are visible and whole-course review uses the installed offline map', () => {
+test('pending trips are visible and trip maps remain vector while zooming', () => {
   assert.match(hud, /PENDING_REVIEW_COUNT_TAG/);
   assert.match(hud, /RoadCrewTripJournal\.pendingTripCount\(activity\)/);
   assert.match(hud, /RoadCrewReportsLayer\.showPendingTripReviews\(\)/);
-  assert.match(background, /renderer\.loadMap\(requested,[\s\S]*false\)/);
-  assert.match(background, /renderer\.getBitmap\(\)/);
-  assert.match(ui, /getPixXFromLatLon/);
-  assert.match(ui, /canvas\.drawBitmap\(bitmap/);
+  assert.match(ui, /contextCache/);
+  assert.match(ui, /canvas\.drawPath\(path/);
+  assert.doesNotMatch(ui, /drawBitmap|RoadCrewTripMapBackground/);
 });
 
 test('actual lifecycle preserves long courses and prompts immediately after navigation ends', () => {
