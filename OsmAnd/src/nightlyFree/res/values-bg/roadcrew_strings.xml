@@ -66,6 +66,12 @@
     <string name="roadcrew_nearby_help_title">Заявки за помощ наблизо</string>
     <string name="roadcrew_nearby_help_distance_unknown">Разстоянието не е известно</string>
     <string name="roadcrew_nearby_help_probably_resolved">вероятно е решено</string>
+    <string name="roadcrew_inbox_title">Известия за шофьора</string>
+    <string name="roadcrew_inbox_empty">Няма получени известия за шофьора.</string>
+    <string name="roadcrew_inbox_notification">RoadCrew известие</string>
+    <string name="roadcrew_inbox_new">НОВО</string>
+    <string name="roadcrew_inbox_mark_all_read">Маркирай всички като прочетени</string>
+    <string name="roadcrew_inbox_content_description">Известия за шофьора. Непрочетени: %1$d</string>
 
     <string name="roadcrew_profile_title">Профил на шофьора</string>
     <string name="roadcrew_profile_driver_name">Име на шофьора</string>

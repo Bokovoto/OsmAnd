@@ -601,7 +601,7 @@ public final class RoadCrewReportsSync {
 		private final String body;
 		private final long createdAtMillis;
 
-		private RoadCrewNotification(@NonNull String id, @NonNull String reportId, @NonNull String kind,
+		RoadCrewNotification(@NonNull String id, @NonNull String reportId, @NonNull String kind,
 				@NonNull String title, @NonNull String body, long createdAtMillis) {
 			this.id = id;
 			this.reportId = reportId;

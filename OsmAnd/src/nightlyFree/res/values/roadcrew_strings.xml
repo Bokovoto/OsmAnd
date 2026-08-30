@@ -66,6 +66,12 @@
     <string name="roadcrew_nearby_help_title">Help requests nearby</string>
     <string name="roadcrew_nearby_help_distance_unknown">Distance unknown</string>
     <string name="roadcrew_nearby_help_probably_resolved">probably resolved</string>
+    <string name="roadcrew_inbox_title">Driver notifications</string>
+    <string name="roadcrew_inbox_empty">No driver notifications have been received.</string>
+    <string name="roadcrew_inbox_notification">RoadCrew notification</string>
+    <string name="roadcrew_inbox_new">NEW</string>
+    <string name="roadcrew_inbox_mark_all_read">Mark all as read</string>
+    <string name="roadcrew_inbox_content_description">Driver notifications. Unread: %1$d</string>
 
     <string name="roadcrew_profile_title">Driver profile</string>
     <string name="roadcrew_profile_driver_name">Driver name</string>

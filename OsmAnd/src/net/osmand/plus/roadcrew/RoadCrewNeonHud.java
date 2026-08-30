@@ -43,6 +43,8 @@ public final class RoadCrewNeonHud {
 	private static final String NAV_ICON_TAG_PREFIX = "roadcrew_neon_nav_icon_";
 	private static final String NAV_TEXT_TAG_PREFIX = "roadcrew_neon_nav_text_";
 	private static final String LIVE_STATUS_TAG = "roadcrew_live_truck_map_status";
+	private static final String INBOX_TAG = "roadcrew_driver_notification_inbox";
+	private static final String INBOX_COUNT_TAG = "roadcrew_driver_notification_inbox_count";
 	private static final String PENDING_REVIEW_TAG = "roadcrew_pending_trip_reviews";
 	private static final String PENDING_REVIEW_COUNT_TAG = "roadcrew_pending_trip_review_count";
 	private static final String FOOTER_TAG = "roadcrew_neon_footer";
@@ -287,37 +289,51 @@ public final class RoadCrewNeonHud {
 		statusParams.rightMargin = dp(activity, 4);
 		header.addView(liveStatus, statusParams);
 
+		FrameLayout inbox = new FrameLayout(activity);
+		inbox.setTag(INBOX_TAG);
+		ImageButton inboxButton = iconButton(activity, R.drawable.ic_action_message,
+				activity.getString(R.string.roadcrew_inbox_title),
+				v -> RoadCrewNotificationInbox.show(activity), landscape ? 8 : 11);
+		inbox.addView(inboxButton, new FrameLayout.LayoutParams(
+				dp(activity, landscape ? 36 : 44), dp(activity, landscape ? 36 : 44)));
+		TextView inboxCount = notificationBadge(activity, INBOX_COUNT_TAG);
+		FrameLayout.LayoutParams badgeParams = new FrameLayout.LayoutParams(dp(activity, 18), dp(activity, 18),
+				Gravity.TOP | Gravity.END);
+		inbox.addView(inboxCount, badgeParams);
+		header.addView(inbox, new LinearLayout.LayoutParams(
+				dp(activity, landscape ? 36 : 44), dp(activity, landscape ? 36 : 44)));
+
 		FrameLayout pendingReviews = new FrameLayout(activity);
 		pendingReviews.setTag(PENDING_REVIEW_TAG);
-		ImageButton pendingButton = iconButton(activity, R.drawable.ic_action_message,
+		ImageButton pendingButton = iconButton(activity, R.drawable.ic_action_route_distance,
 				activity.getString(R.string.roadcrew_trip_pending_title),
 				v -> RoadCrewReportsLayer.showPendingTripReviews(), landscape ? 8 : 11);
 		pendingReviews.addView(pendingButton, new FrameLayout.LayoutParams(
 				dp(activity, landscape ? 36 : 44), dp(activity, landscape ? 36 : 44)));
-		TextView pendingCount = new TextView(activity);
-		pendingCount.setTag(PENDING_REVIEW_COUNT_TAG);
-		pendingCount.setTextColor(Color.WHITE);
-		pendingCount.setTextSize(9);
-		pendingCount.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-		pendingCount.setGravity(Gravity.CENTER);
-		pendingCount.setBackground(circle(ERROR, Color.WHITE, dp(activity, 1)));
-		FrameLayout.LayoutParams badgeParams = new FrameLayout.LayoutParams(dp(activity, 18), dp(activity, 18),
-				Gravity.TOP | Gravity.END);
-		pendingReviews.addView(pendingCount, badgeParams);
+		TextView pendingCount = notificationBadge(activity, PENDING_REVIEW_COUNT_TAG);
+		pendingReviews.addView(pendingCount, new FrameLayout.LayoutParams(dp(activity, 18), dp(activity, 18),
+				Gravity.TOP | Gravity.END));
 		header.addView(pendingReviews, new LinearLayout.LayoutParams(
 				dp(activity, landscape ? 36 : 44), dp(activity, landscape ? 36 : 44)));
-
-		header.addView(iconButton(activity, R.drawable.ic_action_help,
-				activity.getString(R.string.roadcrew_nearby_help_title),
-				v -> RoadCrewReportsLayer.showNearbyHelpReports(activity, activity.getApp()), landscape ? 8 : 11),
-				new LinearLayout.LayoutParams(dp(activity, landscape ? 36 : 44),
-						dp(activity, landscape ? 36 : 44)));
 		header.addView(iconButton(activity, R.drawable.ic_action_compass_north,
 				activity.getString(CompassMode.NORTH_IS_UP.getTitleId()),
 				v -> resetMapNorth(activity), landscape ? 8 : 11),
 				new LinearLayout.LayoutParams(dp(activity, landscape ? 36 : 44),
 						dp(activity, landscape ? 36 : 44)));
 		return header;
+	}
+
+	@NonNull
+	private static TextView notificationBadge(@NonNull MapActivity activity, @NonNull String tag) {
+		TextView badge = new TextView(activity);
+		badge.setTag(tag);
+		badge.setTextColor(Color.WHITE);
+		badge.setTextSize(9);
+		badge.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+		badge.setGravity(Gravity.CENTER);
+		badge.setBackground(circle(ERROR, Color.WHITE, dp(activity, 1)));
+		badge.setVisibility(View.GONE);
+		return badge;
 	}
 
 	@NonNull
@@ -450,10 +466,19 @@ public final class RoadCrewNeonHud {
 		TextView pendingCount = root.findViewWithTag(PENDING_REVIEW_COUNT_TAG);
 		if (pendingReviews != null && pendingCount != null) {
 			int count = RoadCrewTripJournal.pendingTripCount(activity);
-			pendingReviews.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+			pendingReviews.setVisibility(View.VISIBLE);
+			pendingCount.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
 			pendingCount.setText(count > 99 ? "99+" : String.valueOf(count));
 			pendingReviews.setContentDescription(activity.getString(
 					R.string.roadcrew_trip_pending_content_description, count));
+		}
+		View inbox = root.findViewWithTag(INBOX_TAG);
+		TextView inboxCount = root.findViewWithTag(INBOX_COUNT_TAG);
+		if (inbox != null && inboxCount != null) {
+			int count = RoadCrewNotificationInbox.unreadCount(activity);
+			inboxCount.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+			inboxCount.setText(count > 99 ? "99+" : String.valueOf(count));
+			inbox.setContentDescription(activity.getString(R.string.roadcrew_inbox_content_description, count));
 		}
 	}
 

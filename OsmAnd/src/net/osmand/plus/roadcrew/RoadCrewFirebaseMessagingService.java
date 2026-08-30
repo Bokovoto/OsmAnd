@@ -46,6 +46,8 @@ public class RoadCrewFirebaseMessagingService extends FirebaseMessagingService {
 		String body = valueOrDefault(data.get("body"), getString(R.string.roadcrew_push_default_body));
 		String kind = valueOrDefault(data.get("kind"), "ROADCREW_EVENT");
 		String referenceId = valueOrDefault(data.get("referenceId"), "");
+		RoadCrewNotificationInbox.storePush((OsmandApplication) getApplication(),
+				kind, referenceId, title, body);
 		showNotification(title, body, kind, referenceId);
 	}
 

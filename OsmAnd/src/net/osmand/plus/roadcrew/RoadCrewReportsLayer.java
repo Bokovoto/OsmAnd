@@ -171,6 +171,27 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 	}
 
+	static void openInboxNotification(@NonNull MapActivity mapActivity,
+			@NonNull RoadCrewNotificationInbox.Entry entry) {
+		if (activeLayer == null) {
+			mapActivity.getApp().showToastMessage(R.string.roadcrew_layer_not_ready);
+			return;
+		}
+		RoadCrewNotification notification = new RoadCrewNotification(entry.id, entry.referenceId,
+				entry.kind, entry.title, entry.body, entry.createdAt);
+		if ("HELP_NEARBY".equals(entry.kind)) {
+			activeLayer.showHelpNotificationDialog(mapActivity, notification);
+		} else if ("HELP_CHAT_MESSAGE".equals(entry.kind)) {
+			activeLayer.showHelpChatMessageNotificationDialog(mapActivity, notification);
+		} else if ("DIRECT_CHAT_MESSAGE".equals(entry.kind)) {
+			activeLayer.showDirectChatNotificationDialog(mapActivity, notification);
+		} else if ("PLATE_SAFETY_ALERT".equals(entry.kind)) {
+			activeLayer.showPlateSafetyAlertDialog(mapActivity, notification);
+		} else {
+			activeLayer.showGenericNotificationDialog(mapActivity, notification);
+		}
+	}
+
 	static void showPlaceChannels() {
 		if (activeLayer != null && activeLayer.placesController != null) {
 			activeLayer.placesController.showHome();
@@ -196,6 +217,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 		intent.removeExtra(PUSH_KIND_EXTRA);
 		intent.removeExtra(PUSH_REFERENCE_ID_EXTRA);
+		RoadCrewNotificationInbox.markByReference(mapActivity, kind, referenceId);
+		RoadCrewNeonHud.apply(mapActivity);
 		activeLayer.openPushReference(mapActivity, kind, referenceId);
 		return true;
 	}
@@ -1023,6 +1046,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		RoadCrewReportsSync.fetchNotifications(getApplication(), new RoadCrewReportsSync.NotificationsCallback() {
 			@Override
 			public void onNotifications(@NonNull List<RoadCrewNotification> notifications) {
+				RoadCrewNotificationInbox.store(getApplication(), notifications);
+				RoadCrewNeonHud.apply(mapActivity);
 				for (RoadCrewNotification notification : notifications) {
 					if ("HELP_NEARBY".equals(notification.getKind())
 							&& !shownNotificationIds.contains(notification.getId())) {
@@ -1075,6 +1100,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
 		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_later), false, v -> dialog.dismiss());
 		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_join_chat), true, v -> {
+			acknowledgeNotification(mapActivity, notification.getId());
 			dialog.dismiss();
 			joinAndOpenHelpChat(mapActivity, notification.getReportId());
 		});
@@ -1091,8 +1117,12 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		RoadCrewUi.addBody(mapActivity, content, notification.getBody());
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
-		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_ok), false, v -> dialog.dismiss());
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_ok), false, v -> {
+			acknowledgeNotification(mapActivity, notification.getId());
+			dialog.dismiss();
+		});
 		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_open_chat), true, v -> {
+			acknowledgeNotification(mapActivity, notification.getId());
 			dialog.dismiss();
 			openPlateAlertChat(mapActivity, notification.getId());
 		});
@@ -1111,6 +1141,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
 		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_later), false, v -> dialog.dismiss());
 		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_open_chat), true, v -> {
+			acknowledgeNotification(mapActivity, notification.getId());
 			dialog.dismiss();
 			showDirectChatDialog(mapActivity, notification.getReportId());
 		});
@@ -1129,6 +1160,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
 		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_later), false, v -> dialog.dismiss());
 		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_open_chat), true, v -> {
+			acknowledgeNotification(mapActivity, notification.getId());
 			dialog.dismiss();
 			joinAndOpenHelpChat(mapActivity, notification.getReportId());
 		});
@@ -1146,6 +1178,26 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		} else if ("PLATE_SAFETY_ALERT".equals(kind)) {
 			openPlateAlertChat(mapActivity, referenceId);
 		}
+	}
+
+	private void acknowledgeNotification(@NonNull MapActivity mapActivity, @NonNull String id) {
+		RoadCrewNotificationInbox.markRead(mapActivity, id);
+		RoadCrewNeonHud.apply(mapActivity);
+	}
+
+	private void showGenericNotificationDialog(@NonNull MapActivity mapActivity,
+			@NonNull RoadCrewNotification notification) {
+		notificationPromptVisible = true;
+		dismissActiveNotificationDialog();
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity,
+				notification.getTitle().isEmpty() ? mapActivity.getString(R.string.roadcrew_inbox_notification)
+						: notification.getTitle());
+		RoadCrewUi.addBody(mapActivity, content, notification.getBody());
+		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		RoadCrewUi.addFullWidthButton(mapActivity, content, mapActivity.getString(R.string.shared_string_close),
+				false, v -> dialog.dismiss());
+		setActiveNotificationDialog(dialog);
+		dialog.show();
 	}
 
 	private void setActiveNotificationDialog(@NonNull AlertDialog dialog) {
