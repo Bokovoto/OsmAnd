@@ -2,9 +2,9 @@
 <resources>
     <string name="roadcrew_report_direction_title">За коя посока?</string>
     <string name="roadcrew_report_direction_body">Изберете за коя посока важи сигналът „%1$s“.</string>
-    <string name="roadcrew_report_direction_mine">↑ Моята посока</string>
-    <string name="roadcrew_report_direction_opposite">↓ Насрещната посока</string>
-    <string name="roadcrew_report_direction_both">↕ И двете посоки</string>
+    <string name="roadcrew_report_direction_mine">Моята посока</string>
+    <string name="roadcrew_report_direction_opposite">Насрещната посока</string>
+    <string name="roadcrew_report_direction_both">И двете посоки</string>
     <string name="roadcrew_report_direction_unknown">Без определена посока</string>
     <string name="roadcrew_report_direction_no_heading">GPS няма надеждна посока на движение. Отбележете двете посоки или изпратете без посока.</string>
     <string name="roadcrew_report_direction_detail_one">Посока: по стрелката на картата</string>

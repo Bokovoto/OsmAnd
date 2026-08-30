@@ -53,6 +53,12 @@ public class RoadCrewReportButton extends MapButton {
 			"OTHER"
 	};
 	private static final long LIVE_STATUS_REFRESH_MILLIS = 2_000L;
+	private enum DirectionVisual {
+		FORWARD,
+		OPPOSITE,
+		BOTH,
+		UNKNOWN
+	}
 
 	private final ButtonPositionSize defaultPositionSize;
 	private final Paint liveStatusPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -551,27 +557,34 @@ public class RoadCrewReportButton extends MapButton {
 				: mapActivity.getString(R.string.roadcrew_report_direction_no_heading);
 		RoadCrewUi.addBody(mapActivity, content, directionMessage);
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		GridLayout grid = new GridLayout(mapActivity);
+		grid.setColumnCount(2);
+		grid.setUseDefaultMargins(false);
+		LinearLayout.LayoutParams gridParams = new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		gridParams.topMargin = dp(10);
+		content.addView(grid, gridParams);
 		if (Float.isFinite(heading)) {
-			RoadCrewUi.addFullWidthButton(mapActivity, content,
-					mapActivity.getString(R.string.roadcrew_report_direction_mine), true, v -> {
+			addDirectionTile(grid, mapActivity.getString(R.string.roadcrew_report_direction_mine),
+					DirectionVisual.FORWARD, true, () -> {
 						dialog.dismiss();
 						saveReport(type, details, RoadCrewReportDirection.ONE_DIRECTION, heading);
 					});
-			RoadCrewUi.addFullWidthButton(mapActivity, content,
-					mapActivity.getString(R.string.roadcrew_report_direction_opposite), false, v -> {
+			addDirectionTile(grid, mapActivity.getString(R.string.roadcrew_report_direction_opposite),
+					DirectionVisual.OPPOSITE, false, () -> {
 						dialog.dismiss();
 						saveReport(type, details, RoadCrewReportDirection.ONE_DIRECTION,
 								normalizeBearing(heading + 180));
 					});
 		}
-		RoadCrewUi.addFullWidthButton(mapActivity, content,
-				mapActivity.getString(R.string.roadcrew_report_direction_both), false, v -> {
+		addDirectionTile(grid, mapActivity.getString(R.string.roadcrew_report_direction_both),
+				DirectionVisual.BOTH, !Float.isFinite(heading), () -> {
 					dialog.dismiss();
 					saveReport(type, details, RoadCrewReportDirection.BOTH_DIRECTIONS, heading);
 				});
 		if (!Float.isFinite(heading)) {
-			RoadCrewUi.addFullWidthButton(mapActivity, content,
-					mapActivity.getString(R.string.roadcrew_report_direction_unknown), false, v -> {
+			addDirectionTile(grid, mapActivity.getString(R.string.roadcrew_report_direction_unknown),
+					DirectionVisual.UNKNOWN, false, () -> {
 						dialog.dismiss();
 						saveReport(type, details, RoadCrewReportDirection.UNKNOWN, Float.NaN);
 					});
@@ -580,6 +593,41 @@ public class RoadCrewReportButton extends MapButton {
 		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_cancel),
 				false, v -> dialog.dismiss());
 		dialog.show();
+	}
+
+	private void addDirectionTile(@NonNull GridLayout grid, @NonNull String label,
+			@NonNull DirectionVisual visual, boolean primary, @NonNull Runnable action) {
+		LinearLayout tile = new LinearLayout(mapActivity);
+		tile.setOrientation(LinearLayout.VERTICAL);
+		tile.setGravity(Gravity.CENTER);
+		tile.setPadding(dp(8), dp(10), dp(8), dp(10));
+		tile.setMinimumHeight(dp(142));
+		int borderColor = primary ? RoadCrewUi.PRIMARY : 0xff555b61;
+		int backgroundColor = primary ? 0xff173f34 : RoadCrewUi.SURFACE;
+		tile.setBackground(RoadCrewUi.roundRect(backgroundColor, dp(18), borderColor, dp(primary ? 2 : 1)));
+		tile.setOnClickListener(v -> action.run());
+
+		DirectionIconView icon = new DirectionIconView(mapActivity, visual);
+		tile.addView(icon, new LinearLayout.LayoutParams(dp(104), dp(72)));
+
+		TextView text = new TextView(mapActivity);
+		text.setText(label);
+		text.setTextColor(RoadCrewUi.TEXT);
+		text.setTextSize(16);
+		text.setGravity(Gravity.CENTER);
+		text.setTypeface(text.getTypeface(), android.graphics.Typeface.BOLD);
+		text.setMaxLines(2);
+		LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		textParams.topMargin = dp(5);
+		tile.addView(text, textParams);
+
+		GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+		params.width = 0;
+		params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+		params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+		params.setMargins(dp(4), dp(4), dp(4), dp(4));
+		grid.addView(tile, params);
 	}
 
 	private void saveReport(@NonNull RoadCrewReportType type, @NonNull String details,
@@ -618,5 +666,66 @@ public class RoadCrewReportButton extends MapButton {
 
 	private int dp(float value) {
 		return (int) (value * getResources().getDisplayMetrics().density);
+	}
+
+	private static final class DirectionIconView extends View {
+		private final DirectionVisual visual;
+		private final Paint roadPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		private final Paint arrowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		private final Paint questionPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+		DirectionIconView(@NonNull Context context, @NonNull DirectionVisual visual) {
+			super(context);
+			this.visual = visual;
+			float density = context.getResources().getDisplayMetrics().density;
+			roadPaint.setColor(0xff7c8782);
+			roadPaint.setStyle(Paint.Style.STROKE);
+			roadPaint.setStrokeWidth(2.4f * density);
+			roadPaint.setStrokeCap(Paint.Cap.ROUND);
+			arrowPaint.setColor(0xff22d394);
+			arrowPaint.setStyle(Paint.Style.STROKE);
+			arrowPaint.setStrokeWidth(4f * density);
+			arrowPaint.setStrokeCap(Paint.Cap.ROUND);
+			arrowPaint.setStrokeJoin(Paint.Join.ROUND);
+			questionPaint.setColor(0xff22d394);
+			questionPaint.setTextAlign(Paint.Align.CENTER);
+			questionPaint.setTextSize(31f * density);
+			questionPaint.setFakeBoldText(true);
+		}
+
+		@Override
+		protected void onDraw(@NonNull Canvas canvas) {
+			super.onDraw(canvas);
+			float density = getResources().getDisplayMetrics().density;
+			float centerX = getWidth() / 2f;
+			float top = 7f * density;
+			float bottom = getHeight() - 7f * density;
+			float laneOffset = 25f * density;
+			canvas.drawLine(centerX - laneOffset, bottom, centerX - laneOffset * 0.72f, top, roadPaint);
+			canvas.drawLine(centerX + laneOffset, bottom, centerX + laneOffset * 0.72f, top, roadPaint);
+			if (visual == DirectionVisual.UNKNOWN) {
+				Paint.FontMetrics metrics = questionPaint.getFontMetrics();
+				float baseline = getHeight() / 2f - (metrics.ascent + metrics.descent) / 2f;
+				canvas.drawText("?", centerX, baseline, questionPaint);
+				return;
+			}
+			if (visual == DirectionVisual.FORWARD || visual == DirectionVisual.BOTH) {
+				drawArrow(canvas, centerX - 10f * density, bottom - 4f * density,
+						centerX - 10f * density, top + 3f * density, density);
+			}
+			if (visual == DirectionVisual.OPPOSITE || visual == DirectionVisual.BOTH) {
+				drawArrow(canvas, centerX + 10f * density, top + 3f * density,
+						centerX + 10f * density, bottom - 4f * density, density);
+			}
+		}
+
+		private void drawArrow(@NonNull Canvas canvas, float startX, float startY,
+				float endX, float endY, float density) {
+			canvas.drawLine(startX, startY, endX, endY, arrowPaint);
+			float direction = Math.signum(endY - startY);
+			float wing = 7f * density;
+			canvas.drawLine(endX, endY, endX - wing, endY - direction * wing, arrowPaint);
+			canvas.drawLine(endX, endY, endX + wing, endY - direction * wing, arrowPaint);
+		}
 	}
 }

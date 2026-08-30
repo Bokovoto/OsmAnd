@@ -13,6 +13,9 @@ test('report creation offers three directional scopes and normalizes the opposit
   assert.match(button, /roadcrew_report_direction_opposite/);
   assert.match(button, /roadcrew_report_direction_both/);
   assert.match(button, /normalizeBearing\(heading \+ 180\)/);
+  assert.match(button, /addDirectionTile\(grid/);
+  assert.match(button, /class DirectionIconView extends View/);
+  assert.match(button, /grid\.setColumnCount\(2\)/);
 });
 
 test('direction survives local persistence and API synchronization', () => {

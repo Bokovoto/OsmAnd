@@ -2,9 +2,9 @@
 <resources>
     <string name="roadcrew_report_direction_title">Which direction?</string>
     <string name="roadcrew_report_direction_body">Choose where this %1$s report applies.</string>
-    <string name="roadcrew_report_direction_mine">↑ My direction</string>
-    <string name="roadcrew_report_direction_opposite">↓ Opposite direction</string>
-    <string name="roadcrew_report_direction_both">↕ Both directions</string>
+    <string name="roadcrew_report_direction_mine">My direction</string>
+    <string name="roadcrew_report_direction_opposite">Opposite direction</string>
+    <string name="roadcrew_report_direction_both">Both directions</string>
     <string name="roadcrew_report_direction_unknown">Direction not specified</string>
     <string name="roadcrew_report_direction_no_heading">GPS has no reliable travel direction. Mark both directions or send without a direction.</string>
     <string name="roadcrew_report_direction_detail_one">Direction: follow the arrow on the map</string>
