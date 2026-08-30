@@ -710,12 +710,12 @@ public class RoadCrewReportButton extends MapButton {
 				return;
 			}
 			if (visual == DirectionVisual.FORWARD || visual == DirectionVisual.BOTH) {
-				drawArrow(canvas, centerX - 10f * density, bottom - 4f * density,
-						centerX - 10f * density, top + 3f * density, density);
+				drawArrow(canvas, centerX + 10f * density, bottom - 4f * density,
+						centerX + 10f * density, top + 3f * density, density);
 			}
 			if (visual == DirectionVisual.OPPOSITE || visual == DirectionVisual.BOTH) {
-				drawArrow(canvas, centerX + 10f * density, top + 3f * density,
-						centerX + 10f * density, bottom - 4f * density, density);
+				drawArrow(canvas, centerX - 10f * density, top + 3f * density,
+						centerX - 10f * density, bottom - 4f * density, density);
 			}
 		}
 

@@ -16,6 +16,8 @@ test('report creation offers three directional scopes and normalizes the opposit
   assert.match(button, /addDirectionTile\(grid/);
   assert.match(button, /class DirectionIconView extends View/);
   assert.match(button, /grid\.setColumnCount\(2\)/);
+  assert.match(button, /DirectionVisual\.FORWARD[\s\S]*centerX \+ 10f \* density/);
+  assert.match(button, /DirectionVisual\.OPPOSITE[\s\S]*centerX - 10f \* density/);
 });
 
 test('direction survives local persistence and API synchronization', () => {
