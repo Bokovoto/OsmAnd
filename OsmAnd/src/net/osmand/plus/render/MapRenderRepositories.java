@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import net.osmand.NativeLibrary.NativeSearchResult;
 import net.osmand.PlatformUtil;
@@ -641,6 +642,11 @@ public class MapRenderRepositories {
 	}
 
 	public synchronized void loadMap(RotatedTileBox tileRect, MapTileDownloader mapTileDownloader) {
+		loadMap(tileRect, mapTileDownloader, null);
+	}
+
+	public synchronized void loadMap(RotatedTileBox tileRect, MapTileDownloader mapTileDownloader,
+			@Nullable Boolean nightModeOverride) {
 		boolean prevInterrupted = interrupted;
 		interrupted = false;
 		// added to avoid zoomAnimation != 0 which produces wrong map position on the screen
@@ -653,7 +659,8 @@ public class MapRenderRepositories {
 		}
 		try {
 			// find selected rendering type
-			boolean nightMode = app.getDaynightHelper().isNightMode(ThemeUsageContext.MAP);
+			boolean nightMode = nightModeOverride != null ? nightModeOverride
+					: app.getDaynightHelper().isNightMode(ThemeUsageContext.MAP);
 
 			// boolean moreDetail = prefs.SHOW_MORE_MAP_DETAIL.get();
 			RenderingRulesStorage storage = app.getRendererRegistry().getCurrentSelectedRenderer();

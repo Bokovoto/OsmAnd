@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog
 import net.osmand.plus.R
 import net.osmand.plus.OsmandApplication
 import net.osmand.plus.activities.MapActivity
+import net.osmand.data.RotatedTileBox
 import net.osmand.util.MapUtils
 import org.json.JSONArray
 import java.text.DateFormat
@@ -189,6 +190,8 @@ internal class RoadCrewTripReview(
 /** Exact OBF road geometry captured with each observation; never joins gaps with invented roads. */
 private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJournal.Row>) : View(context) {
     private data class GeoPoint(val latitude: Double, val longitude: Double)
+    private data class MapFrame(val bitmap: Bitmap, val tileBox: RotatedTileBox,
+        val lines: List<List<PointF>>, val selectedIndex: Int)
     var onSection: (Int, Boolean) -> Unit = { _, _ -> }
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val app = context.applicationContext as OsmandApplication
@@ -206,14 +209,16 @@ private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJo
         PointF(((point.longitude - centerLon) * longitudeScale).toFloat(),
             ((centerLat - point.latitude) * 111320).toFloat())
     } }
-    private var overviewLines: List<List<PointF>>? = null
-    private var mapBitmap: Bitmap? = null
-    private var mapBackground: RoadCrewTripMapBackground? = null
+    private var overviewFrame: MapFrame? = null
+    private var focusFrame: MapFrame? = null
+    private var overviewBackground: RoadCrewTripMapBackground? = null
+    private var focusBackground: RoadCrewTripMapBackground? = null
+    private var focusRequest = 0
     private var zoom = 1f
     private var offsetX = 0f
     private var offsetY = 0f
     private var selected = -1
-    private var contextRoads: List<Pair<List<PointF>, String>> = emptyList()
+    private var contextRoads: List<Pair<List<GeoPoint>, String>> = emptyList()
     private var downX = 0f
     private var downY = 0f
     private var lastX = 0f
@@ -233,27 +238,37 @@ private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJo
     })
 
     init {
-        setBackgroundColor(0xff131d20.toInt())
+        setBackgroundColor(0xffecebe4.toInt())
         contentDescription = context.getString(R.string.roadcrew_trip_review_map)
     }
 
     fun overview() {
         selected = -1
         contextRoads = emptyList()
-        if (mapBitmap != null && overviewLines != null) {
+        if (overviewFrame != null) {
             zoom = 1f; offsetX = 0f; offsetY = 0f
         } else fit(lines.flatten())
         invalidate()
     }
-    fun focus(index: Int) { selected = index; contextRoads = emptyList(); fit(lines[index]); invalidate() }
-    fun select(index: Int) { selected = index; contextRoads = emptyList(); invalidate() }
+    fun focus(index: Int) {
+        selected = index
+        contextRoads = emptyList()
+        if (focusFrame?.selectedIndex == index) {
+            zoom = 1f; offsetX = 0f; offsetY = 0f
+        } else {
+            fit(lines[index])
+            loadFocus(index)
+        }
+        invalidate()
+    }
+    fun select(index: Int) { focus(index) }
 
     fun setContext(seq: Long, data: RoadCrewValidationMapView.MapData?) {
         if (selected < 0 || rows[selected].seq != seq || data == null) return
         contextRoads = data.roads.map { road ->
-            List(road.pointsLength) { i -> PointF(
-                ((MapUtils.get31LongitudeX(road.getPoint31XTile(i)) - centerLon) * longitudeScale).toFloat(),
-                ((centerLat - MapUtils.get31LatitudeY(road.getPoint31YTile(i))) * 111320).toFloat())
+            List(road.pointsLength) { i -> GeoPoint(
+                MapUtils.get31LatitudeY(road.getPoint31YTile(i)),
+                MapUtils.get31LongitudeX(road.getPoint31XTile(i)))
             } to (road.name ?: "")
         }
         invalidate()
@@ -272,62 +287,102 @@ private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJo
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         overview()
-        if (w <= 0 || h <= 0 || mapBackground != null) return
+        if (w <= 0 || h <= 0 || overviewBackground != null) return
         val all = geoLines.flatten()
         if (all.isEmpty()) return
-        mapBackground = RoadCrewTripMapBackground(app).also { loader ->
+        overviewBackground = RoadCrewTripMapBackground(app).also { loader ->
             loader.load(all.maxOf { it.latitude }, all.minOf { it.longitude },
                 all.minOf { it.latitude }, all.maxOf { it.longitude }, w, h) { result ->
                 if (!isAttachedToWindow) {
                     result.bitmap.recycle()
                     return@load
                 }
-                mapBitmap?.recycle()
-                mapBitmap = result.bitmap
-                overviewLines = geoLines.map { line -> line.map { point ->
-                    PointF(result.tileBox.getPixXFromLatLon(point.latitude, point.longitude),
-                        result.tileBox.getPixYFromLatLon(point.latitude, point.longitude))
-                } }
+                overviewFrame?.bitmap?.recycle()
+                overviewFrame = frame(result, -1)
                 if (selected < 0) overview()
             }
         }
     }
 
+    private fun loadFocus(index: Int) {
+        if (width <= 0 || height <= 0 || geoLines[index].isEmpty()) return
+        val request = ++focusRequest
+        focusBackground?.cancel()
+        focusFrame?.bitmap?.recycle()
+        focusFrame = null
+        val points = geoLines[index]
+        focusBackground = RoadCrewTripMapBackground(app).also { loader ->
+            loader.load(points.maxOf { it.latitude }, points.minOf { it.longitude },
+                points.minOf { it.latitude }, points.maxOf { it.longitude }, width, height) { result ->
+                if (!isAttachedToWindow || request != focusRequest || selected != index) {
+                    result.bitmap.recycle()
+                    return@load
+                }
+                focusFrame = frame(result, index)
+                zoom = 1f; offsetX = 0f; offsetY = 0f
+                invalidate()
+            }
+        }
+    }
+
+    private fun frame(result: RoadCrewTripMapBackground.Result, index: Int): MapFrame =
+        MapFrame(result.bitmap, result.tileBox, geoLines.map { line -> line.map { point ->
+            PointF(result.tileBox.getPixXFromLatLon(point.latitude, point.longitude),
+                result.tileBox.getPixYFromLatLon(point.latitude, point.longitude))
+        } }, index)
+
     override fun onDetachedFromWindow() {
-        mapBackground?.cancel()
-        mapBitmap?.recycle()
-        mapBitmap = null
+        overviewBackground?.cancel()
+        focusBackground?.cancel()
+        overviewFrame?.bitmap?.recycle()
+        focusFrame?.bitmap?.recycle()
+        overviewFrame = null
+        focusFrame = null
         super.onDetachedFromWindow()
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        val displayedLines = if (selected < 0) overviewLines ?: lines else lines
-        if (selected < 0) mapBitmap?.let { bitmap ->
+        val activeFrame = if (selected < 0) overviewFrame
+            else focusFrame?.takeIf { it.selectedIndex == selected }
+        val displayedLines = activeFrame?.lines ?: lines
+        activeFrame?.bitmap?.let { bitmap ->
             canvas.save()
             canvas.translate(offsetX, offsetY)
             canvas.scale(zoom, zoom)
             canvas.drawBitmap(bitmap, 0f, 0f, paint)
             canvas.restore()
         }
+        val displayedContext = contextRoads.map { (points, name) ->
+            points.map { point -> activeFrame?.tileBox?.let { tileBox ->
+                PointF(tileBox.getPixXFromLatLon(point.latitude, point.longitude),
+                    tileBox.getPixYFromLatLon(point.latitude, point.longitude))
+            } ?: PointF(((point.longitude - centerLon) * longitudeScale).toFloat(),
+                ((centerLat - point.latitude) * 111320).toFloat()) } to name
+        }
         paint.style = Paint.Style.STROKE
         paint.strokeJoin = Paint.Join.ROUND
         paint.strokeCap = Paint.Cap.ROUND
-        paint.strokeWidth = dp(1.5f)
-        paint.color = 0xff40545a.toInt()
-        for ((points, _) in contextRoads) canvas.drawPath(path(points), paint)
+        if (activeFrame == null) {
+            paint.strokeWidth = dp(4f)
+            paint.color = 0xffaeb3b0.toInt()
+            for ((points, _) in displayedContext) canvas.drawPath(path(points), paint)
+            paint.strokeWidth = dp(2f)
+            paint.color = 0xffffffff.toInt()
+            for ((points, _) in displayedContext) canvas.drawPath(path(points), paint)
+        }
         for ((index, line) in displayedLines.withIndex()) {
             val path = path(line)
-            if (index == selected) { paint.color = RoadCrewUi.TEXT; paint.strokeWidth = dp(10f); canvas.drawPath(path, paint) }
+            if (index == selected) { paint.color = 0xff243238.toInt(); paint.strokeWidth = dp(10f); canvas.drawPath(path, paint) }
             paint.color = if (rows[index].included) RoadCrewUi.PRIMARY else RoadCrewUi.DANGER
             paint.strokeWidth = dp(6f)
             canvas.drawPath(path, paint)
         }
         paint.style = Paint.Style.FILL
         paint.textSize = dp(12f)
-        paint.color = RoadCrewUi.TEXT
+        paint.color = 0xff263238.toInt()
         val labels = ArrayList<RectF>()
-        for ((points, name) in contextRoads) {
+        for ((points, name) in displayedContext) {
             if (name.isEmpty() || name.length > 35 || points.isEmpty()) continue
             val p = points[points.size / 2]
             val x = p.x * zoom + offsetX; val y = p.y * zoom + offsetY
@@ -358,7 +413,7 @@ private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJo
     private fun marker(canvas: Canvas, p: PointF, label: String) {
         val x = p.x * zoom + offsetX; val y = p.y * zoom + offsetY
         if (x < 0 || y < 0 || x > width || y > height) return
-        paint.color = RoadCrewUi.TEXT
+        paint.color = 0xff263238.toInt()
         canvas.drawCircle(x, y, dp(4f), paint)
         canvas.drawText(label, (x + dp(8f)).coerceIn(dp(6f), (width - paint.measureText(label) - dp(6f)).coerceAtLeast(dp(6f))),
             (y - dp(8f)).coerceIn(dp(20f), height - dp(24f)), paint)
@@ -392,7 +447,9 @@ private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJo
     override fun performClick(): Boolean { super.performClick(); return true }
 
     private fun pick(x: Float, y: Float) {
-        val displayedLines = if (selected < 0) overviewLines ?: lines else lines
+        val activeFrame = if (selected < 0) overviewFrame
+            else focusFrame?.takeIf { it.selectedIndex == selected }
+        val displayedLines = activeFrame?.lines ?: lines
         val distances = displayedLines.mapIndexed { index, points ->
             val distance = points.zipWithNext { a, b ->
                 val ax = a.x * zoom + offsetX; val ay = a.y * zoom + offsetY

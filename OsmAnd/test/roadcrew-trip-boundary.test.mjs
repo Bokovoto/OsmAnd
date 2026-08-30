@@ -75,7 +75,7 @@ test('pending trips are visible and whole-course review uses the installed offli
   assert.match(hud, /PENDING_REVIEW_COUNT_TAG/);
   assert.match(hud, /RoadCrewTripJournal\.pendingTripCount\(activity\)/);
   assert.match(hud, /RoadCrewReportsLayer\.showPendingTripReviews\(\)/);
-  assert.match(background, /updateRendererMap\(requested,[\s\S]*true\)/);
+  assert.match(background, /renderer\.loadMap\(requested,[\s\S]*false\)/);
   assert.match(background, /renderer\.getBitmap\(\)/);
   assert.match(ui, /getPixXFromLatLon/);
   assert.match(ui, /canvas\.drawBitmap\(bitmap/);

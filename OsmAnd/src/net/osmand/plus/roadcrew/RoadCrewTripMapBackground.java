@@ -1,6 +1,7 @@
 package net.osmand.plus.roadcrew;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,10 +9,8 @@ import androidx.annotation.Nullable;
 import net.osmand.data.RotatedTileBox;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.render.MapRenderRepositories;
-import net.osmand.plus.resources.ResourceManager;
-import net.osmand.plus.settings.enums.ThemeUsageContext;
-import net.osmand.plus.views.layers.base.OsmandMapLayer.DrawSettings;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 /** Renders the installed offline map for a whole-course review. */
@@ -28,6 +27,7 @@ final class RoadCrewTripMapBackground {
 	}
 
 	private final OsmandApplication app;
+	private final ExecutorService executor = Executors.newSingleThreadExecutor();
 	private volatile boolean cancelled;
 
 	RoadCrewTripMapBackground(@NonNull OsmandApplication app) {
@@ -36,6 +36,7 @@ final class RoadCrewTripMapBackground {
 
 	void cancel() {
 		cancelled = true;
+		executor.shutdownNow();
 	}
 
 	void load(double top, double left, double bottom, double right, int width, int height,
@@ -58,17 +59,23 @@ final class RoadCrewTripMapBackground {
 		}
 		if (tileBox.getZoom() > 4) { tileBox.setZoom(tileBox.getZoom() - 1); }
 
-		ResourceManager resources = app.getResourceManager();
-		MapRenderRepositories renderer = resources.getRenderer();
-		boolean night = app.getDaynightHelper().isNightMode(ThemeUsageContext.APP);
-		resources.updateRenderedMapNeeded(tileBox, new DrawSettings(night, true));
 		RotatedTileBox requested = tileBox.copy();
-		resources.updateRendererMap(requested, interrupted -> app.runInUIThread(() -> {
-			if (cancelled || interrupted) { return; }
-			Bitmap rendered = renderer.getBitmap();
-			Bitmap copy = copy(rendered);
-			if (copy != null && !cancelled) { completed.accept(new Result(copy, requested)); }
-		}), true);
+		executor.execute(() -> {
+			try {
+				MapRenderRepositories renderer = app.getResourceManager().getRenderer();
+				// The RoadCrew navigation map is intentionally dark. Reviews use the classic day style.
+				renderer.loadMap(requested, app.getResourceManager().getMapTileDownloader(), false);
+				Bitmap copy = copy(renderer.getBitmap());
+				app.runInUIThread(() -> {
+					if (copy != null && !cancelled) { completed.accept(new Result(copy, requested)); }
+					else if (copy != null) { copy.recycle(); }
+				});
+			} catch (RuntimeException e) {
+				Log.w("RoadCrewTripMap", "Classic map rendering failed", e);
+			} finally {
+				executor.shutdown();
+			}
+		});
 	}
 
 	@Nullable
