@@ -322,7 +322,7 @@ final class RoadCrewValidationController {
 				if (closed || request != tripMapRequest.get() || !editor[0].dialog.isShowing()) { return; }
 				executor.execute(() -> {
 					try {
-						RoadCrewValidationMapView.MapData map = RoadCrewValidationMapView.load(app,
+						RoadCrewValidationMapView.MapData map = RoadCrewValidationMapView.loadTripContext(app,
 								section.record.getSegmentKey(), () -> closed || request != tripMapRequest.get()
 										|| !RoadCrewMapObservationConsent.isEnabled(app));
 						handler.post(() -> {

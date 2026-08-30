@@ -20,11 +20,15 @@ import net.osmand.util.MapUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.BooleanSupplier;
 
 /** Offline road geometry only; an unresolved segment is never drawn as a guessed straight line. */
 final class RoadCrewValidationMapView extends View {
+	private static final int MAP_OBJECT_LIMIT = 6_000;
+	private static final double[] TRIP_CONTEXT_RADII_METERS = {4_000, 2_500, 1_500};
 
 	static final class MapData {
 		final List<RouteDataObject> roads;
@@ -50,6 +54,39 @@ final class RoadCrewValidationMapView extends View {
 
 	static MapData load(OsmandApplication app, RoadCrewSegmentIdentity.SegmentKey key,
 			BooleanSupplier cancelled) throws IOException {
+		List<BinaryMapIndexReader> readers = routingReaders(app);
+		double radius = Math.min(4_000, Math.max(600, key.getLengthMeters() + 200));
+		return load(readers, key, radius, cancelled);
+	}
+
+	/**
+	 * Loads a wider vector-road context for the interactive trip review. Dense areas
+	 * progressively fall back to smaller bounds instead of returning a truncated map.
+	 */
+	static MapData loadTripContext(OsmandApplication app, RoadCrewSegmentIdentity.SegmentKey key,
+			BooleanSupplier cancelled) throws IOException {
+		List<BinaryMapIndexReader> readers = routingReaders(app);
+		double minimumRadius = Math.min(4_000, Math.max(600, key.getLengthMeters() + 200));
+		Set<Double> radii = new LinkedHashSet<>();
+		for (double radius : TRIP_CONTEXT_RADII_METERS) {
+			if (radius >= minimumRadius) {
+				radii.add(radius);
+			}
+		}
+		radii.add(minimumRadius);
+		for (double radius : radii) {
+			if (cancelled.getAsBoolean()) {
+				return null;
+			}
+			MapData data = load(readers, key, radius, cancelled);
+			if (data != null) {
+				return data;
+			}
+		}
+		return null;
+	}
+
+	private static List<BinaryMapIndexReader> routingReaders(OsmandApplication app) {
 		List<BinaryMapIndexReader> readers = new ArrayList<>();
 		for (BinaryMapReaderResource resource : app.getResourceManager().getFileReaders()) {
 			if (resource.isUseForRouting()) {
@@ -59,11 +96,17 @@ final class RoadCrewValidationMapView extends View {
 				}
 			}
 		}
+		return readers;
+	}
+
+	private static MapData load(List<BinaryMapIndexReader> readers,
+			RoadCrewSegmentIdentity.SegmentKey key, double radiusMeters,
+			BooleanSupplier cancelled) throws IOException {
 		RoadCrewObfSegmentLoader.LoadResult result = RoadCrewObfSegmentLoader.load(
 				readers.toArray(new BinaryMapIndexReader[0]),
 				(key.getFromLatitude() + key.getToLatitude()) / 2,
 				(key.getFromLongitude() + key.getToLongitude()) / 2,
-				Math.min(4000, Math.max(600, key.getLengthMeters() + 200)), 6000, cancelled::getAsBoolean);
+				radiusMeters, MAP_OBJECT_LIMIT, cancelled::getAsBoolean);
 		if (result.isCancelled() || result.isTruncated()) {
 			return null;
 		}

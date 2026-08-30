@@ -77,6 +77,7 @@ test('pending trips are visible and trip maps remain vector while zooming', () =
   assert.match(ui, /contextCache/);
   assert.match(ui, /canvas\.drawPath\(path/);
   assert.doesNotMatch(ui, /drawBitmap|RoadCrewTripMapBackground/);
+  assert.match(controller, /RoadCrewValidationMapView\.loadTripContext\(app,/);
 });
 
 test('actual lifecycle preserves long courses and prompts immediately after navigation ends', () => {

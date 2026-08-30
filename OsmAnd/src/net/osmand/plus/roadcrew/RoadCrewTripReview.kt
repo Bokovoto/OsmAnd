@@ -212,7 +212,13 @@ private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJo
     private var offsetY = 0f
     private var selected = -1
     private var contextRoads: List<Pair<List<GeoPoint>, String>> = emptyList()
-    private val contextCache = LinkedHashMap<Long, List<Pair<List<GeoPoint>, String>>>()
+    private val contextCache = object : LinkedHashMap<Long, List<Pair<List<GeoPoint>, String>>>(
+        MAX_CONTEXT_CACHE_SIZE, 0.75f, true
+    ) {
+        override fun removeEldestEntry(
+            eldest: MutableMap.MutableEntry<Long, List<Pair<List<GeoPoint>, String>>>?
+        ): Boolean = size > MAX_CONTEXT_CACHE_SIZE
+    }
     private var downX = 0f
     private var downY = 0f
     private var lastX = 0f
@@ -391,4 +397,8 @@ private class JourneyMap(context: Context, private val rows: List<RoadCrewTripJo
     }
 
     private fun dp(value: Float): Float = value * resources.displayMetrics.density
+
+    private companion object {
+        const val MAX_CONTEXT_CACHE_SIZE = 3
+    }
 }
