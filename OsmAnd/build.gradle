@@ -36,10 +36,10 @@ android {
 		}
 
 		publishing {
-			storeFile file("/var/lib/jenkins/osmand_key")
-			storePassword System.getenv("OSMAND_APK_PASSWORD")
-			keyAlias "osmand"
-			keyPassword System.getenv("OSMAND_APK_PASSWORD")
+			storeFile file(System.getenv("ROADCREW_KEYSTORE_PATH") ?: "/var/lib/jenkins/osmand_key")
+			storePassword System.getenv("ROADCREW_KEYSTORE_PASSWORD") ?: System.getenv("OSMAND_APK_PASSWORD")
+			keyAlias System.getenv("ROADCREW_KEY_ALIAS") ?: "osmand"
+			keyPassword System.getenv("ROADCREW_KEY_PASSWORD") ?: System.getenv("OSMAND_APK_PASSWORD")
 		}
 	}
 

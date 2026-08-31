@@ -27,6 +27,11 @@ out/
 agconnect-services.json
 OsmAndHms.jks
 
+# RoadCrew local release configuration and signing material
+OsmAnd/google-services.json
+keystores/roadcrew-*.jks
+keystores/roadcrew-*.p12
+
 # Android Studio
 java_pid*.hprof
 .attach_pid*
@@ -46,6 +51,8 @@ Thumbs.db
 
 # Output files
 build
+/output/
+/roadcrew-build-*.log
 
 #Rendering test files
 OsmAnd-java/src/test/resources/rendering/*
