@@ -53,6 +53,7 @@ Thumbs.db
 build
 /output/
 /roadcrew-build-*.log
+/tools/roadcrew-migration/app/src/main/assets/RoadCrew.apk
 
 #Rendering test files
 OsmAnd-java/src/test/resources/rendering/*

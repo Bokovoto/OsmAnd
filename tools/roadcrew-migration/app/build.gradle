@@ -1,0 +1,41 @@
+plugins {
+	id "com.android.application"
+}
+
+android {
+	namespace "org.roadcrew.migration"
+	compileSdk 35
+
+	defaultConfig {
+		applicationId "org.roadcrew.migration"
+		minSdk 24
+		targetSdk 35
+		versionCode 1
+		versionName "1.0"
+	}
+
+	signingConfigs {
+		release {
+			storeFile file(System.getenv("ROADCREW_KEYSTORE_PATH") ?: "missing-roadcrew-keystore")
+			storePassword System.getenv("ROADCREW_KEYSTORE_PASSWORD") ?: ""
+			keyAlias System.getenv("ROADCREW_KEY_ALIAS") ?: "roadcrew"
+			keyPassword System.getenv("ROADCREW_KEY_PASSWORD") ?: ""
+		}
+	}
+
+	buildTypes {
+		release {
+			debuggable false
+			minifyEnabled false
+			signingConfig signingConfigs.release
+		}
+	}
+
+	androidResources {
+		noCompress "apk"
+	}
+}
+
+dependencies {
+	implementation "androidx.core:core:1.15.0"
+}
