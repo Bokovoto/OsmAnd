@@ -27,8 +27,18 @@ test('direction survives local persistence and API synchronization', () => {
 });
 
 test('compact direction badge is vector and opposite-direction alerts are filtered', () => {
+  const directionBadge = layer.split('private void drawDirectionBadge')[1].split('private void drawLabel')[0];
   assert.match(layer, /drawDirectionBadge\(canvas, tileBox, report/);
   assert.match(layer, /directionArrowPath/);
   assert.match(layer, /report\.appliesToBearing\(location\.getBearing\(\)\)/);
-  assert.doesNotMatch(layer, /drawBitmap/);
+  assert.doesNotMatch(directionBadge, /drawBitmap/);
+});
+
+test('map reports use dedicated neon marker artwork instead of letter bubbles', () => {
+  const drawReport = layer.split('private void drawReport')[1].split('private void drawDirectionBadge')[0];
+  for (const name of ['police', 'traffic_control', 'camera', 'scale', 'danger', 'help']) {
+    assert.match(layer, new RegExp(`roadcrew_map_marker_${name}`));
+  }
+  assert.match(drawReport, /canvas\.drawBitmap\(icon/);
+  assert.doesNotMatch(drawReport, /getShortLabel|drawText/);
 });

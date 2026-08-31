@@ -1,8 +1,12 @@
 package net.osmand.plus.roadcrew;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathDashPathEffect;
@@ -40,6 +44,7 @@ import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Set;
 
@@ -54,16 +59,21 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private static final long HELP_CHAT_REFRESH_INTERVAL_MILLIS = 2 * 1000;
 	private static final double PROMPT_RADIUS_METERS = 700;
 	private static final float MARKER_TOUCH_RADIUS_DP = 36;
+	private static final float MARKER_CENTER_OFFSET_DP = 8;
+	private static final float MARKER_IMAGE_SIZE_DP = 54;
+	private static final float MARKER_LABEL_OFFSET_DP = 31;
 	private static final int HELP_CHAT_MESSAGE_MAX_LENGTH = 1000;
 	private static final String PUSH_KIND_EXTRA = "roadcrew_push_kind";
 	private static final String PUSH_REFERENCE_ID_EXTRA = "roadcrew_push_reference_id";
 
 	private final Paint markerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-	private final Paint markerStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint markerIconPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+	private final Paint inactiveMarkerIconPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
 	private final Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint labelBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint labelStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint directionBadgePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint directionBadgeStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint directionArrowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint restrictionBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -76,14 +86,16 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private final Paint restrictionRoadStripePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Path restrictionRoadPath = new Path();
 	private final Path restrictionTruckPath = new Path();
-	private final Path markerPath = new Path();
 	private final Path directionArrowPath = new Path();
+	private final RectF markerIconRect = new RectF();
 	private final RectF labelRect = new RectF();
 	private final RectF touchLabelRect = new RectF();
 	private final Set<String> promptedReportIds = new HashSet<>();
 	private final Set<String> shownNotificationIds = new HashSet<>();
 	private final Set<String> openHelpReportIds = new HashSet<>();
 	private final Set<String> openDirectChatRoomIds = new HashSet<>();
+	private final EnumMap<RoadCrewReportType, Bitmap> markerIcons =
+			new EnumMap<>(RoadCrewReportType.class);
 	private static RoadCrewReportsLayer activeLayer;
 
 	private long lastProximityCheckMillis;
@@ -152,6 +164,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		if (mapObservationCoordinator != null) {
 			mapObservationCoordinator = null;
 		}
+		for (Bitmap bitmap : markerIcons.values()) {
+			if (!bitmap.isRecycled()) { bitmap.recycle(); }
+		}
+		markerIcons.clear();
 		placesController = null;
 	}
 
@@ -230,9 +246,12 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	}
 
 	private void createResources() {
-		markerStrokePaint.setStyle(Paint.Style.STROKE);
-		markerStrokePaint.setStrokeWidth(dp(2));
-		markerStrokePaint.setColor(Color.WHITE);
+		markerIconPaint.setAlpha(255);
+		ColorMatrix grayscale = new ColorMatrix();
+		grayscale.setSaturation(0);
+		inactiveMarkerIconPaint.setColorFilter(new ColorMatrixColorFilter(grayscale));
+		inactiveMarkerIconPaint.setAlpha(150);
+		loadMarkerIcons();
 
 		textPaint.setColor(Color.WHITE);
 		textPaint.setTextAlign(Paint.Align.CENTER);
@@ -247,13 +266,17 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		labelStrokePaint.setColor(Color.argb(210, 255, 255, 255));
 
 		directionBadgePaint.setStyle(Paint.Style.FILL);
-		directionBadgePaint.setColor(Color.rgb(11, 31, 42));
+		directionBadgePaint.setColor(Color.rgb(6, 17, 13));
+
+		directionBadgeStrokePaint.setStyle(Paint.Style.STROKE);
+		directionBadgeStrokePaint.setStrokeWidth(dp(1.6f));
+		directionBadgeStrokePaint.setColor(Color.rgb(49, 235, 160));
 
 		directionArrowPaint.setStyle(Paint.Style.STROKE);
 		directionArrowPaint.setStrokeWidth(dp(1.6f));
 		directionArrowPaint.setStrokeCap(Paint.Cap.ROUND);
 		directionArrowPaint.setStrokeJoin(Paint.Join.ROUND);
-		directionArrowPaint.setColor(Color.WHITE);
+		directionArrowPaint.setColor(Color.rgb(49, 235, 160));
 
 		restrictionFillPaint.setStyle(Paint.Style.FILL);
 		restrictionFillPaint.setColor(Color.WHITE);
@@ -292,6 +315,21 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		restrictionRoadStripePaint.setStyle(Paint.Style.FILL_AND_STROKE);
 		restrictionRoadStripePaint.setColor(Color.argb(225, 17, 24, 39));
 		restrictionRoadStripePaint.setPathEffect(createWarningTapeStripeEffect());
+	}
+
+	private void loadMarkerIcons() {
+		if (!markerIcons.isEmpty()) { return; }
+		putMarkerIcon(RoadCrewReportType.DAI, R.drawable.roadcrew_map_marker_traffic_control);
+		putMarkerIcon(RoadCrewReportType.POLICE, R.drawable.roadcrew_map_marker_police);
+		putMarkerIcon(RoadCrewReportType.CAMERA, R.drawable.roadcrew_map_marker_camera);
+		putMarkerIcon(RoadCrewReportType.WEIGH_STATION, R.drawable.roadcrew_map_marker_scale);
+		putMarkerIcon(RoadCrewReportType.DANGER, R.drawable.roadcrew_map_marker_danger);
+		putMarkerIcon(RoadCrewReportType.HELP, R.drawable.roadcrew_map_marker_help);
+	}
+
+	private void putMarkerIcon(@NonNull RoadCrewReportType type, int drawableRes) {
+		Bitmap bitmap = BitmapFactory.decodeResource(getApplication().getResources(), drawableRes);
+		if (bitmap != null) { markerIcons.put(type, bitmap); }
 	}
 
 	@NonNull
@@ -588,24 +626,22 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	private void drawReport(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
 			@NonNull RoadCrewReport report, float x, float y) {
-		float radius = dp(14);
-		float pointerHeight = dp(8);
-		float markerCenterY = y - pointerHeight;
-
-		markerPath.reset();
-		markerPath.addCircle(x, markerCenterY, radius, Path.Direction.CW);
-		markerPath.moveTo(x - dp(6), markerCenterY + radius - dp(2));
-		markerPath.lineTo(x, markerCenterY + radius + pointerHeight);
-		markerPath.lineTo(x + dp(6), markerCenterY + radius - dp(2));
-		markerPath.close();
-
-		markerPaint.setColor(report.isHelpProbablyResolved() ? Color.rgb(156, 163, 175) : report.getType().getColor());
-		canvas.drawPath(markerPath, markerPaint);
-		canvas.drawPath(markerPath, markerStrokePaint);
-		canvas.drawText(report.getType().getShortLabel(), x, markerCenterY + dp(5), textPaint);
+		float markerCenterY = y - dp(MARKER_CENTER_OFFSET_DP);
+		Bitmap icon = markerIcons.get(report.getType());
+		if (icon != null && !icon.isRecycled()) {
+			float halfSize = dp(MARKER_IMAGE_SIZE_DP) / 2f;
+			markerIconRect.set(x - halfSize, markerCenterY - halfSize,
+					x + halfSize, markerCenterY + halfSize);
+			canvas.drawBitmap(icon, null, markerIconRect,
+					report.isHelpProbablyResolved() ? inactiveMarkerIconPaint : markerIconPaint);
+		} else {
+			markerPaint.setColor(report.isHelpProbablyResolved()
+					? Color.rgb(156, 163, 175) : report.getType().getColor());
+			canvas.drawCircle(x, markerCenterY, dp(14), markerPaint);
+		}
 		drawDirectionBadge(canvas, tileBox, report, x, markerCenterY);
 
-		drawLabel(canvas, report, x, markerCenterY - radius - dp(8));
+		drawLabel(canvas, report, x, markerCenterY - dp(MARKER_LABEL_OFFSET_DP));
 	}
 
 	private void drawDirectionBadge(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
@@ -613,11 +649,11 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		if (report.getDirection() == RoadCrewReportDirection.UNKNOWN) {
 			return;
 		}
-		float badgeX = x + dp(11);
-		float badgeY = markerCenterY + dp(10);
+		float badgeX = x + dp(15);
+		float badgeY = markerCenterY + dp(14);
 		float badgeRadius = dp(7);
 		canvas.drawCircle(badgeX, badgeY, badgeRadius, directionBadgePaint);
-		canvas.drawCircle(badgeX, badgeY, badgeRadius, markerStrokePaint);
+		canvas.drawCircle(badgeX, badgeY, badgeRadius, directionBadgeStrokePaint);
 
 		float angle = 0;
 		if (report.hasDirectionBearing()) {
@@ -713,8 +749,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 				continue;
 			}
 			float x = tileBox.getPixXFromLatLon(latLon.getLatitude(), latLon.getLongitude());
-			float markerCenterY = tileBox.getPixYFromLatLon(latLon.getLatitude(), latLon.getLongitude()) - dp(8);
-			float labelY = markerCenterY - dp(14) - dp(8);
+			float markerCenterY = tileBox.getPixYFromLatLon(latLon.getLatitude(), latLon.getLongitude())
+					- dp(MARKER_CENTER_OFFSET_DP);
+			float labelY = markerCenterY - dp(MARKER_LABEL_OFFSET_DP);
 			calculateLabelLayout(report, x, labelY, tileBox.getPixWidth(), touchLabelRect);
 			if (touchLabelRect.contains(point.x, point.y)) {
 				return report;
