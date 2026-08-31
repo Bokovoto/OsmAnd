@@ -320,7 +320,7 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 			case POLICE:
 				return "полиция";
 			case CAMERA:
-				return "камера";
+				return "ка̀мера";
 			case WEIGH_STATION:
 				return "кантар";
 			case DANGER:
