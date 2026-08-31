@@ -169,7 +169,7 @@ android {
 		}
 		release {
 			signingConfig signingConfigs.publishing
-			minifyEnabled true
+			minifyEnabled !Boolean.parseBoolean(System.getenv("ROADCREW_DISABLE_MINIFY") ?: "false")
 			shrinkResources false
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		}

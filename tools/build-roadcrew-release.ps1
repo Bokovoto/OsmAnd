@@ -50,6 +50,7 @@ $releaseEnvironment = @{
 	ROADCREW_KEYSTORE_PASSWORD = $password
 	ROADCREW_KEY_ALIAS = "roadcrew"
 	ROADCREW_KEY_PASSWORD = $password
+	ROADCREW_DISABLE_MINIFY = "true"
 	APK_NUMBER_VERSION = $VersionCode.ToString()
 	APK_VERSION = $VersionName
 }

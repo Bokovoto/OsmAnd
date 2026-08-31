@@ -1,6 +1,7 @@
 package org.roadcrew.migration;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -32,9 +33,12 @@ public class MainActivity extends Activity {
 	private static final String ROADCREW_PACKAGE = "org.roadcrew.app";
 	private static final String RELEASE_SHA256 =
 			"18ACE3D71CE155E20C2ADD395F42B0088D44AABF381DB8FD6BD0F047AB331481";
+	private static final long RELEASE_VERSION_CODE = 5400;
 	private static final int REQUEST_PERMISSION = 100;
 	private static final int REQUEST_UNINSTALL = 101;
 	private static final int REQUEST_INSTALL = 102;
+	private static final String TEST_78_URL =
+			"https://github.com/Bokovoto/OsmAnd/releases/download/roadcrew-v0.1.0-test.78/RoadCrew.apk";
 
 	private final ExecutorService executor = Executors.newSingleThreadExecutor();
 	private TextView status;
@@ -120,15 +124,10 @@ public class MainActivity extends Activity {
 					throw new IllegalStateException("Cannot create migration directory");
 				}
 				releaseApk = new File(directory, "RoadCrew-Test-79.apk");
-				try (InputStream input = getAssets().open("RoadCrew.apk");
-					 FileOutputStream output = new FileOutputStream(releaseApk)) {
-					byte[] buffer = new byte[128 * 1024];
-					int read;
-					while ((read = input.read(buffer)) != -1) {
-						output.write(buffer, 0, read);
-					}
+				if (!isExpectedReleaseApk(releaseApk)) {
+					copyEmbeddedRelease(releaseApk);
 				}
-				if (!RELEASE_SHA256.equals(packageCertificateSha256(releaseApk))) {
+				if (!isExpectedReleaseApk(releaseApk)) {
 					throw new SecurityException("Unexpected RoadCrew certificate");
 				}
 				runOnUiThread(() -> {
@@ -139,10 +138,21 @@ public class MainActivity extends Activity {
 			} catch (Exception e) {
 				runOnUiThread(() -> {
 					progress.setVisibility(View.GONE);
-					status.setText("Подготовката не успя. Изтеглете файла отново.");
+					status.setText("Запазеният Test 79 липсва или не премина проверката. Използвайте пълния RoadCrew migration файл.");
 				});
 			}
 		});
+	}
+
+	private void copyEmbeddedRelease(File destination) throws Exception {
+		try (InputStream input = getAssets().open("RoadCrew.apk");
+			 FileOutputStream output = new FileOutputStream(destination)) {
+			byte[] buffer = new byte[128 * 1024];
+			int read;
+			while ((read = input.read(buffer)) != -1) {
+				output.write(buffer, 0, read);
+			}
+		}
 	}
 
 	private void renderState() {
@@ -152,10 +162,15 @@ public class MainActivity extends Activity {
 			primary.setEnabled(true);
 			primary.setOnClickListener(v -> uninstallSelf());
 		} else if (isPackageInstalled(ROADCREW_PACKAGE)) {
-			status.setText("Старата тестова версия трябва да бъде премахната еднократно. Android ще поиска потвърждение, след което ще отвори инсталацията на Test 79. След миграцията може да се наложи отново да настроите профила и офлайн картата.");
-			primary.setText("Деинсталирай старата версия");
+			status.setText("Старата тестова версия трябва да бъде премахната еднократно. В системния прозорец НЕ запазвайте данните, защото съдържат стария подпис. След миграцията настройте отново профила и офлайн картата.");
+			primary.setText("Деинсталирай без запазване на данните");
 			primary.setEnabled(true);
 			primary.setOnClickListener(v -> continueMigration());
+		} else if (hasRetainedRoadCrewData()) {
+			status.setText("Android е запазил данните и стария подпис на Test 78. Инсталирайте Test 78 отново, повторете деинсталирането и махнете отметката за запазване на данните.");
+			primary.setText("Изтегли отново Test 78");
+			primary.setEnabled(true);
+			primary.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(TEST_78_URL))));
 		} else {
 			status.setText("Старата версия е премахната. Продължете с инсталирането на Test 79.");
 			primary.setText("Инсталирай Test 79");
@@ -172,13 +187,28 @@ public class MainActivity extends Activity {
 			return;
 		}
 		if (isPackageInstalled(ROADCREW_PACKAGE)) {
-			Intent uninstall = new Intent(Intent.ACTION_UNINSTALL_PACKAGE,
-					Uri.parse("package:" + ROADCREW_PACKAGE));
-			uninstall.putExtra(Intent.EXTRA_RETURN_RESULT, true);
-			startActivityForResult(uninstall, REQUEST_UNINSTALL);
+			showUninstallWarning();
+		} else if (hasRetainedRoadCrewData()) {
+			renderState();
 		} else {
 			installRelease();
 		}
+	}
+
+	private void showUninstallWarning() {
+		new AlertDialog.Builder(this)
+				.setTitle("Важно при деинсталирането")
+				.setMessage("На следващия системен екран махнете отметката „Запази данните“. Иначе Android ще запази стария подпис и Test 79 няма да може да се инсталира.")
+				.setNegativeButton("Отказ", null)
+				.setPositiveButton("Разбрах", (dialog, which) -> uninstallOldRoadCrew())
+				.show();
+	}
+
+	private void uninstallOldRoadCrew() {
+		Intent uninstall = new Intent(Intent.ACTION_UNINSTALL_PACKAGE,
+				Uri.parse("package:" + ROADCREW_PACKAGE));
+		uninstall.putExtra(Intent.EXTRA_RETURN_RESULT, true);
+		startActivityForResult(uninstall, REQUEST_UNINSTALL);
 	}
 
 	private void installRelease() {
@@ -199,8 +229,16 @@ public class MainActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_PERMISSION && canInstallPackages()) {
 			continueMigration();
-		} else if (requestCode == REQUEST_UNINSTALL && !isPackageInstalled(ROADCREW_PACKAGE)) {
-			installRelease();
+		} else if (requestCode == REQUEST_UNINSTALL) {
+			if (resultCode == RESULT_OK && !isPackageInstalled(ROADCREW_PACKAGE)
+					&& !hasRetainedRoadCrewData()) {
+				installRelease();
+			} else {
+				renderState();
+				if (isPackageInstalled(ROADCREW_PACKAGE)) {
+					status.setText("Старата версия не беше премахната. Потвърдете системния екран за деинсталиране, преди да продължите.");
+				}
+			}
 		} else {
 			renderState();
 		}
@@ -233,16 +271,40 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	private String packageCertificateSha256(File apk) throws Exception {
-		PackageInfo info = getPackageManager().getPackageArchiveInfo(apk.getAbsolutePath(),
-				Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-						? PackageManager.GET_SIGNING_CERTIFICATES : PackageManager.GET_SIGNATURES);
-		if (info == null) {
-			throw new SecurityException("Cannot inspect embedded APK");
+	private boolean hasRetainedRoadCrewData() {
+		if (isPackageInstalled(ROADCREW_PACKAGE)) {
+			return false;
 		}
-		Signature signature = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-				? info.signingInfo.getApkContentsSigners()[0] : info.signatures[0];
-		return sha256(signature.toByteArray());
+		try {
+			getPackageManager().getPackageInfo(ROADCREW_PACKAGE, PackageManager.MATCH_UNINSTALLED_PACKAGES);
+			return true;
+		} catch (PackageManager.NameNotFoundException e) {
+			return false;
+		}
+	}
+
+	private boolean isExpectedReleaseApk(File apk) {
+		if (!apk.isFile()) {
+			return false;
+		}
+		try {
+			PackageInfo info = getPackageManager().getPackageArchiveInfo(apk.getAbsolutePath(),
+					Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
+							? PackageManager.GET_SIGNING_CERTIFICATES : PackageManager.GET_SIGNATURES);
+			if (info == null || !ROADCREW_PACKAGE.equals(info.packageName)
+					|| getVersionCode(info) != RELEASE_VERSION_CODE) {
+				return false;
+			}
+			Signature signature = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
+					? info.signingInfo.getApkContentsSigners()[0] : info.signatures[0];
+			return RELEASE_SHA256.equals(sha256(signature.toByteArray()));
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	private long getVersionCode(PackageInfo info) {
+		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? info.getLongVersionCode() : info.versionCode;
 	}
 
 	private static String sha256(byte[] value) throws Exception {

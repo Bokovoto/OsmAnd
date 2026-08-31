@@ -6,7 +6,8 @@
 	
     <application
         android:icon="@drawable/ic_launcher_roadcrew"
-        tools:replace="android:icon">
+        android:hasFragileUserData="false"
+        tools:replace="android:icon,android:hasFragileUserData">
         <activity
             android:name="net.osmand.plus.activities.MapActivity"
             android:theme="@style/FirstSplashScreenNightlyFree"

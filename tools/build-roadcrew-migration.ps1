@@ -1,6 +1,7 @@
 param(
-	[string] $RoadCrewApk = "output/roadcrew-secure-release-fixed/RoadCrew.apk",
-	[string] $OutputDirectory = "output/roadcrew-migration"
+	[string] $RoadCrewApk = "output/roadcrew-secure-release/RoadCrew.apk",
+	[string] $OutputDirectory = "output/roadcrew-migration",
+	[switch] $PatchOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -13,7 +14,11 @@ $sourceApk = Join-Path $repoRoot $RoadCrewApk
 $migrationRoot = Join-Path $repoRoot "tools\roadcrew-migration"
 $embeddedApk = Join-Path $migrationRoot "app\src\main\assets\RoadCrew.apk"
 
-foreach ($requiredPath in @($keystorePath, $credentialPath, $sourceApk)) {
+$requiredPaths = @($keystorePath, $credentialPath)
+if (-not $PatchOnly) {
+	$requiredPaths += $sourceApk
+}
+foreach ($requiredPath in $requiredPaths) {
 	if (-not (Test-Path -LiteralPath $requiredPath)) {
 		throw "Required migration build file is missing: $requiredPath"
 	}
@@ -56,14 +61,17 @@ $releaseEnvironment = @{
 try {
 	$apksigner = Get-AndroidBuildTool -Name "apksigner.bat"
 	$aapt = Get-AndroidBuildTool -Name "aapt.exe"
-	$releaseCertificate = (& $apksigner verify --print-certs $sourceApk |
-			Select-String "Signer #1 certificate SHA-256 digest").Line
-	if ($LASTEXITCODE -ne 0 -or $releaseCertificate -notmatch "18ace3d71ce155e20c2add395f42b0088d44aabf381db8fd6bd0f047ab331481") {
-		throw "The embedded RoadCrew APK does not use the permanent release certificate."
-	}
+	Remove-Item -LiteralPath $embeddedApk -Force -ErrorAction SilentlyContinue
+	if (-not $PatchOnly) {
+		$releaseCertificate = (& $apksigner verify --print-certs $sourceApk |
+				Select-String "Signer #1 certificate SHA-256 digest").Line
+		if ($LASTEXITCODE -ne 0 -or $releaseCertificate -notmatch "18ace3d71ce155e20c2add395f42b0088d44aabf381db8fd6bd0f047ab331481") {
+			throw "The embedded RoadCrew APK does not use the permanent release certificate."
+		}
 
-	New-Item -ItemType Directory -Path (Split-Path -Parent $embeddedApk) -Force | Out-Null
-	Copy-Item -LiteralPath $sourceApk -Destination $embeddedApk -Force
+		New-Item -ItemType Directory -Path (Split-Path -Parent $embeddedApk) -Force | Out-Null
+		Copy-Item -LiteralPath $sourceApk -Destination $embeddedApk -Force
+	}
 
 	foreach ($entry in $releaseEnvironment.GetEnumerator()) {
 		$previousEnvironment[$entry.Key] = [Environment]::GetEnvironmentVariable($entry.Key, "Process")
@@ -72,7 +80,7 @@ try {
 
 	Push-Location $repoRoot
 	try {
-		& .\gradlew.bat -p tools\roadcrew-migration :app:assembleRelease
+		& .\gradlew.bat -p tools\roadcrew-migration :app:clean :app:assembleRelease
 		if ($LASTEXITCODE -ne 0) {
 			throw "Migration Gradle build failed with exit code $LASTEXITCODE"
 		}
@@ -97,7 +105,8 @@ try {
 
 	$destination = Join-Path $repoRoot $OutputDirectory
 	New-Item -ItemType Directory -Path $destination -Force | Out-Null
-	$destinationApk = Join-Path $destination "RoadCrew.apk"
+	$destinationName = if ($PatchOnly) { "RoadCrew-Migration-Fix.apk" } else { "RoadCrew.apk" }
+	$destinationApk = Join-Path $destination $destinationName
 	Copy-Item -LiteralPath $migrationApk -Destination $destinationApk -Force
 	Write-Output "Verified RoadCrew migration APK: $destinationApk"
 } finally {
