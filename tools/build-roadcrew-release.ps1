@@ -63,7 +63,19 @@ try {
 
 	Push-Location $repoRoot
 	try {
-		& .\gradlew.bat assembleNightlyFreeLegacyFatRelease
+		# Gradle and javac write ordinary notes to stderr. Windows PowerShell
+		# turns any of those into a NativeCommandError under ErrorActionPreference
+		# Stop, which failed a build that had in fact succeeded. The exit code is
+		# the only trustworthy verdict, so ask it directly.
+		$previousPreference = $ErrorActionPreference
+		$ErrorActionPreference = "Continue"
+		try {
+			& .\gradlew.bat assembleNightlyFreeLegacyFatRelease 2>&1 | ForEach-Object {
+				Write-Host $_
+			}
+		} finally {
+			$ErrorActionPreference = $previousPreference
+		}
 		if ($LASTEXITCODE -ne 0) {
 			throw "Gradle release build failed with exit code $LASTEXITCODE"
 		}

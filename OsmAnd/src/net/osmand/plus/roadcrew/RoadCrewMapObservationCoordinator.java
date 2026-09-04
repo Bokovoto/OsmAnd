@@ -168,6 +168,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			lastTransferElapsed = elapsed;
 			transferConfirmed();
 		}
+		RoadCrewShadowValidation.refreshIfDue(app);
 		RoadCrewShadowValidation.flushIfDue(app);
 	}
 

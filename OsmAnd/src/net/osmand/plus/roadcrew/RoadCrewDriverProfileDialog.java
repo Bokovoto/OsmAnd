@@ -253,40 +253,29 @@ final class RoadCrewDriverProfileDialog {
 		});
 		content.addView(observationConsent, new LinearLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-		addShadowValidationSwitch(mapActivity, app, content);
+		addShadowValidationStatus(mapActivity, app, content);
 		updateObservationStatus.run();
 	}
 
 	/**
-	 * The comparison of ROADMAP section 169. It is deliberately a switch on the
-	 * phone rather than something the server decides: a fault found while
-	 * driving can be stopped at once, without waiting for a release, and it can
-	 * be left on for one phone only.
+	 * The comparison of ROADMAP sections 169 and 171. There is no switch here on
+	 * purpose: it is only worth anything when several trucks drive the same
+	 * roads at the same time, which cannot be arranged by asking each driver to
+	 * find a setting. The server decides through `validation_mode`, and that is
+	 * also where it can be stopped for everybody at once. This only reports.
 	 */
-	private static void addShadowValidationSwitch(@NonNull MapActivity mapActivity,
+	private static void addShadowValidationStatus(@NonNull MapActivity mapActivity,
 			@NonNull OsmandApplication app, @NonNull LinearLayout content) {
-		TextView status = RoadCrewUi.addBody(mapActivity, content, "");
+		RoadCrewShadowValidation.QueueStatus queue = RoadCrewShadowValidation.getStatus(app);
+		if (!queue.enabled) {
+			return;
+		}
+		TextView status = RoadCrewUi.addBody(mapActivity, content,
+				mapActivity.getString(R.string.roadcrew_shadow_validation_status,
+						queue.pendingCount, queue.legacyCount, queue.directCount));
+		status.setTextColor(RoadCrewUi.PRIMARY);
 		RoadCrewUi.addBody(mapActivity, content,
 				mapActivity.getString(R.string.roadcrew_shadow_validation_body));
-		CheckBox shadowValidation = new CheckBox(mapActivity);
-		shadowValidation.setText(R.string.roadcrew_shadow_validation_consent);
-		shadowValidation.setTextColor(RoadCrewUi.TEXT);
-		shadowValidation.setChecked(RoadCrewShadowValidation.isEnabled(app));
-		Runnable updateStatus = () -> {
-			RoadCrewShadowValidation.QueueStatus queue = RoadCrewShadowValidation.getStatus(app);
-			status.setText(queue.enabled
-					? mapActivity.getString(R.string.roadcrew_shadow_validation_status,
-							queue.pendingCount, queue.legacyCount, queue.directCount)
-					: mapActivity.getString(R.string.roadcrew_shadow_validation_status_off));
-			status.setTextColor(queue.enabled ? RoadCrewUi.PRIMARY : RoadCrewUi.SECONDARY_TEXT);
-		};
-		shadowValidation.setOnCheckedChangeListener((buttonView, isChecked) -> {
-			RoadCrewShadowValidation.setEnabled(app, isChecked);
-			updateStatus.run();
-		});
-		content.addView(shadowValidation, new LinearLayout.LayoutParams(
-				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-		updateStatus.run();
 	}
 
 	private static void updateLiveTruckMapStatus(@NonNull MapActivity activity,

@@ -19,8 +19,12 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * The comparison side of ROADMAP section 168 and 169.
@@ -37,31 +41,139 @@ public final class RoadCrewShadowValidation {
 
 	private static final String TAG = "RoadCrewShadow";
 	private static final String PREFS_NAME = "roadcrew_shadow_validation";
-	private static final String KEY_ENABLED = "enabled";
+	/** The server's last answer about this installation, and when it was given. */
+	private static final String KEY_VALIDATION_MODE = "validation_mode";
+	private static final String KEY_CHECKED_AT = "validation_mode_checked_at";
+	private static final String KEY_REFRESH_AFTER_MILLIS = "validation_mode_refresh_after";
 	private static final String QUEUE_FILE_NAME = "roadcrew-shadow-observations.json";
+	private static final String VALIDATION_MODE_URL =
+			"https://roadcrew-api.galin-b-vasilev1.workers.dev/v2/truck-map/validation-mode";
+	private static final long DEFAULT_REFRESH_MILLIS = 6 * 60 * 60 * 1_000L;
+	/** Do not hammer the server when it is unreachable. */
+	private static final long RETRY_AFTER_FAILURE_MILLIS = 30 * 60 * 1_000L;
+	private static final int CONNECT_TIMEOUT_MILLIS = 10_000;
+	private static final int READ_TIMEOUT_MILLIS = 20_000;
 
 	private static final Object LOCK = new Object();
+	private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor(runnable -> {
+		Thread thread = new Thread(runnable, "roadcrew-validation-mode");
+		thread.setDaemon(true);
+		return thread;
+	});
 	private static RoadCrewShadowOutbox outbox;
 	private static boolean unavailable;
+	private static boolean refreshing;
 
 	private RoadCrewShadowValidation() {
 	}
 
 	/**
-	 * Off unless the phone has been put in the programme. The flag is local, so
-	 * a fault found in the field can be stopped without waiting for a release.
+	 * Whether this installation is in the validation programme.
+	 *
+	 * Deliberately not a setting the driver can find. The comparison is only
+	 * worth anything when several trucks drive the same roads at the same time,
+	 * and that cannot be arranged by asking each driver to switch something on.
+	 * The server decides, through `validation_mode`, which is also the one place
+	 * the whole thing can be stopped for everybody without a release.
+	 *
+	 * Off until the server has said otherwise: never assume enrolment.
 	 */
 	public static boolean isEnabled(@NonNull Context context) {
-		return preferences(context).getBoolean(KEY_ENABLED, false)
+		return preferences(context).getBoolean(KEY_VALIDATION_MODE, false)
 				&& RoadCrewMapObservationConsent.isEnabled(context);
 	}
 
-	public static void setEnabled(@NonNull Context context, boolean enabled) {
-		preferences(context).edit().putBoolean(KEY_ENABLED, enabled).apply();
-		if (!enabled) {
-			clear(context);
+	/**
+	 * Asks the server again if the last answer has expired. Cheap enough to call
+	 * from the ordinary tick: it does nothing at all until the answer is stale.
+	 */
+	public static void refreshIfDue(@NonNull OsmandApplication app) {
+		if (!RoadCrewMapObservationConsent.isEnabled(app)) {
+			return;
 		}
-		Log.i(TAG, "validation programme " + (enabled ? "joined" : "left"));
+		SharedPreferences preferences = preferences(app);
+		long checkedAt = preferences.getLong(KEY_CHECKED_AT, 0);
+		long refreshAfter = preferences.getLong(KEY_REFRESH_AFTER_MILLIS, DEFAULT_REFRESH_MILLIS);
+		long now = System.currentTimeMillis();
+		// A clock moved backwards must not freeze the answer for ever.
+		if (checkedAt > 0 && now >= checkedAt && now - checkedAt < refreshAfter) {
+			return;
+		}
+		synchronized (LOCK) {
+			if (refreshing) {
+				return;
+			}
+			refreshing = true;
+		}
+		EXECUTOR.execute(() -> {
+			try {
+				refresh(app);
+			} catch (Exception e) {
+				// Keep the previous answer and try again later rather than
+				// guessing; an unreachable server is not a change of programme.
+				preferences(app).edit()
+						.putLong(KEY_CHECKED_AT, System.currentTimeMillis())
+						.putLong(KEY_REFRESH_AFTER_MILLIS, RETRY_AFTER_FAILURE_MILLIS)
+						.apply();
+				Log.w(TAG, "could not ask whether this phone is in the programme", e);
+			} finally {
+				synchronized (LOCK) {
+					refreshing = false;
+				}
+			}
+		});
+	}
+
+	private static void refresh(@NonNull OsmandApplication app) throws Exception {
+		HttpURLConnection connection =
+				(HttpURLConnection) new URL(VALIDATION_MODE_URL).openConnection();
+		String body;
+		try {
+			connection.setRequestMethod("GET");
+			connection.setConnectTimeout(CONNECT_TIMEOUT_MILLIS);
+			connection.setReadTimeout(READ_TIMEOUT_MILLIS);
+			connection.setRequestProperty("Accept", "application/json");
+			connection.setRequestProperty("Authorization", "Bearer "
+					+ RoadCrewMapObservationUploader.getOrRegisterInstallationToken(app));
+			int responseCode = connection.getResponseCode();
+			if (responseCode < 200 || responseCode >= 300) {
+				throw new IOException("validation mode check returned HTTP " + responseCode);
+			}
+			body = readFully(connection.getInputStream());
+		} finally {
+			connection.disconnect();
+		}
+		JSONObject json = new JSONObject(body);
+		boolean enrolled = json.optBoolean("validationMode", false);
+		long refreshAfter = Math.max(15 * 60_000L,
+				json.optLong("refreshAfterSeconds", DEFAULT_REFRESH_MILLIS / 1_000) * 1_000L);
+		boolean wasEnrolled = preferences(app).getBoolean(KEY_VALIDATION_MODE, false);
+		preferences(app).edit()
+				.putBoolean(KEY_VALIDATION_MODE, enrolled)
+				.putLong(KEY_CHECKED_AT, System.currentTimeMillis())
+				.putLong(KEY_REFRESH_AFTER_MILLIS, refreshAfter)
+				.apply();
+		if (wasEnrolled && !enrolled) {
+			// Switched off centrally: nothing collected before is worth keeping,
+			// and nothing further would be accepted anyway.
+			clear(app);
+		}
+		if (wasEnrolled != enrolled) {
+			Log.i(TAG, "validation programme " + (enrolled ? "joined" : "left") + " by the server");
+		}
+	}
+
+	@NonNull
+	private static String readFully(@NonNull java.io.InputStream stream) throws IOException {
+		try (java.io.BufferedReader reader = new java.io.BufferedReader(
+				new java.io.InputStreamReader(stream, java.nio.charset.StandardCharsets.UTF_8))) {
+			StringBuilder result = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				result.append(line);
+			}
+			return result.toString();
+		}
 	}
 
 	/** What the settings screen shows about the comparison queue. */
