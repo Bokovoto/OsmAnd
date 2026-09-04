@@ -15,6 +15,7 @@ import net.osmand.plus.R;
 import net.osmand.plus.Version;
 import net.osmand.plus.activities.MapActivity;
 import net.osmand.plus.base.BaseAlertDialogFragment;
+import net.osmand.plus.roadcrew.RoadCrewAppUpdater;
 import net.osmand.plus.settings.datastorage.SharedStorageWarningFragment;
 import net.osmand.plus.utils.AndroidUtils;
 
@@ -24,6 +25,7 @@ import java.lang.reflect.Field;
 public class WhatsNewDialogFragment extends BaseAlertDialogFragment {
 
 	public static final String TAG = WhatsNewDialogFragment.class.getSimpleName();
+	private static final String ROADCREW_PACKAGE = "org.roadcrew.app";
 
 	private static boolean notShown = true;
 
@@ -47,6 +49,17 @@ public class WhatsNewDialogFragment extends BaseAlertDialogFragment {
 				e.printStackTrace();
 			}
 		}
+		if (isRoadCrew()) {
+			// The upstream dialog sends the reader to osmand.net, which is not
+			// this application. Its own release notes are already on the phone,
+			// kept by the updater that installed this build.
+			String notes = RoadCrewAppUpdater.getReleaseNotes(app);
+			// Sideloaded, or installed by a build that did not keep them yet.
+			// Better to point at where they are than to repeat the version
+			// number that is already in the title.
+			message = notes.trim().isEmpty()
+					? getString(R.string.roadcrew_whats_new_fallback) : notes;
+		}
 		String appVersion = Version.getAppVersion(app);
 		AlertDialog.Builder builder = createDialogBuilder();
 		builder.setTitle(getString(R.string.whats_new) + " " + appVersion)
@@ -61,9 +74,18 @@ public class WhatsNewDialogFragment extends BaseAlertDialogFragment {
 
 	private void showArticle() {
 		MapActivity mapActivity = getMapActivity();
-		if (mapActivity != null) {
-			AndroidUtils.openUrl(mapActivity, R.string.docs_latest_version, nightMode);
+		if (mapActivity == null) {
+			return;
 		}
+		if (isRoadCrew()) {
+			AndroidUtils.openUrl(mapActivity, RoadCrewAppUpdater.getReleasePageUrl(), nightMode);
+			return;
+		}
+		AndroidUtils.openUrl(mapActivity, R.string.docs_latest_version, nightMode);
+	}
+
+	private boolean isRoadCrew() {
+		return ROADCREW_PACKAGE.equals(app.getPackageName());
 	}
 
 	@Override

@@ -41,6 +41,12 @@ public final class RoadCrewAppUpdater {
 	private static final String KEY_LAST_CHECK_MILLIS = "last_check_millis";
 	private static final String KEY_DISMISSED_TAG = "dismissed_tag";
 	private static final String KEY_PENDING_UPDATE = "pending_update";
+	/** The notes of the release being installed, so the new build can show them. */
+	private static final String KEY_NOTES_TAG = "release_notes_tag";
+	private static final String KEY_NOTES_TEXT = "release_notes_text";
+	private static final String RELEASE_PAGE_PREFIX =
+			"https://github.com/Bokovoto/OsmAnd/releases/tag/";
+	private static final int MAX_NOTES_LENGTH = 4000;
 	private static final String CURRENT_RELEASE_TAG = "roadcrew-v" + BuildConfig.VERSION_NAME;
 	private static final String LATEST_RELEASE_API =
 			"https://api.github.com/repos/Bokovoto/OsmAnd/releases/latest";
@@ -149,7 +155,8 @@ public final class RoadCrewAppUpdater {
 					String apiUrl = asset.optString("url");
 					String browserUrl = asset.optString("browser_download_url");
 					if (!apiUrl.isEmpty() || !browserUrl.isEmpty()) {
-						return new UpdateInfo(tag, object.optString("name", tag), apiUrl, browserUrl,
+						return new UpdateInfo(tag, object.optString("name", tag),
+								object.optString("body", ""), apiUrl, browserUrl,
 								releasePageUrl, asset.optLong("size", -1), asset.optString("digest", ""));
 					}
 				}
@@ -194,8 +201,13 @@ public final class RoadCrewAppUpdater {
 			return;
 		}
 		activeTask = new DownloadTask(update);
+		// Kept for the build that is about to replace this one: after the swap
+		// the release JSON is no longer to hand, and without this the driver is
+		// told only the version number he can already see in the title.
 		activity.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
-				.putString(KEY_PENDING_UPDATE, update.toJson().toString()).apply();
+				.putString(KEY_PENDING_UPDATE, update.toJson().toString())
+				.putString(KEY_NOTES_TAG, update.tag)
+				.putString(KEY_NOTES_TEXT, update.notes).apply();
 		if (canInstall(activity)) {
 			startDownload(activity.getApplicationContext(), activeTask);
 		}
@@ -443,20 +455,46 @@ public final class RoadCrewAppUpdater {
 		}
 	}
 
+	/** The page for the running build, for a "read more" that stays in RoadCrew. */
+	@NonNull
+	public static String getReleasePageUrl() {
+		return RELEASE_PAGE_PREFIX + CURRENT_RELEASE_TAG;
+	}
+
+	/**
+	 * What was actually written about the running release, if this build was
+	 * installed by the updater. Empty when it was sideloaded, or when the notes
+	 * belong to some other version.
+	 */
+	@NonNull
+	public static String getReleaseNotes(@NonNull Context context) {
+		SharedPreferences preferences =
+				context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+		String tag = preferences.getString(KEY_NOTES_TAG, "");
+		if (!CURRENT_RELEASE_TAG.equals(tag)) {
+			return "";
+		}
+		return preferences.getString(KEY_NOTES_TEXT, "");
+	}
+
 	private static final class UpdateInfo {
 		final String tag;
 		final String title;
+		final String notes;
 		final String assetApiUrl;
 		final String browserDownloadUrl;
 		final String releasePageUrl;
 		final long expectedSize;
 		final String sha256;
 
-		UpdateInfo(@NonNull String tag, @NonNull String title, @NonNull String assetApiUrl,
+		UpdateInfo(@NonNull String tag, @NonNull String title, @NonNull String notes,
+				@NonNull String assetApiUrl,
 				@NonNull String browserDownloadUrl, @NonNull String releasePageUrl, long expectedSize,
 				@NonNull String digest) {
 			this.tag = tag;
 			this.title = title;
+			this.notes = notes.length() > MAX_NOTES_LENGTH
+					? notes.substring(0, MAX_NOTES_LENGTH) : notes;
 			this.assetApiUrl = assetApiUrl;
 			this.browserDownloadUrl = browserDownloadUrl;
 			this.releasePageUrl = releasePageUrl;
@@ -478,6 +516,7 @@ public final class RoadCrewAppUpdater {
 
 		static UpdateInfo fromJson(JSONObject object) throws org.json.JSONException {
 			return new UpdateInfo(object.getString("tag"), object.getString("title"),
+					object.optString("notes", ""),
 					object.getString("api"), object.getString("browser"), object.getString("page"),
 					object.getLong("size"), object.optString("digest", ""));
 		}
