@@ -148,6 +148,9 @@ public final class RoadCrewMapObservationConsent {
 
 	static void deleteLocalObservations(@NonNull Context context) {
 		RoadCrewShadowRouteDiagnostics.clear(context);
+		// The comparison queue holds copies of the same drives, so revoking
+		// consent has to reach it too or the copies would outlive the originals.
+		RoadCrewShadowValidation.clear(context);
 		File outbox = getOutboxFile(context);
 		deleteIfPresent(outbox);
 		deleteIfPresent(new File(outbox.getPath() + ".bak"));

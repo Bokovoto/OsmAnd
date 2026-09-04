@@ -16,6 +16,7 @@ import net.osmand.plus.resources.ResourceManager.BinaryMapReaderResourceType;
 import net.osmand.plus.settings.backend.ApplicationMode;
 import net.osmand.router.RoadCrewObfSegmentLoader;
 import net.osmand.router.RoadCrewObservationOutbox;
+import net.osmand.router.RoadCrewDirectPassageAccumulator;
 import net.osmand.router.RoadCrewObservationPipeline;
 import net.osmand.router.RoadCrewRecordingPolicy;
 import net.osmand.router.RoadCrewSegmentMatcher;
@@ -76,6 +77,8 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	private int appliedCollectionGeneration;
 	private boolean previousCollectionContext;
 	private volatile boolean navigationSessionActive;
+	/** The comparison group of the session now recording; null when none is. */
+	private volatile String comparisonGroupId;
 	private long lastTransferElapsed;
 
 	RoadCrewMapObservationCoordinator(@NonNull OsmandApplication app) {
@@ -143,7 +146,12 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 				// Do not attach new fixes to the previous course after a failed boundary write.
 				appliedCollectionGeneration = -1;
 				LOG.warn("Could not update trip boundary", e);
-			} finally { resetPipeline(); }
+			} finally {
+				resetPipeline();
+				// The session is over: whatever the comparison collected goes now,
+				// rather than waiting for a drive that may not come today.
+				RoadCrewShadowValidation.flushNow(app);
+			}
 		});
 	}
 
@@ -160,6 +168,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			lastTransferElapsed = elapsed;
 			transferConfirmed();
 		}
+		RoadCrewShadowValidation.flushIfDue(app);
 	}
 
 	RoadCrewTripJournal.Trip prepareTripReview(boolean manual) throws Exception {
@@ -423,13 +432,70 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			RoadCrewMapObservationUploader.schedule(app, outbox);
 		}
 		if (pipeline == null) {
-			pipeline = new RoadCrewObservationPipeline((evidence, observedAt, road, binding) -> {
-				if (enabled && isCollectionContextActive() && isTruckProfileActive()) {
-					RoadCrewTripJournal.get(app).capture(evidence, observedAt, road, binding);
-				}
-			});
+			// One recording session, one group. The pipeline is rebuilt at every
+			// trip boundary, which is exactly where a session ends.
+			comparisonGroupId = RoadCrewShadowValidation.newComparisonGroupId();
+			RoadCrewObservationPipeline created =
+					new RoadCrewObservationPipeline((evidence, observedAt, road, binding) -> {
+						if (!enabled || !isCollectionContextActive() || !isTruckProfileActive()) {
+							return;
+						}
+						// Production first, always. The comparison copy is taken
+						// afterwards and cannot interfere with it.
+						RoadCrewTripJournal.get(app).capture(evidence, observedAt, road, binding);
+						RoadCrewObservationPipeline current = pipeline;
+						if (current != null) {
+							RoadCrewShadowValidation.captureLegacy(app, evidence, observedAt,
+									comparisonGroupId,
+									current.getLegacyPassageFirstFixSequence(),
+									current.getFixSequence());
+						}
+					});
+			created.startSession(comparisonGroupId);
+			enableComparison(created);
+			pipeline = created;
 		}
 		return pipeline;
+	}
+
+	/**
+	 * Turns on the second segmentation over the same matches, when the phone is
+	 * in the validation programme. It writes only to the comparison queue, so
+	 * switching it off leaves the ordinary recording exactly as it was.
+	 */
+	private void enableComparison(@NonNull RoadCrewObservationPipeline created) {
+		if (!RoadCrewShadowValidation.isEnabled(app)) {
+			return;
+		}
+		try {
+			created.enableDirectPipeline(
+					RoadCrewDirectPassageAccumulator.Config.DEFAULT_V1, passage -> { });
+			created.setDirectObservationSink(observations ->
+					RoadCrewShadowValidation.captureDirect(app, observations, comparisonGroupId));
+			created.setDirectMapVersion(RoadCrewShadowValidation.isEnabled(app)
+					? currentMapVersion() : "");
+		} catch (RuntimeException e) {
+			LOG.warn("Could not start the segmentation comparison; recording continues", e);
+		}
+	}
+
+	/**
+	 * Which map edition the geometry was read from. It is a diagnostic on the
+	 * observation, not part of any identity.
+	 */
+	@NonNull
+	private String currentMapVersion() {
+		try {
+			for (BinaryMapIndexReader reader : getRoutingReaders()) {
+				String name = reader.getFile() == null ? null : reader.getFile().getName();
+				if (name != null && !name.isEmpty()) {
+					return name.length() > 64 ? name.substring(0, 64) : name;
+				}
+			}
+		} catch (RuntimeException e) {
+			LOG.warn("Could not read the map edition", e);
+		}
+		return "unknown";
 	}
 
 	private boolean isCollectionContextActive() {
@@ -498,6 +564,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	}
 
 	private void resetPipeline() {
+		comparisonGroupId = null;
 		if (pipeline != null) {
 			pipeline.reset();
 			pipeline = null;

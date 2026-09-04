@@ -416,7 +416,7 @@ final class RoadCrewMapObservationUploader {
 	}
 
 	@NonNull
-	private static String getOrRegisterInstallationToken(@NonNull OsmandApplication app)
+	static String getOrRegisterInstallationToken(@NonNull OsmandApplication app)
 			throws IOException, JSONException {
 		SharedPreferences preferences = app.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
 		String existing = preferences.getString(INSTALLATION_TOKEN, "");

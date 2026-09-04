@@ -280,4 +280,8 @@
     <string name="roadcrew_time_minutes">%1$d мин</string>
     <string name="roadcrew_time_just_now">току-що</string>
     <string name="roadcrew_time_minutes_ago">преди %1$d мин</string>
+    <string name="roadcrew_shadow_validation_consent">Тест на новото разпознаване на пътища (сравнение)</string>
+    <string name="roadcrew_shadow_validation_body">Пуска втори начин за разпознаване на пътища успоредно с обичайния, върху едно и също шофиране, за да могат двата да се сравнят. Не променя нищо в това, което изпращаш или виждаш: копията за сравнението стоят отделно, не могат да станат данни за път и се изтриват след 14 дни. Изключено, докато не го включиш.</string>
+    <string name="roadcrew_shadow_validation_status">Опашка за сравнение: %1$d чакат (стар %2$d, нов %3$d)</string>
+    <string name="roadcrew_shadow_validation_status_off">Сравнението е изключено</string>
 </resources>

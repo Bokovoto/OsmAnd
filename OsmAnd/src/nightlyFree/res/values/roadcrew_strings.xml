@@ -280,4 +280,8 @@
     <string name="roadcrew_time_minutes">%1$d min</string>
     <string name="roadcrew_time_just_now">just now</string>
     <string name="roadcrew_time_minutes_ago">%1$d min ago</string>
+    <string name="roadcrew_shadow_validation_consent">Test the new road recognition (comparison)</string>
+    <string name="roadcrew_shadow_validation_body">Runs a second way of recognising roads alongside the usual one, over the same drive, so the two can be compared. It changes nothing about what you send or see: the comparison copies are kept apart, cannot become road evidence, and are deleted after 14 days. Off unless you turn it on.</string>
+    <string name="roadcrew_shadow_validation_status">Comparison queue: %1$d waiting (old %2$d, new %3$d)</string>
+    <string name="roadcrew_shadow_validation_status_off">Comparison off</string>
 </resources>

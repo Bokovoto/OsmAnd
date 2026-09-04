@@ -85,6 +85,52 @@ public class RoadCrewObservationPipelineTest {
 		Assert.assertTrue(outbox.snapshot().isEmpty());
 	}
 
+	@Test
+	public void theComparisonGroupSurvivesEverythingButANewSession() throws Exception {
+		// Section 168: the group is one recording session, from start to stop.
+		// reset() also runs when the loader swaps roads, so it must not end it -
+		// otherwise a single drive would be split into unrelatable pieces.
+		RoadCrewObservationPipeline pipeline = new RoadCrewObservationPipeline(outbox("group.json"));
+		Assert.assertNull(pipeline.getComparisonGroupId());
+
+		pipeline.startSession("group-a");
+		pipeline.replaceRoads(Collections.singletonList(road(4201, 43.0)));
+		pipeline.accept(fix(43.0, 27.0020), 1_000, 9_000_000);
+		pipeline.reset();
+		Assert.assertEquals("group-a", pipeline.getComparisonGroupId());
+		pipeline.replaceRoads(Collections.singletonList(road(4201, 43.0)));
+		Assert.assertEquals("group-a", pipeline.getComparisonGroupId());
+
+		pipeline.startSession("group-b");
+		Assert.assertEquals("group-b", pipeline.getComparisonGroupId());
+		Assert.assertEquals(0, pipeline.getFixSequence());
+	}
+
+	@Test
+	public void everyResultCarriesAnAscendingFixRangeOnTheSharedTimeline() throws Exception {
+		RoadCrewObservationPipeline pipeline = new RoadCrewObservationPipeline(outbox("timeline.json"));
+		pipeline.startSession("group-c");
+		pipeline.replaceRoads(Collections.singletonList(road(4202, 43.0)));
+
+		long previousConfirmedLastFix = 0;
+		for (int step = 0; step < 8; step++) {
+			RoadCrewObservationPipeline.ProcessingResult result = pipeline.accept(
+					fix(43.0, 27.0020 + step * 0.0002), 1_000 + step * 1_000L,
+					9_000_000 + step * 1_000L);
+			Assert.assertEquals(step + 1, result.getFixSequence());
+			Assert.assertEquals(pipeline.getFixSequence(), result.getLastFixSequence());
+			Assert.assertTrue("range must not run backwards",
+					result.getFirstFixSequence() <= result.getLastFixSequence());
+			if (result.getDetection().isConfirmed()) {
+				Assert.assertTrue("passages must not overlap on the timeline",
+						result.getFirstFixSequence() > previousConfirmedLastFix);
+				previousConfirmedLastFix = result.getLastFixSequence();
+			}
+		}
+		Assert.assertTrue("the drive should have confirmed at least one passage",
+				previousConfirmedLastFix > 0);
+	}
+
 	private RoadCrewObservationOutbox outbox(String name) throws Exception {
 		File file = temporaryFolder.newFile(name);
 		Assert.assertTrue(file.delete());
