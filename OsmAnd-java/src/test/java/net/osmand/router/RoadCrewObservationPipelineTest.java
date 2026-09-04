@@ -26,7 +26,8 @@ public class RoadCrewObservationPipelineTest {
 		RouteDataObject first = road(4100, 43.0);
 		RouteDataObject duplicate = road(4100, 44.0);
 		List<RoadCrewObservationOutbox.Record> staged = new ArrayList<>();
-		RoadCrewObservationPipeline pipeline = new RoadCrewObservationPipeline((evidence, at, source, binding) -> {
+		RoadCrewObservationPipeline pipeline = new RoadCrewObservationPipeline(
+				(evidence, at, source, binding, firstFix, lastFix) -> {
 			Assert.assertSame(first, source);
 			Assert.assertEquals(first.getId(), binding.getRoadId());
 			Assert.assertEquals(evidence.getSegmentKey().getGeometryFingerprint(), binding.getKey().getGeometryFingerprint());
@@ -129,6 +130,35 @@ public class RoadCrewObservationPipelineTest {
 		}
 		Assert.assertTrue("the drive should have confirmed at least one passage",
 				previousConfirmedLastFix > 0);
+	}
+
+	@Test
+	public void aCapturedPassageIsHandedARangeThatRunsForwards() throws Exception {
+		// The fault of 4 September: the field holding the start of the next
+		// passage was advanced before the sink was called, so a sink reading it
+		// back saw first = last + 1. The phone then dropped the range silently
+		// and 76 of 76 legacy observations arrived unusable for the comparison.
+		List<long[]> ranges = new ArrayList<>();
+		RoadCrewObservationPipeline pipeline = new RoadCrewObservationPipeline(
+				(evidence, at, source, binding, firstFix, lastFix) ->
+						ranges.add(new long[]{firstFix, lastFix}));
+		pipeline.startSession("group-range");
+		pipeline.replaceRoads(Collections.singletonList(road(4301, 43.0)));
+
+		for (int step = 0; step < 8; step++) {
+			pipeline.accept(fix(43.0, 27.0020 + step * 0.0002), 1_000 + step * 1_000L,
+					9_000_000 + step * 1_000L);
+		}
+
+		Assert.assertFalse("the drive should have confirmed a passage", ranges.isEmpty());
+		long previousLast = 0;
+		for (long[] range : ranges) {
+			Assert.assertTrue("a range must never run backwards: " + range[0] + "-" + range[1],
+					range[1] >= range[0]);
+			Assert.assertTrue("the first fix is a real position on the timeline", range[0] > 0);
+			Assert.assertTrue("passages must not overlap", range[0] > previousLast);
+			previousLast = range[1];
+		}
 	}
 
 	private RoadCrewObservationOutbox outbox(String name) throws Exception {

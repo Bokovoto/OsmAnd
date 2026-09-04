@@ -89,18 +89,14 @@ public final class RoadCrewObservationPipeline {
 		}
 	}
 
-	/**
-	 * The fix the legacy passage now being built started from. Readable from
-	 * inside the sink, which is called before the result is assembled, so a
-	 * captured passage can say where on the timeline it sits.
-	 */
-	public synchronized long getLegacyPassageFirstFixSequence() {
-		return legacyPassageFirstFix;
-	}
-
 	public interface PassageSink {
+		/**
+		 * @param firstFixSequence the first fix this passage was built from
+		 * @param lastFixSequence  the last one; never before the first
+		 */
 		void capture(RoadCrewPassageDetector.PassageEvidence evidence, long observedAtMillis,
-				RouteDataObject road, RoadCrewSegmentIdentity.SegmentBinding binding) throws IOException;
+				RouteDataObject road, RoadCrewSegmentIdentity.SegmentBinding binding,
+				long firstFixSequence, long lastFixSequence) throws IOException;
 	}
 
 	public synchronized int replaceRoads(Iterable<RouteDataObject> roads) {
@@ -145,8 +141,13 @@ public final class RoadCrewObservationPipeline {
 		if (detection.isConfirmed()) {
 			legacyPassageFirstFix = fixSequence + 1;
 			if (sink != null) {
+				// The range is handed over, not left for the sink to read back
+				// from a field: this line advanced it a moment ago, and a reader
+				// arriving afterwards would see the next passage's start as this
+				// passage's - a reversed range, which is silently unusable.
 				sink.capture(detection.getEvidence(), observedAtMillis,
-						roadsById.get(match.getSegment().getRoadId()), match.getSegment());
+						roadsById.get(match.getSegment().getRoadId()), match.getSegment(),
+						firstFix, lastFix);
 			} else {
 				enqueue = outbox.enqueue(detection.getEvidence(), observedAtMillis);
 			}

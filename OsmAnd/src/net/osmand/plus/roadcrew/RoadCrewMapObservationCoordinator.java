@@ -437,20 +437,16 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			// trip boundary, which is exactly where a session ends.
 			comparisonGroupId = RoadCrewShadowValidation.newComparisonGroupId();
 			RoadCrewObservationPipeline created =
-					new RoadCrewObservationPipeline((evidence, observedAt, road, binding) -> {
+					new RoadCrewObservationPipeline((evidence, observedAt, road, binding,
+							firstFix, lastFix) -> {
 						if (!enabled || !isCollectionContextActive() || !isTruckProfileActive()) {
 							return;
 						}
 						// Production first, always. The comparison copy is taken
 						// afterwards and cannot interfere with it.
 						RoadCrewTripJournal.get(app).capture(evidence, observedAt, road, binding);
-						RoadCrewObservationPipeline current = pipeline;
-						if (current != null) {
-							RoadCrewShadowValidation.captureLegacy(app, evidence, observedAt,
-									comparisonGroupId,
-									current.getLegacyPassageFirstFixSequence(),
-									current.getFixSequence(), road, binding);
-						}
+						RoadCrewShadowValidation.captureLegacy(app, evidence, observedAt,
+								comparisonGroupId, firstFix, lastFix, road, binding);
 					});
 			created.startSession(comparisonGroupId);
 			enableComparison(created);
@@ -565,11 +561,14 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	}
 
 	private void resetPipeline() {
-		comparisonGroupId = null;
 		if (pipeline != null) {
+			// reset() flushes, and flushing produces the last passage of the
+			// drive. Clearing the group first would publish that passage with
+			// no group at all - the one observation that closes the course.
 			pipeline.reset();
 			pipeline = null;
 		}
+		comparisonGroupId = null;
 		loadedLatitude = Double.NaN;
 		loadedLongitude = Double.NaN;
 		loadedAtElapsedMillis = 0;
