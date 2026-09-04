@@ -44,8 +44,6 @@ public final class RoadCrewAppUpdater {
 	/** The notes of the release being installed, so the new build can show them. */
 	private static final String KEY_NOTES_TAG = "release_notes_tag";
 	private static final String KEY_NOTES_TEXT = "release_notes_text";
-	private static final String RELEASE_PAGE_PREFIX =
-			"https://github.com/Bokovoto/OsmAnd/releases/tag/";
 	private static final int MAX_NOTES_LENGTH = 4000;
 	private static final String CURRENT_RELEASE_TAG = "roadcrew-v" + BuildConfig.VERSION_NAME;
 	private static final String LATEST_RELEASE_API =
@@ -453,12 +451,6 @@ public final class RoadCrewAppUpdater {
 			this.update = update;
 			this.total = update.expectedSize;
 		}
-	}
-
-	/** The page for the running build, for a "read more" that stays in RoadCrew. */
-	@NonNull
-	public static String getReleasePageUrl() {
-		return RELEASE_PAGE_PREFIX + CURRENT_RELEASE_TAG;
 	}
 
 	/**

@@ -78,7 +78,9 @@ public class WhatsNewDialogFragment extends BaseAlertDialogFragment {
 			return;
 		}
 		if (isRoadCrew()) {
-			AndroidUtils.openUrl(mapActivity, RoadCrewAppUpdater.getReleasePageUrl(), nightMode);
+			// The project's own roadmap, written for drivers and in their
+			// language - not the release page, which is written for us.
+			AndroidUtils.openUrl(mapActivity, R.string.roadcrew_roadmap_url, nightMode);
 			return;
 		}
 		AndroidUtils.openUrl(mapActivity, R.string.docs_latest_version, nightMode);
