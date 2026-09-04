@@ -80,7 +80,17 @@ try {
 
 	Push-Location $repoRoot
 	try {
-		& .\gradlew.bat -p tools\roadcrew-migration :app:clean :app:assembleRelease
+		# Same trap as the release script: Windows PowerShell turns anything a
+		# native program writes to stderr into an error under ErrorActionPreference
+		# Stop, and javac writes ordinary notes there. Only the exit code counts.
+		$previousPreference = $ErrorActionPreference
+		$ErrorActionPreference = "Continue"
+		try {
+			& .\gradlew.bat -p tools\roadcrew-migration :app:clean :app:assembleRelease 2>&1 |
+				ForEach-Object { Write-Host $_ }
+		} finally {
+			$ErrorActionPreference = $previousPreference
+		}
 		if ($LASTEXITCODE -ne 0) {
 			throw "Migration Gradle build failed with exit code $LASTEXITCODE"
 		}
@@ -105,7 +115,10 @@ try {
 
 	$destination = Join-Path $repoRoot $OutputDirectory
 	New-Item -ItemType Directory -Path $destination -Force | Out-Null
-	$destinationName = if ($PatchOnly) { "RoadCrew-Migration-Fix.apk" } else { "RoadCrew.apk" }
+	# Never "RoadCrew.apk": that name belongs to the in-app updater payload,
+	# and sharing it is what made the website hand Test 78 users an APK that
+	# cannot install over their build.
+	$destinationName = if ($PatchOnly) { "RoadCrew-Migration-Fix.apk" } else { "RoadCrew-Migration.apk" }
 	$destinationApk = Join-Path $destination $destinationName
 	Copy-Item -LiteralPath $migrationApk -Destination $destinationApk -Force
 	Write-Output "Verified RoadCrew migration APK: $destinationApk"
