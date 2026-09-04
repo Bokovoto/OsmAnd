@@ -113,7 +113,17 @@ try {
 	$destinationApk = Join-Path $destination "RoadCrew.apk"
 	Copy-Item -LiteralPath $apk.FullName -Destination $destinationApk -Force
 
+	# Two names, one file. The website downloads RoadCrew-Secure.apk and the
+	# in-app updater downloads RoadCrew.apk; publishing only one of them is what
+	# left the site's download button returning 404 for three releases. The
+	# script emits both so a release cannot be published half-named.
+	$websiteApk = Join-Path $destination "RoadCrew-Secure.apk"
+	Copy-Item -LiteralPath $destinationApk -Destination $websiteApk -Force
+
 	Write-Output "Verified RoadCrew release APK: $destinationApk"
+	Write-Output "Website copy: $websiteApk"
+	Write-Output "Remember the third asset: build-roadcrew-migration.ps1 produces"
+	Write-Output "RoadCrew-Migration.apk, and every release carries all three."
 	Write-Output "Version: $VersionName ($VersionCode)"
 	Write-Output "Signing certificate SHA-1: $($apkSha1 -replace '(.{2})(?!$)', '$1:')"
 } finally {
