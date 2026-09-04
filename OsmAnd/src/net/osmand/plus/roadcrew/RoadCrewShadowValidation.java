@@ -7,8 +7,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import net.osmand.binary.RouteDataObject;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.router.RoadCrewDirectObservation;
+import net.osmand.router.RoadCrewDirectPipeline;
 import net.osmand.router.RoadCrewObservationOutbox;
 import net.osmand.router.RoadCrewPassageDetector;
 import net.osmand.router.RoadCrewSegmentIdentity;
@@ -221,15 +223,23 @@ public final class RoadCrewShadowValidation {
 	 */
 	public static void captureLegacy(@NonNull OsmandApplication app,
 			@NonNull RoadCrewPassageDetector.PassageEvidence evidence, long observedAtMillis,
-			@Nullable String comparisonGroupId, long firstFixSequence, long lastFixSequence) {
+			@Nullable String comparisonGroupId, long firstFixSequence, long lastFixSequence,
+			@Nullable RouteDataObject road,
+			@Nullable RoadCrewSegmentIdentity.SegmentBinding binding) {
 		if (!isEnabled(app)) {
 			return;
 		}
 		try {
 			RoadCrewObservationOutbox.Record record =
 					RoadCrewObservationOutbox.Record.capture(evidence, observedAtMillis);
+			// The direction the matcher actually resolved. The legacy key does
+			// not carry one, and guessing it from the ends of the piece would
+			// put an unknown error into the denominator of the comparison.
+			// Nothing about the key or the production path changes.
+			String direction = binding == null ? null : RoadCrewDirectPipeline.canonicalDirection(
+					road, binding.getStartPointIndex(), binding.getEndPointIndex());
 			JSONObject json = legacyJson(record, comparisonGroupId,
-					firstFixSequence, lastFixSequence);
+					firstFixSequence, lastFixSequence, direction);
 			queue(app).add(RoadCrewShadowOutbox.PIPELINE_LEGACY, comparisonGroupId, json.toString());
 			Log.i(TAG, "rcs1 group=" + comparisonGroupId
 					+ " fixes=" + firstFixSequence + "-" + lastFixSequence
@@ -334,8 +344,8 @@ public final class RoadCrewShadowValidation {
 
 	@NonNull
 	private static JSONObject legacyJson(@NonNull RoadCrewObservationOutbox.Record record,
-			@Nullable String comparisonGroupId, long firstFixSequence, long lastFixSequence)
-			throws JSONException {
+			@Nullable String comparisonGroupId, long firstFixSequence, long lastFixSequence,
+			@Nullable String matcherDirection) throws JSONException {
 		JSONObject json = new JSONObject();
 		json.put("id", record.getId());
 		RoadCrewSegmentIdentity.SegmentKey key = record.getSegmentKey();
@@ -357,6 +367,11 @@ public final class RoadCrewShadowValidation {
 		json.put("forwardMovementMeters", record.getForwardMovementMeters());
 		json.put("maximumDistanceMeters", record.getMaximumDistanceMeters());
 		json.put("maximumHeadingDifferenceDegrees", record.getMaximumHeadingDifferenceDegrees());
+		if (matcherDirection != null) {
+			// Telemetry for the comparison only. The server ignores it, and it
+			// is no part of any identity.
+			json.put("shadowDirection", matcherDirection);
+		}
 		putComparison(json, comparisonGroupId, firstFixSequence, lastFixSequence);
 		return json;
 	}

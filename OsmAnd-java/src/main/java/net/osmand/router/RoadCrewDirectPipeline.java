@@ -202,6 +202,48 @@ public final class RoadCrewDirectPipeline {
 				Math.max(0, match.getHeadingDifferenceDegrees()));
 	}
 
+	/**
+	 * The direction the matcher actually resolved, expressed the same way the
+	 * directed scheme expresses it.
+	 *
+	 * Written for the comparison telemetry of the legacy branch. That branch
+	 * carries no direction of its own, and inferring one from the ends of a
+	 * piece is wrong wherever a road doubles back - which would put an unknown
+	 * error into the denominator of the whole experiment. The matcher already
+	 * knew; this simply asks it, using exactly the code the directed branch
+	 * uses, so the two can never disagree by construction.
+	 *
+	 * Static and stateless: it changes nothing about the passage it describes.
+	 *
+	 * @return "F", "R", or null when the way cannot be canonicalised
+	 */
+	public static String canonicalDirection(RouteDataObject road, int startPointIndex,
+			int endPointIndex) {
+		if (road == null || road.pointsX == null || road.pointsY == null
+				|| road.getPointsLength() < 2 || startPointIndex == endPointIndex
+				|| startPointIndex < 0 || endPointIndex < 0
+				|| startPointIndex >= road.getPointsLength()
+				|| endPointIndex >= road.getPointsLength()) {
+			return null;
+		}
+		try {
+			int[] xs = new int[road.getPointsLength()];
+			int[] ys = new int[road.getPointsLength()];
+			for (int index = 0; index < xs.length; index++) {
+				xs[index] = road.getPoint31XTile(index);
+				ys[index] = road.getPoint31YTile(index);
+			}
+			boolean rawForward = endPointIndex > startPointIndex;
+			boolean forward = RoadCrewWayCanonical.canonicalise(xs, ys).reversed
+					? !rawForward : rawForward;
+			return forward ? "F" : "R";
+		} catch (RuntimeException ignored) {
+			// Telemetry must never disturb the drive; an unusable way simply
+			// reports no direction and the analysis counts it as such.
+			return null;
+		}
+	}
+
 	private WayInfo infoFor(RouteDataObject road) {
 		WayInfo cached = cache.get(road);
 		if (cached != null) {

@@ -150,4 +150,63 @@ public class RoadCrewDirectPipelineTest {
 		pipeline.flush();
 		return collected;
 	}
+
+	@Test
+	public void theLegacyBranchCanBeToldTheDirectionTheMatcherResolved() {
+		// The old key carries no direction, and inferring one from the ends of a
+		// piece is wrong wherever a road doubles back. Asking the matcher removes
+		// that error from the comparison entirely.
+		RouteDataObject road = doublingBackRoad();
+
+		String forward = RoadCrewDirectPipeline.canonicalDirection(road, 0, 1);
+		String backward = RoadCrewDirectPipeline.canonicalDirection(road, 1, 0);
+
+		Assert.assertNotNull(forward);
+		Assert.assertNotNull(backward);
+		Assert.assertNotEquals(forward, backward);
+		// Whatever the shape of the road, both directions of the same edge are
+		// answered consistently.
+		Assert.assertEquals(forward, RoadCrewDirectPipeline.canonicalDirection(road, 2, 3));
+		Assert.assertEquals(backward, RoadCrewDirectPipeline.canonicalDirection(road, 3, 2));
+	}
+
+	@Test
+	public void anEndPieceThatRunsTheOtherWayIsStillNamedByTheWayNotByItsOwnShape() {
+		// This is the case the coordinate proxy gets wrong: the road as a whole
+		// runs east, but its last leg turns back west. Asked about that leg, a
+		// proxy would answer "R" while the traversal is "F".
+		RouteDataObject road = doublingBackRoad();
+		String alongTheWay = RoadCrewDirectPipeline.canonicalDirection(road, 0, 1);
+
+		Assert.assertEquals("the doubling-back leg belongs to the same traversal",
+				alongTheWay, RoadCrewDirectPipeline.canonicalDirection(road, 3, 4));
+	}
+
+	@Test
+	public void anUnusableWayReportsNoDirectionRatherThanGuessing() {
+		Assert.assertNull(RoadCrewDirectPipeline.canonicalDirection(null, 0, 1));
+		RouteDataObject road = doublingBackRoad();
+		Assert.assertNull("the two ends of one point are not a direction",
+				RoadCrewDirectPipeline.canonicalDirection(road, 2, 2));
+		Assert.assertNull(RoadCrewDirectPipeline.canonicalDirection(road, 0, 99));
+		Assert.assertNull(RoadCrewDirectPipeline.canonicalDirection(road, -1, 1));
+	}
+
+	/** Runs east, then turns back west for its final leg. */
+	private static RouteDataObject doublingBackRoad() {
+		double[][] points = {{43.000, 27.000}, {43.000, 27.010}, {43.002, 27.020},
+				{43.004, 27.030}, {43.006, 27.024}};
+		RouteRegion region = new RouteRegion();
+		region.setName("Bulgaria");
+		RouteDataObject road = new RouteDataObject(region);
+		road.id = 7001L << 6;
+		road.types = new int[0];
+		road.pointsX = new int[points.length];
+		road.pointsY = new int[points.length];
+		for (int index = 0; index < points.length; index++) {
+			road.pointsX[index] = MapUtils.get31TileNumberX(points[index][1]);
+			road.pointsY[index] = MapUtils.get31TileNumberY(points[index][0]);
+		}
+		return road;
+	}
 }

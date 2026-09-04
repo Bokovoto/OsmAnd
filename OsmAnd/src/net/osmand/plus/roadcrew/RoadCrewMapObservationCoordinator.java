@@ -449,7 +449,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 							RoadCrewShadowValidation.captureLegacy(app, evidence, observedAt,
 									comparisonGroupId,
 									current.getLegacyPassageFirstFixSequence(),
-									current.getFixSequence());
+									current.getFixSequence(), road, binding);
 						}
 					});
 			created.startSession(comparisonGroupId);
