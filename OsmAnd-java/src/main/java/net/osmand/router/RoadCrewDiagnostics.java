@@ -62,6 +62,10 @@ public final class RoadCrewDiagnostics {
 	 * the other, but both can be measured against what the matcher resolved.
 	 */
 	public synchronized void matched(long fixSequence, long wayId, boolean forward) {
+		// Counted separately from the runs, and never bounded. The runs can be
+		// truncated on a long drive; the denominator of every recall figure must
+		// not be, or a shortened baseline would flatter both branches at once.
+		count("matched_fixes");
 		long[] last = baseline.isEmpty() ? null : baseline.get(baseline.size() - 1);
 		if (last != null && last[2] == wayId && last[3] == (forward ? 1 : 0)
 				&& fixSequence >= last[1]) {
@@ -127,8 +131,13 @@ public final class RoadCrewDiagnostics {
 			json.append('[').append(run[0]).append(',').append(run[1]).append(',')
 					.append(run[2]).append(',').append(run[3]).append(']');
 		}
-		json.append("],\"droppedEvents\":").append(droppedEvents)
-				.append(",\"droppedRuns\":").append(droppedRuns).append('}');
+		// Stated outright rather than left to be inferred: an analyser must not
+		// compute an exact-looking result from a trace it cannot see the end of.
+		json.append("],\"eventTraceTruncated\":").append(droppedEvents > 0)
+				.append(",\"eventTraceDroppedCount\":").append(droppedEvents)
+				.append(",\"matcherBaselineTruncated\":").append(droppedRuns > 0)
+				.append(",\"matcherBaselineDroppedCount\":").append(droppedRuns)
+				.append('}');
 		return json.toString();
 	}
 
