@@ -245,6 +245,133 @@ public class RoadCrewDirectPipelineTest {
 				covered > 1200);
 	}
 
+	@Test
+	public void aPassageEndedByMovingToAnotherRoadMustStillBeReported() throws Exception {
+		// The accumulator only closes the old passage once the NEW way has won
+		// two consecutive fixes - by which time the pipeline has already moved
+		// its "way of the last accepted fix" pointer onto the new way. The guard
+		// that compares that pointer to the finished passage then throws the
+		// observation away.
+		//
+		// On the drive of 5 September the accumulator emitted passages of 2 695,
+		// 3 671, 5 210 and 4 226 metres and the server received almost none of
+		// them: 19 emitted, 13 arrived, 5.9% coverage.
+		List<RoadCrewDirectObservation> produced = new ArrayList<>();
+		RoadCrewDirectPipeline pipeline = new RoadCrewDirectPipeline(
+				RoadCrewDirectPassageAccumulator.Config.DEFAULT_V1, passage -> { });
+		pipeline.setObservationSink(produced::addAll);
+		pipeline.setMapVersion("test.obf");
+
+		RouteDataObject first = fragment(700501, 27.000, 27.010);
+		RouteDataObject second = fragment(700502, 27.010, 27.020);
+		List<RouteDataObject> loaded = Arrays.asList(first, second);
+		RoadCrewSegmentMatcher.PreparedSegments segments = RoadCrewSegmentMatcher.prepare(loaded);
+
+		long time = 9_000_000;
+		int sequence = 0;
+		for (int step = 0; step < 96; step++) {
+			double longitude = 27.0002 + step * 0.0002;
+			RoadCrewSegmentMatcher.GpsFix fix = new RoadCrewSegmentMatcher.GpsFix(
+					43.0, longitude, 5, 16, 90);
+			RoadCrewSegmentMatcher.MatchResult match = segments.match(fix);
+			RouteDataObject road = null;
+			if (match.isMatched() && match.getSegment() != null) {
+				road = match.getSegment().getRoadId() == first.getId() ? first : second;
+			}
+			pipeline.accept(fix, match, road, time, ++sequence);
+			time += 1_000;
+		}
+		pipeline.flush();
+
+		long reported = 0;
+		for (RoadCrewDirectObservation observation : produced) {
+			reported += Math.round(observation.getLengthMeters());
+		}
+		Assert.assertTrue("the first road was driven end to end and reported nothing;"
+				+ " observations=" + produced.size() + " metres=" + reported,
+				reported > 1200);
+	}
+
+	@Test
+	public void everyEmittedPassageBecomesAnObservation() throws Exception {
+		// Four roads driven one after another. The accumulator's own count of
+		// emitted passages and the number of observations that leave the pipeline
+		// must agree - anything else is a passage lost between the two, which is
+		// how nineteen emitted became five point nine per cent on the road.
+		RoadCrewDiagnostics diagnostics = new RoadCrewDiagnostics();
+		List<RoadCrewDirectObservation> produced = new ArrayList<>();
+		RoadCrewDirectPipeline pipeline = new RoadCrewDirectPipeline(
+				RoadCrewDirectPassageAccumulator.Config.DEFAULT_V1, passage -> { });
+		pipeline.setDiagnostics(diagnostics);
+		pipeline.setObservationSink(produced::addAll);
+		pipeline.setMapVersion("test.obf");
+
+		List<RouteDataObject> loaded = Arrays.asList(
+				fragment(700601, 27.000, 27.010), fragment(700602, 27.010, 27.020),
+				fragment(700603, 27.020, 27.030), fragment(700604, 27.030, 27.040));
+		drive(pipeline, loaded, 27.0002, 0.0002, 192);
+		pipeline.flush();
+
+		int emitted = diagnostics.counter("passages_emitted");
+		Assert.assertTrue("the drive should have produced several passages", emitted >= 3);
+		Assert.assertEquals("every emitted passage must reach an observation",
+				emitted, diagnostics.counter("observations_created"));
+		Assert.assertEquals(0, diagnostics.counter("observations_dropped_no_geometry"));
+		Assert.assertEquals(0, diagnostics.counter("observations_dropped_geometry_mismatch"));
+	}
+
+	@Test
+	public void thePassageClosedByTheNextRoadKeepsItsOwnRoadAndGeometry() throws Exception {
+		// A A A A -> B B. The second road wins on its second fix and closes the
+		// first road's passage; at that moment the vehicle is already on B, so
+		// anything resolved then would describe the wrong road.
+		List<RoadCrewDirectObservation> produced = new ArrayList<>();
+		RoadCrewDirectPipeline pipeline = new RoadCrewDirectPipeline(
+				RoadCrewDirectPassageAccumulator.Config.DEFAULT_V1, passage -> { });
+		pipeline.setObservationSink(produced::addAll);
+		pipeline.setMapVersion("test.obf");
+
+		List<RouteDataObject> loaded = Arrays.asList(
+				fragment(700701, 27.000, 27.010), fragment(700702, 27.010, 27.020));
+		drive(pipeline, loaded, 27.0002, 0.0002, 96);
+		pipeline.flush();
+
+		boolean reportedFirstRoad = false;
+		for (RoadCrewDirectObservation observation : produced) {
+			if (observation.osmWayId == 700701) {
+				reportedFirstRoad = true;
+				// The endpoints must lie on the first road, not the second.
+				Assert.assertTrue("longitude " + observation.toLongitude + " is not on way A",
+						observation.toLongitude <= 27.0101);
+			}
+		}
+		Assert.assertTrue("the road driven end to end before the turn was never reported",
+				reportedFirstRoad);
+	}
+
+	/** Drives a straight line west to east across whatever roads are loaded. */
+	private static void drive(RoadCrewDirectPipeline pipeline, List<RouteDataObject> loaded,
+			double fromLongitude, double step, int steps) {
+		RoadCrewSegmentMatcher.PreparedSegments segments = RoadCrewSegmentMatcher.prepare(loaded);
+		long time = 9_000_000;
+		for (int index = 0; index < steps; index++) {
+			RoadCrewSegmentMatcher.GpsFix fix = new RoadCrewSegmentMatcher.GpsFix(
+					43.0, fromLongitude + index * step, 5, 16, 90);
+			RoadCrewSegmentMatcher.MatchResult match = segments.match(fix);
+			RouteDataObject road = null;
+			if (match.isMatched() && match.getSegment() != null) {
+				for (RouteDataObject candidate : loaded) {
+					if (candidate.getId() == match.getSegment().getRoadId()) {
+						road = candidate;
+						break;
+					}
+				}
+			}
+			pipeline.accept(fix, match, road, time, index + 1);
+			time += 1_000;
+		}
+	}
+
 	/** One stretch of a longer OSM way, as the routing index would store it. */
 	private static RouteDataObject fragment(long osmWayId, double fromLongitude,
 			double toLongitude) {

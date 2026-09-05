@@ -74,8 +74,11 @@ public final class RoadCrewDiagnostics {
 		// not be, or a shortened baseline would flatter both branches at once.
 		count("matched_fixes");
 		long[] last = baseline.isEmpty() ? null : baseline.get(baseline.size() - 1);
+		// Contiguous only. A run that jumped over unmatched fixes would cover
+		// more positions than were ever matched, and recall computed against the
+		// exact count then exceeds 100% - as rcs1 did, at 102.8%.
 		if (last != null && last[2] == wayId && last[3] == (forward ? 1 : 0)
-				&& fixSequence >= last[1]) {
+				&& fixSequence == last[1] + 1) {
 			last[1] = fixSequence;
 			return;
 		}

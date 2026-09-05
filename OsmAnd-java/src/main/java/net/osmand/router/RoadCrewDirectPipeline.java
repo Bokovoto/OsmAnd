@@ -48,14 +48,6 @@ public final class RoadCrewDirectPipeline {
 	private ObservationSink observationSink;
 	private RoadCrewDiagnostics diagnostics;
 	private String mapVersion = "";
-	/**
-	 * The way the last accepted fix belonged to. A passage is finished from
-	 * inside accept() of the fix that starts the next one, so this field is
-	 * updated only after the accumulator has returned - at the moment the
-	 * accumulator calls back, it still holds the way the finished passage was
-	 * measured against, which is the geometry the observation needs.
-	 */
-	private WayInfo passageWayInfo;
 	// Keyed by the live object: the loader already bounds how long one survives,
 	// and the same way can carry different geometry between map editions, so a
 	// cache keyed by way id alone would eventually answer for the wrong road.
@@ -108,18 +100,39 @@ public final class RoadCrewDirectPipeline {
 
 	private void emit(RoadCrewDirectPassageAccumulator.Passage passage) {
 		ObservationSink sink = observationSink;
-		WayInfo info = passageWayInfo;
-		// Refusing rather than guessing: a passage whose geometry is no longer
-		// the one it was measured against would produce endpoints for a road
-		// nobody drove.
-		if (sink == null || info == null || passage == null || info.osmWayId != passage.wayId) {
+		if (sink == null || passage == null) {
+			return;
+		}
+		// The geometry travels on the passage itself, taken from the fix that
+		// started it. It used to be read from a field holding "the way of the
+		// last accepted fix" - and a passage closes only once the NEXT way has
+		// won two consecutive fixes, so that field already pointed at the next
+		// road. The guard comparing the two then discarded exactly the valid
+		// passages: fifteen of nineteen on the drive of 5 September, which is
+		// what left coverage at 5.9%.
+		//
+		// Resolving it by way id at this moment would work and would still
+		// depend on the order of events. Carrying it does not.
+		WayInfo info = passage.attachment instanceof WayInfo
+				? (WayInfo) passage.attachment : null;
+		if (info == null) {
+			count("observations_dropped_no_geometry");
+			return;
+		}
+		if (info.osmWayId != passage.wayId) {
+			// Now impossible: both come from the fix that started the passage.
+			// Counted rather than thrown - nothing here may disturb the drive.
+			count("observations_dropped_geometry_mismatch");
 			return;
 		}
 		java.util.List<RoadCrewDirectObservation> observations =
 				RoadCrewDirectObservation.fromPassage(passage, info.canonical, info.region, mapVersion);
-		if (!observations.isEmpty()) {
-			sink.accept(observations);
+		if (observations.isEmpty()) {
+			count("observations_dropped_no_span");
+			return;
 		}
+		count("observations_created");
+		sink.accept(observations);
 	}
 
 	/** Called when the loader swaps the roads held in memory. */
@@ -133,7 +146,6 @@ public final class RoadCrewDirectPipeline {
 		cache.clear();
 		hasPreviousFix = false;
 		pendingMovementMeters = 0;
-		passageWayInfo = null;
 		lastInfo = null;
 	}
 
@@ -172,7 +184,6 @@ public final class RoadCrewDirectPipeline {
 			diagnostics.matched(fixSequence, directFix.wayId, directFix.forward);
 		}
 		accumulator.accept(directFix);
-		passageWayInfo = lastInfo;
 		pendingMovementMeters = 0;
 	}
 
@@ -225,7 +236,7 @@ public final class RoadCrewDirectPipeline {
 				canonicalMeasure, info.canonical.closed, info.canonical.lengthMeters,
 				observedAtMillis, pendingMovementMeters, fixSequence,
 				Math.max(0, match.getDistanceMeters()),
-				Math.max(0, match.getHeadingDifferenceDegrees()));
+				Math.max(0, match.getHeadingDifferenceDegrees()), info);
 	}
 
 	/**

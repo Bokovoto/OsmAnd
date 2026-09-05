@@ -84,6 +84,13 @@ public final class RoadCrewDirectPassageAccumulator {
 		 */
 		public final double matchDistanceMeters;
 		public final double headingDifferenceDegrees;
+		/**
+		 * Whatever the caller needs to describe this way, carried through
+		 * untouched. It travels onto the passage so that a finished passage is
+		 * self-sufficient: nothing about it may depend on where the vehicle
+		 * happens to be by the time it closes.
+		 */
+		public final Object attachment;
 
 		public Fix(long wayId, boolean forward, double measureMeters, boolean closed,
 				double wayLengthMeters, long timeMillis, double movementSincePreviousMeters) {
@@ -101,8 +108,18 @@ public final class RoadCrewDirectPassageAccumulator {
 		public Fix(long wayId, boolean forward, double measureMeters, boolean closed,
 				double wayLengthMeters, long timeMillis, double movementSincePreviousMeters,
 				long fixSequence, double matchDistanceMeters, double headingDifferenceDegrees) {
+			this(wayId, forward, measureMeters, closed, wayLengthMeters, timeMillis,
+					movementSincePreviousMeters, fixSequence, matchDistanceMeters,
+					headingDifferenceDegrees, null);
+		}
+
+		public Fix(long wayId, boolean forward, double measureMeters, boolean closed,
+				double wayLengthMeters, long timeMillis, double movementSincePreviousMeters,
+				long fixSequence, double matchDistanceMeters, double headingDifferenceDegrees,
+				Object attachment) {
 			this.matchDistanceMeters = matchDistanceMeters;
 			this.headingDifferenceDegrees = headingDifferenceDegrees;
+			this.attachment = attachment;
 			this.wayId = wayId;
 			this.forward = forward;
 			this.measureMeters = measureMeters;
@@ -148,20 +165,41 @@ public final class RoadCrewDirectPassageAccumulator {
 		/** The worst the shared matcher did anywhere in this passage. */
 		public final double maximumDistanceMeters;
 		public final double maximumHeadingDifferenceDegrees;
+		/**
+		 * The caller's description of the way, taken when this passage started.
+		 *
+		 * A passage closes only once the *next* way has proved itself, so at that
+		 * moment the vehicle is already elsewhere. Anything resolved then - a
+		 * pointer to the current way, or a lookup by id - describes the wrong
+		 * road or relies on an ordering that will be broken again later. Carrying
+		 * it makes the passage answer for itself.
+		 */
+		public final Object attachment;
 
 		Passage(long wayId, boolean forward, List<Span> spans, long startTimeMillis,
 				long endTimeMillis, int fixCount, double progressMeters,
 				long firstFixSequence, long lastFixSequence) {
 			this(wayId, forward, spans, startTimeMillis, endTimeMillis, fixCount, progressMeters,
-					firstFixSequence, lastFixSequence, 0, 0);
+					firstFixSequence, lastFixSequence, 0, 0, null);
 		}
 
 		Passage(long wayId, boolean forward, List<Span> spans, long startTimeMillis,
 				long endTimeMillis, int fixCount, double progressMeters,
 				long firstFixSequence, long lastFixSequence,
 				double maximumDistanceMeters, double maximumHeadingDifferenceDegrees) {
+			this(wayId, forward, spans, startTimeMillis, endTimeMillis, fixCount, progressMeters,
+					firstFixSequence, lastFixSequence, maximumDistanceMeters,
+					maximumHeadingDifferenceDegrees, null);
+		}
+
+		Passage(long wayId, boolean forward, List<Span> spans, long startTimeMillis,
+				long endTimeMillis, int fixCount, double progressMeters,
+				long firstFixSequence, long lastFixSequence,
+				double maximumDistanceMeters, double maximumHeadingDifferenceDegrees,
+				Object attachment) {
 			this.maximumDistanceMeters = maximumDistanceMeters;
 			this.maximumHeadingDifferenceDegrees = maximumHeadingDifferenceDegrees;
+			this.attachment = attachment;
 			this.wayId = wayId;
 			this.forward = forward;
 			this.spans = spans;
@@ -197,6 +235,8 @@ public final class RoadCrewDirectPassageAccumulator {
 	private int fixCount;
 	private long firstFixSequence;
 	private RoadCrewDiagnostics diagnostics;
+	/** The caller's description of the way this passage is on, taken at its start. */
+	private Object attachment;
 	private double maximumDistanceMeters;
 	private double maximumHeadingDifferenceDegrees;
 	private long lastFixSequence;
@@ -405,6 +445,7 @@ public final class RoadCrewDirectPassageAccumulator {
 		fixCount = 1;
 		firstFixSequence = fix.fixSequence;
 		lastFixSequence = fix.fixSequence;
+		attachment = fix.attachment;
 		maximumDistanceMeters = Math.max(0, fix.matchDistanceMeters);
 		maximumHeadingDifferenceDegrees = Math.max(0, fix.headingDifferenceDegrees);
 		missingFixes = 0;
@@ -443,7 +484,7 @@ public final class RoadCrewDirectPassageAccumulator {
 			}
 			sink.accept(new Passage(wayId, forward, buildSpans(), startTime, endTime,
 					fixCount, progress, firstFixSequence, lastFixSequence,
-					maximumDistanceMeters, maximumHeadingDifferenceDegrees));
+					maximumDistanceMeters, maximumHeadingDifferenceDegrees, attachment));
 		}
 		progress = 0;
 		fixCount = 0;
