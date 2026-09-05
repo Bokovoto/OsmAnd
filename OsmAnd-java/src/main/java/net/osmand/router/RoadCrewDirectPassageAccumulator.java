@@ -196,6 +196,7 @@ public final class RoadCrewDirectPassageAccumulator {
 	private long lastConfirmedTime;
 	private int fixCount;
 	private long firstFixSequence;
+	private RoadCrewDiagnostics diagnostics;
 	private double maximumDistanceMeters;
 	private double maximumHeadingDifferenceDegrees;
 	private long lastFixSequence;
@@ -250,6 +251,17 @@ public final class RoadCrewDirectPassageAccumulator {
 		return progress <= movementLimit;
 	}
 
+	/** Diagnostic build only. */
+	public void setDiagnostics(RoadCrewDiagnostics diagnostics) {
+		this.diagnostics = diagnostics;
+	}
+
+	private void count(String name) {
+		if (diagnostics != null) {
+			diagnostics.count(name);
+		}
+	}
+
 	public void accept(Fix fix) {
 		if (fix == null) {
 			throw new IllegalArgumentException("A fix is required.");
@@ -270,6 +282,7 @@ public final class RoadCrewDirectPassageAccumulator {
 				candidate.clear();
 				extend(fix, step);
 			} else {
+				count("passages_closed_continuity");
 				finish(lastConfirmedTime);
 				start(fix);
 			}
@@ -278,6 +291,7 @@ public final class RoadCrewDirectPassageAccumulator {
 		if (fix.wayId == wayId) {
 			// The same road the other way round. Never merged: a turn is exactly
 			// what the behaviour analysis will want to see.
+			count("passages_closed_direction_change");
 			finish(lastConfirmedTime);
 			start(fix);
 			return;
@@ -294,6 +308,7 @@ public final class RoadCrewDirectPassageAccumulator {
 		missingFixes++;
 		if (missingFixes > config.maxMissingFixes
 				|| timeMillis - lastConfirmedTime > config.gapGraceMillis) {
+			count("passages_closed_gap");
 			finish(lastConfirmedTime);
 		}
 	}
@@ -346,6 +361,7 @@ public final class RoadCrewDirectPassageAccumulator {
 			return;
 		}
 		Fix first = firstCandidateOf(fix.wayId);
+		count("passages_closed_way_change");
 		finish(lastConfirmedTime);
 		start(first);
 		for (int index = candidate.indexOf(first) + 1; index < candidate.size(); index++) {
@@ -371,6 +387,11 @@ public final class RoadCrewDirectPassageAccumulator {
 	}
 
 	private void start(Fix fix) {
+		count("passages_started");
+		if (diagnostics != null) {
+			diagnostics.event(fix.fixSequence, "RCS2_PASSAGE_START", "way=" + fix.wayId
+					+ (fix.forward ? " F" : " R"));
+		}
 		active = true;
 		wayId = fix.wayId;
 		forward = fix.forward;
@@ -407,7 +428,19 @@ public final class RoadCrewDirectPassageAccumulator {
 			return;
 		}
 		active = false;
+		if (progress <= EPSILON) {
+			count("passages_discarded_under_min_progress");
+			if (diagnostics != null) {
+				diagnostics.event(lastFixSequence, "RCS2_PASSAGE_DISCARDED",
+						"way=" + wayId + " progress=0");
+			}
+		}
 		if (progress > EPSILON) {
+			count("passages_emitted");
+			if (diagnostics != null) {
+				diagnostics.event(lastFixSequence, "RCS2_PASSAGE_EMIT", "way=" + wayId
+						+ " metres=" + Math.round(progress));
+			}
 			sink.accept(new Passage(wayId, forward, buildSpans(), startTime, endTime,
 					fixCount, progress, firstFixSequence, lastFixSequence,
 					maximumDistanceMeters, maximumHeadingDifferenceDegrees));

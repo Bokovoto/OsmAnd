@@ -118,6 +118,12 @@ final class RoadCrewShadowUploader {
 		body.put("schemaVersion", 2);
 		body.put("chunkId", batch.getBatchId());
 		body.put("observations", observations);
+		// The server ignores unknown fields and stores the body verbatim, so the
+		// diagnostics ride along without a second endpoint.
+		String diagnostics = RoadCrewShadowValidation.diagnosticsJson();
+		if (diagnostics != null) {
+			body.put("diagnostics", new JSONObject(diagnostics));
+		}
 		byte[] compressed = gzip(body.toString().getBytes(StandardCharsets.UTF_8));
 
 		String url = SHADOW_CHUNK_URL + "?pipeline=" + batch.getPipeline()

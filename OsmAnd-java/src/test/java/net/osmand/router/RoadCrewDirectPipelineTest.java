@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -190,6 +191,78 @@ public class RoadCrewDirectPipelineTest {
 				RoadCrewDirectPipeline.canonicalDirection(road, 2, 2));
 		Assert.assertNull(RoadCrewDirectPipeline.canonicalDirection(road, 0, 99));
 		Assert.assertNull(RoadCrewDirectPipeline.canonicalDirection(road, -1, 1));
+	}
+
+	@Test
+	public void oneOsmWaySplitIntoTwoLoadedObjectsMustNotSilenceThePassage() throws Exception {
+		// OsmAnd stores a long way as several RouteDataObjects. They share one
+		// OSM id but each carries its own point array, so its measures start at
+		// nought again. Identity is per way; the measures were per fragment.
+		//
+		// Driving across the boundary therefore looks like a jump backwards
+		// along the road, the continuity test refuses it, the passage restarts
+		// with no progress, and nothing is ever emitted. On the first real drive
+		// that was 88 legacy observations against 9 directed ones.
+		List<RoadCrewDirectObservation> produced = new ArrayList<>();
+		RoadCrewDirectPipeline pipeline = new RoadCrewDirectPipeline(
+				RoadCrewDirectPassageAccumulator.Config.DEFAULT_V1, passage -> { });
+		pipeline.setObservationSink(produced::addAll);
+		pipeline.setMapVersion("test.obf");
+
+		RouteDataObject first = fragment(700123, 27.000, 27.010);
+		RouteDataObject second = fragment(700123, 27.010, 27.020);
+		Assert.assertEquals("both fragments are the same OSM way",
+				net.osmand.binary.ObfConstants.getOsmObjectId(first),
+				net.osmand.binary.ObfConstants.getOsmObjectId(second));
+
+		long time = 9_000_000;
+		int sequence = 0;
+		for (RouteDataObject road : Arrays.asList(first, second)) {
+			List<RouteDataObject> loaded = Collections.singletonList(road);
+			RoadCrewSegmentMatcher.PreparedSegments segments = RoadCrewSegmentMatcher.prepare(loaded);
+			// About 16 m per second - a lorry at 58 km/h, not a rocket. The
+			// continuity test rightly refuses anything faster than the config
+			// allows, so unrealistic spacing would prove nothing.
+			double from = road == first ? 27.0002 : 27.0102;
+			for (int step = 0; step < 48; step++) {
+				RoadCrewSegmentMatcher.GpsFix fix = new RoadCrewSegmentMatcher.GpsFix(
+						43.0, from + step * 0.0002, 5, 16, 90);
+				RoadCrewSegmentMatcher.MatchResult match = segments.match(fix);
+				pipeline.accept(fix, match, match.isMatched() ? road : null, time, ++sequence);
+				time += 1_000;
+			}
+		}
+		pipeline.flush();
+
+		Assert.assertFalse("the drive produced no directed observation at all", produced.isEmpty());
+		double covered = 0;
+		for (RoadCrewDirectObservation observation : produced) {
+			covered += observation.getLengthMeters();
+		}
+		// The two fragments are about 815 m each; losing one of them entirely is
+		// the failure being guarded against.
+		Assert.assertTrue("only " + Math.round(covered) + " m of about 1600 m was reported",
+				covered > 1200);
+	}
+
+	/** One stretch of a longer OSM way, as the routing index would store it. */
+	private static RouteDataObject fragment(long osmWayId, double fromLongitude,
+			double toLongitude) {
+		RouteRegion region = new RouteRegion();
+		region.setName("Bulgaria");
+		RouteDataObject road = new RouteDataObject(region);
+		road.id = osmWayId << 6;
+		road.types = new int[0];
+		int points = 5;
+		road.pointsX = new int[points];
+		road.pointsY = new int[points];
+		for (int index = 0; index < points; index++) {
+			double longitude = fromLongitude
+					+ (toLongitude - fromLongitude) * index / (points - 1.0);
+			road.pointsX[index] = MapUtils.get31TileNumberX(longitude);
+			road.pointsY[index] = MapUtils.get31TileNumberY(43.0);
+		}
+		return road;
 	}
 
 	/** Runs east, then turns back west for its final leg. */

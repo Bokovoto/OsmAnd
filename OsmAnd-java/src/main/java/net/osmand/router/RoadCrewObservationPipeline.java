@@ -83,6 +83,13 @@ public final class RoadCrewObservationPipeline {
 		}
 	}
 
+	/** Diagnostic build only; forwarded to the directed branch. */
+	public synchronized void setDirectDiagnostics(RoadCrewDiagnostics diagnostics) {
+		if (directPipeline != null) {
+			directPipeline.setDiagnostics(diagnostics);
+		}
+	}
+
 	public synchronized void setDirectMapVersion(String mapVersion) {
 		if (directPipeline != null) {
 			directPipeline.setMapVersion(mapVersion);

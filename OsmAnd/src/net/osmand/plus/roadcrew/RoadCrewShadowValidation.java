@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import net.osmand.binary.RouteDataObject;
 import net.osmand.plus.OsmandApplication;
+import net.osmand.router.RoadCrewDiagnostics;
 import net.osmand.router.RoadCrewDirectObservation;
 import net.osmand.router.RoadCrewDirectPipeline;
 import net.osmand.router.RoadCrewObservationOutbox;
@@ -63,6 +64,9 @@ public final class RoadCrewShadowValidation {
 		return thread;
 	});
 	private static RoadCrewShadowOutbox outbox;
+	/** Diagnostic build: what the directed branch did during this session. */
+	private static final RoadCrewDiagnostics DIAGNOSTICS = new RoadCrewDiagnostics();
+	private static volatile String diagnosticsGroupId;
 	private static boolean unavailable;
 	private static boolean refreshing;
 
@@ -207,6 +211,33 @@ public final class RoadCrewShadowValidation {
 			Log.w(TAG, "could not read the comparison queue", e);
 			return new QueueStatus(true, 0, 0, 0);
 		}
+	}
+
+	@NonNull
+	public static RoadCrewDiagnostics diagnostics() {
+		return DIAGNOSTICS;
+	}
+
+	/** Starts a fresh diagnostic record for one recording session. */
+	public static void beginDiagnostics(@Nullable String comparisonGroupId) {
+		DIAGNOSTICS.reset();
+		diagnosticsGroupId = comparisonGroupId;
+	}
+
+	/**
+	 * What the uploader attaches to every chunk. Whichever branch is being sent,
+	 * the counters travel - which matters most in exactly the case being chased,
+	 * where the directed branch produces nothing and so sends nothing.
+	 */
+	@Nullable
+	static String diagnosticsJson() {
+		String group = diagnosticsGroupId;
+		if (group == null || group.isEmpty()) {
+			return null;
+		}
+		String body = DIAGNOSTICS.toJson();
+		return body.startsWith("{")
+				? "{\"comparisonGroupId\":\"" + group + "\"," + body.substring(1) : null;
 	}
 
 	/** A fresh group for one recording session; it identifies no driver. */

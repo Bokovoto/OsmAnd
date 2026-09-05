@@ -46,6 +46,7 @@ public final class RoadCrewDirectPipeline {
 
 	private final RoadCrewDirectPassageAccumulator accumulator;
 	private ObservationSink observationSink;
+	private RoadCrewDiagnostics diagnostics;
 	private String mapVersion = "";
 	/**
 	 * The way the last accepted fix belonged to. A passage is finished from
@@ -83,6 +84,18 @@ public final class RoadCrewDirectPipeline {
 		});
 	}
 
+	/** Diagnostic build only; without one nothing is counted. */
+	public void setDiagnostics(RoadCrewDiagnostics diagnostics) {
+		this.diagnostics = diagnostics;
+		accumulator.setDiagnostics(diagnostics);
+	}
+
+	private void count(String name) {
+		if (diagnostics != null) {
+			diagnostics.count(name);
+		}
+	}
+
 	/** Turns on the wire-shaped output; without one only passages are produced. */
 	public void setObservationSink(ObservationSink sink) {
 		this.observationSink = sink;
@@ -115,6 +128,7 @@ public final class RoadCrewDirectPipeline {
 	}
 
 	public void reset() {
+		count("pipeline_reset");
 		accumulator.flush();
 		cache.clear();
 		hasPreviousFix = false;
@@ -147,11 +161,15 @@ public final class RoadCrewDirectPipeline {
 			hasPreviousFix = true;
 		}
 		lastInfo = null;
+		count("fixes_seen");
 		RoadCrewDirectPassageAccumulator.Fix directFix =
 				toDirectFix(match, road, observedAtMillis, fixSequence);
 		if (directFix == null) {
 			accumulator.acceptNoMatch(observedAtMillis);
 			return;
+		}
+		if (diagnostics != null) {
+			diagnostics.matched(fixSequence, directFix.wayId, directFix.forward);
 		}
 		accumulator.accept(directFix);
 		passageWayInfo = lastInfo;
@@ -161,7 +179,12 @@ public final class RoadCrewDirectPipeline {
 	private RoadCrewDirectPassageAccumulator.Fix toDirectFix(
 			RoadCrewSegmentMatcher.MatchResult match, RouteDataObject road, long observedAtMillis,
 			long fixSequence) {
-		if (match == null || !match.isMatched() || road == null || match.getSegment() == null) {
+		if (match == null || !match.isMatched() || match.getSegment() == null) {
+			count("no_match");
+			return null;
+		}
+		if (road == null) {
+			count("missing_road");
 			return null;
 		}
 		WayInfo info;
@@ -169,11 +192,13 @@ public final class RoadCrewDirectPipeline {
 			info = infoFor(road);
 			lastInfo = info;
 		} catch (RuntimeException ignored) {
+			count("canonicalisation_failed");
 			// A way this code cannot canonicalise is not a reason to disturb the
 			// legacy path; it simply produces no directed observation.
 			return null;
 		}
 		if (info == null) {
+			count("missing_way_id");
 			return null;
 		}
 		RoadCrewSegmentIdentity.SegmentBinding binding = match.getSegment();
@@ -181,6 +206,7 @@ public final class RoadCrewDirectPipeline {
 		int endIndex = binding.getEndPointIndex();
 		if (startIndex < 0 || endIndex < 0
 				|| startIndex >= info.rawMeasures.length || endIndex >= info.rawMeasures.length) {
+			count("invalid_indices");
 			return null;
 		}
 		// The direction comes from the matcher's own decision about which way

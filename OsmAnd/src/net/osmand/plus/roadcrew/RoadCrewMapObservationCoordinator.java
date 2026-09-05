@@ -16,6 +16,7 @@ import net.osmand.plus.resources.ResourceManager.BinaryMapReaderResourceType;
 import net.osmand.plus.settings.backend.ApplicationMode;
 import net.osmand.router.RoadCrewObfSegmentLoader;
 import net.osmand.router.RoadCrewObservationOutbox;
+import net.osmand.router.RoadCrewDiagnostics;
 import net.osmand.router.RoadCrewDirectPassageAccumulator;
 import net.osmand.router.RoadCrewObservationPipeline;
 import net.osmand.router.RoadCrewRecordingPolicy;
@@ -135,7 +136,24 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 		});
 	}
 
+	/** The conditions a course depends on, so an unexplained break can be read. */
+	@NonNull
+	private String describeCollectionContext() {
+		return "enabled=" + enabled
+				+ " truck=" + isTruckProfileActive()
+				+ " navSession=" + navigationSessionActive
+				+ " following=" + app.getRoutingHelper().isFollowingMode()
+				+ " paused=" + app.getRoutingHelper().isPauseNavigation()
+				+ " mapActivity=" + app.getSettings().MAP_ACTIVITY_ENABLED
+				+ " service=" + RoadCrewRecordingService.isRunning();
+	}
+
 	private void queueTripBoundary(Runnable boundary) {
+		RoadCrewDiagnostics diagnostics = RoadCrewShadowValidation.diagnostics();
+		diagnostics.count("course_ended");
+		RoadCrewObservationPipeline current = pipeline;
+		diagnostics.event(current == null ? 0 : current.getFixSequence(), "COURSE_END",
+				describeCollectionContext());
 		int generation = collectionGeneration.incrementAndGet();
 		latestSample.set(null);
 		executor.execute(() -> {
@@ -436,6 +454,10 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			// One recording session, one group. The pipeline is rebuilt at every
 			// trip boundary, which is exactly where a session ends.
 			comparisonGroupId = RoadCrewShadowValidation.newComparisonGroupId();
+			RoadCrewShadowValidation.beginDiagnostics(comparisonGroupId);
+			RoadCrewShadowValidation.diagnostics().count("course_started");
+			RoadCrewShadowValidation.diagnostics().event(0, "COURSE_START",
+					"context=" + describeCollectionContext());
 			RoadCrewObservationPipeline created =
 					new RoadCrewObservationPipeline((evidence, observedAt, road, binding,
 							firstFix, lastFix) -> {
@@ -471,6 +493,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 					RoadCrewShadowValidation.captureDirect(app, observations, comparisonGroupId));
 			created.setDirectMapVersion(RoadCrewShadowValidation.isEnabled(app)
 					? currentMapVersion() : "");
+			created.setDirectDiagnostics(RoadCrewShadowValidation.diagnostics());
 		} catch (RuntimeException e) {
 			LOG.warn("Could not start the segmentation comparison; recording continues", e);
 		}
@@ -533,10 +556,22 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 				getRoutingReaders(), sample.latitude, sample.longitude, LOAD_RADIUS_METERS,
 				MAX_ROUTE_OBJECTS, () -> cancelled.get() || !enabled || Thread.currentThread().isInterrupted());
 		if (loaded.isCancelled() || loaded.isTruncated()) {
+			// The suspected cause of the missing coverage: in a dense network the
+			// load exceeds its cap, the whole pipeline is reset, and the directed
+			// passage - which needs continuity over hundreds of fixes - is lost,
+			// while the legacy detector needs only three and survives.
+			RoadCrewDiagnostics diagnostics = RoadCrewShadowValidation.diagnostics();
+			diagnostics.count(loaded.isTruncated() ? "load_truncated" : "load_cancelled");
+			diagnostics.event(currentPipeline.getFixSequence(),
+					loaded.isTruncated() ? "LOAD_TRUNCATED" : "LOAD_CANCELLED",
+					"objects=" + loaded.getRouteObjects().size());
+			diagnostics.event(currentPipeline.getFixSequence(), "PIPELINE_RESET",
+					"reason=" + (loaded.isTruncated() ? "LOAD_TRUNCATED" : "LOAD_CANCELLED"));
 			currentPipeline.reset();
 			loadedLatitude = Double.NaN;
 			return false;
 		}
+		RoadCrewShadowValidation.diagnostics().count("roads_loaded");
 		currentPipeline.replaceRoads(loaded.getRouteObjects());
 		loadedLatitude = sample.latitude;
 		loadedLongitude = sample.longitude;
