@@ -318,13 +318,20 @@ public final class RoadCrewShadowValidation {
 		}
 	}
 
-	/** Sends whatever is waiting: the drive stopped, or the app went away. */
+	/**
+	 * Sends whatever is waiting: the drive stopped, or the app went away.
+	 *
+	 * The queue may be empty at exactly this moment, and that is when the final
+	 * snapshot matters most - it is the one carrying COURSE_END and the
+	 * conditions the course depended on. So the uploader is told to send the
+	 * diagnostics even with nothing else to carry.
+	 */
 	public static void flushNow(@NonNull OsmandApplication app) {
 		if (!isEnabled(app)) {
 			return;
 		}
 		try {
-			RoadCrewShadowUploader.schedule(app, queue(app));
+			RoadCrewShadowUploader.scheduleWithFinalDiagnostics(app, queue(app));
 		} catch (IOException | RuntimeException e) {
 			Log.w(TAG, "could not flush the comparison queue", e);
 		}

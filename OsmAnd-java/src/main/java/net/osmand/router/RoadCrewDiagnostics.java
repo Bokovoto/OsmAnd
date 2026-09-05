@@ -31,6 +31,13 @@ public final class RoadCrewDiagnostics {
 	private final List<long[]> baseline = new ArrayList<>();
 	private int droppedEvents;
 	private int droppedRuns;
+	/**
+	 * Which snapshot this is. The counters are cumulative and a copy rides on
+	 * every chunk, so an analyser must take the newest one and never add them
+	 * together. Left to be inferred from the object listing it would take
+	 * whichever happened to be read last, which is not the same thing.
+	 */
+	private int snapshotSequence;
 
 	public synchronized void count(String name) {
 		count(name, 1);
@@ -98,6 +105,7 @@ public final class RoadCrewDiagnostics {
 		baseline.clear();
 		droppedEvents = 0;
 		droppedRuns = 0;
+		snapshotSequence = 0;
 	}
 
 	/**
@@ -105,8 +113,9 @@ public final class RoadCrewDiagnostics {
 	 * library where no JSON library is guaranteed.
 	 */
 	public synchronized String toJson() {
+		snapshotSequence++;
 		StringBuilder json = new StringBuilder(1024);
-		json.append("{\"counters\":{");
+		json.append("{\"snapshotSequence\":").append(snapshotSequence).append(",\"counters\":{");
 		boolean first = true;
 		for (Map.Entry<String, Integer> entry : counters.entrySet()) {
 			if (!first) {

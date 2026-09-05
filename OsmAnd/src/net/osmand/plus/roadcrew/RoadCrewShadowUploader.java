@@ -54,13 +54,27 @@ final class RoadCrewShadowUploader {
 
 	static synchronized void schedule(@NonNull OsmandApplication app,
 			@NonNull RoadCrewShadowOutbox outbox) {
+		schedule(app, outbox, false);
+	}
+
+	/** Used at the end of a course, when the queue may already be empty. */
+	static synchronized void scheduleWithFinalDiagnostics(@NonNull OsmandApplication app,
+			@NonNull RoadCrewShadowOutbox outbox) {
+		schedule(app, outbox, true);
+	}
+
+	private static synchronized void schedule(@NonNull OsmandApplication app,
+			@NonNull RoadCrewShadowOutbox outbox, boolean finalDiagnostics) {
 		if (running) {
 			return;
 		}
 		running = true;
 		EXECUTOR.execute(() -> {
 			try {
-				upload(app, outbox);
+				boolean sentSomething = upload(app, outbox);
+				if (finalDiagnostics && !sentSomething) {
+					postDiagnosticsOnly(app);
+				}
 			} catch (RuntimeException e) {
 				Log.w(TAG, "comparison upload run failed", e);
 			} finally {
@@ -71,11 +85,13 @@ final class RoadCrewShadowUploader {
 		});
 	}
 
-	private static void upload(@NonNull OsmandApplication app,
+	/** @return whether anything at all was sent, and so carried the diagnostics */
+	private static boolean upload(@NonNull OsmandApplication app,
 			@NonNull RoadCrewShadowOutbox outbox) {
+		boolean sent = false;
 		for (int index = 0; index < MAX_BATCHES_PER_RUN; index++) {
 			if (!RoadCrewShadowValidation.isEnabled(app)) {
-				return;
+				return sent;
 			}
 			long now = System.currentTimeMillis();
 			RoadCrewShadowOutbox.Batch batch;
@@ -83,13 +99,14 @@ final class RoadCrewShadowUploader {
 				batch = outbox.nextBatch(now, RoadCrewShadowOutbox.MAX_BATCH_RECORDS);
 			} catch (IOException e) {
 				Log.w(TAG, "could not read the comparison queue", e);
-				return;
+				return sent;
 			}
 			if (batch.isEmpty()) {
-				return;
+				return sent;
 			}
 			try {
 				post(app, batch);
+				sent = true;
 				outbox.markUploaded(batch.getIds());
 				Log.i(TAG, "sent " + batch.getPipeline() + " chunk=" + batch.getBatchId()
 						+ " records=" + batch.getRecords().size()
@@ -103,8 +120,34 @@ final class RoadCrewShadowUploader {
 				Log.w(TAG, "comparison chunk " + batch.getBatchId() + " for "
 						+ batch.getPipeline() + " stays queued; failures for that branch: "
 						+ outbox.consecutiveFailures(batch.getPipeline()), e);
-				return;
+				return sent;
 			}
+		}
+		return sent;
+	}
+
+	/**
+	 * A chunk carrying only the final snapshot. A course can end with nothing
+	 * left to upload, and that is exactly when the reason it ended matters: the
+	 * last snapshot is the one holding COURSE_END and the conditions it
+	 * depended on. The shadow endpoint accepts an empty observation list for
+	 * this alone, and refuses one that carries no diagnostics either.
+	 */
+	private static void postDiagnosticsOnly(@NonNull OsmandApplication app) {
+		String diagnostics = RoadCrewShadowValidation.diagnosticsJson();
+		if (diagnostics == null) {
+			return;
+		}
+		try {
+			JSONObject body = new JSONObject();
+			body.put("schemaVersion", 2);
+			body.put("chunkId", java.util.UUID.randomUUID().toString());
+			body.put("observations", new JSONArray());
+			body.put("diagnostics", new JSONObject(diagnostics));
+			send(app, "RCS2", gzip(body.toString().getBytes(StandardCharsets.UTF_8)));
+			Log.i(TAG, "sent the final diagnostics with no observations to carry them");
+		} catch (IOException | JSONException e) {
+			Log.w(TAG, "could not send the final diagnostics", e);
 		}
 	}
 
@@ -124,9 +167,12 @@ final class RoadCrewShadowUploader {
 		if (diagnostics != null) {
 			body.put("diagnostics", new JSONObject(diagnostics));
 		}
-		byte[] compressed = gzip(body.toString().getBytes(StandardCharsets.UTF_8));
+		send(app, batch.getPipeline(), gzip(body.toString().getBytes(StandardCharsets.UTF_8)));
+	}
 
-		String url = SHADOW_CHUNK_URL + "?pipeline=" + batch.getPipeline()
+	private static void send(@NonNull OsmandApplication app, @NonNull String pipeline,
+			@NonNull byte[] compressed) throws IOException, JSONException {
+		String url = SHADOW_CHUNK_URL + "?pipeline=" + pipeline
 				+ "&pipelineVersion=" + PIPELINE_VERSION;
 		HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
 		try {
