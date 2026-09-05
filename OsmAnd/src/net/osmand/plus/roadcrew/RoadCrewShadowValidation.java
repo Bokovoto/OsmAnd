@@ -243,6 +243,14 @@ public final class RoadCrewShadowValidation {
 		if (groupId == null || groupId.isEmpty()) {
 			return;
 		}
+		// The one guard that matters here. A complete trace of where a vehicle
+		// went is the most sensitive thing this build can write, so it is
+		// written only for a phone the server has put in the validation
+		// programme - by construction, not because every phone happens to be in
+		// it today.
+		if (!isEnabled(context)) {
+			return;
+		}
 		try {
 			recorder = new RoadCrewLocationRecorder(
 					new File(getRecordingDirectory(context), groupId + ".jsonl"));
