@@ -285,4 +285,7 @@
     <string name="roadcrew_shadow_validation_status_off">Comparison off</string>
     <string name="roadcrew_whats_new_fallback">Tap DETAILS to see what changed in this version.</string>
     <string name="roadcrew_roadmap_url" translatable="false">https://roadcrew.meriltrans.com/roadmap</string>
+    <string name="roadcrew_export_recording">Export the drive recording (%1$d available)</string>
+    <string name="roadcrew_export_recording_title">Send the recording</string>
+    <string name="roadcrew_export_recording_failed">The recording could not be shared.</string>
 </resources>

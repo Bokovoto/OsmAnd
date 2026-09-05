@@ -284,4 +284,7 @@
     <string name="roadcrew_shadow_validation_status">Опашка за сравнение: %1$d чакат (стар %2$d, нов %3$d)</string>
     <string name="roadcrew_shadow_validation_status_off">Сравнението е изключено</string>
     <string name="roadcrew_whats_new_fallback">Натиснете ПОДРОБНОСТИ, за да видите какво е променено в тази версия.</string>
+    <string name="roadcrew_export_recording">Изнеси записа на карането (%1$d налични)</string>
+    <string name="roadcrew_export_recording_title">Изпрати записа</string>
+    <string name="roadcrew_export_recording_failed">Записът не можа да бъде споделен.</string>
 </resources>

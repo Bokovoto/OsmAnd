@@ -233,6 +233,34 @@ public final class RoadCrewShadowValidation {
 		return recorder;
 	}
 
+	/**
+	 * The finished recordings, newest first.
+	 *
+	 * Nothing about how or where they are written changes when they are read:
+	 * the export exists so the runtime path being measured stays exactly as it
+	 * was while driving, which is the whole point of replaying it afterwards.
+	 */
+	@NonNull
+	public static List<File> finishedRecordings(@NonNull Context context) {
+		File[] files = getRecordingDirectory(context).listFiles(
+				(directory, name) -> name.endsWith(".jsonl"));
+		if (files == null) {
+			return java.util.Collections.emptyList();
+		}
+		List<File> recordings = new java.util.ArrayList<>();
+		RoadCrewLocationRecorder open = recorder;
+		File openFile = open == null ? null : open.getFile();
+		for (File file : files) {
+			// The course still being driven is left alone; it is not finished
+			// and copying it would capture half a drive.
+			if (openFile == null || !openFile.getAbsolutePath().equals(file.getAbsolutePath())) {
+				recordings.add(file);
+			}
+		}
+		recordings.sort((a, b) -> Long.compare(b.lastModified(), a.lastModified()));
+		return recordings;
+	}
+
 	@NonNull
 	static File getRecordingDirectory(@NonNull Context context) {
 		return new File(context.getFilesDir(), RECORDING_DIRECTORY_NAME);

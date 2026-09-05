@@ -5,6 +5,7 @@ import android.text.InputType;
 import android.text.Editable;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.content.Intent;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -17,9 +18,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import net.osmand.plus.OsmandApplication;
+import net.osmand.plus.utils.AndroidUtils;
 import net.osmand.plus.R;
 import net.osmand.plus.activities.MapActivity;
 import net.osmand.plus.settings.backend.ApplicationMode;
+
+import java.io.File;
+import java.util.List;
 import net.osmand.plus.settings.backend.preferences.CommonPreference;
 import net.osmand.plus.settings.fragments.BaseSettingsFragment;
 import net.osmand.plus.settings.fragments.SettingsScreenType;
@@ -276,6 +281,32 @@ final class RoadCrewDriverProfileDialog {
 		status.setTextColor(RoadCrewUi.PRIMARY);
 		RoadCrewUi.addBody(mapActivity, content,
 				mapActivity.getString(R.string.roadcrew_shadow_validation_body));
+
+		// Reading only, and only once a course has ended. It exists so the same
+		// drive can be replayed against two builds with the code as the only
+		// variable - which no comparison of two different drives can give.
+		List<File> recordings = RoadCrewShadowValidation.finishedRecordings(app);
+		if (recordings.isEmpty()) {
+			return;
+		}
+		RoadCrewUi.addFullWidthButton(mapActivity, content,
+				mapActivity.getString(R.string.roadcrew_export_recording, recordings.size()),
+				false, v -> shareRecording(mapActivity, recordings.get(0)));
+	}
+
+	private static void shareRecording(@NonNull MapActivity mapActivity, @NonNull File recording) {
+		try {
+			Intent share = new Intent(Intent.ACTION_SEND);
+			share.setType("application/json");
+			share.putExtra(Intent.EXTRA_STREAM, AndroidUtils.getUriForFile(
+					mapActivity.getApp(), recording));
+			share.putExtra(Intent.EXTRA_SUBJECT, recording.getName());
+			share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+			mapActivity.startActivity(Intent.createChooser(share,
+					mapActivity.getString(R.string.roadcrew_export_recording_title)));
+		} catch (RuntimeException e) {
+			mapActivity.getApp().showToastMessage(R.string.roadcrew_export_recording_failed);
+		}
 	}
 
 	private static void updateLiveTruckMapStatus(@NonNull MapActivity activity,
