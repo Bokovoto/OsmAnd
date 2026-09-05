@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import net.osmand.binary.RouteDataObject;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.router.RoadCrewDiagnostics;
+import net.osmand.router.RoadCrewLocationRecorder;
 import net.osmand.router.RoadCrewDirectObservation;
 import net.osmand.router.RoadCrewDirectPipeline;
 import net.osmand.router.RoadCrewObservationOutbox;
@@ -49,6 +50,7 @@ public final class RoadCrewShadowValidation {
 	private static final String KEY_CHECKED_AT = "validation_mode_checked_at";
 	private static final String KEY_REFRESH_AFTER_MILLIS = "validation_mode_refresh_after";
 	private static final String QUEUE_FILE_NAME = "roadcrew-shadow-observations.json";
+	private static final String RECORDING_DIRECTORY_NAME = "roadcrew-recordings";
 	private static final String VALIDATION_MODE_URL =
 			"https://roadcrew-api.galin-b-vasilev1.workers.dev/v2/truck-map/validation-mode";
 	private static final long DEFAULT_REFRESH_MILLIS = 6 * 60 * 60 * 1_000L;
@@ -67,6 +69,7 @@ public final class RoadCrewShadowValidation {
 	/** Diagnostic build: what the directed branch did during this session. */
 	private static final RoadCrewDiagnostics DIAGNOSTICS = new RoadCrewDiagnostics();
 	private static volatile String diagnosticsGroupId;
+	private static volatile RoadCrewLocationRecorder recorder;
 	private static boolean unavailable;
 	private static boolean refreshing;
 
@@ -218,10 +221,57 @@ public final class RoadCrewShadowValidation {
 		return DIAGNOSTICS;
 	}
 
+	/**
+	 * The recorder for the current course, or null when nothing is being
+	 * recorded. A complete trace of where a vehicle went is precisely what the
+	 * rest of this system is built never to keep, so it is written only while
+	 * the phone is in the validation programme, it never leaves the device, and
+	 * it is deleted when observation consent is withdrawn.
+	 */
+	@Nullable
+	public static RoadCrewLocationRecorder recorder() {
+		return recorder;
+	}
+
+	@NonNull
+	static File getRecordingDirectory(@NonNull Context context) {
+		return new File(context.getFilesDir(), RECORDING_DIRECTORY_NAME);
+	}
+
+	private static void startRecording(@NonNull Context context, @Nullable String groupId) {
+		stopRecording();
+		if (groupId == null || groupId.isEmpty()) {
+			return;
+		}
+		try {
+			recorder = new RoadCrewLocationRecorder(
+					new File(getRecordingDirectory(context), groupId + ".jsonl"));
+			Log.i(TAG, "recording locations for replay into " + recorder.getFile().getName());
+		} catch (RuntimeException e) {
+			recorder = null;
+			Log.w(TAG, "could not start the replay recording", e);
+		}
+	}
+
+	private static void stopRecording() {
+		RoadCrewLocationRecorder open = recorder;
+		recorder = null;
+		if (open != null) {
+			open.close();
+		}
+	}
+
 	/** Starts a fresh diagnostic record for one recording session. */
-	public static void beginDiagnostics(@Nullable String comparisonGroupId) {
+	public static void beginDiagnostics(@NonNull Context context,
+			@Nullable String comparisonGroupId) {
 		DIAGNOSTICS.reset();
 		diagnosticsGroupId = comparisonGroupId;
+		startRecording(context, comparisonGroupId);
+	}
+
+	/** Ends the recording of the course that is finishing. */
+	public static void endDiagnostics() {
+		stopRecording();
 	}
 
 	/**
@@ -353,6 +403,15 @@ public final class RoadCrewShadowValidation {
 		deleteIfPresent(file);
 		deleteIfPresent(new File(file.getPath() + ".bak"));
 		deleteIfPresent(new File(file.getPath() + ".tmp"));
+		// The recordings are the most sensitive thing this build writes, so
+		// withdrawing consent takes them with everything else.
+		stopRecording();
+		File[] recordings = getRecordingDirectory(context).listFiles();
+		if (recordings != null) {
+			for (File recording : recordings) {
+				deleteIfPresent(recording);
+			}
+		}
 	}
 
 	@NonNull

@@ -17,6 +17,7 @@ import net.osmand.plus.settings.backend.ApplicationMode;
 import net.osmand.router.RoadCrewObfSegmentLoader;
 import net.osmand.router.RoadCrewObservationOutbox;
 import net.osmand.router.RoadCrewDiagnostics;
+import net.osmand.router.RoadCrewLocationRecorder;
 import net.osmand.router.RoadCrewDirectPassageAccumulator;
 import net.osmand.router.RoadCrewObservationPipeline;
 import net.osmand.router.RoadCrewRecordingPolicy;
@@ -437,6 +438,15 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 					new RoadCrewSegmentMatcher.GpsFix(sample.latitude, sample.longitude,
 							sample.accuracyMeters, sample.speedMetersPerSecond, sample.bearingDegrees),
 					sample.elapsedRealtimeMillis, sample.wallTimeMillis);
+			RoadCrewLocationRecorder recorder = RoadCrewShadowValidation.recorder();
+			if (recorder != null) {
+				// Written after the pipeline has had it, so a fault in the
+				// recorder cannot cost an observation.
+				recorder.fix(currentPipeline.getFixSequence(), sample.wallTimeMillis,
+						sample.elapsedRealtimeMillis, sample.latitude, sample.longitude,
+						sample.accuracyMeters, sample.speedMetersPerSecond,
+						sample.bearingDegrees, 0);
+			}
 		} catch (IOException | RuntimeException e) {
 			LOG.error("RoadCrew Live Truck Map observation failed closed", e);
 			resetPipeline();
@@ -454,7 +464,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			// One recording session, one group. The pipeline is rebuilt at every
 			// trip boundary, which is exactly where a session ends.
 			comparisonGroupId = RoadCrewShadowValidation.newComparisonGroupId();
-			RoadCrewShadowValidation.beginDiagnostics(comparisonGroupId);
+			RoadCrewShadowValidation.beginDiagnostics(app, comparisonGroupId);
 			RoadCrewShadowValidation.diagnostics().count("course_started");
 			RoadCrewShadowValidation.diagnostics().event(0, "COURSE_START",
 					"context=" + describeCollectionContext());
@@ -603,6 +613,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			pipeline.reset();
 			pipeline = null;
 		}
+		RoadCrewShadowValidation.endDiagnostics();
 		comparisonGroupId = null;
 		loadedLatitude = Double.NaN;
 		loadedLongitude = Double.NaN;
