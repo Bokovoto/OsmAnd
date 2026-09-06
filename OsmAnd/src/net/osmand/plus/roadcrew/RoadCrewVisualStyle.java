@@ -20,6 +20,15 @@ public final class RoadCrewVisualStyle {
 	private static final String KEY_STYLE = "selected_style";
 	private static final String STYLE_CLASSIC = "CLASSIC";
 	private static final String STYLE_NEON_BETA = "NEON_BETA";
+	/**
+	 * What a phone gets when nobody has chosen.
+	 *
+	 * Neon is what RoadCrew looks like, and a driver who installs it should see
+	 * it without hunting for a setting. Anyone who has explicitly picked classic
+	 * has a stored value and keeps it - changing a default must not overrule a
+	 * choice somebody made on purpose.
+	 */
+	private static final String DEFAULT_STYLE = STYLE_NEON_BETA;
 	private static final String KEY_PREVIOUS_DAY_NIGHT_PREFIX = "previous_day_night_";
 	private static final String KEY_PREVIOUS_ROUTE_COLOR_DAY_PREFIX = "previous_route_color_day_";
 	private static final String KEY_PREVIOUS_ROUTE_COLOR_NIGHT_PREFIX = "previous_route_color_night_";
@@ -33,7 +42,7 @@ public final class RoadCrewVisualStyle {
 	}
 
 	public static boolean isNeonBeta(@NonNull Context context) {
-		return STYLE_NEON_BETA.equals(preferences(context).getString(KEY_STYLE, STYLE_CLASSIC));
+		return STYLE_NEON_BETA.equals(preferences(context).getString(KEY_STYLE, DEFAULT_STYLE));
 	}
 
 	public static void setNeonBeta(@NonNull Context context, boolean enabled) {
