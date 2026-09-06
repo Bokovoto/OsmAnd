@@ -50,7 +50,7 @@
     <string name="map_online_plugin_is_not_installed">Activeu el connector \'Mapes en línia\' per poder seleccionar diferents fonts de mapes</string>
     <string name="map_online_data">Mapes en línia (tessel·les)</string>
     <string name="shared_string_online_maps">Mapes en línia</string>
-    <string name="osmand_accessibility_description">Fer que les funcions d\'accessibilitat del dispositiu estiguin directament disponibles a OsmAnd. Això facilita, per exemple, ajustar la velocitat de parla per a les veus de text a veu, configurar la navegació del D-pad, utilitzar una bola de pista per al control de zoom, o la retroalimentació de text a veu, per exemple per a anunciar automàticament la vostra posició.</string>
+    <string name="osmand_accessibility_description">Fer que les funcions d\'accessibilitat del dispositiu estiguin directament disponibles a RoadCrew. Això facilita, per exemple, ajustar la velocitat de parla per a les veus de text a veu, configurar la navegació del D-pad, utilitzar una bola de pista per al control de zoom, o la retroalimentació de text a veu, per exemple per a anunciar automàticament la vostra posició.</string>
     <string name="plugins_screen">Gestor de connectors</string>
     <string name="poi_search_desc">Cerca de PDI (punt d\'interès)</string>
     <string name="prefs_plugins">Gestor de connectors</string>
@@ -103,7 +103,7 @@
     <string name="rendering_attr_noPolygons_description">Fes transparents totes les característiques d\'àrees de sòl al mapa.</string>
     <string name="edit_filter_create_message">S\'ha creat el filtre \'%1$s\'</string>
     <string name="email">e-mail</string>
-    <string name="debugging_and_development">Desenvolupament de l\'OsmAnd</string>
+    <string name="debugging_and_development">Desenvolupament de l\'RoadCrew</string>
     <string name="local_openstreetmap_upload">Puja l\'edició a OSM</string>
     <string name="local_openstreetmap_uploadall">Penja-ho tot</string>
     <string name="show_current_gpx_title">Mostra la traça actual</string>
@@ -216,7 +216,7 @@
     <string name="osmand_plus_short_description_80_chars">Visualització de mapes mòbil global i navegació amb mapes OSM en línia i fora de línia</string>
     <string name="settings_preset">Perfil per defecte</string>
     <string name="osmand_service">Mode en segon pla</string>
-    <string name="osmand_service_descr">OsmAnd continua executant-se en procés de fons mentre la pantalla està apagada.</string>
+    <string name="osmand_service_descr">RoadCrew continua executant-se en procés de fons mentre la pantalla està apagada.</string>
     <string name="button_upgrade_osmandplus">Actualitza a l\'OsmAnd+</string>
     <string name="local_index_no_items_to_do">No hi ha ítems per %1$s</string>
     <string name="internet_connection_required_for_online_route">El servei de navegació en línia no funciona sense connexió.</string>
@@ -232,9 +232,9 @@
     <string name="amenity_type_office">Oficines</string>
     <string name="m">m</string>
     <string name="application_dir">Carpeta d\'emmagatzematge de dades</string>
-    <string name="osmand_long_description_1000_chars">OsmAnd (OSM Automated Navigation Directions)
+    <string name="osmand_long_description_1000_chars">RoadCrew (OSM Automated Navigation Directions)
 \n
-\nOsmAnd és una aplicació de navegació feta amb programari de codi obert amb accés a una gran varietat de dades globals d\'OSM. Totes les dades dels mapes (siguin mapes vectorials o de tessel·les), es poden desar a la targeta de memòria del telèfon pel seu en desconnexió. També calcula rutes, amb connexió o sense, incloent l\'orientació per veu.
+\nRoadCrew és una aplicació de navegació feta amb programari de codi obert amb accés a una gran varietat de dades globals d\'OSM. Totes les dades dels mapes (siguin mapes vectorials o de tessel·les), es poden desar a la targeta de memòria del telèfon pel seu en desconnexió. També calcula rutes, amb connexió o sense, incloent l\'orientació per veu.
 \n
 \nAlgunes de les característiques principals:
 \n- Funcionament complet en desconnexió (desa localment els mapes vectorials i de tessel·les baixats)
@@ -249,14 +249,14 @@
 \n- Orientació del mapa segons la brúixola o la direcció del moviment
 \n- Indicació de carril, velocitat màxima permesa, veus enregistrades i/o sintetitzades
 \n
-\nLimitacions d\'aquesta versió gratuïta de OsmAnd:
+\nLimitacions d\'aquesta versió gratuïta de RoadCrew:
 \n- Limitació en el nombre de mapes baixats
 \n- No hi ha accés als PDIs de la Viquipèdia sense connexió
 \n
 \nOsmAnd es desenvolupa activament i el nostre projecte i el seu progrés continu depenen de donacions pel desenvolupament i proves de noves funcions. Si us plau, considereu la compra d\'OsmAnd+ o patrocinar una nova característica concreta, o fer una donació genèrica a la pàgina https\\\\osmand.net.</string>
     <string name="osmand_plus_long_description_1000_chars">OsmAnd+ (OSM Automated Navigation Directions) \n \n L\'OsmAnd+ és un programari de navegació de codi obert amb accés a una gran varietat de dades globals d\'OSM. Totes les dades de mapes (mapes de tessel·les o vectorials) poden emmagatzemar-se a la targeta de memòria del telèfon pel seu ús sense connexió. També proporciona que la funcionalitat de càlcul de rutes sigui amb connexió o sense, incloent-hi guiatge per veu. \n \n L\'OsmAnd+ és la versió de pagament; comprant-la esteu donant suport al projecte, financeu el desenvolupament de noves funcions i rebreu les darreres actualitzacions. \n \n Algunes de les característiques centrals són: \n - Funcionalitat completa fora de línia (desa en el dispositiu d\'emmagatzemament els mapes vectorials i de mosaic baixats) \n - Mapes vectorials compactes de tot el món disponibles \n - Baixada il·limitada de mapes nacionals o regionals directament des de l\'aplicació \n - Disponibilitat sense connexió dels PDI baixats prèviament de Viquipèdia, ideal per fer turisme \n - Possibilitat de superposar diverses capes de mapes simultànies, com traces GPX o de navegació, punts d\'interès, preferits, corbes de nivell, parades de transport públic, mapes addicionals amb nivell de transparència ajustable \n \n - Cerca fora de línia d\'adreces i llocs d\'interès (PDI) \n - Càlcul de rutes fora de línia per a distàncies d\'abast mitjà \n - Modalitats opcionals de cotxe, ciclista i vianant \n - Ajust automàtic de representació diürna/nocturna \n - Escala automàtica del mapa segons la velocitat \n - Orientació del mapa segons la brúixola o la direcció del moviment \n - Indicacions de carril, velocitat màxima permesa, veus enregistrades i sintetitzades</string>
     <string name="rendering_attr_contourLines_description">Mostra des del nivell de zoom (requereix dades de la línia de contorn):</string>
-    <string name="osmand_development_plugin_description">Proveeix funcionalitat per provar i depurar OsmAnd: simular rutes de navegació, monitoritzar la representació de pantalla, comprovar el rendiment, etc. Aquest connector no és necessari per a l\'ús normal de l\'aplicació.</string>
+    <string name="osmand_development_plugin_description">Proveeix funcionalitat per provar i depurar RoadCrew: simular rutes de navegació, monitoritzar la representació de pantalla, comprovar el rendiment, etc. Aquest connector no és necessari per a l\'ús normal de l\'aplicació.</string>
     <string name="accessibility_default">En consonància amb la configuració del sistema Android</string>
     <string name="zoomIs">El nivell de zoom és</string>
     <string name="settings_direction_style_descr">Trieu l\'estil per indicar direccions relatives mentre s\'està en moviment</string>
@@ -363,7 +363,7 @@
     <string name="shared_string_favorites">Preferits</string>
     <string name="use_trackball_descr">Utilitzeu un ratolí de bola per moure el mapa.</string>
     <string name="use_trackball">Utilitza el ratolí de bola</string>
-    <string name="process_navigation_service">Servei de navegació de l\'OsmAnd</string>
+    <string name="process_navigation_service">Servei de navegació de l\'RoadCrew</string>
     <string name="osmand_parking_position_description_add">Per rectirar el vehicle a:</string>
     <string name="live_monitoring_interval">Interval de seguiment en viu</string>
     <string name="live_monitoring_interval_descr">Especifiqueu l\'interval de seguiment en línia.</string>
@@ -379,7 +379,7 @@
     <string name="km">km</string>
     <string name="poi_filter_food_shop">Alimentació</string>
     <string name="osmand_net_previously_installed">Totes les dades locals de l\'antiga aplicació instal·lada seran compatibles amb la nova, però els llocs Preferits s\'han d\'exportar primer des de l\'antiga aplicació i després importar-se a la nova.</string>
-    <string name="install_selected_build">Voleu instal·lar OsmAnd - {0} de {1} {2} MB ?</string>
+    <string name="install_selected_build">Voleu instal·lar RoadCrew - {0} de {1} {2} MB ?</string>
     <string name="gps_status_app_not_found">L\'aplicació d\'estatus GPS no està instal·lada. Voleu cercar-la al Market?</string>
     <string name="voice">Veu enregistrada</string>
     <string name="error_reading_gpx">No s\'han pogut llegir les dades GPX.</string>
@@ -433,8 +433,8 @@
     <string name="version_index_is_not_supported">La versió de l\'índex «{0}» no està suportada</string>
     <string name="build_installed">La compilació {0} s\'ha instal·lat ({1}).</string>
     <string name="downloading_build">Baixant compilació…</string>
-    <string name="loading_builds">Carregant paquets de l\'OsmAnd…</string>
-    <string name="select_build_to_install">Seleccioneu el paquet d\'OsmAnd a instal·lar</string>
+    <string name="loading_builds">Carregant paquets de l\'RoadCrew…</string>
+    <string name="select_build_to_install">Seleccioneu el paquet d\'RoadCrew a instal·lar</string>
     <string name="maps_could_not_be_downloaded">Aquest mapa podria no haver-se baixat</string>
     <string name="rendering_exception">No s\'ha pogut dibuixar l\'àrea triada.</string>
     <string name="gpxup_trackable">Seguible</string>
@@ -447,12 +447,12 @@
 \n
 \nPodeu trobar instruccions sobre com editar el mapa al nostre lloc web %1$s.</string>
     <string name="voice_data_unavailable">La llibreria seleccionada de missatges de veu no està disponible</string>
-    <string name="hello">Aplicació de navegació OsmAnd</string>
+    <string name="hello">Aplicació de navegació RoadCrew</string>
     <string name="osmand_rastermaps_plugin_description">Accediu a diferents tipus de mapa (anomenats de tessel·les o de bits), des de les tessel·les predefinides d\'OSM (com Mapnik) a imatges de satèl·lit i capes específiques com mapes meteorològics, climàtics, geològics, de relleu, etc.
 \n
-\nQualsevol d\'aquests mapes es pot utilitzar, sigui per veure\'s com principal (base) o com una superposició o sots-posició d\'un altre mapa base (com els mapes d\'OsmAnd habituals en local). Es pot amagar determinats elements dels mapes vectorials de l\'OsmAnd via el menú «Configuració del mapa» per fer més visible el mapa de fons.
+\nQualsevol d\'aquests mapes es pot utilitzar, sigui per veure\'s com principal (base) o com una superposició o sots-posició d\'un altre mapa base (com els mapes d\'RoadCrew habituals en local). Es pot amagar determinats elements dels mapes vectorials de l\'RoadCrew via el menú «Configuració del mapa» per fer més visible el mapa de fons.
 \n
-\nBaixeu mapes de tessel·les directament de proveïdors en línia o ja preparats per un ús local (copiats manualment al directori de l\'OsmAnd) així com una base de dades SQLite construïda per diferents eines de preparació de mapes de tercers.</string>
+\nBaixeu mapes de tessel·les directament de proveïdors en línia o ja preparats per un ús local (copiats manualment al directori de l\'RoadCrew) així com una base de dades SQLite construïda per diferents eines de preparació de mapes de tercers.</string>
     <string name="renderers">Renderització vectorial</string>
     <string name="add_tag">Afegeix una etiqueta</string>
     <string name="poi_filter_entertainment">Entreteniment</string>
@@ -549,7 +549,7 @@
     <string name="srtm_plugin_description">La informació del terreny, com ara corbes de nivell, ombres i vessants, us ajuda a avaluar visualment la disposició del terreny i el relleu, la navegabilitat i molt més. La informació topogràfica es pot representar al mapa per ombrejat de vessants, corbes de nivell i/o coloració de pendent. \n \nLes dades subjacents provenen de SRTM i ASTER. \n \nMés informació a %1$s.</string>
     <string name="rendering_attr_showRoadMaps_description">Trieu quan mostrar mapes de carreteres i prou:</string>
     <string name="auto_announce_on">Inicia els anuncis automàtics</string>
-    <string name="loading_builds_failed">No s\'ha pogut recuperar la llista de compilacions d\'OsmAnd</string>
+    <string name="loading_builds_failed">No s\'ha pogut recuperar la llista de compilacions d\'RoadCrew</string>
     <string name="contribution_activity">Activitat especial per la versió dels col·laboradors</string>
     <string name="stop_routing_confirm">Aturar la navegació\?</string>
     <string name="recording_context_menu_show">Mostra</string>
@@ -592,7 +592,7 @@
     <string name="prefer_motorways">Millor per autopistes</string>
     <string name="prefer_in_routing_title">Preferències…</string>
     <string name="max_speed_none">cap</string>
-    <string name="osmand_play_title_30_chars">Mapes i navegació OsmAnd</string>
+    <string name="osmand_play_title_30_chars">Mapes i navegació RoadCrew</string>
     <string name="osmand_plus_play_title_30_chars">Mapes i navegació OsmAnd+</string>
     <string name="shared_string_downloading">S\'està baixant…</string>
     <string name="commiting_node">S\'està enviant el node…</string>
@@ -653,11 +653,11 @@
     <string name="speech_rate_descr">Especifiqueu la velocitat en la síntesi de veu.</string>
     <string name="speech_rate">Velocitat de lectura</string>
     <string name="complex_route_calculation_failed">El càlcul ràpid de ruta ha fallat (%s), retorn al mètode lent.</string>
-    <string name="android_19_location_disabled">Des de la versió 4.4 d\'Android (KitKat) no podeu baixar i actualitzar els mapes en l\'antiga carpeta (%s). Voleu copiar tots els fitxers de l\'OsmAnd a la nova destinació\?
+    <string name="android_19_location_disabled">Des de la versió 4.4 d\'Android (KitKat) no podeu baixar i actualitzar els mapes en l\'antiga carpeta (%s). Voleu copiar tots els fitxers de l\'RoadCrew a la nova destinació\?
 \n Nota 1: Els vostres fitxers obsolets quedaran intactes (els podeu esborrar manualment).
 \n Nota 2: En el nou lloc d\'emmagatzemament no serà possible compartir fitxers entre l\'OsmAnd i l\'OsmAnd+.</string>
-    <string name="copying_osmand_files">S\'estan copiant fitxers de dades de l\'OsmAnd…</string>
-    <string name="calculate_osmand_route_gpx">Càlcul d\'una ruta sense línia amb l\'OsmAnd</string>
+    <string name="copying_osmand_files">S\'estan copiant fitxers de dades de l\'RoadCrew…</string>
+    <string name="calculate_osmand_route_gpx">Càlcul d\'una ruta sense línia amb l\'RoadCrew</string>
     <string name="app_mode_truck">Camió</string>
     <string name="routing_attr_prefer_motorway_name">Preferència per autopistes</string>
     <string name="routing_attr_prefer_motorway_description">Preferència per autopistes</string>
@@ -679,15 +679,15 @@
     <string name="av_camera_focus_descr">Mode d\'enfocament de la càmera:</string>
     <string name="av_camera_focus">Tipus d\'enfocament</string>
     <string name="poi_error_unexpected_template">No s\'ha pogut fer l\'acció {0}.</string>
-    <string name="previous_run_crashed">La darrera execució de l\'OsmAnd ha fallat. El fitxer log és a {0}. Si us plau informeu del problema i adjunteu el fitxer log.</string>
+    <string name="previous_run_crashed">La darrera execució de l\'RoadCrew ha fallat. El fitxer log és a {0}. Si us plau informeu del problema i adjunteu el fitxer log.</string>
     <string name="route_head">Endavant</string>
     <string name="route_descr_select_destination">Establiu una destinació</string>
     <string name="shared_string_select_on_map">Selecciona al mapa</string>
     <string name="shared_string_favorite">Preferida</string>
     <string name="route_info">Informació de ruta</string>
     <string name="keep_and_add_destination_point">Afegeix com el següent punt de destinació</string>
-    <string name="calculate_osmand_route_without_internet">Càlcul sense Internet d\'un segment de ruta a l\'OsmAnd</string>
-    <string name="gpx_option_calculate_first_last_segment">Calcula una ruta OsmAnd al primer i al darrer segment de la ruta</string>
+    <string name="calculate_osmand_route_without_internet">Càlcul sense Internet d\'un segment de ruta a l\'RoadCrew</string>
+    <string name="gpx_option_calculate_first_last_segment">Calcula una ruta RoadCrew al primer i al darrer segment de la ruta</string>
     <string name="index_item_nation_addresses">adreces per tot el país</string>
     <string name="index_item_world_altitude_correction">Correcció d\'altitud mundial</string>
     <string name="index_item_world_bitcoin_payments">Llocs amb pagament bitcoin al món</string>
@@ -739,13 +739,13 @@
     <string name="interrupt_music_descr">Les indicacions de veu aturen la reproducció de música.</string>
     <string name="interrupt_music">Atura la música</string>
     <string name="share_route_as_gpx">Comparteix la ruta com un fitxer GPX</string>
-    <string name="share_route_subject">Ruta compartida via OsmAnd</string>
+    <string name="share_route_subject">Ruta compartida via RoadCrew</string>
     <string name="keep_informing_never">Només manualment (premeu fletxa)</string>
     <string name="keep_informing">Repeteix les instruccions de navegació</string>
     <string name="navigation_intent_invalid">Format no vàlid: %s</string>
     <string name="route_descr_destination">Destinació</string>
     <string name="shared_string_share">Comparteix</string>
-    <string name="share_fav_subject">Preferits compartits via OsmAnd</string>
+    <string name="share_fav_subject">Preferits compartits via RoadCrew</string>
     <string name="osmo_connect_menu">Connecta</string>
     <string name="rendering_value_pink_name">rosa</string>
     <string name="rendering_value_brown_name">Marró</string>
@@ -937,7 +937,7 @@
     <string name="track_segments">Segments de traça</string>
     <string name="track_points">Punts de traça</string>
     <string name="plugin_touringview_name">Vista turística del mapa</string>
-    <string name="plugin_touringview_descr">En activar el canvi en l\'estil del mapa de l\'OsmAnd a «Vista de viatge», es mostra una vista especial de gran detall per viatgers i conductors professionals. 
+    <string name="plugin_touringview_descr">En activar el canvi en l\'estil del mapa de l\'RoadCrew a «Vista de viatge», es mostra una vista especial de gran detall per viatgers i conductors professionals. 
 \n 
 \nAquesta vista proporciona, a qualsevol nivell de zoom del mapa, el màxim detall disponible a les dades del mapa per viatjar (particularment carreteres, pistes, camins i senyals d\'orientació). 
 \n 
@@ -1024,7 +1024,7 @@
     <string name="download_wikipedia_maps">Viquipèdia</string>
     <string name="gps_network_not_enabled">El servei de posicionament està aturat. El voleu activar\?</string>
     <string name="disable_recording_once_app_killed">Evita la gravació en procés de fons</string>
-    <string name="shared_string_import2osmand">Importa a l\'OsmAnd</string>
+    <string name="shared_string_import2osmand">Importa a l\'RoadCrew</string>
     <string name="local_recordings_delete_all_confirm">Voleu suprimir %1$d notes?</string>
     <string name="lang_vo">Volapük</string>
     <string name="lang_th">Tailandès</string>
@@ -1078,7 +1078,7 @@
     <string name="restart_is_required">Cal reiniciar per aplicar la modificació.</string>
     <string name="rendering_value_default13_name">Per defecte (13)</string>
     <string name="rendering_value_defaultTranslucentCyan_name">Per defecte (cian translúcid)</string>
-    <string name="do_you_like_osmand">Us agrada OsmAnd?</string>
+    <string name="do_you_like_osmand">Us agrada RoadCrew?</string>
     <string name="user_hates_app_get_feedback">Digueu-nos el motiu.</string>
     <string name="user_hates_app_get_feedback_long">Us agrairíem que ens feu saber qualsevol suggeriment.</string>
     <string name="download_live_updates">Actualitzacions al moment</string>
@@ -1179,7 +1179,7 @@
     <string name="rendering_attr_showProposed_name">Objectes proposats</string>
     <string name="read_more">Llegiu-ne més</string>
     <string name="whats_new">Què hi ha de nou a</string>
-    <string name="share_osm_edits_subject">Edicions OSM compartides via OsmAnd</string>
+    <string name="share_osm_edits_subject">Edicions OSM compartides via RoadCrew</string>
     <string name="lang_nds">Baix alemany</string>
     <string name="lang_mk">Macedònic</string>
     <string name="lang_fy">Frisó</string>
@@ -1236,7 +1236,7 @@
     <string name="only_download_over_wifi">Baixades només amb WIFI</string>
     <string name="live_update">Actualitza al moment</string>
     <string name="update_now">Actualitza ara</string>
-    <string name="missing_write_external_storage_permission">OsmAnd no té autorització per utilitzar la tarja de memòria</string>
+    <string name="missing_write_external_storage_permission">RoadCrew no té autorització per utilitzar la tarja de memòria</string>
     <string name="no_location_permission">Autorització per accedir a les dades d\'ubicació.</string>
     <string name="no_camera_permission">Autorització per utilitzar la càmera.</string>
     <string name="no_microphone_permission">Autoritzeu accedir al micròfon.</string>
@@ -1362,7 +1362,7 @@
     <string name="postcode">Codi postal</string>
     <string name="search_categories">Categories</string>
     <string name="lang_hsb">Alt sòrab</string>
-    <string name="share_history_subject">compartit via OsmAnd</string>
+    <string name="share_history_subject">compartit via RoadCrew</string>
     <string name="back_to_search">Torna a la cerca</string>
     <string name="confirmation_to_delete_history_items">Voleu esborrar els elements seleccionats d\' \'Historial\'?</string>
     <string name="show_something_on_map">Situa %1$s en el mapa</string>
@@ -1377,7 +1377,7 @@
     <string name="update_all_maps_now">Voleu actualitzar tots els mapes ara mateix?</string>
     <string name="clear_tile_data">Esborra totes les tessel·les</string>
     <string name="search_map">Cercant mapes…</string>
-    <string name="first_usage_wizard_desc">Permeteu a OsmAnd determinar la vostra localització i suggerir-vos els mapes a baixar d\'aquesta zona.</string>
+    <string name="first_usage_wizard_desc">Permeteu a RoadCrew determinar la vostra localització i suggerir-vos els mapes a baixar d\'aquesta zona.</string>
     <string name="location_not_found">No s\'ha determinat la localització</string>
     <string name="no_inet_connection">Sense connexió a Internet</string>
     <string name="search_location">Cercant la localització…</string>
@@ -1529,19 +1529,19 @@
     <string name="routing_attr_driving_style_balance_name">Equilibrat</string>
     <string name="routing_attr_driving_style_safety_name">Amb preferència per pistes</string>
     <string name="routing_attr_relief_smoothness_factor_name">Indiqueu la variació d\'alçat</string>
-    <string name="full_version_thanks">Us agraïm la compra de la versió de pagament de l\'OsmAnd.</string>
+    <string name="full_version_thanks">Us agraïm la compra de la versió de pagament de l\'RoadCrew.</string>
     <string name="do_not_show_startup_messages">No mostris missatges inicials</string>
     <string name="parking_options">Opcions d\'aparcament</string>
     <string name="right_side_navigation">Trànsit per la dreta</string>
     <string name="shared_string_automatic">Automàtic</string>
-    <string name="osmand_extended_description_part1">OsmAnd (OSM Automated Navigation Directions) és una aplicació de navegació i de consulta de mapes que accedeix a les dades obertes de tot el món i d\'alta-qualitat d\'OSM. 
+    <string name="osmand_extended_description_part1">RoadCrew (OSM Automated Navigation Directions) és una aplicació de navegació i de consulta de mapes que accedeix a les dades obertes de tot el món i d\'alta-qualitat d\'OSM. 
 \n
 \n Gaudiu del guiatge visual i de veu, representant PDIs (punts d\'interès), creant i gestionat traces GPX, activant la representació de corbes de nivell i d\'informació d\'elevació (requereix connector), optant entre els modes de conducció amb vehicle, bicicleta o com vianant, editant d\'OSM i molt més.</string>
     <string name="restore_purchases">Recupera les compres</string>
     <string name="fonts_header">Tipus de lletra</string>
     <string name="osmand_extended_description_part2">Navegació GPS \n• Trieu el mode desconnectat (no hi hauran càrrecs de roaming si sou a l\'estranger) o el mode en línia (més àgil) \n• El guiatge de veu gir-a-gir us dirigeix pel camí (veus enregistrades i sintètiques) \n• La ruta es tornarà a calcular si us desvieu de la proposta anterior \n• Les indicacions de carril, els noms de carrer i el temps d\'arribada estimat us ajudaran pel camí \n• Per fer el vostre viatge més segur, els canvis entre mode diürn i nocturn són automàtics \n• Mostra els límits de velocitat i us ho recorda si els supereu \n• L\'escala del mapa s\'ajusta a la vostra velocitat \n• Cerca de destinacions per adreça, tipus (p. ex.: Aparcament, restaurant, hotel, gasolinera, museu), o per les coordenades geogràfiques \n• Gestiona punts de pas en el vostre itinerari \n• Enregistreu la vostra o baixeu una traça GPX i seguiu-la</string>
     <string name="osmand_extended_description_part4">Esquí
-\nEl connector de mapes d\'esquí d\'OsmAnd us permet veure les pistes segons la seva dificultat i d\'altres informacions addicionals, com ara la ubicació dels ascensors i altres equipaments.</string>
+\nEl connector de mapes d\'esquí d\'RoadCrew us permet veure les pistes segons la seva dificultat i d\'altres informacions addicionals, com ara la ubicació dels ascensors i altres equipaments.</string>
     <string name="osmand_extended_description_part5">Ciclisme 
 \n• Trobeu vies per ciclistes al mapa 
 \n• La navegació GPS en mode ciclisme us genera la ruta utilitzant vies per ciclistes 
@@ -1552,7 +1552,7 @@
     <string name="osmand_extended_description_part7">Col·laboreu amb Openstreetmap (OSM) \n• Informant de dades errònies \n• Pujant traces GPX a OSM directament des de l\'aplicació \n• Afegint PDIs i penjar-los a OSM directament (o més tard si no esteu connectats)</string>
     <string name="analyze_on_map">Analitza en el mapa</string>
     <string name="shared_string_visible">Visible</string>
-    <string name="osmand_extended_description_part8">OsmAnd és un programari de codi obert desenvolupat activament. Tothom pot contribuir a l\'aplicació informant d\'errors, millorant les traduccions o codificant noves funcions. A més, el projecte es basa en contribucions financeres per finançar la codificació i la prova de noves funcionalitats.
+    <string name="osmand_extended_description_part8">RoadCrew és un programari de codi obert desenvolupat activament. Tothom pot contribuir a l\'aplicació informant d\'errors, millorant les traduccions o codificant noves funcions. A més, el projecte es basa en contribucions financeres per finançar la codificació i la prova de noves funcionalitats.
 \n Cobertura i qualitat aproximades del mapa:
 \n • Europa occidental: ****
 \n • Europa de l\'est: ***
@@ -1617,7 +1617,7 @@
 \n• Enregistrament opcional del trajecte en un fitxer GPX local o a un servei a la xarxa
 \n• Indicació opcional de la velocitat i l\'altitud 
 \n• Visualització de corbes de nivell i ombrejat de relleu (requereix connector addicional)</string>
-    <string name="osmand_plus_extended_description_part7">Col·laboreu directament a OSM \n• Notifiqueu errors en les dades \n• Pugeu traces GPX directament a OSM des de l\'aplicació \n• Afegiu PDIs i pugeu-los OSM (o feu-ho més tard si no esteu connectats) \n• Enregistrament opcional del trajecte, també en segon pla (mentre el dispositiu està bloquejat) \nOsmAnd és un programari de codi obert que es desenvolupa activament. Tothom pot recolzar l\'aplicació informant d\'errors, millorant traduccions o programant noves característiques. El projecte també es fonamenta en les aportacions econòmiques per patrocinar la programació i validació de noves funcionalitats.</string>
+    <string name="osmand_plus_extended_description_part7">Col·laboreu directament a OSM \n• Notifiqueu errors en les dades \n• Pugeu traces GPX directament a OSM des de l\'aplicació \n• Afegiu PDIs i pugeu-los OSM (o feu-ho més tard si no esteu connectats) \n• Enregistrament opcional del trajecte, també en segon pla (mentre el dispositiu està bloquejat) \nRoadCrew és un programari de codi obert que es desenvolupa activament. Tothom pot recolzar l\'aplicació informant d\'errors, millorant traduccions o programant noves característiques. El projecte també es fonamenta en les aportacions econòmiques per patrocinar la programació i validació de noves funcionalitats.</string>
     <string name="shared_string_overview">Visió general</string>
     <string name="animate_my_location">Anima la pròpia posició</string>
     <string name="save_poi_too_many_uppercase">El nom té masses majúscules. Voleu continuar?</string>
@@ -1653,7 +1653,7 @@
     <string name="open_mapillary">Inicia Mapillary</string>
     <string name="distance_moving">Distància corregida</string>
     <string name="shared_string_permissions">Permisos</string>
-    <string name="import_gpx_failed_descr">No s\'ha pogut importar el fitxer. Comproveu que OsmAnd té permís per llegir-lo.</string>
+    <string name="import_gpx_failed_descr">No s\'ha pogut importar el fitxer. Comproveu que RoadCrew té permís per llegir-lo.</string>
     <string name="map_widget_ruler_control">Radi de distància</string>
     <string name="shared_string_reload">Actualitza</string>
     <string name="mapillary_menu_descr_tile_cache">Actualitzeu les tessel·les per veure les dades més recents.</string>
@@ -1691,7 +1691,7 @@
     <string name="add_point_before">Afegeix un punt abans de</string>
     <string name="add_point_after">Afegeix un punt després de</string>
     <string name="shared_string_options">Opcions</string>
-    <string name="measurement_tool_snap_to_road_descr">OsmAnd enllaçarà els punts amb rutes segons el perfil seleccionat.</string>
+    <string name="measurement_tool_snap_to_road_descr">RoadCrew enllaçarà els punts amb rutes segons el perfil seleccionat.</string>
     <string name="choose_navigation_type">Escolliu el perfil de navegació</string>
     <string name="empty_state_favourites">Afegiu als preferits</string>
     <string name="empty_state_favourites_desc">Importeu Preferits o afegiu-los al mapa marcant-los.</string>
@@ -1908,9 +1908,9 @@
     <string name="shared_string_restart">Reinici de l\'aplicació</string>
     <string name="maps_you_need_descr">En base als articles que heu seleccionat, recomanem que us baixeu els següents mapes:</string>
     <string name="maps_you_need">Mapes que us calen</string>
-    <string name="osmand_team">Equip OsmAnd</string>
+    <string name="osmand_team">Equip RoadCrew</string>
     <string name="welcome_to_open_beta_description">Les guies de viatge es basen en Viquiviatges. Proveu totes les funcions durant la fase oberta de proves, de franc.</string>
-    <string name="wikivoyage_travel_guide_descr">Guies dels llocs més interessants del planeta, dins OsmAnd, sense cap connexió a Internet.</string>
+    <string name="wikivoyage_travel_guide_descr">Guies dels llocs més interessants del planeta, dins RoadCrew, sense cap connexió a Internet.</string>
     <string name="in_app_purchase_desc">Pagament únic</string>
     <string name="shared_string_wikivoyage">Viquiviatges</string>
     <string name="index_item_world_wikivoyage">Articles de Viquiviatges d\'arreu</string>
@@ -1926,7 +1926,7 @@
     <string name="shared_string_bookmark">Adreça d\'interès</string>
     <string name="off_road_render_descr">Per conducció fora d\'asfalt és un tipus d\'estil topogràfic que posa imatges de satèl·lit de fons. Gruix petit de les carreteres principals, major gruix de les pistes, camins, vies ciclistes i altres vies.</string>
     <string name="topo_render_descr">Per senderisme, excursionisme i ciclisme de natura. Pensat per il·luminació d\'exteriors. Contrast de vies i objectes naturals, diferents tipus de rutes, configuració avançada de corbes de nivell, detalls addicionals. Ajustant la integritat de superfície es distingeix el tipus de superfície de la via. No hi ha mode nocturn.</string>
-    <string name="touring_view_render_descr">Estil turístic amb alt contrast i màxim detall. Inclou totes les opcions de l\'estil predeterminat d\'OsmAnd, alhora que mostra el màxim de detall possible, en particular carreteres, camins i altres maneres de viatjar. Distinció clara de «atles turístic» entre els tipus de camins. Apte per a ús diürn, nocturn i exterior.</string>
+    <string name="touring_view_render_descr">Estil turístic amb alt contrast i màxim detall. Inclou totes les opcions de l\'estil predeterminat d\'RoadCrew, alhora que mostra el màxim de detall possible, en particular carreteres, camins i altres maneres de viatjar. Distinció clara de «atles turístic» entre els tipus de camins. Apte per a ús diürn, nocturn i exterior.</string>
     <string name="default_render_descr">Estil de propòsit general. Ciutats denses mostrades netament. Característiques rutes, qualitat de superfície, restriccions d\'accés, escuts de carreteres, traçat de camins segons escala SAC/CAI, elements esportius d\'aigües braves, característiques topogràfiques com línies de contorn.</string>
     <string name="read_wikipedia_offline_description">Aconseguiu una subscripció OsmAnd Live per llegir articles de Viquipèdia i ViquiViatges sense connexió.</string>
     <string name="unirs_render_descr">Modificació de l\'estil predefinit per incrementar el contrast a les vies per vianants i bicicletes. Utilitza els colors del llegat Mapnik.</string>
@@ -1947,7 +1947,7 @@
     <string name="search_no_results_feedback">Cap resultat en la cerca?
 \nComenteu-nos-ho</string>
     <string name="test_voice_desrc">Premeu un botó i escolteu la corresponent descripció de veu per identificar si estan pendents o són errònies</string>
-    <string name="ask_for_location_permission">Cal que doneu a OsmAnd accés a la ubicació per continuar.</string>
+    <string name="ask_for_location_permission">Cal que doneu a RoadCrew accés a la ubicació per continuar.</string>
     <string name="rendering_value_black_name">Negre</string>
     <string name="search_street">Cerca un carrer</string>
     <string name="start_search_from_city">Seleccioneu primer la ciutat/població/localitat</string>
@@ -1968,7 +1968,7 @@
     <string name="mapillary_menu_title_pano">Només mostra imatges de 360º</string>
     <string name="shared_string_launch">Arrenca</string>
     <string name="lang_gn_py">Guaraní</string>
-    <string name="quick_action_switch_day_night_descr">Un botó per canviar entre els modes diürn i nocturn d\'OsmAnd.</string>
+    <string name="quick_action_switch_day_night_descr">Un botó per canviar entre els modes diürn i nocturn d\'RoadCrew.</string>
     <string name="add_destination_point">Establiu destinació</string>
     <string name="add_intermediate_point">Afegeix una destinació intermèdia</string>
     <string name="add_start_point">Establiu el punt inicial</string>
@@ -2008,7 +2008,7 @@
     <string name="quick_action_show_hide_gpx_tracks_descr">Un botó per mostrar o amagar les traces seleccionades al mapa.</string>
     <string name="sit_on_the_stop">Pugeu a la parada</string>
     <string name="use_osm_live_public_transport_description">Activa les modificacions del transport públic amb OsmAnd Live.</string>
-    <string name="public_transport_warning_descr_blog">Llegiu més sobre com OsmAnd calcula les rutes al nostre bloc.</string>
+    <string name="public_transport_warning_descr_blog">Llegiu més sobre com RoadCrew calcula les rutes al nostre bloc.</string>
     <string name="public_transport_warning_title">La navegació en transports públics ara està en proves beta, vigileu errors o defectes.</string>
     <string name="add_intermediate">Afegeix una destinació intermèdia</string>
     <string name="transfers_size">%1$d trasllats</string>
@@ -2084,7 +2084,7 @@
     <string name="files_failed">No ha pogut copiar %1$d fitxers (%2$s).</string>
     <string name="dont_move_maps">No moguis</string>
     <string name="public_transport_ped_route_title">La ruta a peu triga aproximadament %1$s i es pot escurçar utilitzant transport públic</string>
-    <string name="public_transport_no_route_title">Per desgràcia, OsmAnd no ha pogut trobar una ruta adient amb els vostres paràmetres.</string>
+    <string name="public_transport_no_route_title">Per desgràcia, RoadCrew no ha pogut trobar una ruta adient amb els vostres paràmetres.</string>
     <string name="public_transport_try_ped">Proveu la navegació caminant.</string>
     <string name="public_transport_try_change_settings">Proveu a canviar els paràmetres.</string>
     <string name="public_transport_calc_pedestrian">Calcula una ruta caminant</string>
@@ -2093,14 +2093,14 @@
     <string name="coordinates_widget">Giny de coordenades</string>
     <string name="rate_dialog_descr">Si us plau, comenteu que us sembla i puntueu la nostra feina a Google Play.</string>
     <string name="shared_string_privacy_policy">Política de privadesa</string>
-    <string name="help_us_make_osmand_better">Ajudeu-nos a millorar OsmAnd</string>
-    <string name="make_osmand_better_descr">Autoritzeu a OsmAnd a recopilar i processar dades anònimes d\'ús de l\'aplicació. No es recollirà cap dada sobre la vostra ubicació ni dels llocs que consulteu al mapa. 
+    <string name="help_us_make_osmand_better">Ajudeu-nos a millorar RoadCrew</string>
+    <string name="make_osmand_better_descr">Autoritzeu a RoadCrew a recopilar i processar dades anònimes d\'ús de l\'aplicació. No es recollirà cap dada sobre la vostra ubicació ni dels llocs que consulteu al mapa. 
 \n 
 \nSempre es pot revisar a \'Configuració\' &gt; \'Privadesa i seguretat\'.</string>
     <string name="choose_data_to_share">Trieu el tipus de dades que voleu compartir:</string>
     <string name="downloaded_maps">Mapes baixats</string>
     <string name="downloaded_maps_collect_descr">Ajudeu-nos a determinar la popularitat dels mapes de països i de regions.</string>
-    <string name="visited_screens_collect_descr">Ajudeu-nos a determinar la popularitat de les característiques d\'OsmAnd.</string>
+    <string name="visited_screens_collect_descr">Ajudeu-nos a determinar la popularitat de les característiques d\'RoadCrew.</string>
     <string name="privacy_and_security_change_descr">Premeu \"Permet\" si accepteu la nostra %1$s</string>
     <string name="settings_privacy_and_security">Privadesa i seguretat</string>
     <string name="settings_privacy_and_security_desc">Trieu quines dades compartiu</string>
@@ -2121,7 +2121,7 @@
     <string name="profile_alert_need_profile_name_title">Introduïu el nom del perfil</string>
     <string name="profile_alert_need_profile_name_msg">Primer hauríeu d\'establir un nom al perfil.</string>
     <string name="profile_alert_duplicate_name_msg">Ja hi ha un perfil amb aquest nom</string>
-    <string name="profile_alert_cant_delete_base">No podeu suprimir els perfils de base d\'OsmAnd</string>
+    <string name="profile_alert_cant_delete_base">No podeu suprimir els perfils de base d\'RoadCrew</string>
     <string name="profile_alert_delete_title">Suprimeix el perfil</string>
     <string name="profile_alert_delete_msg">Esteu segur que voleu suprimir el perfil \"%s\"</string>
     <string name="select_base_profile_dialog_title">Seleccioneu un perfil amb què començar</string>
@@ -2130,12 +2130,12 @@
     <string name="base_profile_descr_pedestrian">Passejada, senderisme, cursa</string>
     <string name="base_profile_descr_public_transport">Tipus de transport públic</string>
     <string name="routing_profile_straightline">Línia recta</string>
-    <string name="osmand_default_routing">Navegació OsmAnd</string>
+    <string name="osmand_default_routing">Navegació RoadCrew</string>
     <string name="special_routing_type">Navegació especial</string>
     <string name="third_party_routing_type">Navegació de tercers</string>
     <string name="application_profiles">Perfils d\'aplicació</string>
     <string name="routing_attr_piste_type_downhill_name">Esquí alpí i de descens</string>
-    <string name="process_downloading_service">Servei de baixades d\'OsmAnd</string>
+    <string name="process_downloading_service">Servei de baixades d\'RoadCrew</string>
     <string name="shared_string_color_magenta">Magenta</string>
     <string name="shared_string_icon">Icona</string>
     <string name="press_again_to_change_the_map_orientation">Torneu a prémer per canviar l\'orientació del mapa</string>
@@ -2164,7 +2164,7 @@
     <string name="default_speed_setting_descr">Canvieu la configuració predeterminada de velocitat</string>
     <string name="new_profile">Nou perfil</string>
     <string name="shared_string_crash">Accident</string>
-    <string name="last_launch_crashed">La darrera execució d\'OsmAnd va fallar. Ajudeu-nos a millorar OsmAnd compartint el missatge d\'error.</string>
+    <string name="last_launch_crashed">La darrera execució d\'RoadCrew va fallar. Ajudeu-nos a millorar RoadCrew compartint el missatge d\'error.</string>
     <string name="release_3_4">• Perfils d\'aplicació: Creeu un perfil personalitzat segons el que us calgui, amb icona i colors a mida \n \n • Ara podeu modificar els valors predeterminats de qualsevol perfil i les velocitats mínima/màxima \n \n • S\'ha afegit una extensió amb les coordenades actuals \n \n • Noves opcions per mostrar la brúixola i un regle radial en el mapa \n \n • S\'ha arreglat el registre de traçat en segon pla \n \n • Baixada de mapes en segon pla millorada \n \n • Ha tornat l\'opció \'Activa la pantalla\' \n \n • Selecció de la llengua de Viquipèdia arreglada \n \n • S\'ha arreglat el comportament del botó de la brúixola en navegació \n \n • Altres correccions d\'errors</string>
     <string name="app_mode_personal_transporter">Transport personal</string>
     <string name="routing_attr_allow_classic_only_name">Restringeix a rutes clàssiques</string>
@@ -2242,12 +2242,12 @@
     <string name="plugins_settings">Configuració del connector</string>
     <string name="shared_string_by_default">Predeterminat</string>
     <string name="route_parameters">Paràmetres de la ruta</string>
-    <string name="change_data_storage_full_description">Voleu moure els fitxers de dades OsmAnd a una nova destinació\?
+    <string name="change_data_storage_full_description">Voleu moure els fitxers de dades RoadCrew a una nova destinació\?
 \n%1$s &gt; %2$s</string>
     <string name="enter_path_to_folder">Introduïu el camí a la carpeta</string>
     <string name="shared_string_select_folder">Carpeta…</string>
-    <string name="paste_Osmand_data_folder_path">Enganxa el camí a la carpeta amb les dades d\'OsmAnd</string>
-    <string name="change_osmand_data_folder_question">Voleu canviar la carpeta de dades de OsmAnd\?</string>
+    <string name="paste_Osmand_data_folder_path">Enganxa el camí a la carpeta amb les dades d\'RoadCrew</string>
+    <string name="change_osmand_data_folder_question">Voleu canviar la carpeta de dades de RoadCrew\?</string>
     <string name="move_maps_to_new_destination">Desplaça a la nova destinació</string>
     <string name="avoid_in_routing_descr_">Evita determinades rutes i tipus de carretera</string>
     <string name="change_data_storage_folder">Canvia la carpeta d\'emmagatzematge</string>
@@ -2274,7 +2274,7 @@
     <string name="routeInfo_piste_difficulty_name">Dificultat de la pista</string>
     <string name="rendering_attr_piste_difficulty_connection_name">Connexió</string>
     <string name="shared_string_calculate">Calcula</string>
-    <string name="shared_string_osmand_usage">Ús d\'OsmAnd</string>
+    <string name="shared_string_osmand_usage">Ús d\'RoadCrew</string>
     <string name="shared_string_maps">Mapes</string>
     <string name="shared_string_memory_tb_desc">%1$s TB</string>
     <string name="shared_string_memory_gb_desc">%1$s GB</string>
@@ -2315,7 +2315,7 @@
     <string name="screen_alerts_descr">Les alertes es mostren abaix a l\'esquerra mentre es navega.</string>
     <string name="reset_to_default">Restableix els valors per defecte</string>
     <string name="osmand_settings_descr">Efectiu a tota l\'aplicació</string>
-    <string name="osmand_settings">Configuració d\'OsmAnd</string>
+    <string name="osmand_settings">Configuració d\'RoadCrew</string>
     <string name="copy_from_other_profile">Còpia d\'un altre perfil</string>
     <string name="turn_screen_on">Activa la pantalla</string>
     <string name="map_during_navigation_info">Mapa durant la navegació</string>
@@ -2364,7 +2364,7 @@
     <string name="rendering_value_thick_name">Gruix</string>
     <string name="delete_profiles_descr">Al prémer \'Aplica\', s\'esborraran definitivament els perfils suprimits.</string>
     <string name="select_color">Seleccioneu el color</string>
-    <string name="edit_profiles_descr">Els perfils predeterminats de l\'OsmAnd no es poden esborrar però si desactivar-se (a la pantalla anterior) o reordenar-se cap al el final.</string>
+    <string name="edit_profiles_descr">Els perfils predeterminats de l\'RoadCrew no es poden esborrar però si desactivar-se (a la pantalla anterior) o reordenar-se cap al el final.</string>
     <string name="edit_profiles">Edita els perfils</string>
     <string name="profile_appearance">Aparença del perfil</string>
     <string name="choose_icon_color_name">Icona, color i nom</string>
@@ -2392,7 +2392,7 @@
     <string name="video_notes">Notes de vídeo</string>
     <string name="photo_notes">Notes de fotos</string>
     <string name="app_mode_osm">OSM</string>
-    <string name="tracks_view_descr">Els vostres enregistraments són a %1$s o al directori d\'OsmAnd .</string>
+    <string name="tracks_view_descr">Els vostres enregistraments són a %1$s o al directori d\'RoadCrew .</string>
     <string name="accessibility_announce">Anunci</string>
     <string name="plugin_global_prefs_info">Aquests paràmetres de connectors són global i afecten tots els perfils</string>
     <string name="osm_editing">Edició OSM</string>
@@ -2413,7 +2413,7 @@
     <string name="plugin_disabled">Connector desactivat</string>
     <string name="plugin_disabled_descr">Aquest connector és una aplicació independent, us caldrà esborrar-la apart si ja no penseu utilitzar-la
 \n
-\nEl connector continua al dispositiu encara que desinstal·leu OsmAnd.</string>
+\nEl connector continua al dispositiu encara que desinstal·leu RoadCrew.</string>
     <string name="shared_string_menu">Menú</string>
     <string name="ltr_or_rtl_triple_combine_via_dash">%1$s — %2$s — %3$s</string>
     <string name="rendering_attr_piste_type_skitour_name">Esquí de muntanya</string>
@@ -2439,12 +2439,12 @@
     <string name="shared_string_nothing_selected">No hi ha res seleccionat</string>
     <string name="shared_string_quick_actions">Accions directes</string>
     <string name="shared_string_profiles">Perfils</string>
-    <string name="listed_exist">Els llistats %1$s ja existeixen a OsmAnd.</string>
+    <string name="listed_exist">Els llistats %1$s ja existeixen a RoadCrew.</string>
     <string name="replace_all_desc">Els elements actuals es substituiran amb elements del fitxer</string>
     <string name="replace_all">Reemplaça-ho tot</string>
     <string name="keep_both">Manté tots dos</string>
     <string name="keep_both_desc">Els elements importats s\'afegiran amb prefix</string>
-    <string name="import_duplicates_description">Hi ha elements importats amb els mateixos noms que altres d\'OsmAnd.
+    <string name="import_duplicates_description">Hi ha elements importats amb els mateixos noms que altres d\'RoadCrew.
 \n
 \nSeleccioneu una opció.</string>
     <string name="import_duplicates_title">Alguns elements ja existeixen</string>
@@ -2463,7 +2463,7 @@
     <string name="importing_from">S\'estan important dades de %1$s</string>
     <string name="shared_string_importing">S\'està important</string>
     <string name="monitoring_min_speed_descr_recommendation">Recomanació: proveu primer d\'utilitzar la detecció de moviment a través del filtre de desplaçament mínim (B) que podria donar millors resultats i perdríeu menys dades. Si les vostres traces encara queden mal definides a baixa velocitat, proveu aquí valors diferents de zero. Tingueu en compte que algunes mesures podrien no incloure cap valor de velocitat (alguns mètodes basats en la xarxa) i llavors no s\'enregistraria res.</string>
-    <string name="checking_for_duplicate_description">OsmAnd està comprovant duplicitats de %1$s amb elements ja existents a l\'aplicació.
+    <string name="checking_for_duplicate_description">RoadCrew està comprovant duplicitats de %1$s amb elements ja existents a l\'aplicació.
 \n
 \nPodria trigar una estona.</string>
     <string name="items_added">Elements afegits</string>
@@ -2497,7 +2497,7 @@
     <string name="app_mode_ski_touring">Esquí de ruta</string>
     <string name="app_mode_ski_snowmobile">Moto de neu</string>
     <string name="download_slope_maps">Pendent</string>
-    <string name="custom_osmand_plugin">Connector d\'OsmAnd adaptat</string>
+    <string name="custom_osmand_plugin">Connector d\'RoadCrew adaptat</string>
     <string name="replace_point_descr">Substitueix un altre punt per aquest.</string>
     <string name="changes_applied_to_profile">S\'han fet els canvis al perfil \'%1$s\'.</string>
     <string name="settings_item_read_error">No s\'ha pogut llegir des de \'%1$s\'.</string>
@@ -2559,7 +2559,7 @@
 \n
 \nSeleccioneu %1$s i rebreu alertes i advertiments de les càmeres de radar. 
 \n
-\nSeleccioneu %2$s. Totes les dades relatives a les càmeres de radar (alertes, notificacions, PDIs) desapareixeran fins que es reinstal·li completament OsmAnd .</string>
+\nSeleccioneu %2$s. Totes les dades relatives a les càmeres de radar (alertes, notificacions, PDIs) desapareixeran fins que es reinstal·li completament RoadCrew .</string>
     <string name="shared_string_uninstall">Desinstal·la</string>
     <string name="speed_cameras_alert">Les alertes de proximitat a càmeres de radar estan prohibides en alguns països.</string>
     <string name="details_dialog_decr">Mostra o amaga detalls addicionals del mapa</string>
@@ -2691,7 +2691,7 @@
     <string name="add_address">Afegeix una adreça</string>
     <string name="shared_string_file_name">Nom del fitxer</string>
     <string name="monitoring_control_start">Enregistrament</string>
-    <string name="disable_recording_once_app_killed_descrp">L\'enregistrament de traces s\'aturarà quan es mati l\'aplicació (mitjançant aplicacions recents). (Les indicacions en segon pla d\'OsmAnd desapareixeran de la barra de notificacions Android.)</string>
+    <string name="disable_recording_once_app_killed_descrp">L\'enregistrament de traces s\'aturarà quan es mati l\'aplicació (mitjançant aplicacions recents). (Les indicacions en segon pla d\'RoadCrew desapareixeran de la barra de notificacions Android.)</string>
     <string name="save_global_track_interval_descr">Trieu l\'interval d\'enregistrament general dels desplaçaments (s\'activa mitjançant el giny del mapa \'Enregistrament de ruta\').</string>
     <string name="simplified_track">Traça simplificada</string>
     <string name="simplified_track_description">Només es desarà la línia del trajecte, les fites s\'esborraran.</string>
@@ -2710,7 +2710,7 @@
     <string name="sort_name_descending">Nom: Z - A</string>
     <string name="sort_name_ascending">Nom: A - Z</string>
     <string name="shared_string_gpx_files">Traces</string>
-    <string name="turn_screen_on_power_button_descr">Prement el botó d\'activació del dispositiu s\'activarà la pantalla mostrant OsmAnd ja la pantalla blocada.</string>
+    <string name="turn_screen_on_power_button_descr">Prement el botó d\'activació del dispositiu s\'activarà la pantalla mostrant RoadCrew ja la pantalla blocada.</string>
     <string name="turn_screen_on_power_button">Botó d\'activació</string>
     <string name="release_3_8">• S\'ha actualitzat la funció Planifica una ruta: permet utilitzar diferents tipus de navegació per segments i afegir traces \n \n • Nou menú Aspecte per les traces: seleccioneu color, gruix, representació de les fletxes de direcció, icones d\'inici i final \n \n • S\'ha millorat la visibilitat dels nodes ciclistes. \n \n • Ara les traces es poden seleccionar, tenen un menú contextual amb informació bàsica. \n \n • S\'han millorat els algoritmes de Cerca \n \n • S\'ha millorat les opcions de Segueix traces a Navegació \n \n • S\'han corregit problemes en la importació/exportació de la configuració dels perfils</string>
     <string name="shared_string_add_profile">Afegeix un perfil</string>
@@ -2738,7 +2738,7 @@
     <string name="lenght_limit_description">Proporcioneu la llargada del vostre vehicle, pot haver-hi rutes restringides als vehicles llargs.</string>
     <string name="gpx_parse_error">S\'han trobat problemes amb un fitxer GPX.
 \n
-\nPodeu contactar amb l\'assistència d\'OsmAnd per investigar.</string>
+\nPodeu contactar amb l\'assistència d\'RoadCrew per investigar.</string>
     <string name="save_track_to_gpx">Enregistra automàticament la traça durant la navegació</string>
     <string name="message_you_need_add_two_points_to_show_graphs">Afegiu almenys dos punts</string>
     <string name="use_dev_url_descr">Canvieu per utilitzar dev.openstreetmap.org en lloc d\'openstreetmap.org en provar la pujada de nota OSM / PDI / GPX.</string>
@@ -2769,7 +2769,7 @@
     <string name="plan_route_add_new_segment">Afegeix un segment nou</string>
     <string name="lang_de_casual">Alemany (col·loquial)</string>
     <string name="what_is_new">Novetats</string>
-    <string name="profile_type_osmand_string">Perfil OsmAnd</string>
+    <string name="profile_type_osmand_string">Perfil RoadCrew</string>
     <string name="profile_type_user_string">Perfil d\'usuari</string>
     <string name="release_3_9">• S\'ha afegit una opció per exportar i importar totes les dades, incloent configuracions, recursos i preferits \n \n • Planificació de la ruta: gràfics per segments de traçat de la ruta i s\'afegeix la possibilitat de crear i editar diversos segments de la traça alhora \n \n • S\'ha afegit el mètode d\'autenticació OAuth per a OpenStreetMap i s\'ha millorat la interfície d\'usuari dels diàlegs OSM \n \n • S\'admeten colors personalitzats per a llocs preferits i fites</string>
     <string name="reverse_all_points">Revertir tots els punts</string>
@@ -2801,7 +2801,7 @@
     <string name="exit_pan_mode_descr">Premeu Selecciona per sortir del mode panoràmic</string>
     <string name="upload_gpx_description_hint">Deixeu-ho buit, els noms de les traces s\'utilitzaran com a descripció. S\'aplicarà la descripció introduïda per a cada traça.</string>
     <string name="shared_app_storage_description">La memòria compartida ja no està disponible a causa del canvi d\'accés d\'emmagatzematge d\'Android.</string>
-    <string name="internal_app_storage_description">Emmagatzematge intern, amagat a tots els usuaris i a d\'altres aplicacions, pel que només OsmAnd pot accedir a les vostres dades.</string>
+    <string name="internal_app_storage_description">Emmagatzematge intern, amagat a tots els usuaris i a d\'altres aplicacions, pel que només RoadCrew pot accedir a les vostres dades.</string>
     <string name="purchases_feature_desc_android_auto">Porta els mapes osmAnd fora de línia i la navegació a la pantalla del teu vehicle i s\'integra amb els controls del teu vehicle.</string>
     <string name="shared_string_details">Detalls</string>
     <string name="included_categories">Categories incloses</string>
@@ -2838,7 +2838,7 @@
     <string name="gps_filter_smoothing">Suavitzat</string>
     <string name="save_changes_into_file">Desa els canvis en un fitxer</string>
     <string name="save_as_copy">Desa com a còpia</string>
-    <string name="storage_migration_wrong_folder_warning">No s\'han trobat dades d\'OsmAnd a la carpeta triada. Si us plau, reintenteu-ho.</string>
+    <string name="storage_migration_wrong_folder_warning">No s\'han trobat dades d\'RoadCrew a la carpeta triada. Si us plau, reintenteu-ho.</string>
     <string name="map_marker_options">Opcions del marcador de mapa</string>
     <string name="app_modes_options">Triar modes d\'aplicació</string>
     <string name="shared_string_size">Mida</string>
@@ -2870,7 +2870,7 @@
     <string name="stop_download_desc">La baixada no ha finalitzat. Si atureu ara la baixada, només es podran mostrar una part de les tessel·les.</string>
     <string name="default_appearance_desc">El color, l’icona i la forma predeterminada s’aplicaran als punts preferits agregats al grup.</string>
     <string name="default_appearance">Aparença predeterminada</string>
-    <string name="location_source_descr">Per defecte, OsmAnd instal·lat des de Google Play utilitza %1$s per a determinar la ubicació.
+    <string name="location_source_descr">Per defecte, RoadCrew instal·lat des de Google Play utilitza %1$s per a determinar la ubicació.
 \n
 \nSi obtens informació d’ubicació imprecisa o utilitzes un dispositiu sense %2$s, intenta canviar a \"%3$s\"</string>
     <string name="import_tracks_descr">%1$s, conté %2$s pistes separades. Tria pistes a importar.</string>
@@ -2939,7 +2939,7 @@
     <string name="go_to_marker_location">Ves a la ubicació del marcador</string>
     <string name="shared_string_switch_mode">Canvia el mode</string>
     <string name="shared_string_shows">Mostra</string>
-    <string name="restore_from_osmand_cloud">Restaura des d\'OsmAnd Clouf</string>
+    <string name="restore_from_osmand_cloud">Restaura des d\'RoadCrew Clouf</string>
     <string name="display_position">Posició de la pantalla</string>
     <string name="favorite_delete_group">Suprimeix el grup</string>
     <string name="rendering_attr_showMtbScaleIMBATrails_description">Mostra els itineraris específics per a bicis de muntanya.</string>
@@ -2990,7 +2990,7 @@
     <string name="shortcut_navigate_to_work">Navega cap a la «Feina»</string>
     <string name="android_auto_map_placeholder_descr">Desconnecteu l\'aparell de l\'Android Auto per a veure el mapa en l\'aplicació.</string>
     <string name="continue_on_phone">Continua en l\'aparell mòbil</string>
-    <string name="location_access_request_title">L\'OsmAnd necessita permisos de geolocalització per a navegar.</string>
+    <string name="location_access_request_title">L\'RoadCrew necessita permisos de geolocalització per a navegar.</string>
     <string name="rendering_attr_horse_scale_impossible_name">Impossible</string>
     <string name="rendering_attr_horse_scale_dangerous_name">Perillosa</string>
     <string name="rendering_attr_showMonorailRoutes_name">Línies de monoraïl</string>
@@ -3174,7 +3174,7 @@
     <string name="app_mode_climbing">Escalada</string>
     <string name="routing_attr_height_obstacles_description">El temps de viatge previst reflectirà l\'impacte de l\'elevació. La preferència de navegació pot ajudar a evitar pujades pronunciades:</string>
     <string name="coordinates_widget_current_location_desc">Mostra les coordenades geogràfiques de la ubicació geogràfica actual</string>
-    <string name="calculate_online_altitude_descr">Calcula l\'elevació en línia als servidors d\'OsmAnd, basant-se en imatges de satèl·lit i models digitals d\'elevació. Les diferències respecte a l\'altitud registrada del dispositiu es poden utilitzar com a correcció d\'elevació.</string>
+    <string name="calculate_online_altitude_descr">Calcula l\'elevació en línia als servidors d\'RoadCrew, basant-se en imatges de satèl·lit i models digitals d\'elevació. Les diferències respecte a l\'altitud registrada del dispositiu es poden utilitzar com a correcció d\'elevació.</string>
     <string name="proxy_port_max_warning">El valor màxim del port és %1$s</string>
     <string name="average_speed_skip_stops_desc">Es comptaran la velocitats inferiors a %1$s i afectarà a la velocitat mitjana.</string>
     <string name="average_speed_skip_stops">Tingueu en compte les parades</string>
@@ -3208,7 +3208,7 @@
     <string name="select_layer">Selecciona una capa</string>
     <string name="routing_attr_motor_type_name">Combustible utilitzat pel motor</string>
     <string name="favorite_confirm_delete_group">Esteu segur que voleu suprimir el grup «%1$s» i tots els punts inclosos (%2$d)?</string>
-    <string name="auto_backup_preference_desc">Per defecte, Android desa còpies de seguretat dels favorits, fitxes de mapes i configuració d\'OsmAnd per restaurar-los en dispositius nous o després de la reinstal·lació. Aquesta còpia de seguretat està limitada a 25 MB.
+    <string name="auto_backup_preference_desc">Per defecte, Android desa còpies de seguretat dels favorits, fitxes de mapes i configuració d\'RoadCrew per restaurar-los en dispositius nous o després de la reinstal·lació. Aquesta còpia de seguretat està limitada a 25 MB.
 \nQuan utilitzeu OsmAnd Cloud, això pot provocar malentesos després de la reinstal·lació.</string>
     <string name="routing_attr_motor_type_lpg_name">Gas liquat del petroli (GLP)</string>
     <string name="kg">kg</string>
@@ -3502,7 +3502,7 @@
     <string name="obd_fuel_consumption_rate_liter_hour">Taxa de consum de combustible</string>
     <string name="shared_string_bluetooth">Bluetooth</string>
     <string name="obd_vehicle_info">Informació del vehicle</string>
-    <string name="connect_obd_instructions_title">OsmAnd reconeix connexions Bluetooth amb escànners OBD-II.</string>
+    <string name="connect_obd_instructions_title">RoadCrew reconeix connexions Bluetooth amb escànners OBD-II.</string>
     <string name="connect_obd_instructions_step2">Engegueu el motor del vostre vehicle</string>
     <string name="connect_obd_instructions_step3">Activeu el Bluetooth al vostre dispositiu</string>
     <string name="obd_how_to_connect">Com connectar:</string>
@@ -3643,7 +3643,7 @@
     <string name="help_article_navigation_routing_straight_line_routing_name">Ruta en línia recta (Avió)</string>
     <string name="help_article_map_point_layers_on_map_name">Punts al mapa</string>
     <string name="help_article_navigation_guidance_map_during_navigation_name">Pantalla del mapa mentre la navegació</string>
-    <string name="detailed_track_guidance_description">OsmAnd combinarà la vostra traça a les carreteres properes per millorar la indicació de maniobres.</string>
+    <string name="detailed_track_guidance_description">RoadCrew combinarà la vostra traça a les carreteres properes per millorar la indicació de maniobres.</string>
     <string name="detailed_track_guidance">Guia detallada de la traça</string>
     <string name="help_article_navigation_routing_public_transport_navigation_name">Ruta amb transport públic</string>
     <string name="record_obd_data">Enregistrament de les dades del vehicle</string>
@@ -3653,13 +3653,13 @@
     <string name="help_article_map_track_context_menu_name">Menú de context de les traces</string>
     <string name="simulation_real_mode_desc">En trams rectes, la velocitat s\'estimarà propera a la velocitat màxima permesa.\nAls encreuaments, la estimació serà inferior.\nTambé s\'estimaran reduccions addicionals prop de semàfors, senyals d\'stop, etc.</string>
     <string name="help_article_map_legend_nautical_map_name">Mapa tipus nàutic</string>
-    <string name="help_article_map_legend_osmand_name">Mapa tipus OsmAnd</string>
+    <string name="help_article_map_legend_osmand_name">Mapa tipus RoadCrew</string>
     <string name="app_mode_suv">SUV</string>
     <string name="help_article_map_interact_with_map_name">Interacció amb el mapa</string>
     <string name="help_article_map_map_context_menu_name">Menú de context del mapa</string>
     <string name="help_article_navigation_routing_online_routing_name">Rutes amb connexió</string>
     <string name="simulation_constant_mode_desc">Es farà una simulació amb la velocitat constant seleccionada.</string>
-    <string name="help_article_navigation_routing_osmand_routing_name">Respecte la navegació OsmAnd</string>
+    <string name="help_article_navigation_routing_osmand_routing_name">Respecte la navegació RoadCrew</string>
     <string name="help_article_map_vector_maps_name">Mapes vectorials (estils de mapa)</string>
     <string name="help_article_navigation_guidance_voice_navigation_name">Avisos de veu / Notificacions</string>
     <string name="help_article_navigation_routing_name">Paràmetres de ruta</string>
@@ -3737,7 +3737,7 @@
     <string name="multipoligon_related">Relació</string>
     <string name="route_part_of">Part de</string>
     <string name="wikidata">Wikidata</string>
-    <string name="prediction_time_description">Position icon in OsmAnd anima amb cada actualització GPS (un cop per segon). Un lleuger retard pot ocórrer, particularment durant el moviment ràpid o quan el senyal GPS és inestable.</string>
+    <string name="prediction_time_description">Position icon in RoadCrew anima amb cada actualització GPS (un cop per segon). Un lleuger retard pot ocórrer, particularment durant el moviment ràpid o quan el senyal GPS és inestable.</string>
     <string name="prediction_time_advanced_description">Ajusta el temps de predicció per minimitzar el retard.</string>
     <string name="prediction_time">Temps de predicció</string>
     <string name="shared_string_no_animation">Sense animació</string>
@@ -3782,7 +3782,7 @@
     <string name="ais_port_nmea_server">Port TCP de la font de dades NMEA</string>
     <string name="ais_port_nmea_server_description">Defineix el número de port TCP de la font de dades NMEA</string>
     <string name="ais_port_nmea_local">Port UDP del receptor de dades NMEA local</string>
-    <string name="ais_port_nmea_local_description">Defineix el port UPD on OsmAnd rep dades NMEA</string>
+    <string name="ais_port_nmea_local_description">Defineix el port UPD on RoadCrew rep dades NMEA</string>
     <string name="ais_object_lost_timeouts">Paràmetres de temps d\'espera per a la recepció del senyal AIS</string>
     <string name="ais_object_lost_timeout">Temps d\'espera per a la visibilitat quan es perd el senyal d\'un vaixell</string>
     <string name="ais_object_lost_timeout_description">Estableix un temps d\'espera per a la visibilitat de l\'objecte AIS: Si no es rep cap senyal dins de la durada especificada, l\'objecte serà eliminat automàticament de la pantalla.</string>
@@ -3925,7 +3925,7 @@
     <string name="explore_3d_track_description">Explora la pista en 3D interactiu! Visualitza l\'alçada, la velocitat i més directament al mapa.</string>
     <string name="maps_that_also_be_used">Mapes que també s\'utilitzaran: %1$s</string>
     <string name="getting_list_of_required_maps">S\'està obtenint una llista dels mapes requerits…</string>
-    <string name="required_maps_calculate_online_summary">La llista de mapes que falten es basa en la ruta en línia recta. Per a obtenir una llista precisa de mapes, OsmAnd pot calcular prèviament en línia la vostra ruta.</string>
+    <string name="required_maps_calculate_online_summary">La llista de mapes que falten es basa en la ruta en línia recta. Per a obtenir una llista precisa de mapes, RoadCrew pot calcular prèviament en línia la vostra ruta.</string>
     <string name="required_maps">Mapes requerits</string>
     <string name="missing_maps_description">Falten alguns mapes fora de línia necessaris per a aquesta ruta o no estan actualitzats. Baixeu o actualitzeu aquests mapes.</string>
     <string name="missing_maps_header">Falten mapes obsolets</string>
@@ -3935,7 +3935,7 @@
     <string name="delete_actions_button">Suprimeix el botó</string>
     <string name="use_terrain_maps_summary">Utilitza mapes del terreny per a les dades d\'elevació. La geometria de la pista no canvia.</string>
     <string name="use_nearby_roads_summary">Utilitza un mapa fora de línia per trobar les dades properes de carreteres i elevacions. Pot ajustar la geometria de la pista.</string>
-    <string name="retrieve_elevation_data_summary">OsmAnd pot recuperar dades d\'elevació de carreteres properes o mapes del terreny.</string>
+    <string name="retrieve_elevation_data_summary">RoadCrew pot recuperar dades d\'elevació de carreteres properes o mapes del terreny.</string>
     <string name="shared_string_osm_id">ID OSM</string>
     <string name="relief_3d_download_description">Es necessiten mapes addicionals per veure Terrain al mapa.</string>
     <string name="vertical_exaggeration_description">Per canviar el valor de l\'escala, podeu emfatitzar el relleu en 3D.</string>
@@ -4035,7 +4035,7 @@
     <string name="key_event_action_move_to_my_location">Mou a la meva ubicació</string>
     <string name="remove_type_q">Elimina el tipus \"%1$s\"?</string>
     <string name="add_new_type">Afegeix un tipus nou</string>
-    <string name="enable_to_use_external_input_device">Habilita l\'ús del dispositiu d\'entrada extern amb OsmAnd</string>
+    <string name="enable_to_use_external_input_device">Habilita l\'ús del dispositiu d\'entrada extern amb RoadCrew</string>
     <string name="external_input_device_title">Dispositiu d\'entrada extern</string>
     <string name="not_specified">No especificat</string>
     <string name="cloud_item_restored">%1$s s\'ha restaurat al Cloud.</string>
@@ -4112,7 +4112,7 @@
     <string name="help_article_search_search_all_name">Cerca-ho tot</string>
     <string name="help_article_search_search_coordinates_name">Coordenades de cerca</string>
     <string name="help_article_search_search_poi_name">Cerca POI</string>
-    <string name="help_article_start_with_name">Comença amb OsmAnd</string>
+    <string name="help_article_start_with_name">Comença amb RoadCrew</string>
     <string name="help_article_start_with_first_steps_name">Primers passos</string>
     <string name="help_article_start_with_main_menu_name">Menú principal</string>
     <string name="help_article_troubleshooting_crash_logs_name">Registres de fallades</string>
@@ -4130,9 +4130,9 @@
     <string name="telegram_chats">Xats del Telegram</string>
     <string name="github_discussion">Discussió GitHub</string>
     <string name="contact_us">Contacta amb nosaltres</string>
-    <string name="free_versions_descr">Descarrega i instal·la la versió gratuïta d\'OsmAnd</string>
+    <string name="free_versions_descr">Descarrega i instal·la la versió gratuïta d\'RoadCrew</string>
     <string name="free_versions">Versions lliures</string>
-    <string name="about_osmand">Quant a OsmAnd</string>
+    <string name="about_osmand">Quant a RoadCrew</string>
     <string name="send_logcat_log_descr">Fitxer de registre detallat</string>
     <string name="send_crash_log_descr">Conté només informació sobre les fallades</string>
     <string name="open_issue_on_github_descr">Pregunta pregunta, proposa característiques</string>
@@ -4243,13 +4243,13 @@
     <string name="ant_plus_bluetooth_off">El Bluetooth està desactivat</string>
     <string name="ant_plus_bluetooth_off_description">Activa la cerca Bluetooth i els sensors de parells.</string>
     <string name="ant_plus_searching_text">S\'estan cercant sensors</string>
-    <string name="ant_plus_searching_text_description">Manteniu el dispositiu a prop del sensor. Heu d\'activar el sensor perquè l\'OsmAnd el trobi.</string>
+    <string name="ant_plus_searching_text_description">Manteniu el dispositiu a prop del sensor. Heu d\'activar el sensor perquè l\'RoadCrew el trobi.</string>
     <string name="ant_plus_help_title">No sé quin tipus de sensor tinc</string>
     <string name="ant_plus_pair_new_sensor">Aparella un sensor nou</string>
     <string name="ant_plus_open_settings">Obre la configuració</string>
     <string name="ant_plus_pair_new_sensor_ble">Sensor Bluetooth LE de parell</string>
     <string name="ant_plus_pair_new_sensor_ant_plus">Sensor de FORMIGA de parell</string>
-    <string name="ant_plus_pair_bluetooth_prompt">Pots aparellar sensors Bluetooth LE i ANT amb OsmAnd.</string>
+    <string name="ant_plus_pair_bluetooth_prompt">Pots aparellar sensors Bluetooth LE i ANT amb RoadCrew.</string>
     <string name="learn_more_about_sensors_link">Més informació sobre els sensors.</string>
     <string name="token_is_not_valid">El testimoni no és vàlid</string>
     <string name="enable_3d_maps">Habilita els mapes 3D</string>
@@ -4273,7 +4273,7 @@
     <string name="no_visible_tracks_description">Seleccioneu les pistes per a mostrar-les al mapa.</string>
     <string name="no_visible_tracks">No hi ha pistes al mapa</string>
     <string name="recently_visible">%1$s visible recentment</string>
-    <string name="empty_tracks_description">Podeu importar, crear o enregistrar fitxers de seguiment utilitzant OsmAnd.</string>
+    <string name="empty_tracks_description">Podeu importar, crear o enregistrar fitxers de seguiment utilitzant RoadCrew.</string>
     <string name="empty_tracks">No teniu fitxers de seguiment.</string>
     <string name="shared_string_select_recent">Selecciona els recents</string>
     <string name="change_appearance">Canvia l\'aparença</string>
@@ -4294,12 +4294,12 @@
     <string name="determine_location">Permet que determinem la vostra ubicació</string>
     <string name="set_up_backup">Configura la còpia de seguretat</string>
     <string name="cant_load_map_styles">No es poden carregar els estils del mapa.</string>
-    <string name="rendering_engine_failed_descr">OsmAnd ha tornat a la representació del mapa \'Versió 1\'. Podeu intentar tornar al nou motor de renderització \'Versió 2 (OpenGL)\' a la Configuració.\n\nSi us plau, doneu suport a les millores proporcionant el registre d\'errors.</string>
-    <string name="rendering_engine_failed">La representació de mapes d\'OsmAnd ha fallat recentment.</string>
-    <string name="map_rendering_engine_descr">La versió 1 era la predeterminada abans d\'OsmAnd 4.3 i encara és preferible per a dispositius antics.\nVersion 2 (OpenGL) és un motor de representació de mapes més potent, també amb vista 2.5D.</string>
+    <string name="rendering_engine_failed_descr">RoadCrew ha tornat a la representació del mapa \'Versió 1\'. Podeu intentar tornar al nou motor de renderització \'Versió 2 (OpenGL)\' a la Configuració.\n\nSi us plau, doneu suport a les millores proporcionant el registre d\'errors.</string>
+    <string name="rendering_engine_failed">La representació de mapes d\'RoadCrew ha fallat recentment.</string>
+    <string name="map_rendering_engine_descr">La versió 1 era la predeterminada abans d\'RoadCrew 4.3 i encara és preferible per a dispositius antics.\nVersion 2 (OpenGL) és un motor de representació de mapes més potent, també amb vista 2.5D.</string>
     <string name="purchases_feature_desc_external_sensors">Display i registre de dades de sensors externs: velocitat de la bicicleta, potència de la bicicleta, cadència i freqüència cardíaca.</string>
     <string name="external_sensors_plugin_description">Accedeix a sensors externs per llegir, per exemple, la freqüència cardíaca, la velocitat de la bicicleta, la potència del ciclisme o la cadència. Requereix que el vostre dispositiu estigui connectat als sensors respectius a través del protocol de xarxa personal sense fils ANT.</string>
-    <string name="send_uuid_preference_desc">Un UUID aleatori s\'utilitza per descarregar mapes fora de línia dels servidors d\'OsmAnd per monitoritzar l\'ús just dels recursos del servidor, predir patrons de trànsit i generar informes anònims mensuals de mapes.</string>
+    <string name="send_uuid_preference_desc">Un UUID aleatori s\'utilitza per descarregar mapes fora de línia dels servidors d\'RoadCrew per monitoritzar l\'ús just dels recursos del servidor, predir patrons de trànsit i generar informes anònims mensuals de mapes.</string>
     <string name="map_widget_target_distance_desc">Mostra la distància entre la càmera i la ubicació de destinació.</string>
     <string name="map_widget_zoom_level_desc">Mostra el nivell de zoom del mapa actual.</string>
     <string name="map_widget_camera_distance_desc">Mostra l\'elevació de la càmera per sobre del nivell de superfície.</string>
@@ -4419,7 +4419,7 @@
     <string name="use_routing_fallback">Enrutament alternatiu fora de línia</string>
     <string name="gps_filter_speed_altitude_desc">Només els punts de seguiment que coincideixin amb l\'interval establert apareixeran al gràfic i al mapa, la resta restarà oculta.</string>
     <string name="gps_filter_smoothing_desc">Estableix la distància del llindar entre punts.\nEls punts de la pista no estaran amagats almenys a aquesta distància de l\'últim punt visible.\nTingueu en compte que els llindars alts poden simplificar en excés la geometria de la pista.</string>
-    <string name="gps_filter_actions_description">OsmAnd aplicarà els canvis a la pista sense actualitzar el fitxer. Podeu desar els canvis manualment.</string>
+    <string name="gps_filter_actions_description">RoadCrew aplicarà els canvis a la pista sense actualitzar el fitxer. Podeu desar els canvis manualment.</string>
     <string name="migration_files_present">%1$d fitxer(s) (%2$s) ja present a la destinació \'%3$s\' i no sobreescrit.</string>
     <string name="fold_unfold">plegar/desplegar</string>
     <string name="app_profile_type">Tipus de perfil de l\'aplicació</string>
@@ -4430,11 +4430,11 @@
     <string name="display_groups_visibility_dialog_description">Podeu controlar la visibilitat del grup al mapa. Si la pista està oculta, tots els grups també estaran ocults.</string>
     <string name="storage_found_files_descr">Tap \"%1$s\" per copiar %2$s fitxers de \"%3$s\" a \"%4$s\". Pot trigar una estona.</string>
     <string name="storage_found_files_size">S\'han trobat %1$s fitxers %2$s</string>
-    <string name="shared_string_skip_warning">Skip the migration? L\'OsmAnd ja no té accés als vostres fitxers en emmagatzematge compartit.\n\nL\'aplicació començarà a utilitzar la carpeta de dades nova.</string>
+    <string name="shared_string_skip_warning">Skip the migration? L\'RoadCrew ja no té accés als vostres fitxers en emmagatzematge compartit.\n\nL\'aplicació començarà a utilitzar la carpeta de dades nova.</string>
     <string name="shared_storage_last_step">Després podeu especificar una carpeta de dades nova.</string>
-    <string name="shared_storage_third_step">Atorga permís per accedir a la carpeta. Sense ell l\'OsmAnd no pot copiar fitxers.</string>
+    <string name="shared_storage_third_step">Atorga permís per accedir a la carpeta. Sense ell l\'RoadCrew no pot copiar fitxers.</string>
     <string name="shared_storage_first_step">Prem «%1$s» (en anglès).\nEl gestor de fitxers s\'obre on cal trobar i obrir la carpeta osmand.</string>
-    <string name="shared_storage_migration_descr">A causa dels canvis en l\'accés d\'emmagatzematge d\'Android, OsmAnd ja no pot utilitzar %1$s.\n\nCopia totes les teves dades a la nova carpeta.</string>
+    <string name="shared_storage_migration_descr">A causa dels canvis en l\'accés d\'emmagatzematge d\'Android, RoadCrew ja no pot utilitzar %1$s.\n\nCopia totes les teves dades a la nova carpeta.</string>
     <string name="shared_storage_second_step">Feu clic a \"Utilitza aquesta carpeta\".</string>
     <string name="folder_access_denied">Cal permís per accedir a la carpeta seleccionada.</string>
     <string name="shared_string_copy_to">Copia a</string>
@@ -4487,7 +4487,7 @@
     <string name="rendering_value_walkingRoutesScopeOSMC_description">Color per afiliació a la xarxa.</string>
     <string name="rendering_value_walkingRoutesOSMC_description">Rutes de color segons el seu color local individual (si està present a OpenStreetMap) i símbol d\'escut de senderisme.</string>
     <string name="routes_color_by_type">Color de les rutes per…</string>
-    <string name="explore_osmnad_plans_to_find_suitable">Explora els plans OsmAnd per trobar-ne un adequat.</string>
+    <string name="explore_osmnad_plans_to_find_suitable">Explora els plans RoadCrew per trobar-ne un adequat.</string>
     <string name="purchases_feature_desc_pro_widgets">Accedeix a les característiques d\'OsmAnd Pro: coloració de la ruta i molt més.</string>
     <string name="option_available_only_in_osmand_pro">Disponible com a part de la subscripció OsmAnd Pro.</string>
     <string name="track_has_no_needed_data">A la pista li falten les dades respectives.</string>
@@ -4500,7 +4500,7 @@
     <string name="backup_data_removed">S\'han eliminat totes les dades.</string>
     <string name="backup_version_history_removed">S\'ha eliminat tot l\'historial de versions.</string>
     <string name="backup_deleted_all_data_descr">Totes les vostres dades s\'han eliminat amb èxit d\'OsmAnd Cloud.</string>
-    <string name="backup_deleting_all_data_descr">Espereu fins que l\'OsmAnd suprimeixi les vostres dades del núvol. Totes les dades del dispositiu romandran intactes.</string>
+    <string name="backup_deleting_all_data_descr">Espereu fins que l\'RoadCrew suprimeixi les vostres dades del núvol. Totes les dades del dispositiu romandran intactes.</string>
     <string name="logout_from_osmand_cloud_decsr">Sortiu?\nHaureu de tornar a iniciar la sessió per fer còpies de seguretat o restaurar les dades.</string>
     <string name="logout_from_osmand_cloud">Tanca la sessió d\'OsmAnd Cloud</string>
     <string name="duration_moment_ago">fa un moment</string>
@@ -4628,7 +4628,7 @@
     <string name="show_start_dialog">Mostra el diàleg d\'inici</string>
     <string name="lost_data_warning">Es perdran totes les dades no desades.</string>
     <string name="trip_recording_save_and_continue">Desa i continua</string>
-    <string name="trip_recording_logging_interval_info">L\'interval de registre estableix el període de temps en què OsmAnd sol·licitarà les dades de posició actuals.</string>
+    <string name="trip_recording_logging_interval_info">L\'interval de registre estableix el període de temps en què RoadCrew sol·licitarà les dades de posició actuals.</string>
     <string name="rendering_attr_natureReserves_name">Reserva natural i zones protegides</string>
     <string name="rendering_attr_natureReserves_description">Mostra la reserva natural, les àrees protegides i els parcs nacionals.</string>
     <string name="live_update_delete_updates_msg">Voleu suprimir totes les actualitzacions en viu de %s?</string>
@@ -4716,12 +4716,12 @@
     <string name="map_source_zoom_levels_descr">Afecta la pantalla quan s\'utilitza com a mapa o superposició/underlay. \n\n%1$s: El mapa està limitat a l\'interval de nivell de zoom seleccionat. \n\n%2$s són els nivells en què les fitxes originals seran visibles, l\'escalat o la baixada es produiran fora d\'aquests valors.</string>
     <string name="turn_screen_on_wake_time_descr">Selecciona el temps d\'espera de la pantalla després de despertar. (\"%1$s\" no aplica temps d\'espera.)</string>
     <string name="turn_screen_on_power_button_disabled">Desactivat. Requereix \'Manté la pantalla activada\' a \'Retard des de l\'activació\'.</string>
-    <string name="turn_screen_on_descr">Seleccioneu les opcions d\'activació de la pantalla (assegureu-vos que l\'OsmAnd estigui en primer pla quan el dispositiu estigui bloquejat):</string>
+    <string name="turn_screen_on_descr">Seleccioneu les opcions d\'activació de la pantalla (assegureu-vos que l\'RoadCrew estigui en primer pla quan el dispositiu estigui bloquejat):</string>
     <string name="system_screen_timeout">Usa el temps d\'espera de la pantalla del sistema</string>
     <string name="system_screen_timeout_descr">Apaga la pantalla segons el temps d\'espera del sistema.</string>
     <string name="profiles_for_action_not_found">No s\'ha pogut trobar cap d\'aquests perfils.</string>
     <string name="quick_action_switch_profile_descr">El botó d\'acció canvia entre els perfils seleccionats.</string>
-    <string name="tracker_item">Rastrejador de OsmAnd</string>
+    <string name="tracker_item">Rastrejador de RoadCrew</string>
     <string name="search_poi_types_descr">Combinar tipus POI de diferents categories. Toca commutador per seleccionar-ho tot, toca el costat esquerre a la selecció de categories.</string>
     <string name="osm_live_payment_subscription_management">El pagament es cobra des del teu compte de Google Play en confirmar la compra.\n\nEs renova llevat que es cancel·li abans del període de renovació seleccionat.\n\nGestioneu o cancel·leu les vostres subscripcions de la configuració de Google Play en qualsevol moment.</string>
     <string name="lang_ckb">Kurd central</string>

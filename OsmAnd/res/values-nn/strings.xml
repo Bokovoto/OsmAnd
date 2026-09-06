@@ -103,7 +103,7 @@
     <string name="routing_attr_avoid_ferries_name">Unngår ferjer</string>
     <string name="routing_attr_avoid_ferries_description">Unngå ferjer</string>
     <string name="routing_attr_weight_name">Maksvekt</string>
-    <string name="copying_osmand_files">Kopierer OsmAnd-filer</string>
+    <string name="copying_osmand_files">Kopierer RoadCrew-filer</string>
     <string name="app_mode_truck">Lastebil</string>
     <string name="amenity_type_seamark">Sjømerke</string>
     <string name="app_modes_choose">Programprofilar</string>

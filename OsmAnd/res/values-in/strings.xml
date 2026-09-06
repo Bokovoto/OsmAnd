@@ -134,7 +134,7 @@
     <string name="add_point_before">Tambah titik sebelum</string>
     <string name="add_point_after">Tambah titik setelah</string>
     <string name="shared_string_options">Opsi</string>
-    <string name="measurement_tool_snap_to_road_descr">OsmAnd akan menghubungkan titik dengan rute untuk profil yang dipilih.</string>
+    <string name="measurement_tool_snap_to_road_descr">RoadCrew akan menghubungkan titik dengan rute untuk profil yang dipilih.</string>
     <string name="choose_navigation_type">Pilih profil navigasi</string>
     <string name="none_point_error">Silakan tambah setidaknya satu titik.</string>
     <string name="quick_action_resume_pause_navigation_descr">Tombol untuk menjeda atau melanjutkan navigasi.</string>
@@ -156,7 +156,7 @@
     <string name="mapillary_menu_title_username">Nama pengguna</string>
     <string name="map_widget_ruler_control">Pengukur radius</string>
     <string name="shared_string_permissions">Perizinan</string>
-    <string name="import_gpx_failed_descr">Tidak dapat mengimpor file. Pastikan OsmAnd memiliki izin untuk membacanya.</string>
+    <string name="import_gpx_failed_descr">Tidak dapat mengimpor file. Pastikan RoadCrew memiliki izin untuk membacanya.</string>
     <string name="distance_moving">Jarak dibenarkan</string>
     <string name="mapillary_image">Gambar Mapillary</string>
     <string name="open_mapillary">Buka Mapillary</string>
@@ -221,7 +221,7 @@
     <string name="shared_string_automatic">Otomatis</string>
     <string name="do_not_show_startup_messages">Jangan tampilkan pesan startup</string>
     <string name="parking_options">Pilihan parkir</string>
-    <string name="full_version_thanks">Terima kasih telah membeli versi berbayar dari OsmAnd.</string>
+    <string name="full_version_thanks">Terima kasih telah membeli versi berbayar dari RoadCrew.</string>
     <string name="routing_attr_relief_smoothness_factor_hills_name">Berbukit</string>
     <string name="routing_attr_relief_smoothness_factor_plains_name">Kurang berbukit</string>
     <string name="routing_attr_relief_smoothness_factor_more_plains_name">Datar</string>
@@ -311,7 +311,7 @@
     <string name="si_mi_meters">Mil/meter</string>
     <string name="search_another_country">Pilih Daerah lain</string>
     <string name="search_map">Mencari Peta…</string>
-    <string name="first_usage_wizard_desc">Biarkan OsmAnd menentukan lokasi Anda dan menyarankan peta untuk diunduh di wilayah tersebut.</string>
+    <string name="first_usage_wizard_desc">Biarkan RoadCrew menentukan lokasi Anda dan menyarankan peta untuk diunduh di wilayah tersebut.</string>
     <string name="location_not_found">Lokasi tidak ditemukan</string>
     <string name="no_inet_connection">Tidak ada koneksi internet</string>
     <string name="search_location">Mencari lokasi…</string>
@@ -329,7 +329,7 @@
     <string name="confirmation_to_delete_history_items">Hapus item yang dipilih dari \'Riwayat\'\?</string>
     <string name="show_something_on_map">Tampilkan %1$s di peta</string>
     <string name="dist_away_from_my_location">Cari %1$s pergi</string>
-    <string name="share_history_subject">Bagikan melalui OsmAnd</string>
+    <string name="share_history_subject">Bagikan melalui RoadCrew</string>
     <string name="search_categories">Kategori</string>
     <string name="postcode">Kode Pos</string>
     <string name="shared_string_from">Dari</string>
@@ -345,15 +345,15 @@
     <string name="exit_at">Keluar di</string>
     <string name="rate_dialog_descr">Silakan beri komentar dan nilai kerja kami di Google Play.</string>
     <string name="shared_string_privacy_policy">Kebijakan Privasi</string>
-    <string name="help_us_make_osmand_better">Bantu kami membuat OsmAnd lebih baik</string>
-    <string name="make_osmand_better_descr">Izinkan OsmAnd untuk mengumpulkan dan memproses data penggunaan aplikasi secara anonim. Kami tidak mengumpulkan atau menyimpan data lokasi Anda, atau data lokasi yang Anda lihat di peta.
+    <string name="help_us_make_osmand_better">Bantu kami membuat RoadCrew lebih baik</string>
+    <string name="make_osmand_better_descr">Izinkan RoadCrew untuk mengumpulkan dan memproses data penggunaan aplikasi secara anonim. Kami tidak mengumpulkan atau menyimpan data lokasi Anda, atau data lokasi yang Anda lihat di peta.
 \n
 \nAnda selalu bisa mengubah pilihan Anda di \'Pengaturan\' &gt; \'Privasi dan Keamanan\'.</string>
     <string name="choose_data_to_share">Tentukan tipe data yang ingin Anda bagikan:</string>
     <string name="downloaded_maps">Peta yang diunduh</string>
     <string name="visited_screens">Layar yang dikunjungi</string>
     <string name="downloaded_maps_collect_descr">Membantu kami memahami popularitas dari peta negara dan daerah.</string>
-    <string name="visited_screens_collect_descr">Membantu kami memahami popularitas fitur OsmAnd.</string>
+    <string name="visited_screens_collect_descr">Membantu kami memahami popularitas fitur RoadCrew.</string>
     <string name="privacy_and_security_change_descr">Ketuk \"Izinkan\" jika Anda setuju dengan %1$s kami</string>
     <string name="settings_privacy_and_security">Privasi dan keamanan</string>
     <string name="settings_privacy_and_security_desc">Pilih data apa yang Anda bagikan</string>
@@ -372,12 +372,12 @@
     <string name="routing_profile_ski">Ski</string>
     <string name="profile_type_descr_string">Tipe: %s</string>
     <string name="profile_alert_need_profile_name_title">Masukkan nama profil</string>
-    <string name="process_downloading_service">Layanan pengunduhan OsmAnd</string>
+    <string name="process_downloading_service">Layanan pengunduhan RoadCrew</string>
     <string name="shared_string_color_magenta">Magenta</string>
     <string name="shared_string_icon">Ikon</string>
     <string name="profile_alert_need_profile_name_msg">Anda harus memberi profil sebuah nama.</string>
     <string name="profile_alert_duplicate_name_msg">Sudah ada profil dengan nama yang sama</string>
-    <string name="profile_alert_cant_delete_base">Anda tidak dapat menghapus profil dasar OsmAnd</string>
+    <string name="profile_alert_cant_delete_base">Anda tidak dapat menghapus profil dasar RoadCrew</string>
     <string name="profile_alert_delete_title">Hapus profil</string>
     <string name="profile_alert_delete_msg">Hapus profil \"%s\"</string>
     <string name="select_base_profile_dialog_title">Pilih profil untuk memulai</string>
@@ -388,7 +388,7 @@
     <string name="files_failed">Tidak dapat menyalin %1$d berkas (%2$s).</string>
     <string name="dont_move_maps">Jangan pindahkan</string>
     <string name="public_transport_ped_route_title">Rute berjalan kaki kira-kira %1$s dan mungkin bisa lebih cepat daripada angkutan publik</string>
-    <string name="public_transport_no_route_title">OsmAnd tidak bisa menemukan rute yang cocok dengan pengaturan anda.</string>
+    <string name="public_transport_no_route_title">RoadCrew tidak bisa menemukan rute yang cocok dengan pengaturan anda.</string>
     <string name="public_transport_try_ped">Coba menavigasi pejalan kaki.</string>
     <string name="searching_gps">Mencari GPS</string>
     <string name="coordinates_widget">Widget koordinat</string>
@@ -398,7 +398,7 @@
     <string name="base_profile_descr_aircraft">Pesawat, meluncur</string>
     <string name="routing_profile_straightline">Garis lurus</string>
     <string name="routing_profile_broutrer">BRouter (luring)</string>
-    <string name="osmand_default_routing">Rute OsmAnd</string>
+    <string name="osmand_default_routing">Rute RoadCrew</string>
     <string name="special_routing_type">Rute spesial</string>
     <string name="third_party_routing_type">Perutean pihak ketiga</string>
     <string name="application_profiles">Profil aplikasi</string>
@@ -496,7 +496,7 @@
     <string name="get_unlimited_access">Dapatkan akses tak terbatas</string>
     <string name="welcome_to_open_beta">Selamat datang di beta terbuka</string>
     <string name="popular_destinations">Tujuan populer</string>
-    <string name="osmand_team">Tim OsmAnd</string>
+    <string name="osmand_team">Tim RoadCrew</string>
     <string name="maps_you_need_descr">Berdasarkan pada artikel yang anda simpan, peta berikut ini direkomendasikan untuk diunduh:</string>
     <string name="maps_you_need">Peta yang Anda butuhkan</string>
     <string name="download_all">Unduh semua</string>
@@ -508,7 +508,7 @@
     <string name="shared_string_bookmark">Markah</string>
     <string name="shared_string_gpx_file">Berkas GPX</string>
     <string name="wikivoyage_travel_guide">Panduan Perjalanan</string>
-    <string name="wikivoyage_travel_guide_descr">Panduan tempat-tempat paling menarik di planet ini, di dalam OsmAnd, tanpa perlu tersambung ke internet.</string>
+    <string name="wikivoyage_travel_guide_descr">Panduan tempat-tempat paling menarik di planet ini, di dalam RoadCrew, tanpa perlu tersambung ke internet.</string>
     <string name="shared_string_travel_guides">Panduan perjalanan</string>
     <string name="quick_action_edit_actions">Sunting tindakan</string>
     <string name="coord_input_edit_point">Sunting titik</string>
@@ -522,7 +522,7 @@
     <string name="thank_you_for_feedback">Terima kasih atas masukan Anda</string>
     <string name="search_no_results_feedback">Tidak menemukan apa pun\?
 \nBerikan masukan</string>
-    <string name="ask_for_location_permission">Izinkan OsmAnd mengakses lokasi untuk melanjutkan.</string>
+    <string name="ask_for_location_permission">Izinkan RoadCrew mengakses lokasi untuk melanjutkan.</string>
     <string name="search_street">Cari jalan</string>
     <string name="start_search_from_city">Pilih kota besar, kota kecil, atau lokalitas terlebih dahulu</string>
     <string name="shared_string_restore">Pulihkan</string>
@@ -585,7 +585,7 @@
     <string name="rendering_attr_highway_class_state_road_name">Jalan raya kota</string>
     <string name="rendering_attr_highway_class_road_name">Jalan raya</string>
     <string name="rendering_attr_highway_class_street_name">Jalan</string>
-    <string name="public_transport_warning_descr_blog">Pelajari lebih lanjut tentang perutean OsmAnd di blog kami.</string>
+    <string name="public_transport_warning_descr_blog">Pelajari lebih lanjut tentang perutean RoadCrew di blog kami.</string>
     <string name="shared_string_walk">Jalan</string>
     <string name="save_poi_value_exceed_length">Kurangi panjang tag \"%s\" sampai kurang dari 255 karakter.</string>
     <string name="avoid_pt_types_descr">Pilih angkutan publik yang ingin dihindari untuk navigasi:</string>
@@ -640,7 +640,7 @@
     <string name="replace_all_desc">Item saat ini akan diganti dengan item berasal dari berkas</string>
     <string name="replace_all">Ganti semua</string>
     <string name="keep_both_desc">Item yang diimpor akan ditambahkan prefiks</string>
-    <string name="import_duplicates_description">Elemen yang diimpor sudah ada dalam aplikasi OsmAnd
+    <string name="import_duplicates_description">Elemen yang diimpor sudah ada dalam aplikasi RoadCrew
 \n
 \nSilahkan pilih tindakan.</string>
     <string name="import_duplicates_title">Beberapa item sudah ada</string>
@@ -773,7 +773,7 @@
     <string name="use_dev_url">Gunakan dev.openstreetmap.org</string>
     <string name="app_mode_light_aircraft">Pesawat terbang ringan</string>
     <string name="plan_route_add_new_segment">Tambahkan segmen baru</string>
-    <string name="profile_type_osmand_string">Profil OsmAnd</string>
+    <string name="profile_type_osmand_string">Profil RoadCrew</string>
     <string name="profile_type_user_string">Profil pengguna</string>
     <string name="shared_string_last_used">Terakhir digunakan</string>
     <string name="shared_string_subtype">Subjenis</string>
@@ -848,7 +848,7 @@
     <string name="app_mode_motorcycle">Sepeda Motor</string>
     <string name="app_mode_hiking">Mendaki</string>
     <string name="app_mode_truck">Truk</string>
-    <string name="copying_osmand_files">Menyalin berkas-berkas data OsmAnd…</string>
+    <string name="copying_osmand_files">Menyalin berkas-berkas data RoadCrew…</string>
     <string name="routing_attr_avoid_motorway_description">Menghindari jalan bebas hambatan</string>
     <string name="routing_attr_avoid_stairs_description">Menghindari tangga</string>
     <string name="routing_attr_avoid_ferries_description">Menghindari kapal feri</string>
@@ -977,7 +977,7 @@
     <string name="share_note">Bagikan catatan</string>
     <string name="back_to_map">Kembali ke peta</string>
     <string name="rename_failed">Pengubahan nama gagal.</string>
-    <string name="debugging_and_development">Pengembangan OsmAnd</string>
+    <string name="debugging_and_development">Pengembangan RoadCrew</string>
     <string name="shared_string_accessibility">Aksesibilitas</string>
     <string name="osmand_parking_plugin_name">Posisi parkir</string>
     <string name="record_plugin_name">Perekaman perjalanan</string>
@@ -1056,10 +1056,10 @@
     <string name="shared_string_video">Video</string>
     <string name="shared_string_resume">Lanjutkan</string>
     <string name="int_seconds">detik</string>
-    <string name="process_navigation_service">Layanan navigasi OsmAnd</string>
+    <string name="process_navigation_service">Layanan navigasi RoadCrew</string>
     <string name="route_tu">Putar balik dan jalan</string>
     <string name="transport_Routes">Rute-rute</string>
-    <string name="hello">Aplikasi navigasi OsmAnd</string>
+    <string name="hello">Aplikasi navigasi RoadCrew</string>
     <string name="uploading_data">Mengunggah data…</string>
     <string name="ttsvoice">Suara TTS</string>
     <string name="shared_string_no_thanks">Tidak, terima kasih</string>
@@ -1288,7 +1288,7 @@
     <string name="failed_to_upload">Tidak dapat mengunggah</string>
     <string name="user_hates_app_get_feedback_long">Mohon beritahu kami saran Anda.</string>
     <string name="user_hates_app_get_feedback">Beritahu kami mengapa.</string>
-    <string name="do_you_like_osmand">Apakah Anda menyukai OsmAnd\?</string>
+    <string name="do_you_like_osmand">Apakah Anda menyukai RoadCrew\?</string>
     <string name="shared_string_get">Dapatkan</string>
     <string name="edit_filter_save_as_menu_item">Simpan Sebagai</string>
     <string name="poi_dialog_reopen">Buka kembali</string>
@@ -1385,7 +1385,7 @@
     <string name="map_during_navigation">Peta selama navigasi</string>
     <string name="map_during_navigation_info">Peta selama navigasi</string>
     <string name="copy_from_other_profile">Salin dari profil lain</string>
-    <string name="osmand_settings">Pengaturan OsmAnd</string>
+    <string name="osmand_settings">Pengaturan RoadCrew</string>
     <string name="osmand_settings_descr">Efektif ke seluruh aplikasi ini</string>
     <string name="general_settings_profile_descr">Tema aplikasi, satuan, daerah</string>
     <string name="configure_navigation">Konfigurasi navigasi</string>
@@ -1445,9 +1445,9 @@
     <string name="shared_string_turn">Belok</string>
     <string name="change_data_storage_folder">Ubah folder penyimpanan</string>
     <string name="move_maps_to_new_destination">Pindahkan ke tujuan baru</string>
-    <string name="change_osmand_data_folder_question">Ubah folder data OsmAnd\?</string>
+    <string name="change_osmand_data_folder_question">Ubah folder data RoadCrew\?</string>
     <string name="data_storage_preference_summary">%1$s • %2$s</string>
-    <string name="change_data_storage_full_description">Pindahkan berkas-berkas data OsmAnd ke tujuan baru\?
+    <string name="change_data_storage_full_description">Pindahkan berkas-berkas data RoadCrew ke tujuan baru\?
 \n%1$s &gt; %2$s</string>
     <string name="avoid_in_routing_descr_">Hindari rute dan jenis jalan tertenu</string>
     <string name="shared_string_memory_kb_desc">%1$s kB</string>
@@ -1456,7 +1456,7 @@
     <string name="shared_string_memory_tb_desc">%1$s TB</string>
     <string name="shared_string_maps">Peta</string>
     <string name="shared_string_tiles">Ubin</string>
-    <string name="shared_string_osmand_usage">Penggunaan OsmAnd</string>
+    <string name="shared_string_osmand_usage">Penggunaan RoadCrew</string>
     <string name="shared_string_calculate">Hitung</string>
     <string name="shared_string_memory_used_kb_desc">Menggunakan %1$s KB</string>
     <string name="shared_string_memory_used_mb_desc">Menggunakan %1$s MB</string>
@@ -1566,7 +1566,7 @@
     <string name="logout_from_osmand_cloud">Keluar dari OsmAnd Cloud</string>
     <string name="logout_from_osmand_cloud_decsr">Keluar\?
 \nAnda harus masuk lagi untuk mencadangkan atau memulihkan data.</string>
-    <string name="backup_deleting_all_data_descr">Mohon tunggu sampai OsmAnd selesai menghapus semua data Anda dari cloud. Semua data pada perangkat tidak disentuh.</string>
+    <string name="backup_deleting_all_data_descr">Mohon tunggu sampai RoadCrew selesai menghapus semua data Anda dari cloud. Semua data pada perangkat tidak disentuh.</string>
     <string name="backup_deleted_all_data_descr">Semua data Anda berhasil dihapus dari OsmAnd Cloud.</string>
     <string name="backup_version_history_removed">Semua riwayat versi terhapus.</string>
     <string name="backup_data_removed">Semua data terhapus.</string>
@@ -1760,7 +1760,7 @@
     <string name="edit_category">Sunting kategori</string>
     <string name="shared_string_shape">Bentuk</string>
     <string name="default_appearance">Penampilan bawaan</string>
-    <string name="location_source_descr">Secara bawaan, OsmAnd yang terinstal dari Google Play menggunakan %1$s untuk menentukan lokasi.
+    <string name="location_source_descr">Secara bawaan, RoadCrew yang terinstal dari Google Play menggunakan %1$s untuk menentukan lokasi.
 \n
 \nJika Anda mendapatkan informasi lokasi yang tidak akurat atau menggunakan perangkat tanpa %2$s, coba ubah ke \"%3$s\"</string>
     <string name="location_source">Sumber lokasi</string>
@@ -1841,7 +1841,7 @@
     <string name="favourites_context_menu_add">Tambahkan Favorit</string>
     <string name="quick_action_sh_poi_descr">Tambahkan satu atau lebih kategori POI untuk ditampilkan pada peta.</string>
     <string name="quick_action_map_overlay_action">Tambahkan hamparan</string>
-    <string name="internal_app_storage_description">Penyimpanan internal, tersembunyi dari semua pengguna dan aplikasi lainnya, jadi hanya OsmAnd yang dapat mengakses data Anda.</string>
+    <string name="internal_app_storage_description">Penyimpanan internal, tersembunyi dari semua pengguna dan aplikasi lainnya, jadi hanya RoadCrew yang dapat mengakses data Anda.</string>
     <string name="number_of_gpx_files_selected_pattern">%s berkas GPX dipilih</string>
     <string name="marker_save_as_track">Simpan sebagai berkas trek</string>
     <string name="fold_unfold">lipat/buka</string>
@@ -1908,8 +1908,8 @@
     <string name="track_file_description">Mengetuk tindakan ini menampilkan trek yang tersedia.</string>
     <string name="turn_arrows_descr">Pilih jika panah arahan ditampilkan pada garis rute.</string>
     <string name="gps_filter_speed_altitude_desc">Hanya titik trek yang cocok dengan interval set akan ditampilkan pada grafik dan peta, yang lain akan disembunyikan.</string>
-    <string name="gps_filter_actions_description">OsmAnd akan menerapkan perubahan pada trek tanpa memperbarui berkas. Anda dapat menyimpan perubahan secara manual.</string>
-    <string name="storage_migration_wrong_folder_warning">Tidak ada data OsmAnd yang ditemukan di folder yang dipilih. Mohon coba lagi.</string>
+    <string name="gps_filter_actions_description">RoadCrew akan menerapkan perubahan pada trek tanpa memperbarui berkas. Anda dapat menyimpan perubahan secara manual.</string>
+    <string name="storage_migration_wrong_folder_warning">Tidak ada data RoadCrew yang ditemukan di folder yang dipilih. Mohon coba lagi.</string>
     <string name="show_parameter_seekbar">Tampilkan bilah pencarian parameter</string>
     <string name="voice_data_not_supported">Versi data suara tidak didukung</string>
     <string name="route_tr">Belok kanan dan jalan</string>
@@ -1929,7 +1929,7 @@
     <string name="migration_files_present">%1$d (%2$s) yang sudah ada di target \'%3$s\' dan tidak ditimpa.</string>
     <string name="map_orientation_default">Sama seperti perangkat</string>
     <string name="routing_attr_avoid_toll_name">Tidak ada jalan tol</string>
-    <string name="shared_storage_migration_descr">Karena perubahan dalam pengaksesan penyimpanan Android, OsmAnd tidak dapat lagi menggunakan %1$s.
+    <string name="shared_storage_migration_descr">Karena perubahan dalam pengaksesan penyimpanan Android, RoadCrew tidak dapat lagi menggunakan %1$s.
 \n
 \nSalin semua data Anda ke folder yang baru.</string>
     <string name="shared_storage_second_step">Klik \"Gunakan folder ini\".</string>
@@ -1953,7 +1953,7 @@
     <string name="navigation_history">Riwayat navigasi</string>
     <string name="history_preferences_descr">Anda dapat menonaktifkan pencatatan riwayat secara individu untuk setiap tipe riwayat.</string>
     <string name="shortcut_navigate_to_work">Navigasi ke \'Kerja\'</string>
-    <string name="location_access_request_title">OsmAnd membutuhkan izin Lokasi untuk navigasi.</string>
+    <string name="location_access_request_title">RoadCrew membutuhkan izin Lokasi untuk navigasi.</string>
     <string name="search_title">Cari: %1$s</string>
     <string name="shared_string_files">Berkas</string>
     <string name="remove_group_from_markers">Hapus grup dari daftar penanda</string>
@@ -1962,7 +1962,7 @@
     <string name="grey_color_undefined">Bagian tanpa data berwarna abu-abu.</string>
     <string name="purchases_restored">Pembelian dipulihkan</string>
     <string name="connect_track_points_as">Hubungkan titik rute</string>
-    <string name="enough_contributions_descr">Selamat, Anda telah menyediakan kontribusi OpenStreetMap yang cukup dan dapat menikmati pembaruan peta OsmAnd tak terbatas!</string>
+    <string name="enough_contributions_descr">Selamat, Anda telah menyediakan kontribusi OpenStreetMap yang cukup dan dapat menikmati pembaruan peta RoadCrew tak terbatas!</string>
     <string name="use_dev_url_descr">Ubah untuk menggunakan dev.openstreetmap.org daripada openstreetmap.org untuk menguji coba mengunggah Catatan / POI / GPX OSM.</string>
     <string name="osm_editing_plugin_description">Buat kontribusi ke OpenStreetMap, sebuah komunitas global yang membuat peta dunia dan menyediakan data sumber terbuka terbaru kepada pengguna siapa pun.
 \n
@@ -2012,7 +2012,7 @@
     <string name="favourites">Favorit</string>
     <string name="poi_deleted_localy">POI akan dihapus ketika Anda mengunggah perubahan Anda</string>
     <string name="count_of_lines">Jumlah garis</string>
-    <string name="missing_write_external_storage_permission">OsmAnd membutuhkan izin untuk menggunakan kartu memori</string>
+    <string name="missing_write_external_storage_permission">RoadCrew membutuhkan izin untuk menggunakan kartu memori</string>
     <string name="quick_action_add_marker_descr">Sebuah tombol untuk menambahkan penanda peta di tengah lokasi layar.</string>
     <string name="quick_action_take_audio_note_descr">Sebuah tombol untuk menambahkan sebuah catatan audio di tengah layar.</string>
     <string name="quick_action_take_video_note_descr">Sebuah tombol untuk menambahkan sebuah catatan video di tengah layar.</string>
@@ -2041,7 +2041,7 @@
     <string name="shared_string_travelbooks">Buku Perjalanan</string>
     <string name="use_external_timestamps_description">Gunakan stempel waktu perutean daring untuk mengatur estimasi waktu dan kecepatan rata-rata</string>
     <string name="not_enough_contributions_descr">Diperlukan minimal %1$s perubahan selama periode dua bulan terakhir %2$s untuk mendapatkan akses untuk pembaruan peta per jam tanpa batas.</string>
-    <string name="loading_builds_failed">Tidak dapat mendapatkan daftar bangunan OsmAnd</string>
+    <string name="loading_builds_failed">Tidak dapat mendapatkan daftar bangunan RoadCrew</string>
     <string name="rendering_exception">Tidak dapat menggambar area yang dipilih.</string>
     <string name="rotate_map_to">Orientasi peta</string>
     <string name="show_view_angle">Tampilkan arah tampilan</string>
@@ -2065,8 +2065,8 @@
     <string name="version_index_is_big_for_memory">Indeks \'\'{0}\'\' tidak muat di memori</string>
     <string name="osmand_net_previously_installed">Semua data luring dalam aplikasi lama yang terpasang akan didukung oleh aplikasi yang baru, tetapi titik Favorit harus diekspor dari aplikasi lama lalu diimpor di aplikasi yang baru.</string>
     <string name="downloading_build">Mengunduh bangunan…</string>
-    <string name="install_selected_build">Pasang OsmAnd - {0} dari {1} {2} MB\?</string>
-    <string name="loading_builds">Memuat bangunan OsmAnd…</string>
+    <string name="install_selected_build">Pasang RoadCrew - {0} dari {1} {2} MB\?</string>
+    <string name="loading_builds">Memuat bangunan RoadCrew…</string>
     <string name="use_trackball_descr">Gunakan sebuah perangkat trackball untuk menggerakkan peta.</string>
     <string name="voice_data_initializing">Memuat data suara…</string>
     <string name="voice_data_unavailable">Paket perintah suara yang dipilih tidak tersedia</string>
@@ -2088,7 +2088,7 @@
     <string name="quick_action_navigation_voice_off">Suarakan Suara</string>
     <string name="quick_action_navigation_voice_descr">Sebuah alihan untuk menonaktifkan atau mengaktifkan pemandu suara saat navigasi.</string>
     <string name="quick_action_add_parking_descr">Sebuah tombol untuk menambahkan sebuah lokasi parkir di tengah layar.</string>
-    <string name="quick_action_switch_day_night_descr">Sebuah alihan untuk mengubah antara mode pagi dan malam untuk OsmAnd.</string>
+    <string name="quick_action_switch_day_night_descr">Sebuah alihan untuk mengubah antara mode pagi dan malam untuk RoadCrew.</string>
     <string name="quick_action_interim_dialog">Tampilkan sebuah dialog interim</string>
     <string name="quick_action_add_create_items">Buat item</string>
     <string name="quick_action_bug_descr">Pesan ini ditambahkan dalam kolom komentar.</string>
@@ -2107,7 +2107,7 @@
     <string name="display_route_tracks">Tampilkan trek</string>
     <string name="quick_action_duplicates">Tindakan cepat dinamai ulang ke %1$s untuk menghindari duplikasi.</string>
     <string name="quick_action_duplicate">Duplikasi nama tindakan cepat</string>
-    <string name="select_build_to_install">Pilih bangun OsmAnd untuk dipasang</string>
+    <string name="select_build_to_install">Pilih bangun RoadCrew untuk dipasang</string>
     <string name="gps_status_app_not_found">Aplikasi status GPS tidak terpasang. Cari di store\?</string>
     <string name="rotate_map_compass_opt">Arah kompas</string>
     <string name="av_camera_focus_continuous">Kamera mencoba untuk fokus secara berkelanjutan</string>
@@ -2138,7 +2138,7 @@
     <string name="shared_string_contributions">Kontribusi</string>
     <string name="error_reading_gpx">Tidak dapat membaca data GPX.</string>
     <string name="shared_storage_last_step">Anda dapat menetapkan folder data baru setelah itu.</string>
-    <string name="shared_storage_third_step">Berikan izin untuk mengakses folder. Tanpa itu OsmAnd tidak dapat menyalin berkas.</string>
+    <string name="shared_storage_third_step">Berikan izin untuk mengakses folder. Tanpa itu RoadCrew tidak dapat menyalin berkas.</string>
     <string name="shared_storage_first_step">Tekan \"%1$s\".
 \nPengelola berkas akan dibuka yang Anda harus mencari dan buka folder osmand.</string>
     <string name="copying_completed">Tersalin</string>
@@ -2148,8 +2148,8 @@
     <string name="rendering_value_disabled_name">Dinonaktifkan</string>
     <string name="rendering_value_walkingRoutesOSMC_name">OSMC</string>
     <string name="daynight_mode_sensor">Sensor cahaya</string>
-    <string name="share_fav_subject">Favorit terbagi via OsmAnd</string>
-    <string name="previous_run_crashed">Terakhir kali OsmAnd mogok. File catatan di {0}. Mohon laporkan masalahnya dan lampirkan file catatan.</string>
+    <string name="share_fav_subject">Favorit terbagi via RoadCrew</string>
+    <string name="previous_run_crashed">Terakhir kali RoadCrew mogok. File catatan di {0}. Mohon laporkan masalahnya dan lampirkan file catatan.</string>
     <string name="navigate_point_format_DM">DDD MM.MMM</string>
     <string name="roads">Jalanan</string>
     <string name="quick_action_showhide_favorites_descr">Sebuah alihan untuk menampilkan atau menyembunyikan titik Favorit pada peta.</string>
@@ -2177,7 +2177,7 @@
     <string name="rendering_value_walkingRoutesOSMCNodes_description">Warnai rute sesuai dengan jenis jaringan nodusnya (internasional, regional, lokal).</string>
     <string name="rendering_value_walkingRoutesScopeOSMC_description">Warnai berdasarkan afiliasi jaringan.</string>
     <string name="rendering_value_walkingRoutesOSMC_description">Warnai rute sesuai dengan warna lokal masing-masing (jika ada di OpenStreetMap) dan simbol perisai pendakian.</string>
-    <string name="explore_osmnad_plans_to_find_suitable">Jelajahi Rencana OsmAnd untuk menemukan yang cocok bagi Anda.</string>
+    <string name="explore_osmnad_plans_to_find_suitable">Jelajahi Rencana RoadCrew untuk menemukan yang cocok bagi Anda.</string>
     <string name="purchases_feature_desc_pro_widgets">Dapatkan akses ke fitur OsmAnd Pro: Pewarnaan rute dan banyak lagi.</string>
     <string name="promo_subscription">Langganan promo</string>
     <string name="option_available_only_in_osmand_pro">Tersedia sebagai bagian dari langganan OsmAnd Pro.</string>
@@ -2196,7 +2196,7 @@
 \nAnda tidak akan dapat memulihkan data yang dihapus.</string>
     <string name="shared_string_show_slope">Tampilkan tanjakan</string>
     <string name="elevation_profile">Profil ketinggian</string>
-    <string name="srtm_download_list_help_message">OsmAnd menyediakan data garis kontur dalam meter dan kaki. Anda perlu mengunduh ulang file untuk mengubah format.</string>
+    <string name="srtm_download_list_help_message">RoadCrew menyediakan data garis kontur dalam meter dan kaki. Anda perlu mengunduh ulang file untuk mengubah format.</string>
     <string name="srtm_unit_format">Varian unit garis kontur</string>
     <string name="renew_subscription">Perbarui langganan</string>
     <string name="three_months_subscription">Langganan tiga bulan</string>
@@ -2401,7 +2401,7 @@
     <string name="benefits_for_contributors">Manfaat untuk kontributor OSM aktif</string>
     <string name="loading_list_of_routing_services">Memuat daftar layanan perutean yang tersedia</string>
     <string name="follow_track">Ikuti trek</string>
-    <string name="shared_string_skip_warning">Lewati migrasi\? OsmAnd tidak akan memiliki akses ke berkas Anda di penyimpanan terbagi.
+    <string name="shared_string_skip_warning">Lewati migrasi\? RoadCrew tidak akan memiliki akses ke berkas Anda di penyimpanan terbagi.
 \n
 \nAplikasi akan mulai menggunakan folder data baru Anda.</string>
     <string name="shared_string_articles">Artikel</string>
@@ -2450,7 +2450,7 @@
     <string name="purchases_feature_desc_android_auto">Menyediakan peta luring dan navigasi OsmAnd ke layar kendaraan Anda dan integrasi kontrol kendaraan Anda.</string>
     <string name="backup_delete_old_data">Hapus versi lama</string>
     <string name="select_backup_data_descr">Pilih data dan folder untuk dicadangkan.</string>
-    <string name="trip_recording_logging_interval_info">Interval pencatatan menetapkan periode waktu di mana OsmAnd akan meminta data posisi saat ini.</string>
+    <string name="trip_recording_logging_interval_info">Interval pencatatan menetapkan periode waktu di mana RoadCrew akan meminta data posisi saat ini.</string>
     <string name="available_until">Tersedia sampai %1$s</string>
     <string name="routing_attr_allow_intermittent_description">Perbolehkan jalan air intermiten</string>
     <string name="routing_attr_allow_streams_name">Perbolehkan aliran dan saluran</string>
@@ -2466,7 +2466,7 @@
     <string name="quick_action_remove_next_destination_descr">Menghapus tujuan berikutnya pada rute Anda. Jika itu adalah tujuan akhir, navigasi akan berhenti.</string>
     <string name="please_provide_point_name_error">Mohon berikan nama untuk titik tersebut</string>
     <string name="use_volume_buttons_as_zoom_descr">Kontrol tingkat perbesaran peta menggunakan tombol volume pada perangkat.</string>
-    <string name="disable_recording_once_app_killed_descrp">Pencatatan trek akan dijeda saat aplikasi dimatikan (melalui aplikasi terbaru). (Indikasi latar belakang OsmAnd menghilang dari bilah notifikasi Android.)</string>
+    <string name="disable_recording_once_app_killed_descrp">Pencatatan trek akan dijeda saat aplikasi dimatikan (melalui aplikasi terbaru). (Indikasi latar belakang RoadCrew menghilang dari bilah notifikasi Android.)</string>
     <string name="vessel_width_limit_description">Atur lebar kapal untuk menghindari jembatan sempit</string>
     <string name="routing_attr_length_description">Tentukan panjang kendaraan untuk diizinkan pada rute.</string>
     <string name="uninstall_speed_cameras">Copot kamera kecepatan</string>
@@ -2544,7 +2544,7 @@
     <string name="map_source_zoom_levels">Atur tingkat perbesaran minimum dan maksimum untuk menampilkan atau memuat peta online.</string>
     <string name="delete_all_actions_message_q">Hapus %d tindakan cepat\?</string>
     <string name="online_map_name_helper_text">Berikan nama untuk sumber peta daring.</string>
-    <string name="turn_screen_on_power_button_descr">Menekan tombol daya perangkat akan menyalakan layar dengan OsmAnd di atas layar kunci.</string>
+    <string name="turn_screen_on_power_button_descr">Menekan tombol daya perangkat akan menyalakan layar dengan RoadCrew di atas layar kunci.</string>
     <string name="online_map_url_helper_text">Masukkan atau tempel URL untuk sumber online.</string>
     <string name="lang_ceb">Cebuano</string>
     <string name="light_theme">Terang</string>
@@ -2603,7 +2603,7 @@
 \n
 \nPilih %1$s dan Anda akan menerima peringatan dan peringatan tentang kamera kecepatan.
 \n
-\nPilih %2$s. Semua data yang terkait dengan kamera kecepatan: peringatan, pemberitahuan, POI akan dihapus hingga OsmAnd diinstal ulang sepenuhnya.</string>
+\nPilih %2$s. Semua data yang terkait dengan kamera kecepatan: peringatan, pemberitahuan, POI akan dihapus hingga RoadCrew diinstal ulang sepenuhnya.</string>
     <string name="shared_string_launch">Luncur</string>
     <string name="lang_gu">Gujarat</string>
     <string name="lang_jv">Bahasa Jawa</string>
@@ -2616,7 +2616,7 @@
     <string name="app_mode_ski_touring">Tur ski</string>
     <string name="developer_plugin">Plugin Pengembang</string>
     <string name="shared_string_items">Item</string>
-    <string name="custom_osmand_plugin">Plugin OsmAnd Kustom</string>
+    <string name="custom_osmand_plugin">Plugin RoadCrew Kustom</string>
     <string name="app_mode_ski_snowmobile">Mobil salju</string>
     <string name="context_menu_actions">Tindakan menu konteks</string>
     <string name="ui_customization">Kustomisasi UI</string>
@@ -2711,7 +2711,7 @@
 \n • Perbaiki bug dengan RTL
 \n
 \n</string>
-    <string name="tracker_item">Pelacak OsmAnd</string>
+    <string name="tracker_item">Pelacak RoadCrew</string>
     <string name="osm_live_payment_subscription_management">Pembayaran dibayar dari akun Google Play Anda ketika mengkonfirmasi pembelian.
 \n
 \nItu diperbarui kecuali dibatalkan sebelum periode perpanjangan yang dipilih.
@@ -2741,7 +2741,7 @@
     <string name="reorder_or_hide_from">Susun ulang atau sembunyikan item dari %1$s.</string>
     <string name="app_mode_camper">Kemping</string>
     <string name="shared_string_commit">Komit</string>
-    <string name="turn_screen_on_descr">PIlih opsi bangunan layar (dan pastikan OsmAnd berada di latar belakang ketika perangkat dikunci):</string>
+    <string name="turn_screen_on_descr">PIlih opsi bangunan layar (dan pastikan RoadCrew berada di latar belakang ketika perangkat dikunci):</string>
     <string name="navigate_point_mgrs">MGRS</string>
     <string name="shared_string_crash">Mogok</string>
     <string name="transfers">Transfer</string>
@@ -2771,7 +2771,7 @@
     <string name="osmand_service">Mode latar belakang</string>
     <string name="gpx_parse_error">Masalah ditemukan dengan sebuah berkas GPX.
 \n
-\nAnda dapat menghubungi dukungan OsmAnd untuk menyelidiki.</string>
+\nAnda dapat menghubungi dukungan RoadCrew untuk menyelidiki.</string>
     <string name="lenght_limit_description">Sediakan panjang kendaraan Anda, beberapa pembatasan rute mungkin diterapkan untuk kendaraan panjang.</string>
     <string name="select_wikipedia_article_langs">Pilih bahasa untuk artikel Wikipedia pada peta. Beralih ke bahasa apa pun yang tersedia saat membaca artikel.</string>
     <string name="shared_string_language">Bahasa</string>
@@ -2938,7 +2938,7 @@
     <string name="items_added">Item ditambahkan</string>
     <string name="get_altitude_information">Dapatkan informasi ketinggian</string>
     <string name="monitoring_min_speed_descr_recommendation">Rekomendasi: Coba gunakan deteksi gerakan melalui filter perpindahan minimum pencatatan (B) terlebih dahulu, ini dapat menghasilkan hasil yang lebih baik, dan Anda akan kehilangan lebih sedikit data. Jika trek Anda tetap berisik pada kecepatan rendah, coba nilai non-nol di sini. Harap dicatat bahwa beberapa pengukuran mungkin tidak melaporkan nilai kecepatan sama sekali (beberapa metode berbasis jaringan), dalam hal ini Anda tidak akan merekam apa pun.</string>
-    <string name="tracks_view_descr">Trek yang Anda rekam ada di %1$s, atau folder OsmAnd.</string>
+    <string name="tracks_view_descr">Trek yang Anda rekam ada di %1$s, atau folder RoadCrew.</string>
     <string name="edit_profiles">Sunting profil</string>
     <string name="added_profiles_descr">Profil yang ditambahkan oleh plugin</string>
     <string name="track_saved">Trek disimpan</string>
@@ -2963,7 +2963,7 @@
     <string name="shared_string_poi_types">Tipe POI</string>
     <string name="shared_string_nothing_selected">Tidak ada yang dipilih</string>
     <string name="shared_string_quick_actions">Tindakan cepat</string>
-    <string name="listed_exist">Terdaftar %1$s, sudah ada di OsmAnd.</string>
+    <string name="listed_exist">Terdaftar %1$s, sudah ada di RoadCrew.</string>
     <string name="live_monitoring_descr">Memungkinkan berbagi lokasi saat ini menggunakan perekaman perjalanan.</string>
     <string name="compass_on_circles">Kompas pada lingkaran</string>
     <string name="distance_circles">Jarak lingkaran</string>
@@ -2974,7 +2974,7 @@
     <string name="calculate_altitude">Hitung ketinggian</string>
     <string name="no_altitude_data">Tidak ada data ketinggian</string>
     <string name="restore_all_profile_settings">Pulihkan semua pengaturan profil\?</string>
-    <string name="checking_for_duplicate_description">OsmAnd periksa %1$s untuk duplikat dengan item yang ada di aplikasi.
+    <string name="checking_for_duplicate_description">RoadCrew periksa %1$s untuk duplikat dengan item yang ada di aplikasi.
 \n
 \nMungkin perlu beberapa waktu.</string>
     <string name="slope_download_description">Peta tambahan diperlukan untuk melihat lereng di peta.</string>
@@ -2999,7 +2999,7 @@
     <string name="default_speed_dialog_msg">Perkiraan waktu kedatangan untuk jenis jalan yang tidak diketahui, dan membatasi kecepatan untuk semua jalan (dapat mempengaruhi perutean)</string>
     <string name="export_profile">Ekspor profil</string>
     <string name="monitoring_min_speed_descr_remark">Keterangan: pemeriksaan kecepatan &gt; 0: Sebagian besar chipset GPS melaporkan nilai kecepatan hanya jika algoritma menentukan Anda sedang bergerak, dan tidak ada jika Anda tidak. Oleh karena itu menggunakan pengaturan &gt; 0 dalam filter ini dalam arti menggunakan deteksi gerakan chipset GPS. Tetapi bahkan jika tidak disaring di sini pada waktu perekaman, kami masih menggunakan fitur ini dalam analisis GPX kami untuk menentukan Jarak yang dikoreksi, yaitu nilai yang ditampilkan di bidang itu adalah jarak yang direkam saat bergerak.</string>
-    <string name="edit_profiles_descr">Profil bawaan OsmAnd tidak dapat dihapus, tetapi dinonaktifkan (pada layar sebelumnya), atau diurutkan ke bawah.</string>
+    <string name="edit_profiles_descr">Profil bawaan RoadCrew tidak dapat dihapus, tetapi dinonaktifkan (pada layar sebelumnya), atau diurutkan ke bawah.</string>
     <string name="rendering_value_walkingRoutesOSMCNodes_name">Jaringan simpul</string>
     <string name="route_start_point">Titik awal</string>
     <string name="monitoring_min_distance_descr_recommendation">Rekomendasi: Tetapkan perpindahan 5 meter jika Anda tidak ingin mencatat detail kecil dari rute Anda, dan tidak memerlukan data tambahan tentang periode istirahat Anda.</string>
@@ -3103,7 +3103,7 @@
 \n • Perbaikan kutu lainnya
 \n
 \n</string>
-    <string name="paste_Osmand_data_folder_path">Tempel jalur ke folder dengan data OsmAnd</string>
+    <string name="paste_Osmand_data_folder_path">Tempel jalur ke folder dengan data RoadCrew</string>
     <string name="track_storage_directory">Folder penyimpanan trek</string>
     <string name="track_storage_directory_descrp">Trek dapat disimpan dalam folder \'rec\', folder bulanan, atau harian.</string>
     <string name="voice_announces_info">Pengumuman suara hanya terjadi selama navigasi.</string>
@@ -3242,14 +3242,14 @@
     <string name="transfers_size">%1$d transfer</string>
     <string name="topo_render_descr">Untuk hiking, trekking, dan bersepeda alam. Dapat dibaca di luar ruangan. Jalan yang kontras dan objek alami, jenis rute yang berbeda, opsi garis kontur lanjutan, detail tambahan. Menyesuaikan Integritas permukaan membedakan kualitas jalan. Tidak ada mode malam.</string>
     <string name="default_render_descr">Gaya penggunaan umum. Kota padat ditampilkan dengan bersih. Menampilkan rute, kualitas permukaan, pembatasan akses, perisai jalan, perenderan jalur sesuai dengan skala SAC/CAI, item olahraga arung, fitur topografi seperti garis kontur.</string>
-    <string name="touring_view_render_descr">Gaya tur dengan kontras tinggi dan detail maksimum. Mencakup semua opsi gaya bawaan OsmAnd, sekaligus menampilkan sedetail mungkin, khususnya jalan, jalur, dan cara lain untuk bepergian. Perbedaan \"atlas tur\" yang jelas antara jenis jalan. Cocok untuk penggunaan siang, malam, dan luar ruangan.</string>
+    <string name="touring_view_render_descr">Gaya tur dengan kontras tinggi dan detail maksimum. Mencakup semua opsi gaya bawaan RoadCrew, sekaligus menampilkan sedetail mungkin, khususnya jalan, jalur, dan cara lain untuk bepergian. Perbedaan \"atlas tur\" yang jelas antara jenis jalan. Cocok untuk penggunaan siang, malam, dan luar ruangan.</string>
     <string name="access_smart_autoannounce">Pengumuman otomatis pintar</string>
     <string name="access_autoannounce_period">Periode pengumuman otomatis</string>
     <string name="access_direction_audio_feedback">Petunjuk audio</string>
     <string name="routing_attr_avoid_subway_name">Tidak ada kereta bawah tanah</string>
     <string name="poi_cannot_be_found">Tidak dapat menemukan simpul atau jalan.</string>
     <string name="shared_string_restart">Pemulaian ulang aplikasi</string>
-    <string name="last_launch_crashed">Terakhir kali OsmAnd mogok. Mohon bantu kami meningkatkan OsmAnd dengan membagikan pesan kesalahan.</string>
+    <string name="last_launch_crashed">Terakhir kali RoadCrew mogok. Mohon bantu kami meningkatkan RoadCrew dengan membagikan pesan kesalahan.</string>
     <string name="keep_passed_markers_descr">Penanda yang ditambahkan sebagai grup Favorit atau titik jalan GPX yang ditandai Dilewati akan tetap berada di peta. Jika grup tidak aktif, penanda akan hilang dari peta.</string>
     <string name="more_transport_on_stop_hint">Tersedia lebih banyak transportasi tersedia dari halte ini.</string>
     <string name="off_road_render_descr">Untuk mengemudi off-road berdasarkan gaya \'Topo\' dan untuk digunakan dengan citra satelit hijau sebagai lapisan bawah. Mengurangi ketebalan jalan utama, meningkatkan ketebalan trek, jalan setapak, sepeda dan rute lainnya.</string>
@@ -3258,7 +3258,7 @@
     <string name="routing_attr_motor_type_description">Pilih tipe bahan bakar mesin Anda, ini dibutuhkan untuk memperkirakan emisi CO2.</string>
     <string name="routing_attr_motor_type_name">Bensin yang digunakan oleh motor</string>
     <string name="transport_hazmat_no_desc">Jalan dan terowongan mungkin dibataskan pada transportasi yang membawa material beracun.</string>
-    <string name="calculate_online_altitude_descr">Hitung ketinggian secara daring di server OsmAnd, berdasarkan citra satelit dan model ketinggian digital. Perbedaan ketinggian atau ketinggian yang direkam oleh perangkat mungkin digunakan untuk pembenaran ketinggian.</string>
+    <string name="calculate_online_altitude_descr">Hitung ketinggian secara daring di server RoadCrew, berdasarkan citra satelit dan model ketinggian digital. Perbedaan ketinggian atau ketinggian yang direkam oleh perangkat mungkin digunakan untuk pembenaran ketinggian.</string>
     <string name="rendering_attr_surface_paving_stones_name">Turap batu</string>
     <string name="public_transport_calc_pedestrian">Kalkulasi rute pada kaki</string>
     <string name="tracks_on_map">Trek yang ditampilkan</string>
@@ -3303,7 +3303,7 @@
     <string name="auto_backup_title">Pencadangan otomatis</string>
     <string name="without_profiles_changing">Tanpa perubahan profil</string>
     <string name="shared_string_only_missing">Hanya hilang</string>
-    <string name="auto_backup_preference_desc">Secara bawaan, Android menyimpan cadangan favorit, token peta, dan pengaturan OsmAnd untuk memulihkannya pada perangkat baru atau setelah instalasi ulang. Cadangan ini dibatasi hingga 25 MB.
+    <string name="auto_backup_preference_desc">Secara bawaan, Android menyimpan cadangan favorit, token peta, dan pengaturan RoadCrew untuk memulihkannya pada perangkat baru atau setelah instalasi ulang. Cadangan ini dibatasi hingga 25 MB.
 \nJika Anda menggunakan OsmAnd Cloud, hal ini dapat menyebabkan kesalahpahaman setelah penginstalan ulang.</string>
     <string name="duplacate_widget_added_snackbar">Widget duplikat ditambahkan berikutnya dalam daftar.</string>
     <string name="shared_string_duplicate">Duplikat</string>
@@ -3404,9 +3404,9 @@
     <string name="restart_is_required">Pemulaian ulang dibutuhkan untuk menetapkan perubahan.</string>
     <string name="osmand_rastermaps_plugin_description">Akses banyak jenis peta daring (disebut ubin atau raster), seperti ubin OSM yang telah dirender, gambar satelit, dan lapisan tujuan khusus seperti peta cuaca, peta iklim, peta geologi, lapisan bayangan bukit, dll.
 \n
-\n Salah satu dari peta ini dapat ditampilkan sebagai peta (dasar) utama, atau sebagai hamparan atau dasaran ke peta dasar lain (seperti peta vektor luring OsmAnd). Elemen tertentu dari peta vektor OsmAnd dapat disembunyikan melalui menu \'Konfigurasi peta\' untuk membuat peta dasar lebih terlihat.
+\n Salah satu dari peta ini dapat ditampilkan sebagai peta (dasar) utama, atau sebagai hamparan atau dasaran ke peta dasar lain (seperti peta vektor luring RoadCrew). Elemen tertentu dari peta vektor RoadCrew dapat disembunyikan melalui menu \'Konfigurasi peta\' untuk membuat peta dasar lebih terlihat.
 \n
-\n Unduh peta ubin secara langsung, atau salin sebagai file basis data SQLite ke folder data OsmAnd menggunakan salah satu dari banyak alat persiapan peta pihak ketiga.</string>
+\n Unduh peta ubin secara langsung, atau salin sebagai file basis data SQLite ke folder data RoadCrew menggunakan salah satu dari banyak alat persiapan peta pihak ketiga.</string>
     <string name="osm_edit_modified_poi">POI OSM Diubah</string>
     <string name="context_menu_item_open_note">Buka Catatan OSM</string>
     <string name="osn_add_dialog_error">Tidak dapat membuat catatan.</string>
@@ -3417,7 +3417,7 @@
     <string name="included_in_your_current_plan">Termasuk dalam langganan \"%1$s\" Anda saat ini</string>
     <string name="osm_edit_deleted_poi">POI OSM Dihapus</string>
     <string name="osm_edit_commented_note">Berkomentar pada Catatan OSM</string>
-    <string name="share_osm_edits_subject">Suntingan OSM dibagikan via OsmAnd</string>
+    <string name="share_osm_edits_subject">Suntingan OSM dibagikan via RoadCrew</string>
     <string name="what_is_new">Apa yang baru</string>
     <string name="favorite_category_dublicate_message">Mohon gunakan sebuah nama kategori yang belum ada.</string>
     <string name="default_speed_system">Unit kecepatan</string>
@@ -3425,7 +3425,7 @@
     <string name="lang_es_us">Spanyol (Amerika)</string>
     <string name="lang_hsb">Sorbia (Atas)</string>
     <string name="disable_recording_once_app_killed">Cegah pencatatan sendiri</string>
-    <string name="shared_string_import2osmand">Impor ke OsmAnd</string>
+    <string name="shared_string_import2osmand">Impor ke RoadCrew</string>
     <string name="read_full_article">Baca artikel penuh (daring)</string>
     <string name="parking_place_limited">Waktu parkir dibatasi sampai</string>
     <string name="short_location_on_map">Lat %1$s
@@ -3502,7 +3502,7 @@
     <string name="profile_settings">Pengaturan Spesifik Profil</string>
     <string name="pref_overlay">Hamparan / dasaran</string>
     <string name="ant_missing_dependency">Ketergantungan Tidak Ditemukan</string>
-    <string name="share_route_subject">Rute dibagikan via OsmAnd</string>
+    <string name="share_route_subject">Rute dibagikan via RoadCrew</string>
     <string name="map_widget_target_distance">Jarak antara kamera ke sasaran</string>
     <string name="ant_go_to_store">Pergi ke Toko</string>
     <string name="map_widget_ant_bicycle_power">Daya Sepeda</string>
@@ -3537,7 +3537,7 @@
     <string name="coordinates_widget_map_center_desc">Menampilkan koordinat geografis tengah peta saat ini</string>
     <string name="distance_by_tap_use_description">Ketuk pada peta untuk menampilkan jarak antara lokasi Anda saat ini dan titik yang diketuk. 
 \nKetuk dengan 2 jari pada peta untuk menampilkan jarak antara titik yang diklik</string>
-    <string name="plugin_touringview_descr">Mengaktifkan tampilan ini mengubah gaya peta OsmAnd menjadi \'Tampilan tur\', ini adalah tampilan detail tinggi khusus untuk pelancong dan pengemudi profesional.
+    <string name="plugin_touringview_descr">Mengaktifkan tampilan ini mengubah gaya peta RoadCrew menjadi \'Tampilan tur\', ini adalah tampilan detail tinggi khusus untuk pelancong dan pengemudi profesional.
 \n
 \nTampilan ini memberikan, pada setiap perbesaran peta tertentu, jumlah maksimum detail perjalanan yang tersedia dalam data peta (khususnya jalan, trek, jalur, dan tanda orientasi).
 \n
@@ -3591,7 +3591,7 @@
     <string name="rendering_attr_shareTaxiRoutes_name">Bagikan rute taksi</string>
     <string name="routing_attr_avoid_shuttle_train_description">Menghindari menggunakan kereta antar jemput</string>
     <string name="plugin_ski_descr">Dirancang untuk bernavigasi di area olahraga musim dingin. Lihat jalur dan lift ski, dan trek ski perbatasan negara, dengan garis berwarna yang menandakan nilai kerumitan. Untuk menggunakan, aktifkan plugin ini dan juga pergi ke \"Konfigurasi peta\" dan pilih gaya peta \"Musim dingin dan ski\".</string>
-    <string name="osmand_development_plugin_description">Menyediakan kemampuan untuk uji dan awakutu OsmAnd: simulasi rute navigasi, periksa performa perenderan layar, periksa performa, dll. Plugin ini tidak dibutuhkan untuk penggunaan aplikasi normal.</string>
+    <string name="osmand_development_plugin_description">Menyediakan kemampuan untuk uji dan awakutu RoadCrew: simulasi rute navigasi, periksa performa perenderan layar, periksa performa, dll. Plugin ini tidak dibutuhkan untuk penggunaan aplikasi normal.</string>
     <string name="arrival_distance_factor_at_last">Sangat terlambat</string>
     <string name="osmand_parking_time_limit_title">Tetapkan batas waktu parkir</string>
     <string name="si_nm_h">Mil laut per jam (knot)</string>
@@ -3611,13 +3611,13 @@
     <string name="navigate_point_olc_info_short">OLC Pendek 
 \nMohon sediakan kode lengkap</string>
     <string name="avoid_unpaved">Tidak ada jalan yang tidak diaspal</string>
-    <string name="osmand_accessibility_description">Membuat fitur aksesibilitas perangkat tersedia langsung di OsmAnd. Ini memfasilitasi mis. menyesuaikan kecepatan bicara untuk suara teks kesuara, mengatur navigasi D-pad, menggunakan trackball untuk kontrol perbesaran, atau umpan balik teks ke suara, misalnya untuk mengumumkan posisi Anda secara otomatis.</string>
+    <string name="osmand_accessibility_description">Membuat fitur aksesibilitas perangkat tersedia langsung di RoadCrew. Ini memfasilitasi mis. menyesuaikan kecepatan bicara untuk suara teks kesuara, mengatur navigasi D-pad, menggunakan trackball untuk kontrol perbesaran, atau umpan balik teks ke suara, misalnya untuk mengumumkan posisi Anda secara otomatis.</string>
     <string name="map_markers_desc">Widget menampilkan jarak atau perkiraan waktu tiba (PWT) untuk dua penanda pertama di daftar penanda peta.</string>
     <string name="routing_attr_no_new_routing_name">TIdak ada aturan perutean v1.9</string>
     <string name="unknown_location">Posisi belum diketahui.</string>
     <string name="keep_informing_never">Hanya secara manual (ketuk panah)</string>
     <string name="external_sensors_plugin_name">Sensor Eksternal</string>
-    <string name="send_uuid_preference_desc">Sebhah UUID acak digunakan untuk mengunduh peta luring dari server OsmAnd untuk memantau penggunaan sumber daya server yang adil, memprediksi pola lalu lintas, dan membuat laporan peta anonim sebulan.</string>
+    <string name="send_uuid_preference_desc">Sebhah UUID acak digunakan untuk mengunduh peta luring dari server RoadCrew untuk memantau penggunaan sumber daya server yang adil, memprediksi pola lalu lintas, dan membuat laporan peta anonim sebulan.</string>
     <string name="map_widget_altitude_desc">Menampilkan ketinggian dari geolokasi saat ini atau untuk pusat peta saat ini</string>
     <string name="location_simulation_cutoff">Simulasi melewati meter pertama</string>
     <string name="location_simulation_speedup">Percepatan simulasi</string>
@@ -3650,7 +3650,7 @@
     <string name="routing_attr_allow_advanced_description">Rute yang sulit, dengan hambatan berbahaya dan bagian yang curam.</string>
     <string name="rendering_attr_showAccess_name">Tampilkan pembatasan akses</string>
     <string name="local_index_action_do">Anda akan %1$s %2$s item. Lanjutkan\?</string>
-    <string name="calculate_osmand_route_gpx">Penghitungan rute OsmAnd secara luring</string>
+    <string name="calculate_osmand_route_gpx">Penghitungan rute RoadCrew secara luring</string>
     <string name="external_input_device">Perangkat masukan eksternal</string>
     <string name="rendering_attr_hikingRoutesOSMC_description">Render jalur sesuai dengan jejak OSMC.</string>
     <string name="intermediate_point_too_far">Tujuan perantara %1$s terlalu jauh dari jalan terdekat.</string>
@@ -3673,7 +3673,7 @@
 \n - Unggah trek GPX ke OSM langsung dari aplikasi
 \n - Tambahkan POI dan langsung mengunggahnya ke OSM (atau nanti jika luring)
 \n - Perekaman perjalanan opsional juga dalam mode latar belakang (saat perangkat dalam mode tidur)
-\n OsmAnd adalah perangkat lunak sumber terbuka yang dikembangkan secara aktif. Setiap orang dapat berkontribusi ke aplikasi dengan melaporkan kutu, memperbaiki terjemahan atau memrogram fitur baru. Selain itu, proyek ini bergantung pada kontribusi keuangan untuk mendanai memrogram dan pengujian fungsi baru.
+\n RoadCrew adalah perangkat lunak sumber terbuka yang dikembangkan secara aktif. Setiap orang dapat berkontribusi ke aplikasi dengan melaporkan kutu, memperbaiki terjemahan atau memrogram fitur baru. Selain itu, proyek ini bergantung pada kontribusi keuangan untuk mendanai memrogram dan pengujian fungsi baru.
 \n</string>
     <string name="osmand_plus_extended_description_part8">Perkiraan cakupan dan kualitas peta:
 \n - Eropa Barat: ****
@@ -3697,13 +3697,13 @@
     <string name="live_monitoring_max_interval_to_send_desrc">Tentukan buffer waktu untuk menyimpan lokasi yang akan dikirim tanpa koneksi</string>
     <string name="enable_plugin_monitoring_services">Aktifkan plugin \"Trip recording\" untuk menggunakan layanan pencatatan posisi (pencatatan GPX, pelacakan daring)</string>
     <string name="routing_attr_piste_type_nordic_name">Ski lintas negara dan nordik</string>
-    <string name="gpx_option_calculate_first_last_segment">Hitung rute OsmAnd untuk segmen rute pertama dan terakhir</string>
+    <string name="gpx_option_calculate_first_last_segment">Hitung rute RoadCrew untuk segmen rute pertama dan terakhir</string>
     <string name="settings_direction_style_descr">Pilih gaya untuk mengekspresikan arah relatif saat bergerak</string>
     <string name="routing_attr_allow_skating_only_description">Rute yang dipersiapkan untuk gaya bebas atau skating saja tanpa trek klasik.</string>
     <string name="routing_attr_width_description">Tentukan batas lebar kendaraan yang diizinkan pada rute.</string>
-    <string name="osmand_long_description_1000_chars">OsmAnd (Petunjuk Arah Navigasi Otomatis OSM)
+    <string name="osmand_long_description_1000_chars">RoadCrew (Petunjuk Arah Navigasi Otomatis OSM)
 \n
-\n OsmAnd adalah aplikasi navigasi perangkat lunak sumber terbuka dengan akses ke berbagai macam data OSM global. Semua data peta (peta vektor atau ubin) dapat disimpan pada kartu memori ponsel untuk penggunaan luring. Fungsionalitas perutean luring dan daring juga ditawarkan, termasuk panduan suara belokan demi belokan.
+\n RoadCrew adalah aplikasi navigasi perangkat lunak sumber terbuka dengan akses ke berbagai macam data OSM global. Semua data peta (peta vektor atau ubin) dapat disimpan pada kartu memori ponsel untuk penggunaan luring. Fungsionalitas perutean luring dan daring juga ditawarkan, termasuk panduan suara belokan demi belokan.
 \n
 \n Beberapa fitur inti:
 \n - Fungsionalitas luring lengkap (menyimpan peta vektor atau tile yang diunduh dalam penyimpanan perangkat)
@@ -3718,17 +3718,17 @@
 \n - Penyelarasan peta menurut kompas atau arah gerakan
 \n - Panduan lajur, tampilan batas kecepatan, suara yang direkam dan teks-ke-suara
 \n
-\n Keterbatasan versi gratis OsmAnd ini:
+\n Keterbatasan versi gratis RoadCrew ini:
 \n - Jumlah unduhan peta terbatas
 \n - Tidak ada akses luring ke POI Wikipedia
 \n
 \n OsmAnd sedang dikembangkan secara aktif dan proyek kami serta kemajuannya yang berkelanjutan bergantung pada kontribusi keuangan untuk pengembangan dan pengujian kemampuan baru. Mohon pertimbangkan untuk membeli OsmAnd+, atau mendanai fitur baru yang spesifik atau memberikan donasi umum di https://osmand.net.</string>
     <string name="gpx_selection_route_points">%1$s
 \nTitik rute %2$s</string>
-    <string name="calculate_osmand_route_without_internet">Perhitungan luring segmen rute OsmAnd</string>
+    <string name="calculate_osmand_route_without_internet">Perhitungan luring segmen rute RoadCrew</string>
     <string name="routing_attr_avoid_borders_description">Menghindari melintasi perbatasan nasional</string>
     <string name="routing_attr_weight_description">Tentukan batas berat kendaraan yang diizinkan pada rute.</string>
-    <string name="android_19_location_disabled">Pada Android 4.4 (KitKat) dan seterusnya, folder penyimpanan lama (%s) sudah tidak digunakan lagi. Salin semua file OsmAnd ke lokasi penyimpanan baru\?
+    <string name="android_19_location_disabled">Pada Android 4.4 (KitKat) dan seterusnya, folder penyimpanan lama (%s) sudah tidak digunakan lagi. Salin semua file RoadCrew ke lokasi penyimpanan baru\?
 \n Catatan 1: File lama Anda akan tetap tidak disentuh (tetapi dapat dihapus secara manual).
 \n Catatan 2: Di lokasi penyimpanan yang baru, Anda tidak dapat berbagi file antara OsmAnd dan OsmAnd+.</string>
     <string name="speech_rate_descr">Menentukan kecepatan bicara untuk teks-ke-ucapan.</string>
@@ -3759,7 +3759,7 @@
 \n - Mendukung titik perantara pada rencana perjalanan Anda
 \n - Rekam atau unggah trek GPX Anda sendiri dan ikuti
 \n</string>
-    <string name="osmand_extended_description_part8">OsmAnd adalah perangkat lunak sumber terbuka yang dikembangkan secara aktif. Setiap orang dapat berkontribusi ke aplikasi dengan melaporkan kutu, memperbaiki terjemahan atau memrogram fitur baru. Selain itu, proyek ini bergantung pada kontribusi keuangan untuk mendanai memrograman dan pengujian fungsi baru.
+    <string name="osmand_extended_description_part8">RoadCrew adalah perangkat lunak sumber terbuka yang dikembangkan secara aktif. Setiap orang dapat berkontribusi ke aplikasi dengan melaporkan kutu, memperbaiki terjemahan atau memrogram fitur baru. Selain itu, proyek ini bergantung pada kontribusi keuangan untuk mendanai memrograman dan pengujian fungsi baru.
 \n Perkiraan cakupan dan kualitas peta:
 \n - Eropa Barat: ****
 \n - Eropa Timur: ***
@@ -3822,7 +3822,7 @@
     <string name="osmand_parking_add_event">Tambahkan pemberitahuan ke aplikasi Kalender</string>
     <string name="routing_attr_allow_expert_description">Rute yang sangat sulit, dengan rintangan dan lingkungan yang berbahaya.</string>
     <string name="native_library_not_supported">Pustaka asli tidak didukung di perangkat ini.</string>
-    <string name="osmand_service_descr">OsmAnd berjalan di latar belakang dengan layar mati.</string>
+    <string name="osmand_service_descr">RoadCrew berjalan di latar belakang dengan layar mati.</string>
     <string name="routing_attr_allow_intermediate_description">Rute yang lebih sulit dengan bagian yang lebih curam. Umumnya beberapa rintangan yang harus dihindari.</string>
     <string name="switch_to_vector_map_to_see">Peta vektor luring hadir untuk lokasi ini.
 \n\t
@@ -3838,17 +3838,17 @@
     <string name="routing_attr_allow_expert_name">Perbolehkan rute ahli</string>
     <string name="routing_attr_allow_classic_only_description">Rute yang dipersiapkan untuk gaya klasik saja tanpa jalur skating. Ini termasuk rute yang dipersiapkan oleh mobil salju yang lebih kecil dengan jalur yang lebih longgar dan trek yang dibuat secara manual oleh pemain ski.</string>
     <string name="osmand_extended_description_part4">Ski
-\n Plugin peta ski OsmAnd memungkinkan Anda untuk melihat trek ski dengan tingkat kerumitan dan beberapa info tambahan, seperti lokasi lift dan fasilitas lainnya.</string>
+\n Plugin peta ski RoadCrew memungkinkan Anda untuk melihat trek ski dengan tingkat kerumitan dan beberapa info tambahan, seperti lokasi lift dan fasilitas lainnya.</string>
     <string name="routing_attr_piste_type_sled_description">Lereng untuk penggunaan kereta luncur.</string>
     <string name="quick_action_need_to_add_item_to_list">Tambahkan setidaknya satu item ke daftar dalam pengaturan \'Tindakan cepat\'</string>
     <string name="routing_attr_allow_intermediate_name">Izinkan rute perantara</string>
     <string name="complex_route_calculation_failed">Perhitungan rute cepat gagal (%s), kembali ke perhitungan lambat.</string>
     <string name="rendering_out_of_memory">Memori proses tidak cukup untuk menampilkan area yang dipilih</string>
     <string name="interrupt_music_descr">Perintah suara menjeda pemutaran musik.</string>
-    <string name="osmand_play_title_30_chars">Peta &amp; Navigasi OsmAnd</string>
+    <string name="osmand_play_title_30_chars">Peta &amp; Navigasi RoadCrew</string>
     <string name="osmand_short_description_80_chars">Tampilan dan navigasi peta seluler global untuk peta OSM luring dan daring</string>
     <string name="map_version_changed_info">Unduh versi aplikasi baru untuk dapat menggunakan file peta baru.</string>
-    <string name="osmand_extended_description_part1">OsmAnd (Petunjuk Arah Navigasi Otomatis OSM) adalah aplikasi peta dan navigasi dengan akses ke data OSM dunia yang bebas dan berkualitas tinggi.
+    <string name="osmand_extended_description_part1">RoadCrew (Petunjuk Arah Navigasi Otomatis OSM) adalah aplikasi peta dan navigasi dengan akses ke data OSM dunia yang bebas dan berkualitas tinggi.
 \n
 \n Nikmati navigasi suara dan optik, melihat POI (tempat menarik), membuat dan mengelola trek GPX, menggunakan visualisasi garis kontur dan info topografis (melalui plugin), pilihan antara mode mengemudi, bersepeda, pejalan kaki, penyuntingan OSM, dan banyak lagi.</string>
     <string name="osmand_extended_description_part3">Peta
@@ -3993,21 +3993,21 @@
     <string name="temperature_widget_desc">Menampilkan suhu untuk tengah peta saat ini.</string>
     <string name="map_widget_sunset_desc">Menampilkan waktu matahari terbit berikutnya atau waktu yang tersisa sampai matahari terbenam.</string>
     <string name="precipitation_widget_desc">Menampilkan curah hujan untuk tengah peta saat ini.</string>
-    <string name="map_rendering_engine_descr">Versi 1 merupakan versi default sebelum OsmAnd 4.3 dan cocok untuk perangkat lama.\n\nVersi 2 (OpenGL) lebih canggih dan menambahkan fitur seperti tampilan 3D.</string>
+    <string name="map_rendering_engine_descr">Versi 1 merupakan versi default sebelum RoadCrew 4.3 dan cocok untuk perangkat lama.\n\nVersi 2 (OpenGL) lebih canggih dan menambahkan fitur seperti tampilan 3D.</string>
     <string name="quick_action_wind_layer">Sebuah saklar untuk menampilkan atau menyembunyikan lapisan angin di peta.</string>
     <string name="quick_action_cloud_layer">Sebuah saklar untuk menampilkan atau menyembunyikan lapisan awan di peta.</string>
     <string name="quick_action_air_pressure_layer">Sebuah saklar untuk menampilkan atau menyembunyikan lapisan tekanan udara di peta.</string>
     <string name="cloud_layer">Lapisan awan</string>
     <string name="precipitation_layer">Lapisan curah hujan</string>
     <string name="temperature_layer">Lapisan suhu</string>
-    <string name="rendering_engine_failed">Perenderan peta OsmAnd telah mogok.</string>
+    <string name="rendering_engine_failed">Perenderan peta RoadCrew telah mogok.</string>
     <string name="pressure_layer">Lapisan tekanan</string>
     <string name="wind_layer">Lapisan angin</string>
     <string name="storage_migration_fragment_close_descr">Menyalin hanya %1$s selesai. Jika Anda menghentikan sekarang, aplikasi mungkin tidak akan bekerja dengan benar.</string>
     <string name="quick_action_precipitation_layer">Sebuah saklar untuk menampilkan atau menyembunyikan lapisan curah hujan di peta.</string>
     <string name="quick_action_temperature_layer">Sebuah saklar untuk menampilkan atau menyembunyikan lapisan suhu di peta.</string>
     <string name="map_widget_sunrise_desc">Menampilkan waktu matahari terbit berikutnya atau waktu yang tersisa sampai matahari terbit.</string>
-    <string name="rendering_engine_failed_descr">OsmAnd telah mengubah ke perenderan peta \'Versi 1\'. Anda dapat mengubah kembali ke mesin perenderan \'Versi 2 (OpenGL)\' baru dalam Pengaturan.
+    <string name="rendering_engine_failed_descr">RoadCrew telah mengubah ke perenderan peta \'Versi 1\'. Anda dapat mengubah kembali ke mesin perenderan \'Versi 2 (OpenGL)\' baru dalam Pengaturan.
 \n
 \nSilakan mendukung peningkatan dengan menyediakan catatan kesalahan Anda.</string>
     <string name="rendering_attr_showMtbScale_description">Tampilkan trek berdasarkan skala MTB.</string>
@@ -4074,7 +4074,7 @@
     <string name="no_visible_tracks_description">Pilih trek untuk ditampilkan di peta.</string>
     <string name="no_visible_tracks">Tidak ada trek di peta</string>
     <string name="recently_visible">Terlihat terkini %1$s</string>
-    <string name="empty_tracks_description">Anda dapat mengimpor, membuat, atau merekam berkas trek menggunakan OsmAnd.</string>
+    <string name="empty_tracks_description">Anda dapat mengimpor, membuat, atau merekam berkas trek menggunakan RoadCrew.</string>
     <string name="empty_tracks">Anda tidak memiliki berkas trek.</string>
     <string name="shared_string_select_recent">Pilih yang terkini</string>
     <string name="change_appearance">Ubah penampilan</string>
@@ -4178,7 +4178,7 @@
     <string name="is_imported">%1$s telah diimpor.</string>
     <string name="file_already_exists_description">\"%1$s\". Sebuah berkas dengan nama itu sudah ada. Menggantikan akan menimpa semua perubahan yang dibuat dengan versi saat ini.</string>
     <string name="external_device_details_received_data">Data yang diterima</string>
-    <string name="ant_plus_searching_text_description">Harap dekatkan perangkat ke sensor. Anda perlu mengaktifkan sensor agar OsmAnd dapat menemukannya.</string>
+    <string name="ant_plus_searching_text_description">Harap dekatkan perangkat ke sensor. Anda perlu mengaktifkan sensor agar RoadCrew dapat menemukannya.</string>
     <string name="ant_plus_pair_new_sensor_ant_plus">Sandingkan sensor ANT+</string>
     <string name="learn_more_about_sensors_link">Pelajari lebih lanjut tentang sensor.</string>
     <string name="file_already_exists">Berkas sudah ada</string>
@@ -4199,7 +4199,7 @@
     <string name="ant_plus_pair_new_sensor">Sandingkan sensor baru</string>
     <string name="ant_plus_open_settings">Buka pengaturan</string>
     <string name="ant_plus_pair_new_sensor_ble">Sandingkan sensor Bluetooth LE</string>
-    <string name="ant_plus_pair_bluetooth_prompt">Anda dapat menyandingkan sensor Bluetooth LE dan ANT+ dengan OsmAnd.</string>
+    <string name="ant_plus_pair_bluetooth_prompt">Anda dapat menyandingkan sensor Bluetooth LE dan ANT+ dengan RoadCrew.</string>
     <string name="ant_plus_nothing_found_description">Pastikan:
 \n– Bluetooth dinyalakan
 \n– Sensor diaktifkan
@@ -4307,7 +4307,7 @@
 \n
 \n • Menambahkan opsi untuk \"Umumkan penyimpangan dari rute\"
 \n
-\n • Layar Mulai: opsi tambahan memulihkan status OsmAnd dari file
+\n • Layar Mulai: opsi tambahan memulihkan status RoadCrew dari file
 \n
 \n • Menambahkan kelas \"Bahan Berbahaya\" Navigasi truk di Amerika Utara
 \n
@@ -4377,7 +4377,7 @@
     <string name="wheel_circumference">Keliling roda</string>
     <string name="external_sensor_name_property_description">Nama sensor</string>
     <string name="contact_us">Hubungi kami</string>
-    <string name="help_article_map_legend_osmand_name">Gaya peta OsmAnd</string>
+    <string name="help_article_map_legend_osmand_name">Gaya peta RoadCrew</string>
     <string name="help_article_navigation_car_play_name">CarPlay</string>
     <string name="help_article_navigation_routing_bicycle_based_routing_name">Perutean sepeda (MTB)</string>
     <string name="help_article_navigation_routing_boat_navigation_name">Perutean kapal</string>
@@ -4387,7 +4387,7 @@
     <string name="help_article_navigation_routing_horse_routing_name">Perutean perkudaan</string>
     <string name="help_article_navigation_routing_moped_routing_name">Perutean moped</string>
     <string name="help_article_navigation_routing_online_routing_name">Perutean daring</string>
-    <string name="help_article_navigation_routing_osmand_routing_name">Tentang perutean OsmAnd</string>
+    <string name="help_article_navigation_routing_osmand_routing_name">Tentang perutean RoadCrew</string>
     <string name="help_article_navigation_routing_pedestrian_routing_name">Perutean pejalan kaki</string>
     <string name="help_article_navigation_routing_public_transport_navigation_name">Perutean transportasi umum</string>
     <string name="help_article_navigation_routing_straight_line_routing_name">Perutean garis lurus (Pesawat)</string>
@@ -4427,7 +4427,7 @@
     <string name="help_article_start_with_main_menu_name">Menu utama</string>
     <string name="help_article_troubleshooting_crash_logs_name">Catatan mogok</string>
     <string name="help_article_search_search_poi_name">Cari POI</string>
-    <string name="help_article_start_with_name">Mulai dengan OsmAnd</string>
+    <string name="help_article_start_with_name">Mulai dengan RoadCrew</string>
     <string name="help_article_start_with_first_steps_name">Langkah-langkah pertama</string>
     <string name="help_article_troubleshooting_general_name">Umum</string>
     <string name="help_article_troubleshooting_maps_data_name">Peta &amp; Data</string>
@@ -4443,9 +4443,9 @@
     <string name="telegram_chats_descr">Bergabung ke salah satu chat Telegram lokal kami.</string>
     <string name="telegram_chats">Chat Telegram</string>
     <string name="github_discussion">Diskusi GitHub</string>
-    <string name="free_versions_descr">Unduh dan pasang versi gratis OsmAnd</string>
+    <string name="free_versions_descr">Unduh dan pasang versi gratis RoadCrew</string>
     <string name="free_versions">Versi gratis</string>
-    <string name="about_osmand">Tentang OsmAnd</string>
+    <string name="about_osmand">Tentang RoadCrew</string>
     <string name="send_logcat_log_descr">Berkas catatan detail</string>
     <string name="send_crash_log_descr">Hanya berisi informasi tentang pemogokan</string>
     <string name="open_issue_on_github_descr">Ajukan pertanyaan, minta fitur baru</string>
@@ -4600,7 +4600,7 @@
     <string name="key_event_action_next_app_profile">Profil aplikasi berikutnya</string>
     <string name="key_event_action_move_to_my_location">Pindah ke lokasi saya</string>
     <string name="remove_type_q">Hapus jenis \"%1$s\"?</string>
-    <string name="enable_to_use_external_input_device">Aktifkan untuk menggunakan perangkat masukan eksternal dengan OsmAnd</string>
+    <string name="enable_to_use_external_input_device">Aktifkan untuk menggunakan perangkat masukan eksternal dengan RoadCrew</string>
     <string name="external_input_device_title">Perangkat masukan eksternal</string>
     <string name="cloud_trash_clear_confirmation">Hapus semua item dalam sampah secara permanen?</string>
     <string name="see_all_plans">Lihat semua paket</string>
@@ -4694,10 +4694,10 @@
     <string name="route_line_use_coloring_speed">Garis rute diwarnai oleh kecepatan gerakan.</string>
     <string name="getting_list_of_required_maps">Mendapatkan daftar peta yang diperlukan…</string>
     <string name="missing_maps_description">Beberapa peta luring yang diperlukan untuk rute ini hilang atau tidak diperbarui. Silakan unduh atau perbarui petanya.</string>
-    <string name="required_maps_calculate_online_summary">Daftar peta yang hilang berdasarkan rute garis lurus. Untuk mendapatkan daftar peta yang akurat, OsmAnda dapat prakalkulasi rute Anda secara daring.</string>
+    <string name="required_maps_calculate_online_summary">Daftar peta yang hilang berdasarkan rute garis lurus. Untuk mendapatkan daftar peta yang akurat, RoadCrewa dapat prakalkulasi rute Anda secara daring.</string>
     <string name="route_line_use_coloring_altitude">Garis rute diwarnai oleh kenaikan pada ketinggian.</string>
     <string name="use_terrain_maps_summary">Gunakan peta medan untuk data ketinggian. Geometri trek tidak akan diubah.</string>
-    <string name="retrieve_elevation_data_summary">OsmAnda bisa mendapatkan data ketinggian dari jalan yang dekat atau peta medan.</string>
+    <string name="retrieve_elevation_data_summary">RoadCrewa bisa mendapatkan data ketinggian dari jalan yang dekat atau peta medan.</string>
     <string name="shared_string_scale">Skala</string>
     <string name="use_nearby_roads">Gunakan jalan yang dekat</string>
     <string name="relief_3d_download_description">Peta tambahan diperlukan untuk menampilkan Medan di peta.</string>
@@ -4770,7 +4770,7 @@
     <string name="energy_avg_info_description">Persentase baterai per menit: %1$s
 \nPenggunaan energi (mAh): %2$s</string>
     <string name="add_widget_below">Tambahkan gawit di bawah layar</string>
-    <string name="weather_data_sources_prompt">OsmAnd menyadur data cuaca dari dua sumber berikut:</string>
+    <string name="weather_data_sources_prompt">RoadCrew menyadur data cuaca dari dua sumber berikut:</string>
     <string name="hugerock_promo_description">Anda dapat mengakses fitur-fitur seperti pengunduhan peta secara takterbatas, relief tiga dimensi, dll. secara gratis selama %1$s bulan</string>
     <string name="auto_25_chars_route_tshl">Belok tajam ke kiri</string>
     <string name="auto_25_chars_route_tsll">Belok sedikit ke kiri</string>
@@ -4888,7 +4888,7 @@
     <string name="hugerock_promo">Promo Hugerock untuk %1$s bulan</string>
     <string name="view_angle">Sudut pandangan</string>
     <string name="height_legend_description">Peta warna ketinggian digunakan untuk menampilkan relief.</string>
-    <string name="detailed_track_guidance_description">OsmAnd akan mencocokkan track Anda dengan jalan terdekat untuk panduan belokan demi belokan yang lebih baik.</string>
+    <string name="detailed_track_guidance_description">RoadCrew akan mencocokkan track Anda dengan jalan terdekat untuk panduan belokan demi belokan yang lebih baik.</string>
     <string name="disable_map_layers_descr">Nonaktifkan semua lapisan peta di atas peta vektor (pemulaian ulang diperlukan).</string>
     <string name="shared_string_dp">dp</string>
     <string name="corner_radius">Radius sudut</string>
@@ -4960,7 +4960,7 @@
     <string name="rendering_avg_info">Statistik perenderan (rata-rata 1 / 5 / 15 menit)</string>
     <string name="release_4_9">• Menambahkan penampil galeri layar penuh untuk gambar Wikimedia\n\n• Memperkenalkan plugin baru “Metrik Kendaraan” untuk memantau kinerja kendaraan menggunakan protokol OBD-II\n\n• Menambahkan kemampuan untuk menetapkan aktivitas ke trek dan memfilternya\n\n• Menerapkan tindakan cepat baru untuk perekaman perjalanan dan kunci layar sentuh\n\n• Memperkenalkan tampilan tombol peta yang dapat disesuaikan dan kisi-kisi yang tepat\n\n• Menambahkan menu konteks dan tindakan “Atur ulang kecepatan rata-rata” ke widget\n\n• Menambahkan lapisan rute baru “Jalur Sepeda Tanah”\n\n• Memperbaiki “Rekam lintasan secara otomatis selama navigasi”\n\n• Memperbaiki masalah dengan koordinat yang terbalik di RTL\n\n• Memperbaiki data sensor yang terlewat untuk trek yang sedang direkam\n\n• Menambahkan informasi tentang area sekitar untuk titik yang dipilih\n\n• Menambahkan tindakan cepat untuk mengontrol visibilitas dari OSM Edits\n\n• Parameter visibilitas yang terpisah untuk opsi pewarnaan Terrain\n\n• Menambahkan ikon yang dapat diketuk untuk menampilkan akses atau atribut jalan atau jalur lainnya</string>
     <string name="shared_string_bluetooth">Bluetooth</string>
-    <string name="connect_obd_instructions_title">OsmAnd mendukung koneksi Bluetooth ke pemindai OBD-II.</string>
+    <string name="connect_obd_instructions_title">RoadCrew mendukung koneksi Bluetooth ke pemindai OBD-II.</string>
     <string name="obd_vehicle_info">Informasi kendaraan</string>
     <string name="connect_obd_instructions_step1">Hubungkan pemindai ke porta OBD-II kendaraan Anda.</string>
     <string name="connect_obd_instructions_step2">Nyalakan mesin kendaraan Anda</string>
@@ -5072,7 +5072,7 @@
     <string name="ais_port_nmea_server">Porta TCP sumber data NMEA</string>
     <string name="ais_port_nmea_server_description">Tentukan nomor porta TCP sumber data NMEA</string>
     <string name="ais_port_nmea_local">Porta UDP penerima data NMEA lokal</string>
-    <string name="ais_port_nmea_local_description">Tentukan porta UDP di mana OsmAnd menerima data NMEA</string>
+    <string name="ais_port_nmea_local_description">Tentukan porta UDP di mana RoadCrew menerima data NMEA</string>
     <string name="ais_object_lost_timeouts">Pengaturan habisnya waktu untuk penerimaan sinyal AIS</string>
     <string name="ais_object_lost_timeout">Batas waktu visibilitas saat kapal hilang</string>
     <string name="ais_object_lost_timeout_description">Atur batas waktu visibilitas objek AIS: Jika tidak ada sinyal yang diterima dalam durasi yang ditentukan, objek akan otomatis dihapus dari tampilan.</string>
@@ -5122,7 +5122,7 @@
     <string name="routing_attr_allow_ferries_description">Izinkan perutean melalui feri</string>
     <string name="labels_position">Posisi label</string>
     <string name="routing_attr_allow_ferries_name">Perbolehkan feri</string>
-    <string name="prediction_time_description">Ikon posisi di OsmAnd dianimasikan pada setiap pembaruan GPS (sekali per detik). Sedikit jeda mungkin terjadi, terutama saat bergerak cepat atau ketika sinyal GPS tidak stabil.</string>
+    <string name="prediction_time_description">Ikon posisi di RoadCrew dianimasikan pada setiap pembaruan GPS (sekali per detik). Sedikit jeda mungkin terjadi, terutama saat bergerak cepat atau ketika sinyal GPS tidak stabil.</string>
     <string name="shared_string_no_animation">Tanpa animasi</string>
     <string name="wiki_around">Tempat populer di sekitar</string>
     <string name="route_members">Anggota</string>
@@ -5435,9 +5435,9 @@
     <string name="ais_own_mmsi">MMSI sendiri (Maritime Mobile Service Identity)</string>
     <string name="ais_own_mmsi_description">Identifikasi MMSI (nilai numerik 9 digit) objek AIS sendiri.</string>
     <string name="ais_display_own_position">Tentukan apakah objek AIS sendiri akan ditampilkan.</string>
-    <string name="ais_display_own_position_description">Biasanya posisi sendiri ditampilkan oleh OsmAnd. Tampilan tambahan objek AIS sendiri mungkin membingungkan dan dapat dinonaktifkan di sini.</string>
-    <string name="ais_receive_in_background">Terima data AIS meskipun OsmAnd dijeda.</string>
-    <string name="ais_receive_in_background_description">Jika diaktifkan, pendengar pesan AIS tetap berjalan saat OsmAnd dijeda atau berjalan di latar belakang. Jika dinonaktifkan, pesan tidak diterima saat OsmAnd berjalan di latar belakang.</string>
+    <string name="ais_display_own_position_description">Biasanya posisi sendiri ditampilkan oleh RoadCrew. Tampilan tambahan objek AIS sendiri mungkin membingungkan dan dapat dinonaktifkan di sini.</string>
+    <string name="ais_receive_in_background">Terima data AIS meskipun RoadCrew dijeda.</string>
+    <string name="ais_receive_in_background_description">Jika diaktifkan, pendengar pesan AIS tetap berjalan saat RoadCrew dijeda atau berjalan di latar belakang. Jika dinonaktifkan, pesan tidak diterima saat RoadCrew berjalan di latar belakang.</string>
     <string name="data_storage">Penyimpanan data</string>
     <string name="main_storage">Penyimpanan utama</string>
     <string name="media_storage">Penyimpanan media</string>

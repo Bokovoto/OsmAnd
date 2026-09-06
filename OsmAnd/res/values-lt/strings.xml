@@ -14,7 +14,7 @@
     <string name="osmand_parking_pm">po piet</string>
     <string name="osmand_parking_am">ryto</string>
     <string name="osmand_parking_position_name">Statymo vieta</string>
-    <string name="osmand_parking_plugin_description">Šis įskiepis leidžia įsiminti vietą, kurioje palikote savo automobilį ir kiek laiko liko iki parkavimo pabaigos . \nTiek vieta, tiek laikas yra matomi OsmAnd valdymo skydelyje bei skydelyje žemėlapyje rodinyje. Šis įskiepis taip pat gali įrašyti priminimą į Android kalendorių.</string>
+    <string name="osmand_parking_plugin_description">Šis įskiepis leidžia įsiminti vietą, kurioje palikote savo automobilį ir kiek laiko liko iki parkavimo pabaigos . \nTiek vieta, tiek laikas yra matomi RoadCrew valdymo skydelyje bei skydelyje žemėlapyje rodinyje. Šis įskiepis taip pat gali įrašyti priminimą į Android kalendorių.</string>
     <string name="osmand_parking_plugin_name">Statymo vieta</string>
     <string name="context_menu_item_add_parking_point">Žymėti statymo vietą</string>
     <string name="gpxup_public">Viešas</string>
@@ -43,15 +43,15 @@
     <string name="shared_string_online_maps">Interneto žemėlapiai</string>
     <string name="osmand_rastermaps_plugin_description">Šio įskiepio pagalba galite pasiekti daugybę žemėlapių rūšių internete, pradedant Openstreetmap (Mapnik), baigiant palydovinėmis nuotraukomis ir specialios paskirties sluoksnių, tokių kaip orų, klimato, geologinių žemėlapiai, bei kalvų šešėliavimo sluoksnius.
 \n
-\nKiekvienas iš šių žemėlapių gali būti atvaizduotas OsmAnd ekrane kaip pagrindinis (bazinis) arba kaip papildomas antsluoksnis ar posluoksnis kitame baziniame žemėlapyje (pvz., OsmAnd parsiųstuose žemėlapiuose). Tam, kad posluoksninis žemėlapis būtų aiškiai matomas, galima išjungti OsmAnd vektorinių žemėlapių tam tikrus elementus meniu \"Konfigūruoti žemėlapį\".
+\nKiekvienas iš šių žemėlapių gali būti atvaizduotas RoadCrew ekrane kaip pagrindinis (bazinis) arba kaip papildomas antsluoksnis ar posluoksnis kitame baziniame žemėlapyje (pvz., RoadCrew parsiųstuose žemėlapiuose). Tam, kad posluoksninis žemėlapis būtų aiškiai matomas, galima išjungti RoadCrew vektorinių žemėlapių tam tikrus elementus meniu \"Konfigūruoti žemėlapį\".
 \n
-\nŽemėlapius lakštus galima atsisiųsti iš interneto arba paruošti naudojimui neprisijungus (ir rankiniu būdu įkelti į OsmAnd duomenų katalogą) kaip SQLite duomenų bazę, kurią galima paruošti įvairiais trečių šalių įrankiais.</string>
-    <string name="osmand_accessibility_description">Šis įskiepis įgalina įrenginio specialiuosius nustatymus tiesiai OsmAnd. Tai, pavyzdžiui, palengvina TTS balso greičio reguliavimą, navigacijos ekrano kryptį, mąstelio reguliavimą.</string>
+\nŽemėlapius lakštus galima atsisiųsti iš interneto arba paruošti naudojimui neprisijungus (ir rankiniu būdu įkelti į RoadCrew duomenų katalogą) kaip SQLite duomenų bazę, kurią galima paruošti įvairiais trečių šalių įrankiais.</string>
+    <string name="osmand_accessibility_description">Šis įskiepis įgalina įrenginio specialiuosius nustatymus tiesiai RoadCrew. Tai, pavyzdžiui, palengvina TTS balso greičio reguliavimą, navigacijos ekrano kryptį, mąstelio reguliavimą.</string>
     <string name="osmand_development_plugin_description">Įskiepis rodo nustatymus kūrimo ir klaidų paieškos funkcionalumui: patikrinti arba imituoti navigaciją, ekrano generavimo efektyvumo, balso pranešimų patikrinimui. Šie nustatymui akrtualūs programuotojui ir nėra įdomūs eiliniam vartotojui.</string>
     <string name="plugins_screen">Įskiepių valdymas</string>
     <string name="prefs_plugins">Įskiepių valdymas</string>
     <string name="play_commands_of_currently_selected_voice">Pasirinkite balsą ir patikrinkite grodami pranešimus:</string>
-    <string name="debugging_and_development">OsmAnd vystymas</string>
+    <string name="debugging_and_development">RoadCrew vystymas</string>
     <string name="test_voice_prompts">Patikrinti balso nurodymus</string>
     <string name="gpx_visibility_txt">Matomumas</string>
     <string name="gpx_tags_txt">Etiketės</string>
@@ -139,7 +139,7 @@
     <string name="user_name">Jūsų OSM vartotojo vardas</string>
     <string name="user_password">Slaptažodis</string>
     <string name="osmand_service">Fono režimas</string>
-    <string name="osmand_service_descr">Reikalinga, jei norite naudoti OsmAnd kai ekranas yra išjungtas.</string>
+    <string name="osmand_service_descr">Reikalinga, jei norite naudoti RoadCrew kai ekranas yra išjungtas.</string>
     <string name="download_files_not_enough_space">Neužtenka vietos parsiųsti %1$s MB (laisva: %2$s).</string>
     <string name="download_files_question_space">Atsiųsti {0} failą(-us)\? 
 \nTam prireiks {1} MB pastoviam saugojimui. (Dabar laisvos vietos yra {2} MB.)</string>
@@ -263,13 +263,13 @@
     <string name="version_index_is_big_for_memory">Indeksas \'\'{0}\'\' netilpo į atmintį</string>
     <string name="version_index_is_not_supported">Indekso versija \'\'{0}\'\' nepalaikoma</string>
     <string name="application_dir">Segtuvas duomenų talpinimui</string>
-    <string name="osmand_net_previously_installed">Šiuo metu yra įdiegta senesnė OsmAnd versija. Visi parsiųsti ir išsaugoti duomenys bus palaikomi ir naujos versijos. Išsaugotas vietas iš senosios versijos reikia eksportuoti, o įdiegus naują - importuoti pačiam naudotojui.</string>
+    <string name="osmand_net_previously_installed">Šiuo metu yra įdiegta senesnė RoadCrew versija. Visi parsiųsti ir išsaugoti duomenys bus palaikomi ir naujos versijos. Išsaugotas vietas iš senosios versijos reikia eksportuoti, o įdiegus naują - importuoti pačiam naudotojui.</string>
     <string name="build_installed">Versija {0} įdiegta ({1}).</string>
     <string name="downloading_build">Parsisiunčiama versija…</string>
-    <string name="install_selected_build">Įdiegti OsmAnd - {0} iš {1} {2} MB?</string>
-    <string name="loading_builds_failed">Nepavyko parsisiųsti OsmAnd versijų sąrašo</string>
-    <string name="loading_builds">Įkeliamos OsmAnd versijos…</string>
-    <string name="select_build_to_install">Įdiegimui pasirinkite vieną iš OsmAnd versijų</string>
+    <string name="install_selected_build">Įdiegti RoadCrew - {0} iš {1} {2} MB?</string>
+    <string name="loading_builds_failed">Nepavyko parsisiųsti RoadCrew versijų sąrašo</string>
+    <string name="loading_builds">Įkeliamos RoadCrew versijos…</string>
+    <string name="select_build_to_install">Įdiegimui pasirinkite vieną iš RoadCrew versijų</string>
     <string name="contribution_activity">Specialūs veiksmai tobulinamai versijai</string>
     <string name="gps_status_app_not_found">GPS statuso programa neįdiegta. Ieškoti Google Play?</string>
     <string name="daynight_mode_day">Diena</string>
@@ -314,7 +314,7 @@
     <string name="layer_map">Žemėlapių šaltiniai…</string>
     <string name="use_trackball_descr">Naudoti manipuliatoriaus rutulį žemėlapiui pastumti.</string>
     <string name="use_trackball">Naudoti manipuliatoriaus rutulį</string>
-    <string name="process_navigation_service">OsmAnd navigacijos paslauga</string>
+    <string name="process_navigation_service">RoadCrew navigacijos paslauga</string>
     <string name="int_seconds">sekundės</string>
     <string name="int_min">min.</string>
     <string name="search_poi_filter">Filtras</string>
@@ -340,7 +340,7 @@
     <string name="transport_stops">stotelės</string>
     <string name="transport">Transportas</string>
     <string name="shared_string_ok">Gerai</string>
-    <string name="hello">Navigacijos programa OsmAnd</string>
+    <string name="hello">Navigacijos programa RoadCrew</string>
     <string name="favorite">Įsimintos vietos</string>
     <string name="shared_string_clear_all">Išvalyti viską</string>
     <string name="shared_string_history">Istorija</string>
@@ -475,12 +475,12 @@
     <string name="day_night_info_description">Saulėtekis : %1$s \nSaulėlydis : %2$s</string>
     <string name="day_night_info">Dienos/nakties info</string>
     <string name="map_widget_renderer">Atvaizdavimo stilius</string>
-    <string name="osmand_short_description_80_chars">OsmAnd - atviro kodo navigacijos programa su interneto/parsiųstais žemėlapius</string>
+    <string name="osmand_short_description_80_chars">RoadCrew - atviro kodo navigacijos programa su interneto/parsiųstais žemėlapius</string>
     <string name="avoid_motorway">Jokių greitkelių</string>
     <string name="snap_to_road">Rodyti ant kelio</string>
-    <string name="osmand_long_description_1000_chars">OsmAnd (OSM Automated Navigation Directions)
+    <string name="osmand_long_description_1000_chars">RoadCrew (OSM Automated Navigation Directions)
 \n
-\nOsmAnd yra atviro kodo programa naudojanti įvairius OpenStreetMap (OSM) duomenis. Visi žemėlapių duomenys (vektoriniai ar lakštiniai) gali būti išsaugoti telefone ir naudojami be interneto prieigos. OsmAnd taip pat gali pasiūlyti maršruto skaičiavimo paslaugas internete ar įrenginyje, bei balso nurodymus kelionei apskaičiuotu maršrutu. 
+\nRoadCrew yra atviro kodo programa naudojanti įvairius OpenStreetMap (OSM) duomenis. Visi žemėlapių duomenys (vektoriniai ar lakštiniai) gali būti išsaugoti telefone ir naudojami be interneto prieigos. RoadCrew taip pat gali pasiūlyti maršruto skaičiavimo paslaugas internete ar įrenginyje, bei balso nurodymus kelionei apskaičiuotu maršrutu. 
 \n
 \nDalis pagrindinių savybių: 
 \n- Veikia be interneto (išsaugokite parsiųstus žemėlapius ar jų lakštus įrenginyje) 
@@ -495,12 +495,12 @@
 \n- pasirinktine žemėlapio orientacija pagal kompaso arba judėjimo kryptį 
 \n- pasirinktinis eismo juostų nurodymas, greičio ribojimų rodymas, įrašyti ar generuojami balsai 
 \n
-\nNemokamos OsmAnd versijos apribojimai: 
+\nNemokamos RoadCrew versijos apribojimai: 
 \n- Ribojamas žemėlapių parsiuntimų skaičius 
 \n- Nėra prieigos prie iš Wikipedia parsiunčiamų LV
 \n
 \n OsmAnd yra aktyviai tobulinama ir mūsų projektas bei jo tolesnis progresas priklauso nuo finansinės paramos, kuri įgalina tolesnį vystymą ir naujų funkcijų kūrimą. Norime paskatinti jus nusipirkti OsmAnd+ programą arba finansiškai prisidėti prie specifinių funkcijų kūrimo arba šiaip paremti programą https://osmand.net svetainėje.</string>
-    <string name="osmand_plus_short_description_80_chars">OsmAnd - atviro kodo navigacijos programa su žemėlapiais</string>
+    <string name="osmand_plus_short_description_80_chars">RoadCrew - atviro kodo navigacijos programa su žemėlapiais</string>
     <string name="osmand_plus_long_description_1000_chars">OsmAnd+ (OSM Automated Navigation Directions) 
 \n
 \nOsmAnd+ yra atviro kodo programa naudojanti visą spektrą OpenStreetMap (OSM) duomenų. Visi žemėlapiai (vektoriniai ar lakštiniai) gali būti išsaugoti telefono atmintyje ar atminties kortelėje ir naudojami be interneto prieigos. OsmAnd taip pat gali pasiūlyti maršruto skaičiavimo paslaugas internete ar įrenginyje, bei balso nurodymus kelionei apskaičiuotu maršrutu.
@@ -584,7 +584,7 @@
     <string name="shared_string_map">Žemėlapis</string>
     <string name="access_arrival_time">Atvykimo laikas</string>
     <string name="map_widget_gps_info">GPS informacija</string>
-    <string name="osmand_play_title_30_chars">OsmAnd žemėlapiai ir navigacija</string>
+    <string name="osmand_play_title_30_chars">RoadCrew žemėlapiai ir navigacija</string>
     <string name="osmand_plus_play_title_30_chars">OsmAnd+ žemėlapiai ir navigacija</string>
     <string name="street_name">Gatvės pavadinimas</string>
     <string name="hno">Namo numeris</string>
@@ -685,14 +685,14 @@
     <string name="android_19_location_disabled">Pradedant Android 4.4 versija jūs nebegalėsite parsisųsti ir atnaujinti žemėlapių ankstesnėse saugojimo vietose (%s). Ar norite pakeisti saugyklos vietą ir į ją nukopijuoti visus failus?
 \n Pastaba: Seni failai išliks kur buvę (galima bus ištrinti rankiniu būdu).
 \n Pastaba: dalintis tais pačiais failais tarp OsmAnd ir OsmAnd+ nebus galima.</string>
-    <string name="copying_osmand_files">Kopijuojami OsmAnd failai…</string>
+    <string name="copying_osmand_files">Kopijuojami RoadCrew failai…</string>
     <string name="keep_and_add_destination_point">Įtraukti kaip sekantį kelionės tikslą</string>
     <string name="route_descr_select_destination">Pasirinkti kelionės tikslą</string>
     <string name="shared_string_select_on_map">Pasirinkti žemėlapyje</string>
     <string name="shared_string_favorite">Įsiminta vieta</string>
     <string name="route_info">Maršruto informacija</string>
-    <string name="calculate_osmand_route_without_internet">Apskaičiuoti OsmAnd maršruto segmentą nenaudojant interneto</string>
-    <string name="gpx_option_calculate_first_last_segment">Apskaičiuoti OsmAnd maršrutą pirmam ir paskutiniam maršruto segmentams</string>
+    <string name="calculate_osmand_route_without_internet">Apskaičiuoti RoadCrew maršruto segmentą nenaudojant interneto</string>
+    <string name="gpx_option_calculate_first_last_segment">Apskaičiuoti RoadCrew maršrutą pirmam ir paskutiniam maršruto segmentams</string>
     <string name="lang_en">Anglų</string>
     <string name="lang_af">Afrikanų</string>
     <string name="lang_hy">Armėnų</string>
@@ -744,12 +744,12 @@
     <string name="interrupt_music_descr">Pristabdyti muziką skelbiant pranešimą (ne tik pamažinti garsumą).</string>
     <string name="interrupt_music">Pristabdyti muziką</string>
     <string name="share_route_as_gpx">Bendrinti maršruto GPX failą</string>
-    <string name="share_route_subject">Maršrutas bendrintas per OsmAnd</string>
+    <string name="share_route_subject">Maršrutas bendrintas per RoadCrew</string>
     <string name="navigation_intent_invalid">Netinkamas formatas: %s</string>
     <string name="keep_informing_never">Tik rankiniu būdu (spauskite rodyklę)</string>
     <string name="keep_informing">Pakartoti maršruto instrukcijas</string>
     <string name="shared_string_share">Bendrinti</string>
-    <string name="share_fav_subject">Įsimintos vietos bendrintos iš OsmAnd</string>
+    <string name="share_fav_subject">Įsimintos vietos bendrintos iš RoadCrew</string>
     <string name="osmo_connect_menu">Prisijungti</string>
     <string name="rendering_value_pink_name">rožinė</string>
     <string name="rendering_value_brown_name">ruda</string>
@@ -999,7 +999,7 @@
     <string name="rendering_value_highContrastRoads_name">Raiškaus kontrasto keliai</string>
     <string name="osmand_parking_overdue">pradelsta</string>
     <string name="shared_string_currently_recording_track">Šiuo metu įrašomas maršrutas</string>
-    <string name="plugin_touringview_descr">Aktyvus šį rodinį, OsmAnd\'s žemėlapių stilius pasikeis į \"Kelionių rodinį\", kuris labai detalus rodynys skirtas keliautojams ir profesionaliems vairuotojams.
+    <string name="plugin_touringview_descr">Aktyvus šį rodinį, RoadCrew\'s žemėlapių stilius pasikeis į \"Kelionių rodinį\", kuris labai detalus rodynys skirtas keliautojams ir profesionaliems vairuotojams.
 \n 
 \nŠis rodinys visuose žemėlapio masteliuose pateikia maksimalų įmanomą žemėlapio informacijos kiekį (ypač kelius, vieškelius, takus ir orientyrus).
 \n 
@@ -1026,7 +1026,7 @@
     <string name="rendering_value_walkingRoutesOSMC_name">Spalvinimas pagal OSMC pėsčiųjų žygių simbolius</string>
     <string name="storage_directory_multiuser">Vartotojų talpykla</string>
     <string name="gps_network_not_enabled">Neįjungta vietos nustatymo paslauga. Įjungti?</string>
-    <string name="shared_string_import2osmand">Importavimas į OsmAnd</string>
+    <string name="shared_string_import2osmand">Importavimas į RoadCrew</string>
     <string name="read_full_article">Skaityti visą straipsnį (internete)</string>
     <string name="shared_string_wikipedia">Vikipedija</string>
     <string name="shared_string_show_details">Rodyti detales</string>
@@ -1085,7 +1085,7 @@
     <string name="rendering_attr_currentTrackWidth_name">GPX plotis</string>
     <string name="rendering_value_default13_name">Numatytoji (13)</string>
     <string name="rendering_value_defaultTranslucentCyan_name">Numatytoji (skaidri žalsvai mėlyna)</string>
-    <string name="do_you_like_osmand">Ar jums patinka OsmAnd\?</string>
+    <string name="do_you_like_osmand">Ar jums patinka RoadCrew\?</string>
     <string name="user_hates_app_get_feedback">Pasakykite, kodėl.</string>
     <string name="user_hates_app_get_feedback_long">Pasakykite, ką mes turėtume pakeisti programėlėje.</string>
     <string name="download_live_updates">Automatinis naujinimas</string>
@@ -1214,7 +1214,7 @@
     <string name="poi_context_menu_modify_osm_change">Redaguoti LV</string>
     <string name="only_download_over_wifi">Atsisiųsti tik naudojant Wi-Fi</string>
     <string name="update_now">Atnaujinti tuoj pat</string>
-    <string name="missing_write_external_storage_permission">OsmAnd neturi leidimo naudoti atminties kortelę</string>
+    <string name="missing_write_external_storage_permission">RoadCrew neturi leidimo naudoti atminties kortelę</string>
     <string name="no_camera_permission">Programėlė neturi teisių naudoti kamerą.</string>
     <string name="no_microphone_permission">Programėlė neturi teisių naudoti mikrofoną.</string>
     <string name="av_video_quality">Vaizdo kokybė</string>
@@ -1233,7 +1233,7 @@
     <string name="lang_als">Albanų (toskų)</string>
     <string name="available_maps">Galimi žemėlapiai</string>
     <string name="shared_string_sound">Garsas</string>
-    <string name="share_osm_edits_subject">OSM redagavimai atlikti OsmAnd pagalba</string>
+    <string name="share_osm_edits_subject">OSM redagavimai atlikti RoadCrew pagalba</string>
     <string name="rendering_attr_currentTrackColor_description">GPX spalva</string>
     <string name="rendering_attr_currentTrackWidth_description">GPX plotis</string>
     <string name="use_drawer_btn">Naudoti meniu</string>
@@ -1363,7 +1363,7 @@
     <string name="confirmation_to_delete_history_items">Ištrinti pasirinktus įrašus iš \"Istorijos\"?</string>
     <string name="show_something_on_map">Rodyti %1$s žemėlapyje</string>
     <string name="dist_away_from_my_location">Ieškoti %1$s spinduliu</string>
-    <string name="share_history_subject">bendrinta iš OsmAnd</string>
+    <string name="share_history_subject">bendrinta iš RoadCrew</string>
     <string name="update_all_maps_now">Ar norite atnaujinti visus žemėlapius?</string>
     <string name="routing_attr_short_way_name">Taupus kelias</string>
     <string name="rendering_attr_hideOverground_name">Antžeminiai objektai</string>
@@ -1385,7 +1385,7 @@
     <string name="get_it">Gauti</string>
     <string name="osm_live_banner_desc">Gaukite neribotą kiekį žemėlapių parsiuntimų ir atnaujinimus dažniau nei kas mėnesį: kas savaitę, kas dieną ar kas valandą.</string>
     <string name="si_mi_meters">Mylios/metrai</string>
-    <string name="first_usage_wizard_desc">Leisti OsmAnd nustatyti jūsų vietą ir pasiūlyti parsisiųsti reikiamus žemėlapius tam regionui.</string>
+    <string name="first_usage_wizard_desc">Leisti RoadCrew nustatyti jūsų vietą ir pasiūlyti parsisiųsti reikiamus žemėlapius tam regionui.</string>
     <string name="location_not_found">Nepavyko nustatyti vietos</string>
     <string name="no_inet_connection">Nėra interneto ryšio</string>
     <string name="give_permission">Suteikti leidimą</string>
@@ -1471,7 +1471,7 @@
     <string name="subscribe_email_error">Klaida</string>
     <string name="nautical_maps">Jūrų žemėlapiai</string>
     <string name="do_not_show_startup_messages">Nerodyti pranešimų paleisties metu</string>
-    <string name="full_version_thanks">Dėkojame, kad įsigijote mokamą OsmAnd versiją.</string>
+    <string name="full_version_thanks">Dėkojame, kad įsigijote mokamą RoadCrew versiją.</string>
     <string name="routing_attr_relief_smoothness_factor_hills_name">Kalvotas</string>
     <string name="routing_attr_relief_smoothness_factor_plains_name">Mažiau kalvotas</string>
     <string name="routing_attr_driving_style_balance_name">Subalansuotas</string>
@@ -1530,7 +1530,7 @@
     <string name="wrong_user_name">Neteisingas vartotojo vardas</string>
     <string name="mapillary_menu_descr_dates">Peržiūrėti tik pridėtus paveikslėlius</string>
     <string name="mapillary_menu_descr_username">Peržiūrėti tik pridėtas nuotraukas</string>
-    <string name="import_gpx_failed_descr">Nepavyko importuoti failo. Įsitikinkite, kad OsmAnd turi leidimą jį perskaityti.</string>
+    <string name="import_gpx_failed_descr">Nepavyko importuoti failo. Įsitikinkite, kad RoadCrew turi leidimą jį perskaityti.</string>
     <string name="distance_moving">Atstumas pataisytas</string>
     <string name="mapillary_action_descr">Pasidalinti savo šios vietos gatvių vaizdu naudojant Mapillary.</string>
     <string name="mapillary_widget_descr">Leidžia greitai prisidėti prie Mapillary.</string>
@@ -1635,7 +1635,7 @@
     <string name="add_point_before">Pridėti tašką prieš</string>
     <string name="add_point_after">Pridėti tašką po</string>
     <string name="shared_string_options">Parinktys</string>
-    <string name="measurement_tool_snap_to_road_descr">OsmAnd sujungs taškus su pasirinkto profilio maršrutu.</string>
+    <string name="measurement_tool_snap_to_road_descr">RoadCrew sujungs taškus su pasirinkto profilio maršrutu.</string>
     <string name="choose_navigation_type">Pasirinkite navigacijos profilį</string>
     <string name="none_point_error">Prašome pridėti bent vieną tašką.</string>
     <string name="osmand_extended_description_part7">Prisidėkite prie OSM 
@@ -1643,7 +1643,7 @@
 \n• Įkelkite GPX maršrutus į OSM tiesiai iš programos 
 \n• Pridėkite LV-as ir tiesiogiai jas įkelkite į OSM (arba vėliau, jei neprisijungę)
 \n</string>
-    <string name="osmand_extended_description_part8">OsmAnd yra atviro kodo ir aktyviai plėtojama. Kiekvienas gali prisidėti prie plėtros pranešdamas apie klaidas, tobulindamas vertimus ar kurdamas naujas funkcijas. Projekto eiga taip pat priklauso nuo finansinių įnašų paremiant programavimą ir naujų funkcijų testavimą. 
+    <string name="osmand_extended_description_part8">RoadCrew yra atviro kodo ir aktyviai plėtojama. Kiekvienas gali prisidėti prie plėtros pranešdamas apie klaidas, tobulindamas vertimus ar kurdamas naujas funkcijas. Projekto eiga taip pat priklauso nuo finansinių įnašų paremiant programavimą ir naujų funkcijų testavimą. 
 \n Apytikslė žemėlapyje aprėptis ir kokybė: 
 \n• Vakarų Europa: ****
 \n• Rytų Europa: ***
@@ -1756,7 +1756,7 @@
     <string name="passed">Paskutinį kartą naudota: %1$s</string>
     <string name="osm_recipient_stat">Taisymų %1$s, suma %2$s mBTC</string>
     <string name="lang_lo">Laosiečių</string>
-    <string name="osmand_extended_description_part1">OsmAnd (OSM Automated Navigation Directions) yra žemėlapio ir navigacijos programa su prieiga prie nemokamų, pasaulinių ir aukštos kokybės OpenStreetMap (OSM) duomenų. 
+    <string name="osmand_extended_description_part1">RoadCrew (OSM Automated Navigation Directions) yra žemėlapio ir navigacijos programa su prieiga prie nemokamų, pasaulinių ir aukštos kokybės OpenStreetMap (OSM) duomenų. 
 \n
 \nNaudokitės balso ir vaizdo navigatoriumi, peržiūrėkite LV (lankytinas vietas), kurkite ir valdytkite GPX kelius, naudojkite kontūro linijos vizualizaciją ir aukščio info (įskiepių pagalba), pasirinkite vairavimo, dviračių, pėsčiųjų režimus, redaguokite OSM duomenis ir daug daugiau.</string>
     <string name="quick_action_add_marker_descr">Bakstelėję veiksmo mygtuką pridėsite žemėlapio žymeklį ekrano centre.</string>
@@ -1774,7 +1774,7 @@
     <string name="nautical_renderer">Jūrinis</string>
     <string name="how_to_open_link">Kaip atverti nuorodą?</string>
     <string name="download_all">Atsisiųsti viską</string>
-    <string name="osmand_team">OsmAnd komanda</string>
+    <string name="osmand_team">RoadCrew komanda</string>
     <string name="popular_destinations">Populiarios kelionių kryptys</string>
     <string name="update_is_available">Yra atnaujinimų</string>
     <string name="download_file">Atsisiųsti failą</string>
@@ -1953,7 +1953,7 @@
     <string name="navigate_point_format_utm">UTM Standartas</string>
     <string name="change_default_settings">Pakeisti nustatymą</string>
     <string name="reset_to_default">Atstatyti numatytąsias reikšmes</string>
-    <string name="osmand_settings">OsmAnd nustatymai</string>
+    <string name="osmand_settings">RoadCrew nustatymai</string>
     <string name="copy_from_other_profile">Kopijuoti iš kito profilio</string>
     <string name="turn_screen_on">Įjungti ekraną</string>
     <string name="shared_string_other">Kita</string>
@@ -1965,7 +1965,7 @@
     <string name="route_parameters">Maršruto parametrai</string>
     <string name="start_editing_card_description">Jus galite redaguoti bet kokį straipsnį Wikivoyage sistemoje. Pasidalink žiniomis, patirtimi, talentu ir savo dėmesiu su kitais.</string>
     <string name="hidden_items_descr">Šie elementai yra paslėpti nuo meniu, bet juos reprezentuojantis nustatymai ar papildai veiks toliau.</string>
-    <string name="wikivoyage_travel_guide_descr">Maršrutai į pačius įdomiausius objektus planetoje, panaudojant OsmAnd nereikalingas interneto ryšis.</string>
+    <string name="wikivoyage_travel_guide_descr">Maršrutai į pačius įdomiausius objektus planetoje, panaudojant RoadCrew nereikalingas interneto ryšis.</string>
     <string name="rendering_attr_piste_difficulty_extreme_name">Ekstremalus</string>
     <string name="rendering_attr_piste_difficulty_expert_name">Ekspertas</string>
     <string name="rendering_attr_piste_difficulty_advanced_name">Pažengęs</string>
@@ -2074,7 +2074,7 @@
     <string name="map_widget_monitoring">Kelionės įrašymas</string>
     <string name="marker_save_as_track">Išsaugoti kaip maršruto failą</string>
     <string name="number_of_gpx_files_selected_pattern">%s pasirinkti maršruto failai</string>
-    <string name="disable_recording_once_app_killed_descrp">Maršruto registravimas bus sustabdytas, kai programa yra išjungta (per pastarosios programos). ( OsmAnd foninė nuoroda dingsta iš Android pranešimų juostos.)</string>
+    <string name="disable_recording_once_app_killed_descrp">Maršruto registravimas bus sustabdytas, kai programa yra išjungta (per pastarosios programos). ( RoadCrew foninė nuoroda dingsta iš Android pranešimų juostos.)</string>
     <string name="save_global_track_interval_descr">Pasirinkite bendrojo maršruto įrašymo intervalą (įjungtas per \"kelionės įrašymo\" valdiklį žemėlapyje).</string>
     <string name="routing_attr_short_way_description">Optimizuotas trumpesnis maršrutas (energijos taupymas)</string>
     <string name="snap_to_road_descr">Dabartinės pozicijos piktograma įsijungs į esamą navigacijos maršrutą</string>
@@ -2202,7 +2202,7 @@
     <string name="select_icon_profile_dialog_title">Pasirinkite piktogramą</string>
     <string name="settings_privacy_and_security">Privatumas ir saugumas</string>
     <string name="shared_string_no_thank_you">Ne, ačiū</string>
-    <string name="quick_action_switch_day_night_descr">Perjungiklis, skirtas perjungti OsmAnd dienos ir nakties režimus.</string>
+    <string name="quick_action_switch_day_night_descr">Perjungiklis, skirtas perjungti RoadCrew dienos ir nakties režimus.</string>
     <string name="quick_action_navigation_voice_descr">Perjungiklis, skirtas išjungti arba įjungti balso nurodymus navigacijos metu.</string>
     <string name="ltr_or_rtl_combine_via_colon">%1$s: %2$s</string>
     <string name="custom_color">Pasirinktinė spalva</string>
@@ -2286,18 +2286,18 @@
     <string name="ltr_or_rtl_combine_with_brackets">%1$s (%2$s)</string>
     <string name="max_sensor_temperature">Temperatūra, max</string>
     <string name="key_event_action_change_map_orientation">Pakeisti žemėlapio orientaciją</string>
-    <string name="enable_to_use_external_input_device">Įgalinti naudoti išorinį įvesties įrenginį su OsmAnd</string>
+    <string name="enable_to_use_external_input_device">Įgalinti naudoti išorinį įvesties įrenginį su RoadCrew</string>
     <string name="not_specified">Nenurodyta</string>
     <string name="battery_optimization_banner_content">Android akumuliatoriaus optimizavimas gali sukelti spragų ir netikslumų įrašytuose takeliuose.</string>
     <string name="any_connected">Bet koks prijungtas</string>
     <string name="key_event_action_zoom_out">Tolinti</string>
     <string name="steps_per_minute_unit">ŽPM</string>
-    <string name="ask_for_location_permission">Jei norite tęsti, suteikite „OsmAnd“ vietos prieigą.</string>
+    <string name="ask_for_location_permission">Jei norite tęsti, suteikite „RoadCrew“ vietos prieigą.</string>
     <string name="custom_buttons">Pasirinktiniai mygtukai</string>
     <string name="root_folder">Pagrindinis aplankas</string>
     <string name="thank_you_for_feedback">Dėkojame už jūsų atsiliepimą</string>
     <string name="use_nearby_roads">Naudokite netoliese esančius kelius</string>
-    <string name="retrieve_elevation_data_summary">OsmAnd gali gauti aukščio duomenis iš netoliese esančių kelių arba reljefo žemėlapių.</string>
+    <string name="retrieve_elevation_data_summary">RoadCrew gali gauti aukščio duomenis iš netoliese esančių kelių arba reljefo žemėlapių.</string>
     <string name="relief_3d_download_description">Norint pamatyti reljefą žemėlapyje, reikia papildomų žemėlapių.</string>
     <string name="vertical_exaggeration_description">Keisdami mastelio vertę, galite pabrėžti 3D reljefą.</string>
     <string name="vertical_exaggeration">Vertikalus perdėjimas</string>
@@ -2334,7 +2334,7 @@
     <string name="shared_string_show_less">Rodyti mažiau</string>
     <string name="voice_announcements">Balso pranešimai</string>
     <string name="any_connected_with_device">Bet koks prijungtas: %s</string>
-    <string name="trash_is_empty_banner_desc">Iš OsmAnd debesies pašalinti failai čia bus pasiekiami %1$s dienų po to.</string>
+    <string name="trash_is_empty_banner_desc">Iš RoadCrew debesies pašalinti failai čia bus pasiekiami %1$s dienų po to.</string>
     <string name="trash_is_empty">Šiukšliadėžė tuščia</string>
     <string name="shared_string_button">Mygtukas</string>
     <string name="key_event_action_move_right">Į dešinę</string>
@@ -2370,7 +2370,7 @@
     <string name="title_3d_track">3D trasa</string>
     <string name="maps_that_also_be_used">Žemėlapiai, kurie taip pat gali būti naudojami: %1$s</string>
     <string name="getting_list_of_required_maps">Gaunamas reikalingų žemėlapių sąrašas…</string>
-    <string name="required_maps_calculate_online_summary">Trūkstamų žemėlapių sąrašas sudarytas remiantis tiesia linija. Norėdami gauti tikslų žemėlapių sąrašą, OsmAnd gali iš anksto apskaičiuoti jūsų maršrutą internete.</string>
+    <string name="required_maps_calculate_online_summary">Trūkstamų žemėlapių sąrašas sudarytas remiantis tiesia linija. Norėdami gauti tikslų žemėlapių sąrašą, RoadCrew gali iš anksto apskaičiuoti jūsų maršrutą internete.</string>
     <string name="required_maps">Reikalingi žemėlapiai</string>
     <string name="missing_maps_description">Trūksta kai kurių šiam maršrutui reikalingų neprisijungus naudojamų žemėlapių arba jie nėra atnaujinti. Atsisiųskite arba atnaujinkite šiuos žemėlapius.</string>
     <string name="missing_maps_header">Trūksta arba pasenę žemėlapiai</string>
@@ -2402,7 +2402,7 @@
     <string name="rendering_attr_padusHideBoundaries_description">Slėpti viešosios žemės ribas, bet palikti sritis</string>
     <string name="added_profiles">Pridėti profiliai</string>
     <string name="update_all_maps">Atnaujinti visus žemėlapius</string>
-    <string name="visited_screens_collect_descr">Padeda suprasti OsmAnd funkcijų populiarumą.</string>
+    <string name="visited_screens_collect_descr">Padeda suprasti RoadCrew funkcijų populiarumą.</string>
     <string name="suggested_maps">Siūlomi žemėlapiai</string>
     <string name="switch_profile">Perjungti profilį</string>
     <string name="default_speed_setting_title">Numatytasis greitis</string>
@@ -2410,14 +2410,14 @@
     <string name="routeInfo_winter_ice_road_name">Žiemos ir ledo keliai</string>
     <string name="selected_profile">Pasirinktas profilis</string>
     <string name="suggested_maps_descr">Šie žemėlapiai reikalingi papildiniui.</string>
-    <string name="help_us_make_osmand_better">Padėkite mums patobulinti OsmAnd</string>
+    <string name="help_us_make_osmand_better">Padėkite mums patobulinti RoadCrew</string>
     <string name="app_mode_monowheel">Vienaratis</string>
     <string name="routing_attr_max_num_changes_name">Pakeitimų skaičius</string>
     <string name="update_all_maps_q">Atnaujinti visus (%1$d) žemėlapius?</string>
     <string name="rendering_attr_winter_road_name">Žiemos kelias</string>
     <string name="disable_map_layers">Išjungti žemėlapio sluoksnius</string>
     <string name="disable_map_layers_descr">Išjungti visus žemėlapio sluoksnius virš vektorinio žemėlapio (reikia paleisti iš naujo).</string>
-    <string name="storage_migration_wrong_folder_warning">Pasirinktame aplanke OsmAnd duomenų nerasta. Prašau, pabandykite dar kartą.</string>
+    <string name="storage_migration_wrong_folder_warning">Pasirinktame aplanke RoadCrew duomenų nerasta. Prašau, pabandykite dar kartą.</string>
     <string name="speed_cameras_alert">Kai kuriose šalyse greičio matavimo kamerų įspėjimai draudžiami įstatymų.</string>
     <string name="shared_string_turn_off">Išjungti</string>
     <string name="rendering_attr_ice_road_name">Ledo kelias</string>
@@ -2428,7 +2428,7 @@
     <string name="downloaded_maps_collect_descr">Padeda suprasti šalies ir regiono žemėlapio populiarumą.</string>
     <string name="select_color">Pasirinkite spalvą</string>
     <string name="join_segments">Sujungti segmentus</string>
-    <string name="change_osmand_data_folder_question">Pakeisti OsmAnd duomenų aplanką?</string>
+    <string name="change_osmand_data_folder_question">Pakeisti RoadCrew duomenų aplanką?</string>
     <string name="routing_attr_max_num_changes_description">Nurodykite viršutinę pakeitimų ribą</string>
     <string name="app_mode_campervan">Kemperis (RV)</string>
     <string name="first_intermediate_dest_description">Prideda pradinę stotelę</string>
@@ -2466,7 +2466,7 @@
     <string name="external_device_characteristic_pulse_rate">Pulsas</string>
     <string name="profile_appearance">Profilio išvaizda</string>
     <string name="logout_from_osmand_cloud">Atsijungti nuo OsmAnd Cloud</string>
-    <string name="about_osmand">Apie OsmAnd</string>
+    <string name="about_osmand">Apie RoadCrew</string>
     <string name="external_sensors_source_of_data">Duomenų šaltinis</string>
     <string name="external_device_blood_pressure">Kraujospūdis</string>
     <string name="external_device_characteristic_arterial_pressure">Arterinis spaudimas</string>
@@ -2511,7 +2511,7 @@
     <string name="cloud_email_not_registered">Šis el. pašto adresas nėra registruotas OsmAnd Cloud</string>
     <string name="map_updates_are_unavailable_yet">Žemėlapio atnaujinimai dar nepasiekiami. :-(</string>
     <string name="verify_email_address">Patvirtinkite el. pašto adresą</string>
-    <string name="enough_contributions_descr">Sveikiname, pateikėte pakankamai OpenStreetMap pakeitimų ir dabar galite mėgautis neribotais OsmAnd žemėlapių atnaujinimais!</string>
+    <string name="enough_contributions_descr">Sveikiname, pateikėte pakankamai OpenStreetMap pakeitimų ir dabar galite mėgautis neribotais RoadCrew žemėlapių atnaujinimais!</string>
     <string name="backup_error_no_subscription">Prenumeratos nėra</string>
     <string name="announcement_time_off_route"/>
     <string name="osmand_cloud_create_account_descr">Įveskite savo el. pašto adresą, ten bus atsiųstas patvirtinimo kodas,
@@ -2565,7 +2565,7 @@
     <string name="track_recording_description">Sustabdyti įrašymą?
 \nVisi neišsaugoti duomenys bus prarasti.</string>
     <string name="delete_number_files_question">Ištrinti %1$d failus?</string>
-    <string name="backup_deleting_all_data_descr">Palaukite, kol OsmAnd ištrins jūsų duomenis iš debesies. Visi įrenginio duomenys liks nepaliesti.</string>
+    <string name="backup_deleting_all_data_descr">Palaukite, kol RoadCrew ištrins jūsų duomenis iš debesies. Visi įrenginio duomenys liks nepaliesti.</string>
     <string name="on_hold_since">Sulaikyta nuo %1$s</string>
     <string name="add_edit_favorite">Pridėti arba redaguoti mėgstamiausią</string>
     <string name="with_waypoints">Su tarpiniais taškais</string>

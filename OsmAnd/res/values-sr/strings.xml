@@ -2965,7 +2965,7 @@
     <string name="output">Излаз</string>
     <string name="release_4_0_beta">• Додата је могућност преузимања изохипси у стопама\n\n• Планирајте положене путање: додати су листови за прелазак између тачака или слика\n\n• Освежавања ОсмАнда уживо су премештена у \"Преузимања &gt; Освежења\"\n\n • Путање се сада могу обојити по висини, брзини или нагибу.\n\n • Додата је могућност измене изгледа линија трагова\n\n • Освежен је прозорчић \"Снимање путовања\"</string>
     <string name="copy_address">Умножи адресу</string>
-    <string name="profile_type_osmand_string">OsmAnd профил</string>
+    <string name="profile_type_osmand_string">RoadCrew профил</string>
     <string name="profile_type_user_string">Кориснички профил</string>
     <string name="reverse_all_points">Обрни све тачке</string>
     <string name="profile_by_default_description">Одаберите профил које ће се користити по покретању апликације.</string>

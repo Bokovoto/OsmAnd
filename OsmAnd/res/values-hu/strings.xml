@@ -86,7 +86,7 @@
     <string name="user_name">OSM-felhasználónév</string>
     <string name="user_password">Jelszó</string>
     <string name="osmand_service">Háttérmód</string>
-    <string name="osmand_service_descr">Az OsmAnd a háttérben fut kikapcsolt kijelzővel.</string>
+    <string name="osmand_service_descr">Az RoadCrew a háttérben fut kikapcsolt kijelzővel.</string>
     <string name="download_files_not_enough_space">Nincs elég hely %1$s MB letöltéséhez (szabad %2$s).</string>
     <string name="download_files_question_space">Letölt {0} fájlt\?
 \nEhhez {1} MB-ra lesz szükség (a jelenlegi {2} MB-ból).</string>
@@ -214,10 +214,10 @@
     <string name="application_dir">Adatmappa</string>
     <string name="build_installed">{0} verzió telepítve ({1}).</string>
     <string name="downloading_build">Összeállítás letöltése…</string>
-    <string name="install_selected_build">OsmAnd telepítése - {0} / {1} {2} MB. Folytatja?</string>
-    <string name="loading_builds_failed">Az OsmAnd verziók listájának letöltése nem sikerült</string>
-    <string name="loading_builds">OsmAnd összeállítások betöltése…</string>
-    <string name="select_build_to_install">Válassza ki a telepítendő OsmAnd összeállítást</string>
+    <string name="install_selected_build">RoadCrew telepítése - {0} / {1} {2} MB. Folytatja?</string>
+    <string name="loading_builds_failed">Az RoadCrew verziók listájának letöltése nem sikerült</string>
+    <string name="loading_builds">RoadCrew összeállítások betöltése…</string>
+    <string name="select_build_to_install">Válassza ki a telepítendő RoadCrew összeállítást</string>
     <string name="contribution_activity">Verzió telepítése</string>
     <string name="gps_status_app_not_found">A GPS státusz alkalmazás nincs telepítve. Megkeresi a piactéren?</string>
     <string name="daynight_mode_day">Nappali</string>
@@ -263,7 +263,7 @@
     <string name="layer_map">Térképforrás…</string>
     <string name="use_trackball_descr">Trackball használata a térkép mozgatásához.</string>
     <string name="use_trackball">Trackball használata</string>
-    <string name="process_navigation_service">OsmAnd navigációs szolgáltatás</string>
+    <string name="process_navigation_service">RoadCrew navigációs szolgáltatás</string>
     <string name="int_seconds">másodperc</string>
     <string name="int_min">perc</string>
     <string name="search_poi_filter">Szűrő</string>
@@ -289,7 +289,7 @@
     <string name="transport_stops">megálló</string>
     <string name="transport">Tömegközlekedés</string>
     <string name="shared_string_ok">OK</string>
-    <string name="hello">OsmAnd navigációs alkalmazás</string>
+    <string name="hello">RoadCrew navigációs alkalmazás</string>
     <string name="favorite">Kedvenc</string>
     <string name="shared_string_clear_all">Összes törlése</string>
     <string name="shared_string_history">Előzmények</string>
@@ -323,7 +323,7 @@
     <string name="invalid_locations">Érvénytelen koordináták</string>
     <string name="shared_string_close">Bezárás</string>
     <string name="loading_data">Adatok betöltése…</string>
-    <string name="previous_run_crashed">Az OsmAnd legutóbb összeomlott. Naplófájl: {0}. Jelentse be a hibát, és mellékelje a naplófájlt.</string>
+    <string name="previous_run_crashed">Az RoadCrew legutóbb összeomlott. Naplófájl: {0}. Jelentse be a hibát, és mellékelje a naplófájlt.</string>
     <string name="saving_gpx_tracks">GPX-fájl mentése…</string>
     <string name="finished_task">Befejezve</string>
     <string name="data_settings">Adat</string>
@@ -397,14 +397,14 @@
     <string name="map_online_plugin_is_not_installed">További térképforrások kijelöléséhez engedélyezze az „Online térképek” bővítményt</string>
     <string name="map_online_data">Online és csempés térképek</string>
     <string name="shared_string_online_maps">Online térképek</string>
-    <string name="osmand_rastermaps_plugin_description">Hozzáférhet többféle online (úgynevezett csempés vagy raszteres) térképhez, például előre megjelenített OSM-csempékhez, műholdképekhez és speciális célú rétegekhez (például: időjárási, éghajlati vagy földtani térképek, domborzatárnyékolási rétegek stb.). \n \nEzek a térképek egyaránt megjeleníthetők fő (alap)térképként, illetve egy másik alaptérkép fedvényeként vagy alátétjeként (mint az OsmAnd offline vektorgrafikus térképei). Az OsmAnd vektoros térképeinek bizonyos elemei elrejthetők a „Térkép beállítása” menüben, hogy az alátétréteg láthatóbb legyen. \n \nTöltse le közvetlenül a csempetérképeket, vagy másolja őket SQLite adatbázis-fájlként az OsmAnd adatmappájába a számos harmadik féltől származó térkép-előkészítő eszköz egyikével.</string>
-    <string name="osmand_accessibility_description">Az eszköz kisegítő lehetőségeit közvetlenül elérhetővé teszi az OsmAndban. Ez megkönnyíti például a beszédsebesség beállítását a szövegfelolvasásnál, a D-pad navigációs beállítását, a trackball használatát a nagyítás vezérléséhez vagy a szövegfelolvasó visszajelzést, például a pozíció automatikus bemondásához.</string>
-    <string name="osmand_development_plugin_description">Funkciókat biztosít az OsmAnd teszteléshez: navigációs útvonalak szimulálása, a képernyőn való megjelenítés, a teljesítmény ellenőrzése stb. Ez a bővítmény az alkalmazás normál használatához nem szükséges.</string>
+    <string name="osmand_rastermaps_plugin_description">Hozzáférhet többféle online (úgynevezett csempés vagy raszteres) térképhez, például előre megjelenített OSM-csempékhez, műholdképekhez és speciális célú rétegekhez (például: időjárási, éghajlati vagy földtani térképek, domborzatárnyékolási rétegek stb.). \n \nEzek a térképek egyaránt megjeleníthetők fő (alap)térképként, illetve egy másik alaptérkép fedvényeként vagy alátétjeként (mint az RoadCrew offline vektorgrafikus térképei). Az RoadCrew vektoros térképeinek bizonyos elemei elrejthetők a „Térkép beállítása” menüben, hogy az alátétréteg láthatóbb legyen. \n \nTöltse le közvetlenül a csempetérképeket, vagy másolja őket SQLite adatbázis-fájlként az RoadCrew adatmappájába a számos harmadik féltől származó térkép-előkészítő eszköz egyikével.</string>
+    <string name="osmand_accessibility_description">Az eszköz kisegítő lehetőségeit közvetlenül elérhetővé teszi az RoadCrewban. Ez megkönnyíti például a beszédsebesség beállítását a szövegfelolvasásnál, a D-pad navigációs beállítását, a trackball használatát a nagyítás vezérléséhez vagy a szövegfelolvasó visszajelzést, például a pozíció automatikus bemondásához.</string>
+    <string name="osmand_development_plugin_description">Funkciókat biztosít az RoadCrew teszteléshez: navigációs útvonalak szimulálása, a képernyőn való megjelenítés, a teljesítmény ellenőrzése stb. Ez a bővítmény az alkalmazás normál használatához nem szükséges.</string>
     <string name="plugins_screen">Bővítmények</string>
     <string name="prefs_plugins">Bővítmények</string>
     <string name="osm_editing_plugin_description">Szerkessze Ön is az OpenStreetMapet azzal a globális közösséggel, amelynek célja a világ átfogó térképének létrehozása és naprakész, nyílt forráskódú adatok biztosítása mindenki számára. \n \nA térkép szerkesztésére vonatkozó tudnivalókat a(z) %1$s weboldalon találja.</string>
     <string name="play_commands_of_currently_selected_voice">Hang kijelölése és tesztelése bemondások lejátszásával:</string>
-    <string name="debugging_and_development">OsmAnd fejlesztés</string>
+    <string name="debugging_and_development">RoadCrew fejlesztés</string>
     <string name="test_voice_prompts">Hangutasítások tesztelése</string>
     <string name="navigate_point_format">Formátum</string>
     <string name="poi_search_desc">POI - Érdekes helyek</string>
@@ -552,7 +552,7 @@
     <string name="item_unchecked">kijelöletlen</string>
     <string name="shared_string_map">Térkép</string>
     <string name="map_widget_gps_info">GPS infó</string>
-    <string name="osmand_play_title_30_chars">OsmAnd térkép és navigáció</string>
+    <string name="osmand_play_title_30_chars">RoadCrew térkép és navigáció</string>
     <string name="osmand_plus_play_title_30_chars">OsmAnd+ térkép és navigáció</string>
     <string name="street_name">Utcanév</string>
     <string name="hno">Házszám</string>
@@ -650,11 +650,11 @@
     <string name="routing_attr_avoid_motorway_description">Elkerüli az autópályákat</string>
     <string name="routing_attr_weight_name">Tömeg</string>
     <string name="routing_attr_weight_description">Adja meg az útvonalakon a járművekre vonatkozó tömegkorlátozást.</string>
-    <string name="android_19_location_disabled">Az Android 4.4 (KitKat) verziója óta a régi tárolási mappa (%s) elavult. Másoljuk az összes OsmAnd fájlt az új helyre\?
+    <string name="android_19_location_disabled">Az Android 4.4 (KitKat) verziója óta a régi tárolási mappa (%s) elavult. Másoljuk az összes RoadCrew fájlt az új helyre\?
 \n 1. megjegyzés: a régi fájlok érintetlenül maradnak (de kézzel törölhetők).
 \n 2. megjegyzés: az új tárolóhelyen nem lehet fájlokat megosztani az OsmAnd és OsmAnd+ között.</string>
-    <string name="copying_osmand_files">OsmAnd adatfájlok másolása…</string>
-    <string name="calculate_osmand_route_gpx">Offline OsmAnd útvonaltervezés</string>
+    <string name="copying_osmand_files">RoadCrew adatfájlok másolása…</string>
+    <string name="calculate_osmand_route_gpx">Offline RoadCrew útvonaltervezés</string>
     <string name="app_mode_truck">Teherautó</string>
     <string name="speech_rate_descr">Adja meg a szövegfelolvasás beszédsebességét.</string>
     <string name="speech_rate">Beszédsebesség</string>
@@ -701,8 +701,8 @@
     <string name="lang_uk">ukrán</string>
     <string name="lang_vi">vietnami</string>
     <string name="lang_cy">walesi</string>
-    <string name="calculate_osmand_route_without_internet">OsmAnd útvonalszakasz offline tervezése</string>
-    <string name="gpx_option_calculate_first_last_segment">OsmAnd útvonal tervezése az első és az utolsó útszakaszra</string>
+    <string name="calculate_osmand_route_without_internet">RoadCrew útvonalszakasz offline tervezése</string>
+    <string name="gpx_option_calculate_first_last_segment">RoadCrew útvonal tervezése az első és az utolsó útszakaszra</string>
     <string name="index_item_nation_addresses">címek (egész ország)</string>
     <string name="index_item_world_altitude_correction">Magasságkorrekció világszerte</string>
     <string name="index_item_world_seamarks">Hajózási jelzések</string>
@@ -712,7 +712,7 @@
     <string name="interrupt_music_descr">Zene szüneteltetése a hangutasítások alatt.</string>
     <string name="interrupt_music">Zene szüneteltetése</string>
     <string name="share_route_as_gpx">Útvonal megosztása GPX-ben</string>
-    <string name="share_route_subject">OsmAnd segítségével megosztott útvonal</string>
+    <string name="share_route_subject">RoadCrew segítségével megosztott útvonal</string>
     <string name="keep_informing_never">Csak kézzel (koppintson a nyílra)</string>
     <string name="keep_informing">Navigációs utasítások ismétlése</string>
     <string name="navigation_intent_invalid">Érvénytelen formátum: %s</string>
@@ -750,7 +750,7 @@
     <string name="shared_string_my_places">Kedvencek</string>
     <string name="osmo_connect_menu">Kapcsolódás</string>
     <string name="shared_string_share">Megosztás</string>
-    <string name="share_fav_subject">OsmAndból megosztott kedvencek</string>
+    <string name="share_fav_subject">RoadCrewból megosztott kedvencek</string>
     <string name="no_index_file_to_download">Nem találhatók letöltések, ellenőrizze az internetkapcsolatát.</string>
     <string name="sort_by_distance">Rendezés távolság szerint</string>
     <string name="sort_by_name">Rendezés név szerint</string>
@@ -963,7 +963,7 @@
     <string name="shared_string_is_open">Most nyitva van</string>
     <string name="shared_string_manage">Kezelés</string>
     <string name="shared_string_edit">Szerkesztés</string>
-    <string name="plugin_touringview_descr">A nézet aktiválása megváltoztatja az OsmAnd térképstílusát „Túra nézet”-re, amely egy speciális, nagy részletezettségű nézet az utazóknak és a hivatásos sofőröknek. 
+    <string name="plugin_touringview_descr">A nézet aktiválása megváltoztatja az RoadCrew térképstílusát „Túra nézet”-re, amely egy speciális, nagy részletezettségű nézet az utazóknak és a hivatásos sofőröknek. 
 \n 
 \nEz a nézet bármely megadott térképnagyításon a térképadatokban elérhető utazási részletek legnagyobb mennyiségét biztosítja (főként utak, ösvények, csapások és tájékozódási pontok). 
 \n 
@@ -1054,7 +1054,7 @@
     <string name="rendering_value_red_name">Vörös</string>
     <string name="rendering_value_default13_name">Alapértelmezett (13)</string>
     <string name="rendering_value_defaultTranslucentCyan_name">Alapértelmezett (átlátszó cián)</string>
-    <string name="do_you_like_osmand">Tetszik Önnek az OsmAnd?</string>
+    <string name="do_you_like_osmand">Tetszik Önnek az RoadCrew?</string>
     <string name="user_hates_app_get_feedback">Mondja el, miért.</string>
     <string name="user_hates_app_get_feedback_long">Mondja el javaslatait.</string>
     <string name="download_live_updates">Élő frissítések</string>
@@ -1154,7 +1154,7 @@
     <string name="shared_string_upload">Feltöltés</string>
     <string name="osm_edit_created_poi">OSM POI létrehozva</string>
     <string name="map_legend">Térkép jelkulcs</string>
-    <string name="share_osm_edits_subject">OsmAnddal megosztott OSM-szerkesztések</string>
+    <string name="share_osm_edits_subject">RoadCrewdal megosztott OSM-szerkesztések</string>
     <string name="lang_nds">alnémet</string>
     <string name="lang_mk">macedón</string>
     <string name="lang_fy">fríz</string>
@@ -1335,7 +1335,7 @@
     <string name="confirmation_to_delete_history_items">Eltávolítja a kijelölt elemeket az „Előzmények”-ből\?</string>
     <string name="show_something_on_map">%1$s megjelenítése a térképen</string>
     <string name="dist_away_from_my_location">Keresés %1$s távolságban</string>
-    <string name="share_history_subject">megosztva OsmAndból</string>
+    <string name="share_history_subject">megosztva RoadCrewból</string>
     <string name="search_categories">Kategóriák</string>
     <string name="city_type_district">Kerület</string>
     <string name="map_widget_search">Keresés</string>
@@ -1352,7 +1352,7 @@
     <string name="osm_live_banner_desc">Szerezzen korlátlan számú térképletöltési lehetőséget, valamint heti, napi vagy akár óránkénti térképfrissítést.</string>
     <string name="si_mi_meters">Mérföld, méter</string>
     <string name="search_map">Térkép keresése…</string>
-    <string name="first_usage_wizard_desc">Engedélyezze az OsmAnd alkalmazásnak a pozíciója meghatározását, hogy letölthető térképet javasolhasson a régióhoz.</string>
+    <string name="first_usage_wizard_desc">Engedélyezze az RoadCrew alkalmazásnak a pozíciója meghatározását, hogy letölthető térképet javasolhasson a régióhoz.</string>
     <string name="location_not_found">Hely nem található</string>
     <string name="no_inet_connection">Nincs internetkapcsolat</string>
     <string name="search_location">Hely keresése…</string>
@@ -1503,7 +1503,7 @@
     <string name="lang_ber">berber</string>
     <string name="do_not_show_startup_messages">Ne mutasson üzeneteket indításkor</string>
     <string name="parking_options">Parkolási beállítások</string>
-    <string name="full_version_thanks">Köszönjük, hogy megvásárolta az OsmAnd fizetős verzióját.</string>
+    <string name="full_version_thanks">Köszönjük, hogy megvásárolta az RoadCrew fizetős verzióját.</string>
     <string name="routing_attr_relief_smoothness_factor_name">Magasság ingadozásának kijelölése</string>
     <string name="right_side_navigation">Jobb oldali közlekedés</string>
     <string name="shared_string_automatic">Automatikus</string>
@@ -1550,7 +1550,7 @@
     <string name="animate_my_location">Saját pozíció animált mozgatása</string>
     <string name="shared_string_overview">Áttekintés</string>
     <string name="route_is_too_long_v2">Hosszú távolságoknál: ha 10 percen belül nem kap eredményt, adjon hozzá köztes úti célokat.</string>
-    <string name="osmand_extended_description_part1">OsmAnd (OSM Automated Navigation Directions) egy térkép- és navigációs alkalmazás, amellyel hozzáférhet az ingyenes, globális és kiváló minőségű OSM-adatokhoz. \n \nÉlvezze a hangalapú és vizuális navigációs szolgáltatást, tekintsen meg érdekes helyeket (POI-kat), hozzon létre és kezeljen GPX-nyomvonalakat, szintvonalak és topográfiai információk használatával (egy plugin segítségével), válasszon az autós, kerékpáros és gyalogos üzemmód közül, szerkessze az OSM-et, és használja ki a számos egyéb lehetőséget.</string>
+    <string name="osmand_extended_description_part1">RoadCrew (OSM Automated Navigation Directions) egy térkép- és navigációs alkalmazás, amellyel hozzáférhet az ingyenes, globális és kiváló minőségű OSM-adatokhoz. \n \nÉlvezze a hangalapú és vizuális navigációs szolgáltatást, tekintsen meg érdekes helyeket (POI-kat), hozzon létre és kezeljen GPX-nyomvonalakat, szintvonalak és topográfiai információk használatával (egy plugin segítségével), válasszon az autós, kerékpáros és gyalogos üzemmód közül, szerkessze az OSM-et, és használja ki a számos egyéb lehetőséget.</string>
     <string name="save_poi_too_many_uppercase">A név túl sok nagybetűt tartalmaz. Folytatja\?</string>
     <string name="private_access_routing_req">Az úti cél korlátozott hozzáférésű területen található. Engedélyezi a magánutak használatát ennél az útvonaltervnél?</string>
     <string name="restart_search">Keresés újraindítása</string>
@@ -1564,7 +1564,7 @@
     <string name="mapillary_widget_descr">Gyors Mapillary közreműködést tesz lehetővé.</string>
     <string name="mapillary_descr">Online utcaszintű képek mindenkinek. Fedezzen fel helyeket, működjön együtt másokkal, örökítse meg a világot.</string>
     <string name="plugin_mapillary_descr">Utcaszintű képek. Ön is közreműködhet. A meglévő adatok térképrétegként való megjelenítéséhez kapcsolja be a „Térkép beállítása” menüben az „Utcaszintű képek” lehetőséget.</string>
-    <string name="osmand_extended_description_part4">Síelés \nAz OsmAnd sítérkép-bővítménye lehetővé teszi a sípályák megjelenítését nehézség szerint, valamint további információkat, mint például a felvonók helyét, és más berendezéseket.</string>
+    <string name="osmand_extended_description_part4">Síelés \nAz RoadCrew sítérkép-bővítménye lehetővé teszi a sípályák megjelenítését nehézség szerint, valamint további információkat, mint például a felvonók helyét, és más berendezéseket.</string>
     <string name="online_photos">Online fényképek</string>
     <string name="improve_coverage_mapillary">Fényképes lefedettség javítása a Mapillaryvel</string>
     <string name="improve_coverage_install_mapillary_desc">A Mapillary telepítésével fényképeket adhat a térképhez.</string>
@@ -1574,7 +1574,7 @@
     <string name="osmand_plus_extended_description_part8">Hozzávetőleges lefedettség és térképminőség: \n • Nyugat-Európa: **** \n • Kelet-Európa: *** \n • Oroszország: *** \n • Észak-Amerika: *** \n • Dél-Amerika: ** \n • Ázsia: ** \n • Japán és Korea: *** \n • Közel-Kelet: ** \n • Afrika: ** \n • Antarktisz: * \n A világ legtöbb országa letölthető. \n Afganisztántól Zimbabwéig, Ausztráliától az Egyesült Államokig. Magyarország, Szlovákia, Románia, Ausztria, Németország, Olaszország, Mexikó, Egyesült Királyság, Spanyolország,…</string>
     <string name="distance_moving">Korrigált távolság</string>
     <string name="shared_string_permissions">Engedélyek</string>
-    <string name="import_gpx_failed_descr">Nem sikerült a fájl importálása. Győződjék meg arról, hogy az OsmAndnak van engedélye a fájl olvasására.</string>
+    <string name="import_gpx_failed_descr">Nem sikerült a fájl importálása. Győződjék meg arról, hogy az RoadCrewnak van engedélye a fájl olvasására.</string>
     <string name="store_tracks_in_monthly_directories">Rögzített nyomvonalak tárolása havi mappákban</string>
     <string name="shared_string_reset">Visszaállítás</string>
     <string name="shared_string_reload">Újratöltés</string>
@@ -1653,7 +1653,7 @@
     <string name="move_all_to_history">Összes áthelyezése az előzményekbe</string>
     <string name="add_point_before">Pont hozzáadása előtte</string>
     <string name="add_point_after">Pont hozzáadása utána</string>
-    <string name="measurement_tool_snap_to_road_descr">Az OsmAnd a kiválasztott profilnak megfelelő útvonallal fogja összekötni a pontokat.</string>
+    <string name="measurement_tool_snap_to_road_descr">Az RoadCrew a kiválasztott profilnak megfelelő útvonallal fogja összekötni a pontokat.</string>
     <string name="rendering_value_darkyellow_name">Sötétsárga</string>
     <string name="mappilary_no_internet_desc">A Mapillary-fényképek csak online láthatók.</string>
     <string name="retry">Újra</string>
@@ -1786,7 +1786,7 @@
     <string name="shared_string_restart">App újraindítása</string>
     <string name="maps_you_need_descr">A könyvjelzőzött cikkek alapján az alábbi térképek letöltését ajánljuk neked:</string>
     <string name="maps_you_need">Ajánlott térképek</string>
-    <string name="osmand_team">OsmAnd csapat</string>
+    <string name="osmand_team">RoadCrew csapat</string>
     <string name="popular_destinations">Népszerű úti célok</string>
     <string name="update_is_available">Frissítés érhető el</string>
     <string name="download_file">Fájl letöltése</string>
@@ -1814,7 +1814,7 @@
     <string name="get_unlimited_access">Szerezzen korlátlan hozzáférést</string>
     <string name="welcome_to_open_beta">Üdvözöljük a nyílt béta tesztben</string>
     <string name="wikivoyage_travel_guide">Útikalauzok</string>
-    <string name="wikivoyage_travel_guide_descr">Útikalauz a bolygó legérdekesebb helyeihez, az OsmAndon belül, internetkapcsolat nélkül.</string>
+    <string name="wikivoyage_travel_guide_descr">Útikalauz a bolygó legérdekesebb helyeihez, az RoadCrewon belül, internetkapcsolat nélkül.</string>
     <string name="download_maps_travel">Útikalauzok</string>
     <string name="shared_string_wikivoyage">Wikivoyage</string>
     <string name="article_removed">Szócikk eltávolítva</string>
@@ -1845,7 +1845,7 @@
     <string name="ski_map_render_descr">Síeléshez. Kiemeli a sípályákat, a felvonókat, a sífutónyomokat stb. A másodlagos térképobjektumokat elhalványítja.</string>
     <string name="light_rs_render_descr">Egyszerű vezetési stílus. Kellemes éjszakai mód, kontrasztos narancsszínű utak, elhalványított másodlagos térképobjektumok, topográfiai jellemzők, mint például a szintvonalak.</string>
     <string name="topo_render_descr">Túrázáshoz és természetben történő kerékpározáshoz. Szabad téren is olvasható. Kontrasztos utak és természeti objektumok, különböző úttípusok, speciális szintvonal-beállítások, további részletek. Ha beállítja az útburkolat épségének megjelenítését, akkor láthatóvá válik az út minősége. Éjszakai mód nincs.</string>
-    <string name="touring_view_render_descr">Turisztikai stílus erős kontraszttal és a legtöbb részlettel. Tartalmazza az OsmAnd alapértelmezett stílus össze beállítását, miközben megjeleníti a lehető legtöbb részletet, különösen utakat, ösvényeket és más utazási útvonalakat. A turistatérkép-szerű stílus világos különbséget tesz az úttípusok között. Alkalmas nappali, éjszakai és szabad téri használatra is.</string>
+    <string name="touring_view_render_descr">Turisztikai stílus erős kontraszttal és a legtöbb részlettel. Tartalmazza az RoadCrew alapértelmezett stílus össze beállítását, miközben megjeleníti a lehető legtöbb részletet, különösen utakat, ösvényeket és más utazási útvonalakat. A turistatérkép-szerű stílus világos különbséget tesz az úttípusok között. Alkalmas nappali, éjszakai és szabad téri használatra is.</string>
     <string name="default_render_descr">Általános felhasználású stílus. A sűrű városok világosan jelennek meg. Jellemzői az útvonalak, a burkolatminőség, a használati korlátozások, útszámozások, ösvények SAC/CAI-skála szerint, vadvízi sportlétesítmények, topográfiai jellemzők, mint például a szintvonalak.</string>
     <string name="quick_action_edit_actions">Műveletek szerkesztése</string>
     <string name="shared_string_dont">Nem</string>
@@ -1874,7 +1874,7 @@
     <string name="start_search_from_city">Település keresése</string>
     <string name="shared_string_restore">Visszaállítás</string>
     <string name="keep_passed_markers">Elhagyott jelölők megtartása a térképen</string>
-    <string name="ask_for_location_permission">A folytatáshoz engedélyezze a helymeghatározást az OsmAnd számára.</string>
+    <string name="ask_for_location_permission">A folytatáshoz engedélyezze a helymeghatározást az RoadCrew számára.</string>
     <string name="thank_you_for_feedback">Köszönjük a visszajelzésed</string>
     <string name="increase_search_radius_to">Keresési sugár kiterjesztése ekkorára: %1$s</string>
     <string name="point_deleted">%1$s pont törölve</string>
@@ -1911,7 +1911,7 @@
     <string name="osmand_extended_description_part3">Térkép \n • POI-k (érdekes helyek) megjelenítése a közelében \n • A térkép módosítása a mozgási iránya (vagy az iránytű) alapján \n • A pozíció és az irány megjelenítése, amerre tekint \n • A pozíció megosztása, hogy a barátai megtalálhassák \n • A legfontosabb helyei „Kedvencként” tárolása \n • Kiválaszthatja, hogyan jelenjenek meg a nevek a térképen: angolul, helyi nyelven, vagy fonetikus átírással \n • Speciális online csempék megjelenítése, műholdnézet (a Bingről), különböző fedőrétegek, mint túra/navigációs GPX-nyomvonalak, és további állítható átlátszóságú rétegek</string>
     <string name="osmand_extended_description_part6">Séta, túra, városnézés \n • A térkép megjeleníti a séta- és túraútvonalakat \n • A Wikipédia sok minden elmondhat az előnyben részesített nyelvén egy városnézés során \n • Tömegközlekedési megállók (busz, villamos, vonal), vonalnevekkel, melyek segítenek tájékozódni egy új városban \n • A gyalogos módban a GPS-navigáció gyalogutakból állítja össze az útvonalat \n • GPX-útvonalak feltöltése és követése, vagy saját rögzítése és megosztása</string>
     <string name="osmand_extended_description_part7">Közreműködés az OSM-ben \n • Adathibák jelentése \n • GPX-nyomvonalak feltöltése az OSM-be, közvetlenül az alkalmazásból \n • POI-k hozzáadása, és közvetlen feltöltés az OSM-be (vagy később, ha jelenleg offline van)</string>
-    <string name="osmand_extended_description_part8">Az OsmAnd egy aktívan fejlesztett nyílt forráskódú szoftver. Mindenki közreműködhet az alkalmazásban a hibák bejelentésével, a fordítások javításával vagy az új funkció programozásával. Továbbá a projekt az adományokra támaszkodik az új funkciók fejlesztésekor és azok tesztelésekor. 
+    <string name="osmand_extended_description_part8">Az RoadCrew egy aktívan fejlesztett nyílt forráskódú szoftver. Mindenki közreműködhet az alkalmazásban a hibák bejelentésével, a fordítások javításával vagy az új funkció programozásával. Továbbá a projekt az adományokra támaszkodik az új funkciók fejlesztésekor és azok tesztelésekor. 
 \n Közelítő térképlefedettség és minőség: 
 \n • Nyugat-Európa: **** 
 \n • Kelet-Európa: *** 
@@ -1927,7 +1927,7 @@
 \n Szerezzen egy megbízható navigátort az országába – legyen az Franciaország, Németország, Mexikó, az Egyesült Királyság, Spanyolország, Hollandia, az Egyesült Államok, Oroszország, Brazília vagy bármely más.</string>
     <string name="osmand_plus_extended_description_part1">Az OsmAnd+ (OSM Automated Navigation Directions) egy térkép és navigáció alkalmazás, amely hozzáférést nyújt az ingyenes, világszintű és magas minőségű OSM-adatokhoz. \n Élvezze a hang- és képalapú navigációt, a POI-k (érdekes helyek) megtekintését, hozzon létre és kezeljen GPX-nyomvonalakat, használjon domborzati ábrázolást és topográfiai adatokat, válasszon a vezetési, kerékpározási és gyalogos módok között, szerkessze az OSM-et, és még sok más. \n \n Az OsmAnd+ az alkalmazás fizetős verziója. A megvásárlásával támogatja a projektet, finanszírozza az új funkciók fejlesztését, és megkapja a legújabb frissítéseket. \n \n Néhány a főbb funkciókból:</string>
     <string name="osmand_plus_extended_description_part2">Navigáció \n • Online (gyorsabb) és offline (nincs roamingdíj külföldön) is működik \n • Kanyaronkénti hangutasítások vezetnek végig az úton (rögzített és előállított hangok) \n • Válaszható sávvezérlés, utcanevek, és becsült érkezési idő \n • Köztes pontok támogatása az útitervben \n • Az útvonal újratervezése kerül, ha letér róla \n• Célkeresés cím, típus (például: parkoló, étterem, hotel, benzinkút, múzeum), vagy földrajzi koordináták szerint</string>
-    <string name="quick_action_switch_day_night_descr">Az OsmAnd éjszakai és nappali módja között váltó kapcsoló.</string>
+    <string name="quick_action_switch_day_night_descr">Az RoadCrew éjszakai és nappali módja között váltó kapcsoló.</string>
     <string name="add_work">Munkahely hozzáadása</string>
     <string name="work_button">Munkahely</string>
     <string name="routeInfo_surface_name">Burkolat</string>
@@ -1962,7 +1962,7 @@
     <string name="avoid_pt_types_descr">A navigáció során elkerülendő tömegközlekedési módok kijelölése:</string>
     <string name="avoid_pt_types">Közlekedési módok kihagyása…</string>
     <string name="shared_string_walk">Séta</string>
-    <string name="public_transport_warning_descr_blog">Az OsmAnd útvonaltervezés módjáról a blogunkon olvashat.</string>
+    <string name="public_transport_warning_descr_blog">Az RoadCrew útvonaltervezés módjáról a blogunkon olvashat.</string>
     <string name="public_transport_warning_title">A tömegközlekedési útvonaltervezés jelenleg béta tesztelési állapotban van, hibák és pontatlanságok előfordulhatnak.</string>
     <string name="add_intermediate">Köztes úti cél hozzáadása</string>
     <string name="transfers_size">%1$d átszállás</string>
@@ -2023,7 +2023,7 @@
     <string name="files_failed">Nem sikerült %1$d fájl másolása (%2$s).</string>
     <string name="dont_move_maps">Ne mozogjon</string>
     <string name="public_transport_ped_route_title">Az út gyalogosan körülbelül %1$s, vagyis lehet, hogy gyorsabb, mint tömegközlekedéssel</string>
-    <string name="public_transport_no_route_title">Az OsmAnd sajnos nem talál a beállításoknak megfelelő útvonalat.</string>
+    <string name="public_transport_no_route_title">Az RoadCrew sajnos nem talál a beállításoknak megfelelő útvonalat.</string>
     <string name="public_transport_try_ped">Próbálja meg a gyalogos navigációt.</string>
     <string name="public_transport_try_change_settings">Próbálja meg módosítani a beállításokat.</string>
     <string name="public_transport_calc_pedestrian">Gyalogútvonal tervezése</string>
@@ -2033,15 +2033,15 @@
     <string name="keep_passed_markers_descr">A Kedvencek vagy GPX-útpontok csoportjaként hozzáadott és elhagyottként megjelölt jelölők a térképen maradnak. A jelölők akkor tűnnek el a térképről, ha a csoport nem aktív (ki van kapcsolva).</string>
     <string name="rate_dialog_descr">Ossza meg visszajelzését, és értékelje munkánkat a Google Playen.</string>
     <string name="shared_string_privacy_policy">Adatvédelmi irányelvek</string>
-    <string name="help_us_make_osmand_better">Segítsen, hogy jobbá tehessük az OsmAndot</string>
-    <string name="make_osmand_better_descr">Engedélyezze, hogy az OsmAnd névtelen alkalmazáshasználati adatokat gyűjtsön és dolgozzon fel. Nem gyűjtünk vagy tárolunk adatokat a helyzetéről vagy az Ön által a térképen megtekintett helyekről. 
+    <string name="help_us_make_osmand_better">Segítsen, hogy jobbá tehessük az RoadCrewot</string>
+    <string name="make_osmand_better_descr">Engedélyezze, hogy az RoadCrew névtelen alkalmazáshasználati adatokat gyűjtsön és dolgozzon fel. Nem gyűjtünk vagy tárolunk adatokat a helyzetéről vagy az Ön által a térképen megtekintett helyekről. 
 \n 
 \nBármikor módosíthatja a Beállítások → Adatvédelem és biztonság menüpontban.</string>
     <string name="choose_data_to_share">Válassza ki a megosztani kívánt adattípusokat:</string>
     <string name="downloaded_maps">Letöltött térképek</string>
     <string name="visited_screens">Meglátogatott képernyők</string>
     <string name="downloaded_maps_collect_descr">Segít megértenünk az ország- és régiótérképek népszerűségét.</string>
-    <string name="visited_screens_collect_descr">Segít megértenünk az OsmAnd funkcióinak népszerűségét.</string>
+    <string name="visited_screens_collect_descr">Segít megértenünk az RoadCrew funkcióinak népszerűségét.</string>
     <string name="privacy_and_security_change_descr">Koppintson az „Engedélyezésre”, ha egyetért a következővel: %1$s</string>
     <string name="settings_privacy_and_security">Adatvédelem és biztonság</string>
     <string name="settings_privacy_and_security_desc">A megosztandó adatok kijelölése</string>
@@ -2063,11 +2063,11 @@
     <string name="profile_alert_need_profile_name_title">Profil nevének megadása</string>
     <string name="profile_alert_need_profile_name_msg">Először meg kell adnia egy profilnevet.</string>
     <string name="profile_alert_duplicate_name_msg">Ilyen nevű profil már van</string>
-    <string name="profile_alert_cant_delete_base">Az OsmAnd alapprofiljai nem törölhetők</string>
+    <string name="profile_alert_cant_delete_base">Az RoadCrew alapprofiljai nem törölhetők</string>
     <string name="profile_alert_delete_title">Profil törlése</string>
     <string name="profile_alert_delete_msg">A(z) „%s” profil törlése</string>
     <string name="select_base_profile_dialog_title">Kiinduló profil kijelölése</string>
-    <string name="process_downloading_service">OsmAnd letöltési szolgáltatás</string>
+    <string name="process_downloading_service">RoadCrew letöltési szolgáltatás</string>
     <string name="shared_string_color_magenta">Magenta</string>
     <string name="shared_string_icon">Ikon</string>
     <string name="press_again_to_change_the_map_orientation">Koppintson ismét a térkép tájolásának módosításához</string>
@@ -2077,7 +2077,7 @@
     <string name="default_speed_setting_descr">Alapértelmezett sebességek beállításainak módosítása</string>
     <string name="new_profile">Új profil</string>
     <string name="shared_string_crash">Összeomlás</string>
-    <string name="last_launch_crashed">Az OsmAnd a legutóbbi futtatáskor összeomlott. A hibaüzenet megosztásával segítsen az OsmAnd javításában.</string>
+    <string name="last_launch_crashed">Az RoadCrew a legutóbbi futtatáskor összeomlott. A hibaüzenet megosztásával segítsen az RoadCrew javításában.</string>
     <string name="app_mode_ufo">UFO (azonosítatlan repülő tárgy)</string>
     <string name="app_mode_personal_transporter">Személyszállító (például: kerékpár)</string>
     <string name="app_mode_monowheel">Egykerekű</string>
@@ -2107,7 +2107,7 @@
     <string name="routing_profile_geocoding">Geokódolás</string>
     <string name="routing_profile_straightline">Légvonal</string>
     <string name="routing_profile_broutrer">BRouter (offline)</string>
-    <string name="osmand_default_routing">OsmAnd útvonaltervezés</string>
+    <string name="osmand_default_routing">RoadCrew útvonaltervezés</string>
     <string name="special_routing_type">Speciális útvonaltervezés</string>
     <string name="third_party_routing_type">Harmadik fél által biztosított útvonaltervezés</string>
     <string name="application_profiles">Alkalmazásprofilok</string>
@@ -2165,7 +2165,7 @@
     <string name="routing_attr_width_name">Szélesség</string>
     <string name="routing_attr_width_description">Adja meg az útvonalakon a járművekre vonatkozó szélességkorlátozást.</string>
     <string name="avoid_in_routing_descr_">Bizonyos útvonalak és úttípusok elkerülése</string>
-    <string name="shared_string_osmand_usage">OsmAnd által felhasznált</string>
+    <string name="shared_string_osmand_usage">RoadCrew által felhasznált</string>
     <string name="shared_string_tiles">Csempék</string>
     <string name="shared_string_maps">Térképek</string>
     <string name="shared_string_memory_used_tb_desc">Felhasznált %1$s TB</string>
@@ -2178,7 +2178,7 @@
     <string name="routing_attr_driving_style_prefer_unpaved_name">Burkolatlan utak előnyben részesítése</string>
     <string name="routing_attr_driving_style_prefer_unpaved_description">Útvonaltervezésnél a burkolatlan utak előnyben részesítése a burkoltakkal szemben.</string>
     <string name="osmand_settings_descr">Az egész alkalmazásra érvényes</string>
-    <string name="osmand_settings">OsmAnd beállítások</string>
+    <string name="osmand_settings">RoadCrew beállítások</string>
     <string name="shared_string_calculate">Tervezés</string>
     <string name="layer_osm_edits">OSM-szerkesztések</string>
     <string name="quick_action_contour_lines_descr">Gomb, amely a térképen megjeleníti vagy elrejti a szintvonalakat.</string>
@@ -2187,8 +2187,8 @@
     <string name="data_storage_space_description">%1$s GB szabad (%2$s GB-ból)</string>
     <string name="enter_path_to_folder">Adja meg a mappa elérési útvonalát</string>
     <string name="shared_string_select_folder">Mappa…</string>
-    <string name="paste_Osmand_data_folder_path">Az OsmAnd-adatokat tartalmazó mappa elérési útvonalának beillesztése</string>
-    <string name="change_osmand_data_folder_question">Módosítja az OsmAnd-adatok mappáját?</string>
+    <string name="paste_Osmand_data_folder_path">Az RoadCrew-adatokat tartalmazó mappa elérési útvonalának beillesztése</string>
+    <string name="change_osmand_data_folder_question">Módosítja az RoadCrew-adatok mappáját?</string>
     <string name="move_maps_to_new_destination">Mozgatás az új helyre</string>
     <string name="shared_string_memory_tb_desc">%1$s TB</string>
     <string name="shared_string_memory_gb_desc">%1$s GB</string>
@@ -2207,7 +2207,7 @@
     <string name="rendering_attr_piste_difficulty_aerialway_name">Kötélpályás felvonó</string>
     <string name="switch_profile">Profil váltás</string>
     <string name="application_profile_changed">Alkalmazásprofil módosítva a következőre: „%s”</string>
-    <string name="change_data_storage_full_description">Áthelyezi az OsmAnd fájlokat az új helyre\?
+    <string name="change_data_storage_full_description">Áthelyezi az RoadCrew fájlokat az új helyre\?
 \n%1$s &gt; %2$s</string>
     <string name="rendering_value_white_name">Fehér</string>
     <string name="swap_two_places">%1$s és %2$s felcserélése</string>
@@ -2301,7 +2301,7 @@
     <string name="join_segments">Szakaszok egyesítése</string>
     <string name="delete_profiles_descr">Az Alkalmaz gombra koppintva a törölt profilok végérvényesen elvesznek.</string>
     <string name="select_color">Szín kijelölése</string>
-    <string name="edit_profiles_descr">Az alapértelmezett OsmAnd-profilok nem törölhetők, viszont letilthatók (az előző képernyőn) vagy letolhatók a lista aljára.</string>
+    <string name="edit_profiles_descr">Az alapértelmezett RoadCrew-profilok nem törölhetők, viszont letilthatók (az előző képernyőn) vagy letolhatók a lista aljára.</string>
     <string name="edit_profiles">Profilok szerkesztése</string>
     <string name="profile_appearance">Profil megjelenése</string>
     <string name="choose_icon_color_name">Ikon, szín és név</string>
@@ -2321,7 +2321,7 @@
 \n • Bekapcsolható útvonalrögzítés helyi GPX-fájlba vagy online módon
 \n • Bekapcsolható sebesség- és magasságkijelzés
 \n • Szintvonalak és domborzatárnyékolás megjelenítése (bővítmény telepítése után)</string>
-    <string name="osmand_plus_extended_description_part7">Szerkessze közvetlenül az OpenStreetMapet \n • Jelentsen be hibákat \n • Töltsön fel GPX-nyomvonalakat az OSM-re közvetlenül az alkalmazásból \n • Adjon hozzá érdekes pontokat és töltse fel őket közvetlenül (vagy később offline módon) az OSM-re \n • Beállítható útvonalrögzítés a háttérben is (miközben az eszköz alvó üzemmódban van) \n Az OsmAnd aktívan fejlesztett nyílt forráskódú szoftver. Bárki közreműködhet az alkalmazás fejlesztésében hibák bejelentésével, a fordítások javításával vagy új funkciók kódolásával. A projekt az új funkciók kódolásának és tesztelésének finanszírozását lehetővé tevő pénzügyi hozzájárulásoktól függ.</string>
+    <string name="osmand_plus_extended_description_part7">Szerkessze közvetlenül az OpenStreetMapet \n • Jelentsen be hibákat \n • Töltsön fel GPX-nyomvonalakat az OSM-re közvetlenül az alkalmazásból \n • Adjon hozzá érdekes pontokat és töltse fel őket közvetlenül (vagy később offline módon) az OSM-re \n • Beállítható útvonalrögzítés a háttérben is (miközben az eszköz alvó üzemmódban van) \n Az RoadCrew aktívan fejlesztett nyílt forráskódú szoftver. Bárki közreműködhet az alkalmazás fejlesztésében hibák bejelentésével, a fordítások javításával vagy új funkciók kódolásával. A projekt az új funkciók kódolásának és tesztelésének finanszírozását lehetővé tevő pénzügyi hozzájárulásoktól függ.</string>
     <string name="release_3_4">• Alkalmazásprofilok: egyedi profil létrehozása saját igényei szerint, egyedi ikonnal és színnel \n \n • Most már minden profilban testre szabhatók az alapértelmezések és legkisebb/legnagyobb sebességek \n \n • Új modul a jelenlegi koordinátáknak \n \n • Új opciók az iránytű és a sugárirányú vonalzó térképen való megjelenítéséhez \n \n • A háttérben történő nyomvonalrögzítés hibáinak javítása \n \n • Háttérben történő térképletöltés javítása \n \n • A „Képernyő bekapcsolása” opció visszaállítása \n \n • A Wikipédia-nyelv kijelölésének javítása \n \n • Az iránytűgomb navigáció közbeni viselkedésének javítása \n \n • Más hibajavítások</string>
     <string name="release_3_5">• Frissített alkalmazás- és profilbeállítások: a beállítások most típusonként vannak elrendezve. Minden profil külön-külön testre szabható. \n \n • Az új térképletöltési párbeszédablak böngészés közben javaslatot tesz a letöltendő térképre \n \n • A sötét téma hibáinak javítása \n \n • Számos útvonaltervezési probléma javítása világszerte \n \n • Frissített alaptérkép részletesebb úthálózattal \n \n • Elárasztott területek javítása világszerte \n \n • Sí útvonaltervezés: magassági profil és az útvonal bonyolultságának hozzáadása az útvonal részleteihez \n \n • További hibajavítások</string>
     <string name="quick_action_directions_from_desc">Gomb, amely beállítja a képernyő közepét kiindulási pontnak. Ezután kérni fog egy úti célt vagy elindítja az útvonaltervezést.</string>
@@ -2343,7 +2343,7 @@
     <string name="live_monitoring_descr">Az utazás rögzítésével lehetővé teszi a jelenlegi pozíció megosztását.</string>
     <string name="live_monitoring">Online nyomvonalrögzítés</string>
     <string name="save_track_logging_accuracy">Naplózás pontossága</string>
-    <string name="tracks_view_descr">Az összes rögzített nyomvonal megtalálható itt: %1$s, vagy az OsmAnd mappában.</string>
+    <string name="tracks_view_descr">Az összes rögzített nyomvonal megtalálható itt: %1$s, vagy az RoadCrew mappában.</string>
     <string name="multimedia_notes_view_descr">Az OSM-jegyzeteit megtalálja itt: %1$s.</string>
     <string name="video_notes">Videójegyzetek</string>
     <string name="photo_notes">Fényképes jegyzetek</string>
@@ -2423,7 +2423,7 @@
     <string name="terrain_empty_state_text">Megjeleníti a térképen a domborzatárnyékolást vagy a lejtést. Ezekről a térképfajtákról a honlapunkon olvashat.</string>
     <string name="app_mode_ski_touring">Túrasízés</string>
     <string name="app_mode_ski_snowmobile">Motoros szán</string>
-    <string name="custom_osmand_plugin">Egyéni OsmAnd-bővítmény</string>
+    <string name="custom_osmand_plugin">Egyéni RoadCrew-bővítmény</string>
     <string name="settings_item_read_error">Sikertelen olvasás innen: \'%1$s\'.</string>
     <string name="settings_item_write_error">Sikertelen írás ide: \'%1$s\'.</string>
     <string name="ui_customization">Felhasználói felület testreszabása</string>
@@ -2482,7 +2482,7 @@
     <string name="lang_lmo">lombard</string>
     <string name="custom_color">Egyéni szín</string>
     <string name="extra_maps_menu_group">Egyéb térképek</string>
-    <string name="tracker_item">OsmAnd helymegosztás</string>
+    <string name="tracker_item">RoadCrew helymegosztás</string>
     <string name="quick_action_item">Gyors-művelet</string>
     <string name="map_markers_item">Térképjelölők</string>
     <string name="favorites_item">Kedvencek</string>
@@ -2511,10 +2511,10 @@
     <string name="shared_string_always">Mindig</string>
     <string name="screen_control">Kijelző beállításai</string>
     <string name="system_screen_timeout">Képernyő-időkorlát: rendszerbeállítás használata</string>
-    <string name="turn_screen_on_descr">Válassza ki a kijelző felébresztési lehetőségeit (fontos, hogy az OsmAnd az előtérben fusson, amikor az eszköz lezárásra kerül):</string>
+    <string name="turn_screen_on_descr">Válassza ki a kijelző felébresztési lehetőségeit (fontos, hogy az RoadCrew az előtérben fusson, amikor az eszköz lezárásra kerül):</string>
     <string name="turn_screen_on_navigation_instructions_descr">Valamennyi navigációs utasítás előtt a kijelző bekapcsolódik.</string>
     <string name="turn_screen_on_navigation_instructions">Navigációs utasítások</string>
-    <string name="turn_screen_on_power_button_descr">Az eszköz bekapcsológombjának megnyomásával a képernyő bekapcsol, a zárolási képernyő fölött pedig megjelenik az OsmAnd.</string>
+    <string name="turn_screen_on_power_button_descr">Az eszköz bekapcsológombjának megnyomásával a képernyő bekapcsol, a zárolási képernyő fölött pedig megjelenik az RoadCrew.</string>
     <string name="turn_screen_on_power_button">Bekapcsológomb</string>
     <string name="turn_screen_on_proximity_sensor">Közelségérzékelő</string>
     <string name="keep_screen_on">Kijelző maradjon bekapcsolva</string>
@@ -2536,7 +2536,7 @@
     <string name="width_limit_description">Adja meg járműve szélességét (a széles járművekre útvonal-korlátozások vonatkozhatnak).</string>
     <string name="height_limit_description">Adja meg a járműve magasságát (a magas járművekre útvonal-korlátozások vonatkozhatnak).</string>
     <string name="weight_limit_description">Adja meg a járműve tömegét (a nehéz járművekre útvonal-korlátozások vonatkozhatnak).</string>
-    <string name="gpx_parse_error">Hiba történt egy GPX-fájlban\n\nTovábbi vizsgálathoz kapcsolatba léphet az OsmAnd ügyfélszolgálattal.</string>
+    <string name="gpx_parse_error">Hiba történt egy GPX-fájlban\n\nTovábbi vizsgálathoz kapcsolatba léphet az RoadCrew ügyfélszolgálattal.</string>
     <string name="export_import_quick_actions_with_profiles_promo">Gyors-műveletek exportálása vagy importálása az alkalmazásprofilokkal .</string>
     <string name="shared_string_delete_all_q">Összes törlése\?</string>
     <string name="delete_all_actions_message_q">Véglegesen töröl %d gyors-műveletet?</string>
@@ -2560,7 +2560,7 @@
     <string name="uninstall_speed_cameras">Sebességmérő kamerák eltávolítása</string>
     <string name="shared_string_legal">Jogi</string>
     <string name="speed_camera_pois">Sebességmérő kamerák</string>
-    <string name="speed_cameras_legal_descr">Bizonyos országokban és régiókban jogszabály tiltja a sebességmérő kamerákra figyelmeztető alkalmazások használatát. \n \nOrszágának törvényei alapján kell döntenie. \n \n%1$s: figyelmeztetéseket és értesítéseket kap a sebességmérő kamerákról. \n \n%2$s: törlődik az összes sebességmérő kamerával kapcsolatos adat (riasztások, értesítések, érdekes helyek), amit csak az OsmAnd teljes újratelepítésével állíthat helyre.</string>
+    <string name="speed_cameras_legal_descr">Bizonyos országokban és régiókban jogszabály tiltja a sebességmérő kamerákra figyelmeztető alkalmazások használatát. \n \nOrszágának törvényei alapján kell döntenie. \n \n%1$s: figyelmeztetéseket és értesítéseket kap a sebességmérő kamerákról. \n \n%2$s: törlődik az összes sebességmérő kamerával kapcsolatos adat (riasztások, értesítések, érdekes helyek), amit csak az RoadCrew teljes újratelepítésével állíthat helyre.</string>
     <string name="keep_active">Maradjanak</string>
     <string name="shared_string_uninstall">Eltávolítás</string>
     <string name="speed_cameras_alert">Bizonyos országokban a törvény tiltja az értesítések használatát a sebességmérő kamerákhoz.</string>
@@ -2573,7 +2573,7 @@
     <string name="speed_cameras_removed_descr">Az eszköz nem tartalmaz adatokat a sebességmérő kamerákról.</string>
     <string name="replace_all_desc">A jelenlegi elemek lecserélésre kerülnek a fájlban lévőkre</string>
     <string name="keep_both_desc">Az importált elemek előtaggal lesznek hozzáadva</string>
-    <string name="import_duplicates_description">Az OsmAnd már tartalmaz az importálttal megegyező nevű elemeket.
+    <string name="import_duplicates_description">Az RoadCrew már tartalmaz az importálttal megegyező nevű elemeket.
 \n
 \nVálasszon egy műveletet.</string>
     <string name="import_duplicates_title">Néhány elem már létezik</string>
@@ -2620,7 +2620,7 @@
     <string name="gpx_split_interval_descr">Válassza ki azt az időközt, amelyenként megjelenjenek a távolság- vagy időjelölések a nyomvonalon.</string>
     <string name="monitoring_min_distance_descr">Ennek a szűrőnek a bekapcsolása kiküszöböli további adatok rögzítését akkor, ha mozgás gyakorlatilag nem érzékelhető. Emellett javul a nyomvonalak térbeli megjelenése, utólagos feldolgozás nélkül is.</string>
     <string name="multimedia_rec_split_title">Rögzítés vágása</string>
-    <string name="disable_recording_once_app_killed_descrp">A nyomvonal naplózása szünetelni fog, amikor az alkalmazást (újabb alkalmazásokkal) kilövik. (Ilyenkor az OsmAnd háttérjelzése is eltűnik az Android értesítési sávjáról.)</string>
+    <string name="disable_recording_once_app_killed_descrp">A nyomvonal naplózása szünetelni fog, amikor az alkalmazást (újabb alkalmazásokkal) kilövik. (Ilyenkor az RoadCrew háttérjelzése is eltűnik az Android értesítési sávjáról.)</string>
     <string name="monitoring_min_speed_descr_recommendation">Ajánlás: Először próbálja meg a mozgásérzékelést használni a legkisebb elmozdulást naplózó szűrővel (B). Ez jobb eredményeket hozhat, és kevesebb adatot veszít. Ha a nyomvonalak alacsony sebességnél továbbra is zajosak, próbálkozzon itt nullától eltérő értékekkel. Felhívjuk figyelmét, hogy egyes (hálózatalapú módszereket használó) mérőeszközök egyáltalán nem adnak sebességértéket, így ebben az esetben semmi sem lesz felvéve.</string>
     <string name="street_level_imagery">Utcaszintű képek</string>
     <string name="simplified_track_description">Csak az út vonala lesz elmentve, az útpontok törlődnek.</string>
@@ -2639,7 +2639,7 @@
     <string name="shared_string_gpx_files">Nyomvonalak</string>
     <string name="layer_gpx_layer">Nyomvonalak</string>
     <string name="monitoring_min_speed_descr">Ez egy alacsony sebesség szűrő, amely egy bizonyos sebesség alatt nem rögzít pontokat. Ezáltal a rögzített nyomvonalak simábbnak néznek ki a térképen.</string>
-    <string name="checking_for_duplicate_description">Az OsmAnd ellenőrzi, hogy a(z) %1$s tartalmaz-e duplikátumokat a már meglévő elemekkel az alkalmazásban.\n\nEz eltarthat egy ideig.</string>
+    <string name="checking_for_duplicate_description">Az RoadCrew ellenőrzi, hogy a(z) %1$s tartalmaz-e duplikátumokat a már meglévő elemekkel az alkalmazásban.\n\nEz eltarthat egy ideig.</string>
     <string name="navigate_to_track_descr">Navigáció a pozíciómtól a nyomvonalhoz</string>
     <string name="plan_route_create_new_route">Új útvonal létrehozása</string>
     <string name="add_hidden_group_info">A hozzáadott pont itt található: „%s”. A térképen való megjelenítéshez vonja vissza a kijelölt csoport elrejtését.</string>
@@ -2685,7 +2685,7 @@
     <string name="only_selected_segment_recalc">Csak a kijelölt szakasz lesz újraszámítva a kiválasztott profilnak megfelelően.</string>
     <string name="plan_route_exit_dialog_descr">Elveti az összes módosítást a tervezett útvonalon\?</string>
     <string name="follow_track_descr">Válassza ki a követendő nyomvonalfájlt</string>
-    <string name="listed_exist">A felsorolt %1$s már létezik az OsmAndban.</string>
+    <string name="listed_exist">A felsorolt %1$s már létezik az RoadCrewban.</string>
     <string name="all_previous_segments">Minden korábbi szakasz</string>
     <string name="plan_route_select_track_file_for_open">Válassza ki a megnyitni kívánt nyomvonalfájlt.</string>
     <string name="plan_route_change_route_type_before">Útvonaltípus módosítása ez előtt:</string>
@@ -2775,7 +2775,7 @@
     <string name="plan_route_split_after">Elvágás ez után:</string>
     <string name="plan_route_add_new_segment">Új szakasz hozzáadása</string>
     <string name="release_3_9">• Lehetőség az összes adat exportálására és importálására, beleértve a beállításokat, erőforrásokat és a kedvenceket is \n \n • Útvonaltervezés: grafikonok a nyomvonalszakaszokhoz útvonallal, valamint lehetőség több nyomvonalszakasz létrehozására és szerkesztésére \n \n • OAuth hitelesítési módszer az OpenStreetMap-hez, az OSM-párbeszédpanelek felhasználói felületének javítása \n \n • Egyéni színek támogatása a kedvenceknél és a nyomvonalak útpontjainál</string>
-    <string name="profile_type_osmand_string">OsmAnd-profil</string>
+    <string name="profile_type_osmand_string">RoadCrew-profil</string>
     <string name="profile_type_user_string">Felhasználói profil</string>
     <string name="reverse_all_points">Összes pont megfordítása</string>
     <string name="profile_by_default_description">Jelölje ki az alkalmazás elindításakor használandó profilt.</string>
@@ -2887,7 +2887,7 @@
     <string name="track_has_no_altitude">A nyomvonal nem tartalmaz magassági adatokat.</string>
     <string name="track_has_no_speed">A nyomvonal nem tartalmaz sebességadatokat.</string>
     <string name="select_another_colorization">Válasszon másik színezéstípust.</string>
-    <string name="trip_recording_logging_interval_info">A naplózási időköz azt az időtartamot határozza meg, amelyen belül az OsmAnd lekérdezi a jelenlegi pozíció adatait.</string>
+    <string name="trip_recording_logging_interval_info">A naplózási időköz azt az időtartamot határozza meg, amelyen belül az RoadCrew lekérdezi a jelenlegi pozíció adatait.</string>
     <string name="trip_recording_save_and_continue">Mentés és folytatás</string>
     <string name="lost_data_warning">Minden nem mentett adat törlődni fog.</string>
     <string name="show_start_dialog">Kezdő párbeszéd megjelenítése</string>
@@ -2917,7 +2917,7 @@
     <string name="user_points">Felhasználói pontok</string>
     <string name="output">Kimenet</string>
     <string name="srtm_download_single_help_message">Válassza ki a mértékegységet. A formátum módosításához újra le kell töltenie a fájlt.</string>
-    <string name="srtm_download_list_help_message">Az OsmAnd méterben és lábban adja meg a szintvonalak közötti távolságot. A mértékegység módosításához újra le kell töltenie a fájlt.</string>
+    <string name="srtm_download_list_help_message">Az RoadCrew méterben és lábban adja meg a szintvonalak közötti távolságot. A mértékegység módosításához újra le kell töltenie a fájlt.</string>
     <string name="shared_string_feet">láb</string>
     <string name="srtm_unit_format">Szintvonalak mértékegysége</string>
     <string name="route_line_use_gradient_coloring">Az útvonal a lejtési viszonyok szerint színezett.</string>
@@ -3052,14 +3052,14 @@
     <string name="track_has_no_needed_data">A nyomvonal nem tartalmazza a szükséges adatokat.</string>
     <string name="backup_error_subscription_was_expired_descr">Az OsmAnd Pro előfizetése lejárt. A biztonsági mentés használatához meg kell újítania. Az OsmAnd Cloudból továbbra is visszaállíthatja az adatokat.</string>
     <string name="contour_lines_hillshade_slope">Szintvonalak, domborzatárnyékolás, lejtési viszonyok</string>
-    <string name="backup_deleting_all_data_descr">Várjon, amíg az OsmAnd törli adatait a felhőből. Az eszközön lévő összes adat érintetlenül marad.</string>
+    <string name="backup_deleting_all_data_descr">Várjon, amíg az RoadCrew törli adatait a felhőből. Az eszközön lévő összes adat érintetlenül marad.</string>
     <string name="backup_deleted_all_data_descr">Minden adata sikeresen törlődött az OsmAnd Cloudból.</string>
     <string name="backup_version_history_removed">Az összes verzióelőzmény el lett távolítva.</string>
     <string name="backup_data_removed">Minden adat el lett távolítva.</string>
     <string name="benefits_for_contributors">Előnyök az OSM aktív szerkesztőinek</string>
     <string name="benefits_for_contributors_primary_descr">Az aktív OpenStreetMap.org szerkesztők korlátlan óránkénti térképfrissítésre lehetnek jogosultak.</string>
     <string name="benefits_for_contributors_secondary_descr">Jelentkezzen be az OpenStreetMapre, hogy ellenőrizze, jogosult-e korlátlan havi és óránkénti térképfrissítésre.</string>
-    <string name="enough_contributions_descr">Gratulálunk, elegendő OpenStreetMap-szerkesztést végzett, így most korlátlanul élvezheti az OsmAnd térképfrissítéseit!</string>
+    <string name="enough_contributions_descr">Gratulálunk, elegendő OpenStreetMap-szerkesztést végzett, így most korlátlanul élvezheti az RoadCrew térképfrissítéseit!</string>
     <string name="shared_string_contributions">Hozzájárulások</string>
     <string name="contributions_may_calculate_with_delay">A szerkesztések kiszámítása több órát is igénybe vehet.</string>
     <string name="map_updates_are_unavailable_yet">Még nem érhető el térképfrissítés :-(</string>
@@ -3069,7 +3069,7 @@
     <string name="walking_route_osmc_description">Útvonalak színezése egyedi helyi színük (ha az OpenStreetMapen meg van adva) és típusuk (helyi, regionális, nemzetközi) szerint.</string>
     <string name="option_available_only_in_osmand_pro">Csak az OsmAnd Pro előfizetés részeként érhető el.</string>
     <string name="purchases_feature_desc_pro_widgets">Szerezze meg az OsmAnd Pro funkcióit is: útvonalak színezése és még sok más.</string>
-    <string name="explore_osmnad_plans_to_find_suitable">Ismerje meg az OsmAnd előfizetési csomagjait, és találja meg az Önnek megfelelőt.</string>
+    <string name="explore_osmnad_plans_to_find_suitable">Ismerje meg az RoadCrew előfizetési csomagjait, és találja meg az Önnek megfelelőt.</string>
     <string name="routes_color_by_type">Útvonalak színezése…</string>
     <string name="shared_string_relation">Kapcsolat</string>
     <string name="rendering_value_walkingRoutesScopeOSMC_description">Színezés hálózati hovatartozás szerint.</string>
@@ -3118,7 +3118,7 @@
     <string name="search_title">Keresés: %1$s</string>
     <string name="exit_pan_mode_descr">A pásztázó módból való kilépéshez nyomja meg a Kijelölés gombot</string>
     <string name="icon_group_nautical">Hajózás</string>
-    <string name="internal_app_storage_description">Belső tárhely, minden felhasználó és más alkalmazások elől elrejtve, így csak az OsmAnd férhet hozzá az adataihoz.</string>
+    <string name="internal_app_storage_description">Belső tárhely, minden felhasználó és más alkalmazások elől elrejtve, így csak az RoadCrew férhet hozzá az adataihoz.</string>
     <string name="purchases_feature_desc_android_auto">Elhozza az OsmAnd offline térképeit és navigációját az autója képernyőjére, és integrálódik a jármű kezelőszerveivel.</string>
     <string name="shared_string_details">Részletek</string>
     <string name="shared_app_storage_description">A megosztott memória már nem érhető el az Android tárhely-hozzáférés változásai miatt.</string>
@@ -3128,7 +3128,7 @@
     <string name="release_4_1">• Android Auto kezdeti támogatása \n \n • Felhasználói felület frissítése az UTM koordináták kereséséhez \n \n • GPS-szűrő a GPX-nyomvonalakhoz \n \n • Tengerszint feletti magasságot megjelenítő modul (Pro) \n \n • Kedvencek: megtekinthetők a legutóbb használt ikonok \n \n • Útvonaltervezés: indítás után a kiválasztott profil használata \n \n • Javult a Mapillary-réteg, a bővítmény mostantól alapértelmezés szerint le van tiltva \n \n • Új képernyő az alkalmazásban lévő összes előzmény kezeléséhez \n \n • Az alkalmazás újraindítása után a térkép tájolása nem áll vissza az alapértelmezés szerinti irányba \n \n • Javult az SRTM magasságjelző megjelenítése \n \n • Javultak az arab térképfeliratok \n \n • Különböző útvonaltervezési problémák javítása</string>
     <string name="android_auto_purchase_request_title">Ha az OsmAndot az Android Autóval szeretné használni, vásárolja meg az OsmAnd Pro vagy a Maps+ alkalmazást</string>
     <string name="continue_on_phone">Folytatás a mobileszközön</string>
-    <string name="location_access_request_title">Az OsmAndnak a Hely engedélyre van szüksége a navigációhoz.</string>
+    <string name="location_access_request_title">Az RoadCrewnak a Hely engedélyre van szüksége a navigációhoz.</string>
     <string name="android_auto_map_placeholder_title">A térkép a jármű képernyőjén jelenik meg.</string>
     <string name="android_auto_map_placeholder_descr">A térképnek az alkalmazásban történő megjelenítéséhez válassza le az eszközt az Android Auto rendszerről.</string>
     <string name="location_access_request_action">Hozzáférés engedélyezése</string>
@@ -3161,7 +3161,7 @@
     <string name="from_to_with_params">Innen: %1$s, ide: %2$s</string>
     <string name="storage_copying_files_size">%1$s fájl (%2$s) másolása</string>
     <string name="storage_found_files_size">%1$s fájl (%2$s) található</string>
-    <string name="shared_string_skip_warning">Biztosan kihagyja az átköltöztetést\? Az OsmAnd többé nem fér hozzá a közös tárhelyen lévő fájljaihoz.
+    <string name="shared_string_skip_warning">Biztosan kihagyja az átköltöztetést\? Az RoadCrew többé nem fér hozzá a közös tárhelyen lévő fájljaihoz.
 \n
 \nAz alkalmazás az új adatmappa használatával fog elindulni.</string>
     <string name="shared_string_migration">Átköltöztetés</string>
@@ -3170,8 +3170,8 @@
     <string name="progress_complete">%1$s kész</string>
     <string name="storage_found_files_descr">Koppintson a(z) „%1$s” gombra, hogy átmásoljon %2$s fájlt innen: „%3$s”, ide: „%4$s”. Ez eltarthat egy ideig.</string>
     <string name="storage_copied_files_size">Feldolgozva %1$s fájl, (%2$s)</string>
-    <string name="shared_storage_third_step">Adjon engedélyt a mappa eléréséhez. Enélkül az OsmAnd nem tud fájlokat másolni.</string>
-    <string name="shared_storage_first_step">Nyomja meg a(z) „%1$s” gombot.\nA fájlkezelő meg fog nyílni, ahol meg kell keresnie és meg kell nyitnia az OsmAnd mappát.</string>
+    <string name="shared_storage_third_step">Adjon engedélyt a mappa eléréséhez. Enélkül az RoadCrew nem tud fájlokat másolni.</string>
+    <string name="shared_storage_first_step">Nyomja meg a(z) „%1$s” gombot.\nA fájlkezelő meg fog nyílni, ahol meg kell keresnie és meg kell nyitnia az RoadCrew mappát.</string>
     <string name="shared_storage_second_step">Kattintson az „Ezen mappa használata” gombra.</string>
     <string name="folder_access_denied">Engedély szükséges a kiválasztott mappa eléréséhez.</string>
     <string name="copying_completed">Másolva</string>
@@ -3184,7 +3184,7 @@
     <string name="rendering_attr_natureReserves_description">Tájvédelmi körzetek, természetvédelmi területek és nemzeti parkok megjelenítése.</string>
     <string name="show_parameter_seekbar">Paraméterkereső sáv megjelenítése</string>
     <string name="shared_storage_last_step">Utána adhatja meg az új adatmappát.</string>
-    <string name="shared_storage_migration_descr">Az Android tárhelyelérési szabályainak változása miatt az OsmAnd már nem használhatja a(z) %1$s mappát.
+    <string name="shared_storage_migration_descr">Az Android tárhelyelérési szabályainak változása miatt az RoadCrew már nem használhatja a(z) %1$s mappát.
 \n
 \nÁt kell másolnia az összes adatát az új mappába.</string>
     <string name="migration_files_present">A(z) %1$d fájl (%2$s) már létezik a(z) „%3$s” helyen, és nincs felülírva.</string>
@@ -3222,8 +3222,8 @@
     <string name="gps_filter_smoothing_desc">Állítsa be a pontok közti távolság korlátját.
 \nAzok a nyomvonalpontok, amelyek nincsenek legalább ekkora távolságra az előző látható ponttól, el lesznek rejtve.
 \nVegye figyelembe, hogy a túl magas korlát túlságosan leegyszerűsítheti a nyomvonalat.</string>
-    <string name="gps_filter_actions_description">Az OsmAnd a fájl frissítése nélkül fogja alkalmazni a nyomvonal változásait. Kézileg mentheti a módosításokat.</string>
-    <string name="storage_migration_wrong_folder_warning">Nem találhatók OsmAnd-adatok a kiválasztott mappában. Próbálja újra.</string>
+    <string name="gps_filter_actions_description">Az RoadCrew a fájl frissítése nélkül fogja alkalmazni a nyomvonal változásait. Kézileg mentheti a módosításokat.</string>
+    <string name="storage_migration_wrong_folder_warning">Nem találhatók RoadCrew-adatok a kiválasztott mappában. Próbálja újra.</string>
     <string name="use_routing_fallback_description">Offline útvonaltervezés használata, ha az online útvonaltervezés nem áll rendelkezésre.</string>
     <string name="use_routing_fallback">Tartalék offline útvonaltervezés</string>
     <string name="created_on">Létrehozva:</string>
@@ -3270,7 +3270,7 @@
     <string name="exit_import">Kilép\?</string>
     <string name="import_tracks_descr">„%1$s” %2$s különálló nyomvonalat tartalmaz. Válassza ki az importálandókat.</string>
     <string name="quick_action_add_route_descr">Gomb, amellyel a képernyő közepéről lehet útvonalat indítani.</string>
-    <string name="location_source_descr">Alapértelmezés szerint a Google Playről telepített OsmAnd a következő segítségével határozza meg a pozíciót: %1$s\n \nHa ez pontatlan, vagy az eszközt %2$s nélkül használja, próbáljon meg átváltani a következőre: „%3$s”</string>
+    <string name="location_source_descr">Alapértelmezés szerint a Google Playről telepített RoadCrew a következő segítségével határozza meg a pozíciót: %1$s\n \nHa ez pontatlan, vagy az eszközt %2$s nélkül használja, próbáljon meg átváltani a következőre: „%3$s”</string>
     <string name="location_source">Helymeghatározás forrása</string>
     <string name="shared_string_shape">Alak</string>
     <string name="default_appearance_desc">Az alapértelmezett szín, ikon és alak a csoporthoz hozzáadott kedvenc pontokra lesz érvényes.</string>
@@ -3439,7 +3439,7 @@
     <string name="next_live_update_time">Következő frissítés: %1$s-kor.</string>
     <string name="altitude_correction">Magasságkorrekció</string>
     <string name="updated_map_time">Frissítve: %1$s.</string>
-    <string name="calculate_online_altitude_descr">Online magasságszámítás az OsmAnd kiszolgálóin, műholdképek és digitális magassági modellek alapján. Az eszköz által rögzített magasságtól való eltérés felhasználható magasságkorrekcióként.</string>
+    <string name="calculate_online_altitude_descr">Online magasságszámítás az RoadCrew kiszolgálóin, műholdképek és digitális magassági modellek alapján. Az eszköz által rögzített magasságtól való eltérés felhasználható magasságkorrekcióként.</string>
     <string name="next_live_update_date_and_time">Következő frissítés: %1$s %2$s-kor.</string>
     <string name="includes_osm_changes_until">Az OSM-en %1$s-ig végrehajtott módosításokat tartalmazza.</string>
     <string name="marker_2nd">2. jelölő</string>
@@ -3467,7 +3467,7 @@
     <string name="rendering_attr_depthContourWidth_description">Mélységvonalak vastagsága</string>
     <string name="time_to_destination_widget_desc">A modul megjeleníti az érkezési- vagy az utolsó úti célig hátralévő időt. A navigáció során az idő folyamatosan frissül a jelenlegi pozíciónak megfelelően.</string>
     <string name="time_to_intermediate_widget_desc">A modul megjeleníti az érkezési- vagy az első köztes úti célig hátralévő időt. Az idő folyamatosan frissül a navigáció közben, és a köztes pontot elhagyva frissül a következő köztes pontra vonatkozó időre.</string>
-    <string name="auto_backup_preference_desc">Alapértelmezés szerint az Android biztonsági mentést készít a kedvencekről, a térkép-tokenekről és az OsmAnd beállításairól, hogy új eszközön vagy újratelepítés után vissza lehessen állítani ezeket. A mentés mérete legfeljebb 25 MB.
+    <string name="auto_backup_preference_desc">Alapértelmezés szerint az Android biztonsági mentést készít a kedvencekről, a térkép-tokenekről és az RoadCrew beállításairól, hogy új eszközön vagy újratelepítés után vissza lehessen állítani ezeket. A mentés mérete legfeljebb 25 MB.
 \nHa az OsmAnd Cloudot használja, ez félreértésekhez vezethet az újratelepítés után.</string>
     <string name="av_notes_audio_widget_desc">A modul megérintésével hangjegyzetet készíthet.</string>
     <string name="av_notes_photo_widget_desc">A modul megérintésével fényképet készíthet.</string>
@@ -3560,7 +3560,7 @@
     <string name="shared_string_identifiers">Azonosítók</string>
     <string name="shared_string_terms_of_use">Felhasználási feltételek</string>
     <string name="location_simulation_speedup">Szimulációs felgyorsítása</string>
-    <string name="send_uuid_preference_desc">A véletlenszerű egyedi felhasználóazonosító (UUID) a következőkre van felhasználva: offline térképek letöltése az OsmAnd kiszolgálókról, a kiszolgáló erőforrásainak méltányos igénybevételének nyomon követése, a forgalom mintázatainak előrejelzése és anonim havi térképjelentések készítése.</string>
+    <string name="send_uuid_preference_desc">A véletlenszerű egyedi felhasználóazonosító (UUID) a következőkre van felhasználva: offline térképek letöltése az RoadCrew kiszolgálókról, a kiszolgáló erőforrásainak méltányos igénybevételének nyomon követése, a forgalom mintázatainak előrejelzése és anonim havi térképjelentések készítése.</string>
     <string name="terms_of_service_desc">A térképek letöltésével elfogadja a következőket: %1$s és %2$s.</string>
     <string name="external_sensors_plugin_description">Hozzáférés külső érzékelők adataihoz, mint például: pulzusszám, kerékpársebesség, -teljesítmény és pedálfordulatszám. Az eszközének ANT+ vezeték nélküli személyi hálózati protokollon keresztül kell kapcsolódnia a megfelelő érzékelőkhöz.</string>
     <string name="speak_gps_signal_status">GPS-jel elvesztésének és helyreállásának bemondása</string>
@@ -3573,9 +3573,9 @@
     <string name="show_map_symbols">Térképjelek megjelenítése</string>
     <string name="map_rendering_engine_v1">1-es verzió</string>
     <string name="dismiss_changes_descr">Minden módosítás el lesz vetve.</string>
-    <string name="rendering_engine_failed_descr">Az OsmAnd visszatért az „1-es verziójú” térkép-megjelenítőhöz. Megpróbálhat visszaváltani az új „2-es verziójú (OpenGL)” megjelenítő motorra a beállításokban. \n\nTámogassa a fejlesztéseket a hibanaplója elküldésével.</string>
-    <string name="map_rendering_engine_descr">Az 1-es verzió volt az alapértelmezett az OsmAnd 4.3-as verziója előtt, és a régebbi eszközöknek is ez a megfelelő.\n\nA 2-es verzió (OpenGL) sokkal fejlettebb és olyan funkciókat is tartalmaz, mint a 3D nézet.</string>
-    <string name="rendering_engine_failed">Az OsmAnd térkép-megjelenítője nemrég összeomlott.</string>
+    <string name="rendering_engine_failed_descr">Az RoadCrew visszatért az „1-es verziójú” térkép-megjelenítőhöz. Megpróbálhat visszaváltani az új „2-es verziójú (OpenGL)” megjelenítő motorra a beállításokban. \n\nTámogassa a fejlesztéseket a hibanaplója elküldésével.</string>
+    <string name="map_rendering_engine_descr">Az 1-es verzió volt az alapértelmezett az RoadCrew 4.3-as verziója előtt, és a régebbi eszközöknek is ez a megfelelő.\n\nA 2-es verzió (OpenGL) sokkal fejlettebb és olyan funkciókat is tartalmaz, mint a 3D nézet.</string>
+    <string name="rendering_engine_failed">Az RoadCrew térkép-megjelenítője nemrég összeomlott.</string>
     <string name="share_crash_log">Összeomlási napló megosztása</string>
     <string name="restart_now">Újraindítás most</string>
     <string name="map_rendering_engine_v2">2-es verzió (OpenGL)</string>
@@ -3721,7 +3721,7 @@
     <string name="recently_visible">Legutóbb látható %1$s</string>
     <string name="shared_string_apply_changes">Módosítások alkalmazása</string>
     <string name="no_visible_tracks_description">Válassza ki a térképen megjelenítendő nyomvonalakat.</string>
-    <string name="empty_tracks_description">Nyomvonal fájlokat az OsmAnd segítségével importálhat, hozhat létre vagy rögzíthet.</string>
+    <string name="empty_tracks_description">Nyomvonal fájlokat az RoadCrew segítségével importálhat, hozhat létre vagy rögzíthet.</string>
     <string name="shared_string_kilograms">kilogramm</string>
     <string name="shared_string_yards">yard</string>
     <string name="shared_string_inches">hüvelyk</string>
@@ -3800,7 +3800,7 @@
     <string name="ant_plus_open_settings">Beállítások megnyitása</string>
     <string name="bluetooth_not_supported">Bluetooth nem támogatott</string>
     <string name="ant_plus_nothing_found_description">Győződjön meg róla, hogy: \n– a Bluetooth be van kapcsolva; \n– az érzékelő aktiválva van; \n– ez az eszköz az érzékelő közelében található</string>
-    <string name="ant_plus_searching_text_description">Tartsa az eszközt az érzékelő közelében. Aktiválnia kell az érzékelőt, hogy az OsmAnd megtalálja.</string>
+    <string name="ant_plus_searching_text_description">Tartsa az eszközt az érzékelő közelében. Aktiválnia kell az érzékelőt, hogy az RoadCrew megtalálja.</string>
     <string name="ant_plus_bluetooth_off_description">Kapcsolja be a Bluetooth-t, keresse meg és párosítása az érzékelőket.</string>
     <string name="ant_plus_searching_text">Érzékelők keresése</string>
     <string name="ant_plus_help_title">Nem tudom milyen típusú érzékelőm van</string>
@@ -3808,7 +3808,7 @@
     <string name="ant_plus_pair_new_sensor_ble">Bluetooth LE-érzékelő párosítása</string>
     <string name="ant_plus_pair_new_sensor_ant_plus">ANT+ érzékelő párosítása</string>
     <string name="learn_more_about_sensors_link">Tudjon meg többet az érzékelőkről.</string>
-    <string name="ant_plus_pair_bluetooth_prompt">Az OsmAnd alkalmazással párosíthat Bluetooth LE- és ANT+-érzékelőket.</string>
+    <string name="ant_plus_pair_bluetooth_prompt">Az RoadCrew alkalmazással párosíthat Bluetooth LE- és ANT+-érzékelőket.</string>
     <string name="is_imported">%1$s importálva.</string>
     <string name="file_already_exists_description">Már létezik a(z) „%1$s” nevű fájl. A csere felülírja a jelenlegi verzióval készített összes módosítást.</string>
     <string name="file_already_exists">A fájl már létezik</string>
@@ -3954,7 +3954,7 @@
     <string name="help_article_search_search_all_name">Keresés mindenben</string>
     <string name="help_article_search_search_coordinates_name">Koordináták keresése</string>
     <string name="help_article_search_search_poi_name">Érdekes hely keresése</string>
-    <string name="help_article_start_with_name">Az OsmAnd használatának elkezdése</string>
+    <string name="help_article_start_with_name">Az RoadCrew használatának elkezdése</string>
     <string name="help_article_troubleshooting_maps_data_name">Térképek és adatok</string>
     <string name="help_article_troubleshooting_track_recording_issues_name">Nyomvonal rögzítése</string>
     <string name="help_article_widgets_name">Térképmodulok</string>
@@ -3963,7 +3963,7 @@
     <string name="telegram_chats_descr">Csatlakozzon valamelyik helyi Telegram csevegésünkhöz.</string>
     <string name="telegram_chats">Telegram csevegések</string>
     <string name="github_discussion">GitHub vitafórum</string>
-    <string name="free_versions_descr">Töltse le és telepítse az ingyenes OsmAnd verziót</string>
+    <string name="free_versions_descr">Töltse le és telepítse az ingyenes RoadCrew verziót</string>
     <string name="send_logcat_log_descr">Részletes naplófájl</string>
     <string name="send_crash_log_descr">Csak az összeomlásokról tartalmaz információkat</string>
     <string name="open_issue_on_github_descr">Tegyen fel kérdést, javasoljon funkciókat</string>
@@ -3980,7 +3980,7 @@
     <string name="help_article_navigation_routing_bicycle_based_routing_name">Útvonaltervezés kerékpárhoz (MTB)</string>
     <string name="help_article_navigation_routing_direct_to_point_routing_name">Közvetlenül pontig tervezés (csónakhoz)</string>
     <string name="help_article_navigation_routing_horse_routing_name">Útvonaltervezés lovagláshoz</string>
-    <string name="help_article_navigation_routing_osmand_routing_name">Az OsmAnd útvonaltervezésről</string>
+    <string name="help_article_navigation_routing_osmand_routing_name">Az RoadCrew útvonaltervezésről</string>
     <string name="help_article_navigation_routing_pedestrian_routing_name">Útvonaltervezés gyalogláshoz</string>
     <string name="help_article_navigation_routing_public_transport_navigation_name">Útvonaltervezés tömegközlekedéshez</string>
     <string name="help_article_navigation_routing_straight_line_routing_name">Útvonaltervezés légvonalban (repülés)</string>
@@ -4006,8 +4006,8 @@
     <string name="help_article_widgets_radius_ruler_name">Sugárvonalzó és normál vonalzó</string>
     <string name="shared_string_setup">Beállítás</string>
     <string name="free_versions">Ingyenes verziók</string>
-    <string name="about_osmand">Az OsmAnd névjegye</string>
-    <string name="help_article_map_legend_osmand_name">OsmAnd térképstílus</string>
+    <string name="about_osmand">Az RoadCrew névjegye</string>
+    <string name="help_article_map_legend_osmand_name">RoadCrew térképstílus</string>
     <string name="open_issue_on_github">Nyisson hibajegyet a Githubon</string>
     <string name="copy_build_version">Összeállítás verziójának másolása</string>
     <string name="most_viewed">Legnézettebb</string>
@@ -4063,7 +4063,7 @@
     <string name="cloud_trash_clear_confirmation">Véglegesen törli az összes elemet a Lomtárból?</string>
     <string name="restore_from_trash">Visszaállítás a Lomtárból</string>
     <string name="delete_all_items">Összes elem törlése</string>
-    <string name="trash_is_empty_banner_desc">Az OsmAnd felhőből eltávolított elemek itt még elérhetőek %1$s napig.</string>
+    <string name="trash_is_empty_banner_desc">Az RoadCrew felhőből eltávolított elemek itt még elérhetőek %1$s napig.</string>
     <string name="delete_trash_item_confirmation_desc">Biztosan véglegesen törli a következőt: „%1$s”?</string>
     <string name="shared_string_empty_trash">Lomtár kiürítése</string>
     <string name="shared_string_delete_immediately">Azonnali törlés</string>
@@ -4079,7 +4079,7 @@
     <string name="folder">Mappa</string>
     <string name="not_specified">Nem meghatározott</string>
     <string name="key_event_action_zoom_in">Nagyítás</string>
-    <string name="enable_to_use_external_input_device">Külső beviteli eszköz használatának engedélyezése az OsmAnd számára</string>
+    <string name="enable_to_use_external_input_device">Külső beviteli eszköz használatának engedélyezése az RoadCrew számára</string>
     <string name="key_event_action_change_map_orientation">Térkép tájolás módosítása</string>
     <string name="key_event_action_previous_app_profile">Előző alkalmazásprofil</string>
     <string name="show_toast_about_key_pressed">A lenyomott billentyű kijelzése</string>
@@ -4213,7 +4213,7 @@
     <string name="vertical_exaggeration">Függőleges eltúlzás</string>
     <string name="use_nearby_roads_summary">Offline térképet használ a közeli utak és magassági adatok megkereséséhez. Módosíthatja a nyomvonal geometriáját.</string>
     <string name="use_nearby_roads">Közeli utak használata</string>
-    <string name="retrieve_elevation_data_summary">Az OsmAnd le tudja kérni a magassági adatokat a közeli utakról vagy domborzati térképekről.</string>
+    <string name="retrieve_elevation_data_summary">Az RoadCrew le tudja kérni a magassági adatokat a közeli utakról vagy domborzati térképekről.</string>
     <string name="use_terrain_maps">Domborzati térkép használata</string>
     <string name="use_terrain_maps_summary">Domborzati térkép használata a magassági adatokhoz. A nyomvonal geometriája változatlan marad.</string>
     <string name="shared_string_osm_id">OSM-azonosító</string>
@@ -4223,7 +4223,7 @@
     <string name="missing_maps_description">Az útvonalhoz szükséges néhány offline térkép hiányzik vagy elavult. Töltse le vagy frissítse ezeket a térképeket.</string>
     <string name="maps_that_also_be_used">Szintén használt térképek: %1$s</string>
     <string name="getting_list_of_required_maps">A szükséges térképek listájának lekérése…</string>
-    <string name="required_maps_calculate_online_summary">A hiányzó térképek listája az egyenes útvonalon alapul. A térképek pontos listájának megszerzéséhez az OsmAnd előre kiszámíthatja az útvonalat online.</string>
+    <string name="required_maps_calculate_online_summary">A hiányzó térképek listája az egyenes útvonalon alapul. A térképek pontos listájának megszerzéséhez az RoadCrew előre kiszámíthatja az útvonalat online.</string>
     <string name="missing_maps_header">Hiányzó vagy elavult térképek</string>
     <string name="route_line_use_coloring_altitude">Az útvonal a magasság változása szerint színezett.</string>
     <string name="route_line_use_coloring_speed">Az útvonal a haladás sebessége szerint színezett.</string>
@@ -4283,7 +4283,7 @@
     <string name="map_settings_weather_wind_animation">Szélanimáció</string>
     <string name="weather_source_ecmwf_title">ECMWF</string>
     <string name="data_source">Adatforrás</string>
-    <string name="weather_data_sources_prompt">Az OsmAnd időjárási adatai két forrásból származnak:</string>
+    <string name="weather_data_sources_prompt">Az RoadCrew időjárási adatai két forrásból származnak:</string>
     <string name="weather_source_GFS_title">GFS</string>
     <string name="weather_source_GFS_description">Az amerikai Nemzeti Környezeti Előrejelző Központok adatait felhasználó Globális Előrejelzési Rendszer</string>
     <string name="weather_source_ecmwf_description">Középtávú Időjárás-előrejelzések Európai Központja</string>
@@ -4357,7 +4357,7 @@
     <string name="driving_region_uk">Angol és hasonló</string>
     <string name="hugerock_promo_description">Ingyenes hozzáférés az olyan funkciókhoz, mint például a korlátlan térképletöltés, 3D domborzat stb. %1$s hónapig</string>
     <string name="hugerock_promo">%1$s hónapos Hugerock-promóció</string>
-    <string name="detailed_track_guidance_description">Az OsmAnd a nyomvonalát a közeli utakhoz igazítja a jobb, részletes navigáció érdekében.</string>
+    <string name="detailed_track_guidance_description">Az RoadCrew a nyomvonalát a közeli utakhoz igazítja a jobb, részletes navigáció érdekében.</string>
     <string name="quick_action_routes_summary">Kapcsoló, amellyel %1$s megjeleníthető vagy elrejthető a térképen.</string>
     <string name="shared_string_automatically">Automatikusan</string>
     <string name="ask_every_time">Kérdezzen rá mindig</string>
@@ -4480,7 +4480,7 @@
     <string name="screen_is_unlocked">Az érintőképernyő feloldva.</string>
     <string name="screen_is_locked_by_action_button">Az érintőképernyő le van zárva. Koppintson a gombra a feloldáshoz.</string>
     <string name="screen_is_locked_by_external_button">Az érintőképernyő le van zárva. A feloldáshoz nyomja meg a(z) %1$s gombot vagy koppintson a képernyőn megjelenő gombra.</string>
-    <string name="connect_obd_instructions_title">Az OsmAnd támogatja a Bluetooth-kapcsolatot használó OBD-II olvasókat.</string>
+    <string name="connect_obd_instructions_title">Az RoadCrew támogatja a Bluetooth-kapcsolatot használó OBD-II olvasókat.</string>
     <string name="connect_obd_instructions_step2">Indítsa be a jármű motorját</string>
     <string name="connect_obd_instructions_step3">Engedélyezze a Bluetooth-t az eszközén</string>
     <string name="connect_obd_instructions_step4">Koppintson a(z) „%1$s” gombra és válassza ki az OBD-olvasót a listáról.</string>
@@ -4584,7 +4584,7 @@
     <string name="ais_cpa_warning_distance_description">A hajók piros színnel lesznek kiemelve meg, ha a CPA (legközelebbi megközelítési pont) a meghatározott küszöbérték alatt van, és a TCPA (a CPA-ig hátralévő idő) a „Figyelmeztetési idő a legközelebbi megközelítési pont (CPA) előtt” beállításban megadott figyelmeztetés idejébe esik.</string>
     <string name="ais_object_lost_timeout_description">Állítsa be az AIS-objektumok láthatóságának időtúllépését: Ha a megadott időtartamon belül nem érkezik jel, az objektum automatikusan eltávolításra kerül a kijelzőről.</string>
     <string name="ais_load_data">AIS-adatok betöltése fájlból</string>
-    <string name="ais_port_nmea_local_description">Határozza meg azt az UPD-portot, amelyen az OsmAnd NMEA-adatokat fogadhat</string>
+    <string name="ais_port_nmea_local_description">Határozza meg azt az UPD-portot, amelyen az RoadCrew NMEA-adatokat fogadhat</string>
     <string name="ais_object_lost_timeout">Láthatósági időtúllépés az elveszett hajóknál</string>
     <string name="ais_ship_lost_timeout_description">Állítsa be a hajó elavult láthatóságának időtúllépését: ezen jelfogadás nélküli idő letelte után a hajó szimbóluma áthúzásra kerül.</string>
     <string name="plugin_ais_tracker_disclaimer">NYILATKOZAT\n\nEz a bővítmény egy hobbiprojekt, és nem kritikus alkalmazásokban való használatra készült. Nem garantálja a megbízhatóságot vagy a pontosságot. Ne hagyatkozzon erre a szoftverre navigáció, életbiztonság vagy bármilyen más alapvető művelet során.</string>
@@ -4635,7 +4635,7 @@
     <string name="destination_first">Úti cél először</string>
     <string name="poi_source">POI-forrás</string>
     <string name="wikidata">Wikidata</string>
-    <string name="prediction_time_description">Az OsmAnd pozícióikonja minden egyes fogadott GPS-adatfrissítéskor elmozdul (másodpercenként egyszer). Enyhe késés léphet fel, különösen gyors mozgás vagy a GPS jelerősség ingadozása esetén.</string>
+    <string name="prediction_time_description">Az RoadCrew pozícióikonja minden egyes fogadott GPS-adatfrissítéskor elmozdul (másodpercenként egyszer). Enyhe késés léphet fel, különösen gyors mozgás vagy a GPS jelerősség ingadozása esetén.</string>
     <string name="position_animation_empty_banner_description">A pozícióikon animáció nélkül mozog az újonnan megkapott helyre.</string>
     <string name="prediction_time">Előrejelzési idő</string>
     <string name="prediction_time_advanced_description">Előrejelzési idő beállítása a késés minimalizálásához.</string>
@@ -5136,9 +5136,9 @@
     <string name="ais_own_mmsi">Saját MMSI (Maritime Mobile Service Identity)</string>
     <string name="ais_own_mmsi_description">Határozza meg a saját AIS-objektum MMSI-számát (9 számjegyű érték).</string>
     <string name="ais_display_own_position">Határozza meg, hogy a saját AIS-objektum megjelenjen-e.</string>
-    <string name="ais_display_own_position_description">Az OsmAnd általában véve megjeleníti a saját pozíciót. A saját AIS-objektum kiegészítő megjelenítése zavaró lehet, ezért itt kikapcsolható.</string>
-    <string name="ais_receive_in_background">Az AIS-adatok fogadása akkor is lehetséges, ha az OsmAnd szünetel.</string>
-    <string name="ais_receive_in_background_description">Ha engedélyezve van, az AIS-üzenetfigyelő továbbra is fut, ha az OsmAnd szünetel vagy háttérben van. Ha le van tiltva, akkor az OsmAnd háttérben való futása esetén nem érkeznek üzenetek.</string>
+    <string name="ais_display_own_position_description">Az RoadCrew általában véve megjeleníti a saját pozíciót. A saját AIS-objektum kiegészítő megjelenítése zavaró lehet, ezért itt kikapcsolható.</string>
+    <string name="ais_receive_in_background">Az AIS-adatok fogadása akkor is lehetséges, ha az RoadCrew szünetel.</string>
+    <string name="ais_receive_in_background_description">Ha engedélyezve van, az AIS-üzenetfigyelő továbbra is fut, ha az RoadCrew szünetel vagy háttérben van. Ha le van tiltva, akkor az RoadCrew háttérben való futása esetén nem érkeznek üzenetek.</string>
     <string name="shared_string_recent">Legutóbbi</string>
     <string name="sort_by_nearest_to_map_center">Térkép közepéhez legközelebbiek</string>
     <string name="last_week">Elmúlt héten</string>

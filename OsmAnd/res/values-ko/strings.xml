@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="play_commands_of_currently_selected_voice">현재 선택된 음성 명령을 재생합니다</string>
-    <string name="debugging_and_development">OsmAnd 개발</string>
+    <string name="debugging_and_development">RoadCrew 개발</string>
     <string name="test_voice_prompts">음성 안내 테스트</string>
     <string name="gpx_visibility_txt">가시성</string>
     <string name="gpx_tags_txt">태그</string>
@@ -32,7 +32,7 @@
     <string name="live_monitoring_interval">온라인 트래킹 시간 간격</string>
     <string name="live_monitoring_url">온라인 트래킹 웹 주소</string>
     <string name="show_current_gpx_title">현재의 GPX 경로를 표시합니다</string>
-    <string name="free_version_message">무료 OsmAnd 버전은 다운로드를 %1$s 번으로 제한되고 오프라인 위키피디아 기사를 제공하지 않습니다.</string>
+    <string name="free_version_message">무료 RoadCrew 버전은 다운로드를 %1$s 번으로 제한되고 오프라인 위키피디아 기사를 제공하지 않습니다.</string>
     <string name="free_version_title">무료 버전</string>
     <string name="poi_context_menu_showdescription">POI 설명 표시</string>
     <string name="index_name_north_america">북아메리카</string>
@@ -54,7 +54,7 @@
     <string name="user_name">OSM 사용자 이름</string>
     <string name="user_password">OSM 패스워드</string>
     <string name="osmand_service">절전 모드</string>
-    <string name="osmand_service_descr">화면이 꺼져 있는 동안에도 OsmAnd 를 실행하기 위해 사용합니다</string>
+    <string name="osmand_service_descr">화면이 꺼져 있는 동안에도 RoadCrew 를 실행하기 위해 사용합니다</string>
     <string name="download_files_not_enough_space">%1$s MB 를 다운로드할 충분한 공간이 없습니다 (빈 공간: %2$s).</string>
     <string name="download_files_question_space">{0} 파일 다운로드(s)?
 \n{1} MB (의 {2} MB)는 사용됩니다.</string>
@@ -106,7 +106,7 @@
     <string name="voice_stream_voice_call">음성 호출 스트림(통화음)</string>
     <string name="voice_stream_notification">소리 알림</string>
     <string name="voice_stream_music">미디어/음악 스트림(통화음)</string>
-    <string name="warning_tile_layer_not_downloadable">OsmAnd 앱이 계층 지도 %1$s 를 다운로드할 수 없으니, 재설치 하세요.</string>
+    <string name="warning_tile_layer_not_downloadable">RoadCrew 앱이 계층 지도 %1$s 를 다운로드할 수 없으니, 재설치 하세요.</string>
     <string name="overlay_transparency">오버레이 투명도</string>
     <string name="map_transparency">언더레이 투명도</string>
     <string name="layer_underlay">언더레이 맵…</string>
@@ -165,13 +165,13 @@
     <string name="version_index_is_big_for_memory">인덱스 \'\'{0}\'\' 가 메모리에 적합하지 않습니다</string>
     <string name="version_index_is_not_supported">인덱스 \'\'{0}\'\' 버전은 지원되지 않습니다</string>
     <string name="application_dir">데이터 저장 폴더</string>
-    <string name="osmand_net_previously_installed">이전 OsmAnd 버전이 설치되어 있습니다. 모든 오프라인 데이터는 새로운 앱에서 지원합니다. 하지만 즐겨찾기 포인트는 이전 앱에서 익스포트되어야 하며 나중에 새로운 것으로 임포트(가져오기)하여야 합니다..</string>
+    <string name="osmand_net_previously_installed">이전 RoadCrew 버전이 설치되어 있습니다. 모든 오프라인 데이터는 새로운 앱에서 지원합니다. 하지만 즐겨찾기 포인트는 이전 앱에서 익스포트되어야 하며 나중에 새로운 것으로 임포트(가져오기)하여야 합니다..</string>
     <string name="build_installed">빌드 {0} 가 성공적으로 설치되었습니다 ({1}).</string>
     <string name="downloading_build">빌드 다운로딩…</string>
-    <string name="install_selected_build">OsmAnd - {0} from {1} {2} MB - 설치를 계속하시겠습니까 ?</string>
-    <string name="loading_builds_failed">OsmAnd 빌드 목록 추출이 실패하였습니다</string>
-    <string name="loading_builds">OsmAnd 빌드 로딩…</string>
-    <string name="select_build_to_install">설치할 OsmAnd 빌드 선택</string>
+    <string name="install_selected_build">RoadCrew - {0} from {1} {2} MB - 설치를 계속하시겠습니까 ?</string>
+    <string name="loading_builds_failed">RoadCrew 빌드 목록 추출이 실패하였습니다</string>
+    <string name="loading_builds">RoadCrew 빌드 로딩…</string>
+    <string name="select_build_to_install">설치할 RoadCrew 빌드 선택</string>
     <string name="contribution_activity">버전 설치</string>
     <string name="gps_status_app_not_found">GPS status 앱이 설치되지 않았습니다. 구글마켓에서 찾을까요?</string>
     <string name="daynight_mode_day">주간</string>
@@ -213,7 +213,7 @@
     <string name="layer_map">맵 소스…</string>
     <string name="use_trackball_descr">지도를 이동하는데 트랙볼을 사용합니다</string>
     <string name="use_trackball">트랙볼 사용</string>
-    <string name="process_navigation_service">OsmAnd 내비게이션 서비스</string>
+    <string name="process_navigation_service">RoadCrew 내비게이션 서비스</string>
     <string name="int_seconds">초</string>
     <string name="int_min">분.</string>
     <string name="search_poi_filter">필터</string>
@@ -238,7 +238,7 @@
     <string name="transport_Stop">정류소</string>
     <string name="transport_stops">정류소들</string>
     <string name="transport">대중교통</string>
-    <string name="hello">내비게이션 앱 OsmAnd</string>
+    <string name="hello">내비게이션 앱 RoadCrew</string>
     <string name="favorite">즐겨찾기</string>
     <string name="uploading_data">데이터를 업로드하는 중…</string>
     <string name="uploading">업로드하는 중…</string>
@@ -363,7 +363,7 @@
     <string name="lang_tr">터키어</string>
     <string name="lang_uk">우크라니아어</string>
     <string name="lang_vi">베트남어</string>
-    <string name="calculate_osmand_route_without_internet">인터넷 연결없이 OsmAnd 경로 구간 계산</string>
+    <string name="calculate_osmand_route_without_internet">인터넷 연결없이 RoadCrew 경로 구간 계산</string>
     <string name="gpx_option_calculate_first_last_segment">첫번째와 마지막 경로 구간 계산</string>
     <string name="keep_and_add_destination_point">도착지로 추가</string>
     <string name="route_descr_select_destination">도착지 선택</string>
@@ -383,8 +383,8 @@
     <string name="android_19_location_disabled">킷캣(KitKat) 버전 이후로 이전에 저장한 폴더 (%s)에 지도를 다운로드하고 업데이트 할 수 없습니다.
 \n저장 위치를 변경하고 모든 파일을 그곳에 복사하는 것을 허락하겠습니까?
 \n Note : 이전 파일은 그대로 유지됩니다. (그러나 수동으로 삭제할 수 있습니다)\n Note : 새로운 저장소는 OsmAnd 와 OsmAnd+ 간에 파일을 공유 할 수 없습니다.</string>
-    <string name="copying_osmand_files">OsmAnd 데이터 파일을 복사중…</string>
-    <string name="calculate_osmand_route_gpx">OsmAnd 오프라인 경로를 계산</string>
+    <string name="copying_osmand_files">RoadCrew 데이터 파일을 복사중…</string>
+    <string name="calculate_osmand_route_gpx">RoadCrew 오프라인 경로를 계산</string>
     <string name="app_mode_truck">트럭</string>
     <string name="speech_rate_descr">TTS에 대한 음성속도를 지정합니다</string>
     <string name="speech_rate">음성 속도</string>
@@ -529,11 +529,11 @@
     <string name="poi_filter_sightseeing">관광</string>
     <string name="avoid_motorway">전용도로 회피</string>
     <string name="snap_to_road">도로로 스냅</string>
-    <string name="osmand_play_title_30_chars">OsmAnd 지도 및 내비게이션</string>
+    <string name="osmand_play_title_30_chars">RoadCrew 지도 및 내비게이션</string>
     <string name="osmand_short_description_80_chars">글로벌 모바일 맵 뷰어 및 오프라인 및 온라인 OSM 지도를 위한 운행</string>
-    <string name="osmand_long_description_1000_chars">" OsmAnd (OSM 자동 라우팅 및 길안내 시스템) OsmAnd 글로벌 OpenStreetMap의 다양한 데이터에 접근할 수 있는 오픈 소스 라우팅 응용 프로그램입니다.
+    <string name="osmand_long_description_1000_chars">" RoadCrew (OSM 자동 라우팅 및 길안내 시스템) RoadCrew 글로벌 OpenStreetMap의 다양한 데이터에 접근할 수 있는 오픈 소스 라우팅 응용 프로그램입니다.
 \n모든 지도 데이터(벡터 맵 또는 타일 맵 ) 는 오프라인 사용을 위하여 휴대 전화 메모리 카드에 저장할 수 있습니다.
-\nOsmAnd는 또한 턴-바이-턴 음성 안내 등의 오프라인 및 온라인 라우팅(길찾기) 기능을 제공합니다.
+\nRoadCrew는 또한 턴-바이-턴 음성 안내 등의 오프라인 및 온라인 라우팅(길찾기) 기능을 제공합니다.
 \n\n핵심 기능 중 일부 :
 \n- 전체 오프라인 기능 (선택한 폴더에 저장, 벡터지도 또는 타일지도 다운로드 가능)
 \n- 컴팩트한 오프라인 벡터는 전 세계에서 사용가능
@@ -547,10 +547,10 @@
 \n- 옵션으로 속도에 따라 지도 줌레벨 변경
 \n- 옵션으로 나침반이나 방향에 따라 맵 정렬
 \n- 옴션으로 차선 안내, 속도제한 표시, 녹음음성 및 TTS음성
-\n\nOsmAnd 무료 버전 제한 사항 :
+\n\nRoadCrew 무료 버전 제한 사항 :
 \n- 지도 다운로드 수 10회로 제한
 \n- 위키 백과 또는 오프라인 관심 장소에 액세스할 수 없음.
-\n\nOsmAnd 는 적극적으로 개발하고 우리의 프로젝트와 프로젝트의 추가 진행은 개발 자금을 재정 지원에 의존하고 새로운 기능을 testdriving 하고있다.
+\n\nRoadCrew 는 적극적으로 개발하고 우리의 프로젝트와 프로젝트의 추가 진행은 개발 자금을 재정 지원에 의존하고 새로운 기능을 testdriving 하고있다.
 \nOsmAnd+ 를 구입, 또는 특정 새로운 기능에 자금을 지원하거나 osmand.net 에 일반 후원을 부탁드립니다. "</string>
     <string name="osmand_plus_play_title_30_chars">OsmAnd+ 지도 및 내비게이션</string>
     <string name="osmand_plus_short_description_80_chars">글로벌 모바일 지도보기 및 오프라인 및 온라인 OSM 지도를 위한 운행</string>
@@ -626,7 +626,7 @@
     <string name="map_online_plugin_is_not_installed">다른 지도 소스를 선택하려면 온라인지도 플러그인을 활성화하세요</string>
     <string name="map_online_data">온라인 및 타일 지도</string>
     <string name="shared_string_online_maps">온라인지도</string>
-    <string name="osmand_accessibility_description">"이 플러그인은 기기의 accessibility 기능을 OsmAnd에 직접 제공 합니다. 예: TTS 음성 속도 조절 용이, 방향 패드 화면 운행 구성 용이,  트랙볼을 사용하여 확대/축소 컨트롤 용이,  또는 TTS 음성 피드백을 사용하여 자동으로 현재위치 발표 용이."</string>
+    <string name="osmand_accessibility_description">"이 플러그인은 기기의 accessibility 기능을 RoadCrew에 직접 제공 합니다. 예: TTS 음성 속도 조절 용이, 방향 패드 화면 운행 구성 용이,  트랙볼을 사용하여 확대/축소 컨트롤 용이,  또는 TTS 음성 피드백을 사용하여 자동으로 현재위치 발표 용이."</string>
     <string name="osmand_development_plugin_description">모의 주행이나 렌더링 성능 표시와 같은 개발 및 디버깅 기능에 대한 설정을 표시합니다.</string>
     <string name="plugins_screen">플러그인</string>
     <string name="prefs_plugins">플러그인</string>
@@ -682,17 +682,17 @@
     <string name="favourites_remove_dialog_msg">즐겨찾기 포인트를 삭제 하시겠습니까 \'%s\'?</string>
     <string name="av_camera_focus_hiperfocal">지나친 초점 포커스</string>
     <string name="audionotes_location_not_defined">노트와 연결할 위치는 아직 정의되지 않았습니다. 지정된 위치에 노트를 할당하려면 \"위치 사용…\"</string>
-    <string name="osmand_rastermaps_plugin_description">"이 플러그인을 사용하면 날씨지도, 기후지도, 지질지도, 음영레이어 등과 같은 위성 영상과 특수 목적 레이어에 (Mapnik 같은) 미리 정의 된 OpenStreetMap의 타일에서, 온라인 지도(타일 또는 래스터라고도 함) 의 여러 유형의 지도에 액세스 할 수 있습니다\n↵\n이러한 지도 중 하나가 OsmAnd지도 화면에 표시하기 위해 메인 (기본)지도로 사용할 수 있다,  또는 (OsmAnd의 일반 오프라인 지도 처럼) 다른 기본 맵에 오버레이 또는 언더레이로 메인 (기본)지도로 사용할 수 있다. 지도를 상세히 볼 수 있도록 언더레이 지도를 만들려면, OsmAnd 벡터 지도의 특정 요소는 쉽게 원하는대로 \'지도 구성\' 메뉴를 통해 숨길 수 있다. ↵\n↵\n타일 맵은 온라인 소스를 통해 직접 구할 수  있다, 또는 다양한 서드파티 지도 준비 도구에 의해 만들 수 있는  SQLite 데이터베이스로서 오프라인 용 사용을 할 수 있다. (수동으로 OsmAnd의 데이터 폴더에 복사 할 수 있다).\n\n기본 맵으로 또는 오버레이/언더레이 지도로 온라인 또는 캐시 타일맵의 다양한 구성을 위한 설정을 표시합니다. 이 지도는 오프라인으로 준비하거나 OsmAnd 데이터 폴더에 복사 할 수 있습니다. "</string>
+    <string name="osmand_rastermaps_plugin_description">"이 플러그인을 사용하면 날씨지도, 기후지도, 지질지도, 음영레이어 등과 같은 위성 영상과 특수 목적 레이어에 (Mapnik 같은) 미리 정의 된 OpenStreetMap의 타일에서, 온라인 지도(타일 또는 래스터라고도 함) 의 여러 유형의 지도에 액세스 할 수 있습니다\n↵\n이러한 지도 중 하나가 RoadCrew지도 화면에 표시하기 위해 메인 (기본)지도로 사용할 수 있다,  또는 (RoadCrew의 일반 오프라인 지도 처럼) 다른 기본 맵에 오버레이 또는 언더레이로 메인 (기본)지도로 사용할 수 있다. 지도를 상세히 볼 수 있도록 언더레이 지도를 만들려면, RoadCrew 벡터 지도의 특정 요소는 쉽게 원하는대로 \'지도 구성\' 메뉴를 통해 숨길 수 있다. ↵\n↵\n타일 맵은 온라인 소스를 통해 직접 구할 수  있다, 또는 다양한 서드파티 지도 준비 도구에 의해 만들 수 있는  SQLite 데이터베이스로서 오프라인 용 사용을 할 수 있다. (수동으로 RoadCrew의 데이터 폴더에 복사 할 수 있다).\n\n기본 맵으로 또는 오버레이/언더레이 지도로 온라인 또는 캐시 타일맵의 다양한 구성을 위한 설정을 표시합니다. 이 지도는 오프라인으로 준비하거나 RoadCrew 데이터 폴더에 복사 할 수 있습니다. "</string>
     <string name="towards">쪽으로</string>
     <string name="mile_per_hour">mph</string>
     <string name="interrupt_music_descr">음성안내를 할 때 음악을 중지</string>
     <string name="interrupt_music">음악 중지</string>
     <string name="share_route_as_gpx">루트를 GPX 파일로 공유</string>
-    <string name="share_route_subject">OsmAnd를 통해 공유된 경로</string>
+    <string name="share_route_subject">RoadCrew를 통해 공유된 경로</string>
     <string name="keep_informing_never">수동으로만 (화살표를 탭)</string>
     <string name="keep_informing">운행 지시를 반복</string>
     <string name="navigation_intent_invalid">잘못된 포맷 : %s</string>
-    <string name="share_fav_subject">OsmAnd를 통해 공유된 즐겨찾기</string>
+    <string name="share_fav_subject">RoadCrew를 통해 공유된 즐겨찾기</string>
     <string name="osmo_connect_menu">연결</string>
     <string name="rendering_value_pink_name">분홍</string>
     <string name="rendering_value_brown_name">갈색</string>
@@ -866,7 +866,7 @@
     <string name="online_map">온라인 지도</string>
     <string name="share_note">노트 공유</string>
     <string name="plugin_ski_descr">지도 스타일을 \' 겨울 스키\'로 변경하려면 뷰(View)를 활성화 합니다, 겨울 조건 하에서 모든 풍경을 보여줍니다. \n\n(모든 스키 슬로프와 크로스 컨트리 스키 경로를 볼 수 있는) 글로벌 지도는 \'세계 스키 지도\'를 다운로드하여 사용할 수 있습니다. \n\n다시 비활성화 하거나, 또는 \'지도 구성\' 의 하위메뉴인 \'지도 스타일\'을 변경하여 보기(View)를 되돌릴 수 있습니다.</string>
-    <string name="plugin_touringview_descr">"OsmAnd의 지도 스타일을  \'여행 보기\'로 변경합니다, 이는 여행자와 전문 드라이버을 위한 특별한 상세 보기를 지원합니다.\n\t\t\n\n이 보기는 다음을 제공 합니다, 어떤 주어진 된 지도 줌레벨에서, 여행의 최대 용량으로 지도 데이터 (특히 도로, 트랙, 경로 및 방향 표시)에서 사용할 수 있다. 그것은 또한 명확하게 (예를 들면 대형 차량 운전 하는 경우, 컬러 코딩으로) 모든 유형의 도로를 묘사합니다.\n\t\t\n\n특별한 지도 다운로드는 필요 하지 않습니다, 보기(View)는 표준 지도에서 만들어집니다.\n\t\t\n\n다시 비활성화 하거나, 또는 \'지도 구성\' 의 하위메뉴인  \'지도 스타일\'을 변경하여 보기(View)를 되돌릴 수 있습니다. "</string>
+    <string name="plugin_touringview_descr">"RoadCrew의 지도 스타일을  \'여행 보기\'로 변경합니다, 이는 여행자와 전문 드라이버을 위한 특별한 상세 보기를 지원합니다.\n\t\t\n\n이 보기는 다음을 제공 합니다, 어떤 주어진 된 지도 줌레벨에서, 여행의 최대 용량으로 지도 데이터 (특히 도로, 트랙, 경로 및 방향 표시)에서 사용할 수 있다. 그것은 또한 명확하게 (예를 들면 대형 차량 운전 하는 경우, 컬러 코딩으로) 모든 유형의 도로를 묘사합니다.\n\t\t\n\n특별한 지도 다운로드는 필요 하지 않습니다, 보기(View)는 표준 지도에서 만들어집니다.\n\t\t\n\n다시 비활성화 하거나, 또는 \'지도 구성\' 의 하위메뉴인  \'지도 스타일\'을 변경하여 보기(View)를 되돌릴 수 있습니다. "</string>
     <string name="plugin_touringview_name">여행중인 지도 보기</string>
     <string name="rename_failed">이름 바꾸기 실패 했습니다.</string>
     <string name="back_to_map">지도로 돌아가기</string>
@@ -998,7 +998,7 @@
     <string name="routing_attr_height_description">도로에 통행가능한 차량중량을 지정</string>
     <string name="gps_network_not_enabled">위치 서비스는 사용할 수 없습니다. 위치 서비스를 켜시겠습니까?</string>
     <string name="disable_recording_once_app_killed">단독 로깅 방지</string>
-    <string name="shared_string_import2osmand">OsmAnd로 가져오기</string>
+    <string name="shared_string_import2osmand">RoadCrew로 가져오기</string>
     <string name="read_full_article">전체 기사 읽기 (온라인)</string>
     <string name="shared_string_wikipedia">위키백과</string>
     <string name="shared_string_show_details">세부 정보 보기</string>
@@ -1063,7 +1063,7 @@
     <string name="rendering_value_boldOutline_name">큰 선</string>
     <string name="no_updates_available">사용 가능한 업데이트 없음</string>
     <string name="download_live_updates">라이브 업데이트</string>
-    <string name="do_you_like_osmand">OsmAnd를 좋아 합니까?</string>
+    <string name="do_you_like_osmand">RoadCrew를 좋아 합니까?</string>
     <string name="user_hates_app_get_feedback">우리에게 이유를 가르쳐 쥬세요.</string>
     <string name="user_hates_app_get_feedback_long">우리가 이 응용 프로그램에서 무엇을 변경 해야 하는 지 알려 주세요.</string>
     <string name="failed_to_upload">업로드 하지 못했습니다</string>
@@ -1177,7 +1177,7 @@
     <string name="map_during_navigation">탐색 중 맵</string>
     <string name="voice_announces">음성 프롬프트</string>
     <string name="screen_alerts">화면 알림</string>
-    <string name="process_downloading_service">OsmAnd 다운로드 서비스</string>
+    <string name="process_downloading_service">RoadCrew 다운로드 서비스</string>
     <string name="downloaded_maps">다운로드된 맵</string>
     <string name="downloaded_maps_collect_descr">국가 및 지역 지도 인기를 이해하는 데 도움이 된다.</string>
     <string name="download_file">파일 다운로드</string>
@@ -1225,7 +1225,7 @@
     <string name="history_actions_descr">기록을 파일로 내보낼 수 있다.</string>
     <string name="transparent_status_bar_descr">상태 표시줄 아래에 지도 표시</string>
     <string name="use_external_timestamps">외부 타임스탬프 사용</string>
-    <string name="location_access_request_title">OsmAnd를 탐색하려면 위치에 대한 액세스 권한이 필요합니다.</string>
+    <string name="location_access_request_title">RoadCrew를 탐색하려면 위치에 대한 액세스 권한이 필요합니다.</string>
     <string name="purchases_feature_desc_hourly_map_updates">지도 업데이트에 더 자주 액세스하십시오. 매시간, 매일 또는 매주 업데이트. 업데이트는 변경된 영역에 대해서만 점진적으로 다운로드된다.</string>
     <string name="purchases_feature_desc_unlimited_map_download">모든 대륙 및 지역의 오프라인 지도를 무제한 다운로드하십시오.</string>
     <string name="shared_string_details">세부 사항</string>
@@ -1234,7 +1234,7 @@
     <string name="shortcut_navigate_to_work">\'직장\'으로 이동</string>
     <string name="android_auto_map_placeholder_descr">앱에서 지도를 보려면 Android Auto에서 단말기의 연결을 해제하십시오.</string>
     <string name="shared_app_storage_description">Android에서 스토리지 액세스 규칙이 변경되어 공유 메모리를 더 이상 사용할 수 없다.</string>
-    <string name="internal_app_storage_description">내부 저장소, 모든 사용자 및 기타 앱에서 숨겨져 있으므로 OsmAnd만 데이터에 액세스할 수 있습니다.</string>
+    <string name="internal_app_storage_description">내부 저장소, 모든 사용자 및 기타 앱에서 숨겨져 있으므로 RoadCrew만 데이터에 액세스할 수 있습니다.</string>
     <string name="download_map_dialog">지도 다운로드 대화상자</string>
     <string name="maps_you_need_descr">북마크한 기사를 바탕으로 다음 맵을 다운로드하는 것이 좋음:</string>
     <string name="download_all">모두 다운로드</string>
@@ -1285,7 +1285,7 @@
     <string name="rendering_value_walkingRoutesOSMCNodes_description">노드 네트워크 유형(국제, 지역, 로컬)에 따른 색상 경로다.</string>
     <string name="wikivoyage_travel_guide_descr">\'탐색\' → \'옵션\'에서 항상 사용 가능.</string>
     <string name="route_between_points_next_segment_button_desc">선택한 프로필을 사용하여 다음 세그먼트만 다시 계산된다.</string>
-    <string name="profile_type_osmand_string">OsmAnd 프로필</string>
+    <string name="profile_type_osmand_string">RoadCrew 프로필</string>
     <string name="plan_route_add_new_segment">새 세그먼트 추가</string>
     <string name="route_descr_select_start_point">출발지 선택</string>
     <string name="plan_route_split_after">다음 후 분할</string>
@@ -1295,7 +1295,7 @@
     <string name="analytics_pref_title">진단공유</string>
     <string name="empty_state_markers_active">지도 마커가 작성됨!</string>
     <string name="map_markers">지도 마커</string>
-    <string name="osmand_settings">OsmAnd 설정</string>
+    <string name="osmand_settings">RoadCrew 설정</string>
     <string name="purchases">구입 내역</string>
     <string name="app_profile_type">앱 프로파일 유형</string>
     <string name="plugins_settings">플러그인 설정</string>
@@ -1343,7 +1343,7 @@
     <string name="shared_string_offline">오프라인</string>
     <string name="monthly_subscription">월 구독</string>
     <string name="annual_subscription">연간 구독</string>
-    <string name="osmand_live">OsmAnd 라이브</string>
+    <string name="osmand_live">RoadCrew 라이브</string>
     <string name="routing_engine_vehicle_type_cycling_regular">규칙적인 사이클링</string>
     <string name="show_track_on_map">지도에 트랙 표시</string>
     <string name="upload_to_openstreetmap">OpenStreetMap에 올리기</string>
@@ -1365,7 +1365,7 @@
     <string name="osm_edit_reopened_note">OSM 노트 다시 열기</string>
     <string name="routing_attr_prefer_horse_routes_name">승마 경로 선호</string>
     <string name="map_updates_are_unavailable_yet">지도 업데이트를 아직 사용할 수 없습니다. :-(</string>
-    <string name="enough_contributions_descr">축하합니다, 충분한 OpenStreetMap 기여도를 제공했으며 이제 무제한 OsmAnd 지도 업데이트를 즐길 수 있습니다!</string>
+    <string name="enough_contributions_descr">축하합니다, 충분한 OpenStreetMap 기여도를 제공했으며 이제 무제한 RoadCrew 지도 업데이트를 즐길 수 있습니다!</string>
     <string name="benefits_for_contributors_primary_descr">OpenStreetMap.org에 적극적으로 기여한 사람은 시간당 지도 업데이트를 무제한으로 받을 수 있습니다.</string>
     <string name="offline_wikivoyage">오프라인 Wikivoyage</string>
     <string name="offline_wikipeadia">오프라인 Wikipedia</string>
@@ -1417,9 +1417,9 @@
     <string name="gps_filter_smoothing">평활</string>
     <string name="save_changes_into_file">파일에 변경 내용 저장</string>
     <string name="save_as_copy">복사본으로 저장</string>
-    <string name="gps_filter_actions_description">OsmAnd는 파일을 업데이트하지 않고 트랙에 변경 사항을 적용합니다. 변경 사항을 수동으로 저장할 수 있습니다.</string>
+    <string name="gps_filter_actions_description">RoadCrew는 파일을 업데이트하지 않고 트랙에 변경 사항을 적용합니다. 변경 사항을 수동으로 저장할 수 있습니다.</string>
     <string name="shared_string_gps_filter">GPS 필터</string>
-    <string name="storage_migration_wrong_folder_warning">선택한 폴더에서 OsmAnd 데이터를 찾을 수 없습니다. 다시 시도하십시오.</string>
+    <string name="storage_migration_wrong_folder_warning">선택한 폴더에서 RoadCrew 데이터를 찾을 수 없습니다. 다시 시도하십시오.</string>
     <string name="show_parameter_seekbar">매개 변수 탐색 막대를 표시</string>
     <string name="reading_files">파일 읽기 중…</string>
     <string name="no_items_selected_warning">하나 이상의 항목을 선택</string>
@@ -1429,7 +1429,7 @@
     <string name="memory_allocated_for_routing">라우팅에 할당된 메모리</string>
     <string name="display_groups_visibility_dialog_description">지도에서 그룹 가시성을 제어할 수 있습니다. 트랙이 숨겨지면 모든 그룹도 숨겨집니다.</string>
     <string name="shared_storage_last_step">나중에 새 데이터 폴더를 지정할 수 있습니다.</string>
-    <string name="shared_storage_third_step">폴더에 액세스할 수 있는 권한을 부여합니다. 그것이 없으면 OsmAnd는 파일을 복사할 수 없다.</string>
+    <string name="shared_storage_third_step">폴더에 액세스할 수 있는 권한을 부여합니다. 그것이 없으면 RoadCrew는 파일을 복사할 수 없다.</string>
     <string name="add_to_group">그룹에 추가</string>
     <string name="app_modes_options">앱 모드 선택</string>
     <string name="exit_without_saving_warning">변경 내용을 저장하지 않고 종료하시겠습니까\?</string>
@@ -1499,7 +1499,7 @@
     <string name="routing_attr_avoid_ferry_description">차량페리 회피</string>
     <string name="hide_full_description">전체 설명 숨기기</string>
     <string name="routing_attr_avoid_ferry_name">차량페리 제외</string>
-    <string name="osmand_team">OsmAnd 팀</string>
+    <string name="osmand_team">RoadCrew 팀</string>
     <string name="popular_destinations">인기 있는 목적지</string>
     <string name="shared_string_topbar">상단 바</string>
     <string name="shared_string_hide">숨기기</string>
@@ -1520,7 +1520,7 @@
     <string name="routing_attr_relief_smoothness_factor_name">해발고도 변동 선택</string>
     <string name="rendering_attr_depthContours_name">해상 깊이 등고선</string>
     <string name="search_another_country">다른 지역 선택</string>
-    <string name="first_usage_wizard_desc">OsmAnd가 사용자의 위치를 결정하고 해당 지역에 대해 다운로드할 지도를 제안하도록 하십시오.</string>
+    <string name="first_usage_wizard_desc">RoadCrew가 사용자의 위치를 결정하고 해당 지역에 대해 다운로드할 지도를 제안하도록 하십시오.</string>
     <string name="shared_string_change">변경</string>
     <string name="shared_string_is_open_24_7">24시간 영업</string>
     <string name="full_report">전체 보고서</string>
@@ -1552,7 +1552,7 @@
     <string name="shared_string_allow">허용</string>
     <string name="new_profile">새 프로필</string>
     <string name="shared_string_crash">충돌</string>
-    <string name="last_launch_crashed">마지막 OsmAnd 실행이 충돌했습니다. 오류 메시지를 공유하여 OsmAnd 개선을 도와주시기 바랍니다.</string>
+    <string name="last_launch_crashed">마지막 RoadCrew 실행이 충돌했습니다. 오류 메시지를 공유하여 RoadCrew 개선을 도와주시기 바랍니다.</string>
     <string name="lang_lmo">롬바르드어 이태리사투리</string>
     <string name="lang_an">아라곤어 스페인사투리</string>
     <string name="lang_bar">오스트로바이에른어 독일사투리</string>
@@ -1668,7 +1668,7 @@
     <string name="rendering_value_walkingRoutesOSMC_description">색상 경로는 각각의 로컬 색상(OpenStreetMap에 있는 경우) 및 하이킹 실드 기호에 따라 달라집니다.</string>
     <string name="shared_string_relation">관계</string>
     <string name="routes_color_by_type">색상 경로 지정 기준…</string>
-    <string name="explore_osmnad_plans_to_find_suitable">OsmAnd Plans을 탐색하여 귀하에게 적합한 계획을 찾으십시오.</string>
+    <string name="explore_osmnad_plans_to_find_suitable">RoadCrew Plans을 탐색하여 귀하에게 적합한 계획을 찾으십시오.</string>
     <string name="option_available_only_in_osmand_pro">OsmAnd Pro 가입의 일부로 제공됩니다.</string>
     <string name="active_till">활성기간 %1$s</string>
     <string name="shared_string_progress">진행 상황</string>
@@ -1685,7 +1685,7 @@
     <string name="start_finish_icons">시작 및 완료 아이콘</string>
     <string name="routing_attr_piste_type_skitour_name">스키 투어</string>
     <string name="service_is_not_available_please_try_later">서비스를 사용할 수 없습니다. 나중에 다시 시도해 주십시오.</string>
-    <string name="logout_from_osmand_cloud">OsmAnd 클라우드에서 로그아웃</string>
+    <string name="logout_from_osmand_cloud">RoadCrew 클라우드에서 로그아웃</string>
     <string name="trip_recording_show_start_dialog_setting">사용 불가능한 경우, 확인 대화상자를 건너뛰고 위젯 또는 메뉴 항목을 누른 후 즉시 기록이 시작됩니다.</string>
     <string name="appearance_on_the_map">지도상의 모양</string>
     <string name="routing_attr_only_permitted_ways_description">명시적으로 허용된 방법(트랙, 경로 등)만 사용됨</string>
@@ -1705,7 +1705,7 @@
     <string name="parking_options">주차 옵션</string>
     <string name="start_point">시작</string>
     <string name="setting_supported_by_style">이 설정은 지도 스타일별로 제공 \'%1$s\'</string>
-    <string name="trip_recording_logging_interval_info">로깅 간격은 OsmAnd가 현재 위치 데이터를 요청할 기간을 설정합니다.</string>
+    <string name="trip_recording_logging_interval_info">로깅 간격은 RoadCrew가 현재 위치 데이터를 요청할 기간을 설정합니다.</string>
     <string name="trip_recording_save_and_continue">저장 후 계속</string>
     <string name="search_title">검색: %1$s</string>
     <string name="progress_complete">%1$s 완성</string>
@@ -1724,7 +1724,7 @@
     <string name="backup_dont_have_any_descr">자동 백업 예약 및 데이터 손실 방지를 합니다.</string>
     <string name="backup_do_not_have_any">아직 온라인 백업이 없음</string>
     <string name="backup_deleted_all_data_descr">귀하의 모든 데이터가 OsmAnd Cloud에서 성공적으로 삭제되었습니다.</string>
-    <string name="backup_deleting_all_data_descr">OsmAnd가 클라우드에서 데이터를 삭제할 때까지 기다려 주십시오. 장치의 모든 데이터는 변경되지 않은 상태로 유지됩니다.</string>
+    <string name="backup_deleting_all_data_descr">RoadCrew가 클라우드에서 데이터를 삭제할 때까지 기다려 주십시오. 장치의 모든 데이터는 변경되지 않은 상태로 유지됩니다.</string>
     <string name="backup_data">데이터 백업</string>
     <string name="update_frequency">업데이트 빈도</string>
     <string name="rendering_attr_natureReserves_description">자연보호구역, 보호구역, 국립공원을 보여줍니다.</string>
@@ -1747,7 +1747,7 @@
     <string name="search_map">지도 검색 중…</string>
     <string name="update_now">지금 업데이트</string>
     <string name="track_show_start_finish_icons">시작 및 완료 아이콘 표시</string>
-    <string name="restore_from_osmand_cloud">OsmAnd 클라우드에서 복원</string>
+    <string name="restore_from_osmand_cloud">RoadCrew 클라우드에서 복원</string>
     <string name="finish_navigation">주행 종료</string>
     <string name="shared_string_not_used">사용하지 않음</string>
     <string name="mapillary_menu_filter_description_new">날짜 또는 유형별로 이미지를 필터링합니다. 클로즈업 줌에서만 활성화됩니다.</string>
@@ -1769,7 +1769,7 @@
     <string name="osmand_cloud">‎오스엠앤‎‎드 클라우드‎</string>
     <string name="new_device_account">‎새 ‎‎장치 / 새‎‎ 계정‎</string>
     <string name="sorted_by_distance">‎거리별로 정렬‎</string>
-    <string name="location_source_descr">‎기본적으로 ‎‎Google Play‎‎에서 설치된 OsmAnd는 다음을 사용합니다. ‎%1$s‎ 위치를 결정합니다. ‎
+    <string name="location_source_descr">‎기본적으로 ‎‎Google Play‎‎에서 설치된 RoadCrew는 다음을 사용합니다. ‎%1$s‎ 위치를 결정합니다. ‎
 \n
 \n‎부정확한 위치 정보를 얻거나 장치를 사용하지 않고 사용하는 경우 ‎%2$s‎, 로 전환하려고합니다 \"‎%3$s\"</string>
     <string name="reorder_profiles">‎프로파일‎‎ 목록 편집‎</string>
@@ -1875,7 +1875,7 @@
     <string name="rendering_attr_hideMilitaryAreas_name">군사 지역 숨기기</string>
     <string name="rendering_attr_hideMilitaryAreas_description">군사 지역 숨기기</string>
     <string name="select_nav_profile_dialog_message">\'탐색 유형\'은 사용 가능한 오프라인 및 온라인 라우팅 엔진을 사용하여 경로를 계산하는 방법을 선택합니다.</string>
-    <string name="calculate_online_altitude_descr">위성 이미지 및 디지털 고도 모델을 기반으로 OsmAnd 서버에서 온라인으로 고도를 계산합니다. 장치에 기록된 고도와 다를 수 있으며 고도 보정으로 사용할 수 있습니다.</string>
+    <string name="calculate_online_altitude_descr">위성 이미지 및 디지털 고도 모델을 기반으로 RoadCrew 서버에서 온라인으로 고도를 계산합니다. 장치에 기록된 고도와 다를 수 있으며 고도 보정으로 사용할 수 있습니다.</string>
     <string name="online_routing_engines">온라인 라우팅 엔진</string>
     <string name="shared_string_contact">연락하기</string>
     <string name="average_speed_skip_stops_desc">%1$s 미만의 속도는 계산되지 않으며 평균 속도에 영향을 미칩니다.</string>
@@ -1925,7 +1925,7 @@
     <string name="shared_string_profiles">프로필</string>
     <string name="shared_string_quick_actions">빠른 작업</string>
     <string name="shared_string_routing">라우팅</string>
-    <string name="import_duplicates_description">OsmAnd 에는 이미 가져온 요소와 동일한 이름의 요소가 있습니다.
+    <string name="import_duplicates_description">RoadCrew 에는 이미 가져온 요소와 동일한 이름의 요소가 있습니다.
 \n
 \n작업을 선택합니다.</string>
     <string name="shared_string_poi_types">POI 유형</string>
@@ -1980,7 +1980,7 @@
     <string name="restore_all_profile_settings">모든 프로필 설정을 복원하시겠습니까\?</string>
     <string name="tap_on_map_to_hide_interface">전체 화면 모드</string>
     <string name="enter_new_name">새 이름 입력</string>
-    <string name="osmand_extended_description_part1">OsmAnd (OSM Automated Navigation Directions)는 무료, 전 세계 및 고품질 OSM 데이터에 액세스 할 수있는지도 및 탐색 앱입니다.
+    <string name="osmand_extended_description_part1">RoadCrew (OSM Automated Navigation Directions)는 무료, 전 세계 및 고품질 OSM 데이터에 액세스 할 수있는지도 및 탐색 앱입니다.
 \n
 \n음성 및 광학 네비게이터, POI (관심 지점) 보기, GPX 트랙 생성 및 관리, 등고선 시각화 및 고도 정보 (플러그인 사용), 운전, 사이클링, 보행자 모드, OSM 편집 등을 즐기십시오.</string>
     <string name="osmand_extended_description_part2">GPS 네비게이션
@@ -2006,7 +2006,7 @@
 \n</string>
     <string name="import_as_gpx">GPX 파일로 가져오기</string>
     <string name="osmand_extended_description_part4">스키
-\n OsmAnd 스키지도 플러그인을 사용하면 복잡성 수준과 리프트 및 기타 시설의 위치와 같은 몇 가지 추가 정보를 갖춘 스키 트랙을 볼 수 있습니다.</string>
+\n RoadCrew 스키지도 플러그인을 사용하면 복잡성 수준과 리프트 및 기타 시설의 위치와 같은 몇 가지 추가 정보를 갖춘 스키 트랙을 볼 수 있습니다.</string>
     <string name="other_menu_group">기타</string>
     <string name="tap_on_map_to_hide_interface_descr">지도를 탭하면 제어 버튼과 위젯이 전환됩니다.</string>
     <string name="import_gpx_file_description">즐겨찾기 또는 GPX 파일로 가져올 수 있습니다.</string>
@@ -2023,7 +2023,7 @@
     <string name="export_profile_failed">프로파일을 내보낼 수 없습니다.</string>
     <string name="plugin_prefs_reset_successful">모든 플러그인 설정이 기본값으로 복원되었습니다.</string>
     <string name="start_editing_card_image_text">누구나 편집 할 수있는 무료 전세계 여행 가이드.</string>
-    <string name="profile_alert_cant_delete_base">OsmAnd의 기본 프로필은 삭제할 수 없음</string>
+    <string name="profile_alert_cant_delete_base">RoadCrew의 기본 프로필은 삭제할 수 없음</string>
     <string name="profile_alert_delete_title">프로필 삭제</string>
     <string name="profile_alert_delete_msg">\"%s\" 프로파일 삭제</string>
     <string name="osmand_extended_description_part5">사이클링
@@ -2153,16 +2153,16 @@
     <string name="auto_backup_title">자동-백업</string>
     <string name="shared_string_weather">날씨</string>
     <string name="explore_weather_forecast">일기 예보를 탐색하십시오.</string>
-    <string name="rendering_engine_failed_descr">OsmAnd가 \'버전 1\' 맵 렌더링으로 되돌렸습니다. 설정에서 새로운 \'버전 2 (OpenGL)\'렌더링 엔진으로 다시 전환 할 수 있습니다.
+    <string name="rendering_engine_failed_descr">RoadCrew가 \'버전 1\' 맵 렌더링으로 되돌렸습니다. 설정에서 새로운 \'버전 2 (OpenGL)\'렌더링 엔진으로 다시 전환 할 수 있습니다.
 \n
 \n오류 로그를 제공하여 개선을 지원하세요.</string>
     <string name="external_sensors_support">외부 센서 지원</string>
     <string name="map_widget_distance_by_tap">탭으로 거리</string>
     <string name="speed_cameras_alert">일부 국가에서는 과속 단속 카메라 경고가 법으로 금지되어 있습니다.</string>
-    <string name="rendering_engine_failed">OsmAnd의 지도 렌더링이 최근에 충돌했습니다.</string>
+    <string name="rendering_engine_failed">RoadCrew의 지도 렌더링이 최근에 충돌했습니다.</string>
     <string name="map_rendering_engine_v1">버전 1</string>
     <string name="map_rendering_engine_v2">버전 2 (오픈GL)</string>
-    <string name="map_rendering_engine_descr">버전 1 렌더링은 OsmAnd 4.3 이전의 기본값이었으며 구형 장치에서는 여전히 선호됩니다.\n버전 2 (OpenGL)는 2.5D보기를 특징으로하는 더 빠른지도 렌더링 엔진입니다.</string>
+    <string name="map_rendering_engine_descr">버전 1 렌더링은 RoadCrew 4.3 이전의 기본값이었으며 구형 장치에서는 여전히 선호됩니다.\n버전 2 (OpenGL)는 2.5D보기를 특징으로하는 더 빠른지도 렌더링 엔진입니다.</string>
     <string name="map_rendering_engine">지도 렌더링 엔진</string>
     <string name="osmand_plus_extended_description_part3">지도 보기
 \n • 위치 및 방향 표시
@@ -2209,7 +2209,7 @@
     <string name="speak_gps_signal_status">GPS 신호 손실 및 복구 안내</string>
     <string name="connect_with_straight_line">직선으로 연결</string>
     <string name="shared_string_only_missing">누락 된 항목 만</string>
-    <string name="auto_backup_preference_desc">기본적으로 Android는 즐겨찾기, 지도 토큰 및 OsmAnd 설정의 백업을 저장하여 새 기기에서 또는 재설치 후 복원합니다. 이 백업은 25MB로 제한됩니다.
+    <string name="auto_backup_preference_desc">기본적으로 Android는 즐겨찾기, 지도 토큰 및 RoadCrew 설정의 백업을 저장하여 새 기기에서 또는 재설치 후 복원합니다. 이 백업은 25MB로 제한됩니다.
 \nOsmAnd Cloud를 사용할 때 재설치 후 오해가 생길 수 있습니다.</string>
     <string name="av_notes_video_widget_desc">위젯을 탭하면 비디오를 녹화할 수 있습니다.</string>
     <string name="speak_route_recalculation">경로 재탐색 안내</string>
@@ -2241,13 +2241,13 @@
     <string name="show_transparency_seekbar">투명 탐색 표시줄 표시</string>
     <string name="map_markers_bar">지도 마커 막대</string>
     <string name="read_more">더 읽어보기</string>
-    <string name="public_transport_warning_descr_blog">블로그에서 OsmAnd 라우팅에 대해 자세히 알아보세요.</string>
+    <string name="public_transport_warning_descr_blog">블로그에서 RoadCrew 라우팅에 대해 자세히 알아보세요.</string>
     <string name="osmand_settings_descr">앱의 전체영역에 효력</string>
     <string name="shared_string_turn_off">끄기</string>
     <string name="shared_string_no_thank_you">필요없음</string>
     <string name="settings_privacy_and_security_desc">공유할 데이터 선택</string>
     <string name="shared_string_privacy_policy">개인 정보 정책</string>
-    <string name="make_osmand_better_descr">OsmAnd가 익명의 앱 사용 데이터를 수집하고 처리하도록 허용합니다. 내 위치 또는 지도에서 보는 위치에 대한 데이터는 수집되지 않습니다.
+    <string name="make_osmand_better_descr">RoadCrew가 익명의 앱 사용 데이터를 수집하고 처리하도록 허용합니다. 내 위치 또는 지도에서 보는 위치에 대한 데이터는 수집되지 않습니다.
 \n
 \n\'설정\' → \'개인 정보 및 보안\'에서 언제든지 구성할 수 있습니다.</string>
     <string name="shared_string_legal">법적고지</string>
@@ -2353,7 +2353,7 @@
 \n
 \n • \"경로 이탈 알림\"에 옵션 추가
 \n
-\n • 시작 화면: 파일에서 OsmAnd 상태 복원 옵션 추가
+\n • 시작 화면: 파일에서 RoadCrew 상태 복원 옵션 추가
 \n
 \n • 북미에서 \"유해 물질\" 등급 추가 트럭 내비게이션
 \n
@@ -2497,7 +2497,7 @@
     <string name="shared_string_swap">전환</string>
     <string name="deletion_error">삭제 오류</string>
     <string name="ant_plus_pair_new_sensor">새 센서 페어링</string>
-    <string name="ant_plus_pair_bluetooth_prompt">Bluetooth LE 및 ANT+ 센서를 OsmAnd와 페어링할 수 있습니다.</string>
+    <string name="ant_plus_pair_bluetooth_prompt">Bluetooth LE 및 ANT+ 센서를 RoadCrew와 페어링할 수 있습니다.</string>
     <string name="save_track_logging_accuracy">로깅정확도</string>
     <string name="cloud_email_not_registered">이 이메일 주소는 OsmAnd Cloud에 등록되어 있지 않음</string>
     <string name="cloud_all_changes_downloaded">다운로드된 모든 변경 사항</string>
@@ -2571,7 +2571,7 @@
 \n
 \n• 계획 경로 풍경: 포인트 또는 그래프 사이 전환 탭 추가
 \n
-\n• OsmAnd 라이브 업데이트가 \"다운로드 &gt; 업데이트\"로 이동
+\n• RoadCrew 라이브 업데이트가 \"다운로드 &gt; 업데이트\"로 이동
 \n
 \n· 트랙은 이제 고도, 속도, 또는 사면에 의해 착색 될 수 있습니다.
 \n
@@ -2626,7 +2626,7 @@
     <string name="shared_string_graph">그래프</string>
     <string name="context_menu_item_add_waypoint">트랙 웨이 포인트 추가</string>
     <string name="off_road_render_descr">\'Topo\' 스타일에 기반을 둔 오프로드 운전과 녹색 위성 이미지를 언더레이로 사용합니다. 주요 도로 간격 감소, 궤도, 경로, 자전거 및 다른 노선의 증가된 간격.</string>
-    <string name="disable_recording_once_app_killed_descrp">트랙 로깅은 앱이 죽었을 때 일시 중지됩니다 (최근 앱을 통해). (OsmAnd 배경 표시는 Android 알림 바에서 사라집니다.)</string>
+    <string name="disable_recording_once_app_killed_descrp">트랙 로깅은 앱이 죽었을 때 일시 중지됩니다 (최근 앱을 통해). (RoadCrew 배경 표시는 Android 알림 바에서 사라집니다.)</string>
     <string name="release_3_9">· 설정, 리소스, 내 장소를 포함한 모든 데이터를 내보내고 가져올 수있는 옵션
 \n
 \n• 계획 경로 : 경로와 트랙 세그먼트에 대한 그래프, 여러 트랙 세그먼트를 만들고 편집 할 수있는 능력을 추가
@@ -2733,7 +2733,7 @@
     <string name="key_event_action_zoom_out">축소</string>
     <string name="key_event_action_zoom_in">확대</string>
     <string name="key_event_action_move_left">왼쪽 이동</string>
-    <string name="enable_to_use_external_input_device">OsmAnd를 가진 외부 입력 장치를 사용하는 가능하게</string>
+    <string name="enable_to_use_external_input_device">RoadCrew를 가진 외부 입력 장치를 사용하는 가능하게</string>
     <string name="external_input_device_title">외부 입력 장치</string>
     <string name="shared_string_empty_trash">휴지통 비우기</string>
     <string name="trash_is_empty_banner_desc">OsmAnd Cloud에서 삭제 된 파일은 다음 날 %1$s에 대해 여기에서 사용할 수 있습니다.</string>
@@ -2754,7 +2754,7 @@
 \n• 앱에서 GPX 트랙을 OSM에 직접 업로드
 \n• POIs를 추가하고 직접 OSM에 업로드하십시오 (또는 오프라인 경우 나중에)
 \n• 배경 모드에서도 옵션 여행 기록 (위험 장치는 수면 모드에서)
-\nOsmAnd는 적극적으로 오픈 소스 소프트웨어 개발. 누구나 버그 보고, 번역 개선, 새로운 기능을 코딩하여 앱에 기여할 수 있습니다. 또한 프로젝트는 새로운 기능의 코딩 및 테스트에 대한 금융 기여에 의존합니다.
+\nRoadCrew는 적극적으로 오픈 소스 소프트웨어 개발. 누구나 버그 보고, 번역 개선, 새로운 기능을 코딩하여 앱에 기여할 수 있습니다. 또한 프로젝트는 새로운 기능의 코딩 및 테스트에 대한 금융 기여에 의존합니다.
 \n</string>
     <string name="trash_is_empty">휴지통은 비어 있습니다</string>
     <string name="snap_to_road_descr">현재 위치 아이콘이 현재 내비게이션 경로로 스냅하기</string>
@@ -2764,7 +2764,7 @@
     <string name="app_mode_hang_gliding">행글라이딩</string>
     <string name="help_article_navigation_routing_moped_routing_name">오토바이 라우팅</string>
     <string name="help_article_navigation_routing_online_routing_name">온라인 라우팅</string>
-    <string name="help_article_navigation_routing_osmand_routing_name">OsmAnd 라우팅 정보</string>
+    <string name="help_article_navigation_routing_osmand_routing_name">RoadCrew 라우팅 정보</string>
     <string name="help_article_navigation_routing_public_transport_navigation_name">대중 교통 노선</string>
     <string name="help_article_personal_import_export_name">가져오기/내보내기</string>
     <string name="help_article_purchases_android_name">Android 구매</string>
@@ -2776,7 +2776,7 @@
     <string name="help_article_widgets_map_buttons_name">맵 버튼</string>
     <string name="help_article_widgets_markers_name">마커 위젯</string>
     <string name="shared_string_setup">구성</string>
-    <string name="about_osmand">OsmAnd 소개</string>
+    <string name="about_osmand">RoadCrew 소개</string>
     <string name="send_logcat_log_descr">자세한 로그 파일</string>
     <string name="open_issue_on_github_descr">질문하기, 기능 제안</string>
     <string name="open_issue_on_github">GitHub에서 미해결 문제</string>
@@ -2799,7 +2799,7 @@
     <string name="filter_screen_title">검색 필터</string>
     <string name="help_article_widgets_info_widgets_name">정보 위젯</string>
     <string name="tripltek_promo">Tripltek 프로모션에 대한 %1$s 달</string>
-    <string name="free_versions_descr">무료 OsmAnd 버전 다운로드 및 설치</string>
+    <string name="free_versions_descr">무료 RoadCrew 버전 다운로드 및 설치</string>
     <string name="routing_attr_hazmat_category_usa_8_name">부식성 물질</string>
     <string name="most_viewed">높은 조회수</string>
     <string name="icon_group_transport">대중교통</string>
@@ -2819,7 +2819,7 @@
     <string name="icon_group_amenity">생활 편의시설</string>
     <string name="shared_string_local_maps">지역 지도</string>
     <string name="apply_to_all_profiles">모든 프로필에게 적용</string>
-    <string name="visited_screens_collect_descr">OsmAnd 기능의 인기도를 이해하는 데 도움이 됩니다.</string>
+    <string name="visited_screens_collect_descr">RoadCrew 기능의 인기도를 이해하는 데 도움이 됩니다.</string>
     <plurals name="tracks">
         <item quantity="other">%1$d (%2$d 트랙)</item>
     </plurals>
@@ -2837,7 +2837,7 @@
     <string name="help_article_search_search_all_name">모두 검색</string>
     <string name="help_article_search_search_coordinates_name">검색 좌표</string>
     <string name="help_article_search_search_poi_name">검색 POI</string>
-    <string name="help_article_start_with_name">OsmAnd로 시작</string>
+    <string name="help_article_start_with_name">RoadCrew로 시작</string>
     <string name="help_article_start_with_first_steps_name">첫 번째 단계</string>
     <string name="help_article_start_with_main_menu_name">메인 메뉴</string>
     <string name="routing_attr_hazmat_category_usa_1_name">폭</string>
@@ -2846,7 +2846,7 @@
     <string name="shared_string_class">등급</string>
     <string name="show_compass_ruler">나침반 눈금자 표시</string>
     <string name="show_toast_about_key_pressed">눌러진 키에 대한 toast보기</string>
-    <string name="help_article_map_legend_osmand_name">OsmAnd 지도 스타일</string>
+    <string name="help_article_map_legend_osmand_name">RoadCrew 지도 스타일</string>
     <string name="help_article_map_vector_maps_name">벡터 맵(맵 스타일)</string>
     <string name="wheel_circumference">휠 인치</string>
     <string name="write_heading_description">기록하는 동안 각 트랙 포인트에 제목 저장</string>
@@ -2867,7 +2867,7 @@
 \n
 \n• 새로운 위젯 : \"Glide ratio\"및 \"Sun Position\"
 \n
-\n• OsmAnd 클라우드: 삭제 된 파일
+\n• RoadCrew 클라우드: 삭제 된 파일
 \n
 \n• 새로운 비대칭 gradient를 가진 Slope 형태에 있는 강화된 궤도
 \n
@@ -2924,7 +2924,7 @@
     <string name="shared_string_included">포함됨</string>
     <string name="dont_move_maps">움직이지 마세요</string>
     <string name="public_transport_ped_route_title">발의 경로는 약 %1$s이며 대중 교통보다 빠르게 될 수 있습니다</string>
-    <string name="public_transport_no_route_title">안타깝게도 OsmAnd는 귀하의 설정에 적합한 경로를 찾을 수 없습니다.</string>
+    <string name="public_transport_no_route_title">안타깝게도 RoadCrew는 귀하의 설정에 적합한 경로를 찾을 수 없습니다.</string>
     <string name="public_transport_try_ped">도보로 내비게이션을 사용해 보세요.</string>
     <string name="public_transport_type">운송 유형</string>
     <string name="shared_string_degrees">각도</string>
@@ -2993,7 +2993,7 @@
     <string name="tracks_empty_folder_description">이 폴더에는 아직 트랙이 없습니다.</string>
     <string name="tracks_empty_folder">빈 폴더</string>
     <string name="rendering_attr_lightDetail_name">라이트 디테일</string>
-    <string name="empty_tracks_description">OsmAnd를 사용하여 트랙 파일을 가져오거나, 만들거나, 녹음할 수 있습니다.</string>
+    <string name="empty_tracks_description">RoadCrew를 사용하여 트랙 파일을 가져오거나, 만들거나, 녹음할 수 있습니다.</string>
     <string name="subscribe_email_desc">앱 할인에 대한 메일링 리스트를 구독하고 지도를 3회 더 다운로드받으세요!</string>
     <string name="shared_string_on_map">지도 위</string>
     <string name="display_position_automatic_descr">지도 방향에 따라 다름: 이동 방향은 아래쪽, 다른 모든 방향은 중심입니다.</string>
@@ -3046,7 +3046,7 @@
     <string name="change_appearance">모양 변경</string>
     <string name="switch_folder">폴더 전환</string>
     <string name="accessibility_announce">안내</string>
-    <string name="osmand_default_routing">OsmAnd 라우팅</string>
+    <string name="osmand_default_routing">RoadCrew 라우팅</string>
     <string name="key_is_already_assigned_error">이 \"%1$s\" 키가 이미 작업에 할당되어 있음: \"%2$s\"</string>
     <string name="may_be_used_if_there_is_shortcut">단축키가 있는 경우 사용할 수 있음</string>
     <string name="osmand_cloud_deletion_secondary_devices_warning">보조 기기는 OsmAnd Cloud에서 로그오프되고 유료 기능을 사용할 수 없게 됩니다.</string>
@@ -3082,7 +3082,7 @@
     <string name="shared_string_skip_warning">이동을 건너? 사이트맵 그리고 더 이상 공유 저장소에 파일에 액세스 할 수 없습니다.
 \n
 \n앱은 새 데이터 폴더를 사용하여 시작합니다.</string>
-    <string name="shared_storage_migration_descr">Android 스토리지 액세스의 변경으로 OsmAnd는 더 이상 %1$s를 사용할 수 없습니다.
+    <string name="shared_storage_migration_descr">Android 스토리지 액세스의 변경으로 RoadCrew는 더 이상 %1$s를 사용할 수 없습니다.
 \n
 \n새 폴더에 모든 데이터를 복사합니다.</string>
     <string name="backup_error_subscription_was_expired_descr">당신의 OsmAnd Pro 구독이 만료되어 백업을 사용할 수 있습니다. 클라우드에서 데이터를 복원 할 수 있습니다.</string>
@@ -3179,7 +3179,7 @@
     <string name="device_disconnected">%1$s 분리</string>
     <string name="ant_plus_nothing_found_text">어떤 센서를 찾을 수 없습니다</string>
     <string name="ant_plus_bluetooth_off_description">Bluetooth 찾기 및 쌍 센서 켜기.</string>
-    <string name="ant_plus_searching_text_description">센서에 가까운 장치를 잡아주세요. 센서를 활성화하려면 OsmAnd를 찾을 수 있습니다.</string>
+    <string name="ant_plus_searching_text_description">센서에 가까운 장치를 잡아주세요. 센서를 활성화하려면 RoadCrew를 찾을 수 있습니다.</string>
     <string name="ant_plus_open_settings">설정 열기</string>
     <string name="weather_wind_ms">m/s</string>
     <string name="weather_wind_miles_per_hour">시간당 마일 수</string>
@@ -3237,7 +3237,7 @@
     <string name="map_widget_rendering_fps">지도 렌더링 FPS</string>
     <string name="map_widget_rendering_fps_desc">맵 및 맵 요소가 표시되고 새로 고침되는 방법을 보여줍니다. 초당 프레임 (FPS).</string>
     <string name="location_simulation_cutoff">시뮬레이션은 1 미터를 건너</string>
-    <string name="send_uuid_preference_desc">임의 UUID는 OsmAnd 서버에서 오프라인 맵을 다운로드하여 서버 리소스의 공정한 사용을 모니터링하고 트래픽 패턴을 예측하고 익명의 월간 맵 보고서를 생성합니다.</string>
+    <string name="send_uuid_preference_desc">임의 UUID는 RoadCrew 서버에서 오프라인 맵을 다운로드하여 서버 리소스의 공정한 사용을 모니터링하고 트래픽 패턴을 예측하고 익명의 월간 맵 보고서를 생성합니다.</string>
     <string name="ant_missing_dependency_descr">필요한 서비스를 찾을 수 없습니다 \"%1$s\".
 \nANT+ Plugins Service를 설치하거나 업데이트해야 합니다.
 \nPlay 스토어를 실행하고 싶습니까?</string>
@@ -3284,7 +3284,7 @@
     <string name="delete_waypoints">방법의 삭제</string>
     <string name="rendering_attr_surface_grass_paver_name">잔디보도</string>
     <string name="average_altitude">평균 고도</string>
-    <string name="osmand_extended_description_part8">OsmAnd는 적극적으로 오픈 소스 소프트웨어 개발. 누구나 버그 보고, 번역 개선, 새로운 기능을 코딩하여 앱에 기여할 수 있습니다. 또한 프로젝트는 새로운 기능의 코딩 및 테스트에 대한 금융 기여에 의존합니다.
+    <string name="osmand_extended_description_part8">RoadCrew는 적극적으로 오픈 소스 소프트웨어 개발. 누구나 버그 보고, 번역 개선, 새로운 기능을 코딩하여 앱에 기여할 수 있습니다. 또한 프로젝트는 새로운 기능의 코딩 및 테스트에 대한 금융 기여에 의존합니다.
 \n대략적인 지도 적용 및 질:
 \n• 서부 유럽: 더 보기
 \n• 동부 유럽: ***
@@ -3301,11 +3301,11 @@
     <string name="rendering_attr_showTrolleybusRoutes_name">무궤도전차 노선</string>
     <string name="added_profiles_descr">플러그인에 의해 추가 된 프로필</string>
     <string name="track_storage_directory_descrp">트랙은 \'rec\'폴더, 월, 또는 일일 폴더에 저장할 수 있습니다.</string>
-    <string name="shared_string_osmand_usage">OsmAnd 사용법</string>
-    <string name="change_data_storage_full_description">OsmAnd 데이터 파일을 새로운 목적지로 이동?
+    <string name="shared_string_osmand_usage">RoadCrew 사용법</string>
+    <string name="change_data_storage_full_description">RoadCrew 데이터 파일을 새로운 목적지로 이동?
 \n%1$s &gt; %2$s</string>
     <string name="shared_string_select_folder">폴더…</string>
-    <string name="paste_Osmand_data_folder_path">OsmAnd 데이터로 폴더에 붙여넣기</string>
+    <string name="paste_Osmand_data_folder_path">RoadCrew 데이터로 폴더에 붙여넣기</string>
     <string name="rendering_attr_showTramRoutes_name">전차 노선</string>
     <string name="show_on_start_description">\'off\'는 직접지도를 시작합니다.</string>
     <string name="rendering_attr_surface_concrete_name">콘크리트</string>
@@ -3389,7 +3389,7 @@
     <string name="routing_engine_vehicle_type_hgv">HGV</string>
     <string name="add_address">주소 추가</string>
     <string name="gpx_split_interval_none_descr">원하는 분할 옵션을 선택: 시간 또는 거리로.</string>
-    <string name="tracks_view_descr">기록 된 트랙은 %1$s 또는 OsmAnd 폴더에 있습니다.</string>
+    <string name="tracks_view_descr">기록 된 트랙은 %1$s 또는 RoadCrew 폴더에 있습니다.</string>
     <string name="shared_string_modified">수정됨</string>
     <string name="osm_login_descr">OAuth 메소드를 사용하여 로그인, 또는 OSM 사용자 이름 및 암호.</string>
     <string name="announcement_time_approach">접근</string>
@@ -3475,7 +3475,7 @@
     <string name="export_not_enough_space">충분한 공간이 없습니다</string>
     <string name="rendering_attr_highway_class_track_name">트랙</string>
     <string name="coordinates_format">좌표계 형식</string>
-    <string name="measurement_tool_snap_to_road_descr">OsmAnd는 선택한 프로필에 대한 경로와 포인트를 연결합니다.</string>
+    <string name="measurement_tool_snap_to_road_descr">RoadCrew는 선택한 프로필에 대한 경로와 포인트를 연결합니다.</string>
     <string name="none_point_error">적어도 1개의 점을 추가하십시오.</string>
     <string name="shared_string_open_street_map">OpenStreetMap</string>
     <string name="x_axis">X-축</string>
@@ -3591,7 +3591,7 @@
 \n
 \n%1$s를 선택하고 속도 카메라에 대한 경고와 경고를 받게됩니다.
 \n
-\n%2$s를 선택하십시오. 속도 카메라와 관련된 모든 데이터 : 경고, 알림, POIs는 OsmAnd가 완전히 재설치 될 때까지 삭제됩니다.</string>
+\n%2$s를 선택하십시오. 속도 카메라와 관련된 모든 데이터 : 경고, 알림, POIs는 RoadCrew가 완전히 재설치 될 때까지 삭제됩니다.</string>
     <string name="monitoring_prefs_descr">네비게이션, 로깅 정확도</string>
     <string name="voice_announces_descr">내비게이션 지침 및 안내음성</string>
     <string name="edit_profile_screen_options_subtitle">화면 옵션 선택</string>
@@ -3616,7 +3616,7 @@
     <string name="map_downloaded_descr">%1$s 맵은 사용 가능합니다.</string>
     <string name="world_map_download_descr">World Basemap (낮은 급상승 수준에서 전체 세계를 커버) 누락 또는 초과. 글로벌 개요에 대한 다운로드를 고려하시기 바랍니다.</string>
     <string name="lang_nds">낮은 독일어</string>
-    <string name="share_osm_edits_subject">OsmAnd를 통해 공유된 OSM 편집</string>
+    <string name="share_osm_edits_subject">RoadCrew를 통해 공유된 OSM 편집</string>
     <string name="lang_kn">칸나다어</string>
     <string name="plugins_menu_group">부가 기능</string>
     <string name="weekly">주간</string>
@@ -3644,7 +3644,7 @@
     <string name="weather_precip_inches">인치</string>
     <string name="coordinates_widget_current_location">좌표: 현재 위치</string>
     <string name="favorite_confirm_delete_group">\"%1$s\" 그룹 및 모든 포함 포인트를 삭제 (%2$d)?</string>
-    <string name="touring_view_render_descr">높은 대조와 최대 세부사항을 가진 여행 작풍. OsmAnd 기본 스타일의 모든 옵션을 포함, 가능한 한 많은 세부 사항으로 표시하는 동안, 특정 도로, 경로 및 여행하는 다른 방법. 도로 유형과 구별되는 \"touring atlas\"를 지우십시오. 일, 밤 및 옥외 사용을 위해 적당한.</string>
+    <string name="touring_view_render_descr">높은 대조와 최대 세부사항을 가진 여행 작풍. RoadCrew 기본 스타일의 모든 옵션을 포함, 가능한 한 많은 세부 사항으로 표시하는 동안, 특정 도로, 경로 및 여행하는 다른 방법. 도로 유형과 구별되는 \"touring atlas\"를 지우십시오. 일, 밤 및 옥외 사용을 위해 적당한.</string>
     <string name="shared_string_reverse_order">역순</string>
     <string name="shared_string_undo_all">모두 실행 취소</string>
     <string name="lang_mk">마케도니아어</string>
@@ -3808,7 +3808,7 @@
     <string name="lang_sr_latn">세르비아어 (라틴)</string>
     <string name="lang_zh_hk">중국어(홍콩)</string>
     <string name="select_suggested_points">제안 포인트 선택</string>
-    <string name="turn_screen_on_power_button_descr">장치 힘 단추를 누르는 것은 자물쇠 스크린의 정상에 OsmAnd로 스크린을 돌 것입니다.</string>
+    <string name="turn_screen_on_power_button_descr">장치 힘 단추를 누르는 것은 자물쇠 스크린의 정상에 RoadCrew로 스크린을 돌 것입니다.</string>
     <string name="empty_state_markers_active_desc">긴 또는 짧은 탭 \'장소\', 다음 마커 플래그 버튼을 누릅니다.</string>
     <string name="lang_oc">오크어</string>
     <string name="configure_navigation">탐색 구성</string>
@@ -3839,7 +3839,7 @@
     <string name="routing_attr_avoid_stairs_name">계단 없음</string>
     <string name="quick_action_take_photo_note_descr">화면의 중간에 사진 메모를 추가하는 버튼.</string>
     <string name="auto_split_recording_descr">6분 간격 후 새 세그먼트, 2시간 간격 후 새 트랙, 날짜가 변경된 경우 더 긴 간격 후 새 파일을 시작합니다.</string>
-    <string name="tracker_item">OsmAnd 트래커</string>
+    <string name="tracker_item">RoadCrew 트래커</string>
     <string name="vessel_height_warning">낮은 다리를 피하기 위해 선박 높이를 설정합니다. 다리가 움직일 경우, 열릴 때 높이가 사용됩니다.</string>
     <string name="compass_click_desc">Hint: compass 버튼을 눌러지도 방향 모드를 전환합니다.</string>
     <string name="exit_import_descr">변경없이 출구?</string>
@@ -3868,7 +3868,7 @@
     <string name="routing_attr_height_obstacles_description">계획된 여행 시간은 고각 충격을 반영할 것입니다. Routing 선호는 가파른 언덕을 피할 수 있습니다:</string>
     <string name="export_not_enough_space_descr">귀하의 장치 만 %1$s 무료. 일부 공간 또는 수출에 일부 항목을 선택 해제하십시오.</string>
     <string name="select_wikipedia_article_langs">지도에 Wikipedia 기사의 언어를 선택하십시오. 문서를 읽는 동안 사용 가능한 언어로 전환하십시오.</string>
-    <string name="checking_for_duplicate_description">OsmAnd 체크 %1$s 앱의 기존 항목과 중복.
+    <string name="checking_for_duplicate_description">RoadCrew 체크 %1$s 앱의 기존 항목과 중복.
 \n
 \n몇 번 걸릴 수 있습니다.</string>
     <string name="monitoring_min_distance_descr">이 필터를 켜면 이동이 거의 감지되지 않을 때 추가 데이터 기록을 피할 수 있습니다. 그것은 또한 더 가공 없이 궤도의 공간 외관을 개량합니다.</string>
@@ -3921,7 +3921,7 @@
     <string name="rendering_attr_tracktype_grade4_name">가장 부드러운</string>
     <string name="dashboard_or_drawer_description">선택은 주로 유연한 대시보드 또는 정적 메뉴를 통해 앱을 제어 할 수 있습니다. 선택은 항상 대쉬보드 설정에서 변경할 수 있습니다.</string>
     <string name="parking_widget_desc">스크린 센터에서 주차 장소에 거리를 표시합니다.</string>
-    <string name="edit_profiles_descr">OsmAnd 기본 프로파일은 삭제 될 수 없습니다, 하지만 비활성화 (이전 화면에), 또는 하단에 정렬.</string>
+    <string name="edit_profiles_descr">RoadCrew 기본 프로파일은 삭제 될 수 없습니다, 하지만 비활성화 (이전 화면에), 또는 하단에 정렬.</string>
     <string name="rendering_attr_highway_class_track_grade1_name">급료 1</string>
     <string name="show_passed">통행 보기</string>
     <string name="routing_attr_avoid_low_emission_zone_name">수도권 공해차량제한지역 우회</string>
@@ -3999,8 +3999,8 @@
     <string name="temporary_conditional_routing_descr">지도에서 활성화되는 도로 제한을 사용하십시오</string>
     <string name="sign_in_with_open_street_map">OpenStreetMap으로 로그인</string>
     <string name="message_you_need_add_two_points_to_show_graphs">최소 2점 추가</string>
-    <string name="use_live_routing">OsmAnd 라이브 데이터</string>
-    <string name="use_live_public_transport">OsmAnd 라이브 데이터</string>
+    <string name="use_live_routing">RoadCrew 라이브 데이터</string>
+    <string name="use_live_public_transport">RoadCrew 라이브 데이터</string>
     <string name="all_previous_segments_will_be_recalc">모든 이전 세그먼트는 선택한 프로파일을 사용하여 재 계산됩니다.</string>
     <string name="all_previous_segments">모든 이전 세그먼트</string>
     <string name="previous_segment">이전 세그먼트</string>
@@ -4123,7 +4123,7 @@
     <string name="speedometer_description">GPS를 통해보고 된 현재 속도를 표시</string>
     <string name="shared_string_speedometer">속도계</string>
     <string name="settings_item_read_error">\'%1$s\'에서 읽을 수 없습니다.</string>
-    <string name="custom_osmand_plugin">사용자 정의 OsmAnd 플러그인</string>
+    <string name="custom_osmand_plugin">사용자 정의 RoadCrew 플러그인</string>
     <string name="shared_string_items">항목</string>
     <string name="lang_zhminnan">남부 분</string>
     <string name="help_article_setup_a_route_name">경로 설정</string>
@@ -4133,7 +4133,7 @@
     <string name="shared_string_available">사용 가능</string>
     <string name="divider_descr">이 시점의 요소는 배당금으로 분리됩니다.</string>
     <string name="shared_string_angle">각도</string>
-    <string name="listed_exist">목록 %1$s, 이미 OsmAnd에 존재.</string>
+    <string name="listed_exist">목록 %1$s, 이미 RoadCrew에 존재.</string>
     <string name="shared_string_import_complete">가져오기 완료</string>
     <string name="use_system_screen_timeout">시스템 스크린 timeout 사용</string>
     <string name="additional_actions_descr">\"%1$s\"버튼을 눌러 이러한 작업을 액세스하십시오.</string>
@@ -4259,7 +4259,7 @@
     <string name="restart_search">다시 검색</string>
     <string name="shared_string_restart">앱 다시시작</string>
     <string name="missing_maps_header">미스 또는 아웃 맵</string>
-    <string name="required_maps_calculate_online_summary">누락된 지도 목록은 직선 노선을 기준으로 합니다. 지도의 정확한 목록을 얻으려면 OsmAnd는 온라인 경로를 사전 계산할 수 있습니다.</string>
+    <string name="required_maps_calculate_online_summary">누락된 지도 목록은 직선 노선을 기준으로 합니다. 지도의 정확한 목록을 얻으려면 RoadCrew는 온라인 경로를 사전 계산할 수 있습니다.</string>
     <string name="required_maps">Required 지도</string>
     <string name="missing_maps_description">이 루트에 필요한 일부 오프라인지도가 누락되거나 날짜까지. 이 맵을 다운로드하거나 업데이트하십시오.</string>
     <string name="route_line_use_coloring_speed">노선은 이동 속도에 의해 착색됩니다.</string>
@@ -4272,7 +4272,7 @@
     <string name="track_vertical_exaggeration_description">스케일 값을 변경하면 3D 트랙 높이를 변경할 수 있습니다.</string>
     <string name="use_terrain_maps_summary">고도 데이터를 위한 지형지도를 사용합니다. 지오메트리는 변경되지 않습니다.</string>
     <string name="use_nearby_roads">인근 도로 사용</string>
-    <string name="retrieve_elevation_data_summary">OsmAnd는 인근 도로 또는 지형지도에서 고도 데이터를 검색 할 수 있습니다.</string>
+    <string name="retrieve_elevation_data_summary">RoadCrew는 인근 도로 또는 지형지도에서 고도 데이터를 검색 할 수 있습니다.</string>
     <string name="modify_the_search_query">검색을 변경하십시오.</string>
     <string name="quick_action_map_style_switch">맵 스타일은 \"%s\"로 변경됩니다.</string>
     <string name="quick_action_map_overlay_switch">지도 오버레이가 \"%s\"로 변경되었습니다.</string>

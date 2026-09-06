@@ -64,7 +64,7 @@
     <string name="shared_string_select_folder">Папка…</string>
     <string name="data_storage_preference_summary">%1$s • %2$s</string>
     <string name="rendering_attr_piste_difficulty_connection_name">Бәйләнеш</string>
-    <string name="shared_string_osmand_usage">OsmAnd куллану</string>
+    <string name="shared_string_osmand_usage">RoadCrew куллану</string>
     <string name="shared_string_turn_off">Сүндерү</string>
     <string name="selected_profile">Сайланган профиль</string>
     <string name="select_color">Төсне сайлау</string>

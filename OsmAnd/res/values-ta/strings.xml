@@ -33,7 +33,7 @@
     <string name="shared_string_restart">மென்பொருள் மறுதொடக்கம்</string>
     <string name="maps_you_need_descr">நீங்கள் புக்மார்க் செய்த தளங்களின் அடிப்படையில், கீழ்கண்ட வரைபடங்கள் பதிவிறக்கம் செய்ய பரிந்துரைக்கப்பட்டுள்ளன:</string>
     <string name="maps_you_need">உங்களுக்கு தேவையான வரைபடங்கள்</string>
-    <string name="osmand_team">OsmAnd குழு</string>
+    <string name="osmand_team">RoadCrew குழு</string>
     <string name="popular_destinations">பிரபலமான இடங்களுக்கு</string>
     <string name="travel_card_update_descr">புதுப்பிப்பு செய்து, புதிய Wikivoyage தரவை அனுபவியுங்கள்.</string>
     <string name="travel_card_download_descr">இணையத்துடன் ஒரு இணைப்பு இல்லாமல் உலகெங்கிலும் உள்ள இடங்களைப் பற்றிய கட்டுரைகளைப் பார்வையிட விக்கிபயணம் பயண வழிகாட்டிகளைப் பதிவிறக்கவும்.</string>
@@ -44,7 +44,7 @@
     <string name="get_unlimited_access">வரம்பற்ற அணுகலைப் பெறுக</string>
     <string name="welcome_to_open_beta">திறந்த பீட்டாவை வரவேற்கிறோம்</string>
     <string name="wikivoyage_travel_guide">பயண வழிகாட்டிகள்</string>
-    <string name="wikivoyage_travel_guide_descr">இணையத்தில் ஒரு இணைப்பு இல்லாமல், கிரகதில் உள்ள மிகவும் சுவாரஸ்யமான இடங்களுக்கு OsmAnd உள்ளே வழிகாட்டபட்டுளது.</string>
+    <string name="wikivoyage_travel_guide_descr">இணையத்தில் ஒரு இணைப்பு இல்லாமல், கிரகதில் உள்ள மிகவும் சுவாரஸ்யமான இடங்களுக்கு RoadCrew உள்ளே வழிகாட்டபட்டுளது.</string>
     <string name="monthly_map_updates">மாதாந்திர வரைபட புதுப்பிப்புகள்</string>
     <string name="daily_map_updates">மணிநேர வரைபட புதுப்பிப்புகள்</string>
     <string name="shared_string_result">முடிவு</string>
@@ -132,7 +132,7 @@
     <string name="add_point_before">முன் புள்ளி சேர்க்கவும்</string>
     <string name="add_point_after">பிறகு புள்ளியைச் சேர்க்கவும்</string>
     <string name="shared_string_options">விருப்பங்கள்</string>
-    <string name="measurement_tool_snap_to_road_descr">OsmAnd தேர்ந்தெடுக்கப்பட்ட சுயவிவரத்தை வைத்து பாதையை புள்ளிகள் மூலம் இணைக்கும்.</string>
+    <string name="measurement_tool_snap_to_road_descr">RoadCrew தேர்ந்தெடுக்கப்பட்ட சுயவிவரத்தை வைத்து பாதையை புள்ளிகள் மூலம் இணைக்கும்.</string>
     <string name="choose_navigation_type">வழிசெலுத்தல் சுயவிவரத்தைத் தேர்ந்தெடுக்கவும்</string>
     <string name="none_point_error">குறைந்தபட்சம் ஒரு புள்ளியைச் சேர்க்கவும்.</string>
     <string name="quick_action_resume_pause_navigation_descr">வழிசெலுத்தலை இடைநிறுத்த அல்லது மீண்டும் தொடங்க பொத்தானை.</string>
@@ -285,7 +285,7 @@
     <string name="si_mi_meters">மைல்கள் / மீட்டர்</string>
     <string name="search_another_country">மற்றொரு பகுதியைத் தேர்ந்தெடுக்கவும்</string>
     <string name="search_map">வரைபடங்களை தேடுகிறது …</string>
-    <string name="first_usage_wizard_desc">OsmAnd உங்கள் இருப்பிடத்தை நிர்ணயித்து, அந்தப் பிராந்தியத்திற்கு ஏற்ற வரைபடங்களைப் பரிந்துரைக்கவும்.</string>
+    <string name="first_usage_wizard_desc">RoadCrew உங்கள் இருப்பிடத்தை நிர்ணயித்து, அந்தப் பிராந்தியத்திற்கு ஏற்ற வரைபடங்களைப் பரிந்துரைக்கவும்.</string>
     <string name="location_not_found">இடம் காணப்படவில்லை</string>
     <string name="no_inet_connection">இணைய இணைப்பு இல்லை</string>
     <string name="search_location">இடம் தேடுகிறது …</string>
@@ -302,7 +302,7 @@
     <string name="back_to_search">தேடுவதற்கு திரும்புக</string>
     <string name="confirmation_to_delete_history_items">தேர்ந்தெடுத்த உருப்படிகளை \'வரலாறு\' இலிருந்து நீக்க வேண்டுமா\?</string>
     <string name="show_something_on_map">வரைபடத்தில் %1$s ஐக் காட்டு</string>
-    <string name="share_history_subject">OsmAnd வழியாக பகிரப்பட்டது</string>
+    <string name="share_history_subject">RoadCrew வழியாக பகிரப்பட்டது</string>
     <string name="search_categories">வகைகள்</string>
     <string name="postcode">அஞ்சல்</string>
     <string name="shared_string_from">இருந்து</string>
@@ -320,7 +320,7 @@
     <string name="access_direction_audio_feedback_descr">ஒலி மூலம் இலக்கு புள்ளி திசையை குறிக்கவும்.</string>
     <string name="access_direction_haptic_feedback">வெறுப்பு திசைகளில்</string>
     <string name="access_direction_haptic_feedback_descr">அதிர்வு மூலம் இலக்கு புள்ளி திசை குறிக்க.</string>
-    <string name="use_osm_live_routing_description">OsmAnd லைவ் மாற்றங்களுக்கான வழிசெலுத்தலை இயக்கு.</string>
+    <string name="use_osm_live_routing_description">RoadCrew லைவ் மாற்றங்களுக்கான வழிசெலுத்தலை இயக்கு.</string>
     <string name="access_no_destination">அணுகல் சொருகி: இலக்கு தொகுப்பு இல்லை</string>
     <string name="map_widget_magnetic_bearing">காந்த தாங்கி</string>
     <string name="map_widget_bearing">உறவினர் தாங்கி</string>
@@ -471,7 +471,7 @@
     <string name="rendering_value_bicycle_name">மிதிவண்டி</string>
     <string name="gps_network_not_enabled">இருப்பிட பணி முடக்கப்பட்டுள்ளது. அதை இயக்கவா?</string>
     <string name="disable_recording_once_app_killed">தனியான பதிவுகளை தடுக்கிறது</string>
-    <string name="shared_string_import2osmand">OsmAnd க்கு இறக்குமதி செய்</string>
+    <string name="shared_string_import2osmand">RoadCrew க்கு இறக்குமதி செய்</string>
     <string name="read_full_article">முழு கட்டுரை (ஆன்லைன்) படிக்கவும்</string>
     <string name="shared_string_wikipedia">விக்கிப்பீடியா</string>
     <string name="shared_string_enable">இயக்கு</string>
@@ -610,8 +610,8 @@
     <string name="lang_uk">உக்ரைனியன்</string>
     <string name="lang_vi">வியட்நாமிஸ்</string>
     <string name="lang_cy">வெல்ஷ்</string>
-    <string name="calculate_osmand_route_without_internet">OsmAnd பாதை பிரிவின் ஆஃப்லைன் கணக்கீடு</string>
-    <string name="gpx_option_calculate_first_last_segment">முதல் மற்றும் கடைசி பாதை பிரிவிற்கு OsmAnd வழியை கணக்கிடுங்கள்</string>
+    <string name="calculate_osmand_route_without_internet">RoadCrew பாதை பிரிவின் ஆஃப்லைன் கணக்கீடு</string>
+    <string name="gpx_option_calculate_first_last_segment">முதல் மற்றும் கடைசி பாதை பிரிவிற்கு RoadCrew வழியை கணக்கிடுங்கள்</string>
     <string name="keep_and_add_destination_point">அடுத்தடுத்த இலக்காக சேர்க்கவும்</string>
     <string name="route_descr_select_destination">இலக்கை அமைக்கவும்</string>
     <string name="route_info">வழி தகவல்</string>
@@ -633,10 +633,10 @@
     <string name="routing_attr_weight_description">அனுமதிக்கப்பட்ட வாகனம் எடை வரம்பை வழிகளில் குறிக்கவும்.</string>
     <string name="routing_attr_height_name">உயரம்</string>
     <string name="routing_attr_height_description">வாகன உயரத்தை பாதைகளில் அனுமதிக்கப்படுவதைக் குறிப்பிடவும்.</string>
-    <string name="android_19_location_disabled">ஆண்ட்ராய்டு பதிப்பு 4.4 (KitKat) என்பதால் பழைய சேமிப்பக கோப்புறையில் (%s) வரைபடங்களைப் பதிவிறக்க மற்றும் புதுப்பிக்க முடியாது. புதிய சேமிப்பக இருப்பிடத்திற்கு அனைத்து OsmAnd கோப்புகளை நகலெடுக்கவா\?
+    <string name="android_19_location_disabled">ஆண்ட்ராய்டு பதிப்பு 4.4 (KitKat) என்பதால் பழைய சேமிப்பக கோப்புறையில் (%s) வரைபடங்களைப் பதிவிறக்க மற்றும் புதுப்பிக்க முடியாது. புதிய சேமிப்பக இருப்பிடத்திற்கு அனைத்து RoadCrew கோப்புகளை நகலெடுக்கவா\?
 \n குறிப்பு 1: உங்கள் பழைய கோப்புகள் தொடாமல் இருக்கும் (ஆனால் கைமுறையாக நீக்க முடியும்).
 \n குறிப்பு 2: புதிய சேமிப்பிட இருப்பிடத்தில், OsmAnd மற்றும் OsmAnd + க்குள்ளும் கோப்புகளை பகிர்ந்து கொள்ள முடியாது.</string>
-    <string name="copying_osmand_files">OsmAnd தரவு கோப்புகளை நகலெடுக்கிறது…</string>
+    <string name="copying_osmand_files">RoadCrew தரவு கோப்புகளை நகலெடுக்கிறது…</string>
     <string name="calculate_osmand_route_gpx">ஆஃப்லைன் ஓஸ்மா வழி பாதை</string>
     <string name="app_mode_truck">டிரக்</string>
     <string name="speech_rate_descr">உரை-க்கு-பேச்சுக்கான பேச்சு வீதத்தைக் குறிப்பிடவும்.</string>

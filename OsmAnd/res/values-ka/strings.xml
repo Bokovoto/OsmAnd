@@ -6,13 +6,13 @@
     <string name="map_online_plugin_is_not_installed">"ჩართეთ მიმდინარე რუკების დამატება სხვადასხვა წყაროების სანახავად"</string>
     <string name="map_online_data">მიმდინარე რუკები</string>
     <string name="shared_string_online_maps">მიმდინარე რუკები</string>
-    <string name="osmand_rastermaps_plugin_description">წვდომას გაძლევთ მრავალი ტიპის ონლაინ (ე.წ. ტაილურ ან რასტრულ) რუკაზე, როგორიცაა წინასწარ რენდერირებული OSM ტაილები, სატელიტური გამოსახულებები და სპეციალური დანიშნულების ფენები: ამინდის, კლიმატის, გეოლოგიური რუკები, რელიეფის დაჩრდილვა და სხვა.\n\nნებისმიერი ეს რუკა შეიძლება გამოყენებულ იქნას როგორც ძირითადი რუკა, ან როგორც ზედა (Overlay) და ქვედა (Underlay) ფენა სხვა რუკისთვის (მაგალითად, OsmAnd-ის ხაზგარეშე ვექტორული რუკებისთვის). ვექტორული რუკის ცალკეული ელემენტების დამალვა შესაძლებელია მენიუდან „რუკის კონფიგურაცია“, რათა ქვედა ფენა უფრო შესამჩნევი გახდეს.\n\n გადმოწერეთ ფილებად დაყოფილი რუკები პირდაპირ, ან დააკოპირეთ ისინი SQLite მონაცემთა ბაზის ფაილების სახით OsmAnd-ის საქაღალდეში სხვადასხვა გარე პროგრამის გამოყენებით.</string>
-    <string name="osmand_accessibility_description">მოწყობილობის წვდომადობის ფუნქციებს პირდაპირ ხელმისაწვდომს ხდის OsmAnd-ში. ეს ამარტივებს, მაგალითად: ტექსტის გახმოვანების (TTS) სიჩქარის რეგულირებას, D-pad ნავიგაციის კონფიგურაციას, ტრეკბოლის გამოყენებას მასშტაბირებისთვის ან ხმოვან შეტყობინებებს თქვენი მდებარეობის ავტომატური გამოცხადებისთვის.</string>
-    <string name="osmand_development_plugin_description">უზრუნველყოფს OsmAnd-ის ტესტირებისა და გამართვის ფუნქციებს: ნავიგაციის მარშრუტების სიმულაცია, ეკრანის რენდერის მონიტორინგი, წარმადობის შემოწმება და სხვა. ეს დამატება არ არის საჭირო აპლიკაციის ჩვეულებრივი გამოყენებისთვის.</string>
+    <string name="osmand_rastermaps_plugin_description">წვდომას გაძლევთ მრავალი ტიპის ონლაინ (ე.წ. ტაილურ ან რასტრულ) რუკაზე, როგორიცაა წინასწარ რენდერირებული OSM ტაილები, სატელიტური გამოსახულებები და სპეციალური დანიშნულების ფენები: ამინდის, კლიმატის, გეოლოგიური რუკები, რელიეფის დაჩრდილვა და სხვა.\n\nნებისმიერი ეს რუკა შეიძლება გამოყენებულ იქნას როგორც ძირითადი რუკა, ან როგორც ზედა (Overlay) და ქვედა (Underlay) ფენა სხვა რუკისთვის (მაგალითად, RoadCrew-ის ხაზგარეშე ვექტორული რუკებისთვის). ვექტორული რუკის ცალკეული ელემენტების დამალვა შესაძლებელია მენიუდან „რუკის კონფიგურაცია“, რათა ქვედა ფენა უფრო შესამჩნევი გახდეს.\n\n გადმოწერეთ ფილებად დაყოფილი რუკები პირდაპირ, ან დააკოპირეთ ისინი SQLite მონაცემთა ბაზის ფაილების სახით RoadCrew-ის საქაღალდეში სხვადასხვა გარე პროგრამის გამოყენებით.</string>
+    <string name="osmand_accessibility_description">მოწყობილობის წვდომადობის ფუნქციებს პირდაპირ ხელმისაწვდომს ხდის RoadCrew-ში. ეს ამარტივებს, მაგალითად: ტექსტის გახმოვანების (TTS) სიჩქარის რეგულირებას, D-pad ნავიგაციის კონფიგურაციას, ტრეკბოლის გამოყენებას მასშტაბირებისთვის ან ხმოვან შეტყობინებებს თქვენი მდებარეობის ავტომატური გამოცხადებისთვის.</string>
+    <string name="osmand_development_plugin_description">უზრუნველყოფს RoadCrew-ის ტესტირებისა და გამართვის ფუნქციებს: ნავიგაციის მარშრუტების სიმულაცია, ეკრანის რენდერის მონიტორინგი, წარმადობის შემოწმება და სხვა. ეს დამატება არ არის საჭირო აპლიკაციის ჩვეულებრივი გამოყენებისთვის.</string>
     <string name="plugins_screen">მოდულები</string>
     <string name="prefs_plugins">მოდულები</string>
     <string name="play_commands_of_currently_selected_voice">ხმით არჩეული ბრძანებების შესრულება:</string>
-    <string name="debugging_and_development">OsmAnd -ის განვითარება და გამართვა</string>
+    <string name="debugging_and_development">RoadCrew -ის განვითარება და გამართვა</string>
     <string name="test_voice_prompts">ხმის ტესტირება</string>
     <string name="gpx_visibility_txt">ხილვადობა</string>
     <string name="gpx_tags_txt">ჭდეები</string>
@@ -100,7 +100,7 @@
     <string name="user_name">თქვენი OSM-ს მომხმარებლის სახელი</string>
     <string name="user_password">პაროლი</string>
     <string name="osmand_service">ფონური პარამეტრები</string>
-    <string name="osmand_service_descr">გამოიყენეთ OsmAnd-ის ეკრანის გათიშულობის დროს გამოსაყენებლად.</string>
+    <string name="osmand_service_descr">გამოიყენეთ RoadCrew-ის ეკრანის გათიშულობის დროს გამოსაყენებლად.</string>
     <string name="download_files_not_enough_space">არასაკმარისი ადგილი %1$s მბ-ის გადმოსაწერად (თავისუფალია: %2$s).</string>
     <string name="download_files_question_space">თავისუფალი ადგილი {2} მბ! 
 \nგადმოვწერო {0} ფაილი ზომით ({1} მბ)\?</string>
@@ -222,13 +222,13 @@
     <string name="version_index_is_big_for_memory">ინდექსი \'\'{0}\'\' არ ეტევა მეხსიერებაში</string>
     <string name="version_index_is_not_supported">ინდექსის ვერსიის \'\'{0}\'\' მხარდაჭერა არ არსებობს</string>
     <string name="application_dir">შესანახი დასტა</string>
-    <string name="osmand_net_previously_installed">დაყენებულია OsmAnd-ის წინა ვერსია. მთელი გათიშული მონაცემების მხარდაჭერილია და გამოყენებულ იქნება ახალ აპლიკაციაში. რჩეული წერტილების გამოსაყენებლად ისინი უნდა დააექსპორტოთ ძველიდან და შეიტანოთ ახალში.</string>
+    <string name="osmand_net_previously_installed">დაყენებულია RoadCrew-ის წინა ვერსია. მთელი გათიშული მონაცემების მხარდაჭერილია და გამოყენებულ იქნება ახალ აპლიკაციაში. რჩეული წერტილების გამოსაყენებლად ისინი უნდა დააექსპორტოთ ძველიდან და შეიტანოთ ახალში.</string>
     <string name="build_installed">ვერსია {0}-ის ჩადგმა წარმატებულად დამთავრდა ({1}).</string>
     <string name="downloading_build">ვერსიის გადმოწერა…</string>
-    <string name="install_selected_build">გნებავთ დააყენოთ OsmAnd - {0} დან {1} {2} მბ ?</string>
-    <string name="loading_builds_failed">OsmAnd-ის ვერსიების სიის გადმოწერა შეუძლებელია</string>
-    <string name="loading_builds">OsmAnd-ის ვერსიების ჩატვირთვა…</string>
-    <string name="select_build_to_install">დასაყენებლად აირჩიეთ OsmAnd-ის ვერსია</string>
+    <string name="install_selected_build">გნებავთ დააყენოთ RoadCrew - {0} დან {1} {2} მბ ?</string>
+    <string name="loading_builds_failed">RoadCrew-ის ვერსიების სიის გადმოწერა შეუძლებელია</string>
+    <string name="loading_builds">RoadCrew-ის ვერსიების ჩატვირთვა…</string>
+    <string name="select_build_to_install">დასაყენებლად აირჩიეთ RoadCrew-ის ვერსია</string>
     <string name="contribution_activity">უფასო ვერსიის შეწირულობის აქტივობა</string>
     <string name="gps_status_app_not_found">ვერ ვიპოვე GPS სტატუსის აპლიკაცია. გნებავთ მისი მოძებნა მაღაზიაში?</string>
     <string name="daynight_mode_day">დღე</string>
@@ -273,7 +273,7 @@
     <string name="layer_map">რუკის წყარო…</string>
     <string name="use_trackball_descr">რუკის სამოძრაოდ გამოიყენეთ ტრეკბოლი.</string>
     <string name="use_trackball">გამოიყენეთ ტრეკბოლი</string>
-    <string name="process_navigation_service">OsmAnd-ის ნავიგაციის სერვისი</string>
+    <string name="process_navigation_service">RoadCrew-ის ნავიგაციის სერვისი</string>
     <string name="int_seconds">წამი</string>
     <string name="int_min">წთ.</string>
     <string name="search_poi_filter">ფილტრი</string>
@@ -299,7 +299,7 @@
     <string name="transport_stops">გაჩერება</string>
     <string name="transport">ტრანსპორტი</string>
     <string name="shared_string_ok">OK</string>
-    <string name="hello">OsmAnd - სანავიგაციო აპლიკაცია</string>
+    <string name="hello">RoadCrew - სანავიგაციო აპლიკაცია</string>
     <string name="favorite">რჩეული</string>
     <string name="shared_string_clear_all">გასუფთავება</string>
     <string name="shared_string_history">ისტორია</string>
@@ -333,7 +333,7 @@
     <string name="invalid_locations">არასწორი კოორდინატები</string>
     <string name="shared_string_close">დახურვა</string>
     <string name="loading_data">მონაცემების კითხვა…</string>
-    <string name="previous_run_crashed">ბოლოს გაშვებული OsmAnd მოკვდა. ჟურნალის ფაილია {0}. გთხოვთ მოგვწეროთ ჟურნალის ფაილი და როგორ მოხდა ეს.</string>
+    <string name="previous_run_crashed">ბოლოს გაშვებული RoadCrew მოკვდა. ჟურნალის ფაილია {0}. გთხოვთ მოგვწეროთ ჟურნალის ფაილი და როგორ მოხდა ეს.</string>
     <string name="saving_gpx_tracks">GPX ფაილის შენახვა…</string>
     <string name="finished_task">დამთავრდა</string>
     <string name="data_settings">მონაცემები</string>
@@ -503,7 +503,7 @@
     <string name="poi_filter_sightseeing">ღირსშესანიშნაობები</string>
     <string name="avoid_motorway">მოტოციკლეტის გზებისათვის თავის არიდება</string>
     <string name="snap_to_road">გზისთვის მიბმა</string>
-    <string name="osmand_short_description_80_chars">OsmAnd არის ნავიგაციის აპლიკაცია ღია წყაროთი გათიშული და ონლაინ რუკების მხარდაჭერით</string>
+    <string name="osmand_short_description_80_chars">RoadCrew არის ნავიგაციის აპლიკაცია ღია წყაროთი გათიშული და ონლაინ რუკების მხარდაჭერით</string>
     <string name="stop_routing_confirm">შევწყვიტო ნავიგაცია\?</string>
     <string name="recording_context_menu_show">ჩვენება</string>
     <string name="recording_photo_description">ფოტო %1$s %2$s</string>
@@ -535,7 +535,7 @@
     <string name="shared_string_control_start">დაწყება</string>
     <string name="map_widget_max_speed">სიჩქარის ლიმიტი</string>
     <string name="route_descr_lat_lon">გან %1$.3f, გრძ %2$.3f</string>
-    <string name="osmand_plus_short_description_80_chars">OsmAnd წარმოადგენს აპლიკაციას ღია კოდით გათიშული და მიმდინარე რუკებით ნავიგაციისათვის</string>
+    <string name="osmand_plus_short_description_80_chars">RoadCrew წარმოადგენს აპლიკაციას ღია კოდით გათიშული და მიმდინარე რუკებით ნავიგაციისათვის</string>
     <string name="incomplete_locale">დაუსრულებელი</string>
     <string name="app_modes_choose">აპლიკაციის პროფილები</string>
     <string name="map_widget_map_rendering">რუკის რენდერი</string>
@@ -611,7 +611,7 @@
     <string name="prefer_motorways">მოტოციკლების გზების არჩევა</string>
     <string name="prefer_in_routing_title">პრიორიტეტი…</string>
     <string name="max_speed_none">არცერთი</string>
-    <string name="osmand_play_title_30_chars">OsmAnd რუკები &amp; ნავიგაცია</string>
+    <string name="osmand_play_title_30_chars">RoadCrew რუკები &amp; ნავიგაცია</string>
     <string name="osmand_plus_play_title_30_chars">OsmAnd+ რუკები &amp; ნავიგაცია</string>
     <string name="shared_string_downloading">გადმოწერა…</string>
     <string name="osb_author_dialog_password">OSM პაროლი(არასავალდებულო)</string>
@@ -819,7 +819,7 @@
     <string name="shared_string_resources">რესურსები</string>
     <string name="approximate_file_size">ფაილის დაახლოებითი ზომაა</string>
     <string name="plan_route_add_new_segment">სეგმენტის დამატება</string>
-    <string name="profile_type_osmand_string">OsmAnd-ის პროფილი</string>
+    <string name="profile_type_osmand_string">RoadCrew-ის პროფილი</string>
     <string name="profile_type_user_string">მომხმარებლის პროფილი</string>
     <string name="select_items_for_import">აირჩიეთ საიმპორტო პუნქტები.</string>
     <string name="shared_string_save_as_gpx"/>
@@ -1355,7 +1355,7 @@
     <string name="shared_string_gpx_file">GPX ფაილი</string>
     <string name="download_all">ყველას გადმოწერა</string>
     <string name="shared_string_restart">აპლიკაციის რესტარტი</string>
-    <string name="osmand_team">OsmAnd-ის ჯგუფი</string>
+    <string name="osmand_team">RoadCrew-ის ჯგუფი</string>
     <string name="popular_destinations">პოპულარული ადგილები</string>
     <string name="download_wiki_region_placeholder">ეს რეგიონი</string>
     <string name="start_editing">ჩასწორების დაწყება</string>
@@ -1737,7 +1737,7 @@
     <string name="routeInfo_piste_type_name">თხილამურის ტიპი</string>
     <string name="shared_string_by_default">ნაგულისხმევად</string>
     <string name="vehicle_parameters">მანქანის პარამეტრები</string>
-    <string name="osmand_settings">OsmAnd-ის გამართვა</string>
+    <string name="osmand_settings">RoadCrew-ის გამართვა</string>
     <string name="switch_profile">პროფილის გადართვა</string>
     <string name="configure_profile">პროფილის გამართვა</string>
     <string name="configure_navigation">ნავიგაციის გამართვა</string>
@@ -1848,11 +1848,11 @@
     <string name="one_point_error">გთხოვთ, დაამატოთ ორი წერტილი მაინც.</string>
     <string name="start_finish_icons">ხატულების დაწყება და დამთავრება</string>
     <string name="contour_lines_thanks">მადლობა \"ტოპოგრაფიის\" შეძენისათვის</string>
-    <string name="use_live_routing">OsmAnd-ის მიმდინარე მონაცემები</string>
-    <string name="use_live_public_transport">OsmAnd-ის მიმდინარე მონაცემები</string>
+    <string name="use_live_routing">RoadCrew-ის მიმდინარე მონაცემები</string>
+    <string name="use_live_public_transport">RoadCrew-ის მიმდინარე მონაცემები</string>
     <string name="use_native_pt">ადგილობრივი საზოგადოებრივი ტრანსპორტის განვითარება</string>
     <string name="message_you_need_add_two_points_to_show_graphs">დაამატეთ ორი წერტილი მაინც</string>
-    <string name="sign_in_with_open_street_map">OsmAnd-ში შესვლა</string>
+    <string name="sign_in_with_open_street_map">RoadCrew-ში შესვლა</string>
     <string name="online_routing_example_hint">URL ყველა პარამეტრით აი ასეთი იქნება:</string>
     <string name="mapillary_image">Mapillary-ის გამოსახულება</string>
     <string name="mapillary_widget">Mapillary-ის ღილაკი</string>
@@ -1864,7 +1864,7 @@
     <string name="swap_two_places">%1$s-ის და %2$s-ისთვის ადგილების შეცვლა</string>
     <string name="file_import_error">%1$s -ის შემოტანის შეცდომა: %2$s</string>
     <string name="export_profile_failed">პროფილის გატანა შეუძლებელია.</string>
-    <string name="change_osmand_data_folder_question">შევცვალო OsmAnd-ის მონაცემების დასტა\?</string>
+    <string name="change_osmand_data_folder_question">შევცვალო RoadCrew-ის მონაცემების დასტა\?</string>
     <string name="voice_announces_descr">ნავიგაციის ინსტრუქციები და გამოცხადებები</string>
     <string name="vehicle_parameters_descr">სიმძიმე, სიმაღლე, სიგრძე და სიჩქარე</string>
     <string name="copy_from_other_profile">სხვა პროფილის ასლის შექმნა</string>
@@ -1901,7 +1901,7 @@
     <string name="update_all">ყველას განახლება (%1$s მბ)</string>
     <string name="default_speed_system_descr">აირჩიეთ სიჩქარის ერთეული.</string>
     <string name="simulate_your_location_stop_descr">თქვენი მდებარეობის სიმულაციის შეწყვეტა.</string>
-    <string name="do_you_like_osmand">მოგწონთ OsmAnd-ი\?</string>
+    <string name="do_you_like_osmand">მოგწონთ RoadCrew-ი\?</string>
     <string name="read_full_article">მთლიანი სტატიის წაკითხვა (ონლაინ)</string>
     <string name="agps_data_last_downloaded">A-GPS მონაცემები გადმოწერილია: %1$s</string>
     <string name="parking_place_limited">პარკინგის დროის ლიმიტი</string>
@@ -1917,7 +1917,7 @@
     <string name="gpx_info_end_time">დასრულების დრო: %1$tF, %1$tT</string>
     <string name="gpx_info_start_time">დაწყების დრო: %1$tF, %1$tT</string>
     <string name="gpx_info_distance">დაშორება: %1$s (%2$s წერტილი)</string>
-    <string name="copying_osmand_files">OsmAnd-ის მონაცემების კოპურება…</string>
+    <string name="copying_osmand_files">RoadCrew-ის მონაცემების კოპურება…</string>
     <string name="all_next_segments">ყველა დარჩენილი სეგმენტი</string>
     <string name="all_previous_segments">ყველა წინა სეგმენტი</string>
     <string name="plan_route_create_new_route">ახალი გზის შექმნა</string>
@@ -1951,7 +1951,7 @@
     <string name="shared_string_file_is_saved">%s შენახულია</string>
     <string name="routing_attr_max_num_changes_name">ტრანსპორტის ცვლილებების მაქს. რაოდენობა</string>
     <string name="precision_hdop">ჰორიზონტალური სიზუსტე: %s</string>
-    <string name="process_downloading_service">OsmAnd-ის გადმოწერის სერვისი</string>
+    <string name="process_downloading_service">RoadCrew-ის გადმოწერის სერვისი</string>
     <string name="base_profile_descr_public_transport">საზოგადოებრივი ტრანსპორტის ტიპები</string>
     <string name="base_profile_descr_pedestrian">სიარული, ლაშქრობა, სირბილი</string>
     <string name="base_profile_descr_car">მანქანა, მოტოციკლი</string>
@@ -1985,7 +1985,7 @@
     <string name="rendering_attr_contourDensity_description">კონტურული ხაზის სიმკვრივე</string>
     <string name="rendering_attr_contourWidth_name">კონტურული ხაზის სიგანე</string>
     <string name="search_location">მიმდინარეობს მდებარეობის ძებნა…</string>
-    <string name="shared_string_import2osmand">OsmAnd-ში შემოტანა</string>
+    <string name="shared_string_import2osmand">RoadCrew-ში შემოტანა</string>
     <string name="lang_zhminnan">სამხრეთული ძმინნური</string>
     <string name="ui_customization">UI-ის მორგება</string>
     <string name="main_actions">მთავარი მოქმედებები</string>
@@ -2096,7 +2096,7 @@
     <string name="multimedia_rec_split_title">ჩანაწერის გაყოფა</string>
     <string name="rendering_value_walkingRoutesOSMCNodes_name">უჯრედული ქსელები</string>
     <string name="layer_osm_edits">OSM ჩასწორებები</string>
-    <string name="shared_string_osmand_usage">OsmAnd-ის გამოყენება</string>
+    <string name="shared_string_osmand_usage">RoadCrew-ის გამოყენება</string>
     <string name="quick_action_add_create_items">ელემენტების შექმნა</string>
     <string name="custom_search">მორგებული ძებნა</string>
     <string name="shared_string_empty">ცარიელი</string>
@@ -2105,7 +2105,7 @@
     <string name="history_actions_descr">შეგიძლიათ ისტორიის ფაილში შენახვა.</string>
     <string name="shortcut_start_recording">ჩაწერის დაწყება</string>
     <string name="continue_on_phone">გაგრძელება ტელეფონზე</string>
-    <string name="location_access_request_title">OsmAnd-ს ნავიგაციისთვის სჭირდება წვდომა მდებარეობასთან.</string>
+    <string name="location_access_request_title">RoadCrew-ს ნავიგაციისთვის სჭირდება წვდომა მდებარეობასთან.</string>
     <string name="shared_string_articles">სტატიები</string>
     <string name="included_categories">ჩართული კატეგორიები</string>
     <string name="routing_attr_avoid_tunnels_description">გვირაბების აცილება</string>
@@ -2292,7 +2292,7 @@
     <string name="shared_string_unsynced">დაუსინქრონებელი</string>
     <string name="map_during_navigation">რუკა ნავიგაციისას</string>
     <string name="select_segments">აირჩიეთ სეგმენტები</string>
-    <string name="osmand_default_routing">ნავიგაცია OsmAnd-ით</string>
+    <string name="osmand_default_routing">ნავიგაცია RoadCrew-ით</string>
     <string name="external_device_details_battery">ელემენტი</string>
     <string name="map_settings_weather_wind">ქარი</string>
     <string name="special_routing_type">სპეციალური ნავიგაცია</string>
@@ -2387,7 +2387,7 @@
     <string name="exit_number">გასასვლელის ნომერი</string>
     <string name="on_hold">შეჩერებულია</string>
     <string name="annual_subscription">წლიური გამოწერა</string>
-    <string name="osmand_live">OsmAnd ცოცხალი</string>
+    <string name="osmand_live">RoadCrew ცოცხალი</string>
     <string name="updated">განახლებულია: %s</string>
     <string name="app_mode_wheelchair_forward">წინ ინვალიდის ეტლია</string>
     <string name="pseudo_mercator_projection">ფსევდო მერკატორის პროექცია</string>
@@ -2441,7 +2441,7 @@
     <string name="lang_sat">სანტალი</string>
     <string name="weather_wind_ms">მ/წმ</string>
     <string name="update_frequency">განახლების სიხშირე</string>
-    <string name="osmand_cloud">OsmAnd ღრუბელში</string>
+    <string name="osmand_cloud">RoadCrew ღრუბელში</string>
     <string name="developer_plugin">პროგრამისტის დამატება</string>
     <string name="inch">დუიმ</string>
     <string name="rendering_attr_showCycleRoutes_name">ველობილიკები</string>
@@ -2449,7 +2449,7 @@
     <string name="delete_updates">განახლებების წაშლა</string>
     <string name="shared_string_temperature">ტემპერატურა</string>
     <string name="renew_subscription">გამოწერის განახლება</string>
-    <string name="tracker_item">OsmAnd-ის ტრეკერი</string>
+    <string name="tracker_item">RoadCrew-ის ტრეკერი</string>
     <string name="backup_error_subscription_was_expired">ამოწურული გამოწერა</string>
     <string name="local_backup">ლოკალური მარქაფი</string>
     <string name="last_backup">ბოლო მარქაფი</string>
@@ -2581,7 +2581,7 @@
     <string name="create_custom_poi">მომხმარებლის ფილტრის შექმნა</string>
     <string name="location_not_found">მდებარეობა ვერ ვიპოვე</string>
     <string name="rendering_value_highContrastRoads_name">მაღალი კონტრასტის გზები</string>
-    <string name="custom_osmand_plugin">მომხარებლის OsmAnd-ის დამატება</string>
+    <string name="custom_osmand_plugin">მომხარებლის RoadCrew-ის დამატება</string>
     <string name="rendering_attr_showMtbRoutes_name">მთის ველოსიპედის გზები</string>
     <string name="rendering_attr_hideWoodScrubs_name">ტყე და ბუჩქები</string>
     <string name="routing_attr_piste_type_skitour_description">გზები სასრიალოდ.</string>
@@ -2674,7 +2674,7 @@
     <string name="download_wikipedia_label">ვიკიპედიის მონაცემების გადმოწერა</string>
     <string name="rendering_attr_pisteRoutes_name">სასრიალო ტრასები</string>
     <string name="routing_attr_piste_type_nordic_name">კროსი და სკანდინავიური სრიალი</string>
-    <string name="calculate_osmand_route_without_internet">OsmAnd-ის მარშრუტის სეგმენტის გამოტვლა ინტერნეტის გარეშე</string>
+    <string name="calculate_osmand_route_without_internet">RoadCrew-ის მარშრუტის სეგმენტის გამოტვლა ინტერნეტის გარეშე</string>
     <string name="profile_prefs_reset_successful">ყველა პროფილის პარამეტრი აღდგენილია ნაგულისხმევ მნიშვნელობაზე.</string>
     <string name="rendering_attr_alpineHiking_description">სიძნელის კლასიფიკაციის ტიპები მარშრუტებისთვის.</string>
     <plurals name="tracks">
@@ -2743,7 +2743,7 @@
     <string name="shared_string_interpolation">ინტერპოლაცია</string>
     <string name="calculating_indication_message">გამოთვლა…</string>
     <string name="zoom_levels_difference_description">დიდი სხვაობას გადიდების დონეებს შორის შეუძლია გადმოსაწერი მონაცემების ზომა გაზარდოს.</string>
-    <string name="gpx_parse_error">აღმოჩენილია GPX ფაილის პრობლემები.\n\nგამოსაკვლევად დაუკავშირდით OsmAnd-ის მხარდაჭერის გუნდს.</string>
+    <string name="gpx_parse_error">აღმოჩენილია GPX ფაილის პრობლემები.\n\nგამოსაკვლევად დაუკავშირდით RoadCrew-ის მხარდაჭერის გუნდს.</string>
     <string name="shared_string_length">სიგრძე</string>
     <string name="shared_string_road_exit">გასვლა</string>
     <string name="shared_string_manual">სახელმძღვანელო</string>
@@ -2777,7 +2777,7 @@
     <string name="suggested_maps_descr">ეს რუკები აუცილებელია დამატებისთვის.</string>
     <string name="vessel_width_limit_description">ვიწრო ხიდების თავიდან ასაცილებლად მიუთითეთ ხომალდის სიგანე</string>
     <string name="unsaved_changes_will_be_lost">შეუნახავი ცვლილებები დაიკარგება. გავაგრძელო?</string>
-    <string name="public_transport_warning_descr_blog">წაიკითხეთ მეტი OsmAnd-ის მარშრუტიზაციის შესახებ ჩვენს ბლოგზე.</string>
+    <string name="public_transport_warning_descr_blog">წაიკითხეთ მეტი RoadCrew-ის მარშრუტიზაციის შესახებ ჩვენს ბლოგზე.</string>
     <string name="quick_action_bug_descr">კომენტარის ველი შეიცავს ამ შეტყობინებას.</string>
     <string name="start_editing_card_image_text">უფასო მსოფლიო სამოგზაურო გზამკვლევი, რომლის ჩასწორებაც ნებისმიერ მსურველს შეუძლია.</string>
     <string name="quick_action_contour_lines_descr">ღილაკი რუკაზე კონტურის ხაზების საჩვენებლად, ან დასამალად.</string>
@@ -2798,9 +2798,9 @@
     <string name="new_filter_desc">შეიყვანეთ ახალი ფილტრის სახელი; ის დაემატება თქვენს ჩანართს „კატეგორიები“.</string>
     <string name="walking_route_osmc_description">მარშრუტების გაფერადება მათი ინდივიდუალური ლოკალური ფერისა (თუ მითითებულია OpenStreetMap-ზე) და ტიპის (საერთაშორისო, რეგიონული, ადგილობრივი) მიხედვით.</string>
     <string name="search_poi_types_descr">გააერთიანეთ POI ტიპები სხვადასხვა კატეგორიიდან. შეეხეთ გადამრთველს ყველას ასარჩევად, ხოლო მარცხენა მხარეს — კატეგორიების ასარჩევად.</string>
-    <string name="wikivoyage_travel_guide_descr">პლანეტის ყველაზე საინტერესო ადგილების გზამკვლევები OsmAnd-ში, ინტერნეტთან კავშირის გარეშე.</string>
+    <string name="wikivoyage_travel_guide_descr">პლანეტის ყველაზე საინტერესო ადგილების გზამკვლევები RoadCrew-ში, ინტერნეტთან კავშირის გარეშე.</string>
     <string name="select_wikipedia_article_langs">აირჩიეთ ვიკიპედიის სტატიის ენა რუკისთვის. სტატიის კითხვისას გადართეთ ნებისმიერ ხელმისაწვდომ ენაზე.</string>
-    <string name="srtm_download_list_help_message">OsmAnd გთავაზობთ კონტურის ხაზების მონაცემებს მეტრებსა და ფუტებში. ფორმატის შესაცვლელად ფაილის ხელახლა გადმოწერა დაგჭირდებათ.</string>
+    <string name="srtm_download_list_help_message">RoadCrew გთავაზობთ კონტურის ხაზების მონაცემებს მეტრებსა და ფუტებში. ფორმატის შესაცვლელად ფაილის ხელახლა გადმოწერა დაგჭირდებათ.</string>
     <string name="vessel_height_limit_description">მიუთითეთ ხომალდის სიმაღლე დაბალი ხიდების თავიდან ასაცილებლად. გაითვალისწინეთ, რომ გასახსნელი ხიდის შემთხვევაში, გამოყენებული იქნება მისი სიმაღლე გახსნილ მდგომარეობაში.</string>
     <string name="plugin_mapillary_descr">ქუჩის ხედის სურათები. თქვენც შეგიძლიათ, შეიტანოთ წვლილი. არსებული მონაცემების რუკის ფენად სანახავად, მენიუში „რუკის მორგება“ ჩართეთ „ქუჩის ხედები“.</string>
     <string name="osm_editing_plugin_description">შეიტანეთ წვლილი OpenStreetMap-ში — გლობალურ საზოგადოებაში, რომელიც ქმნის მსოფლიოს სრულყოფილ რუკას და ყველა მომხმარებელს აწვდის განახლებად, ღია წყაროს მონაცემებს.\n\nრუკის ჩასწორების ინსტრუქციები შეგიძლიათ იხილოთ ჩვენს ვებგვერდზე: %1$s.</string>

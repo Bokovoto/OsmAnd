@@ -202,7 +202,7 @@
     <string name="auto_zoom_map">Samodejno približevanje zemljevida</string>
     <string name="snap_to_road">Pripni na cesto</string>
     <string name="osmand_short_description_80_chars">Globalno mobilno ogledovanje zemljevidov in navigacija za zemljevide OSM z in brez povezave</string>
-    <string name="osmand_plus_short_description_80_chars">OsmAnd je odprtokodni program za navigacijo z uporabo shranjenih ali spletnih zemljevidov</string>
+    <string name="osmand_plus_short_description_80_chars">RoadCrew je odprtokodni program za navigacijo z uporabo shranjenih ali spletnih zemljevidov</string>
     <string name="day_night_info_description">Sončni vzhod: %1$s
 \nSončni zahod: %2$s</string>
     <string name="layer_map_appearance">Nastavitve zaslona</string>
@@ -261,8 +261,8 @@
     <string name="search_nearby">Poišči v bližini</string>
     <string name="opening_changeset">Odpiranje paketa sprememb …</string>
     <string name="closing_changeset">Zapiranje paketa sprememb …</string>
-    <string name="osmand_development_plugin_description">Zagotavlja funkcionalnost za testiranje in odpravljanje napak OsmAnd: simulacija poti za navigacijo, spremljanje upodabljanja zaslona, preverjanje delovanja itd. Ta vtičnik ni potreben za običajno uporabo aplikacije.</string>
-    <string name="osmand_accessibility_description">Omogoča, da so funkcije dostopnosti naprave neposredno na voljo v aplikaciji OsmAnd. Podpira npr. prilagajanje hitrosti govora za pretvorbo besedila-v-govor, nastavitev navigacije D-pad, uporabo sledilne krogle za nadzor povečave ali povratne informacije besedila-v-govor, na primer za samodejno napoved trenutnega položaja.</string>
+    <string name="osmand_development_plugin_description">Zagotavlja funkcionalnost za testiranje in odpravljanje napak RoadCrew: simulacija poti za navigacijo, spremljanje upodabljanja zaslona, preverjanje delovanja itd. Ta vtičnik ni potreben za običajno uporabo aplikacije.</string>
+    <string name="osmand_accessibility_description">Omogoča, da so funkcije dostopnosti naprave neposredno na voljo v aplikaciji RoadCrew. Podpira npr. prilagajanje hitrosti govora za pretvorbo besedila-v-govor, nastavitev navigacije D-pad, uporabo sledilne krogle za nadzor povečave ali povratne informacije besedila-v-govor, na primer za samodejno napoved trenutnega položaja.</string>
     <string name="shared_string_close">Zapri</string>
     <string name="opening_hours">Delovni čas</string>
     <string name="play_commands_of_currently_selected_voice">Izbor glasu in preizkus predvajanja obvestil:</string>
@@ -277,8 +277,8 @@
     <string name="voice_data_unavailable">Izbrani glasovni paket ni na voljo</string>
     <string name="voice_stream_voice_call">Zvok telefonskega klica (za prekinitev avtoradia Bluetooth)</string>
     <string name="voice_provider">Jezik glasovnega vodenja</string>
-    <string name="process_navigation_service">Navigacijska storitev OsmAnd</string>
-    <string name="hello">Program za navigacijo OsmAnd</string>
+    <string name="process_navigation_service">Navigacijska storitev RoadCrew</string>
+    <string name="hello">Program za navigacijo RoadCrew</string>
     <string name="system_locale">Sistemski</string>
     <string name="map_screen_orientation">Usmerjenost zaslona</string>
     <string name="map_orientation_default">Glede na nastavitve naprave</string>
@@ -333,13 +333,13 @@
     <string name="shared_string_online_maps">Spletni zemljevidi</string>
     <string name="osmand_rastermaps_plugin_description">Omogoča dostop do različnih vrst spletnih zemljevidov (rastrski ali s ploščicami), kot so vnaprej upodobljene ploščice OSM, satelitske slik ter posebni prekrivni zemljevidi, kot so vremenski, klimatski, geološki, senčenje terena, itd.
 \n
-\n Vsi ti zemljevidi so lahko prikazani kot osnovni zemljevidi, ali pa so podlaga oziroma prekrivni zemljevid drugim standardnim zemljevidom (kot so OsmAnd vektorski zemljevidi brez povezave). Določene elemente vektorskih zemljevidov OsmAnd lahko prek menija »Nastavitev zemljevida« skriješ, da je zemljevid v podlagi bolj viden.
+\n Vsi ti zemljevidi so lahko prikazani kot osnovni zemljevidi, ali pa so podlaga oziroma prekrivni zemljevid drugim standardnim zemljevidom (kot so RoadCrew vektorski zemljevidi brez povezave). Določene elemente vektorskih zemljevidov RoadCrew lahko prek menija »Nastavitev zemljevida« skriješ, da je zemljevid v podlagi bolj viden.
 \n
-\n Prenesi zemljevide ploščic neposredno ali jih kopiraj v podatkovno mapo OsmAnd, kot datoteke podatkovne zbirke SQLite, z enim od številnih orodij tretjih oseb, za pripravo zemljevidov.</string>
+\n Prenesi zemljevide ploščic neposredno ali jih kopiraj v podatkovno mapo RoadCrew, kot datoteke podatkovne zbirke SQLite, z enim od številnih orodij tretjih oseb, za pripravo zemljevidov.</string>
     <string name="osm_editing_plugin_description">Prispevaj v OpenStreetMap, globalno skupnost, ki vzdržuje celovit zemljevid sveta in vsakemu uporabniku zagotavlja posodobljene odprtokodne podatke.
 \n
 \nNavodila za urejanje zemljevida najdeš na spletni strani %1$s.</string>
-    <string name="debugging_and_development">Razhroščevalnik OsmAnd</string>
+    <string name="debugging_and_development">Razhroščevalnik RoadCrew</string>
     <string name="gpx_tags_txt">Oznake</string>
     <string name="shared_string_description">Opis</string>
     <string name="info_button">Podrobnosti</string>
@@ -436,7 +436,7 @@
     <string name="save_track_to_gpx">Samodejno beleži sled med navigacijo</string>
     <string name="int_seconds">sek</string>
     <string name="int_min">min</string>
-    <string name="previous_run_crashed">Pri zadnjem zagonu programa OsmAnd je prišlo do napake v delovanju. Dnevniška datoteka je shranjena v {0}. Pošljite poročilo o napaki in priložite to datoteko.</string>
+    <string name="previous_run_crashed">Pri zadnjem zagonu programa RoadCrew je prišlo do napake v delovanju. Dnevniška datoteka je shranjena v {0}. Pošljite poročilo o napaki in priložite to datoteko.</string>
     <string name="amenity_type_emergency">Nujna medicinska pomoč</string>
     <string name="amenity_type_geocache">Zaklad Geocache</string>
     <string name="poi_filter_namefinder">Spletni iskalnik imen</string>
@@ -445,10 +445,10 @@
     <string name="osmand_net_previously_installed">Vsi nepovezani podatki iz stare različice so podprti v novi, treba pa je najprej iz stare izvoziti priljubljene točke in jih nato ponovno uvoziti v novejšo različico.</string>
     <string name="build_installed">Različica izgradnje {0} je nameščena ({1}).</string>
     <string name="downloading_build">Prejemanje različice …</string>
-    <string name="install_selected_build">Ali želite namestiti program OsmAnd – {0} od {1} {2} MB\?</string>
-    <string name="loading_builds_failed">Pridobivanje seznama različic OsmAnd je spodletelo</string>
-    <string name="loading_builds">Nalaganje različic OsmAnd …</string>
-    <string name="select_build_to_install">Izberi različico OsmAnd za namestitev</string>
+    <string name="install_selected_build">Ali želite namestiti program RoadCrew – {0} od {1} {2} MB\?</string>
+    <string name="loading_builds_failed">Pridobivanje seznama različic RoadCrew je spodletelo</string>
+    <string name="loading_builds">Nalaganje različic RoadCrew …</string>
+    <string name="select_build_to_install">Izberi različico RoadCrew za namestitev</string>
     <string name="contribution_activity">Nameščanje različic</string>
     <string name="shared_string_select_all">Izberi vse</string>
     <string name="shared_string_refresh">Osveži</string>
@@ -464,9 +464,9 @@
     <string name="vector_data">Vektorski zemljevidi za delo brez povezave</string>
     <string name="show_route">Podrobnosti poti</string>
     <string name="fav_imported_sucessfully">Priljubljene točke so uvožene</string>
-    <string name="osmand_long_description_1000_chars">OsmAnd (OSM Automated Navigation Directions)
+    <string name="osmand_long_description_1000_chars">RoadCrew (OSM Automated Navigation Directions)
 \n
-\nOsmAnd je odprtokodna programska oprema za navigacijo z uporabo širokega izbora podatkov OSM. Vse podatke zemljevidov (vektorskih in s ploščicami) je mogoče shraniti v pomnilnik naprave za uporabo brez povezave. OsmAnd omogoča tudi izračun poti z ali brez povezave in glasovno vodenje od zavoja do zavoja.
+\nRoadCrew je odprtokodna programska oprema za navigacijo z uporabo širokega izbora podatkov OSM. Vse podatke zemljevidov (vektorskih in s ploščicami) je mogoče shraniti v pomnilnik naprave za uporabo brez povezave. RoadCrew omogoča tudi izračun poti z ali brez povezave in glasovno vodenje od zavoja do zavoja.
 \n
 \nPomembnejše lastnosti:
 \n• popolnoma delujoč tudi brez povezave (shrani podatke vektorskih in zemljevidov s ploščicami v mapo po izbiri);
@@ -481,7 +481,7 @@
 \n- z nastavljivo usmerjenostjo zemljevida glede na kompas ali glede na smer gibanja;
 \n- z nastavljivim vodenjem po voznih pasovih, prikazom omejitev hitrosti, vodenjem s posnetim ali sintetiziranim govorom (TTS).
 \n
-\nBrezplačna različica programa OsmAnd ima naslednje omejitve:
+\nBrezplačna različica programa RoadCrew ima naslednje omejitve:
 \n• omejeno je število prenosov zemljevidov;
 \n• brez povezave ni dostopa do vsebin z Wikipedije.
 \n
@@ -601,7 +601,7 @@
     <string name="shared_string_map">Zemljevid</string>
     <string name="access_arrival_time">Čas prihoda</string>
     <string name="map_widget_gps_info">Podrobnosti GPS</string>
-    <string name="osmand_play_title_30_chars">Zemljevidi in navigacija OsmAnd</string>
+    <string name="osmand_play_title_30_chars">Zemljevidi in navigacija RoadCrew</string>
     <string name="osmand_plus_play_title_30_chars">Zemljevidi OsmAnd+ in navigacija</string>
     <string name="street_name">Ulica</string>
     <string name="hno">Hišna številka</string>
@@ -751,7 +751,7 @@
     <string name="android_19_location_disabled">Z različico androida 4.4 (KitKat) je staro mesta shranjevanja (%s) nezaželeno. Ali želite kopirati vse datoteke na novo mesto\?
 \n Opomba 1: vse stare datoteke bodo ostale nespremenjene (vendar jih lahko ročno izbrišete).
 \n Opomba 2: souporaba datotek med OsmAnd in OsmAnd+ ni mogoča.</string>
-    <string name="copying_osmand_files">Kopiranje datotek s podatki programa OsmAnd …</string>
+    <string name="copying_osmand_files">Kopiranje datotek s podatki programa RoadCrew …</string>
     <string name="index_item_nation_addresses">Naslovi za celotno državo</string>
     <string name="lang_mr">Maratščina</string>
     <string name="calculate_osmand_route_without_internet">Izračunanje odseka poti brez povezave</string>
@@ -761,7 +761,7 @@
     <string name="interrupt_music_descr">Glasovni pozivi začasno ustavijo predvajanje glasbe.</string>
     <string name="interrupt_music">Prekini predvajanje glasbe</string>
     <string name="share_route_as_gpx">Objavi pot kot datoteko GPX</string>
-    <string name="share_route_subject">Objavi pot preko spletišča OsmAnd</string>
+    <string name="share_route_subject">Objavi pot preko spletišča RoadCrew</string>
     <string name="navigation_intent_invalid">Neveljaven zapis: %s</string>
     <string name="keep_informing_never">Samo ročno (pritisnite na puščico)</string>
     <string name="keep_informing">Ponavljanje navigacijskih navodil</string>
@@ -800,7 +800,7 @@
     <string name="gpx_selection_track">%1$s
 \nSled %2$s</string>
     <string name="shared_string_my_favorites">Shranjeni kraji</string>
-    <string name="share_fav_subject">Priljubljene točke, ki so bile objavljene z OsmAnd</string>
+    <string name="share_fav_subject">Priljubljene točke, ki so bile objavljene z RoadCrew</string>
     <string name="shared_string_share">Skupna raba</string>
     <string name="route_descr_destination">Cilj</string>
     <string name="gpx_split_interval">Interval za razdelitev</string>
@@ -1047,7 +1047,7 @@
     <string name="shared_string_wikipedia">Wikipedija</string>
     <string name="shared_string_show_details">Pokaži podrobnosti</string>
     <string name="download_wikipedia_maps">Wikipedija</string>
-    <string name="shared_string_import2osmand">Uvozi v OsmAnd</string>
+    <string name="shared_string_import2osmand">Uvozi v RoadCrew</string>
     <string name="local_recordings_delete_all_confirm">Želiš izbrisati %1$d opomb\?</string>
     <string name="gps_network_not_enabled">Storitev lokacija ni omogočena. Ali jo želiš omogočiti\?</string>
     <string name="disable_recording_once_app_killed">Prepreči samostojno beleženje</string>
@@ -1204,7 +1204,7 @@
     <string name="read_more">Preberite več</string>
     <string name="whats_new">Kaj je novega v</string>
     <string name="rendering_attr_showProposed_name">Skrij predlagane predmete</string>
-    <string name="share_osm_edits_subject">Posodobitve OSM, oddane preko OsmAnd</string>
+    <string name="share_osm_edits_subject">Posodobitve OSM, oddane preko RoadCrew</string>
     <string name="lang_nds">Nizka nemščina</string>
     <string name="lang_mk">Makedonščina</string>
     <string name="lang_fy">Frizijščina</string>
@@ -1388,7 +1388,7 @@
     <string name="confirmation_to_delete_history_items">Ali res želite izbrisati izbrane predmete zgodovine?</string>
     <string name="show_something_on_map">Pokaži %1$s na zemljevidu</string>
     <string name="dist_away_from_my_location">Poišči %1$s</string>
-    <string name="share_history_subject">v souporabi prek OsmAnd</string>
+    <string name="share_history_subject">v souporabi prek RoadCrew</string>
     <string name="search_categories">Kategorije</string>
     <string name="lang_hsb">Sorbsčina (zgornja)</string>
     <string name="coords_search">Iskanje po koordinatah</string>
@@ -1555,7 +1555,7 @@
     <string name="routing_attr_relief_smoothness_factor_name">Izbor razgibanosti terena</string>
     <string name="do_not_show_startup_messages">Ob zagonu ne prikazuj sporočil</string>
     <string name="parking_options">Možnosti parkiranja</string>
-    <string name="full_version_thanks">Zahvaljujemo se vam za nakup polne različice programa OsmAnd.</string>
+    <string name="full_version_thanks">Zahvaljujemo se vam za nakup polne različice programa RoadCrew.</string>
     <string name="right_side_navigation">Vožnja po desni strani</string>
     <string name="shared_string_automatic">Samodejno</string>
     <string name="quick_action_auto_zoom">Omogoči/Onemogoči samodejno približanje zemljevida</string>
@@ -1582,7 +1582,7 @@
     <string name="routing_attr_allow_private_name">Dovoli zasebni dostop</string>
     <string name="routing_attr_allow_private_description">Dovoli dostop do zasebnih območij.</string>
     <string name="osmand_extended_description_part4">Smučanje
-\nSmučarski zemljevidi OsmAnd omogočajo pregled prog in ocenjene ravni zahtevnosti, na voljo pa so tudi podatki o postavitvi žičnic in drugih pomembnih zgradbah.</string>
+\nSmučarski zemljevidi RoadCrew omogočajo pregled prog in ocenjene ravni zahtevnosti, na voljo pa so tudi podatki o postavitvi žičnic in drugih pomembnih zgradbah.</string>
     <string name="osmand_plus_extended_description_part8">Približna pokritost zemljevidov in kakovost podatkov:
 \n• Zahodna Evropa: ****
 \n• Vzhodna Evropa: ***
@@ -1640,9 +1640,9 @@
     <string name="display_zoom_level">Raven približanja: %1$s</string>
     <string name="distance_moving">Razdalja je popravljena</string>
     <string name="mapillary_image">Slika Mapillary</string>
-    <string name="import_gpx_failed_descr">Datoteke ni bilo mogoče uvoziti. Prepričaj se, da ima OsmAnd dovoljenje za branje.</string>
+    <string name="import_gpx_failed_descr">Datoteke ni bilo mogoče uvoziti. Prepričaj se, da ima RoadCrew dovoljenje za branje.</string>
     <string name="shared_string_permissions">Dovoljenja</string>
-    <string name="osmand_extended_description_part1">OsmAnd (OSM Automated Navigation Directions) je zemljevid in aplikacija za navigacijo, z dostopom do brezplačnih, svetovnih in visokokakovostnih OSM podatkov.
+    <string name="osmand_extended_description_part1">RoadCrew (OSM Automated Navigation Directions) je zemljevid in aplikacija za navigacijo, z dostopom do brezplačnih, svetovnih in visokokakovostnih OSM podatkov.
 \n
 \nUživajte v glasovnem in vidnem navigatorju, ogledu POI-jev (zanimivih točkah), ustvarjanju in upravljanju GPX sledi, uporabo izohips in drugih topografskih informacij (prek vtičnika), izbiro med vožnjo, kolesarjenjem, načini za pešce, urejanjem OSM-a in še veliko več.</string>
     <string name="map_widget_ruler_control">Krožno ravnilo</string>
@@ -1715,7 +1715,7 @@
 \n
 \n• možnost izbire med popolnimi podatki območja ali pa zgolj cestnega omrežja (primer: popolni zemljevid Japonske zasede 700 MB, cestno omrežje pa zgolj 200 MB).</string>
     <string name="min_max">Najmanj/Največ</string>
-    <string name="osmand_extended_description_part8">OsmAnd je aktivno razvita odprtokodna programska oprema. Vsakdo lahko sodeluje pri razvoju z objavljanjem hroščev, pregledom prevodov ali kodiranjem novih funkcij. Poleg tega projekt temelji na finančnih prispevkih za financiranje kodiranja in testiranja novih funkcionalnosti.
+    <string name="osmand_extended_description_part8">RoadCrew je aktivno razvita odprtokodna programska oprema. Vsakdo lahko sodeluje pri razvoju z objavljanjem hroščev, pregledom prevodov ali kodiranjem novih funkcij. Poleg tega projekt temelji na finančnih prispevkih za financiranje kodiranja in testiranja novih funkcionalnosti.
 \nPribližna pokritost in kakovost zemljevidov:
 \n• Zahodna Evropa: ****
 \n• Vzhodna Evropa: ***
@@ -1791,7 +1791,7 @@
 \n• Pošiljanje sledi GPX neposredno na OSM
 \n• Dodajanje točk POI in neposredno pošiljanje podatkov na strežnik OSM (ob vzpostavitvi povezave)
 \n• Izbirno beleženje tudi v stanju pripravljenosti naprave
-\nOsmAnd je hitro razvijajoči se odprtokodni program. Vsak lahko sodeluje pri razvoju z objavljanjem hroščev, pregledovanjem jezikovnih prilagoditev in pri razvoju novih možnosti programa. Razvoj projekta temelji na donacijah za pripravo in pregled novih zmožnosti ter preizkušanja delovanja.
+\nRoadCrew je hitro razvijajoči se odprtokodni program. Vsak lahko sodeluje pri razvoju z objavljanjem hroščev, pregledovanjem jezikovnih prilagoditev in pri razvoju novih možnosti programa. Razvoj projekta temelji na donacijah za pripravo in pregled novih zmožnosti ter preizkušanja delovanja.
 \n</string>
     <string name="show_guide_line">Pokaži vodilne črte</string>
     <string name="show_arrows_on_the_map">Na zemljevidu pokaži puščice</string>
@@ -1958,7 +1958,7 @@
     <string name="shared_string_total">Skupaj</string>
     <string name="clear_all_intermediates">Počisti vse vmesne točke</string>
     <string name="rendering_attr_whiteWaterSports_name">Športi na divjih vodah</string>
-    <string name="osmand_team">Skupina OsmAnd</string>
+    <string name="osmand_team">Skupina RoadCrew</string>
     <string name="popular_destinations">Priljubljeni cilji</string>
     <string name="travel_card_update_descr">Na voljo so posodobitve podatkov WikiVoyage.</string>
     <string name="update_is_available">Na voljo je posodobitev</string>
@@ -2041,7 +2041,7 @@
     <string name="ski_map_render_descr">Za smučanje. Ponuja proge, vlečnice, proge za tek na smučeh itd. Zatemni sekundarne objekte zemljevida.</string>
     <string name="light_rs_render_descr">Preprost način za vožnjo. Nežen nočni način, ceste v kontrastnem oranžnem slogu, zatemnjeni sekundarni objekti zemljevida, topografski elementi, kot so izohipse.</string>
     <string name="topo_render_descr">Za pohodništvo, treking in kolesarjenje v naravi. Berljivo na prostem. Kontrastne ceste in naravni objekti, različne vrste poti, napredne možnosti izohips, dodatne podrobnosti. Prilagajanje celovitosti površine za razlikovanje kakovosti cest. Ni nočnega načina.</string>
-    <string name="touring_view_render_descr">Turistični slog z visokim kontrastom in največ podrobnostmi. Vključuje vse možnosti privzetega sloga OsmAnd, hkrati pa prikazuje čim več podrobnosti, zlasti o cestah, stezah in drugih načinih potovanja. Jasno razlikovanje med vrstami cest. Primeren za dnevno in nočno uporabo, ter uporabo na prostem.</string>
+    <string name="touring_view_render_descr">Turistični slog z visokim kontrastom in največ podrobnostmi. Vključuje vse možnosti privzetega sloga RoadCrew, hkrati pa prikazuje čim več podrobnosti, zlasti o cestah, stezah in drugih načinih potovanja. Jasno razlikovanje med vrstami cest. Primeren za dnevno in nočno uporabo, ter uporabo na prostem.</string>
     <string name="default_render_descr">Slog za splošno uporabo. Poenostavljen prikaz za uporabo v strnjenih naseljih. Vsebuje poti, kakovost površine, omejitve dostopa, cestne ovire, upodabljanje poti po lestvici SAC/CAI, objekte za športe na divjih vodah, topografski elementi, kot so izohipse.</string>
     <string name="read_wikipedia_offline_description">Naročite se na storitev OsmAnd Live za dostop brez povezave do prispevkov na Wikipediji in Wikivoyage.</string>
     <string name="maps_you_need_descr">Na osnovi shranjenih zaznamkov je priporočljivo prejeti zemljevide:</string>
@@ -2049,7 +2049,7 @@
     <string name="welcome_to_open_beta_description">Popotniški vodniki so zasnovani po vsebinah Wikivoyage. Storitev je na voljo brezplačno med preizkušanjem delovanja različice beta.</string>
     <string name="start_editing_card_description">Vsakdo lahko (in tudi zaželeno je da) ureja prispevke na WikiVoyage. Skupno znanje, izkušnje in mnenja povečajo kakovost vsebine.</string>
     <string name="welcome_to_open_beta">Dobrodošli v različici Open beta</string>
-    <string name="wikivoyage_travel_guide_descr">Krajevno shranjeni vodniki po najbolj zanimivih krajih sveta, prikazani v programu OsmAnd, tudi na mestih, kjer ni povezave z internetom.</string>
+    <string name="wikivoyage_travel_guide_descr">Krajevno shranjeni vodniki po najbolj zanimivih krajih sveta, prikazani v programu RoadCrew, tudi na mestih, kjer ni povezave z internetom.</string>
     <string name="shared_string_dont">Ne objavi</string>
     <string name="shared_string_do">Objavi</string>
     <string name="download_wikipedia_description">Prejmite prispevke z Wikipedija o %1$s za pregled brez povezave.</string>
@@ -2072,8 +2072,8 @@
     <string name="mapillary_menu_title_pano">Pokaži le 360° slike</string>
     <string name="shared_string_launch">Zaženi</string>
     <string name="lang_gn_py">Gvarani</string>
-    <string name="quick_action_switch_day_night_descr">Stikalo za preklapljanje med dnevnim in nočnim načinom OsmAnd.</string>
-    <string name="public_transport_warning_descr_blog">Preberi več o usmerjanju OsmAnd v našem spletnem dnevniku.</string>
+    <string name="quick_action_switch_day_night_descr">Stikalo za preklapljanje med dnevnim in nočnim načinom RoadCrew.</string>
+    <string name="public_transport_warning_descr_blog">Preberi več o usmerjanju RoadCrew v našem spletnem dnevniku.</string>
     <string name="public_transport_warning_title">Možnost navigacije z javnim prevozom je še preizkusna, zato je pričakovati netočnosti in napake.</string>
     <string name="add_intermediate">Dodaj vmesno točko</string>
     <string name="add_start_and_end_points">Dodaj začetno in končnotočko</string>
@@ -2181,7 +2181,7 @@
     <string name="searching_gps">Poteka iskanje signalov GPS</string>
     <string name="coordinates_widget">Gradnik za določevanje koordinat</string>
     <string name="shared_string_privacy_policy">Politika zasebnosti</string>
-    <string name="help_us_make_osmand_better">Pomagajte nam izboljšati OsmAnd</string>
+    <string name="help_us_make_osmand_better">Pomagajte nam izboljšati RoadCrew</string>
     <string name="choose_data_to_share">Izberite katere vrste podatkov želiš deliti:</string>
     <string name="downloaded_maps">Prejete zemljevide</string>
     <string name="visited_screens">Uporabo zaslona</string>
@@ -2205,7 +2205,7 @@
     <string name="profile_alert_need_profile_name_title">Ime profila</string>
     <string name="profile_alert_need_profile_name_msg">Ime profila ne sme biti prazno.</string>
     <string name="profile_alert_duplicate_name_msg">Profil s tem imenom že obstaja</string>
-    <string name="profile_alert_cant_delete_base">Osnovnega profila OsmAnd ni mogoče izbrisati</string>
+    <string name="profile_alert_cant_delete_base">Osnovnega profila RoadCrew ni mogoče izbrisati</string>
     <string name="profile_alert_delete_title">Izbriši profil</string>
     <string name="profile_alert_delete_msg">Brisanje profila »%s«</string>
     <string name="select_base_profile_dialog_title">Izberi profil, s katerim želiš začeti</string>
@@ -2219,14 +2219,14 @@
     <string name="base_profile_descr_aircraft">Za letala, jadralna padala</string>
     <string name="routing_profile_straightline">Hoja po azimutu</string>
     <string name="routing_profile_broutrer">BRouter (brez povezave)</string>
-    <string name="osmand_default_routing">Usmerjanje poti OsmAnd</string>
+    <string name="osmand_default_routing">Usmerjanje poti RoadCrew</string>
     <string name="shared_string_icon">Ikona</string>
     <string name="shared_string_min_speed">Najmanjša hitrost</string>
     <string name="shared_string_max_speed">Največja hitrost</string>
     <string name="default_speed_setting_title">Privzeta hitrost</string>
     <string name="default_speed_setting_descr">Spremeni privzete nastavitve hitrosti</string>
     <string name="new_profile">Nov profil</string>
-    <string name="last_launch_crashed">Med zadnjim zagonom OsmAnda je prišlo do zrušitve. S posredovanjem poročila o napaki pomagaš pri izboljšanju aplikacije.</string>
+    <string name="last_launch_crashed">Med zadnjim zagonom RoadCrewa je prišlo do zrušitve. S posredovanjem poročila o napaki pomagaš pri izboljšanju aplikacije.</string>
     <string name="app_mode_ufo">Štopanje NLP (brisača obvezna)</string>
     <string name="release_3_4">• Profili: ustvariti je mogoče osebni profil z izbrano ikono in barvo
 \n
@@ -2303,7 +2303,7 @@
     <string name="get_discount_second_part">Nato %1$s</string>
     <string name="cancel_subscription">Prekliči naročnino</string>
     <string name="rate_dialog_descr">Prosim, objavi mnenje in oceno našega dela na Google Play.</string>
-    <string name="make_osmand_better_descr">Dovoli OsmAndu, da lahko zbira in obdeluje anonimne podatke o uporabi aplikacije. Podatki o položaju ali lokacijah, ki si jih ogleduješ na zemljevidu, se ne zbirajo.
+    <string name="make_osmand_better_descr">Dovoli RoadCrewu, da lahko zbira in obdeluje anonimne podatke o uporabi aplikacije. Podatki o položaju ali lokacijah, ki si jih ogleduješ na zemljevidu, se ne zbirajo.
 \n
 \nNastaviš lahko kadar koli v »Nastavitve« → »Zasebnost in varnost«.</string>
     <string name="app_mode_shuttle_bus">Prevoz z minibusom</string>
@@ -2320,7 +2320,7 @@
     <string name="routing_attr_allow_expert_description">Izjemno zahtevne poti z nevarnimi preprekami in okolico.</string>
     <string name="routing_attr_difficulty_preference_name">Prednostna raven zahtevnosti</string>
     <string name="routing_attr_freeride_policy_name">Izven urejenih smučišč</string>
-    <string name="process_downloading_service">Storitev prejemanja posodobitev OsmAnd</string>
+    <string name="process_downloading_service">Storitev prejemanja posodobitev RoadCrew</string>
     <string name="shared_string_color_magenta">Temno rdeča</string>
     <string name="press_again_to_change_the_map_orientation">Pritisnite znova, da spremenite usmerjenost zemljevida</string>
     <string name="shared_string_crash">Program se je sesul!</string>
@@ -2353,7 +2353,7 @@
     <string name="switch_profile">Preklopi profil</string>
     <string name="reset_to_default">Ponastavi na privzeto</string>
     <string name="osmand_settings_descr">Vpliva na delovanje celotne aplikacije</string>
-    <string name="osmand_settings">Nastavitve OsmAnd</string>
+    <string name="osmand_settings">Nastavitve RoadCrew</string>
     <string name="copy_from_other_profile">Kopiraj iz drugega profila</string>
     <string name="turn_screen_on">Prižgi zaslon</string>
     <string name="map_during_navigation_info">Zemljevid med navigacijo</string>
@@ -2506,7 +2506,7 @@
     <string name="app_mode_light_aircraft">Lahko letalo</string>
     <string name="plan_route_split_before">Razdeli pred</string>
     <string name="plan_route_split_after">Razdeli po</string>
-    <string name="profile_type_osmand_string">Profil OsmAnd</string>
+    <string name="profile_type_osmand_string">Profil RoadCrew</string>
     <string name="profile_type_user_string">Uporabniški profil</string>
     <string name="reverse_all_points">Obrni vse točke</string>
     <string name="profile_by_default_description">Izbor profila, ki bo prikazan ob zagonu programa.</string>
@@ -2587,9 +2587,9 @@
     <string name="use_routing_fallback_description">Uporabi usmerjanje brez povezave, če spletno usmerjanje ni na voljo.</string>
     <string name="gps_filter_speed_altitude_desc">Na grafikonu in zemljevidu bodo prikazane samo točke sledi, ustrezajo nastavljenemu intervalu, ostale bodo skrite.</string>
     <string name="memory_allocated_for_routing">Pomnilnik, dodeljen za usmerjanje</string>
-    <string name="shared_storage_third_step">Odobri dovoljenje za dostop do mape. Brez nje OsmAnd ne more kopirati datotek.</string>
+    <string name="shared_storage_third_step">Odobri dovoljenje za dostop do mape. Brez nje RoadCrew ne more kopirati datotek.</string>
     <string name="shared_storage_first_step">Pritisni »%1$s«. \nUpravitelj datotek se bo odprl, nato poišči in odpri mapo osmand.</string>
-    <string name="shared_storage_migration_descr">Zaradi sprememb v dostopu do prostora za shranjevanje v sistemu Android, OsmAnd ne more več uporabljati %1$s.
+    <string name="shared_storage_migration_descr">Zaradi sprememb v dostopu do prostora za shranjevanje v sistemu Android, RoadCrew ne more več uporabljati %1$s.
 \n
 \nKopiraj vse svoje podatke v novo mapo.</string>
     <string name="start_copying">Začni kopiranje</string>
@@ -2640,7 +2640,7 @@
     <string name="edit_category">Uredi kategorijo</string>
     <string name="shared_string_shape">Oblika</string>
     <string name="default_appearance_desc">Privzeta barva, ikona in oblika bodo veljali za dodane priljubljene točke v skupini.</string>
-    <string name="location_source_descr">OsmAnd, nameščen iz Googla Play-a, privzeto uporablja %1$s za določanje lokacije. \n \nČe dobite netočne podatke o lokaciji ali uporabljate napravo brez %2$s, poskusite preklopiti na »%3$s«.</string>
+    <string name="location_source_descr">RoadCrew, nameščen iz Googla Play-a, privzeto uporablja %1$s za določanje lokacije. \n \nČe dobite netočne podatke o lokaciji ali uporabljate napravo brez %2$s, poskusite preklopiti na »%3$s«.</string>
     <string name="location_source">Vir lokacije</string>
     <string name="select_suggested_points">Izberi predlagane točke</string>
     <string name="rendering_value_category_name">Skupina</string>
@@ -2687,10 +2687,10 @@
     <string name="rendering_attr_OSMMapperAssistantNote_description">Prikaži oznake za opombe</string>
     <string name="files_with_route_restrictions">Datoteke z omejitvami poti</string>
     <string name="predefined_waypoint_appearance_description">S tapom na to dejanje, se bo točka poti samodejno shranila z vnaprej določenimi parametri.</string>
-    <string name="shared_string_skip_warning">Preskočiti migracijo\? OsmAnd nima več dostopa do vaših datotek v skupni shrambi.
+    <string name="shared_string_skip_warning">Preskočiti migracijo\? RoadCrew nima več dostopa do vaših datotek v skupni shrambi.
 \n
 \nAplikacija bo začela uporabljati vašo novo podatkovno mapo.</string>
-    <string name="storage_migration_wrong_folder_warning">V izbrani mapi ni bilo najdenih podatkov OsmAnd. Poskusi znova.</string>
+    <string name="storage_migration_wrong_folder_warning">V izbrani mapi ni bilo najdenih podatkov RoadCrew. Poskusi znova.</string>
     <string name="memory_allocated_for_routing_ds">Večja dodelitev pomnilnika bo pospešila izračun dolgih poti (nad 500 km), vendar lahko vpliva na delovanje drugih aplikacij.
 \nNe vpliva na hitrost izračuna kratkih poti.</string>
     <string name="files_remaining">Preostale datoteke: %1$s %2$s</string>
@@ -2707,7 +2707,7 @@
 \nTočke z višjo vrednostjo bodo skrite.</string>
     <string name="gps_filter_smoothing">Glajenje</string>
     <string name="save_changes_into_file">Shrani spremembe v datoteko</string>
-    <string name="gps_filter_actions_description">OsmAnd bo uporabil spremembe za sled, ne da bi posodobil datoteke. Spremembe se lahko shranijo ročno.</string>
+    <string name="gps_filter_actions_description">RoadCrew bo uporabil spremembe za sled, ne da bi posodobil datoteke. Spremembe se lahko shranijo ročno.</string>
     <string name="gps_filter_smoothing_desc">Nastavi prag razdalje med točkami.
 \nTočke sledi, ki niso vsaj na tej razdalji od zadnje vidne točke, bodo skrite.
 \nPozor, ker lahko visoki prag preveč poenostavi geometrijo proge.</string>
@@ -2745,7 +2745,7 @@
     <string name="shortcut_navigate_to">Navigacija do …</string>
     <string name="shortcut_start_recording">Začni snemanje</string>
     <string name="search_title">Išči: %1$s</string>
-    <string name="location_access_request_title">OsmAnd za navigacijo potrebuje dovoljenje za lokacijo.</string>
+    <string name="location_access_request_title">RoadCrew za navigacijo potrebuje dovoljenje za lokacijo.</string>
     <string name="location_access_request_action">Dovoli dostop</string>
     <string name="shared_string_articles">Članki</string>
     <string name="routing_attr_difficulty_preference_intermediate_name">Zadovoljivo</string>
@@ -2758,7 +2758,7 @@
     <string name="transparent_status_bar_descr">Prikaži zemljevid pod vrstico stanja</string>
     <string name="transparent_status_bar">Prozorna vrstica stanja</string>
     <string name="routing_attr_difficulty_preference_beginner_name">Začetnik</string>
-    <string name="internal_app_storage_description">Notranji pomnilnik, skrit pred vsemi uporabniki in drugimi aplikacijami, tako da lahko samo OsmAnd dostopa do vaših podatkov.</string>
+    <string name="internal_app_storage_description">Notranji pomnilnik, skrit pred vsemi uporabniki in drugimi aplikacijami, tako da lahko samo RoadCrew dostopa do vaših podatkov.</string>
     <string name="upload_gpx_description_hint">Pusti prazno, imena sledi bodo uporabljena kot opis. Vneseni opis bo uporabljen za vsako sled.</string>
     <string name="history_actions_descr">Zgodovino lahko izvoziš v datoteko.</string>
     <string name="navigation_history">Zgodovina navigacije</string>
@@ -2818,7 +2818,7 @@
     <string name="clear_all_history_warning">Želiš počisti vse vnose zgodovine aplikacij, vključno z zgodovino iskanja, navigacije in oznak\?</string>
     <string name="pro_features">Pro funkcije</string>
     <string name="contributions_may_calculate_with_delay">Izračun prispevkov lahko traja več ur.</string>
-    <string name="enough_contributions_descr">Čestitamo, zagotovil si dovolj prispevkov dodanih na OpenStreetMap in zdaj lahko uživaš v neomejenih posodobitvah zemljevida OsmAnd!</string>
+    <string name="enough_contributions_descr">Čestitamo, zagotovil si dovolj prispevkov dodanih na OpenStreetMap in zdaj lahko uživaš v neomejenih posodobitvah zemljevida RoadCrew!</string>
     <string name="available_until">Na voljo do %1$s</string>
     <string name="routing_attr_prefer_hiking_routes_description">Prednostno bodo izbrane pohodniške poti</string>
     <string name="routing_attr_only_permitted_ways_description">Uporabljaj samo izrecno dovoljene poti (gozdne poti, steze itd.)</string>
@@ -2880,7 +2880,7 @@
     <string name="output">Izhodni podatki</string>
     <string name="srtm_download_single_help_message">Izberi varianto. Datoteko boš moral ponovno prenesti, za spremembo oblike zapisa.</string>
     <string name="shared_string_feet">čevlji</string>
-    <string name="srtm_download_list_help_message">OsmAnd zagotavlja podatke o izohipsah v metrih in čevljih. Za spremembo merskih enot boš moral/a znova prenesti datoteko.</string>
+    <string name="srtm_download_list_help_message">RoadCrew zagotavlja podatke o izohipsah v metrih in čevljih. Za spremembo merskih enot boš moral/a znova prenesti datoteko.</string>
     <string name="srtm_unit_format">Različica enote izohips</string>
     <string name="contact_support_description">Če imaš kakršno koli vprašanje, nas kontaktiraj na %1$s.</string>
     <string name="new_device_account">Nova naprava / nov račun</string>
@@ -2911,7 +2911,7 @@
     <string name="shared_string_relation">Relacija</string>
     <string name="troubleshooting">Odpravljanje težav</string>
     <string name="routes_color_by_type">Obarvaj poti po …</string>
-    <string name="explore_osmnad_plans_to_find_suitable">Razišči Načrte OsmAnd in poišči primernega zate.</string>
+    <string name="explore_osmnad_plans_to_find_suitable">Razišči Načrte RoadCrew in poišči primernega zate.</string>
     <string name="purchases_feature_desc_pro_widgets">Pridobi dostop do naprednih funkcij OsmAnd Pro: barvanje poti in drugo.</string>
     <string name="option_available_only_in_osmand_pro">Na voljo kot del naročnine OsmAnd Pro.</string>
     <string name="track_has_no_needed_data">Sledi manjkajo ustrezni podatki.</string>
@@ -2970,7 +2970,7 @@
     <string name="rendering_value_walkingRoutesScopeOSMC_description">Obarvaj glede na pripadnost omrežju.</string>
     <string name="rendering_value_walkingRoutesOSMCNodes_description">Obarvaj poti glede na vrsto omrežja vozlišč (mednarodno, regionalno, lokalno).</string>
     <string name="duration_moment_ago">pred nekaj trenutki</string>
-    <string name="backup_deleting_all_data_descr">Počakaj, da OsmAnd izbriše podatke iz oblaka. Vsi podatki v napravi bodo ostali nedotaknjeni.</string>
+    <string name="backup_deleting_all_data_descr">Počakaj, da RoadCrew izbriše podatke iz oblaka. Vsi podatki v napravi bodo ostali nedotaknjeni.</string>
     <string name="contour_lines_hillshade_slope">Izohipse, senčenje terena, naklon</string>
     <string name="backup_error_file_not_available">Datoteka ni na voljo</string>
     <string name="backup_error_user_is_not_registered">S tem e-poštnim naslovom ni registriran noben uporabnik</string>
@@ -2995,7 +2995,7 @@
     <string name="tts_description">Sintetizator govora ali pretvorba besedila v govor (Text-to-speech ali TTS) lahko izgovori vse vrste navodil: imena ulic, navodila za zavijanje, imena POI itd.</string>
     <string name="announce_when_exceeded">Obvestilo ob prekoračitvi</string>
     <string name="save_global_track_interval_descr">Določi interval beleženja za splošno snemanje sledi (vklopljeno prek pripomočka »Snemanje poti« na zemljevidu).</string>
-    <string name="disable_recording_once_app_killed_descrp">Beleženje sledi se bo ustavilo, ko bo aplikacija prisilno ustavljena (prek nedavnih aplikacij). (Oznaka OsmAnd delovanja v ozadju izgine iz vrstice z obvestil Android.)</string>
+    <string name="disable_recording_once_app_killed_descrp">Beleženje sledi se bo ustavilo, ko bo aplikacija prisilno ustavljena (prek nedavnih aplikacij). (Oznaka RoadCrew delovanja v ozadju izgine iz vrstice z obvestil Android.)</string>
     <string name="logout_from_osmand_cloud">Odjava iz oblaka OsmAnd Cloud</string>
     <string name="customize_route_line">Prilagodi črto poti</string>
     <string name="annual_subscription">Letna naročnina</string>
@@ -3078,7 +3078,7 @@
     <string name="trip_recording_show_start_dialog_setting">Če onemogočeno, se bo snemanje začelo takoj, ko tapneš pripomoček ali element menija, pri čemer se preskoči potrditveno okno.</string>
     <string name="show_start_dialog">Pokaži začetno pogovorno okno</string>
     <string name="lost_data_warning">Vsi neshranjeni podatki bodo izgubljeni.</string>
-    <string name="trip_recording_logging_interval_info">Interval beleženja nastavi časovno obdobje, v katerem bo OsmAnd zahteval podatke o trenutnem položaju.</string>
+    <string name="trip_recording_logging_interval_info">Interval beleženja nastavi časovno obdobje, v katerem bo RoadCrew zahteval podatke o trenutnem položaju.</string>
     <string name="copy_poi_name">Kopiraj ime točke POI</string>
     <string name="shared_string_interval">Interval</string>
     <string name="live_update_delete_updates_msg">Ali želiš izbrisati vseh %s posodobitev v živo\?</string>
@@ -3165,7 +3165,7 @@
     <string name="mercator_projection">Mercatorjeva projekcija</string>
     <string name="system_screen_timeout_descr">Izklopi zaslon glede na časovno omejitev zaslona, ki je nastavljena v sistemu.</string>
     <string name="turn_screen_on_navigation_instructions_descr">Vsako navodilo za navigacijo bo vklopilo zaslon.</string>
-    <string name="turn_screen_on_descr">Izberi možnosti prebujanja zaslona (prepričaj se, da je OsmAnd v ospredju, ko napravo zakleneš):</string>
+    <string name="turn_screen_on_descr">Izberi možnosti prebujanja zaslona (prepričaj se, da je RoadCrew v ospredju, ko napravo zakleneš):</string>
     <string name="add_edit_favorite">Dodajanje ali urejanje priljubljenih</string>
     <string name="create_edit_poi">Ustvari ali uredite POI</string>
     <string name="enter_text_separated">Vnesi oznake, ločene z vejico.</string>
@@ -3239,7 +3239,7 @@
 \n
 \nIzberi %1$s in prejemal/a boš opozorila o radarjih za merjenje hitrosti.
 \n
-\nIzberi %2$s. Vsi podatki, povezani z radarji za merjenje hitrosti: opozorila, obvestila, točke zanimanja bodo izbrisani, dokler ne boš v celoti ponovno namestil aplikacije OsmAnd.</string>
+\nIzberi %2$s. Vsi podatki, povezani z radarji za merjenje hitrosti: opozorila, obvestila, točke zanimanja bodo izbrisani, dokler ne boš v celoti ponovno namestil aplikacije RoadCrew.</string>
     <string name="release_3_7">• Novi zemljevidi naklona brez povezave. \n \n• Popolna prilagoditev priljubljenih in GPX točk – barve, ikone, oblike po meri. \n \n• Prilagoditev vrstnega reda predmetov v »Kontekstnem meniju«, »Nastavitvah zemljevida« in »Predalu«. \n \n• Wikipedija kot ločen sloj v »Nastavitve zemljevida«, izbereš lahko samo potrebne jezike. \n \n• Ustvari svoj lastni POI filter ali POI zemljevide s popolno prilagodljivostjo. \n \n• Dodana možnost za obnovitev nastavitev za profile po meri. \n \n• Celotne GPX poti iz navigacije podpira prometne pasove in popolna navodila za zavijanje. \n \n• Popravek velikosti uporabniškega vmesnika na tablicah. \n \n• Popravek hroščev z RTL. \n \n</string>
     <string name="plugin_global_prefs_info">Te nastavitve vtičnika so globalne in veljajo za vse profile</string>
     <string name="shared_string_graph">Graf</string>
@@ -3301,7 +3301,7 @@
     <string name="keep_screen_on">Zaslon naj bo vklopen</string>
     <string name="gpx_parse_error">Ugotovljene težave z datoteko GPX.
 \n
-\nZa preiskavo se lahko obrneš na OsmAnd podporo.</string>
+\nZa preiskavo se lahko obrneš na RoadCrew podporo.</string>
     <string name="profiles_for_action_not_found">Takšnih profilov ni bilo mogoče najti.</string>
     <string name="lenght_limit_description">Navedi dolžino svojega vozila, ker za dolga vozila lahko veljajo nekatere omejitve na poti.</string>
     <string name="weight_limit_description">Navedi težo svojega vozila, ker za težka vozila lahko veljajo nekatere omejitve na poti.</string>
@@ -3337,7 +3337,7 @@
 \n</string>
     <string name="shared_string_file_name">Ime datoteke</string>
     <string name="turn_screen_on_proximity_sensor">Senzor bližine</string>
-    <string name="turn_screen_on_power_button_descr">Če pritisneš gumb za vklop naprave, se zaslon vklopi z aplikacijo OsmAnd na vrhu zaklenjenega zaslona.</string>
+    <string name="turn_screen_on_power_button_descr">Če pritisneš gumb za vklop naprave, se zaslon vklopi z aplikacijo RoadCrew na vrhu zaklenjenega zaslona.</string>
     <string name="screen_control">Nadzor zaslona</string>
     <string name="plan_route_trim_after">Obrežite po</string>
     <string name="shared_string_add_profile">Dodaj profil</string>
@@ -3353,7 +3353,7 @@
     <string name="route_recalculation_dist_title">Minimalna razdalja za ponovno izračun poti</string>
     <string name="photo_notes">Foto opombe</string>
     <string name="shared_string_menu">Meni</string>
-    <string name="custom_osmand_plugin">OsmAnd vtičnik po meri</string>
+    <string name="custom_osmand_plugin">RoadCrew vtičnik po meri</string>
     <string name="app_mode_ski_snowmobile">Motorne sani</string>
     <string name="developer_plugin">Vtičnik za razvijalce</string>
     <string name="shared_string_items">Elementi</string>
@@ -3411,8 +3411,8 @@
     <string name="delete_description">Izbriši opis</string>
     <string name="shared_string_importing">Uvažanje</string>
     <string name="import_complete_description">Uvoženi vsi podatki iz %1$s. Uporabi spodnje gumbe, da odpreš kateri koli del aplikacije, za upravljanje.</string>
-    <string name="listed_exist">Navedeni %1$s, že obstajajo v OsmAndu.</string>
-    <string name="import_duplicates_description">OsmAnd že ima elemente z enakimi imeni kot uvoženi.
+    <string name="listed_exist">Navedeni %1$s, že obstajajo v RoadCrewu.</string>
+    <string name="import_duplicates_description">RoadCrew že ima elemente z enakimi imeni kot uvoženi.
 \n
 \nIzberi dejanje.</string>
     <string name="file_does_not_contain_routing_rules">Ni pravil usmerjanja v »%1$s«. Prosim, zberi drugo datoteko.</string>
@@ -3457,7 +3457,7 @@
     <string name="reset_plugin_to_default">Ponastavi nastavitve vtičnika na privzeto</string>
     <string name="video_notes">Video opombe</string>
     <string name="accessibility_announce">Napovej</string>
-    <string name="tracker_item">Sledilnik OsmAnd</string>
+    <string name="tracker_item">Sledilnik RoadCrew</string>
     <string name="download_unsupported_action">Nepodprto dejanje %1$s</string>
     <string name="lang_tt">Tatarščina</string>
     <string name="lang_tg">Tadžiščina</string>
@@ -3488,7 +3488,7 @@
     <string name="select_track_file">Izberite datoteko sledi</string>
     <string name="settings_item_read_error">Ni bilo mogoče brati iz »%1$s«.</string>
     <string name="select_data_to_import">Izberi podatke, ki jih želiš uvoziti.</string>
-    <string name="checking_for_duplicate_description">OsmAnd preveri %1$s za podvojitve z obstoječimi elementi v aplikaciji.
+    <string name="checking_for_duplicate_description">RoadCrew preveri %1$s za podvojitve z obstoječimi elementi v aplikaciji.
 \n
 \nTo lahko traja nekaj časa.</string>
     <string name="items_added">Dodani elementi</string>
@@ -3528,7 +3528,7 @@
 \n</string>
     <string name="reset_to_default_category_button_promo">»Ponastavi na privzeto« bo vrstni red razvrščanja znova ponastavil na privzeto ob namestitvi.</string>
     <string name="accessibility_mode_disabled">Način dostopnosti je v vašem sistemu Android izklopljen.</string>
-    <string name="tracks_view_descr">Posnete sledi so v mapi %1$s ali v mapi OsmAnd.</string>
+    <string name="tracks_view_descr">Posnete sledi so v mapi %1$s ali v mapi RoadCrew.</string>
     <string name="multimedia_notes_view_descr">Tvoje opombe OSM so v %1$s.</string>
     <string name="plugin_prefs_reset_successful">Vse nastavitve vtičnikov so obnovljene na privzete vrednosti.</string>
     <string name="edit_profiles_descr">Privzetega OsmAnd profila ni mogoče izbrisati, temveč ga je mogoče onemogočiti (na prejšnjem zaslonu) ali razvrstiti na dno.</string>
@@ -3570,7 +3570,7 @@
     <string name="monitoring_min_distance_descr">Če vklopiš ta filter, se lahko izogneš dodatnemu snemanju podatkov, kadar gibanja skoraj ni zaznati. Izboljša tudi prostorski videz sledi brez nadaljnje obdelave.</string>
     <string name="monitoring_min_distance_descr_side_effect">Neželeni učinki: obdobja mirovanja se sploh ne beležijo ali pa se vsakokrat shrani le ena točka. Majhni (resnični) premiki (npr. stranka pot, da označiš možen odcep na tvojem potovanju) se lahko izloči. Končna datoteka vsebuje manj informacij za naknadno obdelavo in ima slabšo statistiko, saj filtrira očitno odvečne točke v času snemanja, hkrati pa potencialno ohranja artefakte, ki jih povzroča slab sprejem ali učinki nabora GPS čipov.</string>
     <string name="track_storage_directory">Mapa za shranjevanje sledi</string>
-    <string name="shared_string_osmand_usage">Uporaba OsmAnd</string>
+    <string name="shared_string_osmand_usage">Uporaba RoadCrew</string>
     <string name="app_mode_utv">Eno ob drugem</string>
     <string name="rendering_attr_piste_type_snow_park_name">Snežni park</string>
     <string name="rendering_attr_piste_type_hike_name">Pohod</string>
@@ -3608,8 +3608,8 @@
 \n%1$s &gt; %2$s</string>
     <string name="data_storage_space_description">%1$s GB prosto (od %2$s GB)</string>
     <string name="enter_path_to_folder">Vnesi pot do mape</string>
-    <string name="paste_Osmand_data_folder_path">Prilepi pot do mape s podatki OsmAnd</string>
-    <string name="change_osmand_data_folder_question">Ali želiš spremeniti mapo podatkov OsmAnd\?</string>
+    <string name="paste_Osmand_data_folder_path">Prilepi pot do mape s podatki RoadCrew</string>
+    <string name="change_osmand_data_folder_question">Ali želiš spremeniti mapo podatkov RoadCrew\?</string>
     <string name="move_maps_to_new_destination">Premakni na novo destinacijo</string>
     <string name="change_data_storage_folder">Spremeni mapo za shranjevanje</string>
     <string name="rendering_attr_piste_type_downhill_name">Downhill</string>
@@ -3702,7 +3702,7 @@
     <string name="live_update_frequency_hour_variant">Posodobitve zemljevidov se bodo preverjale vsako uro.</string>
     <string name="live_update_frequency_week_variant">Posodobitve zemljevidov se bodo preverjale tedensko.</string>
     <string name="live_update_frequency_day_variant">Posodobitve zemljevidov se bodo preverjale dnevno.</string>
-    <string name="calculate_online_altitude_descr">Izračunaj višino na spletu na strežnikih OsmAnd na podlagi satelitskih posnetkov in digitalnih modelov višin. Razlike glede na zabeleženo nadmorsko višino naprave se lahko uporabijo za popravek višine.</string>
+    <string name="calculate_online_altitude_descr">Izračunaj višino na spletu na strežnikih RoadCrew na podlagi satelitskih posnetkov in digitalnih modelov višin. Razlike glede na zabeleženo nadmorsko višino naprave se lahko uporabijo za popravek višine.</string>
     <string name="lang_ckb">Soranska kurdščina</string>
     <string name="next_live_update_time">Naslednja posodobitev ob %1$s.</string>
     <string name="altitude_correction">Popravek višine</string>
@@ -3731,7 +3731,7 @@
     <string name="auto_25_chars_route_roundabout_kr">Izberi %1$d izvoz in drži se desne</string>
     <string name="shared_string_duplicate">Podvoji</string>
     <string name="av_notes_photo_widget_desc">S tapanjem gradnika lahko posnameš fotografijo.</string>
-    <string name="auto_backup_preference_desc">Android privzeto shranjuje varnostne kopije priljubljenih, žetonov zemljevidov in nastavitev OsmAnd, da jih lahko obnoviš v novih napravah ali po ponovni namestitvi. Ta varnostna kopija je omejena na 25 MB.
+    <string name="auto_backup_preference_desc">Android privzeto shranjuje varnostne kopije priljubljenih, žetonov zemljevidov in nastavitev RoadCrew, da jih lahko obnoviš v novih napravah ali po ponovni namestitvi. Ta varnostna kopija je omejena na 25 MB.
 \nKo uporabljaš storitev OsmAnd Cloud, lahko to po ponovni namestitvi povzroči nesporazume.</string>
     <string name="duplacate_widget_added_snackbar">Podvojeni gradnik je bil dodan na seznam.</string>
     <string name="auto_25_chars_route_tl_kl">Zavij levo in drži se leve</string>
@@ -3842,8 +3842,8 @@
     <string name="weather_pressure_inhg">inHg</string>
     <string name="weather_pressure_mmhg">mmHg</string>
     <string name="weather_pressure_hectopascals">Hektopaskali</string>
-    <string name="rendering_engine_failed">OsmAndovo upodabljanje zemljevidov se je pred kratkim zrušilo.</string>
-    <string name="rendering_engine_failed_descr">OsmAnd se je vrnil k upodabljanju zemljevidov različice 1. V nastavitvah lahko poskusiš preklopiti nazaj na novo različico 2 (OpenGL).
+    <string name="rendering_engine_failed">RoadCrewovo upodabljanje zemljevidov se je pred kratkim zrušilo.</string>
+    <string name="rendering_engine_failed_descr">RoadCrew se je vrnil k upodabljanju zemljevidov različice 1. V nastavitvah lahko poskusiš preklopiti nazaj na novo različico 2 (OpenGL).
 \n
 \nProsimo, podpri izboljšave s posredovanjem dnevnika napak.</string>
     <string name="share_crash_log">Deli dnevnik zrušitve</string>
@@ -3883,7 +3883,7 @@
     <string name="temperature_widget_desc">Prikazuje temperaturo za trenutno središče zemljevida.</string>
     <string name="weather_prefs_descr">24-urna in 7-dnevna napoved, posodobljena vsake 3 ure</string>
     <string name="weather_temperature_celsius">Celzija</string>
-    <string name="map_rendering_engine_descr">Različica 1 je bila privzeta pred OsmAnd 4.3 in je še vedno primernejša za starejše naprave.\nRazličica 2 (OpenGL) je hitrejši mehanizem za upodabljanje zemljevidov, ki vključuje tudi 2,5D pogled.</string>
+    <string name="map_rendering_engine_descr">Različica 1 je bila privzeta pred RoadCrew 4.3 in je še vedno primernejša za starejše naprave.\nRazličica 2 (OpenGL) je hitrejši mehanizem za upodabljanje zemljevidov, ki vključuje tudi 2,5D pogled.</string>
     <string name="map_rendering_engine_v2">Različica 2 (OpenGL)</string>
     <string name="storage_migration_fragment_close_descr">Kopiranje je opravljeno samo za %1$s%%. Če se zdaj ustaviš, aplikacija morda ne bo delovala pravilno.</string>
     <string name="rendering_attr_depthContourWidth_name">Debelina črte</string>
@@ -3926,7 +3926,7 @@
     <string name="map_widget_altitude_map_center_desc">Prikazuje nadmorsko višino trenutnega središča zemljevida.</string>
     <string name="map_widget_rendering_fps">FPS za izrisovanje zemljevida</string>
     <string name="map_widget_rendering_fps_desc">Prikazuje hitrost prikaza in osveževanja zemljevida in elementov zemljevida, izraženo v sličicah na sekundo (FPS).</string>
-    <string name="send_uuid_preference_desc">Naključni UUID se uporablja za prenos zemljevidov brez povezave s strežnikov OsmAnd za spremljanje poštene uporabe strežniških virov, napovedovanje vzorcev prometa in izdelavo anonimnih mesečnih poročil o zemljevidih.</string>
+    <string name="send_uuid_preference_desc">Naključni UUID se uporablja za prenos zemljevidov brez povezave s strežnikov RoadCrew za spremljanje poštene uporabe strežniških virov, napovedovanje vzorcev prometa in izdelavo anonimnih mesečnih poročil o zemljevidih.</string>
     <string name="send_uuid_preference">Pošlji edinstven identifikator uporabnika (UUID)</string>
     <string name="external_sensors_plugin_description">Dostopa do zunanjih senzorjev za branje npr. tvojega srčnega utripa, hitrost kolesa, moč kolesarjenja ali kadenco. Zahteva, da je tvoja naprava povezana z ustreznimi senzorji prek brezžičnega osebnega omrežnega protokola ANT+.</string>
     <string name="simulate_location_by_gpx">Simulacija lokacije iz GPX-a</string>
@@ -3988,7 +3988,7 @@
     <string name="no_visible_tracks_description">Izberi sledi, ki jih želiš prikazati na zemljevidu.</string>
     <string name="no_visible_tracks">Na zemljevidu ni sledi</string>
     <string name="recently_visible">Nedavno vidna %1$s</string>
-    <string name="empty_tracks_description">Z OsmAnd lahko uvoziš, ustvariš ali posnameš datoteke s sledmi.</string>
+    <string name="empty_tracks_description">Z RoadCrew lahko uvoziš, ustvariš ali posnameš datoteke s sledmi.</string>
     <string name="empty_tracks">Nimaš datotek sledi.</string>
     <string name="shared_string_select_recent">Izberite nedavno</string>
     <string name="change_appearance">Spremeni videz</string>
@@ -4009,7 +4009,7 @@
     <string name="selected_value">Izbrana vrednost</string>
     <string name="shared_string_add_manually">Ročno dodaj …</string>
     <string name="shared_string_inches">palcev</string>
-    <string name="cloud_version_confirm_delete">Izbrisati »%1$s« iz OsmAnd oblaka?</string>
+    <string name="cloud_version_confirm_delete">Izbrisati »%1$s« iz RoadCrew oblaka?</string>
     <string name="shared_string_delete_file">Brisanje datoteke</string>
     <string name="delete_cloud_version">Brisanje različice v oblaku</string>
     <string name="local_version_do_not_exist">Ni lokalne različice.</string>
@@ -4049,11 +4049,11 @@
     <string name="external_device_characteristic_total_distance">Skupna razdalja</string>
     <string name="external_device_characteristic_gear_ratio">Razmerje prestave</string>
     <string name="external_device_characteristic_cadence">Kadenca</string>
-    <string name="ant_plus_searching_text_description">Napravo drži blizu senzorja. Senzor moraš aktivirati, da ga lahko OsmAnd najde.</string>
+    <string name="ant_plus_searching_text_description">Napravo drži blizu senzorja. Senzor moraš aktivirati, da ga lahko RoadCrew najde.</string>
     <string name="ant_plus_help_title">Ne vem, kakšen tip senzorja imam</string>
     <string name="ant_plus_searching">Iskanje</string>
     <string name="ant_plus_pair_new_sensor">Seznani nov senzor</string>
-    <string name="ant_plus_pair_bluetooth_prompt">Z OsmAnd lahko seznaniš senzorje Bluetooth LE in ANT+.</string>
+    <string name="ant_plus_pair_bluetooth_prompt">Z RoadCrew lahko seznaniš senzorje Bluetooth LE in ANT+.</string>
     <string name="no_search_results">Ni rezultatov</string>
     <string name="external_device_connected">Povezana</string>
     <string name="external_device_disconnected">Odklopljena</string>
@@ -4143,14 +4143,14 @@
     <string name="delete_folder">Izbriši mapo</string>
     <string name="routing_attr_allow_via_ferrata_name">Gorska pot (Via ferrata)</string>
     <string name="routing_attr_allow_via_ferrata_description">Gorska pot, opremljena s pritrjenimi jeklenicami, stopnicami, lestvami in mostovi.</string>
-    <string name="free_favorites_backup_description">Registriraj se v OsmAnd oblak, da dobiš brezplačno varnostno kopiranje za priljubljene in nastavitve.</string>
+    <string name="free_favorites_backup_description">Registriraj se v RoadCrew oblak, da dobiš brezplačno varnostno kopiranje za priljubljene in nastavitve.</string>
     <string name="free_favorites_backup">Brezplačna varnostna kopija priljubljenih</string>
     <string name="folder_export_empty_error">Nič za izvoz, mapa je prazna</string>
     <string name="osmand_cloud_deletion_subscriptions_warning">S tem ne boš preklical/a naročnine na OsmAnd Pro.</string>
     <string name="osmand_cloud_deletion_account_warning">Tvoj račun in vsi podatki o računu bodo %1$s</string>
     <string name="delete_account">Izbriši račun</string>
     <string name="verify_account">Potrdi svoj račun</string>
-    <string name="release_4_5">• Senzorji BLE/ANT+: predelana povezava, pisanje in ogled prejetih podatkov v GPX \n \n • Brezplačno varnostno kopiranje priljubljenih in nastavitev v »OsmAnd oblaku«. \n \n • Nova oblika za zemljevide terena s podporo za 3D relief. \n \n • Upravljanje sledi: posodobljen uporabniški vmesnik, dodano razvrščanje, podpora ugnezdenih map. \n \n • Android Auto: nov začetni meni za dostop do priljubljenih, sledi in kategorij POI. \n \n • En seznam pripomočkov za zgornjo/spodnjo ploščo. \n \n • Nov profil »Vlak«, omogoča izračun železniških poti. \n \n • Izohipse delujejo s katerim koli »virom zemljevida«. \n \n • Razširjen seznam privzetih dejanj za zunanje tipkovnice. \n \n • Datoteke za usmerjanje po meri, dodane možnosti za brisanje ali prepisovanje. \n \n • Dodana možnost »Najavi odstopanje od poti«. \n \n • Začetni zaslon: dodana možnost obnovitve stanja OsmAnd iz datoteke. \n \n • Dodani razredi »Nevarne snovi« v navigaciji za tovornjake v Severni Ameriki. \n \n • Dodana podpora za »Via ferrato«, za usmerjanje pešcev. \n \n • Dodana »CAI« lestvica za težavnostno razvrstitev poti. \n \n • Popravljena izbira jezika za posamezno aplikacijo. \n \n • Dodana podpora za tematske ikone. \n \n • OsmAnd oblak: dodana možnost za brisanje računa. \n \n • Dostopnost: velikost cilja za dotik za gumbe spremenjena na 48 dp; odpravljena težava z uporabniškim vmesnikom zemljevida, vidnim za bralnike zaslona. \n \n • Preoblikovana japonska glasovna navodila. \n \n • Sprememba višine in vrednotenje naklona sta predelana. \n \n</string>
+    <string name="release_4_5">• Senzorji BLE/ANT+: predelana povezava, pisanje in ogled prejetih podatkov v GPX \n \n • Brezplačno varnostno kopiranje priljubljenih in nastavitev v »RoadCrew oblaku«. \n \n • Nova oblika za zemljevide terena s podporo za 3D relief. \n \n • Upravljanje sledi: posodobljen uporabniški vmesnik, dodano razvrščanje, podpora ugnezdenih map. \n \n • Android Auto: nov začetni meni za dostop do priljubljenih, sledi in kategorij POI. \n \n • En seznam pripomočkov za zgornjo/spodnjo ploščo. \n \n • Nov profil »Vlak«, omogoča izračun železniških poti. \n \n • Izohipse delujejo s katerim koli »virom zemljevida«. \n \n • Razširjen seznam privzetih dejanj za zunanje tipkovnice. \n \n • Datoteke za usmerjanje po meri, dodane možnosti za brisanje ali prepisovanje. \n \n • Dodana možnost »Najavi odstopanje od poti«. \n \n • Začetni zaslon: dodana možnost obnovitve stanja RoadCrew iz datoteke. \n \n • Dodani razredi »Nevarne snovi« v navigaciji za tovornjake v Severni Ameriki. \n \n • Dodana podpora za »Via ferrato«, za usmerjanje pešcev. \n \n • Dodana »CAI« lestvica za težavnostno razvrstitev poti. \n \n • Popravljena izbira jezika za posamezno aplikacijo. \n \n • Dodana podpora za tematske ikone. \n \n • RoadCrew oblak: dodana možnost za brisanje računa. \n \n • Dostopnost: velikost cilja za dotik za gumbe spremenjena na 48 dp; odpravljena težava z uporabniškim vmesnikom zemljevida, vidnim za bralnike zaslona. \n \n • Preoblikovana japonska glasovna navodila. \n \n • Sprememba višine in vrednotenje naklona sta predelana. \n \n</string>
     <string name="manage_subscriptions">Upravljanje naročnin.</string>
     <string name="osmand_cloud_deletion_all_data_warning">Vsi podatki iz OsmAnd Cloud-a bodo %1$s. Podatki v napravi bodo ostali nedotaknjeni.</string>
     <string name="osmand_cloud_delete_account_confirmation_descr">Ali si prepričan/a, da želiš izbrisati račun OsmAnd Cloud?
@@ -4168,7 +4168,7 @@
     <string name="cache_size">Velikost predpomnilnika</string>
     <string name="shared_string_avoid">Izogibaj se</string>
     <string name="may_be_used_if_there_is_shortcut">Lahko se uporabi, če obstaja bližnjica</string>
-    <string name="get_osmand_cloud">Pridobi OsmAnd oblak</string>
+    <string name="get_osmand_cloud">Pridobi RoadCrew oblak</string>
     <string name="free_account">Brezplačni račun</string>
     <string name="osmand_cloud_deleted_account_descr">Račun in vsi podatki so bili izbrisani iz storitve OsmAnd Cloud.</string>
     <string name="osmand_cloud_deleting_account_descr">V nekaj trenutkih bodo vsi tvoji podatki in račun izbrisani iz OsmAnd Cloud-a.

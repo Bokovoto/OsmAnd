@@ -85,7 +85,7 @@
     <string name="user_name">Vaše OSM uživatelské jméno</string>
     <string name="user_password">Heslo</string>
     <string name="osmand_service">Služba na pozadí</string>
-    <string name="osmand_service_descr">OsmAnd běží na pozadí i při vypnuté obrazovce.</string>
+    <string name="osmand_service_descr">RoadCrew běží na pozadí i při vypnuté obrazovce.</string>
     <string name="download_files_not_enough_space">Nedostatek místa pro stažení %1$s MB dat (volné: %2$s).</string>
     <string name="download_files_question_space">Stáhnout {0} soubor(ů)\?
 \nBude použito {1} MB (z {2} MB).</string>
@@ -169,10 +169,10 @@
     <string name="osmand_net_previously_installed">Všechna off-line data budou podporována novou aplikací, avšak Oblíbená místa musí být vyexportovaná ve staré verzi a potom naimportovaná do nové.</string>
     <string name="build_installed">Balíček {0} byl instalován ({1}).</string>
     <string name="downloading_build">Stahování balíčku…</string>
-    <string name="install_selected_build">Instalovat OsmAnd - {0} z {1} {2} MB\?</string>
-    <string name="loading_builds_failed">Nepodařilo se získat seznam sestavení OsmAndu</string>
-    <string name="loading_builds">Načítání OsmAnd balíčků…</string>
-    <string name="select_build_to_install">Vyberte jeden z balíčků OsmAnd k nainstalování</string>
+    <string name="install_selected_build">Instalovat RoadCrew - {0} z {1} {2} MB\?</string>
+    <string name="loading_builds_failed">Nepodařilo se získat seznam sestavení RoadCrewu</string>
+    <string name="loading_builds">Načítání RoadCrew balíčků…</string>
+    <string name="select_build_to_install">Vyberte jeden z balíčků RoadCrew k nainstalování</string>
     <string name="contribution_activity">Speciální aktivita pro vývojovou verzi</string>
     <string name="installing_new_resources">Rozbalování nových dat…</string>
     <string name="internet_connection_required_for_online_route">On-line navigaci nelze použít bez připojení k internetu.</string>
@@ -261,7 +261,7 @@
     <string name="layer_map">Zdroj map…</string>
     <string name="use_trackball_descr">Použít zařízení trackball k posouvání mapy.</string>
     <string name="use_trackball">Použít trackball</string>
-    <string name="process_navigation_service">Navigační služba OsmAnd</string>
+    <string name="process_navigation_service">Navigační služba RoadCrew</string>
     <string name="int_seconds">sekund</string>
     <string name="int_min">min.</string>
     <string name="search_poi_filter">Filtr</string>
@@ -287,7 +287,7 @@
     <string name="transport_stops">zastávky</string>
     <string name="transport">Doprava</string>
     <string name="shared_string_ok">OK</string>
-    <string name="hello">Navigační aplikace OsmAnd</string>
+    <string name="hello">Navigační aplikace RoadCrew</string>
     <string name="favorite">Oblíbené</string>
     <string name="shared_string_clear_all">Vymazat vše</string>
     <string name="shared_string_history">Minulé</string>
@@ -394,18 +394,18 @@
     <string name="shared_string_online_maps">On-line mapy</string>
     <string name="osmand_rastermaps_plugin_description">Získejte přístup k mnoha typům online (tzv. dlaždicových nebo rastrových) map, jako jsou předrenderované dlaždice OSM, satelitní snímky a speciální vrstvy, např. mapy počasí, klimatické mapy, geologické mapy, vrstvy stínovaných svahů atd.
 \n
-\n Kterákoliv z těchto map může být zobrazena jako hlavní (základní) mapa nebo jako překryvná či podkladová mapa k jiné základní mapě (např. offline vektorové mapy OsmAnd). Některé prvky vektorových map OsmAnd lze skrýt prostřednictvím nabídky \"Nastavení mapy\", aby byla podkladová mapa viditelnější.
+\n Kterákoliv z těchto map může být zobrazena jako hlavní (základní) mapa nebo jako překryvná či podkladová mapa k jiné základní mapě (např. offline vektorové mapy RoadCrew). Některé prvky vektorových map RoadCrew lze skrýt prostřednictvím nabídky \"Nastavení mapy\", aby byla podkladová mapa viditelnější.
 \n
-\n Stáhněte si dlaždicové mapy přímo nebo je zkopírujte jako databázové soubory SQLite do datové složky aplikace OsmAnd pomocí některého z mnoha nástrojů třetích stran pro přípravu map.</string>
-    <string name="osmand_accessibility_description">Zobrazí funkce usnadnění přístupu přímo v aplikaci OsmAnd. To umožňuje např. změnit rychlost řeči generovaných hlasů, nastavení ovládání pomocí D-padu, použití trackballu pro ovládání zoomu nebo automatické hlasové oznamování polohy.</string>
-    <string name="osmand_development_plugin_description">Poskytuje funkce pro testování a ladění aplikace OsmAnd: simulaci navigačních tras, sledování vykreslování obrazovky, kontrolu výkonu atd. Tento modul není pro běžné používání aplikace vyžadován.</string>
+\n Stáhněte si dlaždicové mapy přímo nebo je zkopírujte jako databázové soubory SQLite do datové složky aplikace RoadCrew pomocí některého z mnoha nástrojů třetích stran pro přípravu map.</string>
+    <string name="osmand_accessibility_description">Zobrazí funkce usnadnění přístupu přímo v aplikaci RoadCrew. To umožňuje např. změnit rychlost řeči generovaných hlasů, nastavení ovládání pomocí D-padu, použití trackballu pro ovládání zoomu nebo automatické hlasové oznamování polohy.</string>
+    <string name="osmand_development_plugin_description">Poskytuje funkce pro testování a ladění aplikace RoadCrew: simulaci navigačních tras, sledování vykreslování obrazovky, kontrolu výkonu atd. Tento modul není pro běžné používání aplikace vyžadován.</string>
     <string name="plugins_screen">Správce modulů</string>
     <string name="prefs_plugins">Moduly</string>
     <string name="osm_editing_plugin_description">Přispívejte do OpenStreetMap, globální komunity, která udržuje komplexní mapu světa a poskytuje aktuální open-source data každému uživateli.
 \n
 \nPokyny k úpravám mapy najdete na našich webových stránkách %1$s.</string>
     <string name="play_commands_of_currently_selected_voice">Zvolte hlas a otestujte ho přehráním oznámení:</string>
-    <string name="debugging_and_development">Vývoj a ladění OsmAnd</string>
+    <string name="debugging_and_development">Vývoj a ladění RoadCrew</string>
     <string name="test_voice_prompts">Test hlasových pokynů</string>
     <string name="shared_string_name">Jméno</string>
     <string name="favourites_edit_dialog_category">Kategorie</string>
@@ -479,7 +479,7 @@
     <string name="day_night_info_description">Východ slunce: %1$s
 \nZápad slunce: %2$s</string>
     <string name="osmand_short_description_80_chars">Mobilní zobrazování celosvětových map a navigace pro offline i online mapy OSM</string>
-    <string name="osmand_plus_short_description_80_chars">OsmAnd je open-source navigační program s podporou off-line a on-line map celého světa</string>
+    <string name="osmand_plus_short_description_80_chars">RoadCrew je open-source navigační program s podporou off-line a on-line map celého světa</string>
     <string name="day_night_info">Denní/noční info</string>
     <string name="map_widget_renderer">Styl mapy</string>
     <string name="avoid_motorway">Žádné dálnice</string>
@@ -501,9 +501,9 @@
     <string name="new_destination_point_dialog">Cíl je již nastaven:</string>
     <string name="target_point">Cíl %1$s</string>
     <string name="shared_string_target_points">Cíle</string>
-    <string name="osmand_long_description_1000_chars">OsmAnd (OSM Automated Navigation Directions)
+    <string name="osmand_long_description_1000_chars">RoadCrew (OSM Automated Navigation Directions)
 \n
-\nOsmAnd je open-source navigační program s přístupem k široké paletě celosvětových mapových dat OpenStreetMap (OSM). Veškerá mapová data (vektorová nebo rastrová) mohou být uložena na paměťové kartě telefonu pro off-line použití. OsmAnd také nabízí offline a online navigaci včetně hlasových pokynů.
+\nRoadCrew je open-source navigační program s přístupem k široké paletě celosvětových mapových dat OpenStreetMap (OSM). Veškerá mapová data (vektorová nebo rastrová) mohou být uložena na paměťové kartě telefonu pro off-line použití. RoadCrew také nabízí offline a online navigaci včetně hlasových pokynů.
 \n
 \nVýčet některých hlavních funkcí:
 \n - dokáže pracovat kompletně offline (vektorové nebo rastrové mapy lze uložit do úložiště zařízení)
@@ -578,7 +578,7 @@
     <string name="access_arrival_time">Čas příjezdu</string>
     <string name="map_widget_gps_info">Info o GPS</string>
     <string name="shared_string_map">Mapa</string>
-    <string name="osmand_play_title_30_chars">OsmAnd mapa a navigace</string>
+    <string name="osmand_play_title_30_chars">RoadCrew mapa a navigace</string>
     <string name="osmand_plus_play_title_30_chars">OsmAnd+ mapa a navigace</string>
     <string name="item_checked">zvoleno</string>
     <string name="item_unchecked">nezvoleno</string>
@@ -678,17 +678,17 @@
     <string name="routing_attr_avoid_motorway_description">Vyhne se dálnicím</string>
     <string name="routing_attr_weight_name">Hmotnost</string>
     <string name="routing_attr_weight_description">Zadejte povolenou hmotnost vozidla na trase.</string>
-    <string name="android_19_location_disabled">Od verze Androidu 4.4 (KitKat) není starý adresář (%s) podporovaný. Zkopírovat všechny soubory aplikace OsmAnd do nového umístění\?
+    <string name="android_19_location_disabled">Od verze Androidu 4.4 (KitKat) není starý adresář (%s) podporovaný. Zkopírovat všechny soubory aplikace RoadCrew do nového umístění\?
 \n Poznámka 1: Původní soubory zůstanou nedotčeny (ale mohou být smazány ručně).
 \n Poznámka 2: V novém úložišti nebude možné sdílet soubory mezi OsmAnd a OsmAnd+.</string>
-    <string name="copying_osmand_files">Kopírování datových souborů OsmAnd…</string>
-    <string name="calculate_osmand_route_gpx">Offline výpočet trasy OsmAnd</string>
+    <string name="copying_osmand_files">Kopírování datových souborů RoadCrew…</string>
+    <string name="calculate_osmand_route_gpx">Offline výpočet trasy RoadCrew</string>
     <string name="app_mode_truck">Kamion</string>
     <string name="speech_rate_descr">Zadejte rychlost řeči TTS.</string>
     <string name="speech_rate">Rychlost řeči</string>
     <string name="complex_route_calculation_failed">Rychlý přepočet trasy selhal (%s), návrat k úplnému výpočtu.</string>
-    <string name="calculate_osmand_route_without_internet">Offline výpočet OsmAnd úseku trasy</string>
-    <string name="gpx_option_calculate_first_last_segment">Vypočítat OsmAnd trasu pro první a poslední úsek</string>
+    <string name="calculate_osmand_route_without_internet">Offline výpočet RoadCrew úseku trasy</string>
+    <string name="gpx_option_calculate_first_last_segment">Vypočítat RoadCrew trasu pro první a poslední úsek</string>
     <string name="index_item_world_altitude_correction">Svět - korekce výšky</string>
     <string name="index_item_world_seamarks">Svět ­– plavební</string>
     <string name="index_item_world_bitcoin_payments">Svět - platby bitcoin</string>
@@ -743,11 +743,11 @@
     <string name="interrupt_music_descr">Hlasové pokyny pozastaví hudbu.</string>
     <string name="interrupt_music">Pozastavit hudbu</string>
     <string name="share_route_as_gpx">Sdílet trasu jako GPX soubor</string>
-    <string name="share_route_subject">Trasa sdílena pomocí OsmAnd</string>
+    <string name="share_route_subject">Trasa sdílena pomocí RoadCrew</string>
     <string name="keep_informing_never">Pouze manuálně (ťuknout na šipku)</string>
     <string name="keep_informing">Opakovat navigační pokyny</string>
     <string name="shared_string_share">Sdílet</string>
-    <string name="share_fav_subject">Oblíbené body sdílené přes OsmAnd</string>
+    <string name="share_fav_subject">Oblíbené body sdílené přes RoadCrew</string>
     <string name="navigation_intent_invalid">Neplatný formát: %s</string>
     <string name="gpx_file_is_empty">Prázdný soubor GPX</string>
     <string name="shared_string_tracks">Stopy</string>
@@ -1017,7 +1017,7 @@
     <string name="routing_attr_height_name">Výška</string>
     <string name="routing_attr_height_description">Zadejte výšku vozidla, která musí být povolena na cestách.</string>
     <string name="shared_string_logoff">Odhlásit</string>
-    <string name="shared_string_import2osmand">Importovat do OsmAnd</string>
+    <string name="shared_string_import2osmand">Importovat do RoadCrew</string>
     <string name="read_full_article">Přečíst celý článek (on-line)</string>
     <string name="shared_string_wikipedia">Wikipedie</string>
     <string name="shared_string_show_details">Zobrazit detaily</string>
@@ -1060,7 +1060,7 @@
     <string name="please_specify_poi_type">Vyberte prosím typ POI.</string>
     <string name="add_opening_hours">Přidat otevírací dobu</string>
     <string name="contact_info">Kontaktní informace</string>
-    <string name="do_you_like_osmand">Máte rádi OsmAnd?</string>
+    <string name="do_you_like_osmand">Máte rádi RoadCrew?</string>
     <string name="user_hates_app_get_feedback">Řekněte nám proč.</string>
     <string name="user_hates_app_get_feedback_long">Sdělte nám prosím své návrhy.</string>
     <string name="shared_string_skip">Přeskočit</string>
@@ -1180,7 +1180,7 @@
     <string name="shared_string_upload">Odeslat</string>
     <string name="rendering_attr_showProposed_name">Plánované objekty</string>
     <string name="whats_new">Novinky ve</string>
-    <string name="share_osm_edits_subject">Úpravy OSM sdílené pomocí OsmAnd</string>
+    <string name="share_osm_edits_subject">Úpravy OSM sdílené pomocí RoadCrew</string>
     <string name="lang_nds">Dolnoněmčina</string>
     <string name="lang_mk">Makedonština</string>
     <string name="lang_fy">Fríština</string>
@@ -1241,7 +1241,7 @@
     <string name="no_microphone_permission">Udělit oprávnění pro přístup k mikrofonu.</string>
     <string name="live_update">Okamžité aktualizace</string>
     <string name="update_now">Aktualizovat nyní</string>
-    <string name="missing_write_external_storage_permission">OsmAnd nemá oprávnění používat paměťovou kartu</string>
+    <string name="missing_write_external_storage_permission">RoadCrew nemá oprávnění používat paměťovou kartu</string>
     <string name="item_removed">Položka odstraněna</string>
     <string name="n_items_removed">vymazaných položek</string>
     <string name="shared_string_undo_all">Vrátit vše</string>
@@ -1366,13 +1366,13 @@
     <string name="confirmation_to_delete_history_items">Odstranit vybrané položky z \'Historie\'?</string>
     <string name="show_something_on_map">Zobrazit %1$s na mapě</string>
     <string name="dist_away_from_my_location">Hledat do vzdálenosti %1$s</string>
-    <string name="share_history_subject">sdílené pomocí OsmAnd</string>
+    <string name="share_history_subject">sdílené pomocí RoadCrew</string>
     <string name="coords_search">Hledání souřadnic</string>
     <string name="advanced_coords_search">Rozšířené hledání souřadnic</string>
     <string name="route_stops_before">%1$s zastávek před</string>
     <string name="search_another_country">Vybrat jinou oblast</string>
     <string name="search_map">Hledání map…</string>
-    <string name="first_usage_wizard_desc">Povolit OsmAndu určit vaši polohu a navrhnout mapy pro tuto oblast.</string>
+    <string name="first_usage_wizard_desc">Povolit RoadCrewu určit vaši polohu a navrhnout mapy pro tuto oblast.</string>
     <string name="location_not_found">Poloha nenalezena</string>
     <string name="no_inet_connection">Bez připojení k Internetu</string>
     <string name="search_location">Hledání polohy…</string>
@@ -1531,7 +1531,7 @@
     <string name="lang_ber">Berberština</string>
     <string name="do_not_show_startup_messages">Nezobrazovat zprávy při spuštění</string>
     <string name="parking_options">Možnosti parkování</string>
-    <string name="full_version_thanks">Děkujeme vám za zakoupení placené verze OsmAnd.</string>
+    <string name="full_version_thanks">Děkujeme vám za zakoupení placené verze RoadCrew.</string>
     <string name="routing_attr_relief_smoothness_factor_name">Zvolte kolísání výšky</string>
     <string name="right_side_navigation">Pravostranný provoz</string>
     <string name="shared_string_automatic">Automaticky</string>
@@ -1586,7 +1586,7 @@
     <string name="nothing_found">Nic nebylo nalezeno</string>
     <string name="nothing_found_descr">Změňte vyhledávací dotaz nebo zvětšete okruh hledání.</string>
     <string name="shared_string_permissions">Oprávnění</string>
-    <string name="import_gpx_failed_descr">Nepodařilo se naimportovat soubor. Prosím zkontrolujte, zda má OsmAnd oprávnění ke čtení souboru.</string>
+    <string name="import_gpx_failed_descr">Nepodařilo se naimportovat soubor. Prosím zkontrolujte, zda má RoadCrew oprávnění ke čtení souboru.</string>
     <string name="distance_moving">Vzdálenost opravená</string>
     <string name="mapillary_image">Obrázek Mapillary</string>
     <string name="open_mapillary">Otevřít Mapillary</string>
@@ -1637,7 +1637,7 @@
     <string name="add_point_before">Přidat bod před</string>
     <string name="add_point_after">Přidat bod za</string>
     <string name="shared_string_options">Možnosti</string>
-    <string name="measurement_tool_snap_to_road_descr">OsmAnd spojí body s trasami pro vybraný profil.</string>
+    <string name="measurement_tool_snap_to_road_descr">RoadCrew spojí body s trasami pro vybraný profil.</string>
     <string name="choose_navigation_type">Vyberte profil navigace</string>
     <string name="empty_state_favourites">Přidejte Oblíbené</string>
     <string name="empty_state_favourites_desc">Importujte Oblíbené nebo je přidejte označením bodů na mapě.</string>
@@ -1781,7 +1781,7 @@
     <string name="last_intermediate_dest_description">Přidá poslední mezicíl</string>
     <string name="first_intermediate_dest_description">Přidá první mezicíl</string>
     <string name="subsequent_dest_description">Přesune cíl nahoru a vytvoří ho</string>
-    <string name="osmand_extended_description_part1">OsmAnd (OSM Automated Navigation Directions) je mapová a navigační aplikace s přístupem k volným a kvalitním celosvětovým údajům z OpenStreetMap (OSM).
+    <string name="osmand_extended_description_part1">RoadCrew (OSM Automated Navigation Directions) je mapová a navigační aplikace s přístupem k volným a kvalitním celosvětovým údajům z OpenStreetMap (OSM).
 \n
 \n Využívejte hlasovou a optickou navigaci, zobrazení bodů zájmu, vytváření a správu GPX stop, znázornění vrstevnic a topografických údajů (pomocí doplňkového modulu), výběr z režimů auto, cyklista a pěší, editaci OSM a mnoho dalšího.</string>
     <string name="toast_empty_name_error">Bezejmenné místo</string>
@@ -1812,7 +1812,7 @@
     <string name="osmand_extended_description_part2">GPS navigace \n• Vyberte si mezi offline režimem (bez roamingových poplatků v zahraničí) a online režimem (rychlejší) \n• Hlasová navigace vás povede krok za krokem vaší cestou (nahraný nebo syntetizovaný hlas) \n• Při každém odchýlení se trasa přepočítá \n• Pomůže vám navádění do jízdních pruhů, zobrazení názvů ulic a předpokládaný čas příjezdu \n• Pro větší bezpečí se aplikace automaticky přepíná mezi denním a nočním režimem \n• Můžete si zapnout zobrazování rychlostních limitů a upozornění při jejich překročení \n• Přiblížení mapy se přizpůsobí rychlosti pohybu \n• Hledejte cíle podle adresy, typu (např. parkoviště, restaurace, hotel, čerpací stanice, muzeum) či podle geografických souřadnic \n• Do svého itineráře můžete přidávat mezicíle \n• Zaznamenávejte nebo nahrajte svoji GPX trasu a následujte ji</string>
     <string name="osmand_extended_description_part3">Mapa \n• Zobrazuje POI (body zájmu) ve vašem okolí \n• Mapa se otáčí podle směru vašeho pohybu (nebo podle kompasu) \n• Ukazuje vaši polohu a směr, kterým se díváte \n• Svoji polohu můžete sdílet se svými přáteli \n• Důležitá místa si můžete uložit do složky \'Moje místa\' \n• Můžete si vybrat, jak se na mapě budou zobrazovat názvy: V angličtině, v místním jazyce nebo ve fonetickém přepisu \n• Zobrazuje specializované online dlaždice, satelitní mapy (z Bingu), různé překryvné informace jako navigační GPX trasy a další vrstvy s volitelnou průhledností</string>
     <string name="osmand_extended_description_part4">Lyžování
-\nOsmAnd plugin Lyžařský mapový pohled zobrazuje lyžařské trasy podle stupně obtížnosti a také další informace jako polohy vleků a dalších zařízení.</string>
+\nRoadCrew plugin Lyžařský mapový pohled zobrazuje lyžařské trasy podle stupně obtížnosti a také další informace jako polohy vleků a dalších zařízení.</string>
     <string name="osmand_extended_description_part5">Cyklistika
 \n• Na mapě najdete cyklostezky
 \n• GPS navigace v režimu Cyklista vytvoří trasu po cyklostezkách
@@ -1859,7 +1859,7 @@
 \n• Volitelný záznam výletu do lokálního souboru GPS nebo do online služby
 \n• Zobrazení rychlosti a nadmořské výšky
 \n• Zobrazení vrstevnic a stínování kopců (pomocí pluginů)</string>
-    <string name="osmand_plus_extended_description_part7">Přispívejte přímo do OSM \n• Hlaste chyby v datech \n• Nahrávejte GPX trasy do OSM přímo z aplikace \n• Přidávejte body zájmu a rovnou je nahrávejte do OSM (nebo později, pokud jste zrovna offline) \n• Záznam trasy funguje také na pozadí (když je zařízení v režimu spánku) \nOsmAnd je aktivně vyvíjený open-source software. Do aplikace může každý přispět hlášením chyb, vylepšováním překladů nebo programováním nových funkcí. Projekt je také závislý na finančních příspěvcích pro programování a testování nových funkcí.</string>
+    <string name="osmand_plus_extended_description_part7">Přispívejte přímo do OSM \n• Hlaste chyby v datech \n• Nahrávejte GPX trasy do OSM přímo z aplikace \n• Přidávejte body zájmu a rovnou je nahrávejte do OSM (nebo později, pokud jste zrovna offline) \n• Záznam trasy funguje také na pozadí (když je zařízení v režimu spánku) \nRoadCrew je aktivně vyvíjený open-source software. Do aplikace může každý přispět hlášením chyb, vylepšováním překladů nebo programováním nových funkcí. Projekt je také závislý na finančních příspěvcích pro programování a testování nových funkcí.</string>
     <string name="osmand_plus_extended_description_part8">Přibližné pokrytí a kvalita map: \n • Západní Evropa: **** \n • Východní Evropa: *** \n • Rusko: *** \n • Severní Amerika: *** \n • Jižní Amerika: ** \n • Asie: ** \n • Japonsko a Korea: *** \n • Střední Východ: ** \n • Afrika: ** \n • Antarktida: * \n Mapy většiny států na zeměkouli jsou dostupné ke stažení \n Od Afghánistánu po Zimbabwe, od Austrálie po USA. Argentina, Brazílie, Kanada, Francie, Německo, Mexiko, Spojené království, Španělsko, …</string>
     <string name="clear_all_intermediates">Smazat všechny mezicíle</string>
     <string name="select_waypoints_category_description">Přidat všechny mezicíle na trase nebo vybrat jednotlivé kategorie.</string>
@@ -1893,7 +1893,7 @@
     <string name="shared_string_restart">Restartovat aplikaci</string>
     <string name="maps_you_need_descr">Na základě článků, které jste uložili, vám doporučujeme stáhnout následující mapy:</string>
     <string name="maps_you_need">Potřebné mapy</string>
-    <string name="osmand_team">OsmAnd tým</string>
+    <string name="osmand_team">RoadCrew tým</string>
     <string name="popular_destinations">Oblíbené cíle</string>
     <string name="update_is_available">Je dostupná aktualizace</string>
     <string name="download_file">Stáhnout soubor</string>
@@ -1935,20 +1935,20 @@
     <string name="download_all">Stáhnout vše</string>
     <string name="travel_card_update_descr">Jsou dostupná nová data Wikivoyage, aktualizujte je na nejnovější verzi.</string>
     <string name="wikivoyage_travel_guide">Turistický průvodce Wikivoyage</string>
-    <string name="wikivoyage_travel_guide_descr">Průvodce Wikivoyage Vám ukáže nejzajímavější místa planety, přímo v aplikaci OsmAnd a bez nutnosti připojení k internetu.</string>
+    <string name="wikivoyage_travel_guide_descr">Průvodce Wikivoyage Vám ukáže nejzajímavější místa planety, přímo v aplikaci RoadCrew a bez nutnosti připojení k internetu.</string>
     <string name="test_voice_desrc">Klepněte na tlačítko pro vyslechnutí odpovídajícího hlasového pokynu, abyste zjistili, zda chybí nebo je chybný</string>
     <string name="nautical_render_descr">Pro námořní navigaci. Obsahuje bóje, majáky, plavební cesty, mořské cesty a značky, přístavy, námořní služby a hloubkové vrstevnice.</string>
     <string name="ski_map_render_descr">Pro lyžování. Obsahuje sjezdovky, lyžařské vleky, běžkařské trasy atd. Nedůležité objekty jsou na mapě méně výrazné.</string>
     <string name="welcome_to_open_beta">Vítejte v otevřené beta verzi</string>
     <string name="light_rs_render_descr">Jednoduchý styl pro automobilovou navigaci. Příjemný noční režim, kontrastní oranžové silnice, druhořadé objekty jsou méně výrazné, topografické údaje jako například vrstevnice.</string>
     <string name="topo_render_descr">Pro pěší turistiku a cyklistiku v přírodě. Dobře čitelný venku. Kontrastní silnice a přírodních objekty, různé typy tras, vrstevnice s rozšířeným nastavením, více detailů. Umožňuje rozlišit kvalitu povrchu vozovky. Nemá noční režim.</string>
-    <string name="touring_view_render_descr">Styl pro cestování s vysokým kontrastem a maximálními detaily. Obsahuje všechna nastavení ze základního stylu OsmAnd a navíc zobrazuje maximum detailů, především silnice, cesty a jiné způsoby cestování. Jasně rozlišuje různé typy cest, podobně jako cestovní atlasy. Vhodný pro použití ve dne, v noci i venku.</string>
+    <string name="touring_view_render_descr">Styl pro cestování s vysokým kontrastem a maximálními detaily. Obsahuje všechna nastavení ze základního stylu RoadCrew a navíc zobrazuje maximum detailů, především silnice, cesty a jiné způsoby cestování. Jasně rozlišuje různé typy cest, podobně jako cestovní atlasy. Vhodný pro použití ve dne, v noci i venku.</string>
     <string name="default_render_descr">Obecný styl. Čisté vykreslování hustě osídlených měst. Obsahuje trasy, kvalitu povrchu cest, omezení přístupu, čísla cest, vykreslení cest podle stupnice SAC/CAI, objekty pro vodní sporty, topografické údaje jako například vrstevnice.</string>
     <string name="travel_card_download_descr">Stáhněte si cestovní průvodce Wikivoyage a prohlížejte články o místech po celém světě bez připojení na internet.</string>
     <string name="start_editing_card_image_text">Bezplatný cestovní průvodce, který může upravovat každý.</string>
     <string name="welcome_to_open_beta_description">Cestovní průvodci jsou nyní založené na Wikivoyage. Všechny jejich funkce můžete otestovat zdarma během beta testování.</string>
     <string name="start_editing_card_description">Můžete (a měli byste) upravovat libovolný článek na Wikivoyage. Sdílejte znalosti, zkušenosti, talent a svoji pozornost.</string>
-    <string name="ask_for_location_permission">Pro pokračování prosím udělte OsmAndu oprávnění pro přístup k poloze.</string>
+    <string name="ask_for_location_permission">Pro pokračování prosím udělte RoadCrewu oprávnění pro přístup k poloze.</string>
     <string name="rendering_value_black_name">Černá</string>
     <string name="more_transport_on_stop_hint">Z této zastávky je možná další doprava.</string>
     <string name="search_street">Hledat ulici</string>
@@ -1969,7 +1969,7 @@
     <string name="mapillary_menu_title_pano">Zobrazit pouze 360° obrázky</string>
     <string name="shared_string_launch">Spustit</string>
     <string name="lang_gn_py">Guaranština</string>
-    <string name="quick_action_switch_day_night_descr">Tlačítko pro přepínání mezi denním a nočním režimem v OsmAnd.</string>
+    <string name="quick_action_switch_day_night_descr">Tlačítko pro přepínání mezi denním a nočním režimem v RoadCrew.</string>
     <string name="cubic_m">m³</string>
     <string name="metric_ton">t</string>
     <string name="shared_string_capacity">Kapacita</string>
@@ -2056,7 +2056,7 @@
     <string name="use_osm_live_public_transport_description">Povolit použití změn z OsmAnd Live pro veřejnou dopravu.</string>
     <string name="by_transport_type">Pomocí %1$s</string>
     <string name="sit_on_the_stop">Nastupte na zastávce</string>
-    <string name="public_transport_warning_descr_blog">Zjistěte více o výpočtu trasy v OsmAnd na našem blogu.</string>
+    <string name="public_transport_warning_descr_blog">Zjistěte více o výpočtu trasy v RoadCrew na našem blogu.</string>
     <string name="public_transport_warning_title">Navigace pomocí veřejné dopravy je v současné době v beta testování, očekávejte chyby a nepřesnosti.</string>
     <string name="add_intermediate">Přidat mezicíl</string>
     <string name="avoid_pt_types_descr">Vyberte typy veřejné dopravy, kterým se chcete při navigaci vyhnout:</string>
@@ -2085,7 +2085,7 @@
     <string name="files_failed">Nepodařilo se zkopírovat %1$d souborů (%2$s).</string>
     <string name="dont_move_maps">Nepřesouvat</string>
     <string name="public_transport_ped_route_title">Trasa pěšky je přibližně %1$s a mohla by být rychlejší než veřejnou dopravou</string>
-    <string name="public_transport_no_route_title">Bohužel OsmAnd nemohl najít vhodnou trasu dle vašich nastavení.</string>
+    <string name="public_transport_no_route_title">Bohužel RoadCrew nemohl najít vhodnou trasu dle vašich nastavení.</string>
     <string name="public_transport_try_ped">Vyzkoušejte pěší navigaci.</string>
     <string name="public_transport_try_change_settings">Zkuste změnit nastavení.</string>
     <string name="public_transport_calc_pedestrian">Vypočítat pěší trasu</string>
@@ -2093,7 +2093,7 @@
     <string name="searching_gps">Vyhledávání GPS</string>
     <string name="coordinates_widget">Nástroj souřadnic</string>
     <string name="shared_string_privacy_policy">Zásady soukromí</string>
-    <string name="help_us_make_osmand_better">Pomozte nám OsmAnd vylepšit</string>
+    <string name="help_us_make_osmand_better">Pomozte nám RoadCrew vylepšit</string>
     <string name="choose_data_to_share">Zvolte typ dat, který chcete sdílet:</string>
     <string name="downloaded_maps">Stažené mapy</string>
     <string name="visited_screens">Navštívené obrazovky</string>
@@ -2114,13 +2114,13 @@
     <string name="select_icon_profile_dialog_title">Zvolit ikonu</string>
     <string name="routing_profile_ski">Lyžování</string>
     <string name="profile_type_descr_string">Typ: %s</string>
-    <string name="process_downloading_service">OsmAnd služba pro stahování</string>
+    <string name="process_downloading_service">RoadCrew služba pro stahování</string>
     <string name="shared_string_color_magenta">Purpurová</string>
     <string name="shared_string_icon">Ikona</string>
     <string name="profile_alert_need_profile_name_title">Zadejte název profilu</string>
     <string name="profile_alert_need_profile_name_msg">Zadejte název profilu.</string>
     <string name="profile_alert_duplicate_name_msg">Profil s tímto názvem již existuje</string>
-    <string name="profile_alert_cant_delete_base">Nelze smazat základní profily aplikace OsmAnd</string>
+    <string name="profile_alert_cant_delete_base">Nelze smazat základní profily aplikace RoadCrew</string>
     <string name="profile_alert_delete_title">Odstranit profil</string>
     <string name="profile_alert_delete_msg">Odstranit profil „%s“</string>
     <string name="select_base_profile_dialog_title">Zvolte výchozí profil</string>
@@ -2134,7 +2134,7 @@
     <string name="routing_profile_geocoding">Geokódování</string>
     <string name="routing_profile_straightline">Rovná čára</string>
     <string name="routing_profile_broutrer">BRouter (offline)</string>
-    <string name="osmand_default_routing">Navigace OsmAnd</string>
+    <string name="osmand_default_routing">Navigace RoadCrew</string>
     <string name="special_routing_type">Speciální navigace</string>
     <string name="third_party_routing_type">Navigování třetí strany</string>
     <string name="application_profiles">Profily aplikace</string>
@@ -2157,11 +2157,11 @@
     <string name="routing_attr_difficulty_preference_name">Preferovaná obtížnost</string>
     <string name="routing_attr_freeride_policy_name">Mimo sjezdovky</string>
     <string name="rate_dialog_descr">Prosím, dejte nám zpětnou vazbu a ohodnoťte naši práci na Google Play.</string>
-    <string name="make_osmand_better_descr">Povolit aplikaci OsmAnd sbírat a zpracovávat anonymní data využívání aplikace. Nesbíráme ani neukládáme data o vaší poloze nebo jakýchkoli polohách zobrazených na mapě. 
+    <string name="make_osmand_better_descr">Povolit aplikaci RoadCrew sbírat a zpracovávat anonymní data využívání aplikace. Nesbíráme ani neukládáme data o vaší poloze nebo jakýchkoli polohách zobrazených na mapě. 
 \n 
 \nSvoji volbu můžete kdykoliv změnit v Nastavení &gt; Soukromí a zabezpečení.</string>
     <string name="downloaded_maps_collect_descr">Pomozte nám pochopit, které regiony a země jsou v mapách nejpopulárnější.</string>
-    <string name="visited_screens_collect_descr">Pomůže nám zjistit popularitu funkcí OsmAnd.</string>
+    <string name="visited_screens_collect_descr">Pomůže nám zjistit popularitu funkcí RoadCrew.</string>
     <string name="osmand_routing_promo">Přidejte svou vlastní upravenou verzi souboru routing.xml v ..osmand/routing</string>
     <string name="press_again_to_change_the_map_orientation">Dalším klepnutím změníte orientaci mapy</string>
     <string name="shared_string_min_speed">Min. rychlost</string>
@@ -2170,7 +2170,7 @@
     <string name="default_speed_setting_descr">Změnit výchozí nastavení rychlosti</string>
     <string name="new_profile">Nový profil</string>
     <string name="shared_string_crash">Pád</string>
-    <string name="last_launch_crashed">Posledně se aplikace OsmAnd zhroutila. Prosíme, pomozte nám zlepšit OsmAnd sdílením chybové zprávy.</string>
+    <string name="last_launch_crashed">Posledně se aplikace RoadCrew zhroutila. Prosíme, pomozte nám zlepšit RoadCrew sdílením chybové zprávy.</string>
     <string name="app_mode_personal_transporter">Osobní přepravník</string>
     <string name="app_mode_monowheel">Jednokolka</string>
     <string name="app_mode_scooter">Skútr</string>
@@ -2235,7 +2235,7 @@
     <string name="screen_alerts_descr">Upozornění zobrazená vlevo dole během navigace.</string>
     <string name="reset_to_default">Obnovit do základního nastavení</string>
     <string name="osmand_settings_descr">Ovlivní celou aplikaci</string>
-    <string name="osmand_settings">Nastavení OsmAnd</string>
+    <string name="osmand_settings">Nastavení RoadCrew</string>
     <string name="copy_from_other_profile">Kopírovat z jiného profilu</string>
     <string name="turn_screen_on">Zapnout obrazovku</string>
     <string name="map_during_navigation_info">Mapa během navigace</string>
@@ -2268,14 +2268,14 @@
     <string name="application_profile_changed">Profil aplikace změněn na „%s\\</string>
     <string name="plugins_settings">Nastavení modulů</string>
     <string name="download_detailed_map">Stáhněte detailní mapu %s pro zobrazení této oblasti.</string>
-    <string name="change_data_storage_full_description">Přesunout OsmAnd soubory do nového umístění\?
+    <string name="change_data_storage_full_description">Přesunout RoadCrew soubory do nového umístění\?
 \n%1$s → %2$s</string>
     <string name="data_storage_preference_summary">%1$s • %2$s</string>
     <string name="data_storage_space_description">Volno %1$s GB (z %2$s GB)</string>
     <string name="enter_path_to_folder">Zadejte cestu k adresáři</string>
     <string name="shared_string_select_folder">Adresář…</string>
-    <string name="paste_Osmand_data_folder_path">Zadejte cestu k adresáři s OsmAnd daty</string>
-    <string name="change_osmand_data_folder_question">Změnit adresář pro OsmAnd data\?</string>
+    <string name="paste_Osmand_data_folder_path">Zadejte cestu k adresáři s RoadCrew daty</string>
+    <string name="change_osmand_data_folder_question">Změnit adresář pro RoadCrew data\?</string>
     <string name="move_maps_to_new_destination">Přesunout do nového umístění</string>
     <string name="change_data_storage_folder">Změnit složku pro ukládání dat</string>
     <string name="routeInfo_piste_type_name">Typ sjezdovky</string>
@@ -2289,7 +2289,7 @@
     <string name="routeInfo_piste_difficulty_name">Obtížnost sjezdovky</string>
     <string name="rendering_attr_piste_difficulty_connection_name">Připojení</string>
     <string name="shared_string_calculate">Vypočítat</string>
-    <string name="shared_string_osmand_usage">OsmAnd využití</string>
+    <string name="shared_string_osmand_usage">RoadCrew využití</string>
     <string name="shared_string_tiles">Dlaždice</string>
     <string name="shared_string_maps">Mapy</string>
     <string name="shared_string_memory_tb_desc">%1$s TB</string>
@@ -2328,7 +2328,7 @@
     <string name="routing_attr_allow_classic_only_description">Trasy upravené pro klasické lyžování bez bruslení. Zahrnuje trasy upravené menšími sněžnými vozidly a stopy vytvořené samotnými lyžaři.</string>
     <string name="routing_attr_allow_skating_only_name">Povolit pouze trasy pro bruslení na lyžích</string>
     <string name="app_mode_ski_snowmobile">Sněžný skútr</string>
-    <string name="custom_osmand_plugin">Vlastní modul pro OsmAnd</string>
+    <string name="custom_osmand_plugin">Vlastní modul pro RoadCrew</string>
     <string name="changes_applied_to_profile">Změny aplikovány na profil \'%1$s\'.</string>
     <string name="settings_item_read_error">Nepodařilo se přečíst z \'%1$s\'.</string>
     <string name="settings_item_write_error">Nelze zapsat do \'%1$s\'.</string>
@@ -2345,7 +2345,7 @@
     <string name="import_complete_description">Všechna data z %1$s jsou naimportovaná. Použijte tlačítka níže k otevření části aplikace pro jejich správu.</string>
     <string name="shared_string_import_complete">Import dokončen</string>
     <string name="items_added">Položky přidány</string>
-    <string name="checking_for_duplicate_description">OsmAnd kontroluje %1$s na duplicity s existujícími položkami v aplikaci.
+    <string name="checking_for_duplicate_description">RoadCrew kontroluje %1$s na duplicity s existujícími položkami v aplikaci.
 \n
 \nMůže to chvíli trvat.</string>
     <string name="shared_string_importing">Importování</string>
@@ -2388,14 +2388,14 @@
     <string name="please_provide_profile_name_message">Zadejte prosím název profilu</string>
     <string name="select_data_to_import">Vyberte data k importu.</string>
     <string name="import_duplicates_title">Některé položky již existují</string>
-    <string name="import_duplicates_description">OsmAnd již má položky se stejnými názvy jako ty importované.
+    <string name="import_duplicates_description">RoadCrew již má položky se stejnými názvy jako ty importované.
 \n
 \nZvolte akci.</string>
     <string name="keep_both_desc">Importované položky budou přidány s prefixem</string>
     <string name="keep_both">Ponechat obě</string>
     <string name="replace_all">Nahradit vše</string>
     <string name="replace_all_desc">Aktuální položky budou nahrazeny položkami ze souboru</string>
-    <string name="listed_exist">Zobrazený %1$s již existuje v OsmAnd.</string>
+    <string name="listed_exist">Zobrazený %1$s již existuje v RoadCrew.</string>
     <string name="shared_string_profiles">Profily</string>
     <string name="shared_string_quick_actions">Rychlé akce</string>
     <string name="shared_string_nothing_selected">Nic není vybráno</string>
@@ -2456,7 +2456,7 @@
     <string name="shared_string_hidden">Skryté</string>
     <string name="hidden_items_descr">Tyto položky jsou skryté z menu, ale příslušná nastavení a moduly zůstanou funkční.</string>
     <string name="reset_items_descr">Skrytá nastavení se resetují do svého původního stavu.</string>
-    <string name="tracker_item">Stopování OsmAnd</string>
+    <string name="tracker_item">Stopování RoadCrew</string>
     <string name="quick_action_item">Rychlá akce</string>
     <string name="map_markers_item">Mapové značky</string>
     <string name="favorites_item">Oblíbené</string>
@@ -2592,7 +2592,7 @@
 \n
 \nVyberte %1$s a budete dostávat upozornění a varování o rychlostních radarech.
 \n
-\nVyberte %2$s. Všechna data týkající se rychlostních radarů: upozornění, oznámení, body zájmu budou smazána, dokud nebude aplikace OsmAnd zcela přeinstalována.</string>
+\nVyberte %2$s. Všechna data týkající se rychlostních radarů: upozornění, oznámení, body zájmu budou smazána, dokud nebude aplikace RoadCrew zcela přeinstalována.</string>
     <string name="keep_active">Ponechat aktivní</string>
     <string name="shared_string_uninstall">Odinstalovat</string>
     <string name="speed_cameras_alert">V některých zemích je varování před rychlostními radary zákonem zakázané.</string>
@@ -2662,16 +2662,16 @@
     <string name="lenght_limit_description">Zadejte délku svého vozidla, na trase mohou být omezení pro dlouhá vozidla.</string>
     <string name="gpx_parse_error">Nalezeny problémy se souborem GPX.
 \n
-\nMůžete se obrátit na podporu OsmAnd a prošetřit je.</string>
+\nMůžete se obrátit na podporu RoadCrew a prošetřit je.</string>
     <string name="shared_string_always">Vždy</string>
     <string name="screen_control">Ovládání obrazovky</string>
     <string name="system_screen_timeout_descr">Vypne obrazovku po uplynutí systémového časového limitu.</string>
     <string name="system_screen_timeout">Použít systémový časový limit obrazovky</string>
-    <string name="turn_screen_on_descr">Zvolte možnosti probuzení obrazovky (při zamykání zařízení se ujistěte, že je OsmAnd na popředí):</string>
+    <string name="turn_screen_on_descr">Zvolte možnosti probuzení obrazovky (při zamykání zařízení se ujistěte, že je RoadCrew na popředí):</string>
     <string name="turn_screen_on_navigation_instructions_descr">Každý navigační pokyn zapne obrazovku.</string>
     <string name="turn_screen_on_navigation_instructions">Navigační pokyny</string>
     <string name="turn_screen_on_power_button_disabled">Vypnuto. Vyžaduje „Nechat obrazovku zapnutou“ pod „Časový limit obrazovky po probuzení“.</string>
-    <string name="turn_screen_on_power_button_descr">Stisknutím tlačítka napájení zapnete obrazovku s aplikací OsmAnd na zamčené obrazovce.</string>
+    <string name="turn_screen_on_power_button_descr">Stisknutím tlačítka napájení zapnete obrazovku s aplikací RoadCrew na zamčené obrazovce.</string>
     <string name="turn_screen_on_power_button">Tlačítko napájení</string>
     <string name="turn_screen_on_proximity_sensor">Senzor přiblížení</string>
     <string name="turn_screen_on_wake_time_descr">Zvolte časový limit vypnutí obrazovky po probuzení (\"%1$s\" znamená bez časového limitu.)</string>
@@ -2727,7 +2727,7 @@
     <string name="ltr_or_rtl_combine_via_comma">%1$s, %2$s</string>
     <string name="ltr_or_rtl_combine_via_bold_point">%1$s • %2$s</string>
     <string name="edit_profiles">Upravit profily</string>
-    <string name="edit_profiles_descr">Základní profily OsmAnd nelze odstranit, ale mohou být vypnuty (na předchozí obrazovce), nebo přesunuty na konec seznamu.</string>
+    <string name="edit_profiles_descr">Základní profily RoadCrew nelze odstranit, ale mohou být vypnuty (na předchozí obrazovce), nebo přesunuty na konec seznamu.</string>
     <string name="shared_string_downloading_formatted">Stahování %s</string>
     <string name="desert_render_descr">Pro pouště a jiné řídce osídlené oblasti. Víc detailů.</string>
     <string name="rendering_value_thick_name">Tučné</string>
@@ -2742,7 +2742,7 @@
     <string name="accessibility_announce">Oznámení</string>
     <string name="photo_notes">Foto-poznámky</string>
     <string name="multimedia_notes_view_descr">Vaše OSM poznámky jsou v %1$s.</string>
-    <string name="tracks_view_descr">Všechny vaše zaznamenané stopy jsou v %1$s, nebo ve složce OsmAnd.</string>
+    <string name="tracks_view_descr">Všechny vaše zaznamenané stopy jsou v %1$s, nebo ve složce RoadCrew.</string>
     <string name="save_track_logging_accuracy">Přesnost záznamu</string>
     <string name="live_monitoring">Sledování online</string>
     <string name="live_monitoring_descr">Umožňuje sdílení aktuální polohy prostřednictvím záznamu cesty.</string>
@@ -2777,7 +2777,7 @@
     <string name="login_open_street_map">Přihlásit se do OpenStreetMap</string>
     <string name="login_open_street_map_org">Přihlášení do OpenStreetMap.org</string>
     <string name="sign_in_with_open_street_map">Přihlaste se pomocí OpenStreetMap</string>
-    <string name="osm_edits_view_descr">Zobrazte své dosud neodeslané změny či chyby v OSM v %1$s. Odeslané změny se již v OsmAnd nezobrazují.</string>
+    <string name="osm_edits_view_descr">Zobrazte své dosud neodeslané změny či chyby v OSM v %1$s. Odeslané změny se již v RoadCrew nezobrazují.</string>
     <string name="open_street_map_login_mode">Abyste mohli odeslat nová nebo změněná data, musíte se nejprve přihlásit.
 \n
 \nPoužijte metodu OAuth nebo své jméno a heslo v OSM.</string>
@@ -2837,7 +2837,7 @@
     <string name="plan_route_split_after">Rozdělit po</string>
     <string name="plan_route_add_new_segment">Přidat nový úsek</string>
     <string name="release_3_9">• Přidána možnost exportovat a importovat všechna data včetně nastavení, zdrojů a oblíbených bodů \n \n• Plánování trasy: grafy pro úseky trasy; přidána možnost vytvářet a upravovat více úseků trasy \n \n• Přidána přihlašovací metoda OAuth pro OpenStreetMap, vylepšené uživatelské rozhraní pro OSM dialogy \n \n• Podpora pro vlastní barvy u oblíbených bodů a mezicílů trasy</string>
-    <string name="profile_type_osmand_string">Profil OsmAnd</string>
+    <string name="profile_type_osmand_string">Profil RoadCrew</string>
     <string name="profile_type_user_string">Uživatelský profil</string>
     <string name="reverse_all_points">Otočit všechny body</string>
     <string name="profile_by_default_description">Vyberte profil, který bude použitý při startu aplikace.</string>
@@ -2950,7 +2950,7 @@
     <string name="track_has_no_altitude">Stopa neobsahuje údaje o nadmořské výšce.</string>
     <string name="track_has_no_speed">Stopa neobsahuje údaje o rychlosti.</string>
     <string name="select_another_colorization">Vyberte prosím jiný typ obarvení.</string>
-    <string name="trip_recording_logging_interval_info">Interval záznamu nastaví, jak často bude OsmAnd zjišťovat aktuální polohu.</string>
+    <string name="trip_recording_logging_interval_info">Interval záznamu nastaví, jak často bude RoadCrew zjišťovat aktuální polohu.</string>
     <string name="trip_recording_save_and_continue">Uložit a pokračovat</string>
     <string name="lost_data_warning">Všechna neuložená data budou ztracena.</string>
     <string name="show_start_dialog">Zobrazit úvodní okno</string>
@@ -3005,7 +3005,7 @@
     <string name="update_all_maps_added">Aktualizovat všechny mapy přidané do %1$s\?</string>
     <string name="shared_string_feet">stopy</string>
     <string name="srtm_unit_format">Varianta vrstevnicových jednotek</string>
-    <string name="srtm_download_list_help_message">OsmAnd poskytuje data vrstevnic v metrech a stopách. Pro změnu formátu budete muset soubor znovu stáhnout.</string>
+    <string name="srtm_download_list_help_message">RoadCrew poskytuje data vrstevnic v metrech a stopách. Pro změnu formátu budete muset soubor znovu stáhnout.</string>
     <string name="srtm_download_single_help_message">Vyberte variantu. Chcete-li změnit formát, musíte soubor znovu stáhnout.</string>
     <string name="exit_number">Číslo výjezdu</string>
     <string name="announce_when_exceeded">Oznámení při překročení</string>
@@ -3098,11 +3098,11 @@
     <string name="storage_copied_files_size">Zpracováno %1$s souborů, %2$s</string>
     <string name="storage_copying_files_size">Kopírování %1$s souborů %2$s</string>
     <string name="storage_found_files_size">Nalezeno %1$s souborů %2$s</string>
-    <string name="shared_string_skip_warning">Přeskočit migraci\? OsmAnd již nemá přístup k vašim souborům ve sdíleném úložišti.
+    <string name="shared_string_skip_warning">Přeskočit migraci\? RoadCrew již nemá přístup k vašim souborům ve sdíleném úložišti.
 \n
 \nAplikace začne používat vaši novou datovou složku.</string>
     <string name="shared_storage_last_step">Zvolit novou datovou složku můžete potom.</string>
-    <string name="shared_storage_third_step">Udělte oprávnění pro přístup ke složce. Bez něj OsmAnd nemůže zkopírovat soubory.</string>
+    <string name="shared_storage_third_step">Udělte oprávnění pro přístup ke složce. Bez něj RoadCrew nemůže zkopírovat soubory.</string>
     <string name="shared_storage_second_step">Stiskněte \"Použít tuto složku\".</string>
     <string name="folder_access_denied">Pro přístup ke zvolené složce je potřeba oprávnění.</string>
     <string name="copying_completed">Zkopírováno</string>
@@ -3125,7 +3125,7 @@
     <string name="routeInfo_surface_description">Poskytnout informaci o fyzickém povrchu silnic/pěšin.</string>
     <string name="routeInfo_smoothness_description">Klasifikace manévrovatelnosti silnic/pěšin pro kolová vozidla, zejména vzhledem k pravidelnosti/rovinatosti povrchu.</string>
     <string name="routeInfo_tracktype_description">Obarvit čáru trasy nebo stopy podle složení jejího povrchu. Obvykle se používá, pokud je silniční síť převážně nezpevněná.</string>
-    <string name="shared_storage_migration_descr">Kvůli změnám pravidel pro přístup k úložišti v Androidu již OsmAnd nemůže používat %1$s.
+    <string name="shared_storage_migration_descr">Kvůli změnám pravidel pro přístup k úložišti v Androidu již RoadCrew nemůže používat %1$s.
 \n
 \nZkopírujte všechna svoje data do nové složky.</string>
     <string name="files_remaining">Zbývající soubory: %1$s %2$s</string>
@@ -3156,10 +3156,10 @@
     <string name="shortcut_navigate_to_work">Navigovat do \'Práce\'</string>
     <string name="android_auto_purchase_request_title">Pokud chcete použít OsmAnd s Android Auto, zakupte si OsmAnd Pro nebo Mapy+</string>
     <string name="continue_on_phone">Pokračovat na mobilním zařízení</string>
-    <string name="location_access_request_title">Pro navigaci potřebuje OsmAnd oprávnění pro přístup k poloze.</string>
+    <string name="location_access_request_title">Pro navigaci potřebuje RoadCrew oprávnění pro přístup k poloze.</string>
     <string name="shared_string_details">Detaily</string>
     <string name="shared_app_storage_description">Sdílená paměť již není dostupná kvůli změnám v přístupu k úložišti v Androidu.</string>
-    <string name="internal_app_storage_description">Vnitřní úložiště, skryté před uživateli a jinými aplikacemi, kde pouze OsmAnd může používat vaše data.</string>
+    <string name="internal_app_storage_description">Vnitřní úložiště, skryté před uživateli a jinými aplikacemi, kde pouze RoadCrew může používat vaše data.</string>
     <string name="purchases_feature_desc_android_auto">Přináší mapy a navigaci OsmAnd na obrazovku vašeho vozidla a integruje se s jeho ovládacími prvky.</string>
     <string name="osm_live_payment_subscription_management_amz">Platba se strhne z vašeho účtu Amazon po potvrzení nákupu.
 \n
@@ -3178,12 +3178,12 @@
     <string name="purchases_feature_desc_osmand_cloud">Získejte OsmAnd Cloud pro ukládání všech OsmAnd dat. Po přeinstalování již neztratíte svá data. Zálohujte a obnovujte data jednoduše.</string>
     <string name="purchases_feature_desc_hourly_map_updates">Získejte přístup k častějším aktualizacím map. Hodinové, denní nebo týdenní aktualizace. Aktualizace se stahují inkrementálně, pouze pro změněnou oblast.</string>
     <string name="purchases_feature_desc_unlimited_map_download">Získejte neomezené stahování offline map všech kontinentů a oblastí.</string>
-    <string name="enough_contributions_descr">Gratulujeme, dostatečně přispíváte do OpenStreetMap, a proto můžete nyní využívat neomezené aktualizace map v OsmAnd!</string>
+    <string name="enough_contributions_descr">Gratulujeme, dostatečně přispíváte do OpenStreetMap, a proto můžete nyní využívat neomezené aktualizace map v RoadCrew!</string>
     <string name="benefits_for_contributors">Výhody pro aktivní přispěvatele OSM</string>
     <string name="map_updates_for_mappers">Aktualizace map pro mappery</string>
     <string name="setting_supported_by_style">Toto nastavení je poskytováno mapovým stylem \'%1$s\'</string>
-    <string name="explore_osmnad_plans_to_find_suitable">Prozkoumejte předplatné OsmAnd a najděte si takové, které vám bude vyhovovat.</string>
-    <string name="option_available_only_in_osmand_pro">Dostupné v předplatném OsmAnd.</string>
+    <string name="explore_osmnad_plans_to_find_suitable">Prozkoumejte předplatné RoadCrew a najděte si takové, které vám bude vyhovovat.</string>
+    <string name="option_available_only_in_osmand_pro">Dostupné v předplatném RoadCrew.</string>
     <string name="track_has_no_needed_data">Ve stopě chybí potřebné údaje.</string>
     <string name="promo_subscription">Propagační předplatné</string>
     <string name="on_hold_since">Pozastavené od %1$s</string>
@@ -3224,7 +3224,7 @@
     <string name="backup_welcome_back_descr">Obnovení dat v tomto zařízení pomocí služby OsmAnd Cloud.</string>
     <string name="purchases_feature_desc_pro_widgets">Získejte přístup k pokročilým funkcím OsmAnd: obarvení tras a další.</string>
     <string name="backup_error_subscription_was_expired">Expirované předplatné</string>
-    <string name="backup_deleting_all_data_descr">Počkejte prosím, dokud OsmAnd nesmaže vaše data z cloudu. Všechna data na zařízení zůstanou nedotčena.</string>
+    <string name="backup_deleting_all_data_descr">Počkejte prosím, dokud RoadCrew nesmaže vaše data z cloudu. Všechna data na zařízení zůstanou nedotčena.</string>
     <string name="backup_error_token_is_not_valid">Něco není v pořádku s poskytnutým identifikátorem zařízení</string>
     <string name="backup_error_file_not_available">Soubor není dostupný</string>
     <string name="shared_string_discussion">Diskuse</string>
@@ -3274,9 +3274,9 @@
     <string name="distance_between_points">Vzdálenost mezi body</string>
     <string name="gps_filter_smoothing">Vyhlazování</string>
     <string name="save_as_copy">Uložit jako kopii</string>
-    <string name="gps_filter_actions_description">OsmAnd aplikuje změny na stopu, aniž by aktualizoval soubor. Změny můžete uložit manuálně.</string>
+    <string name="gps_filter_actions_description">RoadCrew aplikuje změny na stopu, aniž by aktualizoval soubor. Změny můžete uložit manuálně.</string>
     <string name="shared_string_gps_filter">Filtr GPS</string>
-    <string name="storage_migration_wrong_folder_warning">Ve vybrané složce nebyla nalezena žádná OsmAnd data. Zkuste to prosím znovu.</string>
+    <string name="storage_migration_wrong_folder_warning">Ve vybrané složce nebyla nalezena žádná RoadCrew data. Zkuste to prosím znovu.</string>
     <string name="shared_string_statistics">Statistiky</string>
     <string name="gps_filter_speed_altitude_desc">Pouze body stopy splňující zadaný interval budou viditelné v grafu a na mapě, ostatní budou skryté.</string>
     <string name="shared_string_show_slope">Zobrazit sklon</string>
@@ -3340,7 +3340,7 @@
     <string name="default_appearance_desc">Výchozí barva, ikona a tvar se aplikuje na přidané oblíbené body ve skupině.</string>
     <string name="default_appearance">Výchozí vzhled</string>
     <string name="location_source">Zdroj polohy</string>
-    <string name="location_source_descr">OsmAnd nainstalovaný z Google Play používá %1$s jako výchozí službu pro určení polohy.
+    <string name="location_source_descr">RoadCrew nainstalovaný z Google Play používá %1$s jako výchozí službu pro určení polohy.
 \n
 \nPokud dostáváte nepřesné informace o poloze nebo používáte zařízení bez %2$s, zkuste přepnout na \"%3$s\"</string>
     <string name="stop_download">Zastavit stahování</string>
@@ -3497,8 +3497,8 @@
     <string name="weather_precip_milimeters">milimetrech</string>
     <string name="weather_wind_kilimeters_per_hour">kilometrech za hodinu</string>
     <string name="weather_pressure_mmhg">mmHg</string>
-    <string name="rendering_engine_failed">Vykreslování map v aplikaci OsmAnd se nedávno zhroutilo.</string>
-    <string name="rendering_engine_failed_descr">OsmAnd se vrátil k vykreslování map verze 1. V nastavení můžete zkusit přepnout zpět na nové vykreslovací jádro \'Verze 2 (OpenGL)\'.
+    <string name="rendering_engine_failed">Vykreslování map v aplikaci RoadCrew se nedávno zhroutilo.</string>
+    <string name="rendering_engine_failed_descr">RoadCrew se vrátil k vykreslování map verze 1. V nastavení můžete zkusit přepnout zpět na nové vykreslovací jádro \'Verze 2 (OpenGL)\'.
 \n
 \nPodpořte prosím vylepšení poskytnutím záznamu chyb.</string>
     <string name="air_pressure_widget_desc">Zobrazuje tlak vzduchu pro aktuální střed mapy.</string>
@@ -3515,7 +3515,7 @@
     <string name="restart_now">Restartovat nyní</string>
     <string name="map_rendering_engine_v1">Verze 1</string>
     <string name="map_rendering_engine_v2">Verze 2 (OpenGL)</string>
-    <string name="map_rendering_engine_descr">Verze 1 byla výchozí před vydáním OsmAnd 4.3 a je vhodnější pro starší zařízení.\n\nVerze 2 (OpenGL) je pokročilejší a přidává funkce jako 3D vykreslování.</string>
+    <string name="map_rendering_engine_descr">Verze 1 byla výchozí před vydáním RoadCrew 4.3 a je vhodnější pro starší zařízení.\n\nVerze 2 (OpenGL) je pokročilejší a přidává funkce jako 3D vykreslování.</string>
     <string name="map_rendering_engine">Vykreslovací jádro mapy</string>
     <string name="weather_wind_mph">mph</string>
     <string name="weather_wind_kmh">km/h</string>
@@ -3536,7 +3536,7 @@
     <string name="no_visible_tracks_description">Vyberte stopy k zobrazení na mapě.</string>
     <string name="no_visible_tracks">Žádné stopy na mapě</string>
     <string name="recently_visible">Nedávno viditelné %1$s</string>
-    <string name="empty_tracks_description">Pomocí aplikace OsmAnd můžete importovat, vytvářet nebo nahrávat soubory stop.</string>
+    <string name="empty_tracks_description">Pomocí aplikace RoadCrew můžete importovat, vytvářet nebo nahrávat soubory stop.</string>
     <string name="empty_tracks">Nemáte soubory stop.</string>
     <string name="shared_string_select_recent">Vybrat nedávné</string>
     <string name="change_appearance">Změnit vzhled</string>
@@ -3580,7 +3580,7 @@
     <string name="routing_attr_allow_private_for_truck_description">Povolit přístup nákladních vozidel na soukromé pozemky.</string>
     <string name="lang_sat">Santali</string>
     <string name="ant_write_to_gpx">Zápis dat do stopy</string>
-    <string name="calculate_online_altitude_descr">Vypočítejte nadmořskou výšku online na serverech OsmAnd na základě satelitních snímků a digitálních modelů nadmořské výšky. Rozdíly oproti nadmořské výšce zaznamenané zařízením lze použít jako korekci nadmořské výšky.</string>
+    <string name="calculate_online_altitude_descr">Vypočítejte nadmořskou výšku online na serverech RoadCrew na základě satelitních snímků a digitálních modelů nadmořské výšky. Rozdíly oproti nadmořské výšce zaznamenané zařízením lze použít jako korekci nadmořské výšky.</string>
     <string name="rendering_attr_hideMilitaryAreas_description">Skrýt vojenské prostory</string>
     <string name="map_widget_camera_tilt_desc">Zobrazuje úhel náklonu kamery v režimu perspektivy. Výchozí hodnota je 90° (bez náklonu).</string>
     <string name="auto_backup_title">Automatické zálohování</string>
@@ -3616,7 +3616,7 @@
     <string name="coordinates_widget_map_center_desc">Zobrazuje zeměpisné souřadnice aktuálního středu mapy</string>
     <string name="coordinates_widget_current_location_desc">Zobrazí zeměpisné souřadnice aktuální polohy</string>
     <string name="auto_25_chars_route_roundabout_kr">Použijte %1$d. výjezd a držte se vpravo</string>
-    <string name="auto_backup_preference_desc">Systém Android ve výchozím nastavení ukládá zálohy oblíbených položek, mapových tokenů a nastavení aplikace OsmAnd, aby je mohl obnovit na nových zařízeních nebo po přeinstalování. Tato záloha je omezena na 25 MB.
+    <string name="auto_backup_preference_desc">Systém Android ve výchozím nastavení ukládá zálohy oblíbených položek, mapových tokenů a nastavení aplikace RoadCrew, aby je mohl obnovit na nových zařízeních nebo po přeinstalování. Tato záloha je omezena na 25 MB.
 \nPři používání služby OsmAnd Cloud to může vést k nedorozuměním po přeinstalaci.</string>
     <string name="available_as_part_of_subscription_plan">K dispozici v rámci předplatného %1$s.</string>
     <string name="relative_bearing_widget_desc">Zobrazuje úhel mezi směrem vašeho pohybu vpřed a cílovým bodem.</string>
@@ -3664,7 +3664,7 @@
     <string name="shared_string_cross_buy">Křížový nákup</string>
     <string name="purchases_feature_desc_cross_buy">Používejte funkce předplatného na různých platformách (Android/iOS/web) bez dalších nákladů.</string>
     <string name="map_widget_altitude_desc">Zobrazení nadmořské výšky aktuální zeměpisné polohy nebo nadmořské výšky aktuálního středu mapy</string>
-    <string name="send_uuid_preference_desc">Náhodný identifikátor UUID se používá ke stahování offline map ze serverů OsmAnd za účelem sledování spravedlivého využívání zdrojů serveru, předvídání vzorců provozu a generování anonymních měsíčních mapových zpráv.</string>
+    <string name="send_uuid_preference_desc">Náhodný identifikátor UUID se používá ke stahování offline map ze serverů RoadCrew za účelem sledování spravedlivého využívání zdrojů serveru, předvídání vzorců provozu a generování anonymních měsíčních mapových zpráv.</string>
     <string name="shared_string_normal">Normální</string>
     <string name="av_notes_video_widget_desc">Klepnutím na nástroj můžete nahrávat video.</string>
     <string name="distance_to_destination_widget_desc">Widget zobrazuje zbývající vzdálenost do posledního cílového bodu.</string>
@@ -3871,13 +3871,13 @@
     <string name="ant_plus_bluetooth_off">Bluetooth je vypnuté</string>
     <string name="ant_plus_bluetooth_off_description">Zapněte vyhledání Bluetooth a spárujte senzory.</string>
     <string name="ant_plus_searching_text">Hledání senzorů</string>
-    <string name="ant_plus_searching_text_description">Zařízení držte v blízkosti snímače. Snímač je třeba aktivovat, aby jej aplikace OsmAnd našla.</string>
+    <string name="ant_plus_searching_text_description">Zařízení držte v blízkosti snímače. Snímač je třeba aktivovat, aby jej aplikace RoadCrew našla.</string>
     <string name="ant_plus_help_title">Nevím, jaký typ senzoru mám</string>
     <string name="ant_plus_searching">Hledání</string>
     <string name="ant_plus_pair_new_sensor">Spárování nového senzoru</string>
     <string name="ant_plus_open_settings">Otevřít nastavení</string>
     <string name="ant_plus_pair_new_sensor_ant_plus">Párování senzoru ANT+</string>
-    <string name="ant_plus_pair_bluetooth_prompt">Se zařízením OsmAnd můžete spárovat senzory Bluetooth LE a ANT+.</string>
+    <string name="ant_plus_pair_bluetooth_prompt">Se zařízením RoadCrew můžete spárovat senzory Bluetooth LE a ANT+.</string>
     <string name="learn_more_about_sensors_link">Další informace o senzorech.</string>
     <string name="external_device_characteristic_distance">Vzdálenost</string>
     <string name="external_device_characteristic_total_distance">Celková vzdálenost</string>
@@ -4017,7 +4017,7 @@
     <string name="live_monitoring_adress_descr">Zadejte webovou adresu pomocí syntaxe parametrů: lat={0}, lon={1}, timestamp={2}, hdop={3}, altitude={4}, speed={5}, bearing={6}, eta={7}, etfa={8}, eda={9}, edfa={10}, batproc={11}.</string>
     <string name="glide_ratio_to_target">Klouzavý poměr k cíli</string>
     <string name="map_widget_group_glide_ratio">Klouzavý poměr</string>
-    <string name="help_article_map_legend_osmand_name">OsmAnd styl mapy</string>
+    <string name="help_article_map_legend_osmand_name">RoadCrew styl mapy</string>
     <string name="help_article_map_legend_ski_map_name">Lyžařský styl mapy</string>
     <string name="help_article_map_interact_with_map_name">Interakce s mapou</string>
     <string name="help_article_map_map_context_menu_name">Kontextová nabídka mapy</string>
@@ -4089,7 +4089,7 @@
     <string name="sort_country_name_descending">Název země: Z – A</string>
     <string name="delete_map_description">Odstranit mapu %1$s?</string>
     <string name="maps_and_resources">Mapy a zdroje</string>
-    <string name="help_article_navigation_routing_osmand_routing_name">O OsmAnd navigaci</string>
+    <string name="help_article_navigation_routing_osmand_routing_name">O RoadCrew navigaci</string>
     <string name="empty_smart_folder_title">Žádná odpovídající stopa</string>
     <string name="smart_folder_name_present">Taková chytrá složka již existuje</string>
     <string name="help_article_search_search_coordinates_name">Hledat souřadnice</string>
@@ -4148,7 +4148,7 @@
     <string name="map_widget_sun_position_desc">Zobrazuje čas do východu nebo západu slunce.</string>
     <string name="key_is_already_assigned_error">Klávesa \"%1$s\" je již přiřazená k akci: \"%2$s\"</string>
     <string name="key_event_action_zoom_out">Oddálit</string>
-    <string name="enable_to_use_external_input_device">Zapněte pro možnost použití externího vstupního zařízení s OsmAnd</string>
+    <string name="enable_to_use_external_input_device">Zapněte pro možnost použití externího vstupního zařízení s RoadCrew</string>
     <string name="delete_all_items">Smazat všechny položky</string>
     <string name="shared_string_delete_immediately">Odstranit okamžitě</string>
     <string name="restore_from_trash">Obnovit z koše</string>
@@ -4174,7 +4174,7 @@
     <string name="key_event_action_open_navigation_view">Otevřít navigaci</string>
     <string name="shared_string_empty_trash">Vyprázdnit koš</string>
     <string name="cloud_trash_clear_confirmation">Natrvalo smazat všechny položky z koše?</string>
-    <string name="about_osmand">O aplikaci OsmAnd</string>
+    <string name="about_osmand">O aplikaci RoadCrew</string>
     <string name="report_an_issues">Nahlásit problém</string>
     <string name="key_event_action_move_to_my_location">Přesunout na mou polohu</string>
     <string name="remove_type_q">Odstranit typ \"%1$s\"?</string>
@@ -4194,7 +4194,7 @@
     <string name="delete_trash_item_confirmation_desc">Smazat \"%1$s\" natrvalo?</string>
     <string name="shared_string_trash">Koš</string>
     <string name="help_article_start_with_main_menu_name">Hlavní menu</string>
-    <string name="help_article_start_with_name">Začínáme s OsmAnd</string>
+    <string name="help_article_start_with_name">Začínáme s RoadCrew</string>
     <string name="help_article_start_with_first_steps_name">První kroky</string>
     <string name="most_viewed">Nejčastěji prohlížené</string>
     <string name="help_article_troubleshooting_crash_logs_name">Záznamy o pádech aplikace</string>
@@ -4205,7 +4205,7 @@
     <string name="key_event_action_emit_navigation_hint">Vydat navigační pokyn</string>
     <string name="telegram_chats">Telegram chaty</string>
     <string name="github_discussion">Diskuse na GitHubu</string>
-    <string name="free_versions_descr">Stáhnout a nainstalovat bezplatnou verzi OsmAnd</string>
+    <string name="free_versions_descr">Stáhnout a nainstalovat bezplatnou verzi RoadCrew</string>
     <string name="free_versions">Bezplatné verze</string>
     <string name="contact_us">Kontaktujte nás</string>
     <string name="lang_zh_hans">Zjednodušená čínština</string>
@@ -4295,7 +4295,7 @@
     <string name="relief_3d_download_description">Pro zobrazení terénu na mapě jsou potřeba další mapy.</string>
     <string name="shared_string_scale">Měřítko</string>
     <string name="missing_maps_ignore">Použít stažené mapy</string>
-    <string name="weather_data_sources_prompt">OsmAnd poskytuje data o počasí ze dvou zdrojů:</string>
+    <string name="weather_data_sources_prompt">RoadCrew poskytuje data o počasí ze dvou zdrojů:</string>
     <string name="weather_source_ecmwf_description">Evropské centrum pro střednědobé předpovědi počasí</string>
     <string name="weather_source_GFS_description">Globální předpovědní systém od Národních center pro environmentální předpovědi</string>
     <string name="weather_source_ecmwf_title">ECMWF</string>
@@ -4408,7 +4408,7 @@
     <string name="missing_maps_description">Některé offline mapy potřebné pro tuto trasu chybí nebo nejsou aktuální. Stáhněte si nebo aktualizujte tyto mapy.</string>
     <string name="missing_maps_header">Chybějící nebo zastaralé mapy</string>
     <string name="use_terrain_maps">Použití map terénu</string>
-    <string name="retrieve_elevation_data_summary">Aplikace OsmAnd dokáže načíst údaje o nadmořské výšce z okolních cest nebo terénních map.</string>
+    <string name="retrieve_elevation_data_summary">Aplikace RoadCrew dokáže načíst údaje o nadmořské výšce z okolních cest nebo terénních map.</string>
     <string name="apply_only_to_new">Platí jen pro nové</string>
     <string name="shared_string_changes">Změny</string>
     <string name="gpx_approximation_geo_java">Na základě geometrie (Java, rychlé)</string>
@@ -4418,7 +4418,7 @@
     <string name="top_and_bottom">Nahoře a dole</string>
     <string name="wall_color">Barva zdi</string>
     <string name="use_nearby_roads">Použít blízké cesty</string>
-    <string name="detailed_track_guidance_description">OsmAnd přizpůsobí vaši stopu blízkým silnicím pro vylepšené navádění krok za krokem.</string>
+    <string name="detailed_track_guidance_description">RoadCrew přizpůsobí vaši stopu blízkým silnicím pro vylepšené navádění krok za krokem.</string>
     <string name="play_weather_forecast">Přehrát předpověď počasí</string>
     <string name="quick_action_previous_app_profile">Na předchozí profil aplikace</string>
     <string name="quick_action_next_app_profile">Na další profil aplikace</string>
@@ -4429,7 +4429,7 @@
     <string name="visualized_by">Vizualizováno</string>
     <string name="maps_that_also_be_used">Mapy, které budou rovněž použity: %1$s</string>
     <string name="use_nearby_roads_summary">Používá offline mapu k vyhledání blízkých cest a údajů o nadmořské výšce. Může upravit geometrii trati.</string>
-    <string name="required_maps_calculate_online_summary">Seznam chybějících map je založen na přímé trase. Chcete-li získat přesný seznam map, může OsmAnd předem vypočítat trasu online.</string>
+    <string name="required_maps_calculate_online_summary">Seznam chybějících map je založen na přímé trase. Chcete-li získat přesný seznam map, může RoadCrew předem vypočítat trasu online.</string>
     <string name="gpx_approximation_java">Na základě navigace (Java)</string>
     <string name="gpx_approximation_cpp">Na základě navigace (C++)</string>
     <string name="allow_display_on_top">Povolit zobrazení nahoře</string>
@@ -4572,7 +4572,7 @@
     <string name="connect_obd_instructions_step3">Povolte v zařízení Bluetooth</string>
     <string name="connect_obd_instructions_step4">Klepněte na možnost „%1$s“ a vyberte skener ze seznamu.</string>
     <string name="shared_string_bluetooth">Bluetooth</string>
-    <string name="connect_obd_instructions_title">OsmAnd podporuje připojení Bluetooth ke snímačům OBD-II.</string>
+    <string name="connect_obd_instructions_title">RoadCrew podporuje připojení Bluetooth ke snímačům OBD-II.</string>
     <string name="learn_more_about_obd_sensors">Další informace o senzorech.</string>
     <string name="liter_per_hour">L/h</string>
     <string name="screen_is_locked_by_external_button">Dotyková obrazovka je uzamčená. Chcete-li odemknout, stiskněte tlačítko %1$s nebo klepněte na tlačítko na obrazovce.</string>
@@ -4680,7 +4680,7 @@
     <string name="ais_port_nmea_server">TCP port zdroje dat NMEA</string>
     <string name="ais_port_nmea_server_description">Definujte číslo TCP portu NMEA datového zdroje</string>
     <string name="ais_port_nmea_local">UDP port lokálního přijímače dat NMEA</string>
-    <string name="ais_port_nmea_local_description">Definovat UDP port, kde bude OsmAnd získávat data NMEA</string>
+    <string name="ais_port_nmea_local_description">Definovat UDP port, kde bude RoadCrew získávat data NMEA</string>
     <string name="ais_object_lost_timeouts">Nastavení časového limitu pro příjem signálu AIS</string>
     <string name="ais_object_lost_timeout">Časový limit pro viditelnost při ztrátě objektu</string>
     <string name="ais_object_lost_timeout_description">Nastavení času pro viditelnost objektu AIS: Pokud se v dané době neobdrží žádný signál, objekt bude automaticky odstraněn z displeje.</string>
@@ -4730,7 +4730,7 @@
     <string name="shared_string_no_animation">Žádná animace</string>
     <string name="position_animation">Animace polohy</string>
     <string name="read_on">Přečíst na %1$s</string>
-    <string name="prediction_time_description">Ikona polohy v aplikaci OsmAnd se animuje s každou aktualizací bodu dat GPS (jednou za sekundu). Může nastat mírné zpoždění, obzvláště při rychlém pohybu nebo pokud signál GPS není stabilní.</string>
+    <string name="prediction_time_description">Ikona polohy v aplikaci RoadCrew se animuje s každou aktualizací bodu dat GPS (jednou za sekundu). Může nastat mírné zpoždění, obzvláště při rychlém pohybu nebo pokud signál GPS není stabilní.</string>
     <string name="prediction_time">Čas předpovědi</string>
     <string name="position_animation_empty_banner_description">Ikona polohy se aktualizuje na každé nové přijaté místo bez animace.</string>
     <string name="routing_attr_allow_ferries_name">Povolit trajekty</string>
@@ -5187,9 +5187,9 @@
     <string name="ais_own_mmsi">Vlastní MMSI (identifikační kód námořní mobilní služby)</string>
     <string name="ais_own_mmsi_description">Identifikujte MMSI (9místnou číselnou hodnotu) vlastního objektu AIS.</string>
     <string name="ais_display_own_position">Definujte, zda se má zobrazit vlastní objekt AIS.</string>
-    <string name="ais_display_own_position_description">Obvykle OsmAnd zobrazuje vlastní polohu. Dodatečné zobrazení vlastního objektu AIS může být matoucí a lze ho zde vypnout.</string>
-    <string name="ais_receive_in_background">Přijímat data AIS, i když je OsmAnd pozastaven.</string>
-    <string name="ais_receive_in_background_description">Pokud je povoleno, přijímač zpráv AIS zůstane spuštěný, i když je OsmAnd pozastaven nebo na pozadí. Pokud je zakázáno, nebudou přijímány žádné zprávy, pokud je OsmAnd na pozadí.</string>
+    <string name="ais_display_own_position_description">Obvykle RoadCrew zobrazuje vlastní polohu. Dodatečné zobrazení vlastního objektu AIS může být matoucí a lze ho zde vypnout.</string>
+    <string name="ais_receive_in_background">Přijímat data AIS, i když je RoadCrew pozastaven.</string>
+    <string name="ais_receive_in_background_description">Pokud je povoleno, přijímač zpráv AIS zůstane spuštěný, i když je RoadCrew pozastaven nebo na pozadí. Pokud je zakázáno, nebudou přijímány žádné zprávy, pokud je RoadCrew na pozadí.</string>
     <string name="data_storage">Ukládání dat</string>
     <string name="main_storage">Hlavní úložiště</string>
     <string name="media_storage">Úložiště médií</string>

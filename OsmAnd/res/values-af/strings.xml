@@ -50,13 +50,13 @@
     <string name="map_online_plugin_is_not_installed">Skakel die internet kaarte inlasmodule aan om ander kaartbronne te kies</string>
     <string name="map_online_data">Internet kaarte (teëls)</string>
     <string name="shared_string_online_maps">Internet kaarte</string>
-    <string name="osmand_rastermaps_plugin_description">Stellings om verskeie internet of kasgeheue-teël kaarte as basis kaart of as bolê- / onderlê-kaarte op te stel. Hierdie kaarte kan ook op jou rekenaar voorberei word en na die OsmAnd leêr gestuur word.</string>
+    <string name="osmand_rastermaps_plugin_description">Stellings om verskeie internet of kasgeheue-teël kaarte as basis kaart of as bolê- / onderlê-kaarte op te stel. Hierdie kaarte kan ook op jou rekenaar voorberei word en na die RoadCrew leêr gestuur word.</string>
     <string name="osmand_accessibility_description">Wys stellings vir spesiale toegankliksheidsfunksies.</string>
     <string name="osmand_development_plugin_description">Wys stellings vir ontwikkeling en ontfoutingsfunksies bv. bewegende navigasie of beeldvertoon werkverrigting.</string>
     <string name="plugins_screen">Inlasmodule bestuurder</string>
     <string name="prefs_plugins">Inlasmodule bestuurder</string>
     <string name="play_commands_of_currently_selected_voice">Speel opdragte van die huidige gekose stem</string>
-    <string name="debugging_and_development">OsmAnd ontwikkeling</string>
+    <string name="debugging_and_development">RoadCrew ontwikkeling</string>
     <string name="test_voice_prompts">Toets stemaanwysings</string>
     <string name="gpx_visibility_txt">Sigbaarheid</string>
     <string name="gpx_tags_txt">Naamplaatjies</string>
@@ -121,7 +121,7 @@
     <string name="live_monitoring_interval">Lewendige spoor-natrek interval</string>
     <string name="live_monitoring_url">Lewendige spoor-natrek webadres</string>
     <string name="show_current_gpx_title">Wys huidige spoor</string>
-    <string name="free_version_message">Hierdie gratis OsmAnd weergawe is beperk tot %1$s aflaailêers en ondersteun nie aflyn Wikipedia artikels nie.</string>
+    <string name="free_version_message">Hierdie gratis RoadCrew weergawe is beperk tot %1$s aflaailêers en ondersteun nie aflyn Wikipedia artikels nie.</string>
     <string name="free_version_title">Gratis weergawe</string>
     <string name="poi_context_menu_showdescription">Wys POI beskrywing</string>
     <string name="index_name_north_america">Noord Amerika</string>
@@ -144,7 +144,7 @@
     <string name="user_name">Jou OSM gebruiker naam</string>
     <string name="user_password">Jou OSM wagwoord</string>
     <string name="osmand_service">Sluimertoestand Funksionaliteit</string>
-    <string name="osmand_service_descr">Gebruik om OsmAnd aan te hou terwyl skerm af is</string>
+    <string name="osmand_service_descr">Gebruik om RoadCrew aan te hou terwyl skerm af is</string>
     <string name="download_files_not_enough_space">Daar is nie genoeg spasie om %1$s MB af te laai nie(beskikbaar:%2$s).</string>
     <string name="download_files_question_space">Beskibare geheue nou {2} MB! Laai {0} lêer(s) ({1} MB) af ?</string>
     <string name="native_library_not_supported">Inheemse biblioteek word nie op hierdie toestel ondersteun nie.</string>
@@ -265,13 +265,13 @@
     <string name="version_index_is_big_for_memory">Die indeks \"{0}\" pas nie in die geheue nie</string>
     <string name="version_index_is_not_supported">Die weergawe van indeks \"{0}\'\' word nie ondersteun nie</string>
     <string name="application_dir">Bergingsadres</string>
-    <string name="osmand_net_previously_installed">\'n Vorige OsmAnd weergawe is geïnstalleer. Alle aflyn inligting sal ondersteun word deur die nuwe toepassing. Maar Gunsteling punte moet uitgevoer word van die ou toepassing en later ingevoer word deur die nuwe een.</string>
+    <string name="osmand_net_previously_installed">\'n Vorige RoadCrew weergawe is geïnstalleer. Alle aflyn inligting sal ondersteun word deur die nuwe toepassing. Maar Gunsteling punte moet uitgevoer word van die ou toepassing en later ingevoer word deur die nuwe een.</string>
     <string name="build_installed">\'Build\' {0} suksesvol geïnstalleer ({1}).</string>
     <string name="downloading_build">Besig om weergawe af te laai…</string>
-    <string name="install_selected_build">Wil jy OsmAnd - {0} van {1} {2} MB installeer ?</string>
-    <string name="loading_builds_failed">die verkryging van die lys van OsmAnd boue het misluk</string>
-    <string name="loading_builds">Laai OsmAnd boue…</string>
-    <string name="select_build_to_install">Kies een van die OsmAnd boue om te instaleer</string>
+    <string name="install_selected_build">Wil jy RoadCrew - {0} van {1} {2} MB installeer ?</string>
+    <string name="loading_builds_failed">die verkryging van die lys van RoadCrew boue het misluk</string>
+    <string name="loading_builds">Laai RoadCrew boue…</string>
+    <string name="select_build_to_install">Kies een van die RoadCrew boue om te instaleer</string>
     <string name="contribution_activity">Spesiale aktiwiteit vir bydrae weergawe</string>
     <string name="gps_status_app_not_found">GPS Status toepasing nie geïnstalleer. Soek in die mark?</string>
     <string name="daynight_mode_day">Dag</string>
@@ -316,7 +316,7 @@
     <string name="layer_map">Kaartbron…</string>
     <string name="use_trackball_descr">Gebruik die trekbal om die kaart te skuif</string>
     <string name="use_trackball">Gebruik die trekbal</string>
-    <string name="process_navigation_service">OsmAnd navigasie diens</string>
+    <string name="process_navigation_service">RoadCrew navigasie diens</string>
     <string name="int_seconds">sekondes</string>
     <string name="int_min">min.</string>
     <string name="search_poi_filter">Filter</string>
@@ -342,7 +342,7 @@
     <string name="transport_stops">haltes</string>
     <string name="transport">Vervoer</string>
     <string name="shared_string_ok">OK</string>
-    <string name="hello">navigasie toepassing OsmAnd</string>
+    <string name="hello">navigasie toepassing RoadCrew</string>
     <string name="favorite">Gunsteling</string>
     <string name="shared_string_clear_all">Vee alles uit</string>
     <string name="shared_string_history">Geskiedenis</string>
@@ -376,7 +376,7 @@
     <string name="invalid_locations">Die koördinate is ongeldig!</string>
     <string name="shared_string_close">Sluit</string>
     <string name="loading_data">Besig om inligting te laai…</string>
-    <string name="previous_run_crashed">Die vorige gebruik van OsmAnd het gefaal. Die Log lêer is by {0}. Raporteer asseblief die probleem en heg die log lêer daarby aan.</string>
+    <string name="previous_run_crashed">Die vorige gebruik van RoadCrew het gefaal. Die Log lêer is by {0}. Raporteer asseblief die probleem en heg die log lêer daarby aan.</string>
     <string name="saving_gpx_tracks">Besig om GPX spore op SD te berg…</string>
     <string name="finished_task">Klaar</string>
     <string name="data_settings">Inligting</string>
@@ -459,7 +459,7 @@
     <string name="map_widget_next_next_turn">Daaropvolgende draai</string>
     <string name="rendering_attr_roadColors_description">Kies `n pad kleurskema:</string>
     <string name="rendering_attr_roadColors_name">Pad kleurskema</string>
-    <string name="osmand_short_description_80_chars">OsmAnd is `n oopbron navigasie toepassing vir aflyn en aanlyn kaarte</string>
+    <string name="osmand_short_description_80_chars">RoadCrew is `n oopbron navigasie toepassing vir aflyn en aanlyn kaarte</string>
     <string name="day_night_info">Dag/nag inligting</string>
     <string name="map_widget_renderer">Kaartvoorstelling-styl</string>
     <string name="layer_map_appearance">Verstel skerm</string>
@@ -492,9 +492,9 @@
     <string name="avoid_motorway">Vermy snelweë</string>
     <string name="snap_to_road">Knip vas aan pad</string>
     <string name="osmand_long_description_1000_chars">
-		OsmAnd (OSM Automated Navigation Directions) is `n ope bron navigasie toepassing met toegang tot `n wye verskeidenheid wêreldwye OpenStreetMap (OSM) inligting. Alle kaart inligting (vektor of teël kaarte) kan gestoor word op die foon geheue kaart vir aflyn gebruik. OsmAnd bied ook aan- en aflyn routeberekening funksionaliteit insluitend draai-vir-draai stem begeleiding. Sommige van die kern funksies: - Volledege aflyn funksionaliteit (stoor afgelaaide vektor of teël kaarte in `n kiesbare leër) - Kompakte aflyn vektor kaarte vir die hele wëreld beskikbaar - aflaai van land of streek kaarte direk uit die toepassing - Oorlegging van verskeie kaart lae moontlik, bv GPX of navigasie spore, Belangepunte, gunstelinge, kontoerlyne, publieke vervoer haltes, ekstra kaarte met verstelbare deurskynendheid - Aflyn
+		RoadCrew (OSM Automated Navigation Directions) is `n ope bron navigasie toepassing met toegang tot `n wye verskeidenheid wêreldwye OpenStreetMap (OSM) inligting. Alle kaart inligting (vektor of teël kaarte) kan gestoor word op die foon geheue kaart vir aflyn gebruik. RoadCrew bied ook aan- en aflyn routeberekening funksionaliteit insluitend draai-vir-draai stem begeleiding. Sommige van die kern funksies: - Volledege aflyn funksionaliteit (stoor afgelaaide vektor of teël kaarte in `n kiesbare leër) - Kompakte aflyn vektor kaarte vir die hele wëreld beskikbaar - aflaai van land of streek kaarte direk uit die toepassing - Oorlegging van verskeie kaart lae moontlik, bv GPX of navigasie spore, Belangepunte, gunstelinge, kontoerlyne, publieke vervoer haltes, ekstra kaarte met verstelbare deurskynendheid - Aflyn
 	</string>
-    <string name="osmand_plus_short_description_80_chars">OsmAnd is `n oop-bron navigasie toepassing vir direkte en internet kaarte</string>
+    <string name="osmand_plus_short_description_80_chars">RoadCrew is `n oop-bron navigasie toepassing vir direkte en internet kaarte</string>
     <string name="osmand_plus_long_description_1000_chars">
 		OsmAnd+ (OSM Automated Navigation Directions) OsmAnd+ is `n ope bron navigasie toepassing met toegang tot `n wye verskeidenheid wêreldwye OpenStreetMap (OSM) inligting. Alle kaart inligting (vektor of teëlkaarte) kan op die foon geheuekaart gestoor word vir aflyn gebruik. OsmAnd bied ook aan- en aflyn roete berekening insluitend draai-vir-draai stem leiding. OsmAnd+ is betaalde toepassing weergawe, deur dit te koop ondersteun jy die projek, befonds die ontwikkeling van nuwe funksies, en ontvang die nuutste opgraderings. Sommige van die kern funksies: - volledige aflyn werking (stoor afgelaaide vektor of teëlkaarte in `n leër van jou keuse) - kompakte aflyn vektor vir die hele wereld beskikbaar - Onbeperkte aflaai van land en streek kaarte uit die toepassing - Aflyn Wikipedia funksies (Wikipedia belangepunte kan afgelaai word), goed vir besigtigingstoere - oorlegging van verskeie kaart lae moontlik, bv. GPX of navigasie spore, belangepunte, gunstelinge, kontoerlyne, publieke vervoer haltes, ekstra kaarte met verstelbare deursigtigheid - Aflyn soek vir adresse en belangepunte - Aflyn navigasie roete berekening vir kort roetes (eksperimenteel) - Kar, fiets, en voetganger gebruikerswyses met: - opsionele outomatiese dag/nag skakeling - opsionele spoed-afhankliket kaart vergroting - opsionele kaart rigting volgens kompas of koers - opsionele laan begeleiding, spoedbeperking vertoon, opgeneemde en TTS stemme "
 	</string>
@@ -549,7 +549,7 @@
     <string name="route_descr_lat_lon">Breedtegraad %1$.3f, lengtegraad %2$.3f</string>
     <string name="incomplete_locale">Onvolledig</string>
     <string name="map_widget_gps_info">GPS inligting</string>
-    <string name="osmand_play_title_30_chars">OsmAnd Kaarte &amp; Navigasie</string>
+    <string name="osmand_play_title_30_chars">RoadCrew Kaarte &amp; Navigasie</string>
     <string name="osmand_plus_play_title_30_chars">OsmAnd+ Kaarte &amp; Navigasie</string>
     <string name="download_using_mobile_internet">WiFi is nie gekoppel nie. Wil jy voortgaan om af te laai met die beskikbare internet diens?</string>
     <string name="street_name">Straat</string>
@@ -636,7 +636,7 @@
     <string name="app_mode_motorcycle">Motorfiets</string>
     <string name="app_mode_boat">Boot</string>
     <string name="app_mode_aircraft">Vliegtuig</string>
-    <string name="calculate_osmand_route_gpx">Bereken OsmAnd aflyn roete</string>
+    <string name="calculate_osmand_route_gpx">Bereken RoadCrew aflyn roete</string>
     <string name="complex_route_calculation_failed">Vinnige roete berekening onsuksesvol(%s), terug na stadige berekening.</string>
     <string name="local_osm_changes_delete_all_confirm">Jy gaan %1$d osm veranderings uitwis. Is jy seker?</string>
     <string name="shared_string_delete_all">Wis alles uit</string>

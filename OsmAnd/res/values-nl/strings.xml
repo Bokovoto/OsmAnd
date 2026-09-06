@@ -7,7 +7,7 @@
     <string name="map_widget_transparent">Transparante widgets</string>
     <string name="int_continuosly">continu</string>
     <string name="play_commands_of_currently_selected_voice">Kies een stem en test door aankondigingen af te spelen:</string>
-    <string name="debugging_and_development">OsmAnd ontwikkeling</string>
+    <string name="debugging_and_development">RoadCrew ontwikkeling</string>
     <string name="test_voice_prompts">Test stem-instructies</string>
     <string name="gpx_visibility_txt">Zichtbaarheid</string>
     <string name="gpx_tags_txt">Tags</string>
@@ -91,7 +91,7 @@
     <string name="user_name">OSM gebruikersnaam</string>
     <string name="user_password">Wachtwoord</string>
     <string name="osmand_service">Achtergrond modus</string>
-    <string name="osmand_service_descr">OsmAnd werkt op de achtergrond als het scherm uit is.</string>
+    <string name="osmand_service_descr">RoadCrew werkt op de achtergrond als het scherm uit is.</string>
     <string name="download_files_not_enough_space">Er is niet voldoende vrije ruimte %1$s MB te downloaden (vrij: %2$s).</string>
     <string name="download_files_question_space">{0} bestand(en) downloaden\? 
 \n{1} MB (van {2} MB) zal gebruikt worden.</string>
@@ -113,7 +113,7 @@
     <string name="poi_query_by_name_matches_categories">Meerdere gerelateerde POI-categorieën gevonden.</string>
     <string name="poi_filter_by_name">Zoek op naam</string>
     <string name="button_upgrade_osmandplus">Upgraden naar OsmAnd+</string>
-    <string name="map_version_changed_info">Op de server staan kaartbestanden die niet compatibel zijn met de huidige programmaversie. Je moet eerst OsmAnd updaten voordat je kaarten kan downloaden en gebruiken.</string>
+    <string name="map_version_changed_info">Op de server staan kaartbestanden die niet compatibel zijn met de huidige programmaversie. Je moet eerst RoadCrew updaten voordat je kaarten kan downloaden en gebruiken.</string>
     <string name="poi_filter_nominatim">Online (Nominatim)</string>
     <string name="context_menu_item_search">Zoek hier dichtbij</string>
     <string name="route_successfully_saved_at">Route succesvol opgeslagen als \'%1$s\'.</string>
@@ -206,13 +206,13 @@
     <string name="version_index_is_big_for_memory">De index \'\'{0}\'\' past niet in het geheugen</string>
     <string name="version_index_is_not_supported">De versie van index \'\'{0}\'\' wordt niet ondersteund</string>
     <string name="application_dir">Opslagmap</string>
-    <string name="osmand_net_previously_installed">Een oudere OsmAnd versie is al geïnstalleerd. Alle offline gegevens blijven werken in het nieuwe programma, maar Favorieten moeten worden geëxporteerd in de oude versie en dan worden geïmporteerd in de nieuwe.</string>
+    <string name="osmand_net_previously_installed">Een oudere RoadCrew versie is al geïnstalleerd. Alle offline gegevens blijven werken in het nieuwe programma, maar Favorieten moeten worden geëxporteerd in de oude versie en dan worden geïmporteerd in de nieuwe.</string>
     <string name="build_installed">Versie {0} succesvol geïnstalleerd ({1}).</string>
     <string name="downloading_build">Build wordt gedownload…</string>
-    <string name="install_selected_build">Doorgaan met de installatie van OsmAnd - {0} van {1} {2} MB\?</string>
-    <string name="loading_builds_failed">Kan de lijst met OsmAnd-builds niet ophalen</string>
-    <string name="loading_builds">OsmAnd-versies worden geladen…</string>
-    <string name="select_build_to_install">Kies de OsmAnd-build om te installeren</string>
+    <string name="install_selected_build">Doorgaan met de installatie van RoadCrew - {0} van {1} {2} MB\?</string>
+    <string name="loading_builds_failed">Kan de lijst met RoadCrew-builds niet ophalen</string>
+    <string name="loading_builds">RoadCrew-versies worden geladen…</string>
+    <string name="select_build_to_install">Kies de RoadCrew-build om te installeren</string>
     <string name="contribution_activity">Installeer versie</string>
     <string name="gps_status_app_not_found">GPS-status applicatie is niet geïnstalleerd. Zoeken op Market?</string>
     <string name="daynight_mode_day">Dag</string>
@@ -235,7 +235,7 @@
     <string name="voice">Opgenomen stem</string>
     <string name="gpx_files_not_found">Geen GPX-bestanden gevonden in de tracks-map</string>
     <string name="error_reading_gpx">Fout bij het lezen van GPX-gegevens.</string>
-    <string name="vector_data">OsmAnd Offline vectorkaart</string>
+    <string name="vector_data">RoadCrew Offline vectorkaart</string>
     <string name="poi_context_menu_modify">Wijzig POI</string>
     <string name="poi_context_menu_delete">Verwijder POI</string>
     <string name="rotate_map_compass_opt">Volgens kompas</string>
@@ -254,7 +254,7 @@
     <string name="layer_map">Basiskaart…</string>
     <string name="use_trackball_descr">Gebruik trackball om de kaart te verschuiven.</string>
     <string name="use_trackball">Gebruik trackball</string>
-    <string name="process_navigation_service">OsmAnd navigatieservice</string>
+    <string name="process_navigation_service">RoadCrew navigatieservice</string>
     <string name="int_seconds">seconden</string>
     <string name="int_min">min.</string>
     <string name="search_poi_filter">Filter</string>
@@ -279,7 +279,7 @@
     <string name="transport_Stop">Halte</string>
     <string name="transport_stops">Haltes</string>
     <string name="transport">Openbaar Vervoer</string>
-    <string name="hello">Navigatieprogamma OsmAnd</string>
+    <string name="hello">Navigatieprogamma RoadCrew</string>
     <string name="favorite">Favoriet</string>
     <string name="uploading_data">Gegevens uploaden…</string>
     <string name="uploading">Uploaden…</string>
@@ -309,7 +309,7 @@
     <string name="arrived_at_destination">De bestemming is bereikt.</string>
     <string name="invalid_locations">Coördinaten zijn ongeldig</string>
     <string name="loading_data">Gegevens worden geladen…</string>
-    <string name="previous_run_crashed">OsmAnd is de vorige keer gecrashed. Logbestand staat op {0}. Gelieve het probleem te rapporteren en het logbestand mee te sturen.</string>
+    <string name="previous_run_crashed">RoadCrew is de vorige keer gecrashed. Logbestand staat op {0}. Gelieve het probleem te rapporteren en het logbestand mee te sturen.</string>
     <string name="saving_gpx_tracks">GPX-tracks worden opgeslagen op SD…</string>
     <string name="finished_task">Gereed</string>
     <string name="data_settings">Gegevens</string>
@@ -375,14 +375,14 @@
     <string name="shared_string_online_maps">Online kaarten</string>
     <string name="osmand_rastermaps_plugin_description">Geeft toegang tot vele soorten online (zogenaamde tile of raster) kaarten, zoals ge pre-renderde OSM tegels, satellietbeelden en lagen voor speciale doeleinden zoals weerkaarten, klimaatkaarten, geologische kaarten, reliëf schaduwlagen, enz.
 \n
-\nAl deze kaarten kunnen worden getoond als de hoofd(basis)kaart, of als een bovenlaag of achtergrondlaag bij een andere basiskaart (zoals de offline vectorkaarten van OsmAnd). Om een achtergrondlaag beter te kunnen zien, kun je elementen van de OsmAnd vectorkaarten verbergen via het menu \'Kaart instellen\'.
+\nAl deze kaarten kunnen worden getoond als de hoofd(basis)kaart, of als een bovenlaag of achtergrondlaag bij een andere basiskaart (zoals de offline vectorkaarten van RoadCrew). Om een achtergrondlaag beter te kunnen zien, kun je elementen van de RoadCrew vectorkaarten verbergen via het menu \'Kaart instellen\'.
 \n
-\nRasterkaarten zijn direct via online bronnen verkrijgbaar of kunnen voor offline gebruik gereedgemaakt worden (en handmatig gekopieerd naar de OsmAnd gegevensmap) als SQLite database door diverse hulpprogramma\'s van derden.</string>
-    <string name="osmand_accessibility_description">Maakt de toegankelijkheidsopties van het toestel rechtstreeks beschikbaar in OsmAnd. Hiermee kan o.a. de spreeksnelheid van tekst-naar-spraak stemmen aangepast worden, D-pad schermnavigatie geconfigureerd worden, een trackball gebruikt worden voor de zoomregeling, of het gebruiken van meldingen via tekst-naar-spraak, bijvoorbeeld het automatisch melden van de positie.</string>
-    <string name="osmand_development_plugin_description">Biedt functionaliteit om OsmAnd te testen en te debuggen: navigatieroutes simuleren, de weergave op het scherm controleren, prestaties controleren, etc. Deze plug-in is niet vereist voor normaal gebruik van de app.</string>
+\nRasterkaarten zijn direct via online bronnen verkrijgbaar of kunnen voor offline gebruik gereedgemaakt worden (en handmatig gekopieerd naar de RoadCrew gegevensmap) als SQLite database door diverse hulpprogramma\'s van derden.</string>
+    <string name="osmand_accessibility_description">Maakt de toegankelijkheidsopties van het toestel rechtstreeks beschikbaar in RoadCrew. Hiermee kan o.a. de spreeksnelheid van tekst-naar-spraak stemmen aangepast worden, D-pad schermnavigatie geconfigureerd worden, een trackball gebruikt worden voor de zoomregeling, of het gebruiken van meldingen via tekst-naar-spraak, bijvoorbeeld het automatisch melden van de positie.</string>
+    <string name="osmand_development_plugin_description">Biedt functionaliteit om RoadCrew te testen en te debuggen: navigatieroutes simuleren, de weergave op het scherm controleren, prestaties controleren, etc. Deze plug-in is niet vereist voor normaal gebruik van de app.</string>
     <string name="plugins_screen">Plugins beheren</string>
     <string name="prefs_plugins">Plug-ins</string>
-    <string name="osm_editing_plugin_description">Draag actief bij aan OpenStreetMap, bijvoorbeeld door het aanmaken of wijzigen van OSM-POI-objecten, aanmaken of becommentariëren van OSM-opmerkingen, en door GPX-tracks te uploaden die met OsmAnd zijn opgenomen door je gebruikersnaam en wachtwoord in te voeren. OpenStreetMap.org is een gemeenschappelijk public domain project om de wereld in kaart te brengen.
+    <string name="osm_editing_plugin_description">Draag actief bij aan OpenStreetMap, bijvoorbeeld door het aanmaken of wijzigen van OSM-POI-objecten, aanmaken of becommentariëren van OSM-opmerkingen, en door GPX-tracks te uploaden die met RoadCrew zijn opgenomen door je gebruikersnaam en wachtwoord in te voeren. OpenStreetMap.org is een gemeenschappelijk public domain project om de wereld in kaart te brengen.
 \n
 \nVoor meer instructies voor het bewerken van de kaart op onze website %1$s.</string>
     <string name="north_north_west">noord-noordwest</string>
@@ -419,7 +419,7 @@
     <string name="osmand_parking_pm">\'s-middags</string>
     <string name="osmand_parking_am">\'s-ochtends</string>
     <string name="osmand_parking_position_name">Parkeerplek</string>
-    <string name="osmand_parking_plugin_description">Bewaart de locatie waar je auto geparkeerd staat en de resterende parkeertijd. \nDe parkeerlocatie en resterende parkeertijd staan op het OsmAnd dashboard en in een widget op de kaart. Er kan een alarmsignaal in de Android kalender geplaatst worden ter herinnering.</string>
+    <string name="osmand_parking_plugin_description">Bewaart de locatie waar je auto geparkeerd staat en de resterende parkeertijd. \nDe parkeerlocatie en resterende parkeertijd staan op het RoadCrew dashboard en in een widget op de kaart. Er kan een alarmsignaal in de Android kalender geplaatst worden ter herinnering.</string>
     <string name="osmand_parking_plugin_name">Parkeerlocatie</string>
     <string name="context_menu_item_add_parking_point">Markeer als parkeerlocatie</string>
     <string name="starting_point_too_far">Beginpunt te ver van de dichtstbijzijnde weg.</string>
@@ -449,10 +449,10 @@
     <string name="day_night_info">Dag/nacht info</string>
     <string name="map_widget_renderer">Kaartstijl</string>
     <string name="osmand_short_description_80_chars">Wereldwijde kaartweergave en navigatie voor offline en online OSM-kaarten</string>
-    <string name="osmand_plus_short_description_80_chars">OsmAnd is een open-source navigatiesysteem met online en offline kaarten</string>
-    <string name="osmand_long_description_1000_chars">OsmAnd (OSM Automated Navigation Directions)
+    <string name="osmand_plus_short_description_80_chars">RoadCrew is een open-source navigatiesysteem met online en offline kaarten</string>
+    <string name="osmand_long_description_1000_chars">RoadCrew (OSM Automated Navigation Directions)
 \n
-\nOsmAnd is een open-source navigatie-app die toegang geeft tot een grote variëteit aan wereldwijde OSM-gegevens. Alle kaartgegevens (vector- of rasterkaarten) kunnen in het telefoongeheugen worden opgeslagen voor offline gebruik. OsmAnd biedt ook zowel offline als online routeaanwijzingen, met stembegeleiding.
+\nRoadCrew is een open-source navigatie-app die toegang geeft tot een grote variëteit aan wereldwijde OSM-gegevens. Alle kaartgegevens (vector- of rasterkaarten) kunnen in het telefoongeheugen worden opgeslagen voor offline gebruik. RoadCrew biedt ook zowel offline als online routeaanwijzingen, met stembegeleiding.
 \n
 \n Enkele van de belangrijkste mogelijkheden:
 \n - Volledig offline gebruik (gedownloade vector- of rasterkaarten worden opgeslagen op het apparaat)
@@ -467,7 +467,7 @@
 \n - Kaartoriëntatie volgens kompas of bewegingsrichting
 \n - Rijstrookinformatie, snelheidslimiet, stembegeleiding met opgenomen- en TTS-stemmen
 \n
-\n Beperkingen van deze gratis versie van OsmAnd:
+\n Beperkingen van deze gratis versie van RoadCrew:
 \n - Beperkt aantal kaartdownloads
 \n - Geen toegang tot offline Wikipedia POI\'s
 \n
@@ -565,7 +565,7 @@
     <string name="item_unchecked">niet aangevinkt</string>
     <string name="access_arrival_time">Aankomsttijd</string>
     <string name="map_widget_gps_info">GPS-info</string>
-    <string name="osmand_play_title_30_chars">OsmAnd Kaarten &amp; Navigatie</string>
+    <string name="osmand_play_title_30_chars">RoadCrew Kaarten &amp; Navigatie</string>
     <string name="osmand_plus_play_title_30_chars">OsmAnd+ Kaarten &amp; Navigatie</string>
     <string name="hno">Huisnummer</string>
     <string name="monitoring_settings">Ritregistratie</string>
@@ -643,11 +643,11 @@
     <string name="speech_rate_descr">Stel de snelheid van tekst-naar-spraak in.</string>
     <string name="speech_rate">Snelheid van de stem</string>
     <string name="app_mode_truck">Vrachtauto</string>
-    <string name="android_19_location_disabled">Sinds Android 4.4 (KitKat) wordt de oude opslaglocatie (%s) niet meer ondersteund. Alle OsmAnd-bestanden kopiëren naar de nieuwe opslaglocatie\?
+    <string name="android_19_location_disabled">Sinds Android 4.4 (KitKat) wordt de oude opslaglocatie (%s) niet meer ondersteund. Alle RoadCrew-bestanden kopiëren naar de nieuwe opslaglocatie\?
 \n Opmerking 1: De oude bestanden blijven bestaan (maar kunnen handmatig verwijderd worden).
 \n Opmerking 2: Bij de nieuwe opslaglocatie is het niet langer mogelijk om bestanden te delen tussen OsmAnd en OsmAnd+.</string>
-    <string name="copying_osmand_files">Kopieer OsmAnd-bestanden…</string>
-    <string name="calculate_osmand_route_gpx">Bereken de route offline met OsmAnd</string>
+    <string name="copying_osmand_files">Kopieer RoadCrew-bestanden…</string>
+    <string name="calculate_osmand_route_gpx">Bereken de route offline met RoadCrew</string>
     <string name="routing_attr_prefer_motorway_name">Voorkeur voor snelwegen</string>
     <string name="routing_attr_prefer_motorway_description">Voorkeur voor snelwegen</string>
     <string name="routing_attr_avoid_toll_name">Geen tolwegen</string>
@@ -663,8 +663,8 @@
     <string name="route_descr_select_destination">Bestemming kiezen</string>
     <string name="route_info">Route-informatie</string>
     <string name="keep_and_add_destination_point">Als volgende bestemming toevoegen</string>
-    <string name="calculate_osmand_route_without_internet">Bereken een OsmAnd routesegment offline</string>
-    <string name="gpx_option_calculate_first_last_segment">Bereken een OsmAnd route voor het eerste en laatste routesegment</string>
+    <string name="calculate_osmand_route_without_internet">Bereken een RoadCrew routesegment offline</string>
+    <string name="gpx_option_calculate_first_last_segment">Bereken een RoadCrew route voor het eerste en laatste routesegment</string>
     <string name="index_item_nation_addresses">Adressen in het hele land</string>
     <string name="index_item_world_altitude_correction">Wereldwijde hoogtecorrectie</string>
     <string name="index_item_world_seamarks">Zeebakens (wereldwijd)</string>
@@ -716,11 +716,11 @@
     <string name="interrupt_music_descr">Onderbreek muziekweergave bij aankondigingen.</string>
     <string name="interrupt_music">Muziek onderbreken</string>
     <string name="share_route_as_gpx">Deel route als GPX-bestand</string>
-    <string name="share_route_subject">Route gedeeld via OsmAnd</string>
+    <string name="share_route_subject">Route gedeeld via RoadCrew</string>
     <string name="navigation_intent_invalid">Ongeldig formaat: %s</string>
     <string name="keep_informing_never">Alleen handmatig (tik op de pijl)</string>
     <string name="keep_informing">Herhaal de routeaanwijzingen</string>
-    <string name="share_fav_subject">Via OsmAnd gedeelde favorieten</string>
+    <string name="share_fav_subject">Via RoadCrew gedeelde favorieten</string>
     <string name="osmo_connect_menu">Verbinden</string>
     <string name="rendering_value_pink_name">Roze</string>
     <string name="rendering_value_brown_name">Bruin</string>
@@ -1058,7 +1058,7 @@
     <string name="lang_es_ar">Spaans (Argentinië)</string>
     <string name="lang_th">Thais</string>
     <string name="disable_recording_once_app_killed">Voorkom zelfstandige registratie</string>
-    <string name="shared_string_import2osmand">Importeren in OsmAnd</string>
+    <string name="shared_string_import2osmand">Importeren in RoadCrew</string>
     <string name="download_wikipedia_maps">Wikipedia</string>
     <string name="rendering_value_default13_name">Standaard (13)</string>
     <string name="rendering_value_defaultTranslucentCyan_name">Standaard (doorschijnend cyaan)</string>
@@ -1099,7 +1099,7 @@
     <string name="lang_gl">Galicisch</string>
     <string name="lang_et">Estisch</string>
     <string name="lang_ceb">Cebuano</string>
-    <string name="do_you_like_osmand">Vind je OsmAnd fijn\?</string>
+    <string name="do_you_like_osmand">Vind je RoadCrew fijn\?</string>
     <string name="user_hates_app_get_feedback">Vertel ons waarom.</string>
     <string name="user_hates_app_get_feedback_long">We horen graag je suggesties.</string>
     <string name="failed_to_upload">Uploaden mislukt</string>
@@ -1196,7 +1196,7 @@
     <string name="read_more">Meer lezen</string>
     <string name="whats_new">Wat is er nieuw in</string>
     <string name="rendering_attr_showProposed_name">Voorgestelde objecten</string>
-    <string name="share_osm_edits_subject">Via OsmAnd gedeelde OSM-bewerkingen</string>
+    <string name="share_osm_edits_subject">Via RoadCrew gedeelde OSM-bewerkingen</string>
     <string name="lang_nds">Nederduits</string>
     <string name="lang_mk">Macedonisch</string>
     <string name="lang_fy">Fries</string>
@@ -1255,7 +1255,7 @@
     <string name="only_download_over_wifi">Alleen downloaden via WiFi</string>
     <string name="live_update">Automatisch controleren</string>
     <string name="update_now">Nu updaten</string>
-    <string name="missing_write_external_storage_permission">OsmAnd heeft geen toestemming om de SD-kaart te gebruiken</string>
+    <string name="missing_write_external_storage_permission">RoadCrew heeft geen toestemming om de SD-kaart te gebruiken</string>
     <string name="no_location_permission">Laat toegang tot locatiegegevens toe.</string>
     <string name="no_camera_permission">Geef camera-gebruik toestemming.</string>
     <string name="no_microphone_permission">Geef microfoon-gebruik toestemming.</string>
@@ -1334,7 +1334,7 @@
     <string name="shared_string_move_up">Omhoog↑</string>
     <string name="shared_string_move_down">Omlaag↓</string>
     <string name="finish_navigation">Navigatie stoppen</string>
-    <string name="storage_permission_restart_is_required">OsmAnd heeft nu toestemming om de externe opslag te gebruiken. Een handmatige herstart is noodzakelijk.</string>
+    <string name="storage_permission_restart_is_required">RoadCrew heeft nu toestemming om de externe opslag te gebruiken. Een handmatige herstart is noodzakelijk.</string>
     <string name="full_report">Volledig Verslag</string>
     <string name="report">Verslag</string>
     <string name="file_name_containes_illegal_char">Ongeldig teken in bestandsnaam</string>
@@ -1383,7 +1383,7 @@
     <string name="confirmation_to_delete_history_items">Geselecteerde items verwijderen uit geschiedenis?</string>
     <string name="show_something_on_map">Toon %1$s op de kaart</string>
     <string name="dist_away_from_my_location">Zoek tot %1$s ver weg</string>
-    <string name="share_history_subject">gedeeld via OsmAnd</string>
+    <string name="share_history_subject">gedeeld via RoadCrew</string>
     <string name="lang_hsb">Oppersorbisch</string>
     <string name="route_stops_before">nog %1$s haltes</string>
     <string name="coords_search">Zoeken met coördinaten</string>
@@ -1403,7 +1403,7 @@
     <string name="clear_tile_data">Alle opgeslagen kaarttegels wissen</string>
     <string name="get_it">Abonnement nemen</string>
     <string name="osm_live_banner_desc">Krijg onbeperkte kaartdownloads, met extra updates per week, dag of zelfs elk uur.</string>
-    <string name="first_usage_wizard_desc">Laat OsmAnd kaarten kiezen om te downloaden aan de hand van je huidige locatie.</string>
+    <string name="first_usage_wizard_desc">Laat RoadCrew kaarten kiezen om te downloaden aan de hand van je huidige locatie.</string>
     <string name="driving_region_australia">Australië</string>
     <string name="lang_kab">Kabylisch</string>
     <string name="selected_categories">Gekozen categorieën</string>
@@ -1569,7 +1569,7 @@
     <string name="restore_purchases">Aankopen herstellen</string>
     <string name="fonts_header">Lettertypes voor de kaart</string>
     <string name="parking_options">Parkeermogelijkheden</string>
-    <string name="full_version_thanks">Dank je wel voor het aanschaffen van de betaalde versie van OsmAnd.</string>
+    <string name="full_version_thanks">Dank je wel voor het aanschaffen van de betaalde versie van RoadCrew.</string>
     <string name="routing_attr_relief_smoothness_factor_hills_name">Heuvelachtig</string>
     <string name="routing_attr_relief_smoothness_factor_plains_name">Minder heuvelachtig</string>
     <string name="routing_attr_relief_smoothness_factor_more_plains_name">Vlak</string>
@@ -1592,7 +1592,7 @@
     <string name="routing_attr_allow_private_description">Ga ook over privé-terreinen.</string>
     <string name="display_zoom_level">Zoomniveau weergave: %1$s</string>
     <string name="route_is_too_long_v2">Voor lange afstanden: voeg tussenstops toe als binnen tien minuten geen route wordt gevonden.</string>
-    <string name="osmand_extended_description_part1">OsmAnd (OSM Automated Navigation Directions) is een kaart- en navigatie-app die gebruik maakt van de gratis, wereldwijde en hoogwaardige OSM-gegevens.
+    <string name="osmand_extended_description_part1">RoadCrew (OSM Automated Navigation Directions) is een kaart- en navigatie-app die gebruik maakt van de gratis, wereldwijde en hoogwaardige OSM-gegevens.
 \n
 \n Gebruik visuele en gesproken navigatie, toon POI\'s (point of interest), maak en volg GPX-tracks, toon hoogtelijnen en topografische informatie (via plug-in), kies tussen autorijden, fietsen of wandelen, bewerk de OSM-kaart en nog veel meer.</string>
     <string name="osmand_extended_description_part2">GPS-navigatie
@@ -1617,7 +1617,7 @@
 \n • Toon extra online tegels, zoals een satellietfoto (van Bing), verschillende extra lagen zoals GPX-tracks voor navigatie e.d. met instelbare transparantie
 \n</string>
     <string name="osmand_extended_description_part4">Skiën
-\n Met de OsmAnd Ski plug-in zie je pistes met hun moeilijkheidsgraad en aanvullende informatie zoals liften en andere faciliteiten.</string>
+\n Met de RoadCrew Ski plug-in zie je pistes met hun moeilijkheidsgraad en aanvullende informatie zoals liften en andere faciliteiten.</string>
     <string name="osmand_extended_description_part5">Fietsen
 \n• Vind fietspaden op de kaart
 \n• GPS navigatie in fiets modus maakt gebruik van fietspaden
@@ -1636,7 +1636,7 @@
 \n • Upload GPX-tracks naar OSM, rechtstreeks vanuit de app
 \n • Voeg POIs toe en upload deze direct naar OSM (of later in offline-modus)
 \n</string>
-    <string name="osmand_extended_description_part8">OsmAnd is open-source en wordt actief ontwikkeld. Iedereen kan bijdragen door bugs in de app te melden, vertalingen te verbeteren of nieuwe functies te programmeren. Bovendien is het project afhankelijk van financiële bijdragen om het ontwikkelen en testen van nieuwe functies te financieren.
+    <string name="osmand_extended_description_part8">RoadCrew is open-source en wordt actief ontwikkeld. Iedereen kan bijdragen door bugs in de app te melden, vertalingen te verbeteren of nieuwe functies te programmeren. Bovendien is het project afhankelijk van financiële bijdragen om het ontwikkelen en testen van nieuwe functies te financieren.
 \n Indicatie van volledigheid en kwaliteit van de kaart: 
 \n • West-Europa: **** 
 \n • Oost-Europa: *** 
@@ -1686,7 +1686,7 @@
     <string name="mapillary_descr">Online foto\'s op straatniveau voor iedereen. Ontdek plaatsen, werk samen, leg de wereld vast.</string>
     <string name="plugin_mapillary_descr">Foto\'s op straatniveau voor iedereen. U kunt ook zelf bijdragen. Om de bestaande data als laag op de kaart te zien, zet u \"Straatniveau-foto\'s\" aan in het \"Kaart instellen\"-menu.</string>
     <string name="shared_string_permissions">Rechten</string>
-    <string name="import_gpx_failed_descr">Kan bestand niet importeren. Controleer of OsmAnd rechten heeft om het bestand te lezen.</string>
+    <string name="import_gpx_failed_descr">Kan bestand niet importeren. Controleer of RoadCrew rechten heeft om het bestand te lezen.</string>
     <string name="distance_moving">Gecorrigeerde afstand</string>
     <string name="osmand_plus_extended_description_part1">OsmAnd+ (OSM Automated Navigation Directions) is een kaart- en navigatie-app die de gratis, wereldwijde en hoogwaardige OSM-gegevens gebruikt.
 \n Gebruik gesproken en visuele navigatie, toon POI‘S (points of interest), maak en beheer GPX-tracks, toon hoogtelijnen en topografische informatie, kies tussen autorijden, fietsen en wandelen, bewerk OSM en nog veel meer.
@@ -1729,7 +1729,7 @@
 \n • Upload GPX-tracks naar OSM, rechtstreeks vanuit de app
 \n • Voeg POIs toe en upload ze direct naar OSM (of later in offline-modus)
 \n • Kan een GPX-track opnemen op de achtergrond (als het apparaat in slaapstand staat)
-\n OsmAnd is open-source en wordt actief ontwikkeld. Iedereen kan bijdragen door bugs te melden, de vertaling te verbeteren of nieuwe functies te ontwikkelen. Het project is ook afhankelijk van financiële bijdragen om ontwikkeling en tests van nieuwe functies te bekostigen.
+\n RoadCrew is open-source en wordt actief ontwikkeld. Iedereen kan bijdragen door bugs te melden, de vertaling te verbeteren of nieuwe functies te ontwikkelen. Het project is ook afhankelijk van financiële bijdragen om ontwikkeling en tests van nieuwe functies te bekostigen.
 \n</string>
     <string name="shared_string_reset">Opnieuw instellen</string>
     <string name="shared_string_reload">Opnieuw laden</string>
@@ -1791,7 +1791,7 @@
     <string name="marker_moved_to_active">Kaartmarkering actief gemaakt</string>
     <string name="passed">Laatst gebruikt: %1$s</string>
     <string name="make_active">Activeren</string>
-    <string name="measurement_tool_snap_to_road_descr">OsmAnd zal de punten verbinden met een route voor het gekozen profiel.</string>
+    <string name="measurement_tool_snap_to_road_descr">RoadCrew zal de punten verbinden met een route voor het gekozen profiel.</string>
     <string name="quick_action_resume_pause_navigation_descr">Knop om navigatie te pauzeren of hervatten.</string>
     <string name="quick_action_show_navigation_finish_dialog">Melding tonen bij einde navigatie</string>
     <string name="quick_action_start_stop_navigation_descr">Knop om de navigatie te starten of beëindigen.</string>
@@ -1872,7 +1872,7 @@
     <string name="shared_string_restart">App herstarten</string>
     <string name="maps_you_need_descr">Op basis van je bladwijzers, raden we je aan de volgende kaarten te downloaden:</string>
     <string name="maps_you_need">Kaarten die je nodig hebt</string>
-    <string name="osmand_team">OsmAnd-team</string>
+    <string name="osmand_team">RoadCrew-team</string>
     <string name="popular_destinations">Populaire bestemmingen</string>
     <string name="travel_card_update_descr">Nieuwe Wikivoyage-bestanden beschikbaar, updaten om deze te gebruiken.</string>
     <string name="travel_card_download_descr">Download Wikivoyage-reisgidsen om artikelen te lezen over plaatsen wereldwijd, zonder internetverbinding.</string>
@@ -1885,7 +1885,7 @@
     <string name="get_unlimited_access">Krijg onbeperkte toegang</string>
     <string name="welcome_to_open_beta">Welkom bij de open bèta</string>
     <string name="wikivoyage_travel_guide">Reisgidsen</string>
-    <string name="wikivoyage_travel_guide_descr">Voert je - binnen OsmAnd, zonder internetverbinding - naar de meest interessante plaatsen op aarde.</string>
+    <string name="wikivoyage_travel_guide_descr">Voert je - binnen RoadCrew, zonder internetverbinding - naar de meest interessante plaatsen op aarde.</string>
     <string name="monthly_map_updates">Maandelijkse kaartupdates</string>
     <string name="daily_map_updates">Kaartupdates: Elk uur</string>
     <string name="in_app_purchase_desc">Eenmalige betaling</string>
@@ -1965,7 +1965,7 @@
     <string name="ski_map_render_descr">Skistijl. Toont pistes, skiliften en andere ski-gerelateerde elementen. Overige kaartelementen worden verduisterd.</string>
     <string name="light_rs_render_descr">Eenvoudige kaartstijl voor autonavigatie. Rustige nachtmodus, contrasterende wegen in oranje stijl, dimt secundaire kaartelementen, topografische kenmerken zoals countourlijnen.</string>
     <string name="topo_render_descr">Voor wandelaars, trektochten en fietsen in de natuur. Buiten goed leesbaar. Contrasterende wegen en natuurlijke objecten, verschillende routetypen, geavanceerde hoogtelijn opties, extra details. Aanpassing van de oppervlakte-integriteit onderscheidt de kwaliteit van de weg. Geen nachtmodus.</string>
-    <string name="touring_view_render_descr">Stijl met hoog contrast en maximaal detail. Deze bevat alle opties van de standaardstijl van OsmAnd, met zoveel mogelijk details, specifiek wegen, paden en andere reismogelijkheden. Geen verschil tussen “wegenkaart”-wegtypes. Geschikt voor dag, nacht en outdoor gebruik.</string>
+    <string name="touring_view_render_descr">Stijl met hoog contrast en maximaal detail. Deze bevat alle opties van de standaardstijl van RoadCrew, met zoveel mogelijk details, specifiek wegen, paden en andere reismogelijkheden. Geen verschil tussen “wegenkaart”-wegtypes. Geschikt voor dag, nacht en outdoor gebruik.</string>
     <string name="default_render_descr">Stijl voor algemene doeleinden. Vereenvoudigde weergave dichtbevolkte steden. Routes, oppervlakkwaliteit, toegangsrestricties, wegnummers, weergave van paden volgens de SAC-schaal, wildwatersportelementen, topografische eigenschappen zoals contourlijnen.</string>
     <string name="read_wikipedia_offline_description">Verkrijg het OsmAnd Live-abonnement om WIkipedia- en Wikivoyage-artikelen offline te lezen.</string>
     <string name="how_to_open_link">Hoe de link openen\?</string>
@@ -2039,7 +2039,7 @@
     <string name="shared_string_restore">Herstellen</string>
     <string name="keep_passed_markers">Vorige vlaggetjes op de kaart behouden</string>
     <string name="more_transport_on_stop_hint">Meerdere verbindingen beschikbaar vanaf deze halte.</string>
-    <string name="ask_for_location_permission">Geef OsmAnd toegang tot je locatie om door te gaan.</string>
+    <string name="ask_for_location_permission">Geef RoadCrew toegang tot je locatie om door te gaan.</string>
     <string name="keep_passed_markers_descr">Markeervlaggetjes die als Favorietengroep zijn toegevoegd of GPX-routepunten die als Gepasseerd gemarkeerd zijn blijven zichtbaar op de kaart. Als de groep niet actief is, verdwijnen de markeringen van de kaart.</string>
     <string name="mapillary_menu_title_pano">Alleen 360°-foto\'s tonen</string>
     <string name="rendering_value_black_name">Zwart</string>
@@ -2062,7 +2062,7 @@
     <string name="shared_string_walk">Loop</string>
     <string name="save_poi_value_exceed_length">Verkort de lengte van \"%s\" tot minder dan 255 karakters.</string>
     <string name="save_poi_value_exceed_length_title">Lengte van waarde \"%s\"</string>
-    <string name="public_transport_warning_descr_blog">Lees meer op onze blog over hoe OsmAnd routes berekent.</string>
+    <string name="public_transport_warning_descr_blog">Lees meer op onze blog over hoe RoadCrew routes berekent.</string>
     <string name="public_transport_warning_title">OV-navigatie is op dit moment in bèta-test, houd rekening met fouten en onnauwkeurigheden.</string>
     <string name="add_intermediate">Tussenstop toevoegen</string>
     <string name="add_start_and_end_points">Vertrekpunt en bestemming toevoegen</string>
@@ -2140,7 +2140,7 @@
     <string name="intermediate_destinations">Tussenbestemmingen</string>
     <string name="arrive_at_time">Aankomst om %1$s</string>
     <string name="shared_string_launch">Open</string>
-    <string name="quick_action_switch_day_night_descr">Een schakelknop om OsmAnd om te schakelen tussen dag- en nachtmodus.</string>
+    <string name="quick_action_switch_day_night_descr">Een schakelknop om RoadCrew om te schakelen tussen dag- en nachtmodus.</string>
     <string name="routeInfo_surface_name">Oppervlakte</string>
     <string name="routeInfo_smoothness_name">Kwaliteit wegdek</string>
     <string name="routeInfo_steepness_name">Helling</string>
@@ -2159,7 +2159,7 @@
     <string name="routing_attr_avoid_tram_name">Geen trams</string>
     <string name="files_failed">Kopiëren van %1$d bestanden mislukt (%2$s).</string>
     <string name="dont_move_maps">Niet verplaatsen</string>
-    <string name="public_transport_no_route_title">Helaas, OsmAnd kan geen route vinden die geschikt is voor jouw instellingen.</string>
+    <string name="public_transport_no_route_title">Helaas, RoadCrew kan geen route vinden die geschikt is voor jouw instellingen.</string>
     <string name="shared_string_no_thank_you">Nee, dankje</string>
     <string name="shared_string_allow">Toestaan</string>
     <string name="app_mode_taxi">Taxi</string>
@@ -2190,7 +2190,7 @@
     <string name="public_transport_try_ped">Probeer de wandelroute.</string>
     <string name="public_transport_try_change_settings">Probeer de instellingen te wijzigen.</string>
     <string name="public_transport_calc_pedestrian">Looproute berekenen</string>
-    <string name="help_us_make_osmand_better">Help ons OsmAnd beter te maken</string>
+    <string name="help_us_make_osmand_better">Help ons RoadCrew beter te maken</string>
     <string name="settings_privacy_and_security">Privacy en veiligheid</string>
     <string name="settings_privacy_and_security_desc">Kies welke gegevens je deelt</string>
     <string name="nav_type_hint">Navigatietype</string>
@@ -2200,7 +2200,7 @@
     <string name="profile_alert_need_profile_name_title">Profielnaam invoeren</string>
     <string name="profile_alert_need_profile_name_msg">Geef eerst een profielnaam op.</string>
     <string name="profile_alert_duplicate_name_msg">Er bestaat al een profiel met die naam</string>
-    <string name="profile_alert_cant_delete_base">Basisprofielen van OsmAnd kunnen niet verwijderd worden</string>
+    <string name="profile_alert_cant_delete_base">Basisprofielen van RoadCrew kunnen niet verwijderd worden</string>
     <string name="profile_alert_delete_title">Profiel verwijderen</string>
     <string name="profile_alert_delete_msg">Verwijder het profiel \"%s\"</string>
     <string name="select_base_profile_dialog_title">Selecteer een profiel om mee te starten</string>
@@ -2211,7 +2211,7 @@
     <string name="base_profile_descr_public_transport">Types openbaar vervoer</string>
     <string name="base_profile_descr_boat">Boot, roeien, zeilen</string>
     <string name="base_profile_descr_aircraft">Vliegtuig, zweefvliegtuig</string>
-    <string name="process_downloading_service">OsmAnd downloadservice</string>
+    <string name="process_downloading_service">RoadCrew downloadservice</string>
     <string name="shared_string_color_magenta">Magenta</string>
     <string name="shared_string_icon">Icoon</string>
     <string name="press_again_to_change_the_map_orientation">Tik nogmaals om de kaartoriëntatie te wijzigen</string>
@@ -2252,7 +2252,7 @@
     <string name="list_of_installed_plugins">Geïnstalleerde plugins</string>
     <string name="configure_navigation">Navigatie instellen</string>
     <string name="reset_to_default">Terugzetten naar standaardwaarden</string>
-    <string name="osmand_settings">OsmAnd instellingen</string>
+    <string name="osmand_settings">RoadCrew instellingen</string>
     <string name="copy_from_other_profile">Kopieer van een ander profiel</string>
     <string name="shared_string_other">Andere</string>
     <string name="vehicle_parameters_descr">Gewicht, hoogte, lengte, snelheid</string>
@@ -2279,7 +2279,7 @@
     <string name="apply_preference_to_all_profiles">Pas deze wijziging toe op alle of alleen op het geselecteerde profiel.</string>
     <string name="routing_attr_driving_style_prefer_unpaved_name">Voorkeur voor onverharde wegen</string>
     <string name="routing_attr_driving_style_prefer_unpaved_description">Voorkeur voor onverharde boven verharde wegen voor begeleiding.</string>
-    <string name="change_data_storage_full_description">OsmAnd databestanden naar de nieuwe locatie kopiëren\?
+    <string name="change_data_storage_full_description">RoadCrew databestanden naar de nieuwe locatie kopiëren\?
 \n%1$s &gt; %2$s</string>
     <string name="enter_path_to_folder">Voer locatie naar de map in</string>
     <string name="shared_string_select_folder">Map…</string>
@@ -2339,21 +2339,21 @@
     <string name="rendering_attr_showCycleNodeNetworkRoutes_name">Toon knooppunt van de fietsroutes</string>
     <string name="rate_dialog_descr">Deel je feedback en beoordeel ons werk op Google Play.</string>
     <string name="shared_string_privacy_policy">Privacybeleid</string>
-    <string name="make_osmand_better_descr">Sta OsmAnd toe om app gebruik anoniem te verzamelen en bewerken. Er wordt geen enkele data over je positie of locatie verzameld..
+    <string name="make_osmand_better_descr">Sta RoadCrew toe om app gebruik anoniem te verzamelen en bewerken. Er wordt geen enkele data over je positie of locatie verzameld..
 \n
 \nHerconfigureer op elk moment in \'Instellingen\'→ \'Privacy en beveiliging\'.</string>
     <string name="choose_data_to_share">Kies de data soort die je wilt delen:</string>
     <string name="downloaded_maps">Gedownloade kaarten</string>
     <string name="visited_screens">Bekeken schermen</string>
     <string name="downloaded_maps_collect_descr">Help ons begrijpen welke land en regio kaarten het populairst zijn.</string>
-    <string name="visited_screens_collect_descr">Help ons begrijpen welke OsmAnd functies het populairst zijn.</string>
+    <string name="visited_screens_collect_descr">Help ons begrijpen welke RoadCrew functies het populairst zijn.</string>
     <string name="privacy_and_security_change_descr">Druk op \"Toestaan\" als je akkoord gaat met onze %1$s</string>
     <string name="app_mode_shuttle_bus">Shuttlebus</string>
     <string name="show_compass_ruler">Toon kompasliniaal</string>
     <string name="select_base_profile_dialog_message">Baseer je aangepaste profiel op één van de standaard profielen, dit bepaalt de algemene opzet zoals standaard zichtbaarheid van widgets en eenheden van snelheid en afstand. Dit zijn de standaard profielen samen met voorbeelden van aangepaste profielen die uitgebreid kunnen worden:</string>
     <string name="routing_profile_geocoding">Geocoderen</string>
     <string name="routing_profile_broutrer">BRouter (offline)</string>
-    <string name="osmand_default_routing">OsmAnd routering</string>
+    <string name="osmand_default_routing">RoadCrew routering</string>
     <string name="special_routing_type">Speciale routering</string>
     <string name="third_party_routing_type">Third-party routering</string>
     <string name="quick_action_need_to_add_item_to_list">Voeg tenminste één item toe aan de lijst via de instelling \'Sneltoetsen\'</string>
@@ -2378,7 +2378,7 @@
     <string name="routing_attr_difficulty_preference_name">Gewenste moeilijkheidsgraad</string>
     <string name="routing_attr_difficulty_preference_description">Geef voorkeur aan routes met deze moeilijkheidsgraad hoewel routering over moeilijkere of makkelijkere pistes ook mogelijk is indien korter.</string>
     <string name="routing_attr_freeride_policy_description">\'Freeride\' en \'Off-piste\' zijn officieuze routes en passages. Meestal onverzorgd en niet onderhouden, en niet \'s avonds gecontroleerd. Betreden op eigen risico.</string>
-    <string name="last_launch_crashed">Laatste OsmAnd uitvoering gecrasht. Help ons alstublieft OsmAnd te verbeteren door de foutmelding te delen.</string>
+    <string name="last_launch_crashed">Laatste RoadCrew uitvoering gecrasht. Help ons alstublieft RoadCrew te verbeteren door de foutmelding te delen.</string>
     <string name="app_mode_personal_transporter">Personen transport</string>
     <string name="app_mode_offroad">Offroad</string>
     <string name="sett_wunderlinq_ext_input">WunderLINQ</string>
@@ -2394,8 +2394,8 @@
     <string name="cancel_subscription">Abonnement beëindigen</string>
     <string name="analytics_pref_title">Analyse</string>
     <string name="wake_time">Timeout na ontwaken</string>
-    <string name="paste_Osmand_data_folder_path">Kopieer pad naar de OsmAnd data folder</string>
-    <string name="change_osmand_data_folder_question">Wijzig OsmAnd data folder\?</string>
+    <string name="paste_Osmand_data_folder_path">Kopieer pad naar de RoadCrew data folder</string>
+    <string name="change_osmand_data_folder_question">Wijzig RoadCrew data folder\?</string>
     <string name="change_data_storage_folder">Wijzig opslagmap</string>
     <string name="rendering_attr_piste_type_snow_park_name">Terrein park</string>
     <string name="rendering_attr_piste_type_sleigh_name">Slee</string>
@@ -2417,7 +2417,7 @@
     <string name="routeInfo_piste_difficulty_name">Moeilijkheidsgraad piste</string>
     <string name="rendering_attr_piste_difficulty_aerialway_name">Lift</string>
     <string name="rendering_attr_piste_difficulty_connection_name">Verbinding</string>
-    <string name="shared_string_osmand_usage">OsmAnd gebruik</string>
+    <string name="shared_string_osmand_usage">RoadCrew gebruik</string>
     <string name="shared_string_tiles">Tegels</string>
     <string name="track_storage_directory">Opslagfolder tracks</string>
     <string name="track_storage_directory_descrp">Tracks kunnen opgeslagen worden in de \'rec\' folder, of in maandelijkse of dagelijkse folders.</string>
@@ -2487,7 +2487,7 @@
     <string name="live_monitoring_descr">Laat het delen van je positie met behulp van ritregistratie toe.</string>
     <string name="live_monitoring">Online volgen</string>
     <string name="save_track_logging_accuracy">Logging nauwkeurigheid</string>
-    <string name="tracks_view_descr">De opgenomen tracks zijn opgeslagen in %1$s, of in de OsmAnd-map.</string>
+    <string name="tracks_view_descr">De opgenomen tracks zijn opgeslagen in %1$s, of in de RoadCrew-map.</string>
     <string name="multimedia_notes_view_descr">Je kan al je notities terugvinden in %1$s.</string>
     <string name="video_notes">Videonotities</string>
     <string name="photo_notes">Fotonotities</string>
@@ -2550,12 +2550,12 @@
     <string name="shared_string_nothing_selected">Niets geselecteerd</string>
     <string name="shared_string_quick_actions">Sneltoetsen</string>
     <string name="shared_string_profiles">Profielen</string>
-    <string name="listed_exist">De getoonde %1$s zijn in OsmAnd reeds beschikbaar.</string>
+    <string name="listed_exist">De getoonde %1$s zijn in RoadCrew reeds beschikbaar.</string>
     <string name="replace_all_desc">Huidige elementen worden vervangen door elementen uit het bestand</string>
     <string name="replace_all">Vervang alles</string>
     <string name="keep_both">Beide houden</string>
     <string name="keep_both_desc">Geïmporteerde elementen zullen toegevoegd worden met een voorvoegsel</string>
-    <string name="import_duplicates_description">OsmAnd heeft reeds elementen met dezelfde naam als de geïmporteerde.
+    <string name="import_duplicates_description">RoadCrew heeft reeds elementen met dezelfde naam als de geïmporteerde.
 \n
 \nKies een actie.</string>
     <string name="import_duplicates_title">Sommige elementen bestaan reeds</string>
@@ -2630,7 +2630,7 @@
     <string name="import_complete_description">Alle data uit de %1$s geïmporteerd. Gebruik de onderstaande knoppen om enig deel van de app te openen om het te beheren.</string>
     <string name="shared_string_import_complete">Importeren voltooid</string>
     <string name="items_added">Elementen toegevoegd</string>
-    <string name="checking_for_duplicate_description">OsmAnd controleert %1$s op duplicaten met bestaande items in de app.
+    <string name="checking_for_duplicate_description">RoadCrew controleert %1$s op duplicaten met bestaande items in de app.
 \n
 \nDit kan even duren.</string>
     <string name="shared_string_importing">Bezig met importeren</string>
@@ -2656,7 +2656,7 @@
     <string name="replace_point_descr">Vervang een ander punt door dit punt.</string>
     <string name="app_mode_ski_touring">Toerskiën</string>
     <string name="app_mode_ski_snowmobile">Sneeuwscooter</string>
-    <string name="custom_osmand_plugin">Aangepaste OsmAnd plug-in</string>
+    <string name="custom_osmand_plugin">Aangepaste RoadCrew plug-in</string>
     <string name="shared_string_items">Elementen</string>
     <string name="changes_applied_to_profile">Wijzigingen toegepast op het \'%1$s\'-profiel.</string>
     <string name="settings_item_read_error">Kon niet lezen van \'%1$s\'.</string>
@@ -2712,16 +2712,16 @@
     <string name="weight_limit_description">Geef het voertuiggewicht op, er zijn mogelijk routebeperkingen voor zwaar verkeer.</string>
     <string name="gpx_parse_error">Er zijn problemen gevonden met een GPX-bestand.
 \n
-\nJe kunt contact opnemen met OsmAnd support voor onderzoek.</string>
+\nJe kunt contact opnemen met RoadCrew support voor onderzoek.</string>
     <string name="shared_string_always">Altijd</string>
     <string name="screen_control">Scherminstellingen</string>
     <string name="system_screen_timeout_descr">Zet het scherm uit volgens de systeeminstelling van de schermtimeout.</string>
     <string name="system_screen_timeout">Gebruik de schermtimeout van het systeem</string>
-    <string name="turn_screen_on_descr">Kies wanneer het scherm aangezet moet worden (OsmAnd moet in de voorgrond actief zijn als het apparaat vergrendeld wordt):</string>
+    <string name="turn_screen_on_descr">Kies wanneer het scherm aangezet moet worden (RoadCrew moet in de voorgrond actief zijn als het apparaat vergrendeld wordt):</string>
     <string name="turn_screen_on_navigation_instructions_descr">Scherm aanzetten bij elke routeaanwijzing.</string>
     <string name="turn_screen_on_navigation_instructions">Routeaanwijzingen</string>
     <string name="turn_screen_on_power_button_disabled">Uitgeschakeld. De instelling ‘Timeout na wakker worden’ moet ingesteld zijn op ‘Scherm aanlaten’.</string>
-    <string name="turn_screen_on_power_button_descr">Door op de aan/uit knop te drukken gaat het scherm aan met OsmAnd op de voorgrond van het vergrendelingsscherm.</string>
+    <string name="turn_screen_on_power_button_descr">Door op de aan/uit knop te drukken gaat het scherm aan met RoadCrew op de voorgrond van het vergrendelingsscherm.</string>
     <string name="turn_screen_on_power_button">Aan/uit-knop</string>
     <string name="turn_screen_on_proximity_sensor">Nabijheidssensor</string>
     <string name="turn_screen_on_wake_time_descr">Selecteer de schermtimeout na wakker worden. (Kies “%1$s” om geen timeout te gebruiken.)</string>
@@ -2745,7 +2745,7 @@
 \n
 \nKies %1$s om meldingen en waarschuwingen te ontvangen over snelheidscamera’s.
 \n
-\nKies %2$s om alle gegevens over snelheidscamera’s te verwijderen: waarschuwingen, meldingen en POI’s worden verwijderd tot OsmAnd volledig opnieuw geïnstalleerd wordt.</string>
+\nKies %2$s om alle gegevens over snelheidscamera’s te verwijderen: waarschuwingen, meldingen en POI’s worden verwijderd tot RoadCrew volledig opnieuw geïnstalleerd wordt.</string>
     <string name="uninstall_speed_cameras">Verwijder snelheidscamera’s</string>
     <string name="shared_string_legal">Legaal</string>
     <string name="speed_camera_pois">Snelheidscamera’s als POI’s</string>
@@ -2921,7 +2921,7 @@
     <string name="add_address">Geef adres in</string>
     <string name="shared_string_file_name">Bestandsnaam</string>
     <string name="number_of_gpx_files_selected_pattern">%s trackbestanden geselecteerd</string>
-    <string name="disable_recording_once_app_killed_descrp">Trackregistratie pauzeert als de app wordt afgesloten (via recente apps). (De OsmAnd-achtergrondindicatie verdwijnt dan uit de Android-notificatiebalk.)</string>
+    <string name="disable_recording_once_app_killed_descrp">Trackregistratie pauzeert als de app wordt afgesloten (via recente apps). (De RoadCrew-achtergrondindicatie verdwijnt dan uit de Android-notificatiebalk.)</string>
     <string name="previous_segment">Vorig segment</string>
     <string name="all_previous_segments">Alle voorgaande segmenten</string>
     <string name="only_selected_segment_recalc">Alleen het geselecteerde segment wordt opnieuw berekend met het geselecteerde profiel.</string>
@@ -2987,7 +2987,7 @@
     <string name="plan_route_split_before">Hiervoor splitsen</string>
     <string name="plan_route_split_after">Hierna splitsen</string>
     <string name="plan_route_add_new_segment">Nieuw segment toevoegen</string>
-    <string name="profile_type_osmand_string">OsmAnd-profiel</string>
+    <string name="profile_type_osmand_string">RoadCrew-profiel</string>
     <string name="profile_type_user_string">Gebruikersprofiel</string>
     <string name="reverse_all_points">Volgorde van alle punten omdraaien</string>
     <string name="shared_string_last_used">Laatst gebruikt</string>
@@ -3158,7 +3158,7 @@
     <string name="update_all_maps_added">Alle kaarten bijwerken die zijn toegevoegd aan %1$s\?</string>
     <string name="shared_string_feet">voet</string>
     <string name="srtm_unit_format">Eenheid van hoogtelijnen</string>
-    <string name="srtm_download_list_help_message">OsmAnd biedt contourlijngegevens in meters en voet aan. Je zal het bestand opnieuw moeten downloaden om het formaat te wijzigen.</string>
+    <string name="srtm_download_list_help_message">RoadCrew biedt contourlijngegevens in meters en voet aan. Je zal het bestand opnieuw moeten downloaden om het formaat te wijzigen.</string>
     <string name="srtm_download_single_help_message">Selecteer a.u.b. een eenheid. Je zal het bestand opnieuw moeten downloaden om het formaat te wijzigen.</string>
     <string name="exit_number">Afritnummer</string>
     <string name="announce_when_exceeded">Waarschuwen indien overschreden</string>
@@ -3173,7 +3173,7 @@
     <string name="recorded_description">De opgenomen stem klinkt beter, maar kan alleen vooraf opgenomen zinnen uitspreken: afslaginstructies. Kan geen straatnamen of POI-namen aankondigen.</string>
     <string name="use_system_language">Gebruik de systeemtaal</string>
     <string name="shared_string_itinerary">Reisbeschrijving</string>
-    <string name="trip_recording_logging_interval_info">Het registratie-interval stelt de tijdsperiode in waarin OsmAnd de huidige positiegegevens opvraagt.</string>
+    <string name="trip_recording_logging_interval_info">Het registratie-interval stelt de tijdsperiode in waarin RoadCrew de huidige positiegegevens opvraagt.</string>
     <string name="show_start_dialog">Toon startdialoog</string>
     <string name="customize_route_line">Routelijn aanpassen</string>
     <string name="shared_string_route_line">Routelijn</string>
@@ -3209,7 +3209,7 @@
     <string name="benefits_for_contributors_primary_descr">Actieve OpenStreetMap.org bijdragers hebben misschien recht op onbeperkte uurlijkse kaartupdates.</string>
     <string name="benefits_for_contributors_secondary_descr">Log in bij OpenStreetMap om te controleren of je in aanmerking komt voor onbeperkte maandelijkse en uurlijkse kaartupdates.</string>
     <string name="available_until">Beschikbaar tot %1$s</string>
-    <string name="enough_contributions_descr">Proficiat, je hebt genoeg OpenStreetMap-bijdragen geleverd en kunt nu genieten van onbeperkte OsmAnd-kaartupdates!</string>
+    <string name="enough_contributions_descr">Proficiat, je hebt genoeg OpenStreetMap-bijdragen geleverd en kunt nu genieten van onbeperkte RoadCrew-kaartupdates!</string>
     <string name="shared_string_contributions">Bijdragen</string>
     <string name="contributions_may_calculate_with_delay">Het berekenen van bijdragen kan enkele uren duren.</string>
     <string name="map_updates_are_unavailable_yet">Kaartupdates zijn nog niet beschikbaar. :-(</string>
@@ -3313,7 +3313,7 @@
     <string name="osmand_pro_tagline">Geniet van een maximum aan functies</string>
     <string name="shared_string_details">Details</string>
     <string name="shared_app_storage_description">Het gedeeld geheugen is niet langer beschikbaar wegens veranderingen in Androids opslag gebruik.</string>
-    <string name="internal_app_storage_description">Interne opslag, verborgen voor gebruikers en andere apps, dus niemand buiten OsmAnd heeft toegang tot jouw gegevens.</string>
+    <string name="internal_app_storage_description">Interne opslag, verborgen voor gebruikers en andere apps, dus niemand buiten RoadCrew heeft toegang tot jouw gegevens.</string>
     <string name="shared_string_articles">Artikelen</string>
     <string name="purchases_feature_desc_android_auto">Brengt OsmAnd offline kaarten en navigatie op het scherm van je voertuig en integreert met de bedieningselementen van je voertuig.</string>
     <string name="included_categories">Inbegrepen categorieën</string>
@@ -3363,7 +3363,7 @@
     <string name="shortcut_navigate_to_home">Navigeer naar \'Huis\'</string>
     <string name="android_auto_map_placeholder_descr">Verbreek de verbinding van je toestel met Android Auto om de kaart terug in de app weer te geven.</string>
     <string name="continue_on_phone">Ga verder op je telefoon</string>
-    <string name="location_access_request_title">OsmAnd heeft toegang nodig tot je locatie om te kunnen navigeren.</string>
+    <string name="location_access_request_title">RoadCrew heeft toegang nodig tot je locatie om te kunnen navigeren.</string>
     <string name="location_access_request_action">Verleen toegang</string>
     <string name="safe_settings">Veilig</string>
     <string name="use_external_timestamps_description">Gebruik de tijdstempels van de online router om de geschatte tijd en gemiddelde snelheid aan te passen</string>
@@ -3380,9 +3380,9 @@
     <string name="gps_filter_smoothing">Afvlakking</string>
     <string name="save_changes_into_file">Sla de wijzigingen op in een bestand</string>
     <string name="save_as_copy">Sla op als kopie</string>
-    <string name="gps_filter_actions_description">OsmAnd past de wijziging toe op de track zonder het bestand bij te werken. Je kan de wijzigingen handmatig opslaan.</string>
+    <string name="gps_filter_actions_description">RoadCrew past de wijziging toe op de track zonder het bestand bij te werken. Je kan de wijzigingen handmatig opslaan.</string>
     <string name="shared_string_gps_filter">GPS-filter</string>
-    <string name="storage_migration_wrong_folder_warning">Geen OsmAnd gegevens in de geselecteerde map gevonden. Gelieve opnieuw te proberen.</string>
+    <string name="storage_migration_wrong_folder_warning">Geen RoadCrew gegevens in de geselecteerde map gevonden. Gelieve opnieuw te proberen.</string>
     <string name="icon_group_education">Educatie</string>
     <string name="shared_string_precision">Nauwkeurigheid</string>
     <string name="gps_filter_smoothing_desc">Stel de drempelafstand tussen de punten in.
@@ -3444,7 +3444,7 @@
     <string name="shared_string_hide_all">Verberg alles</string>
     <string name="files_remaining">Resterende bestanden: %1$s%2$s</string>
     <string name="shared_storage_first_step">Duw op \"%1$s\".
-\nDe bestandsbeheer app opent op de locatie waar je de OsmAnd map kan vinden en openen.</string>
+\nDe bestandsbeheer app opent op de locatie waar je de RoadCrew map kan vinden en openen.</string>
     <string name="shared_string_copy_to">Kopieer naar</string>
     <string name="skip_confirmation">Ja, sla over</string>
     <string name="shared_storage_second_step">Klik op \"Gebruik deze map\".</string>
@@ -3453,11 +3453,11 @@
     <string name="purchases_feature_desc_wikipedia">Biedt alle plaatsgerelateerde Wikipedia-artikelen offline, zodat u meer te weten komt over de plaatsen die u tijdens uw reis bezoekt door eenvoudig te tikken op de kaart. Vergeet niet de Wikipedia-kaartbestanden voor de specifieke regio\'s te downloaden.</string>
     <string name="routing_attr_avoid_tunnels_description">Tunnels vermijden</string>
     <string name="rendering_attr_natureReserves_name">Natuurreservaten en beschermde gebieden</string>
-    <string name="shared_storage_migration_descr">Wegens veranderingen in Androids opslagtoegang kan OsmAnd niet langer %1$s gebruiken.
+    <string name="shared_storage_migration_descr">Wegens veranderingen in Androids opslagtoegang kan RoadCrew niet langer %1$s gebruiken.
 \n
 \nKopieer all je gegevens naar de nieuwe map.</string>
     <string name="shared_storage_last_step">Je kan achteraf de gegevensmap opgeven.</string>
-    <string name="shared_storage_third_step">Verleen toelating om toegang te hebben tot de map. Zonder deze toestemming kan OsmAnd de bestanden niet kopiëren.</string>
+    <string name="shared_storage_third_step">Verleen toelating om toegang te hebben tot de map. Zonder deze toestemming kan RoadCrew de bestanden niet kopiëren.</string>
     <string name="transparent_status_bar">Doorzichtige statusbalk</string>
     <string name="backup_error_size_is_exceeded">Maximum opslag van OsmAnd Cloud overschreden %1$s</string>
     <string name="shared_string_not_included">Niet inbegrepen</string>
@@ -3469,12 +3469,12 @@
     <string name="route_line_use_map_style_width">Standaard breedte gebruiken voor kaartstijl (%1$s).</string>
     <string name="route_line_use_map_style_color">Standaard kleur gebruiken voor kaartstijl (%1$s).</string>
     <string name="select_nav_profile_dialog_message">Het \'navigatie type\' bepaalt hoe routes worden berekend door de beschikbare offline en online route-engines.</string>
-    <string name="shared_string_skip_warning">Sla de migratie over\? OsmAnd zal niet langer toegang hebben tot je bestanden in je gedeelde geheugen.
+    <string name="shared_string_skip_warning">Sla de migratie over\? RoadCrew zal niet langer toegang hebben tot je bestanden in je gedeelde geheugen.
 \n
 \nDe app zal vanaf nu de nieuwe gegevensmap gebruiken.</string>
     <string name="start_copying">Start kopiëren</string>
     <string name="shared_storage">Gedeeld geheugen</string>
-    <string name="explore_osmnad_plans_to_find_suitable">Verken de verschillende OsmAnd abonnementen om diegene te vinden die het best bij jou past.</string>
+    <string name="explore_osmnad_plans_to_find_suitable">Verken de verschillende RoadCrew abonnementen om diegene te vinden die het best bij jou past.</string>
     <string name="shared_string_view_all">Bekijk alles</string>
     <string name="shared_string_discussion">Discussie</string>
     <string name="complete_purchase">Vervolledig aankoop</string>
@@ -3620,7 +3620,7 @@
     <string name="mtb_imba_full">Internationale Mountain Bicycling Association</string>
     <string name="weather_pressure_hectopascals">Hectopascal</string>
     <string name="weather_pressure_inches_of_mercury">Inch kwik</string>
-    <string name="map_rendering_engine_descr">Versie 1 was de standaard tot OsmAnd 4.3 en is geschikt voor oudere apparaten. \n\nVersie 2 (OpenGL) is geavanceerder en biedt onder meer een 3D-weergave.</string>
+    <string name="map_rendering_engine_descr">Versie 1 was de standaard tot RoadCrew 4.3 en is geschikt voor oudere apparaten. \n\nVersie 2 (OpenGL) is geavanceerder en biedt onder meer een 3D-weergave.</string>
     <string name="map_rendering_engine">Laad methode van kaarten</string>
     <string name="show_borders_of_downloaded_maps">Grenzen tonen van gedownloade kaarten</string>
     <string name="purchases_feature_desc_external_sensors">Gegevens van externe sensors tonen en opnemen: fietssnelheid, fietskracht, ritme en hartslag.</string>
@@ -3674,7 +3674,7 @@
     <string name="goods_delivery_desc_2">Wegen gesloten voor de levering van goederen worden vermeden.</string>
     <string name="import_tracks_descr">%1$s, bevat afzonderlijke paden van %2$s. Kies paden om te importeren.</string>
     <string name="favorite_delete_group">Groep Verwijderen</string>
-    <string name="calculate_online_altitude_descr">Bereken de hoogte online op servers van OsmAnd, gebaseerd op satellietbeelden en digitale hoogtekaarten. Verschillen met hoogte berekend door dit toestel kunnen worden gebruikt als hoogte correctie.</string>
+    <string name="calculate_online_altitude_descr">Bereken de hoogte online op servers van RoadCrew, gebaseerd op satellietbeelden en digitale hoogtekaarten. Verschillen met hoogte berekend door dit toestel kunnen worden gebruikt als hoogte correctie.</string>
     <string name="transport_hazmat_no_desc">Wegen en tunnels kunnen het vervoer van gevaarlijke stoffen beperken.</string>
     <string name="routing_attr_motor_type_gas_name">CNG</string>
     <string name="import_as_one_track">Als één pad importeren</string>
@@ -3703,7 +3703,7 @@
     <string name="map_settings_weather_wind">Wind</string>
     <string name="weather_wind_kmh">km/u</string>
     <string name="temperature_widget_desc">Toont temperatuur voor huidige midden van de kaart.</string>
-    <string name="rendering_engine_failed">OsmAnd liep zojuist vast bij het laden van de kaart.</string>
+    <string name="rendering_engine_failed">RoadCrew liep zojuist vast bij het laden van de kaart.</string>
     <string name="share_crash_log">Foutenlog delen</string>
     <string name="map_widget_target_distance">Afstand van camera tot doelwit</string>
     <string name="ant_missing_dependency_descr">Kon de vereiste dienst \"%1$s\" niet vinden.
@@ -3743,7 +3743,7 @@
     <string name="weather_pressure_inhg">inHg</string>
     <string name="weather_temperature_celsius">Celsius</string>
     <string name="weather_temperature_fahrenheit">Fahrenheit</string>
-    <string name="send_uuid_preference_desc">Willekeurig UUID wordt gebruikt om kaarten van de OsmAnd servers lokaal op te slaan, om gematigd gebruik van servercapaciteit te monitoren, verkeer te voorspellen, en anonieme maandelijkse kaart rapporten te maken.</string>
+    <string name="send_uuid_preference_desc">Willekeurig UUID wordt gebruikt om kaarten van de RoadCrew servers lokaal op te slaan, om gematigd gebruik van servercapaciteit te monitoren, verkeer te voorspellen, en anonieme maandelijkse kaart rapporten te maken.</string>
     <string name="map_widget_zoom_level_desc">Toont het huidige zoomniveau van de kaart.</string>
     <string name="rendering_attr_weatherTempContours_name">Temperatuur hoogtelijnen</string>
     <string name="co2_mission">CO2 uitstoot</string>
@@ -3778,7 +3778,7 @@
     <string name="map_settings_weather_temp">Temperatuur</string>
     <string name="calculate_online">Online berekenen</string>
     <string name="rendering_attr_showFitnessTrails_description">Toon sport paden</string>
-    <string name="location_source_descr">Wanneer OsmAnd geïnstalleerd is vanaf Google Play gebruikt het %1$s om de plaats te bepalen. \n \nAls u onnauwkeurige plaatsbepaling ervaart, of als u een apparaat zonder %2$s gebruikt, probeer dan naar \"%3$s\" over te schakelen.</string>
+    <string name="location_source_descr">Wanneer RoadCrew geïnstalleerd is vanaf Google Play gebruikt het %1$s om de plaats te bepalen. \n \nAls u onnauwkeurige plaatsbepaling ervaart, of als u een apparaat zonder %2$s gebruikt, probeer dan naar \"%3$s\" over te schakelen.</string>
     <string name="auto_backup_title">Automatische back-up</string>
     <string name="shared_string_duplicate">Dupliceer</string>
     <string name="updated_map_time">Bijgewerkt: %1$s.</string>
@@ -3823,7 +3823,7 @@
     <string name="cloud_conflict">Tegenstrijdigheid</string>
     <string name="cloud_recent_changes">Aanpassingen</string>
     <string name="cloud_all_changes_uploaded">Alle aanpassingen geüpload</string>
-    <string name="cloud_all_changes_uploaded_descr">Alle aanpassingen op dit toestel zijn gesynchroniseerd met de cloud van OsmAnd.</string>
+    <string name="cloud_all_changes_uploaded_descr">Alle aanpassingen op dit toestel zijn gesynchroniseerd met de cloud van RoadCrew.</string>
     <string name="cloud_no_conflicts">Er zijn geen tegenstrijdigheden.</string>
     <string name="download_cloud_version">Cloud versie downloaden</string>
     <string name="backup_error_failed_to_fetch_remote_items">Kon de bestandslijst niet van de server ophalen.</string>
@@ -3863,7 +3863,7 @@
     <string name="weather_pressure_mmhg">mmHg</string>
     <string name="weather_pressure_millimeters_of_mercury">Millimeter kwik</string>
     <string name="weather_prefs_descr">24-uurs en 7-daagse voorspelling, iedere 3 uur bijgewerkt</string>
-    <string name="rendering_engine_failed_descr">OsmAnd viel terug op \'Versie 1\' van kaart laden. U kunt proberen terug te schakelen naar de nieuwe \'Versie 2 (OpenGL)\' laad methode in de Instellingen.
+    <string name="rendering_engine_failed_descr">RoadCrew viel terug op \'Versie 1\' van kaart laden. U kunt proberen terug te schakelen naar de nieuwe \'Versie 2 (OpenGL)\' laad methode in de Instellingen.
 \n
 \nU kunt de app-ontwikkelaars helpen door hen het foutenlog te sturen.</string>
     <string name="dismiss_changes_descr">Alle aanpassingen zullen worden genegeerd.</string>
@@ -3900,7 +3900,7 @@
     <string name="auto_25_chars_route_tl_kr">Sla linksaf en houd rechts aan</string>
     <string name="auto_25_chars_route_tl_kl">Sla linksaf en houd links aan</string>
     <string name="auto_25_chars_route_roundabout_kl">Afslag %1$d nemen en links aanhouden</string>
-    <string name="auto_backup_preference_desc">Android maakt standaard een reservekopie van favorieten, kaart tekens en OsmAnd instellingen, om het te herstellen op nieuwe toestellen of na herinstallatie. De kopie kan tot 25 MB groot zijn.
+    <string name="auto_backup_preference_desc">Android maakt standaard een reservekopie van favorieten, kaart tekens en RoadCrew instellingen, om het te herstellen op nieuwe toestellen of na herinstallatie. De kopie kan tot 25 MB groot zijn.
 \nAls u ook OsmAnd Cloud gebruikt, kan dat tot tegenstrijdheden leiden na herinstallatie.</string>
     <string name="av_notes_video_widget_desc">Door te tikken op de widget kun je een video opnemen.</string>
     <string name="true_bearing_wdiget_desc">Hoek tussen het ware noorden en het doelpunt gezien van uw locatie.</string>
@@ -4053,7 +4053,7 @@
     <string name="change_appearance">Verander het uiterlijk</string>
     <string name="switch_folder">Wisselmap</string>
     <string name="show_all_tracks">Toon alle tracks</string>
-    <string name="empty_tracks_description">U kunt met OsmAnd trackbestanden importeren, aanmaken of opnemen.</string>
+    <string name="empty_tracks_description">U kunt met RoadCrew trackbestanden importeren, aanmaken of opnemen.</string>
     <string name="shared_string_on_map">Op de kaart</string>
     <string name="shared_string_delete_file">Verwijder bestand</string>
     <string name="delete_cloud_version">Verwijder cloud versie</string>
@@ -4106,14 +4106,14 @@
     <string name="ant_plus_nothing_found_text">Kan geen sensoren vinden</string>
     <string name="ant_plus_bluetooth_off">Bluetooth is uitgeschakeld</string>
     <string name="ant_plus_bluetooth_off_description">Schakel Bluetooth in om sensoren te vinden en te koppelen.</string>
-    <string name="ant_plus_searching_text_description">Houd het apparaat dicht bij de sensor. U moet de sensor activeren zodat OsmAnd hem kan vinden.</string>
+    <string name="ant_plus_searching_text_description">Houd het apparaat dicht bij de sensor. U moet de sensor activeren zodat RoadCrew hem kan vinden.</string>
     <string name="ant_plus_help_title">Ik weet niet welk type sensor ik heb</string>
     <string name="ant_plus_searching">Bezig met zoeken</string>
     <string name="ant_plus_pair_new_sensor">Nieuwe sensor koppelen</string>
     <string name="ant_plus_open_settings">Instellingen openen</string>
     <string name="ant_plus_pair_new_sensor_ble">Bluetooth LE-sensor koppelen</string>
     <string name="ant_plus_pair_new_sensor_ant_plus">ANT+ sensor koppelen</string>
-    <string name="ant_plus_pair_bluetooth_prompt">Je kunt Bluetooth LE en ANT+ sensoren koppelen met OsmAnd.</string>
+    <string name="ant_plus_pair_bluetooth_prompt">Je kunt Bluetooth LE en ANT+ sensoren koppelen met RoadCrew.</string>
     <string name="learn_more_about_sensors_link">Lees meer over sensoren.</string>
     <string name="sort_duration_descending">Langste duur eerst</string>
     <string name="shared_string_yards">yards</string>
@@ -4331,14 +4331,14 @@
     <string name="help_article_map_tracks_name">Tracks</string>
     <string name="help_article_map_routes_name">Routes</string>
     <string name="data_source">Databron</string>
-    <string name="weather_data_sources_prompt">OsmAnd biedt weerdata uit twee bronnen:</string>
+    <string name="weather_data_sources_prompt">RoadCrew biedt weerdata uit twee bronnen:</string>
     <string name="weather_source_GFS_description">Global Forecast System van National Centers for Environmental Prediction</string>
     <string name="weather_source_GFS_title">GFS</string>
     <string name="shared_string_modify">Aanpassen</string>
     <string name="assigned_keys">Toegewezen toetsen</string>
     <string name="shared_string_automatically">Automatisch</string>
     <string name="ask_every_time">Vraag iedere keer</string>
-    <string name="detailed_track_guidance_description">OsmAnd vergelijkt je track met nabijgelegen wegen, voor een betere richtingaanwijzing.</string>
+    <string name="detailed_track_guidance_description">RoadCrew vergelijkt je track met nabijgelegen wegen, voor een betere richtingaanwijzing.</string>
     <string name="quick_action_routes_summary">Een schakel om %1$s te laten zien of verbergen op de kaart.</string>
     <string name="auto_25_chars_route_kr">Rechts aanhouden</string>
     <string name="auto_25_chars_route_tr">Rechts afslaan</string>
@@ -4359,7 +4359,7 @@
     <string name="quick_action_verb_turn_on_off">Aan-/Uitzetten</string>
     <string name="navigation_position_icon_summary">Icoon dat wordt getoond als u navigeert of beweegt.</string>
     <string name="no_assigned_keys_desc">Selecteer een actie en wijs een toets toe met de \"Toevoegen\" knop.</string>
-    <string name="required_maps_calculate_online_summary">De lijst van ontbrekende kaarten is gebaseerd op de rechte lijn voor de route. Voor een nauwkeurige lijst van kaarten kan OsmAnd je route online voorberekenen.</string>
+    <string name="required_maps_calculate_online_summary">De lijst van ontbrekende kaarten is gebaseerd op de rechte lijn voor de route. Voor een nauwkeurige lijst van kaarten kan RoadCrew je route online voorberekenen.</string>
     <string name="contact_support_retry">Probeer het opnieuw, of neem contact op met gebruikersondersteuning</string>
     <string name="no_assigned_keys">Geen toegewezen toetsen</string>
     <string name="clear_all_key_shortcuts_summary">Verwijdert alle toetstoewijzingen voor het geselecteerde type.</string>
@@ -4410,7 +4410,7 @@
     <string name="sort_subfolders">Submappen sorteren</string>
     <string name="change_default_tracks_appearance_confirmation">Veranderingen toepassen op bestaande tracks in de map of alleen op nieuwe tracks?</string>
     <string name="use_nearby_roads_summary">Gebruikt de offline kaarten om nabijgelegen wegen en hoogtegegevens te vinden. Kan de trackgeometrie aanpassen.</string>
-    <string name="retrieve_elevation_data_summary">OsmAnd kan hoogtegegevens ophalen van nabijgelegen wegen of terreinkaarten.</string>
+    <string name="retrieve_elevation_data_summary">RoadCrew kan hoogtegegevens ophalen van nabijgelegen wegen of terreinkaarten.</string>
     <string name="auto_zoom_discrete">Discreet</string>
     <string name="shared_string_limit">Limiet</string>
     <string name="gpx_approximation_cpp">Routegebaseerd (C++)</string>
@@ -4539,7 +4539,7 @@
     <string name="help_article_navigation_routing_direct_to_point_routing_name">Recht-naar-puntroutes (boot)</string>
     <string name="help_article_navigation_routing_horse_routing_name">Paardrijroutes</string>
     <string name="help_article_navigation_routing_online_routing_name">Online routezoeken</string>
-    <string name="help_article_navigation_routing_osmand_routing_name">Over OsmAnd routes</string>
+    <string name="help_article_navigation_routing_osmand_routing_name">Over RoadCrew routes</string>
     <string name="help_article_personal_import_export_name">Importeren / Exporteren</string>
     <string name="help_article_navigation_routing_public_transport_navigation_name">Routes voor openbaar vervoer</string>
     <string name="help_article_navigation_routing_straight_line_routing_name">Rechtelijnroutes (Vliegtuig)</string>
@@ -4550,7 +4550,7 @@
     <string name="clear_all_key_shortcuts">Alle sneltoetsen wissen</string>
     <string name="battery_optimization">Batterijoptimalisering</string>
     <string name="help_article_map_interact_with_map_name">De kaart bedienen</string>
-    <string name="about_osmand">Over OsmAnd</string>
+    <string name="about_osmand">Over RoadCrew</string>
     <string name="map_2d_mode_action">2D-modus</string>
     <string name="any_connected">Alle verbonden</string>
     <string name="app_mode_paragliding">Paragliden</string>
@@ -4566,7 +4566,7 @@
     <string name="show_toast_about_key_pressed">Laat bericht over ingedrukte toets zien</string>
     <string name="key_event_action_open_wunderlinq_datagrid">Open WunderLINQ-dataraster</string>
     <string name="key_event_action_zoom_in">Inzoomen</string>
-    <string name="enable_to_use_external_input_device">Schakel in om een extern invoerapparaat te gebruiken voor OsmAnd</string>
+    <string name="enable_to_use_external_input_device">Schakel in om een extern invoerapparaat te gebruiken voor RoadCrew</string>
     <string name="external_input_device_title">Extern invoerapparaat</string>
     <string name="not_specified">Niet aangegeven</string>
     <string name="discard_filter_changes">Filterveranderingen annuleren</string>
@@ -4580,13 +4580,13 @@
     <string name="delete_map_description">Kaart %1$s verwijderen?</string>
     <string name="sensor_temperature_desc">Toont temperatuur volgens sensor</string>
     <string name="help_article_map_legend_ski_map_name">Skikaartstijl</string>
-    <string name="help_article_map_legend_osmand_name">OsmAnd-kaartstijl</string>
+    <string name="help_article_map_legend_osmand_name">RoadCrew-kaartstijl</string>
     <string name="help_article_map_legend_nautical_map_name">Zeekaartstijl</string>
     <string name="help_article_map_map_context_menu_name">Contextmenu van de kaart</string>
     <string name="help_article_map_point_layers_on_map_name">Punten op de kaart</string>
     <string name="help_article_map_track_context_menu_name">Contextmenu van tracks</string>
     <string name="help_article_navigation_guidance_voice_navigation_name">Stemaanwijzingen / Notificaties</string>
-    <string name="help_article_start_with_name">Beginnen met OsmAnd</string>
+    <string name="help_article_start_with_name">Beginnen met RoadCrew</string>
     <string name="help_article_troubleshooting_general_name">Algemeen</string>
     <string name="help_article_purchases_ios_name">iOS-aankopen</string>
     <string name="help_article_search_search_all_name">Alles doorzoeken</string>
@@ -4697,7 +4697,7 @@
     <string name="help_article_navigation_setup_markers_navigation_name">Navigeer met markeringen</string>
     <string name="help_article_navigation_setup_gpx_navigation_name">Navigeer per track</string>
     <string name="help_article_search_search_poi_name">Zoek interessepunt (POI)</string>
-    <string name="free_versions_descr">Download en installeer gratis OsmAnd-versie</string>
+    <string name="free_versions_descr">Download en installeer gratis RoadCrew-versie</string>
     <string name="telegram_chats_descr">Doe mee aan een van onze lokale Telegram-groepen.</string>
     <string name="help_article_troubleshooting_crash_logs_name">Crashlogboeken</string>
     <string name="help_article_purchases_giveaway_name">Weggevertje</string>
@@ -4805,7 +4805,7 @@
     <string name="unit_of_temperature_description">De geselecteerde eenheid wordt toegepast op alle temperatuur gerelateerde data in het huidige profiel.</string>
     <string name="msg_favorites_skipped_as_existing">De favoriete punten (%1$d) werden overgeslagen, omdat deze al bestonden.</string>
     <string name="multipoligon_related">Gerelateerd</string>
-    <string name="prediction_time_description">Het positie-icoon in OsmAnd wordt geanimeerd bij elke GPS-update (één keer per seconde). Er kan een lichte vertraging optreden, vooral bij snelle beweging of wanneer het GPS-signaal instabiel is.</string>
+    <string name="prediction_time_description">Het positie-icoon in RoadCrew wordt geanimeerd bij elke GPS-update (één keer per seconde). Er kan een lichte vertraging optreden, vooral bij snelle beweging of wanneer het GPS-signaal instabiel is.</string>
     <string name="prediction_time_advanced_description">Pas de voorspellingstijd aan om de vertraging te minimaliseren.</string>
     <string name="prediction_time">Voorspellingstijd</string>
     <string name="shared_string_no_animation">Geen animatie</string>
@@ -4845,7 +4845,7 @@
     <string name="ais_port_nmea_server">TCP-poort van NMEA-databron</string>
     <string name="ais_port_nmea_server_description">Definieer TCP-poortnummer van NMEA databron</string>
     <string name="ais_port_nmea_local">UDP-poort van lokale NMEA-dataontvanger</string>
-    <string name="ais_port_nmea_local_description">Definieer UDP-poort waar OsmAnd data ontvangt</string>
+    <string name="ais_port_nmea_local_description">Definieer UDP-poort waar RoadCrew data ontvangt</string>
     <string name="ais_object_lost_timeouts">Onderbrekingsinstellingen voor AIS-signaalontvangst</string>
     <string name="ais_object_lost_timeout">Tijdslimiet voor zichtbaarheid nadat het schip is verdwenen</string>
     <string name="ais_object_lost_timeout_description">Stel een time-out in voor de zichtbaarheid van het AIS-object: als er binnen de opgegeven tijd geen signaal wordt ontvangen, wordt het object automatisch van het scherm verwijderd.</string>
@@ -4940,7 +4940,7 @@
     <string name="obd_device_forget_sensor_description">De scanner wordt verwijderd van de lijst. Je kunt altijd opnieuw koppelen met deze scanner.</string>
     <string name="shared_string_bluetooth">Bluetooth</string>
     <string name="obd_vehicle_info">Voertuiginformatie</string>
-    <string name="connect_obd_instructions_title">OsmAnd ondersteunt Bluetooth-verbindingen met OBD-II-scanners.</string>
+    <string name="connect_obd_instructions_title">RoadCrew ondersteunt Bluetooth-verbindingen met OBD-II-scanners.</string>
     <string name="obd_how_to_connect">Hoe te verbinden:</string>
     <string name="connect_obd_instructions_step1">Verbind de scanner met de OBD-II-poort van je voertuig.</string>
     <string name="connect_obd_instructions_step2">Laat de motor van je voertuig draaien</string>
@@ -5150,7 +5150,7 @@
     <string name="rendering_attr_hideFerries_description">Verberg veerbootverbindingen</string>
     <string name="rendering_attr_tidalFlatStyle_name">Getijdenvlakte-stijl</string>
     <string name="rendering_attr_tidalFlatStyle_description">Stijl van de getijdenvlakten</string>
-    <string name="tracker_item">OsmAnd tracker</string>
+    <string name="tracker_item">RoadCrew tracker</string>
     <string name="average_elevation">Gemiddelde hoogte</string>
     <string name="rendering_attr_fairwayStyle_name">Fairwaykleur</string>
     <string name="rendering_attr_shellsStyle_name">Schelpenstijl</string>
@@ -5508,9 +5508,9 @@
     <string name="ais_own_mmsi">Eigen MMSI (Maritieme Mobile Service Identiteit-nummer)</string>
     <string name="ais_own_mmsi_description">Geef de MMSI (9-cijferige numerieke waarde) van het eigen AIS-object op.</string>
     <string name="ais_display_own_position">Geef aan of het eigen AIS-object moet worden weergegeven.</string>
-    <string name="ais_display_own_position_description">Normaal wordt de eigen positie weergegeven door OsmAnd. De aanvullende weergave van het eigen AIS-object kan verwarrend zijn en kan hier worden uitgeschakeld.</string>
-    <string name="ais_receive_in_background">Ontvang AIS-gegevens, ook als OsmAnd is gepauzeerd.</string>
-    <string name="ais_receive_in_background_description">Als deze optie is ingeschakeld, blijft de AIS-ontvangstfunctie actief wanneer OsmAnd is gepauzeerd of op de achtergrond draait.</string>
+    <string name="ais_display_own_position_description">Normaal wordt de eigen positie weergegeven door RoadCrew. De aanvullende weergave van het eigen AIS-object kan verwarrend zijn en kan hier worden uitgeschakeld.</string>
+    <string name="ais_receive_in_background">Ontvang AIS-gegevens, ook als RoadCrew is gepauzeerd.</string>
+    <string name="ais_receive_in_background_description">Als deze optie is ingeschakeld, blijft de AIS-ontvangstfunctie actief wanneer RoadCrew is gepauzeerd of op de achtergrond draait.</string>
     <string name="data_storage">Dataopslag</string>
     <string name="main_storage">Hoofdopslag</string>
     <string name="media_storage">Mediaopslag</string>
