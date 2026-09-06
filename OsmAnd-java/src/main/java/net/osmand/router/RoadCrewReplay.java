@@ -57,8 +57,46 @@ public final class RoadCrewReplay {
 	public static final class Result {
 		public final RoadCrewDiagnostics diagnostics = new RoadCrewDiagnostics();
 		public final List<RoadCrewDirectObservation> directed = new ArrayList<>();
+		/**
+		 * Every passage the accumulator emitted, in order.
+		 *
+		 * Kept because the fault of section 183 lived AFTER a passage was
+		 * complete: the passage was right, and it was thrown away on the way to
+		 * becoming an observation. So an experiment that shows only a difference
+		 * in observations has not isolated it. If the segmentation changed too,
+		 * something other than that fix is also at work, and the comparison
+		 * proves nothing about either.
+		 */
+		public final List<RoadCrewDirectPassageAccumulator.Passage> passages = new ArrayList<>();
 		public int legacyObservations;
 		public int fixesReplayed;
+
+		/**
+		 * The passages as text, in a form two builds can be compared line by
+		 * line. Deliberately excludes anything derived after the passage closed:
+		 * this is what the accumulator decided, and nothing downstream of it.
+		 */
+		public List<String> passageFingerprint() {
+			List<String> lines = new ArrayList<>();
+			for (RoadCrewDirectPassageAccumulator.Passage passage : passages) {
+				StringBuilder line = new StringBuilder();
+				line.append(passage.wayId).append(' ').append(passage.forward ? 'F' : 'R')
+						.append(" fixes=").append(passage.firstFixSequence)
+						.append('-').append(passage.lastFixSequence)
+						.append(" count=").append(passage.fixCount)
+						.append(" duration=").append(passage.endTimeMillis - passage.startTimeMillis)
+						.append(" progress=").append(Math.round(passage.progressMeters * 100))
+						.append(" maxDist=").append(Math.round(passage.maximumDistanceMeters * 100))
+						.append(" maxHead=").append(Math.round(passage.maximumHeadingDifferenceDegrees * 100))
+						.append(" spans=");
+				for (RoadCrewDirectPassageAccumulator.Span span : passage.spans) {
+					line.append('[').append(Math.round(span.fromMeasureMeters * 100)).append(',')
+							.append(Math.round(span.toMeasureMeters * 100)).append(']');
+				}
+				lines.add(line.toString());
+			}
+			return lines;
+		}
 
 		/** What the report calls pipeline recall, computed the same way. */
 		public double directedRecall() {
@@ -122,7 +160,7 @@ public final class RoadCrewReplay {
 				(evidence, at, road, binding, firstFix, lastFix) -> result.legacyObservations++);
 		pipeline.startSession("00000000-0000-4000-8000-000000000000");
 		pipeline.enableDirectPipeline(
-				RoadCrewDirectPassageAccumulator.Config.DEFAULT_V1, passage -> { });
+				RoadCrewDirectPassageAccumulator.Config.DEFAULT_V1, result.passages::add);
 		pipeline.setDirectObservationSink(result.directed::addAll);
 		pipeline.setDirectDiagnostics(result.diagnostics);
 		pipeline.setDirectMapVersion("replay");

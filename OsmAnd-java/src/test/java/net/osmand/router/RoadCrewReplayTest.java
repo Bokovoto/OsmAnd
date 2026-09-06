@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
 
 /**
@@ -23,6 +25,17 @@ import java.util.List;
  * none of that depends on the change being tested. A difference of one is worth
  * investigating, not rounding away: it would mean something upstream is not
  * deterministic, and every comparison afterwards would rest on it.
+ *
+ * And the same is true one step further on. The fault of section 183 lived
+ * AFTER a passage was complete: the accumulator's decision was correct and the
+ * passage was discarded on the way to becoming an observation. So the two builds
+ * must also agree on every PASSAGE - the same way, direction, fix range, count,
+ * duration, progress and spans - and differ only in how many observations
+ * survived. If the segmentation moves as well, something besides that fix is at
+ * work and the experiment has isolated nothing.
+ *
+ *   ROADCREW_REPLAY_PASSAGES_OUT=...	est86-passages.txt      (record a baseline)
+ *   ROADCREW_REPLAY_PASSAGES_EXPECT=...	est86-passages.txt   (compare against it)
  */
 public class RoadCrewReplayTest {
 
@@ -42,6 +55,12 @@ public class RoadCrewReplayTest {
 			RoadCrewReplay.Result result = RoadCrewReplay.run(fixes,
 					new BinaryMapIndexReader[]{new BinaryMapIndexReader(file, map)},
 					900, 350, 60_000, 8_000);
+
+			List<String> fingerprint = result.passageFingerprint();
+			String out = System.getenv("ROADCREW_REPLAY_PASSAGES_OUT");
+			if (out != null && !out.isEmpty()) {
+				Files.write(new File(out).toPath(), fingerprint, StandardCharsets.UTF_8);
+			}
 
 			int matched = result.diagnostics.counter("matched_fixes");
 			int seen = result.diagnostics.counter("fixes_seen");
@@ -65,6 +84,17 @@ public class RoadCrewReplayTest {
 				System.out.println("  " + pad(name) + result.diagnostics.counter(name));
 			}
 			System.out.println("------------------------------------------------------------");
+
+			String expect = System.getenv("ROADCREW_REPLAY_PASSAGES_EXPECT");
+			if (expect != null && !expect.isEmpty()) {
+				List<String> baseline = Files.readAllLines(new File(expect).toPath(),
+						StandardCharsets.UTF_8);
+				// Line by line, so a report names WHICH passage moved rather than
+				// only that the counts differ. Two builds that segment the drive
+				// differently are not a controlled experiment about anything.
+				Assert.assertEquals("the two builds must segment the drive identically",
+						baseline, fingerprint);
+			}
 
 			// The invariant the fix of section 183 is about: nothing the
 			// accumulator emits may vanish on the way to an observation.
