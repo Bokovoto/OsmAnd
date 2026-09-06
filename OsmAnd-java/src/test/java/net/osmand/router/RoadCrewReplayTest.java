@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -157,6 +158,108 @@ public class RoadCrewReplayTest {
 		System.out.println();
 		System.out.println("Trace off against on: " + off.passageFingerprint().size()
 				+ " passages identical, " + on.fixTrace.size() + " decisions recorded");
+	}
+
+	/**
+	 * Step 5 of the agreed order: which matched fixes the pipeline did not cover,
+	 * and what the accumulator decided at each of them (ROADMAP sections 199-200).
+	 *
+	 * Everything here is computed the way the server report computes it - the
+	 * matcher baseline minus what the passages covered - so that the replay's
+	 * answer can be checked against the frozen set before a single fix is
+	 * classified. If the two disagree, the replay is describing a different drive
+	 * and nothing it says about the eleven is worth reading.
+	 *
+	 * Deliberately test-only. Nothing in the shipped classes changes for it, so
+	 * the immutability gate of section 203 still holds without being re-run.
+	 */
+	@Test
+	public void whichMatchedFixesThePipelineDidNotCover() throws Exception {
+		String recordingPath = System.getenv("ROADCREW_REPLAY_RECORDING");
+		String mapPath = System.getenv("ROADCREW_TEST_OBF");
+		String out = System.getenv("ROADCREW_UNCOVERED_OUT");
+		File recording = recordingPath == null ? null : new File(recordingPath);
+		File map = mapPath == null ? null : new File(mapPath);
+		Assume.assumeTrue("Set ROADCREW_REPLAY_RECORDING, ROADCREW_TEST_OBF and"
+						+ " ROADCREW_UNCOVERED_OUT",
+				recording != null && recording.isFile() && map != null && map.isFile()
+						&& out != null && !out.isEmpty());
+
+		List<RoadCrewReplay.RecordedFix> fixes = RoadCrewReplay.read(recording);
+		RoadCrewReplay.Result result;
+		try (RandomAccessFile file = new RandomAccessFile(map, "r")) {
+			result = RoadCrewReplay.run(fixes,
+					new BinaryMapIndexReader[]{new BinaryMapIndexReader(file, map)},
+					900, 350, 60_000, 8_000, true);
+		}
+
+		// The baseline, read out of the diagnostics JSON rather than through a
+		// new accessor: no shipped class needs to change for a diagnostic.
+		boolean[] matched = new boolean[fixes.size() + 2];
+		// Scanned rather than matched with a regular expression. Three separate
+		// escaping layers mangled the pattern today; a diagnostic is not worth
+		// fighting them for. The format is "baseline":[[from,to,way,forward],...].
+		String json = result.diagnostics.toJson();
+		int baselineAt = json.indexOf("\"baseline\":[");
+		if (baselineAt >= 0) {
+			int closes = json.indexOf("]]", baselineAt);
+			String body = closes < 0 ? ""
+					: json.substring(json.indexOf('[', baselineAt + 11) + 1, closes + 1);
+			for (String run : body.replace("],[", ";").split(";")) {
+				String[] parts = run.replace("[", "").replace("]", "").split(",");
+				if (parts.length < 2) {
+					continue;
+				}
+				int from = Integer.parseInt(parts[0].trim());
+				int to = Integer.parseInt(parts[1].trim());
+				for (int one = from; one <= to && one < matched.length; one++) {
+					matched[one] = true;
+				}
+			}
+		}
+		boolean[] covered = new boolean[matched.length];
+		for (RoadCrewDirectPassageAccumulator.Passage passage : result.passages) {
+			for (long at = passage.firstFixSequence;
+					at <= passage.lastFixSequence && at < covered.length; at++) {
+				covered[(int) at] = true;
+			}
+		}
+
+		List<Integer> uncovered = new ArrayList<>();
+		for (int at = 1; at < matched.length; at++) {
+			if (matched[at] && !covered[at]) {
+				uncovered.add(at);
+			}
+		}
+
+		List<String> lines = new ArrayList<>();
+		lines.add("recording " + recording.getName());
+		lines.add("fixes " + fixes.size()
+				+ "  matched " + result.diagnostics.counter("matched_fixes")
+				+ "  passages " + result.passages.size()
+				+ "  observations " + result.directed.size());
+		lines.add("uncovered matched fixes: " + uncovered.size() + " " + uncovered);
+		lines.add("");
+		for (int fix : uncovered) {
+			lines.add("--- fix " + fix + " ---");
+			// Everything the accumulator recorded within five fixes either side,
+			// which is what the categories of section 200 are decided from.
+			for (String note : result.fixTrace) {
+				int space = note.indexOf(' ');
+				int at = Integer.parseInt(note.substring(0, space));
+				if (Math.abs(at - fix) <= 5) {
+					lines.add((at == fix ? "  >> " : "     ") + note);
+				}
+			}
+			lines.add("");
+		}
+		lines.add("=== every decision recorded ===");
+		lines.addAll(result.fixTrace);
+		Files.write(new File(out).toPath(), lines, StandardCharsets.UTF_8);
+
+		System.out.println();
+		System.out.println("Uncovered matched fixes: " + uncovered.size() + " " + uncovered);
+		System.out.println("Decisions recorded: " + result.fixTrace.size());
 	}
 
 	private static String pad(String name) {
