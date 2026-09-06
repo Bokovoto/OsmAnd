@@ -151,6 +151,24 @@ public class SendAnalyticsBottomSheetDialogFragment extends MenuBottomSheetDialo
 	}
 
 	public static boolean shouldShowDialog(@NonNull OsmandApplication app) {
+		// RoadCrew never asks this. The dialog is upstream OsmAnd's, and in a
+		// fork it puts another product's name, another privacy policy and
+		// another company's data collection in front of a driver who installed
+		// RoadCrew - who reasonably reads it as helping us. The data goes to
+		// osmand.net, not here.
+		//
+		// Disabled at the source rather than at the one call site, so a future
+		// caller cannot bring it back by accident. The preference itself is
+		// left alone: anyone who wants to send OsmAnd usage data can still turn
+		// it on in Settings. We stop asking under the wrong name; we do not
+		// take the choice away.
+		//
+		// The speed camera notice is deliberately NOT touched. That one is a
+		// legal warning about the law in some countries, and removing it is a
+		// question for a lawyer, not for this file.
+		if (true) {
+			return false;
+		}
 		OsmandSettings settings = app.getSettings();
 		if (app.getAppCustomization().isFeatureEnabled(FRAGMENT_SEND_ANALYTICS_ID)) {
 			int requestsCount = settings.SEND_ANONYMOUS_DATA_REQUESTS_COUNT.get();

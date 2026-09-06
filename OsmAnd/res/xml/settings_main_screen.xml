@@ -14,6 +14,7 @@
 		tools:icon="@drawable/ic_action_settings" />
 
 	<Preference
+		android:key="divider_before_cloud"
 		android:layout="@layout/divider_half_item_with_background"
 		android:selectable="false" />
 
@@ -26,6 +27,7 @@
 		tools:summary="@string/last_backup" />
 
 	<Preference
+		android:key="divider_before_purchases"
 		android:layout="@layout/divider_half_item_with_background"
 		android:selectable="false" />
 

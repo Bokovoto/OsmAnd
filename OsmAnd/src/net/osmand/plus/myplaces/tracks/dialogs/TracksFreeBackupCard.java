@@ -117,6 +117,13 @@ public class TracksFreeBackupCard extends BaseCard {
 	}
 
 	public static boolean shouldShow(@NonNull OsmandApplication app, @NonNull TrackFolder rootFolder) {
+		// RoadCrew does not offer OsmAnd Pro. This card advertises another
+		// company's subscription from inside an app with our name on it, for a
+		// backup service we do not run. Hidden for the same reason as the
+		// Cloud and Purchases entries in Settings.
+		if (true) {
+			return false;
+		}
 		boolean hasTracks = !Algorithms.isEmpty(rootFolder.getFlattenedTrackItems());
 		boolean backupAvailable = InAppPurchaseUtils.isBackupAvailable(app);
 		boolean dismissed = app.getSettings().TRACKS_FREE_ACCOUNT_CARD_DISMISSED.get();

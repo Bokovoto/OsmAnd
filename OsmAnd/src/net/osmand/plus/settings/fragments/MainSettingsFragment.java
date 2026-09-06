@@ -70,9 +70,34 @@ public class MainSettingsFragment extends BaseSettingsFragment implements OnSele
 		availableAppModes = new LinkedHashSet<>(ApplicationMode.values(app));
 		Preference globalSettings = requirePreference("global_settings");
 		globalSettings.setIcon(getContentIcon(R.drawable.ic_action_settings));
-		setupBackupAndRestorePref();
-		Preference purchasesSettings = requirePreference(PURCHASES_SETTINGS);
-		purchasesSettings.setIcon(getContentIcon(R.drawable.ic_action_purchases));
+		// RoadCrew hides OsmAnd Cloud and Purchases.
+		//
+		// Both sell OsmAnd's own paid services - cloud sync, backup,
+		// subscriptions. None of it works here: the account is theirs, the
+		// money goes to them, and the app is called RoadCrew. A driver who
+		// taps "Get OsmAnd Pro" would be paying another company for something
+		// this app does not provide.
+		//
+		// Hidden rather than renamed. Renaming them to RoadCrew Pro would
+		// point at a product that does not exist, which is worse than the
+		// confusion it was meant to fix. Attribution to OsmAnd stays where it
+		// belongs, in About, as GPLv3 requires.
+		Preference backupAndRestore = findPreference(BACKUP_AND_RESTORE);
+		if (backupAndRestore != null) {
+			backupAndRestore.setVisible(false);
+		}
+		Preference purchasesSettings = findPreference(PURCHASES_SETTINGS);
+		if (purchasesSettings != null) {
+			purchasesSettings.setVisible(false);
+		}
+		// Their separators go with them, or the screen shows two rules with
+		// nothing between.
+		for (String divider : new String[]{"divider_before_cloud", "divider_before_purchases"}) {
+			Preference preference = findPreference(divider);
+			if (preference != null) {
+				preference.setVisible(false);
+			}
+		}
 		PreferenceCategory selectedProfile = requirePreference(SELECTED_PROFILE);
 		selectedProfile.setIconSpaceReserved(false);
 		setupConfigureProfilePref();
