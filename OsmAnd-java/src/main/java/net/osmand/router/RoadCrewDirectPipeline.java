@@ -47,6 +47,7 @@ public final class RoadCrewDirectPipeline {
 	private final RoadCrewDirectPassageAccumulator accumulator;
 	private ObservationSink observationSink;
 	private RoadCrewDiagnostics diagnostics;
+	private RoadCrewDirectPassageAccumulator.FixTrace trace;
 	private String mapVersion = "";
 	// Keyed by the live object: the loader already bounds how long one survives,
 	// and the same way can carry different geometry between map editions, so a
@@ -84,7 +85,15 @@ public final class RoadCrewDirectPipeline {
 
 	/** Offline replay only; null everywhere else. See FixTrace. */
 	public void setFixTrace(RoadCrewDirectPassageAccumulator.FixTrace trace) {
+		this.trace = trace;
 		accumulator.setFixTrace(trace);
+	}
+
+	private void note(long fixSequence, String what, String detail) {
+		RoadCrewDirectPassageAccumulator.FixTrace sink = trace;
+		if (sink != null) {
+			sink.note(fixSequence, what, detail);
+		}
 	}
 
 	private void count(String name) {
@@ -197,8 +206,21 @@ public final class RoadCrewDirectPipeline {
 			long fixSequence) {
 		if (match == null || !match.isMatched() || match.getSegment() == null) {
 			count("no_match");
+			// The matcher decides between seven distinct reasons and this counter
+			// collapses every one of them. Recorded for the offline replay, and
+			// only there: the status is read from a decision already taken, and
+			// nothing here acts on it.
+			note(fixSequence, "MATCH_REFUSED", match == null ? "status=NO_RESULT"
+					: "status=" + match.getStatus()
+						+ " nearby=" + match.getNearbyCandidateCount()
+						+ " eligible=" + match.getDirectionCandidateCount()
+						+ " dist=" + Math.round(match.getDistanceMeters() * 100) / 100.0
+						+ " heading=" + Math.round(match.getHeadingDifferenceDegrees() * 100) / 100.0);
 			return null;
 		}
+		note(fixSequence, "MATCH_ACCEPTED", "status=" + match.getStatus()
+				+ " nearby=" + match.getNearbyCandidateCount()
+				+ " eligible=" + match.getDirectionCandidateCount());
 		if (road == null) {
 			count("missing_road");
 			return null;
