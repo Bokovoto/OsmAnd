@@ -94,7 +94,8 @@ public final class RoadCrewDirectPipeline {
 		return "way" + candidate.osmWayId + "/road" + candidate.roadId + "[" + candidate.startPointIndex + ".."
 				+ candidate.endPointIndex + "]d" + Math.round(candidate.distanceMeters * 100) / 100.0
 				+ "h" + Math.round(candidate.headingDifferenceDegrees * 100) / 100.0
-				+ "s" + Math.round(candidate.score * 100) / 100.0;
+				+ "s" + Math.round(candidate.score * 100) / 100.0
+				+ "p" + Math.round(candidate.progressMeters * 100) / 100.0;
 	}
 
 	private void note(long fixSequence, String what, String detail) {
@@ -235,6 +236,9 @@ public final class RoadCrewDirectPipeline {
 			if (first != null && second != null) {
 				detail += " best=" + describe(first) + " second=" + describe(second)
 						+ " scoreDelta=" + Math.round((second.score - first.score) * 100) / 100.0
+						+ " groundApart=" + Math.round(net.osmand.util.MapUtils.getDistance(
+							first.projectedLatitude, first.projectedLongitude,
+							second.projectedLatitude, second.projectedLongitude) * 100) / 100.0
 						+ " sameRoad=" + (first.roadId == second.roadId)
 						+ " sameWay=" + (first.osmWayId == second.osmWayId)
 						+ " sameSense=" + (Integer.signum(first.endPointIndex - first.startPointIndex)

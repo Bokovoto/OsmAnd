@@ -145,8 +145,15 @@ public final class RoadCrewSegmentMatcher {
 					continue;
 				}
 				double score = nearest.distanceMeters + headingDifference * HEADING_SCORE_WEIGHT;
-				eligible.add(new ScoredCandidate(candidate.binding, nearest.distanceMeters,
-						headingDifference, nearest.progressMeters, score));
+				ScoredCandidate scored = new ScoredCandidate(candidate.binding,
+						nearest.distanceMeters, headingDifference, nearest.progressMeters, score);
+				// Where on the ground this candidate puts the vehicle. progressMeters
+				// is measured from each binding's own start index, so two candidates
+				// on one way measure it in different frames and the difference
+				// between them means nothing. The projected point is frame-free.
+				scored.projectedLatitude = nearest.projectedLatitude;
+				scored.projectedLongitude = nearest.projectedLongitude;
+				eligible.add(scored);
 			}
 			if (eligible.isEmpty()) {
 				return MatchResult.unmatched(nearbyCount == 0
@@ -219,6 +226,15 @@ public final class RoadCrewSegmentMatcher {
 			public final double distanceMeters;
 			public final double headingDifferenceDegrees;
 			public final double score;
+			/**
+			 * How far along the way this candidate puts the vehicle. Two
+			 * candidates can share a way and a direction and still disagree
+			 * about this - the same distinction as identity against coordinate
+			 * in section 205 - so it has to be measured, not assumed.
+			 */
+			public final double progressMeters;
+			public final double projectedLatitude;
+			public final double projectedLongitude;
 
 			private ScoredCandidateView(ScoredCandidate candidate) {
 				this.roadId = candidate.binding.getRoadId();
@@ -229,6 +245,9 @@ public final class RoadCrewSegmentMatcher {
 				this.distanceMeters = candidate.distanceMeters;
 				this.headingDifferenceDegrees = candidate.headingDifferenceDegrees;
 				this.score = candidate.score;
+				this.progressMeters = candidate.progressMeters;
+				this.projectedLatitude = candidate.projectedLatitude;
+				this.projectedLongitude = candidate.projectedLongitude;
 			}
 		}
 
@@ -362,7 +381,9 @@ public final class RoadCrewSegmentMatcher {
 							fromLatitude, fromLongitude, toLatitude, toLongitude);
 					nearest = new NearestEdge(distance,
 							bearing(fromLatitude, fromLongitude, toLatitude, toLongitude),
-							completedMeters + edgeLength * projection);
+							completedMeters + edgeLength * projection,
+							fromLatitude + (toLatitude - fromLatitude) * projection,
+							fromLongitude + (toLongitude - fromLongitude) * projection);
 				}
 				completedMeters += edgeLength;
 			}
@@ -375,7 +396,13 @@ public final class RoadCrewSegmentMatcher {
 		private final double bearingDegrees;
 		private final double progressMeters;
 
-		private NearestEdge(double distanceMeters, double bearingDegrees, double progressMeters) {
+		private final double projectedLatitude;
+		private final double projectedLongitude;
+
+		private NearestEdge(double distanceMeters, double bearingDegrees, double progressMeters,
+				double projectedLatitude, double projectedLongitude) {
+			this.projectedLatitude = projectedLatitude;
+			this.projectedLongitude = projectedLongitude;
 			this.distanceMeters = distanceMeters;
 			this.bearingDegrees = bearingDegrees;
 			this.progressMeters = progressMeters;
@@ -384,6 +411,8 @@ public final class RoadCrewSegmentMatcher {
 
 	private static final class ScoredCandidate {
 		private final RoadCrewSegmentIdentity.SegmentBinding binding;
+		private double projectedLatitude;
+		private double projectedLongitude;
 		private final double distanceMeters;
 		private final double headingDifferenceDegrees;
 		private final double progressMeters;
