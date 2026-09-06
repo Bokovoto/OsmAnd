@@ -156,7 +156,12 @@ public final class RoadCrewSegmentMatcher {
 			ScoredCandidate best = eligible.get(0);
 			if (eligible.size() > 1
 					&& eligible.get(1).score - best.score < AMBIGUITY_SCORE_MARGIN) {
-				return MatchResult.ambiguous(best, nearbyCount, eligible.size());
+				// The runner-up travels with the result. Without it an ambiguous
+				// refusal cannot be told apart afterwards: two candidates that
+				// resolve to the same way and direction mean the refusal was
+				// needlessly conservative, two different roads mean it was
+				// right. Carried only; no condition depends on it.
+				return MatchResult.ambiguous(best, eligible.get(1), nearbyCount, eligible.size());
 			}
 			return MatchResult.matched(best, nearbyCount, eligible.size());
 		}
@@ -192,6 +197,55 @@ public final class RoadCrewSegmentMatcher {
 			return new MatchResult(Status.MATCHED, candidate.binding, candidate.distanceMeters,
 					candidate.headingDifferenceDegrees, candidate.progressMeters,
 					candidate.binding.getKey().getLengthMeters(), candidate.score, nearbyCount, directionCount);
+		}
+
+		/** The candidate that came second, for diagnosis only. May be null. */
+		private ScoredCandidate runnerUp;
+		private ScoredCandidate best;
+
+		/** A read-only view, so nothing outside can reach into the matcher. */
+		public static final class ScoredCandidateView {
+			public final long roadId;
+			/**
+			 * The OSM way, which is what an RCS2 identity is made of. roadId is
+			 * OsmAnd's own object id and one OSM way can appear as several of
+			 * them, so comparing roadId alone would report two candidates as
+			 * different roads when they are the same way. Derived here by the
+			 * same pure function the pipeline uses.
+			 */
+			public final long osmWayId;
+			public final int startPointIndex;
+			public final int endPointIndex;
+			public final double distanceMeters;
+			public final double headingDifferenceDegrees;
+			public final double score;
+
+			private ScoredCandidateView(ScoredCandidate candidate) {
+				this.roadId = candidate.binding.getRoadId();
+				this.osmWayId = net.osmand.binary.ObfConstants.getOsmIdFromMapObjectId(
+						candidate.binding.getRoadId());
+				this.startPointIndex = candidate.binding.getStartPointIndex();
+				this.endPointIndex = candidate.binding.getEndPointIndex();
+				this.distanceMeters = candidate.distanceMeters;
+				this.headingDifferenceDegrees = candidate.headingDifferenceDegrees;
+				this.score = candidate.score;
+			}
+		}
+
+		public ScoredCandidateView getRunnerUp() {
+			return runnerUp == null ? null : new ScoredCandidateView(runnerUp);
+		}
+
+		public ScoredCandidateView getBestCandidate() {
+			return best == null ? null : new ScoredCandidateView(best);
+		}
+
+		private static MatchResult ambiguous(ScoredCandidate candidate, ScoredCandidate second,
+				int nearbyCount, int directionCount) {
+			MatchResult result = ambiguous(candidate, nearbyCount, directionCount);
+			result.best = candidate;
+			result.runnerUp = second;
+			return result;
 		}
 
 		private static MatchResult ambiguous(ScoredCandidate candidate, int nearbyCount, int directionCount) {

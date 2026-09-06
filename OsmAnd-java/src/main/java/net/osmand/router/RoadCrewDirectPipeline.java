@@ -89,6 +89,14 @@ public final class RoadCrewDirectPipeline {
 		accumulator.setFixTrace(trace);
 	}
 
+	private static String describe(
+			RoadCrewSegmentMatcher.MatchResult.ScoredCandidateView candidate) {
+		return "way" + candidate.osmWayId + "/road" + candidate.roadId + "[" + candidate.startPointIndex + ".."
+				+ candidate.endPointIndex + "]d" + Math.round(candidate.distanceMeters * 100) / 100.0
+				+ "h" + Math.round(candidate.headingDifferenceDegrees * 100) / 100.0
+				+ "s" + Math.round(candidate.score * 100) / 100.0;
+	}
+
 	private void note(long fixSequence, String what, String detail) {
 		RoadCrewDirectPassageAccumulator.FixTrace sink = trace;
 		if (sink != null) {
@@ -210,12 +218,29 @@ public final class RoadCrewDirectPipeline {
 			// collapses every one of them. Recorded for the offline replay, and
 			// only there: the status is read from a decision already taken, and
 			// nothing here acts on it.
-			note(fixSequence, "MATCH_REFUSED", match == null ? "status=NO_RESULT"
+			String detail = match == null ? "status=NO_RESULT"
 					: "status=" + match.getStatus()
 						+ " nearby=" + match.getNearbyCandidateCount()
 						+ " eligible=" + match.getDirectionCandidateCount()
 						+ " dist=" + Math.round(match.getDistanceMeters() * 100) / 100.0
-						+ " heading=" + Math.round(match.getHeadingDifferenceDegrees() * 100) / 100.0);
+						+ " heading=" + Math.round(match.getHeadingDifferenceDegrees() * 100) / 100.0;
+			// For an ambiguous refusal the two competitors are what matters: if
+			// both resolve to the same road and direction the refusal was
+			// needlessly conservative, and if they do not it was right. Neither
+			// can be told from the counters.
+			RoadCrewSegmentMatcher.MatchResult.ScoredCandidateView first =
+					match == null ? null : match.getBestCandidate();
+			RoadCrewSegmentMatcher.MatchResult.ScoredCandidateView second =
+					match == null ? null : match.getRunnerUp();
+			if (first != null && second != null) {
+				detail += " best=" + describe(first) + " second=" + describe(second)
+						+ " scoreDelta=" + Math.round((second.score - first.score) * 100) / 100.0
+						+ " sameRoad=" + (first.roadId == second.roadId)
+						+ " sameWay=" + (first.osmWayId == second.osmWayId)
+						+ " sameSense=" + (Integer.signum(first.endPointIndex - first.startPointIndex)
+							== Integer.signum(second.endPointIndex - second.startPointIndex));
+			}
+			note(fixSequence, "MATCH_REFUSED", detail);
 			return null;
 		}
 		note(fixSequence, "MATCH_ACCEPTED", "status=" + match.getStatus()
