@@ -45,16 +45,15 @@ public class RoadCrewReplayTest {
 		String recordingPath = System.getenv("ROADCREW_REPLAY_RECORDING");
 		String mapPath = System.getenv("ROADCREW_TEST_OBF");
 		File recording = recordingPath == null ? null : new File(recordingPath);
-		File map = mapPath == null ? null : new File(mapPath);
+		File map = mapPath == null ? null : new File(mapPath.split(";")[0].trim());
 		Assume.assumeTrue("Set ROADCREW_REPLAY_RECORDING and ROADCREW_TEST_OBF to replay a drive",
 				recording != null && recording.isFile() && map != null && map.isFile());
 
 		List<RoadCrewReplay.RecordedFix> fixes = RoadCrewReplay.read(recording);
 		Assert.assertFalse("the recording holds no fixes", fixes.isEmpty());
 
-		try (RandomAccessFile file = new RandomAccessFile(map, "r")) {
-			RoadCrewReplay.Result result = RoadCrewReplay.run(fixes,
-					new BinaryMapIndexReader[]{new BinaryMapIndexReader(file, map)},
+		try {
+			RoadCrewReplay.Result result = RoadCrewReplay.run(fixes, openReaders(mapPath),
 					900, 350, 60_000, 8_000);
 
 			List<String> fingerprint = result.passageFingerprint();
@@ -105,6 +104,8 @@ public class RoadCrewReplayTest {
 			Assert.assertEquals(0, result.diagnostics.counter("observations_dropped_no_geometry"));
 			Assert.assertEquals(0,
 					result.diagnostics.counter("observations_dropped_geometry_mismatch"));
+		} finally {
+			closeReaders();
 		}
 	}
 
@@ -124,23 +125,16 @@ public class RoadCrewReplayTest {
 		String recordingPath = System.getenv("ROADCREW_REPLAY_RECORDING");
 		String mapPath = System.getenv("ROADCREW_TEST_OBF");
 		File recording = recordingPath == null ? null : new File(recordingPath);
-		File map = mapPath == null ? null : new File(mapPath);
+		File map = mapPath == null ? null : new File(mapPath.split(";")[0].trim());
 		Assume.assumeTrue("Set ROADCREW_REPLAY_RECORDING and ROADCREW_TEST_OBF",
 				recording != null && recording.isFile() && map != null && map.isFile());
 
 		List<RoadCrewReplay.RecordedFix> fixes = RoadCrewReplay.read(recording);
 		RoadCrewReplay.Result off;
 		RoadCrewReplay.Result on;
-		try (RandomAccessFile file = new RandomAccessFile(map, "r")) {
-			off = RoadCrewReplay.run(fixes,
-					new BinaryMapIndexReader[]{new BinaryMapIndexReader(file, map)},
-					900, 350, 60_000, 8_000, false);
-		}
-		try (RandomAccessFile file = new RandomAccessFile(map, "r")) {
-			on = RoadCrewReplay.run(fixes,
-					new BinaryMapIndexReader[]{new BinaryMapIndexReader(file, map)},
-					900, 350, 60_000, 8_000, true);
-		}
+		off = RoadCrewReplay.run(fixes, openReaders(mapPath), 900, 350, 60_000, 8_000, false);
+		on = RoadCrewReplay.run(fixes, openReaders(mapPath), 900, 350, 60_000, 8_000, true);
+		closeReaders();
 
 		Assert.assertEquals("matched fixes", off.diagnostics.counter("matched_fixes"),
 				on.diagnostics.counter("matched_fixes"));
@@ -179,7 +173,7 @@ public class RoadCrewReplayTest {
 		String mapPath = System.getenv("ROADCREW_TEST_OBF");
 		String out = System.getenv("ROADCREW_UNCOVERED_OUT");
 		File recording = recordingPath == null ? null : new File(recordingPath);
-		File map = mapPath == null ? null : new File(mapPath);
+		File map = mapPath == null ? null : new File(mapPath.split(";")[0].trim());
 		Assume.assumeTrue("Set ROADCREW_REPLAY_RECORDING, ROADCREW_TEST_OBF and"
 						+ " ROADCREW_UNCOVERED_OUT",
 				recording != null && recording.isFile() && map != null && map.isFile()
@@ -187,11 +181,8 @@ public class RoadCrewReplayTest {
 
 		List<RoadCrewReplay.RecordedFix> fixes = RoadCrewReplay.read(recording);
 		RoadCrewReplay.Result result;
-		try (RandomAccessFile file = new RandomAccessFile(map, "r")) {
-			result = RoadCrewReplay.run(fixes,
-					new BinaryMapIndexReader[]{new BinaryMapIndexReader(file, map)},
-					900, 350, 60_000, 8_000, true);
-		}
+		result = RoadCrewReplay.run(fixes, openReaders(mapPath), 900, 350, 60_000, 8_000, true);
+		closeReaders();
 
 		// The baseline, read out of the diagnostics JSON rather than through a
 		// new accessor: no shipped class needs to change for a diagnostic.
@@ -260,6 +251,44 @@ public class RoadCrewReplayTest {
 		System.out.println();
 		System.out.println("Uncovered matched fixes: " + uncovered.size() + " " + uncovered);
 		System.out.println("Decisions recorded: " + result.fixTrace.size());
+	}
+
+	/**
+	 * Every map the replay should read, as the phone does it.
+	 *
+	 * The phone hands the loader EVERY reader that is marked for routing and
+	 * contains route data - typically the country map and the world basemap -
+	 * while the replay used one. Two different road sets are two different
+	 * experiments, so the variable is made explicit: ROADCREW_TEST_OBF takes a
+	 * ';'-separated list, in the order they should be offered.
+	 */
+	private static List<RandomAccessFile> openedFiles = new ArrayList<>();
+
+	private static BinaryMapIndexReader[] openReaders(String paths) throws Exception {
+		closeReaders();
+		List<BinaryMapIndexReader> readers = new ArrayList<>();
+		for (String one : paths.split(";")) {
+			String trimmed = one.trim();
+			if (trimmed.isEmpty()) {
+				continue;
+			}
+			File map = new File(trimmed);
+			RandomAccessFile file = new RandomAccessFile(map, "r");
+			openedFiles.add(file);
+			readers.add(new BinaryMapIndexReader(file, map));
+		}
+		return readers.toArray(new BinaryMapIndexReader[0]);
+	}
+
+	private static void closeReaders() {
+		for (RandomAccessFile file : openedFiles) {
+			try {
+				file.close();
+			} catch (Exception ignored) {
+				// Nothing useful can be done while tearing down a test.
+			}
+		}
+		openedFiles = new ArrayList<>();
 	}
 
 	private static String pad(String name) {

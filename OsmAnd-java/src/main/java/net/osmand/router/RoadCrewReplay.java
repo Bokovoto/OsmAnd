@@ -189,10 +189,21 @@ public final class RoadCrewReplay {
 		double loadedLongitude = 0;
 		long loadedAtElapsed = 0;
 		for (RecordedFix fix : fixes) {
+			// Both comparisons are >=, because that is what the phone does:
+			//
+			//   sample.elapsed - loadedAtElapsed >= RELOAD_INTERVAL_MILLIS
+			//   || getDistance(...) >= RELOAD_DISTANCE_METERS
+			//
+			// With > the replay declines to reload at exactly 350 m or exactly
+			// 60000 ms where the phone reloads, so the two can hold different
+			// road sets for a fix - which is a difference in the input to the
+			// matcher, not in the matcher. Written as > here originally; that
+			// was mine, and it is the kind of one-character difference that
+			// makes a replay describe a drive nobody took.
 			boolean needsReload = Double.isNaN(loadedLatitude)
 					|| net.osmand.util.MapUtils.getDistance(loadedLatitude, loadedLongitude,
-							fix.latitude, fix.longitude) > reloadDistanceMeters
-					|| fix.elapsedRealtimeMillis - loadedAtElapsed > reloadIntervalMillis;
+							fix.latitude, fix.longitude) >= reloadDistanceMeters
+					|| fix.elapsedRealtimeMillis - loadedAtElapsed >= reloadIntervalMillis;
 			if (needsReload) {
 				RoadCrewObfSegmentLoader.LoadResult loaded = RoadCrewObfSegmentLoader.load(
 						readers, fix.latitude, fix.longitude, loadRadiusMeters, maxRouteObjects, null);
