@@ -82,6 +82,11 @@ public final class RoadCrewDirectPipeline {
 		accumulator.setDiagnostics(diagnostics);
 	}
 
+	/** Offline replay only; null everywhere else. See FixTrace. */
+	public void setFixTrace(RoadCrewDirectPassageAccumulator.FixTrace trace) {
+		accumulator.setFixTrace(trace);
+	}
+
 	private void count(String name) {
 		if (diagnostics != null) {
 			diagnostics.count(name);

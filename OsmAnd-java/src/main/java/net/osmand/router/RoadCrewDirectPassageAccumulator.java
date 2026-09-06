@@ -235,6 +235,25 @@ public final class RoadCrewDirectPassageAccumulator {
 	private int fixCount;
 	private long firstFixSequence;
 	private RoadCrewDiagnostics diagnostics;
+	private FixTrace trace;
+
+	/**
+	 * A passive record of decisions this class has ALREADY taken, for the
+	 * diagnostic replay of ROADMAP section 199.
+	 *
+	 * Deliberately not routed through RoadCrewDiagnostics. That has a bounded
+	 * event trace - two hundred entries - because on a phone a longer one starts
+	 * to resemble the trace of a driver, which the whole system exists not to
+	 * keep. This is set only by an offline replay, is null everywhere else, and
+	 * so costs a null check per decision and nothing more.
+	 *
+	 * It may not influence anything. No condition, threshold, state transition
+	 * or call order changes for it; there are no new early returns; it reports
+	 * what has been decided and never takes part in deciding.
+	 */
+	public interface FixTrace {
+		void note(long fixSequence, String what, String detail);
+	}
 	/** The caller's description of the way this passage is on, taken at its start. */
 	private Object attachment;
 	private double maximumDistanceMeters;
@@ -292,6 +311,17 @@ public final class RoadCrewDirectPassageAccumulator {
 	}
 
 	/** Diagnostic build only. */
+	public void setFixTrace(FixTrace trace) {
+		this.trace = trace;
+	}
+
+	private void note(long fixSequence, String what, String detail) {
+		FixTrace sink = trace;
+		if (sink != null) {
+			sink.note(fixSequence, what, detail);
+		}
+	}
+
 	public void setDiagnostics(RoadCrewDiagnostics diagnostics) {
 		this.diagnostics = diagnostics;
 	}
@@ -312,6 +342,8 @@ public final class RoadCrewDirectPassageAccumulator {
 
 		if (!active) {
 			start(fix);
+			note(fix.fixSequence, "STARTED_IDLE", "way=" + fix.wayId
+					+ " " + (fix.forward ? "F" : "R"));
 			return;
 		}
 		if (fix.wayId == wayId && fix.forward == forward) {
@@ -321,10 +353,15 @@ public final class RoadCrewDirectPassageAccumulator {
 			if (continuous(step, delta, movementSince(fix))) {
 				candidate.clear();
 				extend(fix, step);
+				note(fix.fixSequence, "EXTENDED", "way=" + fix.wayId
+						+ " " + (fix.forward ? "F" : "R"));
 			} else {
 				count("passages_closed_continuity");
 				finish(lastConfirmedTime);
 				start(fix);
+				note(fix.fixSequence, "CONTINUITY_REFUSED", "way=" + fix.wayId
+						+ " " + (fix.forward ? "F" : "R") + " step=" + Math.round(step)
+						+ " deltaMs=" + delta + " moved=" + Math.round(movementSince(fix)));
 			}
 			return;
 		}
@@ -334,6 +371,8 @@ public final class RoadCrewDirectPassageAccumulator {
 			count("passages_closed_direction_change");
 			finish(lastConfirmedTime);
 			start(fix);
+			note(fix.fixSequence, "DIRECTION_CHANGE", "way=" + fix.wayId
+					+ " now " + (fix.forward ? "F" : "R"));
 			return;
 		}
 		offerCandidate(fix);
@@ -398,9 +437,15 @@ public final class RoadCrewDirectPassageAccumulator {
 			// Still only a suggestion. The active passage stays where it was
 			// last certain, so jitter between two parallel roads cannot shatter
 			// it into fragments.
+			note(fix.fixSequence, "CANDIDATE_PENDING", "way=" + fix.wayId
+					+ " " + (fix.forward ? "F" : "R") + " candidates=" + candidate.size()
+					+ " inWindow=" + inWindow + " activeWay=" + wayId);
 			return;
 		}
 		Fix first = firstCandidateOf(fix.wayId);
+		note(fix.fixSequence, "CANDIDATE_CONFIRMED", "way=" + fix.wayId
+				+ " " + (fix.forward ? "F" : "R") + " startsAtFix=" + first.fixSequence
+				+ (consecutive ? " consecutive" : " dominant"));
 		count("passages_closed_way_change");
 		finish(lastConfirmedTime);
 		start(first);
@@ -412,6 +457,16 @@ public final class RoadCrewDirectPassageAccumulator {
 				if (continuous(step, later.timeMillis - lastConfirmedTime, movementSince(later))) {
 					extend(later, step);
 				}
+			}
+		}
+		// Whatever else was in the candidate list belonged to a way that was not
+		// confirmed. Named here because that is the difference between a fix
+		// refused on purpose and a fix that could have been recovered, and no
+		// figure computed afterwards can tell the two apart.
+		for (Fix pending : candidate) {
+			if (pending.wayId != wayId) {
+				note(pending.fixSequence, "CANDIDATE_DISCARDED", "way=" + pending.wayId
+						+ " " + (pending.forward ? "F" : "R") + " confirmedWay=" + wayId);
 			}
 		}
 		candidate.clear();

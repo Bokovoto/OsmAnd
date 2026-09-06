@@ -107,6 +107,58 @@ public class RoadCrewReplayTest {
 		}
 	}
 
+	/**
+	 * The gate the diagnostic instrument had to pass before it was allowed near
+	 * the eleven uncovered fixes (ROADMAP section 203).
+	 *
+	 * An instrument that changes what it measures is not an instrument. The same
+	 * recording is replayed with the decision trace off and on, and every
+	 * passage must come out identical - way, direction, fix range, count,
+	 * duration, progress, worst match, spans - along with the matcher's own
+	 * totals. A single character of difference and the instrumentation goes
+	 * back, however useful its output looked.
+	 */
+	@Test
+	public void tracingDecisionsChangesNothingItMeasures() throws Exception {
+		String recordingPath = System.getenv("ROADCREW_REPLAY_RECORDING");
+		String mapPath = System.getenv("ROADCREW_TEST_OBF");
+		File recording = recordingPath == null ? null : new File(recordingPath);
+		File map = mapPath == null ? null : new File(mapPath);
+		Assume.assumeTrue("Set ROADCREW_REPLAY_RECORDING and ROADCREW_TEST_OBF",
+				recording != null && recording.isFile() && map != null && map.isFile());
+
+		List<RoadCrewReplay.RecordedFix> fixes = RoadCrewReplay.read(recording);
+		RoadCrewReplay.Result off;
+		RoadCrewReplay.Result on;
+		try (RandomAccessFile file = new RandomAccessFile(map, "r")) {
+			off = RoadCrewReplay.run(fixes,
+					new BinaryMapIndexReader[]{new BinaryMapIndexReader(file, map)},
+					900, 350, 60_000, 8_000, false);
+		}
+		try (RandomAccessFile file = new RandomAccessFile(map, "r")) {
+			on = RoadCrewReplay.run(fixes,
+					new BinaryMapIndexReader[]{new BinaryMapIndexReader(file, map)},
+					900, 350, 60_000, 8_000, true);
+		}
+
+		Assert.assertEquals("matched fixes", off.diagnostics.counter("matched_fixes"),
+				on.diagnostics.counter("matched_fixes"));
+		Assert.assertEquals("fixes seen", off.diagnostics.counter("fixes_seen"),
+				on.diagnostics.counter("fixes_seen"));
+		Assert.assertEquals("passages emitted", off.diagnostics.counter("passages_emitted"),
+				on.diagnostics.counter("passages_emitted"));
+		Assert.assertEquals("observations created",
+				off.diagnostics.counter("observations_created"),
+				on.diagnostics.counter("observations_created"));
+		Assert.assertEquals("every passage identical",
+				off.passageFingerprint(), on.passageFingerprint());
+		Assert.assertTrue("the trace recorded nothing while off", off.fixTrace.isEmpty());
+		Assert.assertFalse("the trace recorded nothing while on", on.fixTrace.isEmpty());
+		System.out.println();
+		System.out.println("Trace off against on: " + off.passageFingerprint().size()
+				+ " passages identical, " + on.fixTrace.size() + " decisions recorded");
+	}
+
 	private static String pad(String name) {
 		StringBuilder padded = new StringBuilder(name);
 		while (padded.length() < 22) {

@@ -68,6 +68,8 @@ public final class RoadCrewReplay {
 		 * proves nothing about either.
 		 */
 		public final List<RoadCrewDirectPassageAccumulator.Passage> passages = new ArrayList<>();
+		/** Every decision the accumulator recorded, when the trace was on. */
+		public final List<String> fixTrace = new ArrayList<>();
 		public int legacyObservations;
 		public int fixesReplayed;
 
@@ -155,6 +157,19 @@ public final class RoadCrewReplay {
 	public static Result run(List<RecordedFix> fixes, BinaryMapIndexReader[] readers,
 			double loadRadiusMeters, double reloadDistanceMeters, long reloadIntervalMillis,
 			int maxRouteObjects) throws IOException {
+		return run(fixes, readers, loadRadiusMeters, reloadDistanceMeters, reloadIntervalMillis,
+				maxRouteObjects, false);
+	}
+
+	/**
+	 * With `traceDecisions` off this must behave exactly as it did before the
+	 * trace existed. That is not an assumption: `diagnostics off against on
+	 * leaves every passage identical` runs the same recording both ways and
+	 * requires the same fingerprint.
+	 */
+	public static Result run(List<RecordedFix> fixes, BinaryMapIndexReader[] readers,
+			double loadRadiusMeters, double reloadDistanceMeters, long reloadIntervalMillis,
+			int maxRouteObjects, boolean traceDecisions) throws IOException {
 		Result result = new Result();
 		RoadCrewObservationPipeline pipeline = new RoadCrewObservationPipeline(
 				(evidence, at, road, binding, firstFix, lastFix) -> result.legacyObservations++);
@@ -164,6 +179,11 @@ public final class RoadCrewReplay {
 		pipeline.setDirectObservationSink(result.directed::addAll);
 		pipeline.setDirectDiagnostics(result.diagnostics);
 		pipeline.setDirectMapVersion("replay");
+		if (traceDecisions) {
+			pipeline.setDirectFixTrace((fixSequence, what, detail) ->
+					result.fixTrace.add(fixSequence + " " + what
+							+ (detail == null || detail.isEmpty() ? "" : " " + detail)));
+		}
 
 		double loadedLatitude = Double.NaN;
 		double loadedLongitude = 0;

@@ -90,6 +90,14 @@ public final class RoadCrewObservationPipeline {
 		}
 	}
 
+	/** Offline replay only; null everywhere else. */
+	public synchronized void setDirectFixTrace(
+			RoadCrewDirectPassageAccumulator.FixTrace trace) {
+		if (directPipeline != null) {
+			directPipeline.setFixTrace(trace);
+		}
+	}
+
 	public synchronized void setDirectMapVersion(String mapVersion) {
 		if (directPipeline != null) {
 			directPipeline.setMapVersion(mapVersion);
