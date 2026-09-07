@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import net.osmand.plus.OsmandApplication;
+import net.osmand.router.RoadCrewFinalDiagnosticsQueue;
 import net.osmand.router.RoadCrewShadowOutbox;
 
 import org.json.JSONArray;
@@ -47,42 +48,53 @@ final class RoadCrewShadowUploader {
 				thread.setDaemon(true);
 				return thread;
 			});
-	private static boolean running;
+	private static final RoadCrewFinalDiagnosticsQueue UPLOAD_STATE =
+			new RoadCrewFinalDiagnosticsQueue();
 
 	private RoadCrewShadowUploader() {
 	}
 
-	static synchronized void schedule(@NonNull OsmandApplication app,
+	static void schedule(@NonNull OsmandApplication app,
 			@NonNull RoadCrewShadowOutbox outbox) {
-		schedule(app, outbox, false);
+		schedule(app, outbox, null);
 	}
 
 	/** Used at the end of a course, when the queue may already be empty. */
-	static synchronized void scheduleWithFinalDiagnostics(@NonNull OsmandApplication app,
+	static void scheduleWithFinalDiagnostics(@NonNull OsmandApplication app,
 			@NonNull RoadCrewShadowOutbox outbox) {
-		schedule(app, outbox, true);
+		// Capture now: a new course may reset the global diagnostics before an
+		// upload which is already running gets to this final request.
+		schedule(app, outbox, RoadCrewShadowValidation.diagnosticsJson());
 	}
 
-	private static synchronized void schedule(@NonNull OsmandApplication app,
-			@NonNull RoadCrewShadowOutbox outbox, boolean finalDiagnostics) {
-		if (running) {
+	private static void schedule(@NonNull OsmandApplication app,
+			@NonNull RoadCrewShadowOutbox outbox, String finalDiagnostics) {
+		if (!UPLOAD_STATE.requestRun(finalDiagnostics)) {
 			return;
 		}
-		running = true;
-		EXECUTOR.execute(() -> {
+		EXECUTOR.execute(() -> runUpload(app, outbox));
+	}
+
+	private static void runUpload(@NonNull OsmandApplication app,
+			@NonNull RoadCrewShadowOutbox outbox) {
+		try {
+			upload(app, outbox);
+		} catch (RuntimeException e) {
+			Log.w(TAG, "comparison upload run failed", e);
+		}
+		while (true) {
+			String diagnostics;
+			while ((diagnostics = UPLOAD_STATE.pollFinalSnapshot()) != null) {
 			try {
-				boolean sentSomething = upload(app, outbox);
-				if (finalDiagnostics && !sentSomething) {
-					postDiagnosticsOnly(app);
-				}
+				postDiagnosticsOnly(app, diagnostics);
 			} catch (RuntimeException e) {
-				Log.w(TAG, "comparison upload run failed", e);
-			} finally {
-				synchronized (RoadCrewShadowUploader.class) {
-					running = false;
-				}
+				Log.w(TAG, "final comparison diagnostics failed", e);
 			}
-		});
+			}
+			if (UPLOAD_STATE.finishIfIdle()) {
+				return;
+			}
+		}
 	}
 
 	/** @return whether anything at all was sent, and so carried the diagnostics */
@@ -133,11 +145,8 @@ final class RoadCrewShadowUploader {
 	 * depended on. The shadow endpoint accepts an empty observation list for
 	 * this alone, and refuses one that carries no diagnostics either.
 	 */
-	private static void postDiagnosticsOnly(@NonNull OsmandApplication app) {
-		String diagnostics = RoadCrewShadowValidation.diagnosticsJson();
-		if (diagnostics == null) {
-			return;
-		}
+	private static void postDiagnosticsOnly(@NonNull OsmandApplication app,
+			@NonNull String diagnostics) {
 		try {
 			JSONObject body = new JSONObject();
 			body.put("schemaVersion", 2);
