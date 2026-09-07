@@ -169,7 +169,11 @@ ${block(updater, 'public enum Phase')}
 class R { static class string { static final int roadcrew_update_transfer_failed = 1, roadcrew_update_interrupted = 2, roadcrew_update_installer_failed = 3; } }
 class Log { static void w(String tag, String msg, Exception e) {} }
 class JSONObject { String value; JSONObject(String value) { this.value = value; } public String toString() { return value; } }
-class UpdateInfo { JSONObject toJson() { return new JSONObject("saved"); } static UpdateInfo fromJson(JSONObject o) { return new UpdateInfo(); } }
+class UpdateInfo {
+  String tag = "test.94", notes = "release notes";
+  JSONObject toJson() { return new JSONObject("saved"); }
+  static UpdateInfo fromJson(JSONObject o) { return new UpdateInfo(); }
+}
 class Preferences {
   Map<String, String> values = new HashMap<>();
   Preferences edit() { return this; }
@@ -199,7 +203,8 @@ class DownloadTask {
   DownloadTask(UpdateInfo u) { update = u; }
 }
 class StateChecks {
-  static final String TAG = "test", PREFS_NAME = "prefs", KEY_PENDING_UPDATE = "pending";
+  static final String TAG = "test", PREFS_NAME = "prefs", KEY_PENDING_UPDATE = "pending",
+      KEY_NOTES_TAG = "notes-tag", KEY_NOTES_TEXT = "notes-text";
   static WeakReference<MapActivity> foreground = new WeakReference<>(null);
   static DownloadTask activeTask;
   static WindowStub progressDialog, offerDialog;
@@ -228,7 +233,7 @@ class StateChecks {
     downloadAndInstall(rotated, new UpdateInfo());
     check(started == 1, "new transfer before cancellation finished");
     finishCancelled(rotated, original);
-    check(!isUpdateInProgress() && Context.prefs.values.isEmpty(), "cancel did not finish");
+    check(!isUpdateInProgress() && !Context.prefs.values.containsKey(KEY_PENDING_UPDATE), "cancel did not finish");
 
     permission = false;
     downloadAndInstall(rotated, new UpdateInfo());
