@@ -54,6 +54,14 @@ public class RoadCrewDirectPassageAccumulatorTest {
 		return passages.get(0);
 	}
 
+	private void diagnosticFix(RoadCrewDiagnostics diagnostics, long sequence,
+			long way, double measure, double movement) {
+		clock += 1000;
+		diagnostics.matched(sequence, way, true);
+		accumulator.accept(new RoadCrewDirectPassageAccumulator.Fix(
+				way, true, measure, false, OPEN_LENGTH, clock, movement, sequence));
+	}
+
 	private void assertSpan(RoadCrewDirectPassageAccumulator.Passage passage, int index,
 			double from, double to) {
 		RoadCrewDirectPassageAccumulator.Span span = passage.spans.get(index);
@@ -74,6 +82,54 @@ public class RoadCrewDirectPassageAccumulatorTest {
 		Assert.assertTrue(passage.forward);
 		Assert.assertEquals(1, passage.spans.size());
 		assertSpan(passage, 0, 100, 245);
+	}
+
+	@Test
+	public void streamingCoverageIncludesJitterBridgedByTheActivePassage() {
+		RoadCrewDiagnostics diagnostics = new RoadCrewDiagnostics();
+		accumulator.setDiagnostics(diagnostics);
+		diagnosticFix(diagnostics, 1, WAY_A, 100, 0);
+		diagnosticFix(diagnostics, 2, WAY_A, 150, 50);
+		diagnosticFix(diagnostics, 3, WAY_B, 900, 30);
+		diagnosticFix(diagnostics, 4, WAY_A, 210, 30);
+		accumulator.flush();
+
+		Assert.assertEquals(4, diagnostics.matchedFixCount());
+		Assert.assertEquals(4, diagnostics.coveredMatchedFixCount());
+		Assert.assertEquals(0, diagnostics.uncoveredMatchedFixCount());
+		Assert.assertTrue(diagnostics.isCoverageComplete());
+	}
+
+	@Test
+	public void streamingCoverageLeavesARejectedCandidateUncovered() {
+		RoadCrewDiagnostics diagnostics = new RoadCrewDiagnostics();
+		accumulator.setDiagnostics(diagnostics);
+		diagnosticFix(diagnostics, 1, WAY_A, 100, 0);
+		diagnosticFix(diagnostics, 2, WAY_A, 150, 50);
+		diagnosticFix(diagnostics, 3, 99_999, 500, 30);
+		diagnosticFix(diagnostics, 4, WAY_B, 900, 30);
+		diagnosticFix(diagnostics, 5, WAY_B, 950, 50);
+		accumulator.flush();
+
+		Assert.assertEquals(5, diagnostics.matchedFixCount());
+		Assert.assertEquals(4, diagnostics.coveredMatchedFixCount());
+		Assert.assertEquals(1, diagnostics.uncoveredMatchedFixCount());
+		Assert.assertEquals(1, diagnostics.uncoveredRunCount());
+		Assert.assertEquals(1, diagnostics.longestUncoveredRun());
+	}
+
+	@Test
+	public void zeroProgressPassageIsUncovered() {
+		RoadCrewDiagnostics diagnostics = new RoadCrewDiagnostics();
+		accumulator.setDiagnostics(diagnostics);
+		diagnosticFix(diagnostics, 1, WAY_A, 100, 0);
+		diagnosticFix(diagnostics, 2, WAY_A, 100, 0);
+		accumulator.flush();
+
+		Assert.assertEquals(2, diagnostics.matchedFixCount());
+		Assert.assertEquals(0, diagnostics.coveredMatchedFixCount());
+		Assert.assertEquals(2, diagnostics.uncoveredMatchedFixCount());
+		Assert.assertEquals(2, diagnostics.longestUncoveredRun());
 	}
 
 	@Test

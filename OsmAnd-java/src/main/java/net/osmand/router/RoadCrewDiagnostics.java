@@ -1,6 +1,8 @@
 package net.osmand.router;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,24 +15,37 @@ import java.util.Map;
  * old one saw. Totals alone would say "there were seventeen truncated loads"
  * without showing that those seventeen sit exactly on the gaps, so this keeps a
  * bounded trace of transitions as well - never every GPS fix, which would be
- * exactly the trace of a driver we have gone to such lengths not to keep.
+ * exactly the trace of a driver we have gone to such lengths not to keep. The
+ * exact coverage figures are accumulated separately and reveal no road ids,
+ * positions, times or ordering.
  *
  * Everything here is bounded and cheap. It is a diagnostic build's instrument,
  * not a permanent feature, and it must never be able to affect the drive.
  */
 public final class RoadCrewDiagnostics {
+	public static final int SCHEMA_VERSION = 2;
 
-	/** Enough to cover a course's transitions; far too few to reconstruct a route. */
+	/** Bounded forensic sample; it is deliberately not a complete long-course trace. */
 	public static final int MAX_EVENTS = 200;
-	/** Runs of one matched way; a long drive folds into a few hundred. */
+	/** Legacy forensic sample only; schema 2 never measures from this list. */
 	public static final int MAX_BASELINE_RUNS = 400;
 
 	private final Map<String, Integer> counters = new LinkedHashMap<>();
 	private final List<String> events = new ArrayList<>();
-	/** [firstFix, lastFix, wayId, forward] for every stretch the matcher chose. */
+	/** [firstFix, lastFix, wayId, forward] for the bounded legacy sample. */
 	private final List<long[]> baseline = new ArrayList<>();
+	/** Contiguous matcher positions not yet decided by the passage lifecycle. */
+	private final Deque<long[]> pendingMatched = new ArrayDeque<>();
 	private int droppedEvents;
 	private int droppedRuns;
+	private long matchedFixes;
+	private long coveredMatchedFixes;
+	private long uncoveredMatchedFixes;
+	private long uncoveredRunCount;
+	private long longestUncoveredRun;
+	private long openUncoveredRun;
+	private long lastResolvedMatchedSequence = Long.MIN_VALUE;
+	private boolean coverageComplete;
 	/**
 	 * Which snapshot this is. The counters are cumulative and a copy rides on
 	 * every chunk, so an analyser must take the newest one and never add them
@@ -69,10 +84,18 @@ public final class RoadCrewDiagnostics {
 	 * the other, but both can be measured against what the matcher resolved.
 	 */
 	public synchronized void matched(long fixSequence, long wayId, boolean forward) {
-		// Counted separately from the runs, and never bounded. The runs can be
-		// truncated on a long drive; the denominator of every recall figure must
-		// not be, or a shortened baseline would flatter both branches at once.
+		// Counted separately from both the old run sample and the new unresolved
+		// queue. The denominator of every recall figure is never bounded.
 		count("matched_fixes");
+		matchedFixes++;
+		coverageComplete = false;
+		long[] pending = pendingMatched.peekLast();
+		if (pending != null && pending[1] != Long.MAX_VALUE
+				&& fixSequence == pending[1] + 1) {
+			pending[1] = fixSequence;
+		} else {
+			pendingMatched.addLast(new long[]{fixSequence, fixSequence});
+		}
 		long[] last = baseline.isEmpty() ? null : baseline.get(baseline.size() - 1);
 		// Contiguous only. A run that jumped over unmatched fixes would cover
 		// more positions than were ever matched, and recall computed against the
@@ -87,6 +110,102 @@ public final class RoadCrewDiagnostics {
 			return;
 		}
 		baseline.add(new long[]{fixSequence, fixSequence, wayId, forward ? 1 : 0});
+	}
+
+	/** Everything before this start can no longer belong to a future passage. */
+	public synchronized void passageStarted(long firstFixSequence) {
+		if (firstFixSequence > Long.MIN_VALUE) {
+			resolveThrough(firstFixSequence - 1, false);
+		}
+	}
+
+	/** Positive progress is irreversible, so this prefix is known to be emitted. */
+	public synchronized void passageCovered(long firstFixSequence, long lastFixSequence) {
+		if (lastFixSequence < firstFixSequence) {
+			return;
+		}
+		passageStarted(firstFixSequence);
+		resolveThrough(lastFixSequence, true);
+	}
+
+	/** A zero-progress passage was decided but emitted no evidence. */
+	public synchronized void passageDiscarded(long firstFixSequence, long lastFixSequence) {
+		if (lastFixSequence < firstFixSequence) {
+			return;
+		}
+		passageStarted(firstFixSequence);
+		resolveThrough(lastFixSequence, false);
+	}
+
+	/** Finalises the tail which no later passage can cover. */
+	public synchronized void finishCoverage() {
+		resolveThrough(Long.MAX_VALUE, false);
+		coverageComplete = pendingMatched.isEmpty()
+				&& matchedFixes == coveredMatchedFixes + uncoveredMatchedFixes;
+	}
+
+	private void resolveThrough(long lastFixSequence, boolean covered) {
+		while (!pendingMatched.isEmpty()) {
+			long[] run = pendingMatched.peekFirst();
+			if (run[0] > lastFixSequence) {
+				break;
+			}
+			long end = Math.min(run[1], lastFixSequence);
+			resolve(run[0], end, covered);
+			if (end == run[1]) {
+				pendingMatched.removeFirst();
+			} else {
+				run[0] = end + 1;
+				break;
+			}
+		}
+	}
+
+	private void resolve(long first, long last, boolean covered) {
+		long amount = last - first + 1;
+		if (covered) {
+			coveredMatchedFixes += amount;
+			openUncoveredRun = 0;
+		} else {
+			uncoveredMatchedFixes += amount;
+			if (openUncoveredRun > 0 && lastResolvedMatchedSequence != Long.MAX_VALUE
+					&& first == lastResolvedMatchedSequence + 1) {
+				openUncoveredRun += amount;
+			} else {
+				openUncoveredRun = amount;
+				uncoveredRunCount++;
+			}
+			longestUncoveredRun = Math.max(longestUncoveredRun, openUncoveredRun);
+		}
+		lastResolvedMatchedSequence = last;
+	}
+
+	public synchronized long matchedFixCount() {
+		return matchedFixes;
+	}
+
+	public synchronized long coveredMatchedFixCount() {
+		return coveredMatchedFixes;
+	}
+
+	public synchronized long uncoveredMatchedFixCount() {
+		return uncoveredMatchedFixes;
+	}
+
+	public synchronized long pendingMatchedFixCount() {
+		return matchedFixes - coveredMatchedFixes - uncoveredMatchedFixes;
+	}
+
+	public synchronized long uncoveredRunCount() {
+		return uncoveredRunCount;
+	}
+
+	public synchronized long longestUncoveredRun() {
+		return longestUncoveredRun;
+	}
+
+	public synchronized boolean isCoverageComplete() {
+		return coverageComplete;
 	}
 
 	public synchronized int counter(String name) {
@@ -106,8 +225,17 @@ public final class RoadCrewDiagnostics {
 		counters.clear();
 		events.clear();
 		baseline.clear();
+		pendingMatched.clear();
 		droppedEvents = 0;
 		droppedRuns = 0;
+		matchedFixes = 0;
+		coveredMatchedFixes = 0;
+		uncoveredMatchedFixes = 0;
+		uncoveredRunCount = 0;
+		longestUncoveredRun = 0;
+		openUncoveredRun = 0;
+		lastResolvedMatchedSequence = Long.MIN_VALUE;
+		coverageComplete = false;
 		snapshotSequence = 0;
 	}
 
@@ -118,7 +246,17 @@ public final class RoadCrewDiagnostics {
 	public synchronized String toJson() {
 		snapshotSequence++;
 		StringBuilder json = new StringBuilder(1024);
-		json.append("{\"snapshotSequence\":").append(snapshotSequence).append(",\"counters\":{");
+		json.append("{\"diagnosticsSchemaVersion\":").append(SCHEMA_VERSION)
+				.append(",\"snapshotSequence\":").append(snapshotSequence)
+				.append(",\"coverage\":{")
+				.append("\"coverageComplete\":").append(coverageComplete)
+				.append(",\"matchedFixes\":").append(matchedFixes)
+				.append(",\"coveredMatchedFixes\":").append(coveredMatchedFixes)
+				.append(",\"uncoveredMatchedFixes\":").append(uncoveredMatchedFixes)
+				.append(",\"pendingMatchedFixes\":").append(pendingMatchedFixCount())
+				.append(",\"uncoveredRunCount\":").append(uncoveredRunCount)
+				.append(",\"longestUncoveredRun\":").append(longestUncoveredRun)
+				.append("},\"counters\":{");
 		boolean first = true;
 		for (Map.Entry<String, Integer> entry : counters.entrySet()) {
 			if (!first) {
@@ -143,8 +281,8 @@ public final class RoadCrewDiagnostics {
 			json.append('[').append(run[0]).append(',').append(run[1]).append(',')
 					.append(run[2]).append(',').append(run[3]).append(']');
 		}
-		// Stated outright rather than left to be inferred: an analyser must not
-		// compute an exact-looking result from a trace it cannot see the end of.
+		// Kept for old analysers and forensic display. A schema 2 analyser reads
+		// the exact coverage summary above and never computes from these samples.
 		json.append("],\"eventTraceTruncated\":").append(droppedEvents > 0)
 				.append(",\"eventTraceDroppedCount\":").append(droppedEvents)
 				.append(",\"matcherBaselineTruncated\":").append(droppedRuns > 0)

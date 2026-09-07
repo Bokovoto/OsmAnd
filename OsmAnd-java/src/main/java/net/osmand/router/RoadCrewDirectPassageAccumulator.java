@@ -399,6 +399,9 @@ public final class RoadCrewDirectPassageAccumulator {
 		}
 		candidate.clear();
 		recentWays.clear();
+		if (diagnostics != null) {
+			diagnostics.finishCoverage();
+		}
 	}
 
 	private double movementSince(Fix fix) {
@@ -486,6 +489,7 @@ public final class RoadCrewDirectPassageAccumulator {
 		if (diagnostics != null) {
 			diagnostics.event(fix.fixSequence, "RCS2_PASSAGE_START", "way=" + fix.wayId
 					+ (fix.forward ? " F" : " R"));
+			diagnostics.passageStarted(fix.fixSequence);
 		}
 		active = true;
 		wayId = fix.wayId;
@@ -517,6 +521,9 @@ public final class RoadCrewDirectPassageAccumulator {
 		maximumHeadingDifferenceDegrees =
 				Math.max(maximumHeadingDifferenceDegrees, fix.headingDifferenceDegrees);
 		fixCount++;
+		if (progress > EPSILON && diagnostics != null) {
+			diagnostics.passageCovered(firstFixSequence, lastFixSequence);
+		}
 	}
 
 	private void finish(long endTime) {
@@ -529,6 +536,7 @@ public final class RoadCrewDirectPassageAccumulator {
 			if (diagnostics != null) {
 				diagnostics.event(lastFixSequence, "RCS2_PASSAGE_DISCARDED",
 						"way=" + wayId + " progress=0");
+				diagnostics.passageDiscarded(firstFixSequence, lastFixSequence);
 			}
 		}
 		if (progress > EPSILON) {
@@ -536,6 +544,7 @@ public final class RoadCrewDirectPassageAccumulator {
 			if (diagnostics != null) {
 				diagnostics.event(lastFixSequence, "RCS2_PASSAGE_EMIT", "way=" + wayId
 						+ " metres=" + Math.round(progress));
+				diagnostics.passageCovered(firstFixSequence, lastFixSequence);
 			}
 			sink.accept(new Passage(wayId, forward, buildSpans(), startTime, endTime,
 					fixCount, progress, firstFixSequence, lastFixSequence,

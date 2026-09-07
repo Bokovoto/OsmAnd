@@ -76,6 +76,10 @@ public class RoadCrewReplayTest {
 			System.out.println("  rcs2 observations     " + result.directed.size());
 			System.out.println("  rcs2 recall           "
 					+ Math.round(1000.0 * result.directedRecall()) / 10.0 + "%");
+			System.out.println("  streaming covered     "
+					+ result.diagnostics.coveredMatchedFixCount());
+			System.out.println("  streaming uncovered   "
+					+ result.diagnostics.uncoveredMatchedFixCount());
 			for (String name : new String[]{"roads_loaded", "load_truncated", "pipeline_reset",
 					"passages_started", "passages_emitted", "observations_created",
 					"observations_dropped_no_geometry", "observations_dropped_geometry_mismatch",
@@ -104,6 +108,12 @@ public class RoadCrewReplayTest {
 			Assert.assertEquals(0, result.diagnostics.counter("observations_dropped_no_geometry"));
 			Assert.assertEquals(0,
 					result.diagnostics.counter("observations_dropped_geometry_mismatch"));
+			Assert.assertTrue("the replay must finish its coverage summary",
+					result.diagnostics.isCoverageComplete());
+			Assert.assertEquals("matched = covered + uncovered",
+					result.diagnostics.matchedFixCount(),
+					result.diagnostics.coveredMatchedFixCount()
+							+ result.diagnostics.uncoveredMatchedFixCount());
 		} finally {
 			closeReaders();
 		}
@@ -145,6 +155,15 @@ public class RoadCrewReplayTest {
 		Assert.assertEquals("observations created",
 				off.diagnostics.counter("observations_created"),
 				on.diagnostics.counter("observations_created"));
+		Assert.assertEquals("covered matched fixes",
+				off.diagnostics.coveredMatchedFixCount(),
+				on.diagnostics.coveredMatchedFixCount());
+		Assert.assertEquals("uncovered matched fixes",
+				off.diagnostics.uncoveredMatchedFixCount(),
+				on.diagnostics.uncoveredMatchedFixCount());
+		Assert.assertEquals("longest uncovered run",
+				off.diagnostics.longestUncoveredRun(),
+				on.diagnostics.longestUncoveredRun());
 		Assert.assertEquals("every passage identical",
 				off.passageFingerprint(), on.passageFingerprint());
 		Assert.assertTrue("the trace recorded nothing while off", off.fixTrace.isEmpty());
