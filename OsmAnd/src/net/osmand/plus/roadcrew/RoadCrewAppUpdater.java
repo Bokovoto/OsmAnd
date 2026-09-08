@@ -24,6 +24,7 @@ import net.osmand.util.RoadCrewUpdateTransfer;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -424,13 +425,22 @@ public final class RoadCrewAppUpdater {
 
 	@NonNull
 	private static String readFully(@NonNull InputStream inputStream) throws Exception {
-		StringBuilder builder = new StringBuilder();
+		// The bytes are collected first and decoded once, at the end.
+		//
+		// Decoding each read on its own looks equivalent and is not: a Cyrillic
+		// letter is two bytes, and one that straddles a buffer boundary reaches
+		// two separate decoders, each seeing half a character and writing the
+		// replacement mark for it. That is how a driver came to read "ko??a" in
+		// What's New while every file here held clean Bulgarian - the text was
+		// never wrong, it was broken on the way in, at one offset of one long
+		// response, which is why exactly one word was damaged.
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		byte[] buffer = new byte[16 * 1024];
 		int read;
 		while ((read = inputStream.read(buffer)) != -1) {
-			builder.append(new String(buffer, 0, read, StandardCharsets.UTF_8));
+			bytes.write(buffer, 0, read);
 		}
-		return builder.toString();
+		return new String(bytes.toByteArray(), StandardCharsets.UTF_8);
 	}
 
 	public enum Phase { PERMISSION, CONNECTING, DOWNLOADING, VERIFYING, READY, FAILED, CANCELLING }
