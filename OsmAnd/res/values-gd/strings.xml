@@ -84,7 +84,7 @@
     <string name="help_article_personal_name">An dàta agam</string>
     <string name="help_article_personal_import_export_name">Steach-ghluais / Mach-ghluais</string>
     <string name="help_article_search_search_all_name">Lorg air fad</string>
-    <string name="help_article_start_with_name">Tòisich air RoadCrew</string>
+    <string name="help_article_start_with_name">Tòisich air OsmAnd</string>
     <string name="shared_string_setup">Seatadh</string>
     <string name="ltr_or_rtl_triple_combine_via_bold_point">%1$s • %2$s • %3$s</string>
     <string name="routing_attr_hazmat_category_usa_1_name">Stuthan-spreadhaidh</string>
@@ -316,7 +316,7 @@
     <string name="backup_promocode">Còd àrdachaidh</string>
     <string name="backup_version_history">Eachdraidh an dreucha</string>
     <string name="delete_version_history">Dubh às eachdraidh an dreucha</string>
-    <string name="restore_from_osmand_cloud">Aisig air ais bho sgòth RoadCrew</string>
+    <string name="restore_from_osmand_cloud">Aisig air ais bho sgòth OsmAnd</string>
     <string name="delete_all_confirmation">Tha, dubh às uile</string>
     <string name="backup_danger_zone">Sòn cunnartach</string>
     <string name="backup_conflicts">Còmhstrithean</string>
@@ -333,7 +333,7 @@
     <string name="elevation_profile">Pròifil àrdachaidh</string>
     <string name="shared_string_external">A-muigh</string>
     <string name="shared_string_offline">Far-loidhne</string>
-    <string name="osmand_cloud">Sgòth RoadCrew</string>
+    <string name="osmand_cloud">Sgòth OsmAnd</string>
     <string name="duration_ago">O chionn %1$s</string>
     <string name="last_backup">Lethbhreac mu dheireadh</string>
     <string name="backup_and_restore">Dèan lethbhreac-glèidhidh agus aisig air ais</string>
@@ -344,7 +344,7 @@
     <string name="contact_support">Cuir fios gu \'taic\'</string>
     <string name="trip_recording_save_and_continue">Sàbhail agus lean air</string>
     <string name="annual_subscription">Fo-sgrìobhadh bliadhnail</string>
-    <string name="osmand_live">RoadCrew Beò</string>
+    <string name="osmand_live">OsmAnd Beò</string>
     <string name="shared_string_route_line">Loidhne slighe</string>
     <string name="customize_route_line">Gnàthaich loidhne slighe</string>
     <string name="rendering_attr_natureReserves_name">Tèarmann nàdair</string>

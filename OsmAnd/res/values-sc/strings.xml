@@ -48,7 +48,7 @@
     <string name="lang_uk">Ucrainu</string>
     <string name="lang_vi">Vietnamita</string>
     <string name="lang_cy">Gallesu</string>
-    <string name="calculate_osmand_route_without_internet">Càrculu chene impreu de ìnternet de un\'àndala de RoadCrew</string>
+    <string name="calculate_osmand_route_without_internet">Càrculu chene impreu de ìnternet de un\'àndala de OsmAnd</string>
     <string name="gpx_option_calculate_first_last_segment">Càrcula un’àndala cun OsmAnd pro su primu e s’ùrtimu segmentu de sa caminera</string>
     <string name="keep_and_add_destination_point">Annanghe comente destinatzione imbeniente</string>
     <string name="route_descr_select_destination">Imposta sa destinatzione</string>
@@ -70,8 +70,8 @@
     <string name="android_19_location_disabled">Dae sa versione Android 4.4 (KitKat) in antis, sa cartella betza (%s) non si podet impreare prus. Cheres copiare totus sos datos in sa destinatzione noa\?
 \n Nota 1: sos datos antepostos tuos non at a èssere mudados (ma podent essere iscantzellados manualmente).
 \n Nota 2: in sa cartella noa non at a èssere possìbile cumpartzire sos datos intra OsmAnd e OsmAnd+.</string>
-    <string name="copying_osmand_files">Copiende sos datos de RoadCrew…</string>
-    <string name="calculate_osmand_route_gpx">Càrculu chene lìnia de s’àndala de RoadCrew</string>
+    <string name="copying_osmand_files">Copiende sos datos de OsmAnd…</string>
+    <string name="calculate_osmand_route_gpx">Càrculu chene lìnia de s’àndala de OsmAnd</string>
     <string name="app_mode_truck">Càmion</string>
     <string name="speech_rate_descr">Imposta sa lestresa de sa boghe de sintetizatzione vocale (TTS).</string>
     <string name="speech_rate">Lestresa de sa boghe</string>
@@ -235,7 +235,7 @@
     <string name="snap_to_road">Arrea in subra de sos caminos</string>
     <string name="interrupt_music_descr">Sos annùntzios vocales ponent sa mùsica in pàusa.</string>
     <string name="interrupt_music">Firma sa mùsica</string>
-    <string name="osmand_play_title_30_chars">RoadCrew Mapas &amp; Navigatzione</string>
+    <string name="osmand_play_title_30_chars">OsmAnd Mapas &amp; Navigatzione</string>
     <string name="osmand_short_description_80_chars">Ammustradore de mapas e navigadore cun mapas globales in lìnia e chene lìnia</string>
     <string name="edit_filter_save_as_menu_item">Sarva comente</string>
     <string name="poi_dialog_opening_hours">Aberi</string>
@@ -314,9 +314,9 @@
     <string name="avoid_ferries">Perunu traghetu</string>
     <string name="map_widget_transparent">Butones trasparentes</string>
     <string name="int_continuosly">Sighidu</string>
-    <string name="osmand_long_description_1000_chars">RoadCrew (OSM Automated Navigation Directions - Indicatziones de Navigatzione Automàticas) 
+    <string name="osmand_long_description_1000_chars">OsmAnd (OSM Automated Navigation Directions - Indicatziones de Navigatzione Automàticas) 
 \n 
-\nRoadCrew est un aplicatzione pro sa navigatzione chi impreat sa cantidade manna de datos a mitza aberta de OSM. Totu sas mapas (vetoriales o a tasseddos) podent èssere sarvadas in s’ischeda de su telèfono pro èssere impreadas chene lìnia. RoadCrew frunit fintzas sa funtzionalidade de su càrculu de s’àndala in lìnia (online) e chene lìnia (offline) cun una boghe de ghia, bortada pro bortada, incluida. 
+\nOsmAnd est un aplicatzione pro sa navigatzione chi impreat sa cantidade manna de datos a mitza aberta de OSM. Totu sas mapas (vetoriales o a tasseddos) podent èssere sarvadas in s’ischeda de su telèfono pro èssere impreadas chene lìnia. OsmAnd frunit fintzas sa funtzionalidade de su càrculu de s’àndala in lìnia (online) e chene lìnia (offline) cun una boghe de ghia, bortada pro bortada, incluida. 
 \n 
 \nCalicuna de sas caraterìsticas printzipales: 
 \n - Funtzionalidade intrea chene lìnia (Sarva sas mapas vetoriales o a tasseddos in sa memòria de su dispositivu) 
@@ -331,7 +331,7 @@
 \n - Alliniamentu de sa mapa regoladu sighinde sa diretzione o sa bùssola 
 \n - Indicadore de corsia optzionale, sinnalatzione de su lìmite de lestresa, boghes registradas e sintetizadas (TTS) 
 \n 
-\n Limitatziones de custa versione de badas de RoadCrew: 
+\n Limitatziones de custa versione de badas de OsmAnd: 
 \n - Nùmeru limitadu de iscarrigamentu de mapas 
 \n - Atzessu a Wikipedia pro sos PDI chene lìnia chi mancat 
 \n 
@@ -409,7 +409,7 @@
     <string name="gpxup_private">Privadu</string>
     <string name="asap">ASAP</string>
     <string name="share_route_as_gpx">Cumpartzi s’àndala comente documentu GPX</string>
-    <string name="share_route_subject">Àndala cumpartzida tràmite RoadCrew</string>
+    <string name="share_route_subject">Àndala cumpartzida tràmite OsmAnd</string>
     <string name="route_kl">Mantene sa manca e sighi</string>
     <string name="route_kr">Mantene sa destra e sighi</string>
     <string name="rendering_attr_noPolygons_name">Polìgonos</string>
@@ -422,10 +422,10 @@
     <string name="confirm_interrupt_download">Annullare s’iscarrigamentu\?</string>
     <string name="map_online_data">Mapas in lìnia e a tasseddos</string>
     <string name="shared_string_online_maps">Mapas in lìnia</string>
-    <string name="osmand_accessibility_description">Permitit de impreare sas funtzionalidades pro s\'atzessibilidade de su dispositivu a manera direta in RoadCrew. Custu fatzìlitat, pro nàrrere, sa modìfica de sa lestresa de sas boghes de sìntesi vocale, sa cunfiguratzione de su movimentu de s\'ischermu, s’impreu de una trackball pro s\'ismanniamentu o de un’interfache vocale pro cosas che s\'annùntziu de sa positzione tua.</string>
+    <string name="osmand_accessibility_description">Permitit de impreare sas funtzionalidades pro s\'atzessibilidade de su dispositivu a manera direta in OsmAnd. Custu fatzìlitat, pro nàrrere, sa modìfica de sa lestresa de sas boghes de sìntesi vocale, sa cunfiguratzione de su movimentu de s\'ischermu, s’impreu de una trackball pro s\'ismanniamentu o de un’interfache vocale pro cosas che s\'annùntziu de sa positzione tua.</string>
     <string name="plugins_screen">Estensiones</string>
     <string name="prefs_plugins">Estensiones</string>
-    <string name="debugging_and_development">Isvilupu de RoadCrew</string>
+    <string name="debugging_and_development">Isvilupu de OsmAnd</string>
     <string name="gpx_visibility_txt">Visibilidade</string>
     <string name="gpx_tags_txt">Etichetas</string>
     <string name="shared_string_description">Descritzione</string>
@@ -519,15 +519,15 @@
     <string name="poi_error_info_not_loaded">Informatziones relatas a su nodu non carrigadas</string>
     <string name="poi_error_io_error_template">Errore de I/O durante s’esecutzione de s’atzione {0}.</string>
     <string name="poi_action_succeded_template">Atzione {0} acabbada.</string>
-    <string name="osmand_development_plugin_description">Frunit funtzionalidades pro proare RoadCrew e depurare su còdighe suo: simulare àndalas de biàgiu, verificare su rendimentu de sa renderizatzione de s\'ischermu etz. S\'estensione no est netzessària pro s\'impreu normale de s\'aplicatzione.</string>
+    <string name="osmand_development_plugin_description">Frunit funtzionalidades pro proare OsmAnd e depurare su còdighe suo: simulare àndalas de biàgiu, verificare su rendimentu de sa renderizatzione de s\'ischermu etz. S\'estensione no est netzessària pro s\'impreu normale de s\'aplicatzione.</string>
     <string name="osmand_parking_warning_text">Una notìfica pro recuperare sa màchina est istada annangada a su tzeravallu/calendàriu tuo, e podet èssere modificada o bogada dae cue.</string>
     <string name="rendering_attr_noPolygons_description">Faghe divènnere transparentes totu sas caraterìsticas de sas àreas de su terrinu.</string>
     <string name="rendering_attr_hmRendered_description">Aumenta sa cantidade ammustrada de minujos de sa mapa.</string>
     <string name="osmand_rastermaps_plugin_description">Atzede a medas castas de màpas in lìnia (cussas connotas comente \"a tasseddos\" o \"raster\"), che a sos tasseddos pre-renderizados de OSM, a sas immàgines satellitares e a sos istratos pro punnas ispetziales comente sas mapas metereològicas, climàticas, geològicas, e umbradura de sos rilievos etc.
 \n
-\nTotu custas mapas si podent ammustrare comente mapa printzipale (de base) o comente un\'istratu se subrapositzione o de isfundu de un’àtera mapa de base (che a sas mapas vetoriales non in lìnia de RoadCrew). Unos cantos de sos elementos de sas mapas vetoriales si podent cuare, impreende su menù \'Cunfigura sa mapa\', pro fàghere in manera chi sas mapas de isfundu siant prus visìbiles.
+\nTotu custas mapas si podent ammustrare comente mapa printzipale (de base) o comente un\'istratu se subrapositzione o de isfundu de un’àtera mapa de base (che a sas mapas vetoriales non in lìnia de OsmAnd). Unos cantos de sos elementos de sas mapas vetoriales si podent cuare, impreende su menù \'Cunfigura sa mapa\', pro fàghere in manera chi sas mapas de isfundu siant prus visìbiles.
 \n
-\nIscàrriga sas mapas a tasseddos de manera direta o còpia·las comente archìvios de bases de datos SQLite in sa cartella de sos datos de RoadCrew impreende una de sas medas ainas de tertzas partes pro s\' ammanniamentu de sas mapas.</string>
+\nIscàrriga sas mapas a tasseddos de manera direta o còpia·las comente archìvios de bases de datos SQLite in sa cartella de sos datos de OsmAnd impreende una de sas medas ainas de tertzas partes pro s\' ammanniamentu de sas mapas.</string>
     <string name="osm_editing_plugin_description">Faghe contributziones a OpenStreetMap, una comunidade globale chi amministrat una mapa totale de su mundu e frunit datos a còdighe abertu e annoados a cada impreadore.
 \n
 \nPodes agatare istrutziones subra de comente modificare sa mapa in su situ nostru %1$s.</string>
@@ -563,7 +563,7 @@
     <string name="index_name_tts_voice">Indicatziones vocales (TTS-sintetizadas, preferìbiles)</string>
     <string name="amenity_type_user_defined">Definidu dae s’impitadore</string>
     <string name="osmand_service">Modalidade de isfundu</string>
-    <string name="osmand_service_descr">RoadCrew sighit a funtzionare in s’isfundu, cun s’ischermu mortu.</string>
+    <string name="osmand_service_descr">OsmAnd sighit a funtzionare in s’isfundu, cun s’ischermu mortu.</string>
     <string name="download_files_not_enough_space">Non b\'est memòria bastante pro iscarrigare %1$s MB (lìberos: %2$s).</string>
     <string name="download_files_question_space">Iscarrigare {0} documentu(os)\?
 \n{1} MB (de {2} MB) s\'ant a prenare.</string>
@@ -677,12 +677,12 @@
     <string name="application_dir">Cartella datos</string>
     <string name="build_installed">Build {0} installada ({1}).</string>
     <string name="downloading_build">Iscarrigamentu de sa versione…</string>
-    <string name="install_selected_build">Installare RoadCrew - {0} de {1} {2} MB ?</string>
+    <string name="install_selected_build">Installare OsmAnd - {0} de {1} {2} MB ?</string>
     <string name="auth_failed">Autorizatzione fallida</string>
     <string name="failed_op">fallidu</string>
-    <string name="loading_builds_failed">Carrigamentu de s\'elencu de sas versiones de RoadCrew fallidu</string>
-    <string name="loading_builds">Carrigamentu versiones RoadCrew…</string>
-    <string name="select_build_to_install">Ischerta sa versione de RoadCrew de installare</string>
+    <string name="loading_builds_failed">Carrigamentu de s\'elencu de sas versiones de OsmAnd fallidu</string>
+    <string name="loading_builds">Carrigamentu versiones OsmAnd…</string>
+    <string name="select_build_to_install">Ischerta sa versione de OsmAnd de installare</string>
     <string name="daynight_mode_day">Die</string>
     <string name="daynight_mode_night">Note</string>
     <string name="daynight_mode_auto">Arbèschida/intrinada</string>
@@ -707,7 +707,7 @@
     <string name="no_fav_to_save">Perunu preferidu de sarvare</string>
     <string name="shared_string_import">Importa</string>
     <string name="shared_string_share">Cumpartzi</string>
-    <string name="share_fav_subject">Preferidos cumpartzidos pro mèdiu de RoadCrew</string>
+    <string name="share_fav_subject">Preferidos cumpartzidos pro mèdiu de OsmAnd</string>
     <string name="error_occurred_loading_gpx">Impossìbile carrigare de su documentu GPX.</string>
     <string name="send_report">Imbia resumu</string>
     <string name="layer_route">Àndala</string>
@@ -716,7 +716,7 @@
     <string name="layer_map">Mitza mapa…</string>
     <string name="use_trackball_descr">Imprea una trackball pro mòere sa mapa.</string>
     <string name="use_trackball">Imprea sa trackball</string>
-    <string name="process_navigation_service">Servìtziu de navigatzione RoadCrew</string>
+    <string name="process_navigation_service">Servìtziu de navigatzione OsmAnd</string>
     <string name="int_seconds">segundos</string>
     <string name="int_min">min.</string>
     <string name="search_poi_filter">Filtru</string>
@@ -750,7 +750,7 @@
     <string name="transport_stops">firmadas</string>
     <string name="transport">Trasportos pùblicos</string>
     <string name="shared_string_ok">AB</string>
-    <string name="hello">Aplicatzione de navigatzione RoadCrew</string>
+    <string name="hello">Aplicatzione de navigatzione OsmAnd</string>
     <string name="favorite">Preferidu</string>
     <string name="shared_string_clear_all">Iscantzella totu</string>
     <string name="shared_string_history">Istòria</string>
@@ -1045,7 +1045,7 @@
     <string name="shared_string_logoff">Essi</string>
     <string name="rendering_value_walkingRoutesScopeOSMC_name">Casta (afiliatzione) de retze</string>
     <string name="rendering_value_walkingRoutesOSMC_name">OSMC</string>
-    <string name="shared_string_import2osmand">Importa in RoadCrew</string>
+    <string name="shared_string_import2osmand">Importa in OsmAnd</string>
     <string name="read_full_article">Leghe s\'artìculu intreu (in lìnia)</string>
     <string name="shared_string_show_details">Ammustra minujas</string>
     <string name="local_recordings_delete_all_confirm">Iscantzellare %1$d notas\?</string>
@@ -1104,7 +1104,7 @@
     <string name="rendering_value_translucent_red_name">Ruju translùcidu</string>
     <string name="rendering_value_default13_name">Predefinidu (13)</string>
     <string name="rendering_value_defaultTranslucentCyan_name">Predefinidu (cianu translùcidu)</string>
-    <string name="do_you_like_osmand">T\'agradat RoadCrew?</string>
+    <string name="do_you_like_osmand">T\'agradat OsmAnd?</string>
     <string name="user_hates_app_get_feedback">Narade·nos proite.</string>
     <string name="user_hates_app_get_feedback_long">Pro praghere faghe·nos ischire si tenes carchi cussìgiu.</string>
     <string name="no_updates_available">Perunu agiornamentu a disponimentu</string>
@@ -1210,7 +1210,7 @@
     <string name="lang_mk">Matzèdone</string>
     <string name="lang_fy">Frisonu otzidentale</string>
     <string name="lang_als">Albanesu (Tosk)</string>
-    <string name="share_osm_edits_subject">Modìficas OSM cumpartzidas pro mèdiu de RoadCrew</string>
+    <string name="share_osm_edits_subject">Modìficas OSM cumpartzidas pro mèdiu de OsmAnd</string>
     <string name="save_poi_without_poi_type_message">Sarvare su PDI chene casta\?</string>
     <string name="shared_string_location">Positzione</string>
     <string name="context_menu_item_delete_waypoint">Iscantzellare su puntu de coladòrgiu GPX?</string>
@@ -1263,7 +1263,7 @@
     <string name="only_download_over_wifi">Iscàrriga petzi cun su WiFi</string>
     <string name="live_update">Agiornamentos in tempus reale</string>
     <string name="update_now">Agiorna como</string>
-    <string name="missing_write_external_storage_permission">RoadCrew no est autorizada a impreare s’ischeda de memòria</string>
+    <string name="missing_write_external_storage_permission">OsmAnd no est autorizada a impreare s’ischeda de memòria</string>
     <string name="no_location_permission">Fruni su permissu a sos datos de positzione.</string>
     <string name="no_camera_permission">Fruni su permissu a sa fotocàmera.</string>
     <string name="no_microphone_permission">Fruni su permissu a su micròfonu.</string>
@@ -1387,7 +1387,7 @@
     <string name="map_widget_search">Chirca</string>
     <string name="city_type_district">Distretu</string>
     <string name="search_categories">Categorias</string>
-    <string name="share_history_subject">cumpartzidu pro mèdiu de RoadCrew</string>
+    <string name="share_history_subject">cumpartzidu pro mèdiu de OsmAnd</string>
     <string name="lang_hsb">Sorabu (superiore)</string>
     <string name="show_something_on_map">Ammustra %1$s in sa mapa</string>
     <string name="dist_away_from_my_location">Chirca a %1$s dae inoghe</string>
@@ -1403,7 +1403,7 @@
     <string name="si_mi_meters">Mìllias/metros</string>
     <string name="search_another_country">Issèbera un\'àtera regione</string>
     <string name="search_map">Chirchende sas mapas…</string>
-    <string name="first_usage_wizard_desc">Lassa agatare sa positzione tua a RoadCrew e faghe·ti impositare sas mapas de iscarrigare pro cussa regione.</string>
+    <string name="first_usage_wizard_desc">Lassa agatare sa positzione tua a OsmAnd e faghe·ti impositare sas mapas de iscarrigare pro cussa regione.</string>
     <string name="location_not_found">Positzione non agatada</string>
     <string name="no_inet_connection">Peruna connessione a ìnternet</string>
     <string name="search_location">Chirchende sa positzione…</string>
@@ -1555,12 +1555,12 @@
     <string name="routing_attr_driving_style_balance_name">Bilantziadu</string>
     <string name="routing_attr_driving_style_safety_name">Privilègia sos caminos segundàrios</string>
     <string name="routing_attr_relief_smoothness_factor_name">Ischerta su valore de variatzione de s\'artària</string>
-    <string name="full_version_thanks">Gràtzias pro àere comporadu sa versione a pagamentu de RoadCrew.</string>
+    <string name="full_version_thanks">Gràtzias pro àere comporadu sa versione a pagamentu de OsmAnd.</string>
     <string name="do_not_show_startup_messages">No ammustres messàgios a s\'allughìngiu</string>
     <string name="parking_options">Issèberos pro sos parchègios</string>
     <string name="right_side_navigation">Tzirculatzione a destra</string>
     <string name="shared_string_automatic">Automàtica</string>
-    <string name="osmand_extended_description_part1">RoadCrew (OSM Automated Navigation Directions) est un\'aplicatzione pro sa consultatzione de mapas e sa navigatzione chi impreat sos datos lìberos, vàlidos pro totu su mundu, e de calidade arta, de OSM. 
+    <string name="osmand_extended_description_part1">OsmAnd (OSM Automated Navigation Directions) est un\'aplicatzione pro sa consultatzione de mapas e sa navigatzione chi impreat sos datos lìberos, vàlidos pro totu su mundu, e de calidade arta, de OSM. 
 \n 
 \nImprea sa ghia vocale e sas indicatziones in s\'ischermu, càstia sos PDI (puntos de interesse), crea e manìgia rastas GPX, abìlita sa visualizatzione de sas curvas de livellu e sos datos de s\'artària (pro mèdiu de un\'estensione), issèbera sa modalidade intre ghia pro sa màchina, sas bitzicletas e a pede, agiuda a megioare sas mapas OSM e àteru meda.</string>
     <string name="osmand_extended_description_part2">Navigatzione GPS 
@@ -1746,7 +1746,7 @@
     <string name="mapillary_image">Immàgine de Mapillary</string>
     <string name="distance_moving">Distàntzia curreta</string>
     <string name="shared_string_permissions">Autorizatziones</string>
-    <string name="import_gpx_failed_descr">Importatzione de su documentu fallida. Pro praghere verìfica chi RoadCrew tèngiat su permissu de lu lèghere.</string>
+    <string name="import_gpx_failed_descr">Importatzione de su documentu fallida. Pro praghere verìfica chi OsmAnd tèngiat su permissu de lu lèghere.</string>
     <string name="map_widget_ruler_control">Righighedda radiale</string>
     <string name="shared_string_reload">Torra a carrigare</string>
     <string name="mapillary_menu_descr_tile_cache">Torra a carrigare sos tasseddos pro bìdere datos agiornados.</string>
@@ -1784,7 +1784,7 @@
     <string name="add_point_before">Annanghe unu puntu in antis</string>
     <string name="add_point_after">Annanghe unu puntu a pustis</string>
     <string name="shared_string_options">Optziones</string>
-    <string name="measurement_tool_snap_to_road_descr">RoadCrew at a connètere sos puntos cun sas àndalas pro su profilu isseberadu.</string>
+    <string name="measurement_tool_snap_to_road_descr">OsmAnd at a connètere sos puntos cun sas àndalas pro su profilu isseberadu.</string>
     <string name="choose_navigation_type">Issèbera su profilu de navigatzione</string>
     <string name="empty_state_favourites">Annanghe preferidos</string>
     <string name="empty_state_favourites_desc">Importa preferidos o annanghe·los pro mèdiu de marcadores in sa mapa.</string>
@@ -1985,7 +1985,7 @@
     <string name="daily_map_updates">Agiornamentos ora in ora de sas mapas</string>
     <string name="in_app_purchase_desc">Pagamentu ùnicu</string>
     <string name="wikivoyage_travel_guide">Ghias de biàgiu</string>
-    <string name="wikivoyage_travel_guide_descr">Ghias pro sos logos prus interessantes de su mundu, in intro de RoadCrew, chi non tenent bisòngiu de impreare una connessione a ìnternet.</string>
+    <string name="wikivoyage_travel_guide_descr">Ghias pro sos logos prus interessantes de su mundu, in intro de OsmAnd, chi non tenent bisòngiu de impreare una connessione a ìnternet.</string>
     <string name="travel_card_update_descr">Datos noos de Wikivoyage a disponimentu, agiorna·los pro los bìdere.</string>
     <string name="travel_card_download_descr">Iscàrriga sas ghias de biàgiu de Wikivoyage pro lèghere artìculos a pitzu de logos in totu su mundu chene tènnere una connessione a ìnternet.</string>
     <string name="update_is_available">Agiornamentu a disponimentu</string>
@@ -2004,7 +2004,7 @@
     <string name="wiki_article_not_found">Artìculu non agatadu</string>
     <string name="how_to_open_wiki_title">Comente abèrrere sos artìculos de Wikipedia?</string>
     <string name="popular_destinations">Destinatziones popolares</string>
-    <string name="osmand_team">Grupu de traballu de RoadCrew</string>
+    <string name="osmand_team">Grupu de traballu de OsmAnd</string>
     <string name="maps_you_need_descr">Bidende sos artìculos chi as sarvadu in sos sinnalibros, ti cunsigiamus de iscarrigare custas mapas:</string>
     <string name="maps_you_need">Mapas cunsigiadas</string>
     <string name="shared_string_restart">Torra a allùghere s\'aplicatzione</string>
@@ -2019,7 +2019,7 @@
     <string name="light_rs_render_descr">Istile simple pro sa navigatzione in màchina. Gentile pro sos ogros in sa modalidade noturna cun lìnias de livellu, caminos cun cuntrastu artu in colore arantzu, ogetos de mapa secondàrios minimados.</string>
     <string name="topo_render_descr">Pro passigiadas, escursionismu o tziclismu in sa natura. Leghìbile a s\'àera aberta. Caminos e ogetos naturales in cuntrastu artu, castas diferentes de àndalas, curvas de livellu cun impostatziones avantzadas, minujas in prus. S\'integridade de sa superfìtzie ti permitit de distìnghere sa calidade de sos caminos. Peruna modalidade noturna.</string>
     <string name="default_render_descr">Istile de impreu generale. Sas tzitades cun un\'arta densidade de populatzione benint ammustradas in manera crara. Curvas de livellu, àndalas, calidades de sas superfìtzies, restritziones de atzessu, iscudos de sos caminos, rapresentatzione de sas camineras sighende s\'iscala SAC, elementos pro sos isports de abba durche.</string>
-    <string name="touring_view_render_descr">Istile pro su turismu cun cuntrastu artu e fatu a sa minuda. Incluit totu sas optziones de s\'istile predefinidu de RoadCrew, ammustrende totu sas minujas chi est possìbile ammustrare, in particulare totu sos caminos, sas camineras, e sas àteras maneras de biagiare. Faghet una distintzione crara intre totu sas castas de caminu, in una manera sìmile a medas atlantes pro su turismu. Adatu pro s\'impreu a de die, a de note e a s\'àera aberta.</string>
+    <string name="touring_view_render_descr">Istile pro su turismu cun cuntrastu artu e fatu a sa minuda. Incluit totu sas optziones de s\'istile predefinidu de OsmAnd, ammustrende totu sas minujas chi est possìbile ammustrare, in particulare totu sos caminos, sas camineras, e sas àteras maneras de biagiare. Faghet una distintzione crara intre totu sas castas de caminu, in una manera sìmile a medas atlantes pro su turismu. Adatu pro s\'impreu a de die, a de note e a s\'àera aberta.</string>
     <string name="shared_string_bookmark">Sinnalibru</string>
     <string name="off_road_render_descr">Pro sa ghia foras de sos caminos basada in s\'istile \'Topo\' (topogràficu) e pro s\'impreu cun mapas satellitares birdes comente suta-istratu. Caraterìsticas printzipales: grussesa de sos caminos printzipales minimada, grussesa de sas rastas, sas camineras, de sas pistas tziclàbiles e de sas àteras àndalas ismanniada.</string>
     <string name="unirs_render_descr">Modìfica de s\'istile predefinidu pro ismanniare su cuntrastu pro sos caminos pedonales e sas pistas tziclàbiles. Impreat sos colores de sa versione betza de Mapnik.</string>
@@ -2039,7 +2039,7 @@
     <string name="search_no_results_feedback">Perunu risultadu de chirca\? 
 \nFruni·nos s\'opinione tua</string>
     <string name="test_voice_desrc">Toca unu butone e ascurta s\'annùntziu vocale chi li currispondet pro intendere si mancat o si est isballiadu</string>
-    <string name="ask_for_location_permission">Pro praghere fruni a RoadCrew s\'atzessu a sa positzione pro sighire.</string>
+    <string name="ask_for_location_permission">Pro praghere fruni a OsmAnd s\'atzessu a sa positzione pro sighire.</string>
     <string name="rendering_value_black_name">Nieddu</string>
     <string name="more_transport_on_stop_hint">In custa firmada bi sunt àteros mèdios de trasportu a disponimentu.</string>
     <string name="search_street">Chirca una carrera</string>
@@ -2060,7 +2060,7 @@
     <string name="mapillary_menu_title_pano">Ammustra petzi immàgines a 360°</string>
     <string name="shared_string_launch">Allughe</string>
     <string name="lang_gn_py">Guaraní</string>
-    <string name="quick_action_switch_day_night_descr">Unu butone pro colare intre sas modalidade pro sa die e cussa pro sa note de RoadCrew.</string>
+    <string name="quick_action_switch_day_night_descr">Unu butone pro colare intre sas modalidade pro sa die e cussa pro sa note de OsmAnd.</string>
     <string name="add_destination_point">Imposta una destinatzione</string>
     <string name="cubic_m">m³</string>
     <string name="metric_ton">t</string>
@@ -2147,7 +2147,7 @@
     <string name="rendering_attr_highway_class_path_name">Caminera</string>
     <string name="rendering_attr_highway_class_cycleway_name">Pista tziclàbile</string>
     <string name="rendering_attr_undefined_name">Non dessinidu</string>
-    <string name="public_transport_warning_descr_blog">Leghe de prus a pitzu de su càrculu de s\'àndala de RoadCrew in su blog nostru.</string>
+    <string name="public_transport_warning_descr_blog">Leghe de prus a pitzu de su càrculu de s\'àndala de OsmAnd in su blog nostru.</string>
     <string name="public_transport_warning_title">Sa navigatzione cun sos trasportos pùblicos, in custu momentu, est in fase de proa beta. Bi diant pòdere èssere errores e impretzisiones.</string>
     <string name="add_intermediate">Annaghe unu puntu de coladòrgiu</string>
     <string name="avoid_pt_types_descr">Issèbera sas castas de trasportu pùblicu de istransire pro sa navigatzione:</string>
@@ -2176,7 +2176,7 @@
     <string name="files_failed">Còpia de %1$d documentos fallida (%2$s).</string>
     <string name="dont_move_maps">Non tràmudes</string>
     <string name="public_transport_ped_route_title">Cust\'àndala a pede est pagu prus o mancu de %1$s, e diat pòdere èssere prus lestra de su trasportu pùblicu</string>
-    <string name="public_transport_no_route_title">A dolu mannu RoadCrew no at pòtiu agatare un\'àndala adata a sas impostatziones tuas.</string>
+    <string name="public_transport_no_route_title">A dolu mannu OsmAnd no at pòtiu agatare un\'àndala adata a sas impostatziones tuas.</string>
     <string name="public_transport_try_ped">Proa sa navigatzione a pede.</string>
     <string name="public_transport_try_change_settings">Proa a cambiare sas impostatziones.</string>
     <string name="public_transport_calc_pedestrian">Càrcula un\'àndala a pede</string>
@@ -2185,15 +2185,15 @@
     <string name="coordinates_widget">Widget de sas coordinatas</string>
     <string name="rate_dialog_descr">Pro praghere cumpartzi s\'opinione tua e vota su traballu nostru in Google Play.</string>
     <string name="shared_string_privacy_policy">Polìtica de riservadesa</string>
-    <string name="help_us_make_osmand_better">Agiuda·nos a megiorare RoadCrew</string>
-    <string name="make_osmand_better_descr">Permiti a RoadCrew de collire e protzessare datos anònimos a pitzu de s\'impreu de s\'aplicatzione. Non collimus o sarvamus datos a pitzu de sa positzione tua, o a pitzu de cale si siat positzione chi pompias in sa mapa. 
+    <string name="help_us_make_osmand_better">Agiuda·nos a megiorare OsmAnd</string>
+    <string name="make_osmand_better_descr">Permiti a OsmAnd de collire e protzessare datos anònimos a pitzu de s\'impreu de s\'aplicatzione. Non collimus o sarvamus datos a pitzu de sa positzione tua, o a pitzu de cale si siat positzione chi pompias in sa mapa. 
 \n 
 \nMuda sas cunfiguratziones in cale si siat momentu in Impostatziones &gt; Riservadesa e Seguresa.</string>
     <string name="choose_data_to_share">Issèbera sa casta de datos chi cheres cumpartzire:</string>
     <string name="downloaded_maps">Mapas iscarrigadas</string>
     <string name="visited_screens">Ischermos visitados</string>
     <string name="downloaded_maps_collect_descr">Agiuda·nos a cumprèndere sa popularidade de sas mapas regiones e istados.</string>
-    <string name="visited_screens_collect_descr">Agiuda·nos a cumprèndere sa popularidade de sas funtzionalidades de RoadCrew.</string>
+    <string name="visited_screens_collect_descr">Agiuda·nos a cumprèndere sa popularidade de sas funtzionalidades de OsmAnd.</string>
     <string name="privacy_and_security_change_descr">Toca \"Permite\" si atzetas sa %1$s nostra</string>
     <string name="settings_privacy_and_security">Riservadesa e seguresa</string>
     <string name="settings_privacy_and_security_desc">Ischerta sos datos de cumpartzire</string>
@@ -2215,7 +2215,7 @@
     <string name="profile_alert_need_profile_name_title">Inserta su nùmene de su profilu</string>
     <string name="profile_alert_need_profile_name_msg">In antis depes dislindare unu nùmene de profilu.</string>
     <string name="profile_alert_duplicate_name_msg">B\'at giai unu profilu cun custu nùmene</string>
-    <string name="profile_alert_cant_delete_base">Non podes iscantzellare sos profilos de base de RoadCrew</string>
+    <string name="profile_alert_cant_delete_base">Non podes iscantzellare sos profilos de base de OsmAnd</string>
     <string name="profile_alert_delete_title">Iscantzella su profilu</string>
     <string name="profile_alert_delete_msg">Iscantzellare su profilu \"%s\"\?</string>
     <string name="select_base_profile_dialog_title">Ischerta unu profilu cun su cale incumentzare</string>
@@ -2230,7 +2230,7 @@
     <string name="routing_profile_geocoding">Geocodìfica</string>
     <string name="routing_profile_straightline">Lìnia dereta</string>
     <string name="routing_profile_broutrer">BRouter (non in lìnia)</string>
-    <string name="osmand_default_routing">Càrculu de s\'àndala de RoadCrew</string>
+    <string name="osmand_default_routing">Càrculu de s\'àndala de OsmAnd</string>
     <string name="special_routing_type">Càrculu de s\'àndala ispetziale</string>
     <string name="third_party_routing_type">Càrculu de s\'àndala de tertzas partes</string>
     <string name="application_profiles">Profilos de s\'aplicatzione</string>
@@ -2257,7 +2257,7 @@
     <string name="routing_attr_difficulty_preference_description">Preferi àndalas de custa dificultade, fintzas si colare in pistas prus difìtziles o prus fàtziles est galu possìbile si est prus curtzu.</string>
     <string name="routing_attr_freeride_policy_name">In foras de pista</string>
     <string name="routing_attr_freeride_policy_description">Sas àndalas e sos coladòrgios in foras de pista (\'freeride\' e \'offpiste\') non sunt ufitziales. De sòlitu non sunt curados, non benint manutentados e non benint compidados su sero. Intra a perìgulu e arriscu tuo.</string>
-    <string name="process_downloading_service">Servìtziu de iscarrigamentu de RoadCrew</string>
+    <string name="process_downloading_service">Servìtziu de iscarrigamentu de OsmAnd</string>
     <string name="shared_string_color_magenta">Magenta</string>
     <string name="shared_string_icon">Icona</string>
     <string name="press_again_to_change_the_map_orientation">Torra a tocare pro mudare s\'orientamentu de sa mapa</string>
@@ -2267,7 +2267,7 @@
     <string name="default_speed_setting_descr">Muda sas impostatziones predefinidas de lestresa</string>
     <string name="new_profile">Profilu nou</string>
     <string name="shared_string_crash">Serradura arrepente</string>
-    <string name="last_launch_crashed">S\'ùrtima sessione de RoadCrew s\'est serrada. Pro praghere agiuda·nos a megiorare RoadCrew cumpartzende su messàgiu de errore.</string>
+    <string name="last_launch_crashed">S\'ùrtima sessione de OsmAnd s\'est serrada. Pro praghere agiuda·nos a megiorare OsmAnd cumpartzende su messàgiu de errore.</string>
     <string name="app_mode_ufo">OVNI (UFO)</string>
     <string name="release_3_4">• Profilos de s\'aplicatzione: crea unu profilu personalizadu pro sas netzessidades tuas, cun un\'icona e unu colore personalizados
 \n
@@ -2370,7 +2370,7 @@
     <string name="screen_alerts_descr">Sas notìficas benint ammustradas in s\'àngulu in bassu a manca durante sa navigatzione.</string>
     <string name="switch_profile">Muda de profilu</string>
     <string name="osmand_settings_descr">Tenet efetu pro totu s\'aplicatzione</string>
-    <string name="osmand_settings">Impostatziones de RoadCrew</string>
+    <string name="osmand_settings">Impostatziones de OsmAnd</string>
     <string name="copy_from_other_profile">Còpia dae un\'àteru profilu</string>
     <string name="map_during_navigation_info">Mapa durante sa navigatzione</string>
     <string name="map_during_navigation">Mapa durante sa navigatzione</string>
@@ -2387,12 +2387,12 @@
     <string name="shared_string_by_default">Predefinidu</string>
     <string name="plugins_settings">Impostatziones de s\'estensione</string>
     <string name="download_detailed_map">Iscàrriga sa mapa de %s fata a sa minuda pro pompiare cust\'àrea.</string>
-    <string name="change_data_storage_full_description">Tramudare sos datos de RoadCrew in sa destinatzione noa\?
+    <string name="change_data_storage_full_description">Tramudare sos datos de OsmAnd in sa destinatzione noa\?
 \n%1$s &gt; %2$s</string>
     <string name="enter_path_to_folder">Inserta s\'àndala pro sa cartella</string>
     <string name="shared_string_select_folder">Cartella…</string>
-    <string name="paste_Osmand_data_folder_path">Incolla s\'àndala pro sa cartella cun sos datos de RoadCrew</string>
-    <string name="change_osmand_data_folder_question">Mudare sa cartella de sos datos de RoadCrew\?</string>
+    <string name="paste_Osmand_data_folder_path">Incolla s\'àndala pro sa cartella cun sos datos de OsmAnd</string>
+    <string name="change_osmand_data_folder_question">Mudare sa cartella de sos datos de OsmAnd\?</string>
     <string name="move_maps_to_new_destination">Tràmuda a sa destinatzione noa</string>
     <string name="change_data_storage_folder">Muda sa cartella de archiviatzione</string>
     <string name="rendering_attr_piste_type_snow_park_name">Parcu de nie</string>
@@ -2422,7 +2422,7 @@
     <string name="rendering_attr_piste_difficulty_aerialway_name">Isciovia</string>
     <string name="rendering_attr_piste_difficulty_connection_name">Connessione</string>
     <string name="shared_string_calculate">Càrcula</string>
-    <string name="shared_string_osmand_usage">Impreu de RoadCrew</string>
+    <string name="shared_string_osmand_usage">Impreu de OsmAnd</string>
     <string name="shared_string_tiles">Tasseddos</string>
     <string name="shared_string_maps">Mapas</string>
     <string name="shared_string_memory_tb_desc">%1$s TB</string>
@@ -2496,7 +2496,7 @@
     <string name="desert_render_descr">Pro sos desertos e sas àteras àreas cun una populatzione minore. Prus a sa minuda.</string>
     <string name="delete_profiles_descr">Incarchende \'Àplica\' as a iscantzellare definitivamente sos profilos rimòvidos.</string>
     <string name="select_color">Ischerta su colore</string>
-    <string name="edit_profiles_descr">Non podes iscantzellare sos profilos predefinidos de RoadCrew, ma los podes disabilitare (in s\'ischermada anteposta), o los podes mòvere a giosso.</string>
+    <string name="edit_profiles_descr">Non podes iscantzellare sos profilos predefinidos de OsmAnd, ma los podes disabilitare (in s\'ischermada anteposta), o los podes mòvere a giosso.</string>
     <string name="edit_profiles">Muda sos profilos</string>
     <string name="profile_appearance">Aparèntzia de su profilu</string>
     <string name="choose_icon_color_name">Icona, colore e nùmene</string>
@@ -2519,7 +2519,7 @@
     <string name="live_monitoring_descr">Permitit de cumpartzire sa positzione atuale impreende sa registratzione de su biàgiu.</string>
     <string name="live_monitoring">Arrastamentu in lìnia</string>
     <string name="save_track_logging_accuracy">Pretzisione de registratzione</string>
-    <string name="tracks_view_descr">Podes agatare totu sas rastas registradas tuas in %1$s o in sa cartella de RoadCrew.</string>
+    <string name="tracks_view_descr">Podes agatare totu sas rastas registradas tuas in %1$s o in sa cartella de OsmAnd.</string>
     <string name="multimedia_notes_view_descr">Sas notas tuas sunt in %1$s.</string>
     <string name="video_notes">Vìdeo-notas</string>
     <string name="photo_notes">Foto-notas</string>
@@ -2615,12 +2615,12 @@
     <string name="shared_string_nothing_selected">Nudda de ischertadu</string>
     <string name="shared_string_quick_actions">Atziones lestras</string>
     <string name="shared_string_profiles">Profilos</string>
-    <string name="listed_exist">Sos %1$s allistados esistint giai in RoadCrew.</string>
+    <string name="listed_exist">Sos %1$s allistados esistint giai in OsmAnd.</string>
     <string name="replace_all_desc">Sos elementos atuales ant a èssere remplasados cun elementos dae su documentu</string>
     <string name="replace_all">Remplasa totu</string>
     <string name="keep_both">Mantene ambos</string>
     <string name="keep_both_desc">Sos elementos importados ant a èssere annànghidos cun unu prefissu</string>
-    <string name="import_duplicates_description">RoadCrew tenet giai elementos cun su matessi nùmene de cussos importados.
+    <string name="import_duplicates_description">OsmAnd tenet giai elementos cun su matessi nùmene de cussos importados.
 \n
 \nIscherta un\'atzione.</string>
     <string name="import_duplicates_title">Unos cantos elementos esistint giai</string>
@@ -2633,7 +2633,7 @@
     <string name="clear_recorded_data_warning">Iscantzellare sos datos registrados\?</string>
     <string name="importing_from">Importende datos dae %1$s</string>
     <string name="shared_string_importing">Importende</string>
-    <string name="checking_for_duplicate_description">RoadCrew analizat %1$s pro agatare dopiones cun sos elementos chi esistint giai in s\'aplicatzione.
+    <string name="checking_for_duplicate_description">OsmAnd analizat %1$s pro agatare dopiones cun sos elementos chi esistint giai in s\'aplicatzione.
 \n
 \nBi diat pòdere chèrrere unu pagu de tempus.</string>
     <string name="items_added">Elementos annànghidos</string>
@@ -2666,7 +2666,7 @@
     <string name="replace_point_descr">Remplasa un\'àteru puntu cun custu.</string>
     <string name="app_mode_ski_touring">Iscì-alpinismu</string>
     <string name="app_mode_ski_snowmobile">Motoislita</string>
-    <string name="custom_osmand_plugin">Estensione de RoadCrew personalizada</string>
+    <string name="custom_osmand_plugin">Estensione de OsmAnd personalizada</string>
     <string name="changes_applied_to_profile">Modìficas aplicadas a su profilu \'%1$s\'.</string>
     <string name="settings_item_read_error">Leghidura dae \'%1$s\' fallida.</string>
     <string name="settings_item_write_error">Iscritura in \'%1$s\' fallida.</string>
@@ -2730,7 +2730,7 @@
     <string name="search_poi_types">Chirca castas de PDI</string>
     <string name="search_poi_types_descr">Cumbina castas de PDI de catogorias diferentes. Incarca su butone pro ischertare totu, incarca in s\'ala a manca pro ischertare una categoria.</string>
     <string name="ltr_or_rtl_combine_via_slash_with_space">%1$s / %2$s</string>
-    <string name="tracker_item">Arrastadore de RoadCrew</string>
+    <string name="tracker_item">Arrastadore de OsmAnd</string>
     <string name="quick_action_item">Atzione lestra</string>
     <string name="map_markers_item">Marcadores mapa</string>
     <string name="favorites_item">Preferidos</string>
@@ -2785,11 +2785,11 @@
 \nPodes cuntatare s\'iscuadra de suportu pro investigare.</string>
     <string name="system_screen_timeout_descr">Istudat s\'ischermu sighende sas impostatziones de sistema.</string>
     <string name="system_screen_timeout">Imprea su tempus de istudadura de sistema</string>
-    <string name="turn_screen_on_descr">Ischerta sas optziones de allughidura de s\'ischermu (assegura·ti chi RoadCrew siat in primu pranu cando ses blochende su dispositivu):</string>
+    <string name="turn_screen_on_descr">Ischerta sas optziones de allughidura de s\'ischermu (assegura·ti chi OsmAnd siat in primu pranu cando ses blochende su dispositivu):</string>
     <string name="turn_screen_on_navigation_instructions_descr">Cada indicatzione de navigatzione at a allùghere s\'ischermu.</string>
     <string name="turn_screen_on_navigation_instructions">Indicatziones de navigatzione</string>
     <string name="turn_screen_on_power_button_disabled">Disabilitadu. Tenet bisòngiu de \'Mantene s\'ischermu allutu\' in suta de \'Tempus de allughidura\'.</string>
-    <string name="turn_screen_on_power_button_descr">Incarchende su butone de allughidura de su dispositivu as a allùghere s\'ischermu cun RoadCrew in subra a s\'ischermada de blocu.</string>
+    <string name="turn_screen_on_power_button_descr">Incarchende su butone de allughidura de su dispositivu as a allùghere s\'ischermu cun OsmAnd in subra a s\'ischermada de blocu.</string>
     <string name="turn_screen_on_wake_time_descr">Issèbera sa longària de istudadura de s\'ischermu a pustis de s\'allughidura. (\"%1$s\" non ponet tempus perunu.)</string>
     <string name="map_source_zoom_levels">Imposta unu livellu de ismanniamentu mìnimu e unu màssimu pro ammustrare o carrigare sa mapa in lìnia.</string>
     <string name="expire_time_descr">Sos tasseddos ant a èssere torrados a carrigare a pustis de su nùmeru de minutos dillindados. Lassa custu campu bòidu pro no annoare mai sos tasseddos pro custa mitza. 
@@ -2830,7 +2830,7 @@
 \n
 \nIscherta %1$s e as a retzire avisos pro sos autovelox.
 \n
-\nIscherta %2$s. Totu sos datos relativos a sos autovelox: avisos, notìficas e PDI ant a èssere iscantzellados finas a cando RoadCrew no at a èssere torradu a installare dae nou.</string>
+\nIscherta %2$s. Totu sos datos relativos a sos autovelox: avisos, notìficas e PDI ant a èssere iscantzellados finas a cando OsmAnd no at a èssere torradu a installare dae nou.</string>
     <string name="speed_cameras_alert">Sos avisos pro sos autovelox sunt proibidos dae sa lege in unos cantos istados.</string>
     <string name="keep_active">Mantene ativu</string>
     <string name="shared_string_uninstall">Disinstalla</string>
@@ -2891,7 +2891,7 @@
     <string name="show_gpx">Rastas</string>
     <string name="context_menu_item_add_waypoint">Annanghe unu puntu de coladòrgiu a sa rasta</string>
     <string name="map_widget_monitoring">Registratzione de su biàgiu</string>
-    <string name="disable_recording_once_app_killed_descrp">Sa registratzione de sa rasta s\'at a pònnere in pàusa cando RoadCrew at a èssere istudadu (pro mèdiu de sas aplicatziones reghentes). (S\'indicatore de sa modalidade RoadCrew de isfundu at a iscumpàrrere dae sa barra de notìfica de Android.)</string>
+    <string name="disable_recording_once_app_killed_descrp">Sa registratzione de sa rasta s\'at a pònnere in pàusa cando OsmAnd at a èssere istudadu (pro mèdiu de sas aplicatziones reghentes). (S\'indicatore de sa modalidade OsmAnd de isfundu at a iscumpàrrere dae sa barra de notìfica de Android.)</string>
     <string name="gpx_monitoring_stop">Pone in pàusa sa registratzione de su biàgiu</string>
     <string name="gpx_monitoring_start">Sighi cun sa registratzione de su biàgiu</string>
     <string name="marker_save_as_track">Sarva comente documentu de rasta</string>
@@ -3027,7 +3027,7 @@
 \n • Suportu pro colores personalizados pro sos preferidos e sos puntos de coladòrgiu de sas rastas
 \n
 \n</string>
-    <string name="profile_type_osmand_string">Profilu de RoadCrew</string>
+    <string name="profile_type_osmand_string">Profilu de OsmAnd</string>
     <string name="profile_type_user_string">Profilu de s\'impreadore</string>
     <string name="reverse_all_points">Fùrria totu sos puntos</string>
     <string name="profile_by_default_description">Ischerta su profilu de impreare a s\'allughìngiu de s\'aplicatzione.</string>
@@ -3157,8 +3157,8 @@
 \n
 \n</string>
     <string name="in_grace_period">In perìodu de gràtzia</string>
-    <string name="osmand_live">RoadCrew in direta</string>
-    <string name="trip_recording_logging_interval_info">S\'intervallu de registratzione impostat sa frecuèntzia cun sa cale RoadCrew at a pedire sos datos de sa positzione atuale.</string>
+    <string name="osmand_live">OsmAnd in direta</string>
+    <string name="trip_recording_logging_interval_info">S\'intervallu de registratzione impostat sa frecuèntzia cun sa cale OsmAnd at a pedire sos datos de sa positzione atuale.</string>
     <string name="trip_recording_show_start_dialog_setting">Si est disabilitadu sa registratzione at a incumintzare immediatamente a pustis de su tocu in subra de su widget o de s\'elementu de su menù, brinchende sa ventanedda de diàlogu de cunfirma.</string>
     <string name="customize_route_line">Personaliza sa lìnia de s\'àndala</string>
     <string name="shared_string_route_line">Lìnia de s\'àndala</string>
@@ -3183,7 +3183,7 @@
     <string name="output">Essida</string>
     <string name="shared_string_feet">pees</string>
     <string name="srtm_unit_format">Unidade de medida pro sas curvas de livellu</string>
-    <string name="srtm_download_list_help_message">RoadCrew frunit datos de sas curvas de livellu in metros e in pees. As a dèpere torrare a iscarrigare su documentu pro mudare su formadu.</string>
+    <string name="srtm_download_list_help_message">OsmAnd frunit datos de sas curvas de livellu in metros e in pees. As a dèpere torrare a iscarrigare su documentu pro mudare su formadu.</string>
     <string name="srtm_download_single_help_message">Pro praghere ischerta sa variante. As a dèpere torrare a iscarrigare su documentu pro mudare su formadu.</string>
     <string name="route_line_use_gradient_coloring">Sa lìnia de s\'àndala s\'at a colorare sighende sa pendèntzia.</string>
     <string name="shared_string_min_height">Artària mìn.</string>
@@ -3312,7 +3312,7 @@
     <string name="logout_from_osmand_cloud">Essi dae OsmAnd Cloud</string>
     <string name="logout_from_osmand_cloud_decsr">Cheres essire\?
 \nAs a dèpere torrare a intrare pro fàghere una còpia de seguresa o ripristinare sos datos.</string>
-    <string name="backup_deleting_all_data_descr">Pro praghere iseta finas a cando RoadCrew at a acabbare de iscantzellare totu sos datos tuos dae sa nue. Totu sos datos in su dispositivu ant a abarrare chene tocados.</string>
+    <string name="backup_deleting_all_data_descr">Pro praghere iseta finas a cando OsmAnd at a acabbare de iscantzellare totu sos datos tuos dae sa nue. Totu sos datos in su dispositivu ant a abarrare chene tocados.</string>
     <string name="backup_deleted_all_data_descr">Totu sos datos sunt istados iscantzellados chene problemas dae OsmAnd Cloud.</string>
     <string name="backup_version_history_removed">Totu sas versiones sunt istadas iscantzelladas.</string>
     <string name="backup_data_removed">Totu sos datos sunt istados iscantzellados.</string>
@@ -3364,7 +3364,7 @@
     <string name="benefits_for_contributors">Benefìtzios pro sos cuntribuidores ativos a OSM</string>
     <string name="benefits_for_contributors_secondary_descr">Intra in OpenStreetMap pro averguare de èssere o nono idòneu pro retzire agiornamentos de sas mapas mensiles e cada ora.</string>
     <string name="available_until">A disponimentu finas a su %1$s</string>
-    <string name="enough_contributions_descr">Bene meda, as frunidu contributziones bastantes a OpenStreetMap e como ti podes godire agiornamentos chene lìmites de sas mapas de RoadCrew!</string>
+    <string name="enough_contributions_descr">Bene meda, as frunidu contributziones bastantes a OpenStreetMap e como ti podes godire agiornamentos chene lìmites de sas mapas de OsmAnd!</string>
     <string name="shared_string_contributions">Contributziones</string>
     <string name="contributions_may_calculate_with_delay">Su càrculu de sas contributziones diat pòdere durare unas cantas oras.</string>
     <string name="map_updates_are_unavailable_yet">Non bi sunt galu agiornamentos a disponimentu pro sas mapas :-(</string>
@@ -3406,7 +3406,7 @@
     <string name="exit_pan_mode_descr">Incarca in Ischerta pro essire dae sa modalidade panoràmica</string>
     <string name="icon_group_nautical">Nàutica</string>
     <string name="shared_app_storage_description">Sa memòria cumpartzida no est prus a disponimentu pro neghe de modìficas a sas règulas de atzessu a s\'archiviatzione in Android.</string>
-    <string name="internal_app_storage_description">Memòria interna, cuada a s\'impreadore e a sas àteras aplicatziones, in manera chi nemos francu RoadCrew potzat atzèdere a sos datos tuos.</string>
+    <string name="internal_app_storage_description">Memòria interna, cuada a s\'impreadore e a sas àteras aplicatziones, in manera chi nemos francu OsmAnd potzat atzèdere a sos datos tuos.</string>
     <string name="purchases_feature_desc_android_auto">Batit sas mapas non in lìnia e sa navigatzione de OsmAnd a s\'ischermu de su veìculu tuo e s\'ìntegrat in manera discansosa cun sos controllos de su veìculu tuo.</string>
     <string name="shared_string_details">Minujas</string>
     <string name="rendering_attr_natureReserves_name">Riserva naturale</string>
@@ -3437,7 +3437,7 @@
 \n • Medas problemas de càrculu de s\'àndala risoltos
 \n
 \n</string>
-    <string name="location_access_request_title">RoadCrew tenet bisòngiu de s\'atzessu a sa positzione pro pòdere navigare.</string>
+    <string name="location_access_request_title">OsmAnd tenet bisòngiu de s\'atzessu a sa positzione pro pòdere navigare.</string>
     <string name="location_access_request_action">Fruni s\'atzessu</string>
     <string name="continue_on_phone">Sighi in su dispositivu mòbile</string>
     <string name="android_auto_map_placeholder_title">Sa mapa est ammustrada in s\'ischermu de su veìculu.</string>
@@ -3480,7 +3480,7 @@
     <string name="no_items_selected_warning">Seletziona a su nessi un\'elementu</string>
     <string name="shared_string_hide_all">Cua totu</string>
     <string name="shared_storage_first_step">Incarca \"%1$s\".
-\nSu gestore de archìvios s\'aberit in ue depes buscare e abèrrere sa cartella de RoadCrew.</string>
+\nSu gestore de archìvios s\'aberit in ue depes buscare e abèrrere sa cartella de OsmAnd.</string>
     <string name="folder_access_denied">Permissu pedidu pro atzèdere a sa cartella ischertada.</string>
     <string name="display_groups_visibility_dialog_description">Podes controllare sa visibilidade de sos grupos in sa mapa. Si sa rasta est cuada totu sos grupos s\'ant a cuare issos puru.</string>
     <string name="app_modes_options">Issèbera sos modos de s\'aplicatzione</string>
@@ -3535,7 +3535,7 @@
     <string name="use_routing_fallback">Ripiegu de càrculu de s\'àndala non in lìnia</string>
     <string name="use_routing_fallback_description">Imprea su càrculu de s\'àndala non in lìnia cando su càrculu in lìnia no est a disponimentu.</string>
     <string name="gps_filter_precision">Pretzisione de su GPS</string>
-    <string name="storage_migration_wrong_folder_warning">Non s\'est agatadu perunu datu de RoadCrew in sa cartella ischertada. Torra a proare.</string>
+    <string name="storage_migration_wrong_folder_warning">Non s\'est agatadu perunu datu de OsmAnd in sa cartella ischertada. Torra a proare.</string>
     <string name="exit_without_saving_warning">Essire chene sarvare sas modìficas\?</string>
     <string name="map_marker_options">Optziones de su marcadore de sa mapa</string>
     <string name="shared_string_statistics">Istatìsticas</string>
@@ -3546,19 +3546,19 @@
 \nDae cara a su fatu chi lìmites artos diant pòdere semplificare tropu sa geometria de sa rasta.</string>
     <string name="save_changes_into_file">Sarva sas modìficas in unu documentu</string>
     <string name="gps_filter_speed_altitude_desc">Petzi sos puntos de sa rasta chi currispondent a s\'intervallu impostadu ant a apàrrere in su gràficu e in sa mapa, su restu s\'at a cuare.</string>
-    <string name="gps_filter_actions_description">RoadCrew at a aplicare sas modìficas a sa rasta chene carrigare su documentu. Podes sarvare sas modìficas in manera manuale.</string>
+    <string name="gps_filter_actions_description">OsmAnd at a aplicare sas modìficas a sa rasta chene carrigare su documentu. Podes sarvare sas modìficas in manera manuale.</string>
     <string name="add_to_group">Annanghe a su grupu</string>
     <string name="memory_allocated_for_routing_ds">Unu valore de memòria dedicadu prus artu at a allestrare su càrculu de àndalas longas (prus de 500 km) ma diat pòdere influentzare su rendimentu de àteras aplicatziones.
 \nNo influentzat sa lestresa de càrculu de àndalas curtzas.</string>
     <string name="show_parameter_seekbar">Ammustra sa barra de chirca de paràmetros</string>
     <string name="shared_storage_last_step">A pustis as a pòdere dislindare una cartella noa pro sos datos.</string>
-    <string name="shared_storage_third_step">Fruni su permissu pro atzèdere a sa cartella. Chene cussu RoadCrew non podet copiare documentos.</string>
+    <string name="shared_storage_third_step">Fruni su permissu pro atzèdere a sa cartella. Chene cussu OsmAnd non podet copiare documentos.</string>
     <string name="copying_file">Copiende su documentu %1$s…</string>
     <string name="storage_found_files_descr">Toca \"%1$s\" pro copiare %2$s documentos dae \"%3$s\" a \"%4$s\". Bi diat pòdere chèrrere unu pagu de tempus.</string>
-    <string name="shared_string_skip_warning">Chere brincare sa migratzione\? RoadCrew non tenet prus atzessu a sos documentos tuos in sa memòria cumpartzida.
+    <string name="shared_string_skip_warning">Chere brincare sa migratzione\? OsmAnd non tenet prus atzessu a sos documentos tuos in sa memòria cumpartzida.
 \n
 \nS\'aplicatzione at a incumintzare a impreare sa cartella de sos datos tuos noa.</string>
-    <string name="shared_storage_migration_descr">Pro neghe de modìficas a s\'atzessu a sa memòria de Android RoadCrew non podet prus impreare %1$s.
+    <string name="shared_storage_migration_descr">Pro neghe de modìficas a s\'atzessu a sa memòria de Android OsmAnd non podet prus impreare %1$s.
 \n
 \nCòpia totu sos datos tuos in sa cartella noa.</string>
     <string name="shared_storage_migration">Migratzione de sa memòria cumpartzida</string>
@@ -3573,7 +3573,7 @@
     <string name="rendering_attr_seabedDetail_description">Informatziones additzionales subra de sas caraterìsticas de sa superfìtzie de su fundu marinu (surface_qualification), sas castas de superfìtzies cumbinadas, sas categorias e sa tassonomia de s\'erba o de sas algas</string>
     <string name="save_track_to_gpx_descrp">Incumintza in automàticu sa registratzione cando sa navigatzione est in cursu e a pustis sarva in automàticu.</string>
     <string name="edit_category">Modìfica sa categoria</string>
-    <string name="location_source_descr">Comente impostatzione predefinida, RoadCrew installadu dae Google Play impreat %1$s pro determinare sa positzione.
+    <string name="location_source_descr">Comente impostatzione predefinida, OsmAnd installadu dae Google Play impreat %1$s pro determinare sa positzione.
 \n
 \nSi otenes informatziones non pretzisas o impreas unu dispositivu chene %2$s proa a colare a \"%3$s\"</string>
     <string name="location_source">Fonte pro sa positzione</string>
@@ -3791,7 +3791,7 @@
     <string name="routing_attr_motor_type_electric_name">Elètricu</string>
     <string name="routing_attr_motor_type_gas_name">Metanu GNC</string>
     <string name="audio_video_notes_desc">Frunit un\'atzessu lestru pro fàghere partire/firmare una nota sonora, vìdeu o foto.</string>
-    <string name="calculate_online_altitude_descr">Càrcula s\'artària in lìnia in sos serbidores de RoadCrew in base a sas immàgines satellitares e sos modellos de artària digitale. Sas diferèntzias cunfronta a s\'artària registrada dae su dispositivu si diat pòdere impreare comente curretzione de s\'artària.</string>
+    <string name="calculate_online_altitude_descr">Càrcula s\'artària in lìnia in sos serbidores de OsmAnd in base a sas immàgines satellitares e sos modellos de artària digitale. Sas diferèntzias cunfronta a s\'artària registrada dae su dispositivu si diat pòdere impreare comente curretzione de s\'artària.</string>
     <string name="time_to_navigation_point_widget_settings_desc">Toca su widget pro cambiare modalidade.</string>
     <string name="routing_attr_avoid_4wd_only_name">Èvita sos caminos pro 4x4</string>
     <string name="routing_attr_avoid_4wd_only_description">Èvita sos caminos adatos petzi a sos veìculos 4x4</string>
@@ -3916,10 +3916,10 @@
 \n • Essida de su sonu e cumportamentu de su reguladore de su volume acontzados
 \n
 \n</string>
-    <string name="rendering_engine_failed_descr">RoadCrew est torradu a sa renderizatzione de sa mapa \'Versione 1\'. Podes proare a torrare a su motore de renderizatzione nou \'Versione 2 (OpenGL)\' in sas Impostatziones.
+    <string name="rendering_engine_failed_descr">OsmAnd est torradu a sa renderizatzione de sa mapa \'Versione 1\'. Podes proare a torrare a su motore de renderizatzione nou \'Versione 2 (OpenGL)\' in sas Impostatziones.
 \n
 \nPro praghere agiuda cun sos megioros frunende su registru de errores tuo.</string>
-    <string name="rendering_engine_failed">Sa renderizatzione de sa mapa de RoadCrew s\'est serrada a sa sola dae pagora.</string>
+    <string name="rendering_engine_failed">Sa renderizatzione de sa mapa de OsmAnd s\'est serrada a sa sola dae pagora.</string>
     <string name="share_crash_log">Cumpartzi su registru de sas serraduras improvisas</string>
     <string name="dismiss_changes_descr">Totu sas modìficas s\'ant a iscartare.</string>
     <string name="map_rendering_engine_v1">Versione 1</string>
@@ -3988,7 +3988,7 @@
     <string name="weather_pressure_mmhg">mmHg</string>
     <string name="weather_pressure_hectopascals">Etopascàls</string>
     <string name="precipitation_widget_desc">Ammustrat sas pretzipitatziones pro su tzentru atuale de sa mapa.</string>
-    <string name="map_rendering_engine_descr">Sa versione 1 fiat sa predefinida finas a RoadCrew 4.3, e est galu sa cussigiada pro dispositivos prus betzos.\nSa versione 2 (OpenGL) est unu motore de renderizatzione de sa mapa prus lestru, chi tenet fintzas sa vista 2.5D.</string>
+    <string name="map_rendering_engine_descr">Sa versione 1 fiat sa predefinida finas a OsmAnd 4.3, e est galu sa cussigiada pro dispositivos prus betzos.\nSa versione 2 (OpenGL) est unu motore de renderizatzione de sa mapa prus lestru, chi tenet fintzas sa vista 2.5D.</string>
     <string name="quick_action_precipitation_layer">Unu butone pro ammustrare o cuare s\'istratu de sas pretzipitatziones in sa mapa.</string>
     <string name="quick_action_wind_layer">Unu butone pro ammustrare o cuare s\'istratu de su bentu in sa mapa.</string>
     <string name="quick_action_cloud_layer">Unu butone pro ammustrare o cuare s\'istratu de sas nues in sa mapa.</string>

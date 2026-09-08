@@ -236,7 +236,7 @@
     <string name="mapillary_widget">ಮ್ಯಾಪಿಲರಿ ವಿಜೆಟ್</string>
     <string name="shared_string_plugin">ಪ್ಲಗಿನ್</string>
     <string name="default_speed_dialog_msg">ಅಜ್ಞಾತ ರೀತಿಯ ರಸ್ತೆಗಳಿಗೆ ಆಗಮನದ ಸಮಯವನ್ನು ಅಂದಾಜು ಮಾಡಲು ಮತ್ತು ಎಲ್ಲಾ ರಸ್ತೆಗಳ ವೇಗವನ್ನು ಮಿತಿಗೊಳಿಸಲು ಬಳಸಲಾಗುತ್ತದೆ (ಮಾರ್ಗವನ್ನು ಬದಲಾಯಿಸಬಹುದು)</string>
-    <string name="change_data_storage_full_description">RoadCrew ಡೇಟಾ ಫೈಲ್‌ಗಳನ್ನು ಹೊಸ ಸ್ಥಳಕ್ಕೆ ಸೇರಿಸುವುದೇ\?
+    <string name="change_data_storage_full_description">OsmAnd ಡೇಟಾ ಫೈಲ್‌ಗಳನ್ನು ಹೊಸ ಸ್ಥಳಕ್ಕೆ ಸೇರಿಸುವುದೇ\?
 \n%1$s &gt; %2$s</string>
     <string name="data_storage_preference_summary">%1$s • %2$s</string>
     <string name="avoid_in_routing_descr_">ಕೆಲವು ಮಾರ್ಗಗಳು ಮತ್ತು ರಸ್ತೆ ಪ್ರಕಾರಗಳನ್ನು ಪರಿಗಣಿಸಬೇಡಿ</string>
@@ -244,7 +244,7 @@
     <string name="rendering_attr_piste_difficulty_aerialway_name">ವೈಮಾನಿಕ ಮಾರ್ಗ</string>
     <string name="rendering_attr_piste_difficulty_connection_name">ಸಂಪರ್ಕ</string>
     <string name="shared_string_calculate">ಲೆಕ್ಕಹಾಕು</string>
-    <string name="shared_string_osmand_usage">RoadCrewನ ಬಳಕೆ</string>
+    <string name="shared_string_osmand_usage">OsmAndನ ಬಳಕೆ</string>
     <string name="shared_string_maps">ನಕ್ಷೆಗಳು</string>
     <string name="shared_string_memory_tb_desc">%1$s TB</string>
     <string name="shared_string_memory_gb_desc">%1$s GB</string>
@@ -298,12 +298,12 @@
     <string name="clear_confirmation_msg">%1$s ತೆರವುಗೊಳಿಸುವುದೇ\?</string>
     <string name="download_map_dialog">ನಕ್ಷೆಯ ಸಂವಾದವನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ</string>
     <string name="dialogs_and_notifications_title">ಸಂವಾದಗಳು ಮತ್ತು ಅಧಿಸೂಚನೆಗಳು</string>
-    <string name="dialogs_and_notifications_descr">ಬಳಕೆಯ ಸಮಯದಲ್ಲಿ RoadCrew ತೋರಿಸುವ ಪಾಪ್‌ಅಪ್‌ಗಳು, ಸಂವಾದಗಳು ಮತ್ತು ಅಧಿಸೂಚನೆಗಳನ್ನು ನಿಯಂತ್ರಿಸಿ.</string>
+    <string name="dialogs_and_notifications_descr">ಬಳಕೆಯ ಸಮಯದಲ್ಲಿ OsmAnd ತೋರಿಸುವ ಪಾಪ್‌ಅಪ್‌ಗಳು, ಸಂವಾದಗಳು ಮತ್ತು ಅಧಿಸೂಚನೆಗಳನ್ನು ನಿಯಂತ್ರಿಸಿ.</string>
     <string name="rendering_value_walkingRoutesOSMCNodes_name">ನೋಡ್ ನೆಟ್‌ವರ್ಕ್‌ಗಳು</string>
     <string name="suggested_maps">ಸೂಚಿಸಲಾದ ನಕ್ಷೆಗಳು</string>
     <string name="suggested_maps_descr">ಆ ನಕ್ಷೆಗಳನ್ನು ಪ್ಲಗಿನ್‌ನೊಂದಿಗೆ ಬಳಸುವ ಅಗತ್ಯವಿದೆ</string>
     <string name="added_profiles">ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಸೇರಿಸಲಾಗಿದೆ</string>
-    <string name="added_profiles_descr">ಪ್ಲಗಿನ್ RoadCrew ಗೆ ಹೊಸ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಸೇರಿಸುತ್ತದೆ</string>
+    <string name="added_profiles_descr">ಪ್ಲಗಿನ್ OsmAnd ಗೆ ಹೊಸ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಸೇರಿಸುತ್ತದೆ</string>
     <string name="shared_string_turn_off">ಆಫ್ ಮಾಡಿ</string>
     <string name="new_plugin_added">ಹೊಸ ಪ್ಲಗಿನ್ ಸೇರಿಸಲಾಗಿದೆ</string>
     <string name="join_segments">ಭಾಗಗಳನ್ನು ಸೇರಿಸಿ</string>
@@ -315,7 +315,7 @@
     <string name="desert_render_descr">ಮರುಭೂಮಿಗಳು ಮತ್ತು ಇತರ ಜನನಿಬಿಡ ಪ್ರದೇಶಗಳಿಗೆ, ವೀಕ್ಷಣೆ ಪ್ರಮಾಣದಲ್ಲಿ ಹೆಚ್ಚಿನ ವಿವರಗಳನ್ನು ಪ್ರದರ್ಶಿಸುತ್ತದೆ.</string>
     <string name="delete_profiles_descr">ನೀವು \'ಅನ್ವಯಿಸು\' ಟ್ಯಾಪ್ ಮಾಡಿದ ನಂತರ, ಅಳಿಸಿದ ಪ್ರೊಫೈಲ್‌ಗಳು ಸಂಪೂರ್ಣವಾಗಿ ಕಳೆದುಹೋಗುತ್ತವೆ.</string>
     <string name="select_color">ಬಣ್ಣವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
-    <string name="edit_profiles_descr">ನೀವು ಡೀಫಾಲ್ಟ್ RoadCrew ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಅಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ, ಆದರೆ ನೀವು ಅವುಗಳನ್ನು ಹಿಂದಿನ ಪರದೆಯಲ್ಲಿ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಬಹುದು, ಅಥವಾ ಅವುಗಳನ್ನು ಕೆಳಕ್ಕೆ ಸರಿಸಬಹುದು.</string>
+    <string name="edit_profiles_descr">ನೀವು ಡೀಫಾಲ್ಟ್ OsmAnd ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಅಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ, ಆದರೆ ನೀವು ಅವುಗಳನ್ನು ಹಿಂದಿನ ಪರದೆಯಲ್ಲಿ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಬಹುದು, ಅಥವಾ ಅವುಗಳನ್ನು ಕೆಳಕ್ಕೆ ಸರಿಸಬಹುದು.</string>
     <string name="edit_profiles">ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಪರಿಷ್ಕರಿಸು</string>
     <string name="profile_appearance">ಪ್ರೊಫೈಲ್ ತೋರಿಕೆ</string>
     <string name="choose_icon_color_name">ಐಕಾನ್, ಬಣ್ಣ ಮತ್ತು ಹೆಸರನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</string>

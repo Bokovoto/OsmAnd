@@ -124,7 +124,7 @@
     <string name="add_point_before">Ավելացնըլ կետ մինչեւ</string>
     <string name="add_point_after">Ավելացել կետ</string>
     <string name="shared_string_options">Ընտրանքներ</string>
-    <string name="measurement_tool_snap_to_road_descr">RoadCrew կմիացնի կետերը երթուղիների հետ ընտրված պրոֆիլի համար։</string>
+    <string name="measurement_tool_snap_to_road_descr">OsmAnd կմիացնի կետերը երթուղիների հետ ընտրված պրոֆիլի համար։</string>
     <string name="choose_navigation_type">Ընտրեք նավիգացիոն պրոֆիլը</string>
     <string name="none_point_error">Անհրաժեշտ է ավելացնել գոնե մեկ կետ։</string>
     <string name="quick_action_resume_pause_navigation_descr">Սեղմել այս կոճակը նավիգացիան կասեցնելու կամ վերսկսելու։</string>
@@ -146,7 +146,7 @@
     <string name="mapillary_menu_title_username">Օգտատերի անունը</string>
     <string name="map_widget_ruler_control">Շառավիղ-քանոն</string>
     <string name="shared_string_permissions">Թույլտվություն</string>
-    <string name="import_gpx_failed_descr">Հնարավոր չէ ներմուծել ֆայլը: Ստուգեք, արդյոք RoadCrew-ը իրավունք ունի կարդալ ֆայլը գտնվելու վայրից:</string>
+    <string name="import_gpx_failed_descr">Հնարավոր չէ ներմուծել ֆայլը: Ստուգեք, արդյոք OsmAnd-ը իրավունք ունի կարդալ ֆայլը գտնվելու վայրից:</string>
     <string name="distance_moving">Ուղղված հեռավորությունը</string>
     <string name="mapillary_image">Ուղարկել լուսանկարներ Mapillary- ին</string>
     <string name="open_mapillary">Բացել Mapillary</string>
@@ -195,7 +195,7 @@
     <string name="no_overlay">Ծածկույթի քարտեզը անջատված է</string>
     <string name="no_underlay">Նեքեվի շերնը անջատված է</string>
     <string name="subscribe_email_error">Սխալ</string>
-    <string name="subscribe_email_desc">Բաժանորդագրվեք մեր էլեկտրոնային փոստի առաքմանը `RoadCrew զեղչերի մասին և ստացիր 3 լրացուցիչ քարտեզների ներբեռնում:</string>
+    <string name="subscribe_email_desc">Բաժանորդագրվեք մեր էլեկտրոնային փոստի առաքմանը `OsmAnd զեղչերի մասին և ստացիր 3 լրացուցիչ քարտեզների ներբեռնում:</string>
     <string name="depth_contour_descr">Քարտեզներ՝ ծովային եզրագծեր և խորության կետեր։</string>
     <string name="sea_depth_thanks">Շնորհակալություն \"Ծովային խորքային ուրվագծերի\" ձեռքբերման համար</string>
     <string name="index_item_depth_contours_osmand_ext">Ծովային խորքային ուրվագծեր</string>
@@ -209,7 +209,7 @@
     <string name="shared_string_automatic">Ավտոմատ</string>
     <string name="do_not_show_startup_messages">Չցուցադրել հաղորդագրությունները մեկնարկին</string>
     <string name="parking_options">Ավտոկանգառի ընտրանքներ</string>
-    <string name="full_version_thanks">Շնորհակալություն RoadCrew-ի վճարովի տարբերակի ձեռք բերեման համար։</string>
+    <string name="full_version_thanks">Շնորհակալություն OsmAnd-ի վճարովի տարբերակի ձեռք բերեման համար։</string>
     <string name="routing_attr_relief_smoothness_factor_hills_name">Լեռնոտ</string>
     <string name="routing_attr_relief_smoothness_factor_plains_name">Քիչ լեռնոտ</string>
     <string name="routing_attr_relief_smoothness_factor_more_plains_name">Բնակարան</string>
@@ -286,7 +286,7 @@
     <string name="si_mi_meters">Մղոններ/մետր</string>
     <string name="search_another_country">Ընտրեք այլ տարածաշրջան</string>
     <string name="search_map">Քարտեզների որոնում…</string>
-    <string name="first_usage_wizard_desc">RoadCrew-ը կորոշի ձեր դիրքը և առաջարկի քարտեզներ ներբեռնման համար այդ տարածաշրջանի համար:</string>
+    <string name="first_usage_wizard_desc">OsmAnd-ը կորոշի ձեր դիրքը և առաջարկի քարտեզներ ներբեռնման համար այդ տարածաշրջանի համար:</string>
     <string name="location_not_found">Չհաջողվեց բացահայտել դիրքը</string>
     <string name="no_inet_connection">Ինտերնետ կապ չկա</string>
     <string name="search_location">Դիրքի որոնմում…</string>
@@ -333,7 +333,7 @@
     <string name="access_no_destination">Նպատակակետը սահմանված չէ</string>
     <string name="map_widget_magnetic_bearing">Մագնիսական կրող</string>
     <string name="access_smart_autoannounce">Smart ավտո-հայտարարում</string>
-    <string name="share_history_subject">Կիսել RoadCrew-ի միջոցով</string>
+    <string name="share_history_subject">Կիսել OsmAnd-ի միջոցով</string>
     <string name="access_direction_audio_feedback">Ուղղության ձայնային նշում</string>
     <string name="access_direction_haptic_feedback_descr">Նշեք թրթռանքով նպատակակետի ուղղութունը։</string>
     <string name="access_smart_autoannounce_descr">Տեղեկացնել միայն նպատակակետի ուղղությունը փոխվելուց։</string>
@@ -476,7 +476,7 @@
     <string name="context_menu_item_delete_waypoint">Ջնջել GPX կետը?</string>
     <string name="context_menu_item_edit_waypoint">Խմբագրել GPX կետը</string>
     <string name="shared_string_location">Գտնվելու վայրը</string>
-    <string name="share_osm_edits_subject">OSM խմբագրումները ուղարկվել են RoadCrew-ի միջոցով</string>
+    <string name="share_osm_edits_subject">OSM խմբագրումները ուղարկվել են OsmAnd-ի միջոցով</string>
     <string name="lang_nds">Ցածր Գերմաներեն</string>
     <string name="lang_mk">Մակեդոնական</string>
     <string name="lang_fy">Ֆրիզերեն</string>
@@ -598,7 +598,7 @@
     <string name="lang_ber">Բերբեր</string>
     <string name="gps_network_not_enabled">Կոորդինատները հայտնաբերման ծառայությունը միացված չէ: Միացնել?</string>
     <string name="disable_recording_once_app_killed">Դադարեցնել ինքնավար գրանցումը</string>
-    <string name="shared_string_import2osmand">Ներմուծել RoadCrew</string>
+    <string name="shared_string_import2osmand">Ներմուծել OsmAnd</string>
     <string name="read_full_article">Կարդալ ամբողջական հոդվածը (առցանց)</string>
     <string name="shared_string_wikipedia">Վիքիփեդիա</string>
     <string name="shared_string_show_details">Ցույց տալ մանրամասները</string>
@@ -720,13 +720,13 @@
     <string name="shared_string_online_maps">Առցանց քարտեզներ</string>
     <string name="osmand_rastermaps_plugin_description">Այս plugin-ի միջոցով Դուք կարող եք մուտք գործել առցանց (այսպես կոչված սալիկների կամ ռաստր) քարտեզների, նախապես սահմանված OpenStreetMap սալիկներից (նման Mapnik), արբանյակային պատկերներ եւ հատուկ նպատակային շերտեր, ինչպիսիք են եղանակային քարտեզները, կլիմայական քարտեզները, երկրաբանական քարտեզները, խճուղային շերտերը եւ այլն:
 \n
-\nԱյս քարտեզներից յուրաքանչյուրը կարող է օգտագործվել որպես հիմնական (բազային) քարտեզ, որը ցուցադրվում է RoadCrew քարտեզի էկրանին, կամ որպես կափարիչ կամ ստորագրված այլ բազային քարտեզի (նման RoadCrew-ի ստանդարտ անցանց քարտեզները): Ցանկացած ստորերկրյա քարտեզի առավել տեսանելի դարձնելու համար RoadCrew վեկտորի քարտեզները հեշտությամբ կարելի է թաքցնել «Կարգավորեք քարտեզը» ցանկի միջոցով:
+\nԱյս քարտեզներից յուրաքանչյուրը կարող է օգտագործվել որպես հիմնական (բազային) քարտեզ, որը ցուցադրվում է OsmAnd քարտեզի էկրանին, կամ որպես կափարիչ կամ ստորագրված այլ բազային քարտեզի (նման OsmAnd-ի ստանդարտ անցանց քարտեզները): Ցանկացած ստորերկրյա քարտեզի առավել տեսանելի դարձնելու համար OsmAnd վեկտորի քարտեզները հեշտությամբ կարելի է թաքցնել «Կարգավորեք քարտեզը» ցանկի միջոցով:
 \n
-\nՍալիկի քարտեզները կարելի է ձեռք բերել անմիջապես առցանց աղբյուրների միջոցով կամ կարող են պատրաստվել անցանց օգտագործման համար (և պատճենել RoadCrew-ի տվյալների պանակում) որպես SQLite տվյալների բազա, որը կարող է արտադրվել 3-րդ կողմի քարտեզի պատրաստման գործիքների կողմից:</string>
+\nՍալիկի քարտեզները կարելի է ձեռք բերել անմիջապես առցանց աղբյուրների միջոցով կամ կարող են պատրաստվել անցանց օգտագործման համար (և պատճենել OsmAnd-ի տվյալների պանակում) որպես SQLite տվյալների բազա, որը կարող է արտադրվել 3-րդ կողմի քարտեզի պատրաստման գործիքների կողմից:</string>
     <string name="record_plugin_name">Ուղեւորության գրանցում</string>
     <string name="srtm_plugin_name">Բարձունքների գծեր (եզրագծեր)</string>
     <string name="plugin_touringview_name">Տուրիստական քարտեզ</string>
-    <string name="plugin_touringview_descr">Այս դիտարկումը ակտիվացնելուց RoadCrew-ի քարտեզի ոճը փոխվում է «Touring view»-ի ոճի, սա հատուկ բարձր մանրամասն դիտարկում է ճանապարհորդների և պրոֆեսիոնալ վարորդների համար: 
+    <string name="plugin_touringview_descr">Այս դիտարկումը ակտիվացնելուց OsmAnd-ի քարտեզի ոճը փոխվում է «Touring view»-ի ոճի, սա հատուկ բարձր մանրամասն դիտարկում է ճանապարհորդների և պրոֆեսիոնալ վարորդների համար: 
 \n 
 \nԱյս դիտումը ապահովում է քարտեզի վրա առկա առավելագույն քանակի ճամփորդության մանրամասները(մասնավորապես, ճանապարհներ, տրեկներ, ուղիներ և կողմնորոշման նշաններ): 
 \n 
@@ -742,16 +742,16 @@
     <string name="audionotes_plugin_name">Աուդիո և վիդեո նշումներ</string>
     <string name="audionotes_plugin_description">Աուդիո/Վիդեո նշումների plugin-ը հնարավորություն են տալիս ստեղծել աուդիո/լուսանկարներ/վիդեո նշումներ վարելու ժամանակ կամ կոճակի միջոցով քարտեզի էկրանին վրա կամ անմիջապես համատեքստային մենյուի միջոցով ցանկացած դիրքի համար քարտեզի վրա:</string>
     <string name="osmand_parking_plugin_name">Ավտոկայանատեղ</string>
-    <string name="osmand_parking_plugin_description">Թույլ է տալիս գրանցել, թե որտեղ է ձեր մեքենան կայանել և որքան ժամանակ է մնացել ավտոկայանատեղը ազատելու (եթե առկա է ժամկետ): \nԹե տեղը, թե ժամանակը տեսանելի են RoadCrew-ի վահանակի վրա, ինչպես նաև քարտեզի էկրանին ինչպես նաև վիդժետի մեջ: Android օրացույցին կարելի է միացնել որպես հիշեցում:</string>
+    <string name="osmand_parking_plugin_description">Թույլ է տալիս գրանցել, թե որտեղ է ձեր մեքենան կայանել և որքան ժամանակ է մնացել ավտոկայանատեղը ազատելու (եթե առկա է ժամկետ): \nԹե տեղը, թե ժամանակը տեսանելի են OsmAnd-ի վահանակի վրա, ինչպես նաև քարտեզի էկրանին ինչպես նաև վիդժետի մեջ: Android օրացույցին կարելի է միացնել որպես հիշեցում:</string>
     <string name="shared_string_accessibility">Հատուկ հնարավորություններ</string>
-    <string name="osmand_accessibility_description">The plugin-ն սարքի համար ավելացնում հատուկ հնարավորությունների աջակցում ուղղակիորեն RoadCrew-ում: Սա հեշտացնում է, օրինակ, TTS-ի ձայնի ելքային արագությունը հարմարեցնելու համար, կարգավորել նավիգացիայի ուղղվածությունը էկրանի վրա, վերահսկեք սանդղակը կամ ձայնային հետադարձ կապի հրամանները ավտո անոտացիաներ անելու դեպքում ձեր դիրքի վերաբերյալ:</string>
+    <string name="osmand_accessibility_description">The plugin-ն սարքի համար ավելացնում հատուկ հնարավորությունների աջակցում ուղղակիորեն OsmAnd-ում: Սա հեշտացնում է, օրինակ, TTS-ի ձայնի ելքային արագությունը հարմարեցնելու համար, կարգավորել նավիգացիայի ուղղվածությունը էկրանի վրա, վերահսկեք սանդղակը կամ ձայնային հետադարձ կապի հրամանները ավտո անոտացիաներ անելու դեպքում ձեր դիրքի վերաբերյալ:</string>
     <string name="wrong_input">Սխալ մուտքագրում</string>
     <string name="enter_new_name">Մուտքագրեք նոր անուն</string>
     <string name="shared_string_back">Վերադառնալ</string>
     <string name="shared_string_view">Դիտել</string>
     <string name="osm_editing_plugin_name">OSM-ի խմբագրում</string>
     <string name="osmand_development_plugin_description">Կարգավորումներ զարգացման եւ կարգաբերման գործառույթների համար, ինչպիսիք են երթուղու ստուգումը կամ մոդելավորումը,քարտեզի ցուցադրման կատարումը, ձայնային հուշումները ստուգելը: Այս կարգավորումները մշակողների համար են և հասարակ օգտագործողների համար անհրաժեշտ չեն:</string>
-    <string name="debugging_and_development">RoadCrew-ի կարգավորումը և զարգացումը</string>
+    <string name="debugging_and_development">OsmAnd-ի կարգավորումը և զարգացումը</string>
     <string name="rename_failed">Չհաջողվեց վերանվանել:</string>
     <string name="back_to_map">Վերադառնալ քարտեզին</string>
     <string name="share_note">Տարածեք նշումը</string>
@@ -984,8 +984,8 @@
     <string name="lang_uk">Ուկրաիներեն</string>
     <string name="lang_vi">Վիետնամերեն</string>
     <string name="lang_cy">Ուելսերեն</string>
-    <string name="calculate_osmand_route_without_internet">Հաշվարկել RoadCrew-ի երթուղու հատվածը անցանց</string>
-    <string name="gpx_option_calculate_first_last_segment">Հաշվարկել երթուղին առաջին և վերջին հատվածի RoadCrew երթուղու սեգմենտին</string>
+    <string name="calculate_osmand_route_without_internet">Հաշվարկել OsmAnd-ի երթուղու հատվածը անցանց</string>
+    <string name="gpx_option_calculate_first_last_segment">Հաշվարկել երթուղին առաջին և վերջին հատվածի OsmAnd երթուղու սեգմենտին</string>
     <string name="keep_and_add_destination_point">Ավելացնել որպես նպատակակետ</string>
     <string name="routing_attr_avoid_stairs_name">Առանց աստիճաններից</string>
     <string name="routing_attr_avoid_stairs_description">Խուսափել աստիճաններից</string>
@@ -993,11 +993,11 @@
     <string name="routing_attr_avoid_borders_description">Խուսափել երկրի սահմանի հատումը</string>
     <string name="routing_attr_height_name">Բարձրության սահմանափակում</string>
     <string name="routing_attr_height_description">Նշեք մեքենայի բարձրությունը երթուղու հաշվարկի համար։</string>
-    <string name="android_19_location_disabled">Android 4.4 (KitKat) տարբերակից սկսած պահեստային ֆոլդերը(%s) արժեզրկվել է: Պատճենել բոլոր RoadCrew ֆայլերը նոր պահպանման վայրում\? 
+    <string name="android_19_location_disabled">Android 4.4 (KitKat) տարբերակից սկսած պահեստային ֆոլդերը(%s) արժեզրկվել է: Պատճենել բոլոր OsmAnd ֆայլերը նոր պահպանման վայրում\? 
 \n…Ծանոթագրություն 1. Ձեր հին ֆայլերը կմնան անփոփոխ (բայց կարող են ջնջվել ձեռքով): 
 \n…Ծանոթագրություն 2. Երբ ֆայլերը փոխանցեք նոր պահպանման վայր, «OsmAnd»-ի և «OsmAnd+» ֆայլերի համատեղ օգտագործումը հնարավոր չի լինի:</string>
-    <string name="copying_osmand_files">Պատճենահանում RoadCrew-ի տվյալների ֆայլերը…</string>
-    <string name="calculate_osmand_route_gpx">Հաշվարկել RoadCrew երթուղին անցանց</string>
+    <string name="copying_osmand_files">Պատճենահանում OsmAnd-ի տվյալների ֆայլերը…</string>
+    <string name="calculate_osmand_route_gpx">Հաշվարկել OsmAnd երթուղին անցանց</string>
     <string name="app_mode_truck">Բեռնատար</string>
     <string name="speech_rate_descr">Որոշեք արտասանության արագությունը տեքստ-խոսք(TTS) համար։</string>
     <string name="speech_rate">Արտասանության արագությունը</string>
@@ -1101,11 +1101,11 @@
     <string name="snap_to_road">Կապել ճանապարհին</string>
     <string name="interrupt_music_descr">Ձայնային հրահանգներ դադարեցնում են երաժշտության նվագումը։</string>
     <string name="interrupt_music">Ընդհատել երաժշտությունը</string>
-    <string name="osmand_play_title_30_chars">RoadCrew քարտեզներ և նավիգացիա</string>
+    <string name="osmand_play_title_30_chars">OsmAnd քարտեզներ և նավիգացիա</string>
     <string name="osmand_short_description_80_chars">Գլոբալ քարտեզի դիտում և նավարկություն online և offline, OSM քարտեզների հիման վրա ամբողջ աշխարհում</string>
-    <string name="osmand_long_description_1000_chars">RoadCrew (OSM Automated Navigation Directions)
+    <string name="osmand_long_description_1000_chars">OsmAnd (OSM Automated Navigation Directions)
 \n
-\nRoadCrew-ը բաց կոդով նավիգացիոն ծրագիր է, որը հնարավորություն է տալիս մուտք գործել համաշխարհային OpenStreetMap (OSM) տվյալների լայն շրջանակ: Բոլոր քարտեզները (վեկտորային կամ կղմինդր) և դրա հետ կապված տվյալները կարող են պահվել հեռախոսի հիշողության քարտում անցանց օգտագործման համար: Առաջարկվում է նաև անցանց և առցանց երթուղիների ֆունկցիոնալություն, այդ թվում`մանրամասն ձայնային ուղեցույց:
+\nOsmAnd-ը բաց կոդով նավիգացիոն ծրագիր է, որը հնարավորություն է տալիս մուտք գործել համաշխարհային OpenStreetMap (OSM) տվյալների լայն շրջանակ: Բոլոր քարտեզները (վեկտորային կամ կղմինդր) և դրա հետ կապված տվյալները կարող են պահվել հեռախոսի հիշողության քարտում անցանց օգտագործման համար: Առաջարկվում է նաև անցանց և առցանց երթուղիների ֆունկցիոնալություն, այդ թվում`մանրամասն ձայնային ուղեցույց:
 \n
 \nՀիմնական առանձնահատկություններից մի քանիսը`
 \n- Ամբողջությամբ անցանց ֆունկցիոնալությունը (պահեստավորվող վեկտոր կամ կղմինդր քարտեզներ սարքի հիշողութունում)։
@@ -1120,12 +1120,12 @@
 \n- Ընտրովի՝ քարտեզի հավասարեցում, ըստ կողմնացույցի կամ շարժման ուղղության։
 \n- Ընտրովի՝ գծի ուղեցույց, արագության սահմանափակուման ցուցադռումը, արձանագրված և TTS ձայներ:
 \n
-\nRoadCrew-ի այս անվճար տարբերակի սահմանափակումները։
+\nOsmAnd-ի այս անվճար տարբերակի սահմանափակումները։
 \n- Քարտեզների ներբեռնումների քանակը սահմանափակ է։
 \n- Հասանելի չեն Վիքիպեդիա POIs-ները:
 \n
 \nOsmAnd-ը ակտիվորեն զարգանում է, և մեր նախագիծը և դրա հետագա առաջընթացը հիմնված են ֆինանսական ներդրումները վրա, որը հնարավորություն է տալիս մշակել և փորձարկել է նոր ֆունկցիոնալությունըԽնդրեմ։ Խնդրում ենք մտածեք OsmAnd+ գնելու մասին կամ ֆինանսավորեք կոնկրետ նոր հատկություններ, կամ նվիրատվություն արեք osmand.net կայքում։</string>
-    <string name="osmand_extended_description_part1">RoadCrew (OSM Automated Navigation Directions) հանդիսանում է որպեսզ քարտեզ և նավիգացիոն հավելված ազատ մուտթով բարձրորակ OpenStreetMap (OSM) տվյալներին։ 
+    <string name="osmand_extended_description_part1">OsmAnd (OSM Automated Navigation Directions) հանդիսանում է որպեսզ քարտեզ և նավիգացիոն հավելված ազատ մուտթով բարձրորակ OpenStreetMap (OSM) տվյալներին։ 
 \n
 \nՎայելեք ձայնային և օպտիկական նավիգատորի հնարավորությունները, դիտելով POIs, ստեղծեք և կառավարեք GPX track-րը, օգտագործելով եզրագծերի(contour lines) արտացոլման և բարձրությանների տեղեկատվություն (plugin-ի միջոցով), մեքենավարման, հեծանվավազքի, հետիոտների ռեժիմների միջև ընտրում, OSM խմբագրում և այլնի:</string>
     <string name="osmand_extended_description_part2">GPS նավիգացիան
@@ -1150,7 +1150,7 @@
 \n• Ցուցադրում է մասնագիտացված օնլայն սալիկներ, արբանյակային դիտում (Bing-ից), տարբեր կափարիչներ, ինչպիսիք են շրջագայությունը/նավիգացիան GPX tracks և լրացուցիչ շերտերով`հարմարեցված թափանցիկությամբ
 \n</string>
     <string name="osmand_extended_description_part4">Դահուկավազք
-\n• RoadCrew-ի լեռնադահուկային քարտեզների plugin-նը հնարավորություն է տալիս տեսնել լեռնադահուկային ուղիները բարդության աստիճանի և որոշ լրացուցիչ տեղեկություններ, ինչպես նաև վերելակների տեղակայման և այլ օբյեկտների:</string>
+\n• OsmAnd-ի լեռնադահուկային քարտեզների plugin-նը հնարավորություն է տալիս տեսնել լեռնադահուկային ուղիները բարդության աստիճանի և որոշ լրացուցիչ տեղեկություններ, ինչպես նաև վերելակների տեղակայման և այլ օբյեկտների:</string>
     <string name="osmand_extended_description_part5">Հեծանվավազք
 \n • Գտնել հեծանվային ուղիներ քարտեզի վրա 
 \n• Հեծանվային ռեժիմում GPS նավիգացիան, կառուցում է ձեր երթուղին հեծանվային ուղիներով 
@@ -1184,7 +1184,7 @@
 \nՇատ երկրներում հասանելի է ներբեռնման համար:
 \nՍտացեք մի հուսալի նավարկում ձեր երկրի համար, լինի դա Ֆրանսիան, Գերմանիան, Մեքսիկա, Միացյալ Թագավորություն, Իսպանիան, Նիդերլանդները, ԱՄՆ, Ռուսաստան, Բրազիլիա, կամ որեւէ այլ։</string>
     <string name="osmand_plus_play_title_30_chars">OsmAnd+ քարտեզներ և նավիգացիա</string>
-    <string name="osmand_plus_short_description_80_chars">RoadCrew - ճանապարհորդելու համար նավիգացիոն ծրագիր է բաց կոդով</string>
+    <string name="osmand_plus_short_description_80_chars">OsmAnd - ճանապարհորդելու համար նավիգացիոն ծրագիր է բաց կոդով</string>
     <string name="import_as_gpx">Ներմուծեք որպես GPX ֆայլ</string>
     <string name="import_as_favorites">Ներմուծեք որպես «Սիրված» (Favorites)</string>
     <string name="import_file">Ներմուծել ֆայլը</string>
@@ -1326,7 +1326,7 @@
     <string name="gpxup_private">Անհատ</string>
     <string name="asap">Հնարավորինս շուտ</string>
     <string name="share_route_as_gpx">Կիսվել(ուղարկել) երթուղին GPX ֆայլի տեսքով</string>
-    <string name="share_route_subject">Երթուղին տրամադրվել է RoadCrew-ի միջոցով</string>
+    <string name="share_route_subject">Երթուղին տրամադրվել է OsmAnd-ի միջոցով</string>
     <string name="route_roundabout">Շրջանաձև երթևեկություն %1$d ելք</string>
     <string name="route_kl">Պահեք ձախ կողմում</string>
     <string name="route_kr">Պահեք աջ կողմում</string>
@@ -1437,7 +1437,7 @@
     <string name="user_name">Ձեր OSM օգտվողի անունը (username)</string>
     <string name="user_password">Ձեր OSM գաղտնաբառը</string>
     <string name="osmand_service">Ֆոնային ռեժիմ</string>
-    <string name="osmand_service_descr">Աշխատեցնում է RoadCrew-ը ֆոնային ռեժիմում երբ էկրանը անջատված է։</string>
+    <string name="osmand_service_descr">Աշխատեցնում է OsmAnd-ը ֆոնային ռեժիմում երբ էկրանը անջատված է։</string>
     <string name="download_files_not_enough_space">Ներբեռնելու համար բավարար ազատ տեղ չկա %1$s ՄԲ (ազատ է: %2$s)։</string>
     <string name="native_library_not_supported">Հիմնական գրադարանը չի աջակցվում այս սարքում:</string>
     <string name="init_native_library">Տեղական գրադարանի ստեղծում …</string>
@@ -1554,10 +1554,10 @@
     <string name="osmand_net_previously_installed">Հին տեղադրված հավելվածում բոլոր անցանց(offline) տվյալները աջակցվում են հավելվածի նոր տարբերակում,այնուամենայնիվ «Սիրված»(Favorite) կետերը պետք է բեռնաթափվեն հավելվածի նախորդ տարբերակից և բեռնվեն նորի մեջ:</string>
     <string name="build_installed">Հավաքացուն {0} տեղադրված ({1}):</string>
     <string name="downloading_build">Հավաքացուն ներբեռնվում է…</string>
-    <string name="install_selected_build">Տեղադրեք RoadCrew-ը - {0} of {1} {2} ՄԲ \?</string>
-    <string name="loading_builds_failed">Չհաջողվեց ստանալ RoadCrew-ի հավաքացուների ցանկը</string>
-    <string name="loading_builds">Ներբեռնվում են RoadCrew-ի հավաքացուները…</string>
-    <string name="select_build_to_install">Ընտրեք RoadCrew-ի տարբերակներից մեկը տեղադրելու համար</string>
+    <string name="install_selected_build">Տեղադրեք OsmAnd-ը - {0} of {1} {2} ՄԲ \?</string>
+    <string name="loading_builds_failed">Չհաջողվեց ստանալ OsmAnd-ի հավաքացուների ցանկը</string>
+    <string name="loading_builds">Ներբեռնվում են OsmAnd-ի հավաքացուները…</string>
+    <string name="select_build_to_install">Ընտրեք OsmAnd-ի տարբերակներից մեկը տեղադրելու համար</string>
     <string name="gps_status_app_not_found">\"GPS status\" հավելվածը չի գտնվել: Որոնել Google Play-ում?</string>
     <string name="daynight_mode_day">Ցերեկային</string>
     <string name="daynight_mode_night">Գիշերային</string>
@@ -1587,7 +1587,7 @@
     <string name="show_route">Ցույց տալ երթուղին</string>
     <string name="fav_imported_sucessfully">«Սիրվածները» ներմուծվել են</string>
     <string name="no_fav_to_save">«Սիրված» կետեր չկան պահպանելու համար</string>
-    <string name="share_fav_subject">«Սիրված» կետերը կիսեցին(ուղարկված) RoadCrew-ի միջոցով</string>
+    <string name="share_fav_subject">«Սիրված» կետերը կիսեցին(ուղարկված) OsmAnd-ի միջոցով</string>
     <string name="error_occurred_loading_gpx">Հնարավոր չէ բեռնել GPX։</string>
     <string name="send_report">Ուղարկել զեկույց</string>
     <string name="poi_namefinder_query_empty">Մուտքագրեք հարցում POI որոնման համար</string>
@@ -1597,7 +1597,7 @@
     <string name="layer_map">Քարտեզի աղբյուրը…</string>
     <string name="use_trackball_descr">Քարտեզը շարժելու համար օգտագործեք trackball։</string>
     <string name="use_trackball">Օգտագործել trackball</string>
-    <string name="process_navigation_service">RoadCrew նավիգացիոն ծառայությունը</string>
+    <string name="process_navigation_service">OsmAnd նավիգացիոն ծառայությունը</string>
     <string name="int_seconds">վայրկյան</string>
     <string name="int_min">րոպ․</string>
     <string name="search_poi_filter">Ֆիլտր</string>
@@ -1620,7 +1620,7 @@
     <string name="transport_Stop">Կանգառ</string>
     <string name="transport_stops">կանգառներ</string>
     <string name="transport">Տրանսպորտ</string>
-    <string name="hello">Նավիգացիոն հավելված RoadCrew</string>
+    <string name="hello">Նավիգացիոն հավելված OsmAnd</string>
     <string name="favorite">Սիրված</string>
     <string name="uploading_data">Տվյալների վերբեռնում…</string>
     <string name="uploading">Վերբեռնում…</string>
@@ -1708,7 +1708,7 @@
     <string name="navigation_intent_invalid">Սխալ ձևաչափ՝ %s</string>
     <string name="plugin_install_needs_network">Անհրաժեշտ է ինտերնետ կապ այս plugin-ը տեղադրելու համար:</string>
     <string name="shared_string_get">Ստանալ</string>
-    <string name="do_you_like_osmand">Ձեզ դուր է գալիս RoadCrew?</string>
+    <string name="do_you_like_osmand">Ձեզ դուր է գալիս OsmAnd?</string>
     <string name="user_hates_app_get_feedback">Ասեք մեզ, թե ինչու։</string>
     <string name="user_hates_app_get_feedback_long">Խնդրում ենք ասել մեզ, թե ինչ եք ուզում փոխել այս հավելվածում:</string>
     <string name="failed_to_upload">Չհաջողվեց վերբեռնել</string>
@@ -1888,7 +1888,7 @@
     <string name="tap_on_map_to_hide_interface_descr">Սեղմելով քարտեզի վրա փոխարինում են հսկողության կոճակները եւ վիջեթները:</string>
     <string name="tap_on_map_to_hide_interface">Ամբողջ էկրանով ռեժիմ</string>
     <string name="osm_recipient_stat">Խմբագրումները կազմում են %1$s, գումարը %2$s mBTC</string>
-    <string name="plugin_ski_descr">RoadCrew-ի այս հավելվածը տրքմքդրում է մանրամասները գլոբալ ցածր լեռնադահուկային լանջերի, խաչաձեւ լեռնադահուկային լեռնանցքի, ալպիական լեռնադահուկային երթուղիների, ճոպանուղիների և լեռնադահուկային վերելակների մանրամասների մասին: \n \nԱյս տեսակը ակտիվացնելու դեպքում, քարտեզի ոճը փոխվում է «Ձմեռային եւ լեռնադահուկային սպորտին», ցույց տալով լանդշաֆտի բոլոր մանրամասները`ձմռանը նայելու ձևով: Այս (ձմեռային) տեսքը կարող է չեղյալ համարվել , այստեղ կրկին անջատելով այն, կամ եթե փոխեք «Քարտի ոճը» ցանկալի տեսք, «Քարտեզների կարգավորումը» ցանկում:</string>
+    <string name="plugin_ski_descr">OsmAnd-ի այս հավելվածը տրքմքդրում է մանրամասները գլոբալ ցածր լեռնադահուկային լանջերի, խաչաձեւ լեռնադահուկային լեռնանցքի, ալպիական լեռնադահուկային երթուղիների, ճոպանուղիների և լեռնադահուկային վերելակների մանրամասների մասին: \n \nԱյս տեսակը ակտիվացնելու դեպքում, քարտեզի ոճը փոխվում է «Ձմեռային եւ լեռնադահուկային սպորտին», ցույց տալով լանդշաֆտի բոլոր մանրամասները`ձմռանը նայելու ձևով: Այս (ձմեռային) տեսքը կարող է չեղյալ համարվել , այստեղ կրկին անջատելով այն, կամ եթե փոխեք «Քարտի ոճը» ցանկալի տեսք, «Քարտեզների կարգավորումը» ցանկում:</string>
     <string name="route_tu">Կատարեք շրջադարձ(U-turn) և շարժվեք</string>
     <string name="map_orientation_default">Ըստ սարքի</string>
     <string name="map_orientation_portrait">Դիմանկարի ձև (Portrait)</string>
@@ -1918,7 +1918,7 @@
     <string name="tunnel_warning">Առջևում թունել է</string>
     <string name="show_tunnels">Թունելներ</string>
     <string name="maps_you_need">Ձեզ անհրաժեշտ քարտեզները</string>
-    <string name="osmand_team">RoadCrew-ի թիմը</string>
+    <string name="osmand_team">OsmAnd-ի թիմը</string>
     <string name="popular_destinations">Հանրահայտ վայրեր</string>
     <string name="travel_card_update_descr">Մատչելի են նոր Վիքիուղեցույցի տվյալները, թարմացրեք այն և վայելեք.</string>
     <string name="update_is_available">Թարմացում է հասանելի</string>
@@ -1955,7 +1955,7 @@
     <string name="travel_card_download_descr">Ներբեռնեք Wikivoyage-ի ուղևորության ուղեցույցները` աշխարհի նշանավոր տեղերի մասին հոդվածներ դիտելու համար առանց ինտերնետի:</string>
     <string name="start_editing_card_image_text">Աշխարհի ուղեցույց, որը կարող է խմբագրել ցանկացած մեկը:</string>
     <string name="welcome_to_open_beta_description">Ուղեւորության ուղեցույցները ներկայումս հիմնված են Wikivoyage-ի վրա: Փորձեք անվճար բոլոր հնարավորությունները բետա տեստավորման ժամանակ:</string>
-    <string name="wikivoyage_travel_guide_descr">Տեսեք ուղեցույցները, RoadCrew-ում աշխարհի ամենահետաքրքիր վայրերը, առանց ինտերնետին միանալու:</string>
+    <string name="wikivoyage_travel_guide_descr">Տեսեք ուղեցույցները, OsmAnd-ում աշխարհի ամենահետաքրքիր վայրերը, առանց ինտերնետին միանալու:</string>
     <string name="shared_string_dont">Ոչ</string>
     <string name="shared_string_do">Կատարել</string>
     <string name="shared_string_only_with_wifi">Միայն Wi-Fi</string>
@@ -2020,7 +2020,7 @@
     <string name="keep_passed_markers_descr">Մարկերները, որոնք ավելացված են որպես «Սիրված» խումբ կամ GPX կետեր և նշված են որպես անցած կետեր կմնամ քարտեզի վրա։ Եթե խումբը ակտիվ ճէ ապա կետերը կհեռացվեն քարտեզից։</string>
     <string name="keep_passed_markers">Պահպանեք մարկերները քարտեզի վրա</string>
     <string name="more_transport_on_stop_hint">Այս կանգառում ավելի շատ տրանսպորտային միջոցներ կա:</string>
-    <string name="ask_for_location_permission">Շարունակելու համար RoadCrew-ին թույլտվություն տրամադրեք վայրը որոշելու հնարավորություն:</string>
+    <string name="ask_for_location_permission">Շարունակելու համար OsmAnd-ին թույլտվություն տրամադրեք վայրը որոշելու հնարավորություն:</string>
     <string name="thank_you_for_feedback">Շնորհակալություն Ձեր արձագանքի համար</string>
     <string name="poi_cannot_be_found">Հանգույցը կամ ճանապարհը հնարավոր չէ գտնել:</string>
     <string name="search_no_results_feedback">Որոնման արդյունքներ չկան\?
@@ -2125,13 +2125,13 @@
     <string name="width_limit_description">Նշեք մեքենայի լայնությունը, երթուղու վրա կարող են կիրառվել սահմանափակումներ ծանր տրանսպորտային միջոցների համար։</string>
     <string name="height_limit_description">Նշեք մեքենայի բարձրությունը, երթուղու վրա կարող են կիրառվել սահմանափակումներ ծանր տրանսպորտային միջոցների համար։</string>
     <string name="weight_limit_description">Նշեք մեքենայի քաշը, երթուղու վրա կարող են կիրառվել սահմանափակումներ ծանր տրանսպորտային միջոցների համար։</string>
-    <string name="gpx_parse_error">RoadCrew-ի լավ ձևավորված չէ GPX, խնդրում ենք կապվել աջակցության թիմի հետ հետագա քննության համար:</string>
+    <string name="gpx_parse_error">OsmAnd-ի լավ ձևավորված չէ GPX, խնդրում ենք կապվել աջակցության թիմի հետ հետագա քննության համար:</string>
     <string name="shared_string_always">Միշտ</string>
     <string name="screen_control">Էկրանի կառավարում</string>
     <string name="system_screen_timeout_descr">Էկրանը կանջատվի սարքի անգործության ժամանակահատվածից հետո, որը նշված է համակարգի պարամետրերում։</string>
-    <string name="turn_screen_on_descr">Էկրանի միացման կարգավորումները (սարքը կողպելուց առաջ համոզվեք, որ RoadCrew-ը գտնվում է առաջին պլանում)՝</string>
+    <string name="turn_screen_on_descr">Էկրանի միացման կարգավորումները (սարքը կողպելուց առաջ համոզվեք, որ OsmAnd-ը գտնվում է առաջին պլանում)՝</string>
     <string name="turn_screen_on_power_button_disabled">Անջատված է: Դուք պետք է միացնել «Պահել էկրանը միացված», «Արթնանալուց հետո աշխատելու ժամանակը» բաժնում:</string>
-    <string name="turn_screen_on_power_button_descr">Սեղմելով սարքի միացման կոճակը հնարավորություն կտա ցուցադրել RoadCrew-ը արգելափակման էկրանին։</string>
+    <string name="turn_screen_on_power_button_descr">Սեղմելով սարքի միացման կոճակը հնարավորություն կտա ցուցադրել OsmAnd-ը արգելափակման էկրանին։</string>
     <string name="map_source_zoom_levels">Սահմանեք նվազագույն և առավելագույն մասշտաբի չափերը առցանց քարտեզը ցուցադրելու կամ ներբեռնելու համար:</string>
     <string name="system_screen_timeout">Օգտագործել համակարգի կարգավորումը</string>
     <string name="turn_screen_on_navigation_instructions_descr">Յուրաքանչյուր նավիգացիոն հրահանգը կմիացնի էկրանը:</string>
@@ -2145,7 +2145,7 @@
 \n
 \nԸնտրեք %1$s արագության տեսախցիկների վերաբերյալ ահազանգեր ստանալու համար:
 \n
-\nԸնտրեք %2$s։ Արագության խցիկների (ծանուցումների, ազդանշանների և POI- ների) հետ կապված բոլոր տվյալները ջնջելու համար, մինչև RoadCrew- ը ամբողջովին կվերատեղակայվի:</string>
+\nԸնտրեք %2$s։ Արագության խցիկների (ծանուցումների, ազդանշանների և POI- ների) հետ կապված բոլոր տվյալները ջնջելու համար, մինչև OsmAnd- ը ամբողջովին կվերատեղակայվի:</string>
     <string name="shared_string_items">Տարրեր</string>
     <string name="changes_applied_to_profile">Փոփոխությունները կիրառվել են «%1$s» պրոֆիլի վրա:</string>
     <string name="settings_item_read_error">Անհնար է կարդալ «%1$s»։</string>
@@ -2189,7 +2189,7 @@
     <string name="search_poi_types">Որոնում POI տեսակները</string>
     <string name="extra_maps_menu_group">Լրացուցիչ քարտեզներ</string>
     <string name="download_unsupported_action">Չաջակցվող գործողություն %1$s</string>
-    <string name="tracker_item">RoadCrew թրեկեր</string>
+    <string name="tracker_item">OsmAnd թրեկեր</string>
     <string name="quick_action_item">Արագ գործողություն</string>
     <string name="map_markers_item">Մարկերներ</string>
     <string name="favorites_item">Սիրված</string>

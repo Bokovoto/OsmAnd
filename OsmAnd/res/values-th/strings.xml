@@ -35,7 +35,7 @@
     <string name="external_device_characteristic_systolic">ซิสโตลิก</string>
     <string name="external_device_details_connection">การเชื่อมต่อ</string>
     <string name="external_device_details_battery">แบตเตอรี่</string>
-    <string name="ant_plus_pair_bluetooth_prompt">คุณสามารถจับคู่เซ็นเซอร์ Bluetooth LE และ ANT+ กับ RoadCrew ได้</string>
+    <string name="ant_plus_pair_bluetooth_prompt">คุณสามารถจับคู่เซ็นเซอร์ Bluetooth LE และ ANT+ กับ OsmAnd ได้</string>
     <string name="learn_more_about_sensors_link">เรียนรู้เพิ่มเติมเกี่ยวกับเซ็นเซอร์</string>
     <string name="movement_speed">ความเร็วในการเคลื่อนที่</string>
     <string name="shared_string_inches">นิ้ว</string>
@@ -174,13 +174,13 @@
 \n– บลูทูธได้เปิดอยู่
 \n– เซนเซอร์ได้เปิดอยู่
 \n– มือถืออยู่ใกล้กับเซนเซอร์</string>
-    <string name="ant_plus_searching_text_description">โปรดถืออุปกรณ์ใกล้กับเซ็นเซอร์ คุณต้องเปิดใช้งานเซ็นเซอร์เพื่อให้ RoadCrew สามารถค้นหาได้</string>
+    <string name="ant_plus_searching_text_description">โปรดถืออุปกรณ์ใกล้กับเซ็นเซอร์ คุณต้องเปิดใช้งานเซ็นเซอร์เพื่อให้ OsmAnd สามารถค้นหาได้</string>
     <string name="ant_plus_searching">กำลังค้นหา</string>
     <string name="ant_plus_pair_new_sensor">จับคู่เซ็นเซอร์ใหม่</string>
     <string name="cloud_version_confirm_delete">ลบ \"%1$s\" จาก OsmAnd Cloud หรือไม่\?</string>
     <string name="recently_visible">เพิ่งเห็น %1$s</string>
     <string name="shared_string_select_recent">เลือกล่าสุด</string>
-    <string name="empty_tracks_description">คุณสามารถนําเข้า สร้าง หรือบันทึกไฟล์แทร็กโดยใช้ RoadCrew</string>
+    <string name="empty_tracks_description">คุณสามารถนําเข้า สร้าง หรือบันทึกไฟล์แทร็กโดยใช้ OsmAnd</string>
     <string name="change_appearance">เปลี่ยนรูปลักษณ์</string>
     <string name="show_all_tracks">แสดงแทร็กทั้งหมด</string>
     <string name="shared_string_on_map">บนแผนที่</string>
@@ -272,7 +272,7 @@
     <string name="shared_string_all_icons">ไอคอนทั้งหมด</string>
     <string name="missing_maps_header">แผนที่สูญหายหรือเก่าเกินไป</string>
     <string name="data_source">แหล่งข้อมูล</string>
-    <string name="weather_data_sources_prompt">RoadCrew ให้ข้อมูลสภาพอากาศจาก 2 แหล่ง:</string>
+    <string name="weather_data_sources_prompt">OsmAnd ให้ข้อมูลสภาพอากาศจาก 2 แหล่ง:</string>
     <string name="shared_string_modify">แก้ไข</string>
     <string name="required_maps">ต้องใช้แผนที่</string>
     <string name="use_nearby_roads">ใช้ถนนรอบข้าง</string>
@@ -360,7 +360,7 @@
     <string name="shared_string_all_languages">ภาษาทั้งหมด</string>
     <string name="shared_string_memory_used_gb_desc">ใช้ไป %1$s กิกะไบต์</string>
     <string name="quick_action_auto_zoom_on">เปิดการขยายแผนที่โดยอัตโนมัติ</string>
-    <string name="full_version_thanks">ขอบคุณที่ซื้อ RoadCrew ในเวอร์ชั่นเสียเงิน</string>
+    <string name="full_version_thanks">ขอบคุณที่ซื้อ OsmAnd ในเวอร์ชั่นเสียเงิน</string>
     <string name="points_delete_multiple">ต้องการลบจุด %1$d ?</string>
     <string name="shared_string_trip">การเดินทาง</string>
     <string name="dark_theme">ธีมมืด</string>
@@ -493,7 +493,7 @@
     <string name="obd_engine_oil_temperature">อุณหภูมิของน้ำมันเครื่องยนต์</string>
     <string name="obd_fuel_pressure_desc">แสดงแรงดันภายในระบบเชื้อเพลิง</string>
     <string name="obd_calculated_engine_load">การใช้งานเครื่องยนต์ที่คำนวณ</string>
-    <string name="osmand_settings">การตั้งค่าของ RoadCrew</string>
+    <string name="osmand_settings">การตั้งค่าของ OsmAnd</string>
     <string name="configure_map">การตั้งค่าแผนที่</string>
     <string name="context_menu_item_directions_from">ตั้งเป็นจุดเริ่มต้น</string>
     <string name="index_name_africa">ทวีปแอฟริกา</string>
@@ -571,7 +571,7 @@
     <string name="obd_throttle_position_desc">แสดงองศาของแผ่นคันเร่งในกลไกคันเร่ง</string>
     <string name="obd_engine_runtime_desc">แสดงว่าเครื่องยนต์ได้ทำงานมาเป็นเวลาเท่าไหร่แล้วตั้งแต่ที่เริ่มสตาร์ทเครื่องยนต์</string>
     <string name="shared_string_instant">ในทันที</string>
-    <string name="connect_obd_instructions_title">RoadCrew รองรับการเชื่อมต่อไปยังตัวแสกน OBD-II ผ่านบลูทูธ</string>
+    <string name="connect_obd_instructions_title">OsmAnd รองรับการเชื่อมต่อไปยังตัวแสกน OBD-II ผ่านบลูทูธ</string>
     <string name="obd_how_to_connect">วิธีการเชื่อมต่อตัวแสกน :</string>
     <string name="connect_obd_instructions_step3">เปิดบลูทูธบนเครื่องของคุณที่คุณใช้แอพอยู่ในตอนนี้</string>
     <string name="connect_obd_instructions_step4">กด \'%1$s\' แล้วเลือกตัวแสกนจากลิสต์</string>

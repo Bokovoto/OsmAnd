@@ -265,7 +265,7 @@
     <string name="shared_string_size">ᱢᱟᱨᱟᱝ ᱛᱮᱫ</string>
     <string name="shared_string_hide_all">ᱡᱷᱚᱛᱚ ᱠᱚ ᱩᱠᱩᱭ ᱢᱮ</string>
     <string name="map_markers_history">ᱱᱚᱠᱥᱟ ᱫᱟᱜᱽ ᱱᱟᱜᱟᱢ</string>
-    <string name="location_access_request_title">ᱯᱟᱱᱛᱮ ᱞᱟᱹᱜᱤᱫᱛᱮ RoadCrew ᱫᱚᱨᱠᱟᱨ ᱟᱭ ᱠᱟᱱᱟ ᱡᱟᱭᱜᱟ ᱟᱹᱭᱫᱟᱹᱨᱤ ᱨᱮᱱᱟᱜ᱾</string>
+    <string name="location_access_request_title">ᱯᱟᱱᱛᱮ ᱞᱟᱹᱜᱤᱫᱛᱮ OsmAnd ᱫᱚᱨᱠᱟᱨ ᱟᱭ ᱠᱟᱱᱟ ᱡᱟᱭᱜᱟ ᱟᱹᱭᱫᱟᱹᱨᱤ ᱨᱮᱱᱟᱜ᱾</string>
     <string name="shortcut_navigate_to_home">\'ᱚᱲᱟᱜ\' ᱛᱮ ᱯᱟᱱᱛᱮ ᱢᱮ</string>
     <string name="android_auto_map_placeholder_title">ᱱᱚᱠᱥᱟ ᱫᱚ ᱜᱟᱹᱰᱤ ᱨᱮᱭᱟᱜ ᱥᱠᱨᱤᱱ ᱨᱮ ᱫᱮᱠᱷᱟᱣ ᱦᱩᱭᱩᱜ ᱠᱟᱱᱟ᱾</string>
     <string name="continue_on_phone">ᱢᱚᱵᱟᱭᱤᱞ ᱥᱟᱫᱷᱚᱱ ᱨᱮ ᱞᱮᱛᱟᱲ ᱢᱮ</string>
@@ -287,8 +287,8 @@
     <string name="osmand_maps_plus_tagline">ᱯᱩᱥᱴᱟᱹᱣ ᱜᱩᱱ ᱠᱚ ᱧᱟᱢ ᱢᱮ</string>
     <string name="shared_string_turn">ᱟᱹᱪᱩᱨᱚ ᱢᱮ</string>
     <string name="announcement_time_prepare">ᱛᱮᱭᱟᱨᱚ ᱢᱮ</string>
-    <string name="use_live_routing">RoadCrew ᱞᱟᱭᱤᱵᱷ ᱥᱟᱹᱠᱷᱤᱭᱟᱹᱛ</string>
-    <string name="use_live_public_transport">RoadCrew ᱞᱟᱭᱤᱵᱷ ᱥᱟᱹᱠᱷᱤᱭᱟᱹᱛ</string>
+    <string name="use_live_routing">OsmAnd ᱞᱟᱭᱤᱵᱷ ᱥᱟᱹᱠᱷᱤᱭᱟᱹᱛ</string>
+    <string name="use_live_public_transport">OsmAnd ᱞᱟᱭᱤᱵᱷ ᱥᱟᱹᱠᱷᱤᱭᱟᱹᱛ</string>
     <string name="shared_string_redo">ᱫᱚᱦᱲᱟ ᱠᱚᱨᱟᱣ</string>
     <string name="select_another_track">ᱮᱴᱟᱜ ᱴᱮᱨᱮᱠ ᱵᱟᱪᱷᱟᱣ ᱢᱮ</string>
     <string name="map_widget_monitoring">ᱫᱟᱸᱲᱟᱱ ᱨᱮᱭᱟᱜ ᱨᱮᱠᱚᱰᱤᱝ</string>
@@ -383,7 +383,7 @@
     <string name="shared_string_show_slope">ᱫᱤᱲᱟᱝ ᱩᱱᱩᱫᱩᱜ</string>
     <string name="renew_subscription">ᱪᱟᱸᱫᱟ ᱨᱟᱹᱥᱭᱟᱹ ᱱᱟᱶᱟ ᱟᱹᱨᱩᱭ ᱢᱮ</string>
     <string name="three_months_subscription">ᱯᱩᱱ ᱪᱟᱸᱫᱚ ᱨᱮᱭᱟᱜ ᱪᱟᱸᱫᱟ ᱨᱟᱹᱥᱤᱭᱟᱹ</string>
-    <string name="osmand_live">RoadCrew ᱞᱟᱭᱤᱵᱷ</string>
+    <string name="osmand_live">OsmAnd ᱞᱟᱭᱤᱵᱷ</string>
     <string name="new_device_account">ᱱᱟᱶᱟ ᱥᱟᱫᱷᱚᱱ / ᱱᱟᱶᱟ ᱠᱷᱟᱛᱟ</string>
     <string name="shared_string_interval">ᱯᱷᱟᱸᱠ</string>
     <string name="copy_poi_name">POI ᱧᱩᱛᱩᱢ ᱱᱚᱠᱚᱞ ᱢᱮ</string>
@@ -403,7 +403,7 @@
     <string name="keep_it_empty_if_not">ᱠᱷᱟᱹᱞᱤ ᱫᱚᱦᱚᱭ ᱢᱮ ᱡᱩᱫᱤ ᱵᱟᱝ</string>
     <string name="shared_string_last_used">ᱢᱩᱪᱟᱹᱫ ᱵᱮᱵᱷᱟᱨ</string>
     <string name="profile_type_user_string">ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱢᱚᱦᱲᱟ</string>
-    <string name="profile_type_osmand_string">RoadCrew ᱢᱚᱦᱲᱟ</string>
+    <string name="profile_type_osmand_string">OsmAnd ᱢᱚᱦᱲᱟ</string>
     <string name="osm_edit_close_note">OSM ᱠᱷᱟᱴᱚ ᱚᱞ ᱵᱚᱸᱫᱚᱭ ᱢᱮ</string>
     <string name="sign_in_with_open_street_map">OpenStreetMap ᱥᱟᱣᱛᱮ ᱵᱚᱞᱚᱱ ᱥᱩᱦᱤ ᱢᱮ</string>
     <string name="login_open_street_map_org">OpenStreetMap.org ᱨᱮ ᱵᱚᱞᱚᱱ ᱢᱮ</string>
@@ -495,7 +495,7 @@
     <string name="map_magnifier">ᱱᱚᱠᱥᱟ ᱢᱟᱨᱟᱝ ᱨᱮᱱᱟᱜ</string>
     <string name="poi_filter_by_name">ᱧᱩᱛᱩᱢ ᱛᱮ ᱥᱮᱸᱫᱽᱨᱟᱭ ᱢᱮ</string>
     <string name="system_locale">ᱥᱤᱥᱴᱚᱢ</string>
-    <string name="hello">RoadCrew ᱯᱟᱱᱛᱮᱭᱟᱜᱽ ᱮᱯᱯ</string>
+    <string name="hello">OsmAnd ᱯᱟᱱᱛᱮᱭᱟᱜᱽ ᱮᱯᱯ</string>
     <string name="searching">ᱥᱮᱸᱫᱽᱨᱟ ᱦᱩᱭᱩᱜ ᱠᱟᱱᱟ…</string>
     <string name="searching_address">ᱴᱷᱤᱠᱟᱹᱬᱟ ᱥᱮᱸᱫᱽᱨᱟ ᱦᱩᱭᱩᱜ ᱠᱟᱱᱟ…</string>
     <string name="night">ᱟᱹᱭᱩᱵ</string>
@@ -528,7 +528,7 @@
     <string name="amenity_type_shop">ᱫᱩᱠᱟᱹᱱ</string>
     <string name="daynight_mode_auto">ᱥᱮᱛᱟᱜ/ᱧᱩᱦᱩᱢ</string>
     <string name="show_route">ᱦᱚᱨ ᱨᱮᱱᱟᱜ ᱵᱤᱵᱨᱚᱱ ᱠᱚ</string>
-    <string name="process_navigation_service">RoadCrew ᱯᱟᱱᱛᱮᱭᱟᱜᱽ ᱥᱮᱣᱟ</string>
+    <string name="process_navigation_service">OsmAnd ᱯᱟᱱᱛᱮᱭᱟᱜᱽ ᱥᱮᱣᱟ</string>
     <string name="contact_support_description">ᱡᱩᱫᱤ ᱟᱢᱴᱷᱮᱱ ᱡᱟᱦᱟᱱᱟᱜ ᱠᱩᱠᱞᱤ ᱢᱮᱱᱟᱜᱼᱟ, ᱫᱟᱭᱟ ᱠᱟᱛᱮ ᱟᱞᱮ ᱴᱷᱮᱱ ᱥᱚᱢᱯᱚᱨᱠ ᱢᱮ %1$s ᱨᱮ᱾</string>
     <string name="settings_privacy_and_security">ᱫᱟᱱᱟᱝ ᱟᱨ ᱡᱟᱹᱯᱛᱤ</string>
     <string name="nav_type_hint">ᱪᱮᱞᱮᱠᱟᱱᱼᱟ ᱯᱟᱱᱛᱮ</string>
@@ -557,8 +557,8 @@
     <string name="change_data_storage_folder">ᱡᱚᱜᱟᱣ ᱯᱚᱴᱚᱢ ᱵᱚᱫᱚᱞ ᱢᱮ</string>
     <string name="general_settings_profile_descr">ᱮᱯᱯ ᱩᱭᱦᱟᱹᱨ, ᱱᱟᱯᱠᱚ, ᱴᱚᱴᱷᱟ</string>
     <string name="osmand_settings_descr">ᱜᱚᱴᱟ ᱮᱯᱯ ᱨᱮ ᱯᱚᱨᱵᱷᱟᱣ ᱯᱟᱲᱟᱼᱟ</string>
-    <string name="osmand_settings">RoadCrew ᱥᱟᱡᱟᱣᱠᱚ</string>
-    <string name="help_us_make_osmand_better">RoadCrew ᱟᱹᱰᱤ ᱵᱮᱥ ᱵᱮᱱᱟᱣ ᱞᱟᱹᱜᱤᱫᱽ ᱛᱮ ᱜᱚᱲᱚᱣ ᱟᱞᱮ ᱯᱮ</string>
+    <string name="osmand_settings">OsmAnd ᱥᱟᱡᱟᱣᱠᱚ</string>
+    <string name="help_us_make_osmand_better">OsmAnd ᱟᱹᱰᱤ ᱵᱮᱥ ᱵᱮᱱᱟᱣ ᱞᱟᱹᱜᱤᱫᱽ ᱛᱮ ᱜᱚᱲᱚᱣ ᱟᱞᱮ ᱯᱮ</string>
     <string name="searching_gps">GPS ᱥᱮᱸᱫᱽᱨᱟ ᱦᱩᱭᱩᱜ ᱠᱟᱱᱟ</string>
     <string name="map_mode">ᱱᱚᱠᱥᱟ ᱨᱮᱭᱟᱜ ᱚᱵᱚᱥᱛᱟ</string>
     <string name="rendering_attr_horseRoutes_name">ᱥᱟᱫᱚᱢ ᱦᱚᱨᱠᱚ</string>

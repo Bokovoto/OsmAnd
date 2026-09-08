@@ -69,7 +69,7 @@
     <string name="plugin_nautical_name">Merenduskaardi vaade</string>
     <string name="audionotes_plugin_name">Audio/video märkmed</string>
     <string name="shared_string_accessibility">Hõlpsus</string>
-    <string name="debugging_and_development">RoadCrewi arendus</string>
+    <string name="debugging_and_development">OsmAndi arendus</string>
     <string name="back_to_map">Tagasi kaardile</string>
     <string name="share_note">Jaga märget</string>
     <string name="notes">Audio/video märkmed</string>
@@ -116,7 +116,7 @@
     <string name="nothing_found">Ei leitud midagi</string>
     <string name="nothing_found_descr">Muuda otsingu päringut või laienda selle raadiust.</string>
     <string name="shared_string_permissions">Load</string>
-    <string name="import_gpx_failed_descr">Faili ei saa importida. Palun veendu, et RoadCrew\'il on õigus seda faili lugeda.</string>
+    <string name="import_gpx_failed_descr">Faili ei saa importida. Palun veendu, et OsmAnd\'il on õigus seda faili lugeda.</string>
     <string name="distance_moving">Korrigeeritud vahemaa</string>
     <string name="mapillary_image">Mapillary pilt</string>
     <string name="open_mapillary">Ava Mapillary</string>
@@ -153,7 +153,7 @@
     <string name="download_all">Laadi kõik alla</string>
     <string name="shared_string_restart">Rakenduse taaskäivitamine</string>
     <string name="maps_you_need">Kaardid, mida vajad</string>
-    <string name="osmand_team">RoadCrewi meeskond</string>
+    <string name="osmand_team">OsmAndi meeskond</string>
     <string name="popular_destinations">Populaarsed sihtkohad</string>
     <string name="update_is_available">Uuendus saadaval</string>
     <string name="download_file">Laadi fail alla</string>
@@ -178,7 +178,7 @@
     <string name="print_route">Trüki teekond</string>
     <string name="rendering_attr_showCycleRoutes_name">Rattarajad</string>
     <string name="route_info">Teekonna teave</string>
-    <string name="calculate_osmand_route_gpx">Võrguühenduseta RoadCrew teekonna arvutamine</string>
+    <string name="calculate_osmand_route_gpx">Võrguühenduseta OsmAnd teekonna arvutamine</string>
     <string name="complex_route_calculation_failed">Kiire teekonna arvutamine ebaõnnestus (%s), taandumine aeglasemale arvutamisele.</string>
     <string name="animate_routing_route_not_calculated">Palun arvuta kõigepealt teekond</string>
     <string name="route_descr_map_location">Kaart:</string>
@@ -190,7 +190,7 @@
     <string name="rendering_attr_hikingRoutesOSMC_name">Matkateekonnad</string>
     <string name="select_animate_speedup">Teekonna simuleerimise kiirus:</string>
     <string name="share_route_as_gpx">Jaga teekonda GPX failina</string>
-    <string name="share_route_subject">RoadCrew abil jagatud teekond</string>
+    <string name="share_route_subject">OsmAnd abil jagatud teekond</string>
     <string name="route_roundabout">Ringristmik: vali %1$d väljumine ja sõida otse</string>
     <string name="route_kl">Hoia vasakule ja sõida otse</string>
     <string name="route_kr">Hoia paremale ja sõida otse</string>
@@ -254,7 +254,7 @@
     <string name="add_point_before">Lisa punkt ennem</string>
     <string name="add_point_after">Lisa punkt peale</string>
     <string name="shared_string_options">Valikud</string>
-    <string name="measurement_tool_snap_to_road_descr">RoadCrew ühendab punktid valitud profiili kohastel teekondadel.</string>
+    <string name="measurement_tool_snap_to_road_descr">OsmAnd ühendab punktid valitud profiili kohastel teekondadel.</string>
     <string name="choose_navigation_type">Vali navigeerimise profiil</string>
     <string name="exit_without_saving">Välju ilma salvestamata\?</string>
     <string name="do_not_use_animations">Eemalda animatsioonid</string>
@@ -424,7 +424,7 @@
     <string name="shared_string_view">Vaata</string>
     <string name="wikivoyage_travel_guide">Reisijuhid</string>
     <string name="shared_string_travel_guides">Reisijuhid</string>
-    <string name="ask_for_location_permission">Palun luba jätkamiseks RoadCrew asukoha juurdepääs.</string>
+    <string name="ask_for_location_permission">Palun luba jätkamiseks OsmAnd asukoha juurdepääs.</string>
     <string name="more_transport_on_stop_hint">Selles peatuses saadaval laiem transpordivalik.</string>
     <string name="search_street">Otsi tänavat</string>
     <string name="start_search_from_city">Kõigepealt määra linn/maakond</string>
@@ -522,7 +522,7 @@
     <string name="rendering_attr_highway_class_path_name">Rada</string>
     <string name="rendering_attr_highway_class_cycleway_name">Jalgrattatee</string>
     <string name="rendering_attr_undefined_name">Määratlemata</string>
-    <string name="public_transport_warning_descr_blog">RoadCrew teekonna arvutamise kohta loe lähemalt meie blogist.</string>
+    <string name="public_transport_warning_descr_blog">OsmAnd teekonna arvutamise kohta loe lähemalt meie blogist.</string>
     <string name="public_transport_warning_title">Ühistranspordiga liikumine on praegu beetatestimisel, arvesta vigade ja ebatäpsusega.</string>
     <string name="add_intermediate">Lisa vahepealne sihtpunkt</string>
     <string name="shared_string_walk">Kõndimine</string>
@@ -549,7 +549,7 @@
     <string name="files_failed">%1$d faili kopeerimine ei õnnestunud (%2$s).</string>
     <string name="dont_move_maps">Ära teisalda</string>
     <string name="public_transport_ped_route_title">Teekond jalgsi on umbes %1$s ja see võib olla kiirem kui ühistransport</string>
-    <string name="public_transport_no_route_title">Kahjuks ei suuda RoadCrew leida sinu seadetele vastavat teekonda.</string>
+    <string name="public_transport_no_route_title">Kahjuks ei suuda OsmAnd leida sinu seadetele vastavat teekonda.</string>
     <string name="public_transport_try_ped">Proovi jalgsi navigeerimist.</string>
     <string name="public_transport_try_change_settings">Proovi muuta seadeid.</string>
     <string name="public_transport_calc_pedestrian">Arvuta teekond jalgsi</string>
@@ -558,15 +558,15 @@
     <string name="coordinates_widget">Koordinaatide vidin</string>
     <string name="rate_dialog_descr">Palun jaga oma tagasisidet ja hinda meie tööd Google Play keskkonnas.</string>
     <string name="shared_string_privacy_policy">Andmekaitsepõhimõtted</string>
-    <string name="help_us_make_osmand_better">Aita meil teha RoadCrew paremaks</string>
-    <string name="make_osmand_better_descr">Luba RoadCrewil koguda ja töödelda anonüümseid rakenduse kasutamise andmeid. Sinu asukoha või kaardil vaadeldavate asukohtade kohta andmeid ei koguta.
+    <string name="help_us_make_osmand_better">Aita meil teha OsmAnd paremaks</string>
+    <string name="make_osmand_better_descr">Luba OsmAndil koguda ja töödelda anonüümseid rakenduse kasutamise andmeid. Sinu asukoha või kaardil vaadeldavate asukohtade kohta andmeid ei koguta.
 \n
 \nSeadista mis tahes ajal menüüst \'Seaded\' → \'Privaatsus ja turvalisus\'.</string>
     <string name="choose_data_to_share">Vali, millist liiki andmeid soovid jagada:</string>
     <string name="downloaded_maps">Allalaaditud kaardid</string>
     <string name="visited_screens">Külastatud ekraanid</string>
     <string name="downloaded_maps_collect_descr">Aita meil mõista riikide ja piirkondade kaartide populaarsust.</string>
-    <string name="visited_screens_collect_descr">Aita meil mõista RoadCrew funktsioonide populaarust.</string>
+    <string name="visited_screens_collect_descr">Aita meil mõista OsmAnd funktsioonide populaarust.</string>
     <string name="privacy_and_security_change_descr">Puuduta \"Luba\" kui nõustud meie %1$s</string>
     <string name="settings_privacy_and_security">Privaatsus ja turvalisus</string>
     <string name="settings_privacy_and_security_desc">Vali, milliseid andmeid jagad</string>
@@ -588,7 +588,7 @@
     <string name="profile_alert_need_profile_name_title">Sisesta profiili nimi</string>
     <string name="profile_alert_need_profile_name_msg">Pead kõigepealt määrama profiili nime.</string>
     <string name="profile_alert_duplicate_name_msg">Sellise nimega profiil on juba olemas</string>
-    <string name="profile_alert_cant_delete_base">RoadCrew põhiprofiile ei saa eemaldada</string>
+    <string name="profile_alert_cant_delete_base">OsmAnd põhiprofiile ei saa eemaldada</string>
     <string name="profile_alert_delete_title">Kustuta profiil</string>
     <string name="profile_alert_delete_msg">Kustutada \"%s\" profiil</string>
     <string name="select_base_profile_dialog_title">Vali profiil alustamiseks</string>
@@ -603,11 +603,11 @@
     <string name="routing_profile_geocoding">Geokoodeerimine</string>
     <string name="routing_profile_straightline">Sirgjoon</string>
     <string name="routing_profile_broutrer">BRouter (võrguühenduseta)</string>
-    <string name="osmand_default_routing">RoadCrew marsruutimine</string>
+    <string name="osmand_default_routing">OsmAnd marsruutimine</string>
     <string name="special_routing_type">Spetsiaalne marsruutimine</string>
     <string name="third_party_routing_type">Kolmanda osapoole marsruutimine</string>
     <string name="application_profiles">Rakenduse profiilid</string>
-    <string name="process_downloading_service">RoadCrew allalaadimisteenus</string>
+    <string name="process_downloading_service">OsmAnd allalaadimisteenus</string>
     <string name="shared_string_color_magenta">Fuksiapunane</string>
     <string name="shared_string_icon">Ikoon</string>
     <string name="press_again_to_change_the_map_orientation">Puuduta uuesti kaardi orientatsiooni muutmiseks</string>
@@ -618,7 +618,7 @@
     <string name="default_speed_dialog_msg">Hindab saabumisaega tundmatute teede korral ja kiirusepiiranguid kõikidel teedel (võib muuta teekonda)</string>
     <string name="new_profile">Uus profiil</string>
     <string name="shared_string_crash">Kokkujooksmine</string>
-    <string name="last_launch_crashed">RoadCrew jooksis viimati kasutades kokku. Palun aita meil veateadet jagades RoadCrew rakendust parandada.</string>
+    <string name="last_launch_crashed">OsmAnd jooksis viimati kasutades kokku. Palun aita meil veateadet jagades OsmAnd rakendust parandada.</string>
     <string name="app_mode_ufo">UFO</string>
     <string name="release_3_4">• Rakenduse profiilid: saate luua oma vajadustele vastavalt kohandatud profiili meelepärase ikooni ja värviga \n \n • Nüüd kohandage mis tahes profiili vaikimisi ja min / max kiirusi \n \n • Lisatud praeguste koordinaatide vidin \n \n • Lisatud valikud kompassi ja raadiuse joonlaua kuvamiseks kaardil \n \n • Parandatud raja taustalogimist \n \n • Täiustatud taustakaardi allalaadimist \n \n • Taastatud valik \'Lülita ekraan sisse\' \n \n • Parandatud Vikipeedia keelevalik \n \n • Parandatud kompassinuppude käitumine navigeerimise ajal \n \n • Muud veaparandused</string>
     <string name="app_mode_personal_transporter">Isiklik vedaja</string>
@@ -698,7 +698,7 @@
     <string name="switch_profile">Vaheta profiili</string>
     <string name="reset_to_default">Taasta algväärtused</string>
     <string name="osmand_settings_descr">Jõus kogu rakenduses</string>
-    <string name="osmand_settings">RoadCrewi seadistused</string>
+    <string name="osmand_settings">OsmAndi seadistused</string>
     <string name="copy_from_other_profile">Kopeeri teisest profiilist</string>
     <string name="turn_screen_on">Lülita ekraan sisse</string>
     <string name="map_during_navigation_info">Kaart navigeerimise ajal</string>
@@ -717,14 +717,14 @@
     <string name="plugins_settings">Laienduse seaded</string>
     <string name="shared_string_by_default">Vaikimisi</string>
     <string name="download_detailed_map">Selle ala vaatlemiseks laadi alla üksikasjalik %s kaart.</string>
-    <string name="change_data_storage_full_description">Teisaldada RoadCrew andmefailid uude sihtkohta\?
+    <string name="change_data_storage_full_description">Teisaldada OsmAnd andmefailid uude sihtkohta\?
 \n%1$s &gt; %2$s</string>
     <string name="data_storage_preference_summary">%1$s • %2$s</string>
     <string name="data_storage_space_description">%1$s GB vaba (%2$s GB-st)</string>
     <string name="enter_path_to_folder">Sisesta kausta tee</string>
     <string name="shared_string_select_folder">Kaust…</string>
-    <string name="paste_Osmand_data_folder_path">Kleebi RoadCrew andmekausta asukoht</string>
-    <string name="change_osmand_data_folder_question">Muuta RoadCrew andmekausta\?</string>
+    <string name="paste_Osmand_data_folder_path">Kleebi OsmAnd andmekausta asukoht</string>
+    <string name="change_osmand_data_folder_question">Muuta OsmAnd andmekausta\?</string>
     <string name="move_maps_to_new_destination">Liiguta uude asukohta</string>
     <string name="change_data_storage_folder">Muuda salvestamise kausta</string>
     <string name="rendering_attr_piste_type_snow_park_name">Maastikupark</string>
@@ -750,7 +750,7 @@
     <string name="rendering_attr_piste_difficulty_aerialway_name">Köisraudtee</string>
     <string name="rendering_attr_piste_difficulty_connection_name">Ühendus</string>
     <string name="shared_string_calculate">Arvuta</string>
-    <string name="shared_string_osmand_usage">RoadCrew\'i kasutus</string>
+    <string name="shared_string_osmand_usage">OsmAnd\'i kasutus</string>
     <string name="shared_string_tiles">Paanid</string>
     <string name="shared_string_maps">Kaardid</string>
     <string name="shared_string_memory_tb_desc">%1$s TB</string>
@@ -806,7 +806,7 @@
     <string name="desert_render_descr">Kõrbete ja muude hõredalt asustatud piirkondade jaoks. Üksikasjalikum.</string>
     <string name="delete_profiles_descr">Rakenda-nupu vajutamisel on eemaldatakse kustutatud profiilid jäädavalt.</string>
     <string name="select_color">Vali värv</string>
-    <string name="edit_profiles_descr">RoadCrew vaikimisi profiile ei saa kustutada, aga saate need eelmisel ekraanil keelata või lõppu nihutada.</string>
+    <string name="edit_profiles_descr">OsmAnd vaikimisi profiile ei saa kustutada, aga saate need eelmisel ekraanil keelata või lõppu nihutada.</string>
     <string name="edit_profiles">Muuda profiile</string>
     <string name="profile_appearance">Profiili välimus</string>
     <string name="choose_icon_color_name">Ikoon, värv ja nimi</string>
@@ -889,7 +889,7 @@
     <string name="lang_ceb">sebu</string>
     <string name="gps_network_not_enabled">Asukohateenus on välja lülitatud. Lülitada sisse\?</string>
     <string name="disable_recording_once_app_killed">Väldi iseseisvat logimist</string>
-    <string name="shared_string_import2osmand">RoadCrew import</string>
+    <string name="shared_string_import2osmand">OsmAnd import</string>
     <string name="read_full_article">Loe kogu artiklit (veebis)</string>
     <string name="shared_string_show_details">Kuva üksikasjad</string>
     <string name="rendering_value_disabled_name">Keelatud</string>
@@ -953,9 +953,9 @@
     <string name="track_points">Rajapunktid</string>
     <string name="osmand_rastermaps_plugin_description">Selle lisaga saad ligipääsu mitut liiki veebikaartidele (nn paanid või rasterkaardid), alates eelnevalt määratletud OpenStreetMap-i paanidest (nagu Mapnik) kuni satelliidipiltide ja eriotstarbeliste kihtideni nagu ilmakaardid, kliimakaardid, geoloogilised kaardid, künklikihi kihid jne.
 \n
-\nKõiki neid kaarte saad kasutada kas peamise (põhi) kaardina, mida kuvatakse RoadCrew kaardil, või ülekattena või aluskihina mõnele muule põhikaardile (nagu RoadCrewi standardsed võrguühenduseta kaardid). Mis tahes aluskihi paremini nähtavamaks muutmiseks saad RoadCrewi vektorkaartide teatud elemente soovi korral hõlpsalt peita menüü „Kaardi seadistamine“ abil.
+\nKõiki neid kaarte saad kasutada kas peamise (põhi) kaardina, mida kuvatakse OsmAnd kaardil, või ülekattena või aluskihina mõnele muule põhikaardile (nagu OsmAndi standardsed võrguühenduseta kaardid). Mis tahes aluskihi paremini nähtavamaks muutmiseks saad OsmAndi vektorkaartide teatud elemente soovi korral hõlpsalt peita menüü „Kaardi seadistamine“ abil.
 \n
-\nKaardipaane saad hankida otse veebiallikatest või neid saad võrguühenduseta kasutamiseks ette valmistada (ja käsitsi kopeerida RoadCrewi andmekataloogi) SQLite andmebaasina, mida võid luua mitmesuguste kolmandate osapoolte kaardi ettevalmistamise tööriistade abil.</string>
+\nKaardipaane saad hankida otse veebiallikatest või neid saad võrguühenduseta kasutamiseks ette valmistada (ja käsitsi kopeerida OsmAndi andmekataloogi) SQLite andmebaasina, mida võid luua mitmesuguste kolmandate osapoolte kaardi ettevalmistamise tööriistade abil.</string>
     <string name="srtm_plugin_name">Topograafia</string>
     <string name="plugin_touringview_name">Teekaardi vaade</string>
     <string name="plugin_ski_name">Suusakaardi vaade</string>
@@ -1147,8 +1147,8 @@
     <string name="lang_uk">ukraina</string>
     <string name="lang_vi">vietnami</string>
     <string name="lang_cy">kõmri</string>
-    <string name="calculate_osmand_route_without_internet">RoadCrew teekonna lõigu võrguühenduseta arvutamine</string>
-    <string name="gpx_option_calculate_first_last_segment">Arvuta RoadCrew teekond esimesele ja viimasele teekonnalõigule</string>
+    <string name="calculate_osmand_route_without_internet">OsmAnd teekonna lõigu võrguühenduseta arvutamine</string>
+    <string name="gpx_option_calculate_first_last_segment">Arvuta OsmAnd teekond esimesele ja viimasele teekonnalõigule</string>
     <string name="keep_and_add_destination_point">Lisa hilisemaks sihtkohaks</string>
     <string name="route_descr_select_destination">Määra sihtkoht</string>
     <string name="routing_attr_prefer_motorway_name">Eelista kiirteid</string>
@@ -1167,7 +1167,7 @@
     <string name="routing_attr_weight_description">Määra teedel lubatud sõiduki kaal.</string>
     <string name="routing_attr_height_name">Kõrgus</string>
     <string name="routing_attr_height_description">Määra teedel lubatud sõiduki kõrgus.</string>
-    <string name="copying_osmand_files">RoadCrew andmefailide kopeerimine…</string>
+    <string name="copying_osmand_files">OsmAnd andmefailide kopeerimine…</string>
     <string name="app_mode_truck">Veoauto</string>
     <string name="speech_rate_descr">Määra kõnesünteesi kõne kiirus.</string>
     <string name="speech_rate">Kõne kiirus</string>
@@ -1297,10 +1297,10 @@
     <string name="snap_to_road">Kinnitu teele</string>
     <string name="interrupt_music_descr">Hääljuhised peatavad muusika esitamise.</string>
     <string name="interrupt_music">Peata muusika</string>
-    <string name="osmand_play_title_30_chars">RoadCrew kaardid ja navigeerimine</string>
-    <string name="osmand_long_description_1000_chars">RoadCrew (OSM automatiseeritud navigeerimisjuhised)
+    <string name="osmand_play_title_30_chars">OsmAnd kaardid ja navigeerimine</string>
+    <string name="osmand_long_description_1000_chars">OsmAnd (OSM automatiseeritud navigeerimisjuhised)
 \n
-\n RoadCrew on avatud lähtekoodiga tarkvara navigeerimisrakendus, millel on juurdepääs mitmesugustele ülemaailmsetele OpenStreetMap (OSM) andmetele. Kõiki kaardiandmeid (vektor- või paanikaarte) saad salvestada telefoni mälukaardile võrguühenduseta kasutamiseks. Olemas on ka võrguühenduseta ja veebipõhised teekonna leidmise funktsioonid, sealhulgas pöörangupõhiseid hääljuhiseid.
+\n OsmAnd on avatud lähtekoodiga tarkvara navigeerimisrakendus, millel on juurdepääs mitmesugustele ülemaailmsetele OpenStreetMap (OSM) andmetele. Kõiki kaardiandmeid (vektor- või paanikaarte) saad salvestada telefoni mälukaardile võrguühenduseta kasutamiseks. Olemas on ka võrguühenduseta ja veebipõhised teekonna leidmise funktsioonid, sealhulgas pöörangupõhiseid hääljuhiseid.
 \n
 \n Mõned põhifunktsioonid:
 \n - Täielik võrguühenduseta funktsioon (salvestades allalaaditud vektor- või paanikaardid seadme mällu)
@@ -1315,7 +1315,7 @@
 \n - Kaardi joondamine vastavalt kompassile või liikumissuunale
 \n - Teekonnal juhtimine, kiiruspiirangu kuvamine, salvestatud ja kõnesünteesitud hääljuhised
 \n
-\n Selle tasuta RoadCrew versiooni piirangud:
+\n Selle tasuta OsmAnd versiooni piirangud:
 \n - Kaardi allalaadimiste arv on piiratud
 \n - Vikipeedia huvipunktidele puudub võrguühenduseta juurdepääs
 \n
@@ -1465,7 +1465,7 @@
     <string name="user_name">Sinu OSM kasutajanimi</string>
     <string name="user_password">Salasõna</string>
     <string name="osmand_service">Taustarežiim</string>
-    <string name="osmand_service_descr">RoadCrew töötab taustal, ekraan välja lülitatud.</string>
+    <string name="osmand_service_descr">OsmAnd töötab taustal, ekraan välja lülitatud.</string>
     <string name="download_files_question_space">Kas laadime alla {0} fail(i)\?
 \n{1} MB (kokku {2} MB-st) võetakse kasutusse.</string>
     <string name="choose_auto_follow_route">Kaardivaade automaatselt keskele</string>
@@ -1564,10 +1564,10 @@
     <string name="version_index_is_not_supported">Indeksi versioon \'\'{0}\'\' ei ole toetatud</string>
     <string name="build_installed">Versioon {0} paigaldati ({1}).</string>
     <string name="downloading_build">Versiooni alla laadimine…</string>
-    <string name="install_selected_build">Paigaldada RoadCrew - {0} / {1} {2} MB \?</string>
-    <string name="loading_builds_failed">RoadCrewi versioonide loendi laadimine ei õnnestunud</string>
-    <string name="loading_builds">RoadCrew versioonide laadimine…</string>
-    <string name="select_build_to_install">Vali paigaldatav RoadCrew versioon</string>
+    <string name="install_selected_build">Paigaldada OsmAnd - {0} / {1} {2} MB \?</string>
+    <string name="loading_builds_failed">OsmAndi versioonide loendi laadimine ei õnnestunud</string>
+    <string name="loading_builds">OsmAnd versioonide laadimine…</string>
+    <string name="select_build_to_install">Vali paigaldatav OsmAnd versioon</string>
     <string name="gps_status_app_not_found">GPS oleku rakendust ei ole paigaldatud. Otsida turult\?</string>
     <string name="daynight_mode_day">Päev</string>
     <string name="daynight_mode_night">Öö</string>
@@ -1592,7 +1592,7 @@
     <string name="rotate_map_to">Kaardi orientatsioon</string>
     <string name="fav_imported_sucessfully">Lemmikud imporditud</string>
     <string name="no_fav_to_save">Puuduvad lemmikpunktid salvestamiseks</string>
-    <string name="share_fav_subject">Lemmikud jagatud RoadCrew abil</string>
+    <string name="share_fav_subject">Lemmikud jagatud OsmAnd abil</string>
     <string name="error_occurred_loading_gpx">GPX laadimine ebaõnnestus.</string>
     <string name="send_report">Saada ettekanne</string>
     <string name="poi_namefinder_query_empty">Kirjuta huvipunkti leidmiseks</string>
@@ -1661,7 +1661,7 @@
     <string name="lang_mk">makedoonia</string>
     <string name="lang_fy">friisi</string>
     <string name="lang_als">albaania (Toski)</string>
-    <string name="share_osm_edits_subject">RoadCrew kaudu jagatud OSM muudatused</string>
+    <string name="share_osm_edits_subject">OsmAnd kaudu jagatud OSM muudatused</string>
     <string name="shared_string_location">Asukoht</string>
     <string name="context_menu_item_delete_waypoint">Kustuta GPX teekonnapunkt\?</string>
     <string name="context_menu_item_edit_waypoint">Muuda GPX teekonnapunkti</string>
@@ -1787,7 +1787,7 @@
     <string name="postcode">Postiindeks</string>
     <string name="search_categories">Kategooriad</string>
     <string name="lang_hsb">ülemsorbi</string>
-    <string name="share_history_subject">jagatud RoadCrew kaudu</string>
+    <string name="share_history_subject">jagatud OsmAnd kaudu</string>
     <string name="show_something_on_map">Kuva %1$s kaardil</string>
     <string name="dist_away_from_my_location">Otsi %1$s kauguses</string>
     <string name="confirmation_to_delete_history_items">Eemaldada valitud üksused \'Ajaloost\'\?</string>
@@ -1801,7 +1801,7 @@
     <string name="update_all_maps_now">Kas uuendan kohe kõik kaardid?</string>
     <string name="search_another_country">Vali mõni teine piirkond</string>
     <string name="search_map">Kaartide otsing…</string>
-    <string name="first_usage_wizard_desc">Las RoadCrew määrab sinu asukoha ja soovitab selle piirkonna jaoks alla laaditavaid kaarte.</string>
+    <string name="first_usage_wizard_desc">Las OsmAnd määrab sinu asukoha ja soovitab selle piirkonna jaoks alla laaditavaid kaarte.</string>
     <string name="location_not_found">Asukohta ei leitud</string>
     <string name="no_inet_connection">Internetiühendus puudub</string>
     <string name="search_location">Asukoha otsing…</string>
@@ -1906,7 +1906,7 @@
     <string name="routing_attr_driving_style_balance_name">Tasakaalustatud</string>
     <string name="routing_attr_driving_style_safety_name">Eelista kõrvalteid</string>
     <string name="routing_attr_relief_smoothness_factor_name">Vali kõrguse vahelduvus</string>
-    <string name="full_version_thanks">Täname RoadCrew tasulise versiooni ostmise eest.</string>
+    <string name="full_version_thanks">Täname OsmAnd tasulise versiooni ostmise eest.</string>
     <string name="parking_options">Parkimisvalikud</string>
     <string name="do_not_show_startup_messages">Ära kuva käivitusteateid</string>
     <string name="osmand_extended_description_part2">GPS-navigeerimine \n • Vali võrguühenduseta (välismaal viibides rändlustasudeta) või võrgus (kiirem) vahel \n • Hääljuhised pöörangupõhisel suunamisel juhatavad sind mööda teed (salvestatud ja sünteesitud hääled) \n • Teekond arvutatakse sellest kõrvale kaldudes alati ümber \n • Teeäärsed juhised, tänavanimed ja eeldatav saabumisaeg on teel olles abiks \n • Reisi turvalisemaks muutmiseks lülitatakse päeval/öösel ekraani režiim automaatselt ümber \n • Näitame kiiruspiiranguid ja saad selle ületamise korral meeldetuletusi \n • Kaardi suurendustaset kohandame vastavalt sinu kiirusele \n • Otsi sihtkohti aadressi, liigi (nt parkimine, restoran, hotell, bensiinijaam, muuseum) või geograafiliste koordinaatide järgi \n • Toetab teekonna vahepunkte \n • Salvesta oma andmed või laadi üles GPX rada ja liigu mööda seda</string>
@@ -1967,7 +1967,7 @@
     <string name="light_rs_render_descr">Lihtne sõidustiil. Õrn öörežiim, kontrastsed oranži värvi teed, hägustatud teisejärgulised kaardiobjektid ning topograafia elemendid, nagu tasakõrgusjooned.</string>
     <string name="topo_render_descr">Matkamiseks, rändamiseks ja jalgrattasõiduks looduses. Loetav õues. Kontrastsed teed ja loodusobjektid, erinevad teekonnaliigid, täpsemad kõrgusjoonte võimalused, lisadetailid. Pinna terviklikkuse reguleerimine eristab tee kvaliteeti. Öine režiim puudub.</string>
     <string name="default_render_descr">Üldotstarbeline stiil. Selgelt esitatud tiheasustus. Sisaldab teekondi, pinna kvaliteeti, juurdepääsupiiranguid, teekatteid, SAC/CAI-skaala järgi joonistatud radu, kärestikuspordi objekte ning topograafia elemendid, nagu tasakõrgusjooned.</string>
-    <string name="touring_view_render_descr">Suure kontrastsusega ja maksimaalselt detailne matkamise stiil. Sisaldab kõiki RoadCrewi vaikestiili valikuid, kuvades samal ajal võimalikult palju üksikasju, eriti teid, radu ja muid liikumisviise. Selge \"turismialase atlase\" eristamine teetüüpide vahel. Sobib kasutamiseks nii päeval, öösel kui ka välitingimustes.</string>
+    <string name="touring_view_render_descr">Suure kontrastsusega ja maksimaalselt detailne matkamise stiil. Sisaldab kõiki OsmAndi vaikestiili valikuid, kuvades samal ajal võimalikult palju üksikasju, eriti teid, radu ja muid liikumisviise. Selge \"turismialase atlase\" eristamine teetüüpide vahel. Sobib kasutamiseks nii päeval, öösel kui ka välitingimustes.</string>
     <string name="off_road_render_descr">\'Topo\' stiilis maanteel sõitmiseks ja rohelise satelliidipildi aluskihina kasutamiseks. Vähendatud peatee paksus, suurendatud radade, teede, jalgratta ja muude teede paksus.</string>
     <string name="unirs_render_descr">Vaikimisi stiili muudatus, et parandada kõnniteede ja jalgrattateede kontrastsust. Kasutab vanu Mapnik värve.</string>
     <string name="shared_string_gpx_track">Rada</string>
@@ -1976,7 +1976,7 @@
     <string name="shared_string_waypoints">Teekonnapunktid</string>
     <string name="shared_string_waypoint">Teekonnapunkt</string>
     <string name="shared_string_target_points">Sihtkohad</string>
-    <string name="wikivoyage_travel_guide_descr">Juhised planeedi kõige huvitavamatesse kohtadesse, RoadCrewi sees, ilma internetiühenduseta.</string>
+    <string name="wikivoyage_travel_guide_descr">Juhised planeedi kõige huvitavamatesse kohtadesse, OsmAndi sees, ilma internetiühenduseta.</string>
     <string name="shared_string_tracks">Rajad</string>
     <string name="send_search_query_description">Sinu otsingupäring saadetakse: \"%1$s\", koos sinu asukohaga.
 \n
@@ -2006,8 +2006,8 @@
     <string name="record_plugin_description">Salvesta oma radu ja treeninguid ning analüüsi nende andmeid nagu kiirus, tõusud, laskumised, kõrgusprofiil, jne. Salvestatud radu saad arhiveerida, jagada sõpradega, muuta ja järeltöödelda.
 \n
 \nLisateave %1$s.</string>
-    <string name="srtm_plugin_description">See laiendus pakub nii kõrgusjoonte ülekatte kui ka (reljeefse) künkavarjutuse kihi, mida kuvatakse RoadCrew standardkaartidel. Seda funktsionaalsust hindavad sportlased, matkajad, rändajad ja kõik teised, kes on huvitatud kontuurjoontest, maastiku reljeefstruktuurist ning nõlvade toonimisest. \n \nAndmed pärinevad SRTM (süstiku radari topograafiamissioon) ja ASTER (täiustatud kosmose termilise kiirguse ja peegelduse radiomeeter) andmekogudest. \n \nLisateave: %1$s.</string>
-    <string name="plugin_touringview_descr">Selle vaate aktiveerimine muudab RoadCrewi kaardistiili „Reisivaateks“. See on reisijatele ja kutselistele autojuhtidele mõeldud eriline kõrglahutusega vaade.
+    <string name="srtm_plugin_description">See laiendus pakub nii kõrgusjoonte ülekatte kui ka (reljeefse) künkavarjutuse kihi, mida kuvatakse OsmAnd standardkaartidel. Seda funktsionaalsust hindavad sportlased, matkajad, rändajad ja kõik teised, kes on huvitatud kontuurjoontest, maastiku reljeefstruktuurist ning nõlvade toonimisest. \n \nAndmed pärinevad SRTM (süstiku radari topograafiamissioon) ja ASTER (täiustatud kosmose termilise kiirguse ja peegelduse radiomeeter) andmekogudest. \n \nLisateave: %1$s.</string>
+    <string name="plugin_touringview_descr">Selle vaate aktiveerimine muudab OsmAndi kaardistiili „Reisivaateks“. See on reisijatele ja kutselistele autojuhtidele mõeldud eriline kõrglahutusega vaade.
 \n
 \nSee vaade pakub igal kaardi suurendamisel maksimaalse hulga kaardiandmetes saada olevaid reisiandmeid (eriti teed, rajad ja orientatsioonimärgid).
 \n
@@ -2018,20 +2018,20 @@
 \nSpetsiaalset kaardi allalaadimist pole vaja, vaade on loodud meie tavakaartidest.
 \n
 \nSelle vaate saad tagasi lülitada, aktiveerides selle siin uuesti või muutes vastavalt vajadusele jaotises „Kaardi seadistamine“ „Kaardistiil“.</string>
-    <string name="plugin_nautical_descr">See lisamoodul rikastab RoadCrewi kaardirakendust meresõiduks vajaliku teabega, nagu laevateed, meremärgid, ohutsoonid, sildumisjuhendid ja muu oluline. Kasutamiseks lülita alajaotuses „Seadista kaarti“ sisse valik „Merekaardid“ ning laadi alla soovitud piirkonna kaart. \n \nLisateave: %1$s.</string>
+    <string name="plugin_nautical_descr">See lisamoodul rikastab OsmAndi kaardirakendust meresõiduks vajaliku teabega, nagu laevateed, meremärgid, ohutsoonid, sildumisjuhendid ja muu oluline. Kasutamiseks lülita alajaotuses „Seadista kaarti“ sisse valik „Merekaardid“ ning laadi alla soovitud piirkonna kaart. \n \nLisateave: %1$s.</string>
     <string name="plugin_ski_descr">Mõeldud liikumiseks talipordipiirkonnas: vaata mäesuusatamise nõlvade, murdmaasuusaradade, mäesuusaradade ja suusaliftide teavet, sealhulgas värviliste joontega märgitud radade raskusastmeid. Kasutamiseks lülita lisamoodul sisse, ava „Kaardi seadistamine“ ja vali kaardi stiiliks „Talv ja suusk“.</string>
     <string name="audionotes_plugin_description">Tee reisi ajal heli-, pildi- või videomärkmeid, kasutades kas nuppu kaardil või asukoha kontekstimenüüd.</string>
     <string name="osmand_parking_plugin_description">Jäta meelde oma auto parkimiskoht ja teavita oma kalendrirakendust, kui parkimise aeg hakkab lõppema. Parkimismarkeri lisamiseks vali vajalik koht kaardil, ava „Tegevused“ ja klõpsi „Lisa parkimine“.</string>
     <string name="unit_of_length_descr">Muuda vahemaa mõõtmiseks kasutatud ühikut.</string>
-    <string name="osmand_accessibility_description">Teeb seadme erivajadusega kasutajatele mõeldud funktsioonid otse RoadCrewis kättesaadavaks. See lihtsustab näiteks kõnesünteesi häälte kõnekiiruse reguleerimist, ekraanil navigeerimise suuna seadistamist, rulliku kasutamist suurenduse juhtimiseks või kõnesünteesi tagasisidet, näiteks oma asukoha automaatseks teatamiseks.</string>
-    <string name="osm_editing_plugin_description">Tee RoadCrewi abil OSMi kaastöid, näiteks loo või muuda OSMi huvipunkte, ava või kommenteeri OSMi märkmeid ning lisa salvestatud GPX faile. Selleks sisesta oma OSMi kasutajanimi ja salasõna. OSM on kogukonna juhitud globaalne vaba litsentsi alusel avaldatud kaardistamisprojekt.
+    <string name="osmand_accessibility_description">Teeb seadme erivajadusega kasutajatele mõeldud funktsioonid otse OsmAndis kättesaadavaks. See lihtsustab näiteks kõnesünteesi häälte kõnekiiruse reguleerimist, ekraanil navigeerimise suuna seadistamist, rulliku kasutamist suurenduse juhtimiseks või kõnesünteesi tagasisidet, näiteks oma asukoha automaatseks teatamiseks.</string>
+    <string name="osm_editing_plugin_description">Tee OsmAndi abil OSMi kaastöid, näiteks loo või muuda OSMi huvipunkte, ava või kommenteeri OSMi märkmeid ning lisa salvestatud GPX faile. Selleks sisesta oma OSMi kasutajanimi ja salasõna. OSM on kogukonna juhitud globaalne vaba litsentsi alusel avaldatud kaardistamisprojekt.
 \n
 \nKaardi muutmiseks vajaliku teabe leiad meie veebisaidist: %1$s.</string>
-    <string name="osmand_development_plugin_description">See moodul lisab RoadCrewi testimis- ja silumisfunktsionaalsuse: teekondade simuleerimine, ekraanirenderduse jälgimine, jõudlusekontrollimine, jne. Rakenduse tavapäraseks kasutuseks seda vaja pole.</string>
+    <string name="osmand_development_plugin_description">See moodul lisab OsmAndi testimis- ja silumisfunktsionaalsuse: teekondade simuleerimine, ekraanirenderduse jälgimine, jõudlusekontrollimine, jne. Rakenduse tavapäraseks kasutuseks seda vaja pole.</string>
     <string name="avoid_roads_msg">Vali alternatiivne teekond, valides välditavad teed</string>
     <string name="fav_point_emoticons_message">Emotikone sisaldava stringi salvestamiseks faili mutsime lemmiku uueks nimeks \'%1$s\'.</string>
     <string name="live_monitoring_m_descr">Saada jälgimisandmed kindlaksmääratud veebiteenusele kui GPX logimine on sisse lülitatud.</string>
-    <string name="android_19_location_disabled">Alates Android 4.4 (KitKat) ei ole vanemad salvestuskaustad (%s) enam toetatud. Kas kopeerime kõik RoadCrew failid uude salvestuskohta\?
+    <string name="android_19_location_disabled">Alates Android 4.4 (KitKat) ei ole vanemad salvestuskaustad (%s) enam toetatud. Kas kopeerime kõik OsmAnd failid uude salvestuskohta\?
 \n Märkus 1: Vanad failid jäävad puutumatuks (kuid neid saab käsitsi kustutada).
 \n Märkus 2: Uues salvestuskohas pole faile võimalik OsmAnd ja OsmAnd+ vahel jagada.</string>
     <string name="local_osm_changes_delete_all_confirm">Kustutadad %1$d OSM muudatust\?</string>
@@ -2075,7 +2075,7 @@
     <string name="gpx_files_not_found">Radade kaustast ei leitud ühtegi GPX faili</string>
     <string name="use_trackball_descr">Kasuta juhtpalli kaardi liigutamiseks.</string>
     <string name="use_trackball">Kasuta juhtrullikut</string>
-    <string name="process_navigation_service">RoadCrew navigeerimisteenus</string>
+    <string name="process_navigation_service">OsmAnd navigeerimisteenus</string>
     <string name="int_seconds">sekundit</string>
     <string name="int_min">min.</string>
     <string name="search_poi_filter">Filter</string>
@@ -2091,7 +2091,7 @@
     <string name="transport_Stop">Peatus</string>
     <string name="transport_stops">peatused</string>
     <string name="transport">Transport</string>
-    <string name="hello">RoadCrew navigeerimisrakendus</string>
+    <string name="hello">OsmAnd navigeerimisrakendus</string>
     <string name="favorite">Lemmik</string>
     <string name="uploading_data">Andmete üleslaadimine…</string>
     <string name="uploading">Laadin üles…</string>
@@ -2116,7 +2116,7 @@
     <string name="arrived_at_destination">Oled kohale jõudnud.</string>
     <string name="invalid_locations">Vigased koordinaadid</string>
     <string name="loading_data">Laadin andmeid…</string>
-    <string name="previous_run_crashed">RoadCrew jooksis viimasel kasutamisel kokku. Logifail asukoht on {0}. Palun teata probleemist ja edasta logifail.</string>
+    <string name="previous_run_crashed">OsmAnd jooksis viimasel kasutamisel kokku. Logifail asukoht on {0}. Palun teata probleemist ja edasta logifail.</string>
     <string name="saving_gpx_tracks">GPX faili salvestamine…</string>
     <string name="finished_task">Valmis</string>
     <string name="data_settings">Andmed</string>
@@ -2175,7 +2175,7 @@
     <string name="av_camera_pic_size_descr">Määra kaamera pildi suurus</string>
     <string name="navigation_intent_invalid">Vigane formaat: %s</string>
     <string name="shared_string_get">Hangi</string>
-    <string name="do_you_like_osmand">Kas sulle meeldib RoadCrew\?</string>
+    <string name="do_you_like_osmand">Kas sulle meeldib OsmAnd\?</string>
     <string name="user_hates_app_get_feedback">Ütle meile, miks.</string>
     <string name="user_hates_app_get_feedback_long">Palun anna meile teada kõigist ettepanekutest.</string>
     <string name="failed_to_upload">Ei saanud üles laadida</string>
@@ -2226,7 +2226,7 @@
     <string name="use_drawer_btn">Kasuta menüüd</string>
     <string name="value_downloaded_of_max">%1$.1f / %2$.1f MB</string>
     <string name="only_download_over_wifi">Laadi alla ainult WiFi kaudu</string>
-    <string name="missing_write_external_storage_permission">RoadCrewil puudub mälukaardi kasutamise luba</string>
+    <string name="missing_write_external_storage_permission">OsmAndil puudub mälukaardi kasutamise luba</string>
     <string name="hourly">Iga tund</string>
     <string name="daily">Iga päev</string>
     <string name="weekly">Iga nädal</string>
@@ -2282,12 +2282,12 @@
     <string name="quick_action_map_overlay_switch">Kaardi ülekatteks muudetud \"%s\".</string>
     <string name="quick_action_map_underlay_switch">Kaardi aluskihiks muudetud \"%s\".</string>
     <string name="quick_action_page_list_descr">Nupp alloleva loendi sirvimiseks.</string>
-    <string name="osmand_extended_description_part1">RoadCrew (OSM automatiseeritud navigeerimisjuhised) on kaardi- ja navigatsioonirakendus, millel on juurdepääs tasuta, ülemaailmsetele ja kvaliteetsetele OpenStreetMap (OSM) andmetele.
+    <string name="osmand_extended_description_part1">OsmAnd (OSM automatiseeritud navigeerimisjuhised) on kaardi- ja navigatsioonirakendus, millel on juurdepääs tasuta, ülemaailmsetele ja kvaliteetsetele OpenStreetMap (OSM) andmetele.
 \n
 \n Naudi hääl- ja optilist navigaatorit, HP-de (huvipunktide) vaatamist, GPX radade loomist ja haldamist, kõrgusjoonte visuaalse kuvamise ja kõrguse teabe kasutamist (lisa kaudu), valikut sõidu, jalgrattasõidu, jalakäijate režiimide, OSM\'i andmete muutmise ja palju muu vahel.</string>
     <string name="osmand_extended_description_part3">Kaart \n • Kuvab HP-d (huvipunktid) sinu ümber \n • Kohandab kaarti sinu liikumissuunaga (või kompassiga) \n • Näitab sinu asukohta ja vaatamise suunda \n • Jaga oma asukohta, et sõbrad saaksid sind üles leida \n • Hoiab sinu kõige olulisemaid kohti menüüs \'Eelistused\' \n • Võimaldab valida, kuidas nimesid kaardil kuvada: inglise keeles, kohalikus või foneetilises kirjas \n • Kuvab spetsiaalseid veebipaane, satelliidivaadet (Bingilt), erinevaid ülekatteid, näiteks GPX radade ringkäik / navigeerimine ja kohandatava läbipaistvusega täiendavaid kihte</string>
     <string name="osmand_extended_description_part4">Suusatamine
-\n RoadCrew suusakaartide lisa võimaldab näha keerukusastmega suusaradasid ja mõnda lisateavet, näiteks suusatõstukite ja muude rajatiste asukohti.</string>
+\n OsmAnd suusakaartide lisa võimaldab näha keerukusastmega suusaradasid ja mõnda lisateavet, näiteks suusatõstukite ja muude rajatiste asukohti.</string>
     <string name="osmand_extended_description_part5">Jalgrattasõit
 \n • Leia kaardilt jalgrattateed
 \n • GPS navigeerimine jalgrattarežiimis loob marsruudi jalgrattateede abil
@@ -2296,7 +2296,7 @@
 \n • Täiendava lisa kaudu saad lubada kõrgusjooned ja künkavarjutuse</string>
     <string name="osmand_extended_description_part6">Jalutamine, matkamine, linnaekskursioon \n • Kaart näitab jalgsi- ja matkaradu \n • Vikipeedia sinu eelistatud keeles võib sulle linnaekskursiooni ajal palju öelda \n • Ühistranspordipeatused (buss, tramm, rong) koos liinide nimedega aitavad uues linnas navigeerida \n • Jalakäijate režiimis GPS navigeerimine loob sulle marsruudi kõnniteede abil \n • Laadi üles GPX marsruut ja järgi seda või salvesta ja jaga enda oma</string>
     <string name="osmand_extended_description_part7">Panusta OSM kvaliteeti \n • Teata andmevigadest \n • Laadi GPX rajad OSM keskkonda üles otse rakendusest \n • Lisa huvipunkte ja laadi need kohe üles OSM keskkonda (või hiljem internetühenduse tekkides)</string>
-    <string name="osmand_extended_description_part8">RoadCrew on aktiivselt arendatud avatud lähtekoodiga tarkvara. Kõik saavad rakendusse panustada, teatades vigadest, parandades tõlkeid või luues uut funktsioonaalsust. Lisaks kasutab projekt rahalisele toetuset programmerimiseks ja uute funktsioonide testimiseks.
+    <string name="osmand_extended_description_part8">OsmAnd on aktiivselt arendatud avatud lähtekoodiga tarkvara. Kõik saavad rakendusse panustada, teatades vigadest, parandades tõlkeid või luues uut funktsioonaalsust. Lisaks kasutab projekt rahalisele toetuset programmerimiseks ja uute funktsioonide testimiseks.
 \n Ligikaudne kaardi leviala ja kvaliteet:
 \n • Lääne-Euroopa: ****
 \n • Ida-Euroopa: ***
@@ -2333,7 +2333,7 @@
 \n • Valikuline reisi salvestamine kohalikku GPX faili või veebiteenusesse
 \n • Valikuline kiiruse ja kõrguse kuvamine
 \n • Kõrgusjoonte ja künkavarjutuse kuvamine (täiendava lisa abil)</string>
-    <string name="osmand_plus_extended_description_part7">Tee otse OSM kaastööd \n • Teata andmevigadest \n • Laadi GPX radu OSM keskkonda otse rakendusest \n • Lisa huvipunkte ja laadi need kohe üles OSM keskkonda (või hiljem internetiühenduse tekkimisel) \n • Kui soovid, siis salvesta teekonda ka taustrežiimis (kui seade on puhkeolekus) \n RoadCrew on aktiivselt arendatud avatud lähtekoodiga tarkvara. Kõik saavad rakendusse panustada, teatades vigadest, parandades tõlkeid või kodeerides uusi funktsioone. Lisaks toetub projekt rahalisele toetusele nii programmeerimiseks kui ka uue funktsionaalsuse testimiseks.</string>
+    <string name="osmand_plus_extended_description_part7">Tee otse OSM kaastööd \n • Teata andmevigadest \n • Laadi GPX radu OSM keskkonda otse rakendusest \n • Lisa huvipunkte ja laadi need kohe üles OSM keskkonda (või hiljem internetiühenduse tekkimisel) \n • Kui soovid, siis salvesta teekonda ka taustrežiimis (kui seade on puhkeolekus) \n OsmAnd on aktiivselt arendatud avatud lähtekoodiga tarkvara. Kõik saavad rakendusse panustada, teatades vigadest, parandades tõlkeid või kodeerides uusi funktsioone. Lisaks toetub projekt rahalisele toetusele nii programmeerimiseks kui ka uue funktsionaalsuse testimiseks.</string>
     <string name="osmand_plus_extended_description_part8">Ligikaudne kaardi leviala ja kvaliteet: \n • Lääne-Euroopa: **** \n • Ida-Euroopa: *** \n • Venemaa: *** \n • Põhja-Ameerika: *** \n • Lõuna-Ameerika: ** \n • Aasia: ** \n • Jaapan ja Korea: *** \n • Lähis-Ida: ** \n • Aafrika: ** \n • Antarktika: * \n Enamike riikide andmed üle maailma on allalaadimiseks saadaval \n Afganistanist Zimbabweni, Austraaliast Ameerika Ühendriikideni. Argentina, Brasiilia, Kanada, Prantsusmaa, Saksamaa, Mehhiko, Suurbritannia, Hispaania, …</string>
     <string name="save_poi_too_many_uppercase">Nimi sisaldab liiga palju suurtähti. Jätkata\?</string>
     <string name="retry">Proovi uuesti</string>
@@ -2361,7 +2361,7 @@
     <string name="wiki_article_not_found">Artiklit ei leitud</string>
     <string name="how_to_open_wiki_title">Kuidas Vikipeedia artikleid avada\?</string>
     <string name="test_voice_desrc">Puuduta nuppu ja kuula sellele vastavat häält, et kuulda, kas see puudub või on vigane</string>
-    <string name="quick_action_switch_day_night_descr">Nupp RoadCrew\'i päeva- ja öörežiimi vahetamiseks.</string>
+    <string name="quick_action_switch_day_night_descr">Nupp OsmAnd\'i päeva- ja öörežiimi vahetamiseks.</string>
     <string name="routing_attr_avoid_sett_name">Pole klombitud tänavakive</string>
     <string name="routing_attr_avoid_sett_description">Väldi klombitud tänavakive</string>
     <string name="quick_action_need_to_add_item_to_list">Lisa nimekirja vähemalt üks element \'Kiirtegevus\' seadetes</string>
@@ -2395,14 +2395,14 @@
     <string name="live_monitoring_descr">Lubab jagada praegust asukohta kasutades reisi salvestamist.</string>
     <string name="live_monitoring">Veebis jälgimine</string>
     <string name="save_track_logging_accuracy">Logimise täpsus</string>
-    <string name="tracks_view_descr">Sinu salvestatud rajad asuvad %1$s või RoadCrew kataloogis.</string>
+    <string name="tracks_view_descr">Sinu salvestatud rajad asuvad %1$s või OsmAnd kataloogis.</string>
     <string name="multimedia_notes_view_descr">Sinu OSM märkmed asuvad %1$s.</string>
     <string name="video_notes">Video märkmed</string>
     <string name="photo_notes">Foto märkmed</string>
     <string name="accessibility_announce">Teata</string>
     <string name="plugin_global_prefs_info">Need pistikprogrammi seaded on üldised ja rakenduvad kõikidele profiilidele</string>
     <string name="osm_editing">OSM\'i andmete muutmine</string>
-    <string name="osm_edits_view_descr">Vaata kõiki üleslaadimata muudatusi või OSM vigu saad menüüs %1$s. Juba üleslaaditud muudatusi RoadCrew ei kuva.</string>
+    <string name="osm_edits_view_descr">Vaata kõiki üleslaadimata muudatusi või OSM vigu saad menüüs %1$s. Juba üleslaaditud muudatusi OsmAnd ei kuva.</string>
     <string name="app_mode_osm">OSM</string>
     <string name="logcat_buffer_descr">Vaata ja jaga rakenduse detailseid logisid</string>
     <string name="permission_is_required">Selle valiku kasutamine vajab luba.</string>
@@ -2431,14 +2431,14 @@
     <string name="please_provide_profile_name_message">Määra profiili nimi</string>
     <string name="select_data_to_import">Vali imporditavad andmed.</string>
     <string name="import_duplicates_title">Mõned kirjed on juba olemas</string>
-    <string name="import_duplicates_description">RoadCrewis on juba samade nimedega kirjed kui need, mis imporditud.
+    <string name="import_duplicates_description">OsmAndis on juba samade nimedega kirjed kui need, mis imporditud.
 \n
 \nVali tegevus.</string>
     <string name="keep_both_desc">Imporditud kirjetele lisatakse eesliide</string>
     <string name="keep_both">Säilita mõlemad</string>
     <string name="replace_all">Asenda kõik</string>
     <string name="replace_all_desc">Olemasolevad kirjed asendatakse failis leiduvate kirjetega</string>
-    <string name="listed_exist">Loetletud %1$s on juba RoadCrewis olemas.</string>
+    <string name="listed_exist">Loetletud %1$s on juba OsmAndis olemas.</string>
     <string name="shared_string_profiles">Profiilid</string>
     <string name="shared_string_quick_actions">Kiirtoimingud</string>
     <string name="shared_string_nothing_selected">Midagi pole valitud</string>
@@ -2461,7 +2461,7 @@
     <string name="import_complete_description">Imporditud kõik andmed %1$s. Kasuta allpool olevaid nuppe, et avada rakenduse mis tahes osa selle haldamiseks.</string>
     <string name="shared_string_import_complete">Imporditud</string>
     <string name="items_added">Kirjed lisatud</string>
-    <string name="checking_for_duplicate_description">RoadCrew kontrollib faili %1$s, et leida rakenduses korduvaid kirjeid.
+    <string name="checking_for_duplicate_description">OsmAnd kontrollib faili %1$s, et leida rakenduses korduvaid kirjeid.
 \n
 \nSelleks võib kuluda aega.</string>
     <string name="shared_string_importing">Impordin</string>
@@ -2488,7 +2488,7 @@
     <string name="replace_point_descr">Asenda sellega mõni teine punkt.</string>
     <string name="app_mode_ski_touring">Suusasõit</string>
     <string name="app_mode_ski_snowmobile">Mootorsaan</string>
-    <string name="custom_osmand_plugin">Kohandatud RoadCrew pistik</string>
+    <string name="custom_osmand_plugin">Kohandatud OsmAnd pistik</string>
     <string name="changes_applied_to_profile">Profiil %1$s on muudetud.</string>
     <string name="settings_item_read_error">\'%1$s\' lugemine ebaõnnestus.</string>
     <string name="settings_item_write_error">Ei saanud kirjutada %1$s\'sse.</string>
@@ -2587,7 +2587,7 @@
     <string name="track_coloring_solid">Ühtlane</string>
     <string name="turn_screen_on_navigation_instructions_descr">Iga navigeerimisjuhis lülitab ekraani tööle.</string>
     <string name="turn_screen_on_navigation_instructions">Navigeerimisjuhised</string>
-    <string name="turn_screen_on_power_button_descr">Seadme toitenupu vajutamisel lülitatakse ekraan tööle ning RoadCrew\'i näidatakse lukustuskuval.</string>
+    <string name="turn_screen_on_power_button_descr">Seadme toitenupu vajutamisel lülitatakse ekraan tööle ning OsmAnd\'i näidatakse lukustuskuval.</string>
     <string name="turn_screen_on_power_button">Toitenupp</string>
     <string name="shared_string_uninstall">Eemalda</string>
     <string name="extra_maps_menu_group">Täiendavad kaardid</string>
@@ -2606,7 +2606,7 @@
     <string name="height_limit_description">Palun märgi oma sõiduki kõrgus, et saaks arvestada mõnedel teekondadel kehtestatud sõidukite kõrguspiirangutega.</string>
     <string name="lenght_limit_description">Mõnedel marsruutidel võivad kohalduda piirangud sõiduki pikkusele. Palun märkige oma sõiduki pikkus.</string>
     <string name="weight_limit_description">Palun märgi oma sõiduki kaal, et saaks arvestada mõnedel teekondadel kehtestatud sõidukite kaalupiirangutega.</string>
-    <string name="gpx_parse_error">RoadCrew GPX-andmestiku vormingus on vigu.
+    <string name="gpx_parse_error">OsmAnd GPX-andmestiku vormingus on vigu.
 \n
 \nTäpsemaks uurimiseks võid võta ühendust meie kasutajatoega.</string>
     <string name="sort_by_category">Sorteeri kategooria järgi</string>
@@ -2629,7 +2629,7 @@
     <string name="reset_items_descr">Seadistuste peitmine taastab nende algsed väärtused.</string>
     <string name="main_actions_descr">On ainult neli nuppu.</string>
     <string name="select_track_file">Vali rajafail</string>
-    <string name="tracker_item">RoadCrew jälgija</string>
+    <string name="tracker_item">OsmAnd jälgija</string>
     <string name="map_markers_item">Kaardimarkerid</string>
     <string name="favorites_item">Lemmikud</string>
     <string name="back_to_editing">Tagasi muutmise juurde</string>
@@ -2692,7 +2692,7 @@
     <string name="simplified_track_description">Salvestatakse ainult üldine teekond ilma teekonnapunktideta.</string>
     <string name="shared_string_file_name">Failinimi</string>
     <string name="number_of_gpx_files_selected_pattern">%s rajafaili valitud</string>
-    <string name="disable_recording_once_app_killed_descrp">Raja logimine peatub, kui rakendus tapetakse (viimaste rakenduste kaudu). (RoadCrew-i tausttähis kaob Androidi teateribalt.)</string>
+    <string name="disable_recording_once_app_killed_descrp">Raja logimine peatub, kui rakendus tapetakse (viimaste rakenduste kaudu). (OsmAnd-i tausttähis kaob Androidi teateribalt.)</string>
     <string name="save_global_track_interval_descr">Määra üldisel teekonna salvestamisel kasutatav logimisvälp (lülitatakse sisse kaardil asuvast teekonna salvestamise vidinast).</string>
     <string name="system_default_theme">Süsteemi vaikeseadistused</string>
     <string name="all_next_segments">Kõik järgnevad segmendid</string>
@@ -2717,7 +2717,7 @@
 \n
 \nValides %1$s sa saad kiiruskaamerate-kohaseid teateid ja hoiatusi.
 \n
-\nValides %2$s kustutatakse kõik kiiruskaameratega seotud andmed, nagu hoiatused, teated ja huvipunktid seniks, kuni sa RoadCrew\'ile ei tee täiesti uut paigaldust.</string>
+\nValides %2$s kustutatakse kõik kiiruskaameratega seotud andmed, nagu hoiatused, teated ja huvipunktid seniks, kuni sa OsmAnd\'ile ei tee täiesti uut paigaldust.</string>
     <string name="quick_action_remove_next_destination_descr">Kustutab järgmise marsruudi sihtkoha. Kui see on lõppsihtkoht, siis navigeerimine peatub.</string>
     <string name="plan_route_change_route_type_after">Muuda teekonna liiki pärast</string>
     <string name="plan_route_change_route_type_before">Muuda teekonna liiki enne</string>
@@ -2757,8 +2757,8 @@
     <string name="osm_edit_logout_success">Väljalogitud</string>
     <string name="development">Arendus</string>
     <string name="what_is_new">Meie uudised</string>
-    <string name="use_live_routing">RoadCrew andmed reaalajas</string>
-    <string name="use_live_public_transport">RoadCrew andmed reaalajas</string>
+    <string name="use_live_routing">OsmAnd andmed reaalajas</string>
+    <string name="use_live_public_transport">OsmAnd andmed reaalajas</string>
     <string name="snowmobile_render_descr">Mootorsaanide sõitmine eraldi määratud teedel ja radadel.</string>
     <string name="icon_group_special">Eriteenused</string>
     <string name="icon_group_amenity">Hüved ja teenused</string>
@@ -2839,7 +2839,7 @@
 \n</string>
     <string name="system_screen_timeout_descr">Lülitab ekraani välja vastavalt süsteemi ekraani aegumisele.</string>
     <string name="system_screen_timeout">Kasuta süsteemi ekraani ajalõppu</string>
-    <string name="turn_screen_on_descr">Valige ekraani äratussuvandid (veenduge, et seadme lukustamisel oleks esiplaanil RoadCrew):</string>
+    <string name="turn_screen_on_descr">Valige ekraani äratussuvandid (veenduge, et seadme lukustamisel oleks esiplaanil OsmAnd):</string>
     <string name="turn_screen_on_power_button_disabled">Keelatud. Nõuab jaotises „Aegumise aeg pärast ärkamist” valikut „Hoia ekraan sisse lülitatud”.</string>
     <string name="turn_screen_on_wake_time_descr">Valige pärast ärkamist ekraani ajalõpp. (\"%1$s\" ei kasuta ajalõppu.)</string>
     <string name="map_source_zoom_levels_descr">Mõjutab ekraani, kui seda kasutatakse kaardi või ülekatte / aluskattena.
@@ -2999,7 +2999,7 @@
     <string name="backup_data">Andmete varundamine</string>
     <string name="select_backup_data_descr">Vali varundatavad andmed ja kaustad.</string>
     <string name="select_nav_profile_dialog_message">\"Navigatsiooni liik\" valib teekondade arvutamise viisi, seejuures on saadaval nii võguühenduseta kui -ühendusega arvutusmootorid.</string>
-    <string name="backup_delete_types_descr">Kas kustutame kõik andmed vananenud andmetüüpide kohta RoadCrew pilvest\?</string>
+    <string name="backup_delete_types_descr">Kas kustutame kõik andmed vananenud andmetüüpide kohta OsmAnd pilvest\?</string>
     <string name="backup_delete_types">Kustuta keelatud andmetüübid</string>
     <string name="shared_string_discussion">Arutelu</string>
     <string name="shared_string_view_all">Vaata kõiki</string>
@@ -3055,7 +3055,7 @@
     <string name="backup_error_token_is_not_valid_or_expired">Kehtetu või aegunud sümbol</string>
     <string name="backup_error_user_is_not_registered">Selle e-posti aadressiga ei ole registreeritud ühtegi kasutajat</string>
     <string name="backup_error_no_valid_subscription">Kehtiv tellimus puudub</string>
-    <string name="trip_recording_logging_interval_info">Logimisintervall määrab ajavahemiku, mille jooksul RoadCrew küsib jooksvaid asukohaandmeid.</string>
+    <string name="trip_recording_logging_interval_info">Logimisintervall määrab ajavahemiku, mille jooksul OsmAnd küsib jooksvaid asukohaandmeid.</string>
     <string name="shared_string_route_line">Teekonna joon</string>
     <string name="no_purchases">Ostud puuduvad</string>
     <string name="new_device_account">Uus seade / uus konto</string>
@@ -3063,7 +3063,7 @@
     <string name="empty_purchases_description">Kui ostud ei ilmu siin nähtavale, koputa \"%1$s\" või võta ühendust meie klienditoega.</string>
     <string name="contact_support">Võta ühendust tugiteenusega</string>
     <string name="troubleshooting">Veaotsing</string>
-    <string name="osmand_live">RoadCrew Reaalajas</string>
+    <string name="osmand_live">OsmAnd Reaalajas</string>
     <string name="annual_subscription">Aastatellimus</string>
     <string name="monthly_subscription">Igakuine tellimus</string>
     <string name="three_months_subscription">Kolme kuu tellimus</string>
@@ -3077,7 +3077,7 @@
     <string name="update_all_maps_added">Kas uuendan kõik %1$s lisatud kaarti?</string>
     <string name="shared_string_feet">jalga</string>
     <string name="srtm_unit_format">Kõrgusjoonte ühiku variant</string>
-    <string name="srtm_download_list_help_message">RoadCrew pakub kõrgusjoonte andmeid meetrites ja jalgades. Formaadi muutmiseks laadi fail uuesti alla.</string>
+    <string name="srtm_download_list_help_message">OsmAnd pakub kõrgusjoonte andmeid meetrites ja jalgades. Formaadi muutmiseks laadi fail uuesti alla.</string>
     <string name="srtm_download_single_help_message">Palun vali variant. Vormingu muutmiseks tuleb fail uuesti alla laadida.</string>
     <string name="exit_number">Väljumise number</string>
     <string name="announce_when_exceeded">Teata ületamisel</string>
@@ -3118,7 +3118,7 @@
     <string name="backup_delete_old_data_warning">Oled kustutamas varem laetud andmete muutuste ajalugu.
 \n
 \nAndmete praegune versioon salvestatakse serverisse ning varem tehtud muudatusi ei saa tagasi võtta.</string>
-    <string name="backup_version_history_delete_descr">Kas kustutame vananenud andmetüüpide muutuste logi RoadCrewi pilves\?</string>
+    <string name="backup_version_history_delete_descr">Kas kustutame vananenud andmetüüpide muutuste logi OsmAndi pilves\?</string>
     <string name="purchases_feature_desc_unlimited_map_download">Hangi kõigi mandrite ja piirkondade võrguühenduseta kaartide piiramatud allalaadimised.</string>
     <string name="release_4_0">• Pilvepõhine varundamine \n \n • Lisatud öine režiim \"Topo\" renderdamisstiili jaoks \n \n • Lisatud võimalus kõrgusjoonte allalaadimiseks jalgades \n \n • Jälgi saab nüüd värvida kõrguse, kiiruse või kallakuga. \n \n • Uuendatud dialoog \"Reisi salvestamine\" \n \n • Kaugus koputuse järgi viidi raadiuse joonlauast eraldi valikuks \n \n • Marsruudi plaan: lisatud võimalus muuta navigeerimisvalikuid, pääseda kaardile ja otsingule ilma marsruudi plaanist lahkumata. \n \n • Uus ekraan \"Ostmine\", kus on üksikasjalik teave ostmise kohta. \n \n • Lisatud võimalus muuta marsruudiliini välimust. \n \n • OsmAnd Live\'i uuendused on viidud jaotisse \"Allalaadimised &gt; Uuendused\"</string>
     <string name="duration_moment_ago">hetk tagasi</string>
@@ -3130,7 +3130,7 @@
     <string name="benefits_for_contributors_primary_descr">Aktiivse kaastöötajana võid omada õigust kaardivärskendustele kord tunnis.</string>
     <string name="benefits_for_contributors_secondary_descr">Logi OpenStreetMapi sisse, et kontrollida, kas sul on piiramatu õigus igakuistele ja igatunnistele kaardivärskendustele.</string>
     <string name="available_until">Saadaval kuni %1$s</string>
-    <string name="enough_contributions_descr">Õnnitleme! Oled teinud OpenStreetMapile piisavalt kaastööd ja saad nüüd piiramatult kasutada RoadCrew\'i kaardivärskendusi!</string>
+    <string name="enough_contributions_descr">Õnnitleme! Oled teinud OpenStreetMapile piisavalt kaastööd ja saad nüüd piiramatult kasutada OsmAnd\'i kaardivärskendusi!</string>
     <string name="contributions_may_calculate_with_delay">Kaastööde arvutamine võib võtta mitu tundi.</string>
     <string name="shared_string_contributions">Kaastööd</string>
     <string name="map_updates_are_unavailable_yet">Kaardi värskendused pole veel saadaval. :-(</string>
@@ -3140,7 +3140,7 @@
     <string name="backup_error_subscription_was_expired_descr">Sinu OsmAnd Pro tellimus on aegunud, uuenda seda varukoopiate kasutamiseks. Andmeid saad endiselt pilvest taastada.</string>
     <string name="logout_from_osmand_cloud">Logi OsmAnd Cloud pilvest välja</string>
     <string name="logout_from_osmand_cloud_decsr">Kas logime välja? \nAndmete varundamiseks või taastamiseks pead uuesti sisse logima.</string>
-    <string name="backup_deleting_all_data_descr">Palun oota, kuni RoadCrew kustutab Sinu andmed pilvest. Kõik seadmes olevad andmed jäävad puutumata.</string>
+    <string name="backup_deleting_all_data_descr">Palun oota, kuni OsmAnd kustutab Sinu andmed pilvest. Kõik seadmes olevad andmed jäävad puutumata.</string>
     <string name="backup_deleted_all_data_descr">Kõik Sinu andmed on OsmAnd Cloud pilvest edukalt kustutatud.</string>
     <string name="backup_version_history_removed">Kogu versiooniajalugu on eemaldatud.</string>
     <string name="backup_data_removed">Kõik andmed on eemaldatud.</string>
@@ -3158,7 +3158,7 @@
     <string name="track_has_no_needed_data">Rada ei sisalda vajalikke andmeid.</string>
     <string name="option_available_only_in_osmand_pro">Saadaval OsmAnd Pro tellimuse osana.</string>
     <string name="purchases_feature_desc_pro_widgets">Saa juurdepääs OsmAnd Pro funktsioonidele: teekonna värvimine ja palju muud.</string>
-    <string name="explore_osmnad_plans_to_find_suitable">Tutvu RoadCrew plaanidega, et leida endale sobiv.</string>
+    <string name="explore_osmnad_plans_to_find_suitable">Tutvu OsmAnd plaanidega, et leida endale sobiv.</string>
     <string name="shared_string_relation">Seos</string>
     <string name="setting_supported_by_style">Selle sätte pakub kaardistiil \'%1$s\'</string>
     <string name="grey_color_undefined">Andmeteta osad on halli värvi.</string>
@@ -3218,12 +3218,12 @@
     <string name="map_markers_history">Kaardimarkerite ajalugu</string>
     <string name="history_actions_descr">Sa saad ajaloo eksportida faili.</string>
     <string name="location_access_request_action">Luba juurdepääs</string>
-    <string name="location_access_request_title">RoadCrew vajab teekonna juhtamiseks juurdepääsu asukohaandmetele.</string>
+    <string name="location_access_request_title">OsmAnd vajab teekonna juhtamiseks juurdepääsu asukohaandmetele.</string>
     <string name="continue_on_phone">Jätka nutiseadmes</string>
     <string name="android_auto_purchase_request_title">Kui soovid kasutada OsmAnd\'i Android Auto\'s, siis palun osta OsmAnd Pro või Maps+</string>
     <string name="android_auto_map_placeholder_descr">Vaatamaks kaarte rakenduses, katkesta Android Auto ühendus.</string>
     <string name="android_auto_map_placeholder_title">Kaarti kuvame sõiduki ekraanil.</string>
-    <string name="internal_app_storage_description">Sisemine salvestusruum, kasutaja ja teiste rakenduste eest peidetud ja seega ainult RoadCrew pääseb sellele teabele ligi.</string>
+    <string name="internal_app_storage_description">Sisemine salvestusruum, kasutaja ja teiste rakenduste eest peidetud ja seega ainult OsmAnd pääseb sellele teabele ligi.</string>
     <string name="transparent_status_bar">Läbipaistev olekuriba</string>
     <string name="shortcut_navigate_to_home">Näita teed koju</string>
     <string name="shortcut_navigate_to_work">Näita teed töökohta</string>
@@ -3303,7 +3303,7 @@
     <string name="wikipedia_and_travel_maps">Vikipeedia ja reisikaardid</string>
     <string name="offline_weather_forecast">Ilmaennustus, mis ei vaja võrguühendust</string>
     <string name="shared_string_weather">Ilmateade</string>
-    <string name="map_rendering_engine_descr">Kaardimootori versioon 1 oli esmase valikuna kasutusel kuni RoadCrewi versioonini 4.3 ning on jätkuvalt mõistlik eelistus vanemates seadmetes.\n\nKaardimootori versioon 2 (OpenGL) on kiire ning lisab uut funktsionaalsust, nagu 3-mõõtmelise vaate.</string>
+    <string name="map_rendering_engine_descr">Kaardimootori versioon 1 oli esmase valikuna kasutusel kuni OsmAndi versioonini 4.3 ning on jätkuvalt mõistlik eelistus vanemates seadmetes.\n\nKaardimootori versioon 2 (OpenGL) on kiire ning lisab uut funktsionaalsust, nagu 3-mõõtmelise vaate.</string>
     <string name="rendering_styles">Kaardi kuvamise stiilid</string>
     <string name="sort_subfolders">Sordi alamkaustad</string>
     <string name="empty_screen_view_selected_weather_data">Valitud ilmateate andmete kuvamiseks kaardil lülita see valik sisse.</string>
@@ -3330,7 +3330,7 @@
     <string name="weather_forecast">Ilmaennustus</string>
     <string name="weather_widget_group_desc">Komplekt vidinaid ilmateate erinevate andmete kuvamiseks.</string>
     <string name="contact_us">Suhtle meiega</string>
-    <string name="rendering_engine_failed">RoadCrew\'i kaardimootor on hiljuti kokku jooksnud.</string>
+    <string name="rendering_engine_failed">OsmAnd\'i kaardimootor on hiljuti kokku jooksnud.</string>
     <string name="av_def_action_choose">Nõudmisel</string>
     <string name="discard_changes_prompt">Kas loobud muudatustest?</string>
     <string name="remove_widget_first">Palun esmalt eemalda vidin</string>
@@ -3409,7 +3409,7 @@
     <string name="explore_3d_track_description">Tutvu rajaga interaktiivses 3D-vaates! Visualiseeri kõrgust, kiirust ja palju muud otse kaardil.</string>
     <string name="maps_that_also_be_used">Lisaks kasutatame kaarte: %1$s</string>
     <string name="getting_list_of_required_maps">Laadime vajalike kaartide loendit…</string>
-    <string name="required_maps_calculate_online_summary">Puuduvate kaartide loend põhineb sirgjoonel. Täpse kaartide loendi saamiseks võib RoadCrew sinu teekonna koostada võrguteenuse abil.</string>
+    <string name="required_maps_calculate_online_summary">Puuduvate kaartide loend põhineb sirgjoonel. Täpse kaartide loendi saamiseks võib OsmAnd sinu teekonna koostada võrguteenuse abil.</string>
     <string name="route_line_use_coloring_altitude">Teekonna joon on värvitud kõrgusjoonte alusel.</string>
     <string name="disable_map_layers">Lülita kaardikihid välja</string>
     <string name="disable_map_layers_descr">Lülita kõik vektorkaardi peal asuvad kaardikihid välja (jõustamiseks käivita rakendus uuesti).</string>
@@ -3422,7 +3422,7 @@
     <string name="route_line_use_coloring_speed">Teekonna joon on värvitud liikumiskiiruse alusel.</string>
     <string name="delete_actions_button_confirmation">Kas sa oled kindel, et soovid kustutada „%1$s“ koos kõikide oma tegevustega?</string>
     <string name="remove_type_q">Kas eemaldame tüübi „%1$s“?</string>
-    <string name="enable_to_use_external_input_device">Võimalda välise sisendseadme kasutamist koos RoadCrewiga</string>
+    <string name="enable_to_use_external_input_device">Võimalda välise sisendseadme kasutamist koos OsmAndiga</string>
     <string name="delete_actions_button">Kustuta nupp</string>
     <string name="wall_color">Seina värv</string>
     <string name="fixed_height">Fikseeritud kõrgus</string>
@@ -3443,7 +3443,7 @@
     <string name="play_weather_forecast">Esita ilmaennustust</string>
     <string name="use_terrain_maps_summary">Kõrguskoonte jaoks kasutame maastikukaarte. Raja geomeetria sellega ei muutu.</string>
     <string name="relief_3d_download_description">Maastiku kuvamiseks on vaja täiendavaid kaarte.</string>
-    <string name="retrieve_elevation_data_summary">RoadCrew võib laadida kõrgusjoonte andmed nii läheduses olevate teede andmetest kui maastikukaartidelt.</string>
+    <string name="retrieve_elevation_data_summary">OsmAnd võib laadida kõrgusjoonte andmed nii läheduses olevate teede andmetest kui maastikukaartidelt.</string>
     <string name="clear_all_key_shortcuts">Eemalda kõik kiirklahvid</string>
     <string name="clear_all_key_shortcuts_summary">Kõik valitud tüübi jaoks määratud klahvikombinatsioonid nüüd eemaldatakse.</string>
     <string name="cloud_trash_clear_confirmation">Kas kustutame kõik objektid prügikastist jäädavalt?</string>
@@ -3493,7 +3493,7 @@
     <string name="progress_complete">%1$s on tehtud</string>
     <string name="quick_action_map_overlay">Ülekate</string>
     <string name="weather_source_ecmwf_description">Euroopa Keskpika Ilmaennustuse Keskus (ECMWF)</string>
-    <string name="help_article_map_legend_osmand_name">RoadCrew kaardi stiil</string>
+    <string name="help_article_map_legend_osmand_name">OsmAnd kaardi stiil</string>
     <string name="terrain_map">Kolmemõõtmeline maastikukaart</string>
     <string name="shared_string_setup">Seadista</string>
     <string name="telegram_chats">Vestlused Telegramis</string>
@@ -3555,7 +3555,7 @@
     <string name="shared_string_automatically">Automaatselt</string>
     <string name="ask_every_time">Küsi iga kord</string>
     <string name="detailed_track_guidance">Üksikasjalik rajapõhine teekonna juhatamine</string>
-    <string name="detailed_track_guidance_description">RoadCrew võrdleb sinu rada lähimate teede ja tänavatega ning selle põhjal juhatab sammhaaval teed.</string>
+    <string name="detailed_track_guidance_description">OsmAnd võrdleb sinu rada lähimate teede ja tänavatega ning selle põhjal juhatab sammhaaval teed.</string>
     <string name="quick_action_routes_summary">Lüliti %1$s näitamiseks kaardil või selle seal peitmiseks.</string>
     <string name="quick_action_to_my_location">Minu asukohta</string>
     <string name="quick_action_move_map_left">Kaart vasakule</string>
@@ -3564,7 +3564,7 @@
     <string name="quick_action_move_map_up">Kaart üles</string>
     <string name="shared_string_set">Määra</string>
     <string name="shared_string_create">Loo</string>
-    <string name="weather_data_sources_prompt">RoadCrew jagab ilmaennustust kahe andmeallika alusel:</string>
+    <string name="weather_data_sources_prompt">OsmAnd jagab ilmaennustust kahe andmeallika alusel:</string>
     <string name="navigation_position_icon_summary">Ikoon, mida kuvatakse, kui oled liikvel.</string>
     <string name="help_article_navigation_routing_moped_routing_name">Teekonna koostamine mopeedisõiduks</string>
     <string name="storage_found_files_size">Leidsime %1$s faili %2$s</string>
@@ -3846,7 +3846,7 @@
     <string name="kpa_unit">kPa</string>
     <string name="percent_hour">%/t</string>
     <string name="obd_searching_text_description">Palun hoia nutiseade skänneri lähedal ja mootor sisselülitatuna.</string>
-    <string name="connect_obd_instructions_title">RoadCrew toetab Bluetoothi ühendusi OBD-II skänneritega.</string>
+    <string name="connect_obd_instructions_title">OsmAnd toetab Bluetoothi ühendusi OBD-II skänneritega.</string>
     <string name="connect_obd_instructions_step3">Lülita oma nutiseadmes Bluetooth sisse</string>
     <string name="connect_obd_instructions_step2">Lülita sõiduki mootor sisse</string>
     <string name="connect_obd_instructions_step1">Ühenda skänner sõiduki OBD-II pordiga.</string>
@@ -3867,7 +3867,7 @@
     <string name="copy_build_version">Kopeeri rakenduse versioon</string>
     <string name="help_article_troubleshooting_crash_logs_name">Kokkujooksmise logid</string>
     <string name="help_article_start_with_first_steps_name">Esimesed sammud</string>
-    <string name="help_article_start_with_name">Alusta RoadCrewi kasutamist</string>
+    <string name="help_article_start_with_name">Alusta OsmAndi kasutamist</string>
     <string name="help_article_search_search_poi_name">Otsi huvipunkti alusel</string>
     <string name="help_article_search_search_coordinates_name">Otsi koordinaatide alusel</string>
     <string name="help_article_search_search_all_name">Otsi kõige alusel</string>
@@ -4028,7 +4028,7 @@
     <string name="rendering_attr_showRunningRoutes_description">Näita jooksuradu</string>
     <string name="copying_completed">Kopeeritud</string>
     <string name="shared_storage_last_step">Uue andmekausta võid määratleda ka hiljem.</string>
-    <string name="shared_storage_migration_descr">Kuna Androidi andmeruumi kasutuse reeglid muutusid, siis RoadCrew enam ei saa kasutada kausta „%1$s“.\n\nKopeeri kõik oma andmed uude kausta.</string>
+    <string name="shared_storage_migration_descr">Kuna Androidi andmeruumi kasutuse reeglid muutusid, siis OsmAnd enam ei saa kasutada kausta „%1$s“.\n\nKopeeri kõik oma andmed uude kausta.</string>
     <string name="shared_string_migration">Andmete teisaldamine</string>
     <string name="icon_group_education">Haridus</string>
     <string name="shared_storage_migration">Teisaldamine jagatud andmeruumist</string>
@@ -4052,14 +4052,14 @@
     <string name="exit_without_saving_warning">Ka väljud ilma muudatusi salvestamata?</string>
     <string name="start_copying">Alusta kopeerimist</string>
     <string name="estimated_download_size">Hinnanguline allalaadimise maht</string>
-    <string name="shared_storage_first_step">Vajuta „%1$s“.\nAvaneb failihalduri rakendus ja selle abil pead leidma ja avama RoadCrewi kausta (nimega osmand).</string>
+    <string name="shared_storage_first_step">Vajuta „%1$s“.\nAvaneb failihalduri rakendus ja selle abil pead leidma ja avama OsmAndi kausta (nimega osmand).</string>
     <string name="storage_found_files_descr">„%2$s“ faili kopeerimiseks asukohast „%3$s“ uude asukohta „%4$s“ klõpsi „%1$s“. Selleks võib kuluda natuke aega.</string>
     <string name="memory_allocated_for_routing_ds">Suurema mälukasutuse lubamine kiirendab pikemate teekondade koostamist (enam, kui 500 km), aga võib vähendada muude rakenduste jõudlust.\nLühikeste teekondade koostamisele see mõju ei avalda.</string>
     <string name="memory_allocated_for_routing">Mälukasutus teekonna koostamiseks</string>
-    <string name="shared_storage_third_step">Ligupääsuks kaustale jaga vastavad õigused. Ilma selleta RoadCrew ei saa kopeerida faile.</string>
+    <string name="shared_storage_third_step">Ligupääsuks kaustale jaga vastavad õigused. Ilma selleta OsmAnd ei saa kopeerida faile.</string>
     <string name="shared_storage_second_step">Klõpsi „Kasuta seda kausta“.</string>
     <string name="skip_confirmation">Jah, jäta vahele</string>
-    <string name="shared_string_skip_warning">Kas loobud andmete teisaldamisest? RoadCrew enam ei saa ligi sinu andmetele jagatud andmeruumid.\n\nJärgnevaga hakkab rakendus kasutama sinu uut andmekausta.</string>
+    <string name="shared_string_skip_warning">Kas loobud andmete teisaldamisest? OsmAnd enam ei saa ligi sinu andmetele jagatud andmeruumid.\n\nJärgnevaga hakkab rakendus kasutama sinu uut andmekausta.</string>
     <string name="rendering_attr_showRunningRoutes_name">Jooksurajad</string>
     <string name="help_article_navigation_routing_pedestrian_routing_name">Teekonna koostamine jalakäijatele</string>
     <string name="help_article_navigation_routing_train_routing_name">Teekonna koostamine rongisõiduks</string>
@@ -4076,7 +4076,7 @@
     <string name="help_article_navigation_routing_direct_to_point_routing_name">Otseteekonna koostamine paadisõiduks</string>
     <string name="help_article_navigation_routing_horse_routing_name">Teekonna koostamine ratsutamiseks</string>
     <string name="help_article_navigation_routing_online_routing_name">Teekonna koostamine võrguühenduse abil</string>
-    <string name="help_article_navigation_routing_osmand_routing_name">Teave RoadCrewi teekonna koostamise kohta</string>
+    <string name="help_article_navigation_routing_osmand_routing_name">Teave OsmAndi teekonna koostamise kohta</string>
     <string name="help_article_navigation_routing_car_based_routing_name">Teekonna koostamine autosõiduks (veoauto, mootorratas)</string>
     <string name="auto_25_chars_route_tr_kl">Pööra paremale ja hoia vasakule</string>
     <string name="auto_25_chars_route_tl_kr">Pööra vasakule ja hoia paremale</string>
@@ -4218,7 +4218,7 @@
     <string name="shared_string_large">Suur</string>
     <string name="delete_account_warning">Kas kustutame „%1$s“ konto?</string>
     <string name="backup_error_delete_account_email_match">E-posti aadress ei vasta kasutajanimele</string>
-    <string name="ant_plus_pair_bluetooth_prompt">RoadCrewiga saad lisada paardumise Bluetooth LE ja ANT+ anduritega.</string>
+    <string name="ant_plus_pair_bluetooth_prompt">OsmAndiga saad lisada paardumise Bluetooth LE ja ANT+ anduritega.</string>
     <string name="device_connected">%1$s on ühendatud</string>
     <string name="external_device_characteristic_arterial_pressure">Arteriaalne vererõhk</string>
     <string name="weather_download_error">%1$s paani allalaadimine ei õnnestunud.</string>
@@ -4441,9 +4441,9 @@
     <string name="telegram_chats_descr">Liitu mõne meie vestlusega Telegramis.</string>
     <string name="help_article_setup_a_route_name">Teekonna seadistamine</string>
     <string name="github_discussion">Vestlus GitHubis</string>
-    <string name="free_versions_descr">Laadi alla ja paigalda RoadCrewi vaba versioon</string>
+    <string name="free_versions_descr">Laadi alla ja paigalda OsmAndi vaba versioon</string>
     <string name="free_versions">Vabad versioonid</string>
-    <string name="about_osmand">Teave RoadCrewi kohta</string>
+    <string name="about_osmand">Teave OsmAndi kohta</string>
     <string name="send_logcat_log_descr">Üksikasjalik logifail</string>
     <string name="send_crash_log_descr">Sisaldab teavet vaid rakenduse kokkujooksmise kohta</string>
     <string name="open_issue_on_github_descr">Küsi küsimusi ja tee ettepanekuid</string>
@@ -4483,11 +4483,11 @@
     <string name="astro_sort_oldest_first">Esmalt vanemad</string>
     <string name="astro_expand_your_universe_title">Laienda oma universumit</string>
     <string name="shared_string_gps_filter">GPS-filter</string>
-    <string name="gps_filter_actions_description">RoadCrew rakendab rajafaili muudatused ilma seda uuendamata. Muudatused saad salvestada käsitsi.</string>
+    <string name="gps_filter_actions_description">OsmAnd rakendab rajafaili muudatused ilma seda uuendamata. Muudatused saad salvestada käsitsi.</string>
     <string name="save_as_copy">Salvesta koopia</string>
     <string name="save_changes_into_file">Salvesta faili muudatused</string>
     <string name="gps_filter_smoothing">Sujuvamaks tegemine</string>
-    <string name="storage_migration_wrong_folder_warning">Valitud kaustas ei leidu RoadCrewi andmeid. Palun proovi uuesti.</string>
+    <string name="storage_migration_wrong_folder_warning">Valitud kaustas ei leidu OsmAndi andmeid. Palun proovi uuesti.</string>
     <string name="created_on">Loomise aeg</string>
     <string name="waypoint_template">Teekonnapunkti mall</string>
     <string name="stop_and_exit">Lõpeta ja välju</string>

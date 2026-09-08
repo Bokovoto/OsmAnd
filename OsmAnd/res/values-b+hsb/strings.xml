@@ -64,7 +64,7 @@
     <string name="context_menu_item_delete_waypoint">GPX-dypk wotstronić?</string>
     <string name="context_menu_item_edit_waypoint">GPX-dypk wobdźěłać</string>
     <string name="shared_string_location">městno</string>
-    <string name="share_osm_edits_subject">OSM-změny, zdźělene přez RoadCrew</string>
+    <string name="share_osm_edits_subject">OSM-změny, zdźělene přez OsmAnd</string>
     <string name="lang_nds">nižoněmsce</string>
     <string name="lang_mk">makedonsce</string>
     <string name="lang_fy">frizisce</string>
@@ -374,7 +374,7 @@
     <string name="snap_to_road">Na dróze wostać</string>
     <string name="interrupt_music_descr">Připowědźenje přetorhnje hudźbu.</string>
     <string name="interrupt_music">Wothrawanje hudźby přetorhować</string>
-    <string name="osmand_play_title_30_chars">RoadCrew karty a nawigacija</string>
+    <string name="osmand_play_title_30_chars">OsmAnd karty a nawigacija</string>
     <string name="osmand_short_description_80_chars">Globalna kartowa a nawigaciska słužba za OSM-karty (online a offline)</string>
     <string name="osmand_long_description_1000_chars">OsmAnd (OSM Automated Navigation Directions) OsmAnd je wotewrjena nawigaciska słužba z přistupom na wulku wšelakorosć globalnych datow OpenStreetMap (OSM). Wšě kartowe daty (wektorowe formaty abo kartowe kachlicy) hodźa so za offline-wužiwanje na Wašej składowanskej karće składować. OsmAnd poskići nimo toho nawigacisku słužbu z hłosowymi připowědźemi. Někotre centralne funkcije: - funguje dospołnje tež online (karty hodźa so składować na nastroju) - kompaktne wektorowe karty za cyły swět steja k dispoziciji - sćehnjenje kartow je móžne direktnje z aplikacije - wjacore kartowe runiny hodźa so runočasnje pokazować (n.př. GPX-tracks, nawigaciske čary, zajimawostki (POI), fawority, zastanišća zjawneho transporta a přidatne karty - offline-pytanje za adresami a městnami (POI) - offline-nawigacija za krótke čary (eksperimentalnje) - modusy za awta, kolesa a pěškow z: - móžnym awtomatiskim měnjenjom mjez dnjowym/nócnym modusom - móžnym awtomatiskim zoomom wotpowědujo spěšnosći - móžnym awtomatiskim wusměrjenjom karty wotpowědujo kompasej abo směrej pohibowanja - informacijemi wo dowolenej spěšnosći, jězbnych ćěrjach a błyskačach Wobmjezowanja tuteje bjezpłatneje wersije OsmAnd: - ličba offline-kartow je wobmjezowana - žadyn přistup k offline-dypkam (POI) Wikipedije OsmAnd so aktiwnje dale wuwiwa a projekt trjeba pjenježne srědki za wuwiwanje, wudospołnjenje a testowanje (jězby) nowych funkcijow. Prošu přemyslće, hač njebyšće chcył(a) kupić OsmAnd+ z dalšimi funkcijemi abo podpěrać OsmAnd z darom pod osmand.net.</string>
     <string name="day_night_info_description">Schadźenje słónca: %1$s
@@ -457,7 +457,7 @@
     <string name="user_name">Waše wužiwarske mjeno pola OSM</string>
     <string name="user_password">Waše hesło pola OSM</string>
     <string name="osmand_service">Pozadkowy modus</string>
-    <string name="osmand_service_descr">RoadCrew dźěła w pozadku dale, hdyž je wobrazowka hasnjena.</string>
+    <string name="osmand_service_descr">OsmAnd dźěła w pozadku dale, hdyž je wobrazowka hasnjena.</string>
     <string name="download_files_not_enough_space">Njeje dosć swobodneho městna za download %1$s MB (swobodne: %2$s).</string>
     <string name="choose_auto_follow_route">Kartu sobuwzać</string>
     <string name="city_type_suburb">Měšćanski dźěl</string>
@@ -554,7 +554,7 @@
     <string name="transport_Stop">Zastanišćo</string>
     <string name="transport_stops">zastanišća</string>
     <string name="transport">Zjawny transport</string>
-    <string name="hello">Nawigacija RoadCrew</string>
+    <string name="hello">Nawigacija OsmAnd</string>
     <string name="favorite">Faworit</string>
     <string name="uploading_data">Nahraju daty…</string>
     <string name="uploading">Nahraju…</string>
@@ -610,7 +610,7 @@
     <string name="av_camera_focus_auto">Awtofokus</string>
     <string name="navigation_intent_invalid">Njepłaćiwy format: %s</string>
     <string name="plugin_install_needs_network">Trjebaš zwisk z internetom za instalowanje tutoho plugina.</string>
-    <string name="do_you_like_osmand">Lubi so ći RoadCrew?</string>
+    <string name="do_you_like_osmand">Lubi so ći OsmAnd?</string>
     <string name="failed_to_upload">Nahrawanje zwrěšćiło</string>
     <string name="delete_change">Změnu wušmórnyć</string>
     <string name="try_again">Znowa spytać</string>
@@ -656,7 +656,7 @@
     <string name="mapillary_menu_descr_dates">Jenož přidate wobrazy pokazać</string>
     <string name="mapillary_menu_descr_username">Jenož wobrazy wužiwarja</string>
     <string name="mapillary_menu_title_username">Wužiwarske mjeno</string>
-    <string name="import_gpx_failed_descr">Njemóžach dataju importować. Prošu zaruč, zo ma RoadCrew dowolnosć za začitanje dataje.</string>
+    <string name="import_gpx_failed_descr">Njemóžach dataju importować. Prošu zaruč, zo ma OsmAnd dowolnosć za začitanje dataje.</string>
     <string name="distance_moving">Zdalenosć skorigowana</string>
     <string name="mapillary_image">Wobraz z Mapillary</string>
     <string name="open_mapillary">Mapillary wočinić</string>
@@ -694,7 +694,7 @@
     <string name="right_side_navigation">Jězdźenje naprawo</string>
     <string name="shared_string_automatic">Awtomatisce</string>
     <string name="parking_options">Opcije parkowanja</string>
-    <string name="full_version_thanks">Dźakujemy so za kup dospołneje wersije RoadCrew.</string>
+    <string name="full_version_thanks">Dźakujemy so za kup dospołneje wersije OsmAnd.</string>
     <string name="routing_attr_relief_smoothness_factor_hills_name">Hórkate</string>
     <string name="routing_attr_relief_smoothness_factor_plains_name">Mjenje hórkate</string>
     <string name="routing_attr_relief_smoothness_factor_more_plains_name">Płone</string>
@@ -1131,7 +1131,7 @@
     <string name="profile_alert_need_profile_name_title">Zapodaj mjeno profila</string>
     <string name="profile_alert_need_profile_name_msg">Dyrbiš najprjedy profilowe mjeno zapodać.</string>
     <string name="profile_alert_duplicate_name_msg">Profil z tutym mjenom hižo eksistuje</string>
-    <string name="profile_alert_cant_delete_base">Njemóžeš zakładne profile w RoadCrew wotstronić</string>
+    <string name="profile_alert_cant_delete_base">Njemóžeš zakładne profile w OsmAnd wotstronić</string>
     <string name="profile_alert_delete_title">Profil wotstronić</string>
     <string name="profile_alert_delete_msg">Sy sej wěsty/a, zo chceš profil \"%s\" wotstronić</string>
     <string name="select_base_profile_dialog_title">Wubjer profil za start</string>
@@ -1161,12 +1161,12 @@
     <string name="year">lěto</string>
     <string name="months_3">tři měsacy</string>
     <string name="download_detailed_map">Sćehń sej podrobnu kartu %s, zo by tutu kónčinu widźał(a).</string>
-    <string name="change_data_storage_full_description">RoadCrew-daty na nowe městno přesunyć\?
+    <string name="change_data_storage_full_description">OsmAnd-daty na nowe městno přesunyć\?
 \n%1$s &gt; %2$s</string>
     <string name="data_storage_preference_summary">%1$s • %2$s</string>
     <string name="data_storage_space_description">%1$s GB swobodne (wot %2$s GB)</string>
     <string name="shared_string_select_folder">Rjadowak…</string>
-    <string name="change_osmand_data_folder_question">Rjadowak za RoadCrew-daty změnić\?</string>
+    <string name="change_osmand_data_folder_question">Rjadowak za OsmAnd-daty změnić\?</string>
     <string name="move_maps_to_new_destination">Na nowe městno přesunyć</string>
     <string name="change_data_storage_folder">Rjadowak za składowanje datow změnić</string>
     <string name="rendering_attr_piste_type_connection_name">Zwisk</string>
@@ -1178,7 +1178,7 @@
     <string name="avoid_in_routing_descr_">Wěste čary a pućne typy wobeńć</string>
     <string name="rendering_attr_piste_difficulty_connection_name">Zwisk</string>
     <string name="shared_string_calculate">Wobličeć</string>
-    <string name="shared_string_osmand_usage">Wužiwanje RoadCrew</string>
+    <string name="shared_string_osmand_usage">Wužiwanje OsmAnd</string>
     <string name="shared_string_tiles">Kachlicy</string>
     <string name="shared_string_maps">Karty</string>
     <string name="shared_string_memory_tb_desc">%1$s TB</string>
@@ -1299,7 +1299,7 @@
     <string name="depth_contours">Hłubokostne kontury</string>
     <string name="rendering_attr_surface_paved_name">wobkrućeny</string>
     <string name="rendering_attr_surface_ice_name">lód</string>
-    <string name="profile_type_osmand_string">Profil za RoadCrew</string>
+    <string name="profile_type_osmand_string">Profil za OsmAnd</string>
     <string name="select_wikipedia_article_langs">Wubjer rěče za zapiski Wikipedije na karće. Dźi k dalšim přistupnym rěčam w běhu čitanja.</string>
     <string name="discard_changes">Změnu zaćisnyć</string>
     <string name="vehicle_parameters_descr">Waha, wysokosć, dołhosć, spěšnosć</string>
@@ -1325,7 +1325,7 @@
     <string name="routing_attr_motor_type_petrol_name">bencin</string>
     <string name="one_point_error">Prošu dodaj znajmjeńša dwaj dypkaj.</string>
     <string name="changes_applied_to_profile">Změny přewzate za profil \'%1$s\'.</string>
-    <string name="osmand_settings">Nastajenja RoadCrew</string>
+    <string name="osmand_settings">Nastajenja OsmAnd</string>
     <string name="shared_string_language">Rěč</string>
     <string name="gpx_monitoring_stop">Nahrawanje jězby přetorhnyć</string>
     <string name="map_settings_weather_precip">Spadki</string>
@@ -1362,7 +1362,7 @@
     <string name="import_export">Import/eksport</string>
     <string name="purchases">Nakupy</string>
     <string name="routing_attr_avoid_fords_name">Brody wobeńć</string>
-    <string name="location_access_request_title">Za nawigaciju trjeba RoadCrew přistup na twoje stejišćo.</string>
+    <string name="location_access_request_title">Za nawigaciju trjeba OsmAnd přistup na twoje stejišćo.</string>
     <string name="no_purchases">Nimaš žane nakupy</string>
     <string name="sort_last_modified">poslednjej změnje</string>
     <string name="map_settings_weather_cloud">Mróčele</string>
@@ -1383,7 +1383,7 @@
     <string name="rendering_attr_surface_salt_name">sel</string>
     <string name="rendering_attr_surface_cobblestone_name">plesternaki</string>
     <string name="restore_purchases">Nakupy wobnowić</string>
-    <string name="empty_tracks_description">Móžeš čarowe dataje z pomocu RoadCrew importować, wutworić abo nahrawać.</string>
+    <string name="empty_tracks_description">Móžeš čarowe dataje z pomocu OsmAnd importować, wutworić abo nahrawać.</string>
     <string name="show_borders_of_downloaded_maps">Hranicy sćehnjenych kartow pokazać</string>
     <string name="map_settings_weather_temp">Temperatura</string>
     <string name="map_settings_weather_air_pressure">Powětrowy ćišć</string>
@@ -1442,8 +1442,8 @@
     <string name="towards">směr</string>
     <string name="rendering_attr_surface_snow_name">sněh</string>
     <string name="import_from_file">Z dataje importować</string>
-    <string name="edit_profiles_descr">Standardne profile za RoadCrew njehodźa so wotstronić, ale wupinyć (na předchadnej stronje) abo dele sortěrować.</string>
-    <string name="measurement_tool_snap_to_road_descr">RoadCrew budźe dypki z čarami za wubrany profil zwjazać.</string>
+    <string name="edit_profiles_descr">Standardne profile za OsmAnd njehodźa so wotstronić, ale wupinyć (na předchadnej stronje) abo dele sortěrować.</string>
+    <string name="measurement_tool_snap_to_road_descr">OsmAnd budźe dypki z čarami za wubrany profil zwjazać.</string>
     <string name="rendering_attr_surface_dirt_name">proch</string>
     <string name="routing_attr_motor_type_name">Ćěriwo za motor</string>
     <string name="profile_appearance">Napohlad profila</string>
@@ -1461,7 +1461,7 @@
     <string name="topography_maps">Topografiske karty</string>
     <string name="rendering_styles">Stile renderowanja</string>
     <string name="delete_map">Kartu wotstronić</string>
-    <string name="internal_app_storage_description">Interny skład, schowany před wužiwarjemi a druhimi aplikacijemi, jenož za RoadCrew přistupny.</string>
+    <string name="internal_app_storage_description">Interny skład, schowany před wužiwarjemi a druhimi aplikacijemi, jenož za OsmAnd přistupny.</string>
     <string name="maps_and_resources">Karty a resursy</string>
     <string name="mapillary_menu_title_tile_cache">Mjezyskład kachličkow</string>
     <string name="offline_cache">Mjezyskład offline</string>
@@ -1506,7 +1506,7 @@
     <string name="map_settings_weather_wind_animation">Animacija wětřika</string>
     <string name="shared_string_details">Podrobnosće</string>
     <string name="shared_string_all_colors">Wšě barby</string>
-    <string name="weather_data_sources_prompt">RoadCrew poskići wjedrowe daty z dweju žórłow:</string>
+    <string name="weather_data_sources_prompt">OsmAnd poskići wjedrowe daty z dweju žórłow:</string>
     <string name="weather_source_ecmwf_title">ECMWF</string>
     <string name="weather_source_GFS_title">GFS</string>
     <string name="missing_maps_header">Falowace abo zestarjene karty</string>
@@ -1535,14 +1535,14 @@
     <string name="all_data">Wšě daty</string>
     <string name="home_button">Doma</string>
     <string name="routing_attr_width_name">Šěrokosć</string>
-    <string name="share_route_subject">Čara je so přez RoadCrew zdźěliła</string>
+    <string name="share_route_subject">Čara je so přez OsmAnd zdźěliła</string>
     <string name="routing_attr_allow_gate_name">wužiwanje wrotow dowolić</string>
     <string name="shared_string_route_line">Smužka čary</string>
     <string name="rendering_attr_smoothness_impassable_name">njewobjězdna</string>
     <string name="cloud_all_changes_downloaded">Wšě změny su so sćahnyli</string>
     <string name="avoid_roads_msg">Wutwor alternatiwnu čaru přez wuběranje dróhow, kiž wobeńdźeš</string>
     <string name="store_tracks_in_monthly_directories">Nahrawane čary w měsačnych rjadowakach składować</string>
-    <string name="backup_deleting_all_data_descr">Prošu dočakaj, dołhož RoadCrew twoje daty z cloud wotstroni. Wšě daty na nastroju wostanu njezměnjene.</string>
+    <string name="backup_deleting_all_data_descr">Prošu dočakaj, dołhož OsmAnd twoje daty z cloud wotstroni. Wšě daty na nastroju wostanu njezměnjene.</string>
     <string name="download_wikipedia_description">Sćehń sej zapiski Wikipedije za kónčinu %1$s zo by je offline čitał/a.</string>
     <string name="all_folders">Wšě rjadowaki</string>
     <string name="sort_date_descending">najstarši datum horjeka</string>

@@ -1482,7 +1482,7 @@
     <string name="local_recordings_delete_all_confirm">നിങ്ങൾ %1$d കുറിപ്പുകൾ ഇല്ലാതാക്കാൻ പോകുന്നു. ഉറപ്പാണോ\?</string>
     <string name="parking_place_limited">പാർക്കിങ്ങ് സമയം നിയന്ത്രിതം</string>
     <string name="shared_string_collapse">ചുരുക്കുക</string>
-    <string name="osmand_accessibility_description">ഈ പ്ലഗിൻ ഉപകരണത്തിന്റെ അക്സസ്സിബിലിറ്റി സവിശേഷതകൾ RoadCrew- ൽ നേരിട്ട് ലഭ്യമാക്കുന്നു. ഉദാ: നിങ്ങളുടെ സ്ഥാനം പ്രഖ്യാപിക്കുക, സ്വയം ടിടിഎസ് ശബ്ദങ്ങൾക്കായുള്ള സംഭാഷണ നിരക്ക് ക്രമീകരിക്കുക, സൂം നിയന്ത്രണത്തിനു ട്രാക്ക്ബോൾ ഉപയോഗിക്കുക, ടെക്സ്റ്റ്-ടു-സ്പീച്ച് ഫീഡ്ബാക്ക് ഉപയോഗിക്കുക.</string>
+    <string name="osmand_accessibility_description">ഈ പ്ലഗിൻ ഉപകരണത്തിന്റെ അക്സസ്സിബിലിറ്റി സവിശേഷതകൾ OsmAnd- ൽ നേരിട്ട് ലഭ്യമാക്കുന്നു. ഉദാ: നിങ്ങളുടെ സ്ഥാനം പ്രഖ്യാപിക്കുക, സ്വയം ടിടിഎസ് ശബ്ദങ്ങൾക്കായുള്ള സംഭാഷണ നിരക്ക് ക്രമീകരിക്കുക, സൂം നിയന്ത്രണത്തിനു ട്രാക്ക്ബോൾ ഉപയോഗിക്കുക, ടെക്സ്റ്റ്-ടു-സ്പീച്ച് ഫീഡ്ബാക്ക് ഉപയോഗിക്കുക.</string>
     <string name="osmand_development_plugin_description">"റൂട്ടിംഗ്, സ്ക്രീൻ റെൻഡറിംഗ് പ്രകടനം, അല്ലെങ്കിൽ വോയ്സ് പ്രോംപ്റ്റിംഗ് എന്നിവ പരിശോധിക്കുന്നതിനോ മെച്ചപ്പെടുത്തുന്നതിനോ ഉള്ള ഡെവലപ്മെന്റ്, ഡീബഗ്ഗിംഗ് ഫീച്ചറുകൾക്കായുള്ള ക്രമീകരണങ്ങള്‍ കാണിക്കുന്ന പ്ലഗിൻ  . ഈ ക്രമീകരണങ്ങൾ ഡെവലപ്പർമാർക്ക് ഉദ്ദേശിച്ചതും പൊതു ഉപയോക്താവിനായി ആവശ്യമില്ലാത്തതുമാണ്."</string>
     <string name="proxy_pref_descr">ഒരു പ്രോക്സി സെർവർ വ്യക്തമാക്കുക.</string>
     <string name="routing_attr_no_new_routing_name">റൂട്ടിങ്ങ് റൂളുകൾ v1.9 ഇല്ല</string>
@@ -1513,9 +1513,9 @@
     <string name="gpx_selection_track">%1$s 
 \nട്രാക്ക് %2$s</string>
     <string name="osmo_connect_menu">ബന്ധിപ്പിക്കുക</string>
-    <string name="gpx_option_calculate_first_last_segment">ആദ്യത്തേയും അവസാനത്തേയും റൂട്ട് സെഗ്മെന്റിനായി RoadCrew വഴി കണക്കാക്കുക</string>
+    <string name="gpx_option_calculate_first_last_segment">ആദ്യത്തേയും അവസാനത്തേയും റൂട്ട് സെഗ്മെന്റിനായി OsmAnd വഴി കണക്കാക്കുക</string>
     <string name="keep_and_add_destination_point">തുടർന്നുള്ള ലക്ഷ്യമായി ചേർക്കുക</string>
-    <string name="copying_osmand_files">RoadCrew ഡാറ്റാ ഫയലുകൾ പകർത്തുന്നു ...</string>
+    <string name="copying_osmand_files">OsmAnd ഡാറ്റാ ഫയലുകൾ പകർത്തുന്നു ...</string>
     <string name="local_osm_changes_delete_all_confirm">നിങ്ങൾ %1$d OSM മാറ്റങ്ങൾ ഇല്ലാതാക്കാൻ പോകുകയാണ്. ഉറപ്പാണോ\?</string>
     <string name="new_directions_point_dialog">നിങ്ങൾ ഇതിനകം ഇടലക്ഷ്യസ്ഥാനങ്ങള്‍ സജ്ജമാക്കിയിട്ടുണ്ട്.</string>
     <string name="intermediate_items_sort_by_distance">ഡോര്‍-ടു-ഡോര്‍ ക്രമീകരിക്കുക</string>
@@ -1555,7 +1555,7 @@
     <string name="index_name_tts_voice">വോയ്സ് പ്രോംറ്റുകൾ (TTS- കൃത്രിമമായി| പ്രിഫേര്‍ഡ്)</string>
     <string name="profile_settings">പ്രൊഫൈലിലെ ക്രമീകരണങ്ങൾ</string>
     <string name="global_settings">ആഗോള ക്രമീകരണങ്ങൾ</string>
-    <string name="osmand_service_descr">സ്ക്രീൻ ഓഫായാല്‍ പിന്നാമ്പുറത്ത് RoadCrew പ്രവർത്തിക്കുന്നു.</string>
+    <string name="osmand_service_descr">സ്ക്രീൻ ഓഫായാല്‍ പിന്നാമ്പുറത്ത് OsmAnd പ്രവർത്തിക്കുന്നു.</string>
     <string name="download_files_not_enough_space">%1$s MB ഡൗൺലോഡ് ചെയ്യാൻ മതിയായ സ്ഥലമില്ല (ഉള്ളത്:%2$s).</string>
     <string name="init_native_library">നേറ്റീവ് ലൈബ്രറി സമാരംഭിക്കുന്നു ...</string>
     <string name="keep_informing_never">സ്വമേധയാ മാത്രം (ടാപ്പ് അമ്പ്)</string>
@@ -1584,10 +1584,10 @@
     <string name="mile_per_hour">മൈല്‍/മണി.</string>
     <string name="version_index_is_big_for_memory">ഇന്ഡക്സ് \'\' {0} \'\' ആവശ്യമായ മെമ്മറിയില്ല</string>
     <string name="osmand_net_previously_installed">പുതിയ വേര്‍ഷന്‍ പഴയ ഇൻസ്റ്റാൾ ചെയ്ത അപ്ലിക്കേഷന്റെ എല്ലാ ഓഫ്ലൈൻ ഡാറ്റയും പിന്തുണയ്ക്കുന്നു, എന്നാൽ പ്രിയപ്പെട്ടവ പഴയ ആപ്ലിക്കേഷനിൽ നിന്ന് എക്സ്പോർട്ട് ചെയ്യപ്പെടുകയും തുടർന്ന് ഇതിലേക്ക് ഇറക്കുമതി ചെയ്യുകയും വേണം.</string>
-    <string name="install_selected_build">{1} {2} MB- യുള്ള RoadCrew - {0} ഇൻസ്റ്റാൾ ചെയ്യണോ\?</string>
+    <string name="install_selected_build">{1} {2} MB- യുള്ള OsmAnd - {0} ഇൻസ്റ്റാൾ ചെയ്യണോ\?</string>
     <string name="loading_builds_failed">ഓസ്മാൻഡ് ബിൽഡ് ലിസ്റ്റ് വീണ്ടെടുക്കുന്നത് പരാജയപ്പെട്ടു</string>
     <string name="loading_builds">ഒസ്മാൻഡ് ബില്‍ഡ് ചെയ്യുന്നു ...</string>
-    <string name="select_build_to_install">ഇൻസ്റ്റാൾ ചെയ്യാൻ ഒരു RoadCrew ബിൽഡ് തിരഞ്ഞെടുക്കുക</string>
+    <string name="select_build_to_install">ഇൻസ്റ്റാൾ ചെയ്യാൻ ഒരു OsmAnd ബിൽഡ് തിരഞ്ഞെടുക്കുക</string>
     <string name="gps_status_app_not_found">GPS സ്റ്റാറ്റസ് അപ്ലിക്കേഷൻ ഇൻസ്റ്റാളുചെയ്തില്ല. മാർക്കറ്റിൽ തിരയണോ\?</string>
     <string name="rendering_exception">തിരഞ്ഞെടുത്ത പ്രദേശം വരയ്ക്കാൻ കഴിഞ്ഞില്ല</string>
     <string name="renderer_load_exception">റെൻഡറർ ലോഡുചെയ്യാനായില്ല</string>
@@ -1623,7 +1623,7 @@
     <string name="map_legend">മാപ്പ് ലെജൻഡ്</string>
     <string name="save_poi_without_poi_type_message">"ഈ POI അതിന്റെ  തരം ഇല്ലാ തെസംരക്ഷിക്കണോ\?"</string>
     <string name="dashboard_or_drawer_description">നിങ്ങളുടെ ഇഷ്ടാനുസരണം ഡാഷ്ബോർഡ് അല്ലെങ്കിൽ ഒരു സ്റ്റാറ്റിക്ക് മെനു മുഖേന പ്രാഥമികമായി ആപ്പ് നിയന്ത്രിക്കാം . ഡാഷ്ബോർഡ് ക്രമീകരണങ്ങളിൽ നിങ്ങളുടെ ഇഷ്ടം എല്ലായ്പ്പോഴും മാറ്റാം.</string>
-    <string name="missing_write_external_storage_permission">മെമ്മറി കാർഡ് ഉപയോഗിക്കാൻ RoadCrew- ന് അനുമതിയില്ല</string>
+    <string name="missing_write_external_storage_permission">മെമ്മറി കാർഡ് ഉപയോഗിക്കാൻ OsmAnd- ന് അനുമതിയില്ല</string>
     <string name="morning">രാവിലെ</string>
     <string name="number_of_contributors">സംഭാവകരുടെ എണ്ണം</string>
     <string name="number_of_edits">എഡിറ്റുകളുടെ എണ്ണം</string>
@@ -1702,7 +1702,7 @@
     <string name="routing_attr_driving_style_balance_name">സമതുലിതം</string>
     <string name="routing_attr_driving_style_safety_name">ബൈവേകള്‍ തിരഞ്ഞെടുക്കുക</string>
     <string name="routing_attr_relief_smoothness_factor_name">എലവേഷൻ fluctuation തിരഞ്ഞെടുക്കുക</string>
-    <string name="full_version_thanks">RoadCrew ന്റെ പണമടച്ച പതിപ്പ് വാങ്ങിയതിന് നിങ്ങൾക്ക് നന്ദി.</string>
+    <string name="full_version_thanks">OsmAnd ന്റെ പണമടച്ച പതിപ്പ് വാങ്ങിയതിന് നിങ്ങൾക്ക് നന്ദി.</string>
     <string name="do_not_show_startup_messages">സ്റ്റാർട്ടപ്പ് സന്ദേശങ്ങൾ കാണിക്കരുത്</string>
     <string name="parking_options">പാർക്കിംഗ് ഓപ്ഷനുകൾ</string>
     <string name="fonts_header">മാപ്പ് ഫോണ്ടുകൾ</string>
@@ -1863,7 +1863,7 @@
     <string name="mapillary_menu_title_pano">360° ഇമേജുകൾ മാത്രം പ്രദർശിപ്പിക്കുക</string>
     <string name="shared_string_launch">സമാരംഭിക്കുക</string>
     <string name="lang_gn_py">ഗ്വരാനി</string>
-    <string name="quick_action_switch_day_night_descr">RoadCrew-ലെ പകല്‍/ രാത്രി മോഡ് മാറ്റാന്‍ ഈ പ്രവർത്തന ബട്ടൺ ടാപ്പുചെയ്യുക</string>
+    <string name="quick_action_switch_day_night_descr">OsmAnd-ലെ പകല്‍/ രാത്രി മോഡ് മാറ്റാന്‍ ഈ പ്രവർത്തന ബട്ടൺ ടാപ്പുചെയ്യുക</string>
     <string name="add_destination_point">ലക്ഷ്യസ്ഥാനം ചേര്‍ക്കുക</string>
     <string name="add_intermediate_point">ഇടലക്ഷ്യസ്ഥാനം ചേര്‍ക്കുക</string>
     <string name="add_start_point">ആരംഭസ്ഥാനം ചേർക്കുക</string>
@@ -1896,7 +1896,7 @@
     <string name="exit_at">പുറത്തേക്ക് എത്തുക</string>
     <string name="sit_on_the_stop">സ്റ്റോപ്പിൽ നിന്ന് കയറുക</string>
     <string name="quick_action_show_hide_gpx_tracks_descr">"ഈ  ബട്ടണ്‍ തെരഞ്ഞെടുത്ത GPX ട്രാക്കുകൾ മാപ്പില്‍ കാണിക്കാന്‍ /മറയ്ക്കാന്‍ ഉപയോഗിക്കാം"</string>
-    <string name="use_osm_live_public_transport_description">"RoadCrew ലൈവ് മാറ്റങ്ങൾക്കായി പൊതു ഗതാഗത സംവിധാനത്തെ  പ്രാപ്തമാക്കുക."</string>
+    <string name="use_osm_live_public_transport_description">"OsmAnd ലൈവ് മാറ്റങ്ങൾക്കായി പൊതു ഗതാഗത സംവിധാനത്തെ  പ്രാപ്തമാക്കുക."</string>
     <string name="transfers_size">"%1$d  കൈമാറ്റങ്ങൾ"</string>
     <string name="add_start_and_end_points">ആരംഭ| അവസാന പോയിന്റുകൾ ചേർക്കുക</string>
     <string name="route_add_start_point">ആരംഭ പോയിന്റ് ചേർക്കുക</string>
@@ -1944,7 +1944,7 @@
     <string name="rendering_attr_highway_class_path_name">പാത</string>
     <string name="rendering_attr_highway_class_cycleway_name">സൈക്കിൾ വേ</string>
     <string name="rendering_attr_undefined_name">നിഷ്കര്‍ഷിക്കപെടാത്തത്</string>
-    <string name="public_transport_warning_descr_blog">ഞങ്ങളുടെ ബ്ലോഗിൽ നിന്നും RoadCrew റൂട്ടുകൾ എങ്ങനെ കണക്കുകൂട്ടുന്നുവെന്നതിനെ കുറിച്ച് കൂടുതലറിയാം.</string>
+    <string name="public_transport_warning_descr_blog">ഞങ്ങളുടെ ബ്ലോഗിൽ നിന്നും OsmAnd റൂട്ടുകൾ എങ്ങനെ കണക്കുകൂട്ടുന്നുവെന്നതിനെ കുറിച്ച് കൂടുതലറിയാം.</string>
     <string name="public_transport_warning_title">"പൊതു ഗതാഗത നാവിഗേഷൻ ബീറ്റാ ടെസ്റ്റിങ്ങിലാൺ   പിശകുകളും തെറ്റും    പ്രതീക്ഷിക്കു."</string>
     <string name="add_intermediate">ഇന്റർമീഡിയറ്റ് പോയിന്റ് ചേർക്കുക</string>
     <string name="shared_string_walk">നടക്കുക</string>

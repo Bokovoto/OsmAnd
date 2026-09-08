@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="location_source_descr">Mar réamhshocrú, úsáideann RoadCrew suiteáilte ó Google Play %1$s chun do shuíomh a fháil amach.
+    <string name="location_source_descr">Mar réamhshocrú, úsáideann OsmAnd suiteáilte ó Google Play %1$s chun do shuíomh a fháil amach.
 \n
 \nMá fhaigheann tú eolas suímh mhíchruinn nó tá tú ag úsáid gléas gan %2$s, bain triail as athrú go dtí \"%3$s\"</string>
     <string name="shared_string_done">Déanta</string>
     <string name="shared_string_online">Ar líne</string>
     <string name="simulation_real_mode_title">Ionsamhlú réalaíoch</string>
-    <string name="free_favorites_backup_description">Cláraigh ar Scamall RoadCrew chun cúltaca do na ceanáin agus na socruithe a fháil saor in aisce.</string>
+    <string name="free_favorites_backup_description">Cláraigh ar Scamall OsmAnd chun cúltaca do na ceanáin agus na socruithe a fháil saor in aisce.</string>
     <string name="weather_wind_kilimeters_per_hour">Ciliméadair san uair</string>
     <string name="lang_pnb">Puinseáibis</string>
     <string name="cloud_trash_clear_confirmation">Scrios gach rud sa bhosca bruscair go buan?</string>
@@ -25,7 +25,7 @@
     <string name="open_issue_on_github">Oscail ceist faoi fhadhb ar GitHub</string>
     <string name="activity_type_offroad_name">Easbhóthair</string>
     <string name="click_on_widget">Cliceáil ar an ngiuirléid</string>
-    <string name="about_osmand">Faoi RoadCrew</string>
+    <string name="about_osmand">Faoi OsmAnd</string>
     <string name="favorite_confirm_delete_group">Scrios grúpa \"%1$s\" agus gach pointe san áireamh (%2$d)?</string>
     <string name="share_geo">geo:</string>
     <string name="amenity_type_entertainment">Siamsaíocht</string>
@@ -283,7 +283,7 @@
     <string name="activity_type_hiking_name">Siúlóireacht</string>
     <string name="rendering_value_yellow_name">Amarillo</string>
     <string name="pressure_layer">Sraith an bhrú</string>
-    <string name="free_versions_descr">Íoslódáil agus suiteáil an leagan saor in aisce d\'RoadCrew</string>
+    <string name="free_versions_descr">Íoslódáil agus suiteáil an leagan saor in aisce d\'OsmAnd</string>
     <string name="shared_string_avoid">Seachain</string>
     <string name="max_altitude">Airde uasta</string>
     <string name="lang_be">Bealarúisis</string>
@@ -440,7 +440,7 @@
     <string name="rendering_value_all_name">Uile</string>
     <string name="login_account">Cuntas</string>
     <string name="help_article_navigation_setup_route_details_name">Sonraí an bhealaigh</string>
-    <string name="trash_is_empty_banner_desc">Beidh na comhaid a bhaintear ó Scamall RoadCrew ar fáil anseo ar feadh %1$s lá.</string>
+    <string name="trash_is_empty_banner_desc">Beidh na comhaid a bhaintear ó Scamall OsmAnd ar fáil anseo ar feadh %1$s lá.</string>
     <string name="lang_sl">Slóivéinis</string>
     <string name="shared_string_near">Gar do</string>
     <string name="activity_type_motorbike_name">Gluaisrothar</string>
@@ -514,7 +514,7 @@
     <string name="weather_forecast">Réamhaisnéis na haimsire</string>
     <string name="lang_min">Míneangcababhais</string>
     <string name="external_device_disconnected">Dícheangailte</string>
-    <string name="share_fav_subject">Ceanáin roinnte trí RoadCrew</string>
+    <string name="share_fav_subject">Ceanáin roinnte trí OsmAnd</string>
     <string name="external_device_characteristic_distance">Fad</string>
     <string name="shared_string_minute_lowercase">nóim</string>
     <string name="shared_string_travelbooks">Leabhair thaistil</string>
@@ -631,7 +631,7 @@
     <string name="app_mode_motorcycle">Gluaisrothar</string>
     <string name="index_name_russia">An Rúis</string>
     <string name="max_speed_none">ceann ar bith</string>
-    <string name="help_article_map_legend_osmand_name">Stíl léarscáil RoadCrew</string>
+    <string name="help_article_map_legend_osmand_name">Stíl léarscáil OsmAnd</string>
     <string name="asap">Chomh luath agus is féidir</string>
     <string name="app_mode_motorboat">Mótarbhád</string>
     <string name="home">Deais</string>
@@ -712,7 +712,7 @@
     <string name="cloud_item_restored">Aischuireadh %1$s ón Scamall.</string>
     <string name="shared_string_export">Easpórtáil</string>
     <string name="shared_string_progress">Dul chun cinn</string>
-    <string name="rendering_engine_failed_descr">D\'fhill RoadCrew go dtí \'Leagan 1\' den rindreáil léarscáile. Is féidir leat triail a bhaint as athrú ar ais sna socruithe chuig an inneall rindreála nua \'Leagan 2 (OpenGL)\'.
+    <string name="rendering_engine_failed_descr">D\'fhill OsmAnd go dtí \'Leagan 1\' den rindreáil léarscáile. Is féidir leat triail a bhaint as athrú ar ais sna socruithe chuig an inneall rindreála nua \'Leagan 2 (OpenGL)\'.
 \n
 \nCabhraigh linn trí loga d\'earráide a thabhairt dúinn.</string>
     <string name="shared_string_precision">Cruinneas</string>
@@ -721,7 +721,7 @@
     <string name="rendering_value_blue_name">Gorm</string>
     <string name="average">Meán</string>
     <string name="rendering_value_default_name">Réamhshocrú</string>
-    <string name="cloud_all_changes_uploaded_descr">Sioncronaítear gach athrú a dhéantar ar an ngléas seo le Scamall RoadCrew.</string>
+    <string name="cloud_all_changes_uploaded_descr">Sioncronaítear gach athrú a dhéantar ar an ngléas seo le Scamall OsmAnd.</string>
     <string name="sync_now">Sioncronaigh anois</string>
     <string name="lang_da">Danmhairgis</string>
     <string name="help_article_navigation_routing_horse_routing_name">Bealaí ar chapall</string>
@@ -894,7 +894,7 @@
     <string name="external_device_ble">BLE</string>
     <string name="map_orientation_portrait">Portráid</string>
     <string name="cloud_conflict">Coinbhleacht</string>
-    <string name="help_article_start_with_name">Tosaigh le RoadCrew</string>
+    <string name="help_article_start_with_name">Tosaigh le OsmAnd</string>
     <string name="map_widget_trip_recording_downhill">Síos leis an bhfána</string>
     <string name="weather_wind_ms">m/s</string>
     <string name="rendering_category_hide">Folaigh</string>
@@ -966,13 +966,13 @@
     <string name="help_article_map_legend_ski_map_name">Stíl léarscáil sciála</string>
     <string name="maps_and_resources">Léarscáileanna ⁊ acmhainní</string>
     <string name="external_device_details_information">Eolas</string>
-    <string name="rendering_engine_failed">Chlis rindreáil léarscáile RoadCrew le déanaí.</string>
+    <string name="rendering_engine_failed">Chlis rindreáil léarscáile OsmAnd le déanaí.</string>
     <string name="rendering_value_red_name">Dearg</string>
     <string name="default_appearance">Cuma réamhshocraithe</string>
     <string name="mtb_imba_full">Cumann Idirnáisiúnta Rothaíocht Sléibhe</string>
     <string name="si_mi_yard">Mílte/slat</string>
     <string name="shared_string_nearest">Is gaire</string>
-    <string name="help_article_navigation_routing_osmand_routing_name">Faoi áireamh na bealaí ar RoadCrew</string>
+    <string name="help_article_navigation_routing_osmand_routing_name">Faoi áireamh na bealaí ar OsmAnd</string>
     <string name="shared_string_type">Cineál</string>
     <string name="map_widget_altitude_map_center">Airde: lár na léarscáile</string>
     <string name="shared_string_setup">Cumraíocht</string>
@@ -980,7 +980,7 @@
     <string name="rendering_value_sector2_name">Ceantar 2</string>
     <string name="follow_track">Lean an chonair</string>
     <string name="shared_string_two">Dhá</string>
-    <string name="tracker_item">Rianaire RoadCrew</string>
+    <string name="tracker_item">Rianaire OsmAnd</string>
     <string name="download_hillshade_maps">Scáthanna rilífe</string>
     <string name="rendering_attr_showTrolleybusRoutes_name">Línte bus tralaí</string>
     <string name="whole_track">An chonair ar fad</string>
@@ -1096,7 +1096,7 @@
     <string name="shared_string_added">Cuireadh leis é</string>
     <string name="si_kmh">Ciliméadair san uair</string>
     <string name="app_mode_camper">Veain champála</string>
-    <string name="osmand_settings">Socruithe RoadCrew</string>
+    <string name="osmand_settings">Socruithe OsmAnd</string>
     <string name="app_mode_scooter">Scútar</string>
     <string name="device_disconnected">Dícheanglaíodh %1$s</string>
     <string name="shared_string_paused">Ar sos</string>
@@ -1297,7 +1297,7 @@
     <string name="extra_maps_menu_group">Léarscáileanna breise</string>
     <string name="yesterday">Inné</string>
     <string name="shared_string_result">Toradh</string>
-    <string name="osmand_default_routing">Ríomh bealaí RoadCrew</string>
+    <string name="osmand_default_routing">Ríomh bealaí OsmAnd</string>
     <string name="app_mode_motor_scooter">Mótarscútar</string>
     <string name="shared_string_memory_mb_desc">%1$s MB</string>
     <string name="transfers">Athruithe</string>
@@ -1408,7 +1408,7 @@
     <string name="camera_app">Aip an cheamara</string>
     <string name="shared_string_next_sunrise">An chéad éirí na gréine eile</string>
     <string name="backup_storage_taken">Stóras lán</string>
-    <string name="shared_string_osmand_usage">Úsáid RoadCrew</string>
+    <string name="shared_string_osmand_usage">Úsáid OsmAnd</string>
     <string name="search_street">Cuardaigh sráid</string>
     <string name="backup_error_file_not_available">Níl an comhad ar fáil</string>
     <string name="descendingly">Z-A</string>
@@ -1491,7 +1491,7 @@
     <string name="layer_map_appearance">Socraigh an scáileán</string>
     <string name="routing_attr_allow_motorway_description">Ceadaítear mótarbhealaí a úsáid.</string>
     <string name="renderers">Rindreálaí veicteora</string>
-    <string name="get_osmand_cloud">Faigh Scamall RoadCrew</string>
+    <string name="get_osmand_cloud">Faigh Scamall OsmAnd</string>
     <string name="zoomIn">Zúmáil isteach</string>
     <string name="enter_lat">Cuir isteach domhanleithead</string>
     <string name="copying_file">Ag cóipeáil an comhad %1$s…</string>
@@ -1695,7 +1695,7 @@
     <string name="track_recording_save_and_stop">Sábháil agus stop an taifeadadh</string>
     <string name="select_category_descr">Roghnaigh catagóir nó cruthaigh ceann nua</string>
     <string name="key_event_action_zoom_in">Zúmáil isteach</string>
-    <string name="osmand_cloud">Scamall RoadCrew</string>
+    <string name="osmand_cloud">Scamall OsmAnd</string>
     <string name="current_time_widget_desc">Taispeánann sé an t-am faoi láthair mar atá sé ar do ghléas.</string>
     <string name="context_menu_read_full">Léigh iomlán</string>
     <string name="routing_attr_motor_type_name">Breosla úsáidte ag an inneall</string>
@@ -1763,10 +1763,10 @@
     <string name="monthly_subscription">Síntiús míosúil</string>
     <string name="co2_mission">Astaíocht CO₂</string>
     <string name="copy_address">Cóipeáil seoladh</string>
-    <string name="backup_delete_all_data_warning">Tá tú ar tí gach sonraí a uaslódáladh chuig Scamall RoadCrew roimhe seo, stair na leaganacha san áireamh.
+    <string name="backup_delete_all_data_warning">Tá tú ar tí gach sonraí a uaslódáladh chuig Scamall OsmAnd roimhe seo, stair na leaganacha san áireamh.
 \n
 \nNí féidir na sonraí scriosta a athshlánú.</string>
-    <string name="osmand_team">Foireann RoadCrew</string>
+    <string name="osmand_team">Foireann OsmAnd</string>
     <string name="rename_track">Athainmnigh conair</string>
     <string name="includes_osm_changes_until">Tá na hathruithe OSM déanta go dtí %1$s san áireamh.</string>
     <string name="export_not_enough_space_descr">Níl ach %1$s saor ar do ghléas. Cuir spás ar fáil nó díroghnaigh roinnt mír atá le heaspórtáil.</string>
@@ -1810,7 +1810,7 @@
     <string name="routing_engine_vehicle_type_racingbike">Rothar rásaíochta</string>
     <string name="key_is_already_assigned_error">Tá an eochair \"%1$s\" sannta cheana don ghníomh: \"%2$s\"</string>
     <string name="select_folder">Roghnaigh fillteán</string>
-    <string name="cloud_email_not_registered">Níor an seoladh r-phoist cláraithe do Scamall RoadCrew</string>
+    <string name="cloud_email_not_registered">Níor an seoladh r-phoist cláraithe do Scamall OsmAnd</string>
     <string name="track_has_no_altitude">Níl aon sonraí airde ag an gconair seo.</string>
     <string name="shared_string_min_height">Íosairde</string>
     <string name="backup_no_internet_descr">Seiceáil do nasc idirlín agus íoslódáil arís.</string>
@@ -1818,7 +1818,7 @@
     <string name="exit_number">Uimhir na slí amach</string>
     <string name="routing_attr_avoid_highway_name">Seachain mótarbhealaí</string>
     <string name="export_not_enough_space">Níl a dhóthain spáis ann</string>
-    <string name="osmand_live">RoadCrew Beo</string>
+    <string name="osmand_live">OsmAnd Beo</string>
     <string name="use_dev_url">Bain úsáid as dev.openstreetmap.org</string>
     <string name="shared_string_show_slope">Taispeáin an fána</string>
     <string name="osmand_cloud_create_account_descr">Cuir isteach do sheoladh r-phoist. Seolfar cód fíorúcháin chuige,
@@ -1849,7 +1849,7 @@
     <string name="upload_local_version">Uaslódáil an leagan áitiúil</string>
     <string name="shared_string_api_key">Eochair an API</string>
     <string name="announce_when_exceeded">Fógra nuair a sháraítear é</string>
-    <string name="srtm_download_list_help_message">Cuireann RoadCrew sonraí na gcomhrianta ar fáil i méadair agus i dtroithe. Chun an fhormáid a athrú, caithfidh tú an comhad a íoslódáil arís.</string>
+    <string name="srtm_download_list_help_message">Cuireann OsmAnd sonraí na gcomhrianta ar fáil i méadair agus i dtroithe. Chun an fhormáid a athrú, caithfidh tú an comhad a íoslódáil arís.</string>
     <string name="shared_string_restart">Atosaigh an aip</string>
     <string name="shared_string_travel_guides">Treoirleabhair thaistil</string>
     <string name="backup_view_conflicts">Amharc ar choinbhleachtaí</string>
@@ -1877,7 +1877,7 @@
     <string name="provided_by">Curtha ar fáil ag %1$s</string>
     <string name="osm_edit_close_note">Dún an nóta OSM</string>
     <string name="change_folder">Athraigh fillteán</string>
-    <string name="profile_type_osmand_string">Próifíl RoadCrew</string>
+    <string name="profile_type_osmand_string">Próifíl OsmAnd</string>
     <string name="no_purchases">Níl aon cheannacháin agat</string>
     <string name="upload_to_openstreetmap">Uaslódáil go hOpenStreetMap</string>
     <string name="rendering_attr_padusDisplayMode_description">De réir cineál rochtana nó ainm an bhainisteora</string>
@@ -1917,7 +1917,7 @@
 \n– An gléas seo in aice leis an mbraiteoir</string>
     <string name="ant_plus_bluetooth_off">Tá Bluetooth casta as</string>
     <string name="ant_plus_bluetooth_off_description">Cas ar Bluetooth chun braiteoirí a aimsiú agus a phéireáil.</string>
-    <string name="ant_plus_searching_text_description">Le do thoil, cuir an gléas in aice leis an mbraiteoir. Caithfidh tú an braiteoir a chumasú sa chaoi is go mbeidh RoadCrew in ann é a aimsiú.</string>
+    <string name="ant_plus_searching_text_description">Le do thoil, cuir an gléas in aice leis an mbraiteoir. Caithfidh tú an braiteoir a chumasú sa chaoi is go mbeidh OsmAnd in ann é a aimsiú.</string>
     <string name="local_version_do_not_exist">Níl aon leagan áitiúil ann.</string>
     <string name="shared_string_link">Nasc</string>
     <string name="shared_string_author">Údar</string>
@@ -1954,14 +1954,14 @@
     <string name="search_track_by_name">Cuardaigh bealach de réir an ainm</string>
     <string name="file_already_exists_description">\"%1$s\". Tá comhad ann cheana leis an t-ainm sin. Athscríobhfar gach athrú a rinneadh leis an leagan reatha.</string>
     <string name="nav_profile_confirm_delete">Scrios \"%1$s\"?</string>
-    <string name="cloud_version_confirm_delete">Scrios \"%1$s\" ó Scamall RoadCrew?</string>
+    <string name="cloud_version_confirm_delete">Scrios \"%1$s\" ó Scamall OsmAnd?</string>
     <string name="zoom_animated">Zúm beochana</string>
     <string name="free_ride">Aistear saor</string>
-    <string name="osmand_cloud_deleted_account_descr">Scriosadh an cuntas agus gach sonraí ó Scamall RoadCrew.</string>
-    <string name="osmand_cloud_deleting_account_descr">I gceann cúpla nóiméad, scriosfar do chuntas agus na sonraí uilig ó Scamall RoadCrew.
+    <string name="osmand_cloud_deleted_account_descr">Scriosadh an cuntas agus gach sonraí ó Scamall OsmAnd.</string>
+    <string name="osmand_cloud_deleting_account_descr">I gceann cúpla nóiméad, scriosfar do chuntas agus na sonraí uilig ó Scamall OsmAnd.
 \n
 \nBeidh na sonraí atá ar an ngléas fós ann.</string>
-    <string name="osmand_cloud_delete_account_confirmation_descr">Scrios an cuntas Scamall RoadCrew?
+    <string name="osmand_cloud_delete_account_confirmation_descr">Scrios an cuntas Scamall OsmAnd?
 \n
 \nNí féidir dul ar ais ar an ngníomh seo.</string>
     <string name="osmand_cloud_deletion_subscriptions_warning">Ní chuirfear do shíntiús OsmAnd Pro ar ceal.</string>
@@ -2067,7 +2067,7 @@
     <string name="shared_string_unexpected_error">Earráid gan choinne</string>
     <string name="plugin_install_needs_network">Ní mór duit a bheith ar líne chun an breiseán seo a shuiteáil.</string>
     <string name="connect_obd_instructions_step2">Cas inneall d\'fheithicle air</string>
-    <string name="use_live_routing">RoadCrew Sonraí beo</string>
+    <string name="use_live_routing">OsmAnd Sonraí beo</string>
     <string name="in_case_of_reverse_direction">I gcás treo droim ar ais</string>
     <string name="context_menu_points_of_group">Gach pointe den ghrúpa</string>
     <string name="lang_hu_formal">Ungáiris (foirmiúil)</string>
@@ -2161,8 +2161,8 @@
     <string name="personal_category_name">Pearsanta</string>
     <string name="weeks_5">Seachtainí</string>
     <string name="months_5">Míonna</string>
-    <string name="last_launch_crashed">Last OsmAgus rith crashed. Cabhraigh linn RoadCrew a fheabhsú tríd an teachtaireacht earráide a roinnt.</string>
-    <string name="process_downloading_service">RoadCrew seirbhís a íoslódáil</string>
+    <string name="last_launch_crashed">Last OsmAgus rith crashed. Cabhraigh linn OsmAnd a fheabhsú tríd an teachtaireacht earráide a roinnt.</string>
+    <string name="process_downloading_service">OsmAnd seirbhís a íoslódáil</string>
     <string name="privacy_and_security_change_descr">Tapáil \"Ceadaigh\" má aontaíonn tú lenár %1$s</string>
     <string name="start_editing_card_description">Is féidir leat agus ba chóir duit aon alt a chur in eagar ar Wikivoyage. Roinn eolas, taithí, tallann, agus d\'aird.</string>
     <string name="welcome_to_open_beta">Fáilte go dtí an béite oscailte</string>
@@ -2198,7 +2198,7 @@
     <string name="terrain_category_description">Línte imlíne tír-raon, cnocán liathscála agus léiriú fána scála datha, chun beanna agus ísealchríocha a thaispeáint.</string>
     <string name="relief_3d_description">Féin agus breathnú ar an tsamhail scála de do chomharsanacht nó ar an mór-roinn ar fad.</string>
     <string name="clear_online_cache_description">Glanfaidh sé seo an taisce le haghaidh tíleanna aimsire ar líne.</string>
-    <string name="empty_tracks_description">Is féidir leat comhaid rian a iompórtáil, a chruthú nó a thaifeadadh ag baint úsáide as RoadCrew.</string>
+    <string name="empty_tracks_description">Is féidir leat comhaid rian a iompórtáil, a chruthú nó a thaifeadadh ag baint úsáide as OsmAnd.</string>
     <string name="empty_tracks">Níl comhaid rian agat.</string>
     <string name="cloud_changes_will_be_dismissed">Déanfar na hathruithe scamall a dhíbhe</string>
     <string name="empty_screen_view_selected_weather_data">Cas air chun amharc ar na sonraí aimsire roghnaithe ar an léarscáil.</string>
@@ -2220,14 +2220,14 @@
     <string name="simulation_constant_mode_desc">Beidh an insamhalta a dhéanamh le luas roghnaithe tairiseach.</string>
     <string name="import_tracks_descr">%1$s, tá rianta ar leith %2$s ann. Roghnaigh rianta le hiompórtáil.</string>
     <string name="gps_filter_hdop_desc">Socraigh an luach uasta a nglactar leis le haghaidh HDOP.\nCuirfear pointí le luach níos airde i bhfolach.</string>
-    <string name="storage_migration_wrong_folder_warning">Níl aon sonraí RoadCrew le fáil san fhillteán roghnaithe. Bain triail eile as.</string>
+    <string name="storage_migration_wrong_folder_warning">Níl aon sonraí OsmAnd le fáil san fhillteán roghnaithe. Bain triail eile as.</string>
     <string name="routing_attr_only_permitted_streets_name">Sráideanna atá ceadaithe go sainráite</string>
     <string name="routing_attr_only_permitted_ways_name">Bealaí a cheadaítear go sainráite</string>
     <string name="routing_attr_prefer_horse_routes_name">Bealaí capall is fearr leat</string>
     <string name="routeInfo_surface_description">Eolas fisiciúil faoi dhromchla an bhóthair/an chosáin a chur ar fáil.</string>
     <string name="map_updates_for_mappers">Nuashonruithe léarscáile le haghaidh mappers</string>
     <string name="setting_supported_by_style">Cuirtear an socrú seo ar fáil i stíl léarscáile \'%1$s\'</string>
-    <string name="explore_osmnad_plans_to_find_suitable">Déan iniúchadh ar RoadCrew Plans chun ceann a aimsiú atá oiriúnach duit.</string>
+    <string name="explore_osmnad_plans_to_find_suitable">Déan iniúchadh ar OsmAnd Plans chun ceann a aimsiú atá oiriúnach duit.</string>
     <string name="backup_welcome_back_descr">Athchóirigh sonraí ar an ngléas seo ag baint úsáide as OsmAnd Cloud.</string>
     <string name="backup_error_size_is_exceeded">Sháraigh uasmhéid OsmAnd Cloud %1$s</string>
     <string name="osmand_maps_plus_tagline">Faigh gnéithe breisithe</string>
@@ -2250,7 +2250,7 @@
     <string name="help_article_navigation_routing_straight_line_routing_name">Ródú líne dhíreach (Aerárthaí)</string>
     <string name="help_article_search_search_poi_name">Cuardaigh POI</string>
     <string name="use_raster_sqlitedb_for_slope_hillshade">Bain úsáid as sqlitedb raster do hillshade / fána</string>
-    <string name="import_duplicates_description">Tá eilimintí ag RoadCrew cheana féin leis na hainmneacha céanna leo siúd a allmhairíodh.\n\nRoghnaigh gníomh.</string>
+    <string name="import_duplicates_description">Tá eilimintí ag OsmAnd cheana féin leis na hainmneacha céanna leo siúd a allmhairíodh.\n\nRoghnaigh gníomh.</string>
     <string name="please_provide_profile_name_message">Tabhair ainm don phróifíl</string>
     <string name="reset_to_default_category_button_promo">Cuirfidh \'Athshocraigh go réamhshocrú\' an t-ordú sórtála ar ais chuig an réamhshocrú suiteála.</string>
     <string name="shared_string_available">Ar fáil</string>
@@ -2357,7 +2357,7 @@
     <string name="rendering_attr_showAccess_name">Taispeáin srianta rochtana</string>
     <string name="lang_en_gb">Béarla (An Ríocht Aontaithe)</string>
     <string name="routing_attr_avoid_motorway_name">Gan mótarbhealaí</string>
-    <string name="copying_osmand_files">Comhaid sonraí RoadCrew á gcóipeáil…</string>
+    <string name="copying_osmand_files">Comhaid sonraí OsmAnd á gcóipeáil…</string>
     <string name="download_using_mobile_internet">Gan a bheith ceangailte le Wi-Fi. Bain úsáid as an nasc reatha leis an Idirlíon le híoslódáil?</string>
     <string name="avoid_toll_roads">Gan dola-bhóithre</string>
     <string name="global_app_allocated_memory_descr">Cuimhne leithdháilte %1$s MB (teorainn Android %2$s MB, Dalvik%3$s MB).</string>
@@ -2397,7 +2397,7 @@
     <string name="monitoring_min_accuracy_descr_side_effect">Fo-iarsma: Mar thoradh ar scagadh de réir cruinnis, d\'fhéadfadh pointí a bheith in easnamh go hiomlán e.g. faoi dhroichid, faoi chrainn, idir foirgnimh arda, nó le coinníollacha aimsire áirithe.</string>
     <string name="tts_initialization_error">Ní féidir inneall téacs- go- hurlabhra a thosú.</string>
     <string name="select_nav_profile_dialog_title">Roghnaigh cineál nascleanúna</string>
-    <string name="wikivoyage_travel_guide_descr">Treoracha do na háiteanna is suimiúla ar an phláinéid, taobh istigh RoadCrew, gan nasc leis an Idirlíon.</string>
+    <string name="wikivoyage_travel_guide_descr">Treoracha do na háiteanna is suimiúla ar an phláinéid, taobh istigh OsmAnd, gan nasc leis an Idirlíon.</string>
     <string name="gpx_file_desc">GPX - oiriúnach le honnmhairiú chuig JOSM nó eagarthóirí OSM eile.</string>
     <string name="osc_file_desc">OSC - oiriúnach le honnmhairiú chuig OpenStreetMap.</string>
     <string name="import_gpx_file_description">is féidir é a iompórtáil mar Cheanáin nó comhad GPX.</string>
@@ -2428,7 +2428,7 @@
     <string name="shared_string_transparency">Trédhearcacht</string>
     <string name="ltr_or_rtl_triple_combine_via_dash">%1$s — %2$s — %3$s</string>
     <string name="sunrise_at">Éirí gréine ag %1$s</string>
-    <string name="paste_Osmand_data_folder_path">Greamaigh cosán chuig an bhfillteán le sonraí RoadCrew</string>
+    <string name="paste_Osmand_data_folder_path">Greamaigh cosán chuig an bhfillteán le sonraí OsmAnd</string>
     <string name="rendering_attr_piste_difficulty_advanced_name">Ardrang</string>
     <string name="reset_to_default">Athshocraigh go réamhshocrú</string>
     <string name="get_discount_first_part">%1$s don chéad %2$s</string>
@@ -2494,8 +2494,8 @@
     <string name="any_connected">Déanfar aon</string>
     <string name="shared_string_class">Aicme</string>
     <string name="osmand_cloud_deletion_all_data_warning">Beidh na sonraí go léir ó OsmAnd Cloud %1$s. Tá sonraí ar an ngléas fós gan athrú.</string>
-    <string name="map_rendering_engine_descr">Ba é Leagan 1 an leagan réamhshocraithe roimh RoadCrew 4.3 agus oireann sé do ghléasanna níos sine.\n\nTá Leagan 2 (OpenGL) níos forbartha agus cuireann sé gnéithe cosúil le radharc 3T leis.</string>
-    <string name="send_uuid_preference_desc">Úsáidtear UUID randamach chun léarscáileanna as líne a íoslódáil ó fhreastalaithe RoadCrew chun monatóireacht a dhéanamh ar úsáid chothrom acmhainní freastalaí, patrúin tráchta a thuar, agus tuarascálacha léarscáile míosúla gan ainm a ghiniúint.</string>
+    <string name="map_rendering_engine_descr">Ba é Leagan 1 an leagan réamhshocraithe roimh OsmAnd 4.3 agus oireann sé do ghléasanna níos sine.\n\nTá Leagan 2 (OpenGL) níos forbartha agus cuireann sé gnéithe cosúil le radharc 3T leis.</string>
+    <string name="send_uuid_preference_desc">Úsáidtear UUID randamach chun léarscáileanna as líne a íoslódáil ó fhreastalaithe OsmAnd chun monatóireacht a dhéanamh ar úsáid chothrom acmhainní freastalaí, patrúin tráchta a thuar, agus tuarascálacha léarscáile míosúla gan ainm a ghiniúint.</string>
     <string name="altitude_correction">Ceartú ingearchló</string>
     <string name="save_track_to_gpx_descrp">Taifeadadh rian uathoibríoch-tús agus nascleanúint agus uathoibríoch-shábháil ina dhiaidh sin.</string>
     <string name="files_with_route_restrictions">Comhaid le srianta bealaigh</string>
@@ -2607,7 +2607,7 @@
     <string name="cancel_anytime_in_amazon_app">Cealaigh é ag am ar bith tríd an aip Amazon</string>
     <string name="option_available_only_in_osmand_pro">Ar fáil mar chuid de shíntiús OsmAnd Pro.</string>
     <string name="route_line_use_map_style_width">Úsáid leithead réamhshocraithe stíl na léarscáile ( %1$s).</string>
-    <string name="trip_recording_logging_interval_info">Socraíonn an t-eatramh logála an tréimhse ama ina n-iarrfaidh RoadCrew na sonraí suímh reatha.</string>
+    <string name="trip_recording_logging_interval_info">Socraíonn an t-eatramh logála an tréimhse ama ina n-iarrfaidh OsmAnd na sonraí suímh reatha.</string>
     <string name="delete_online_routing_engine">Bain an t-inneall ródaithe ar líne seo?</string>
     <string name="online_routing_engines">Innill ródaithe ar líne</string>
     <string name="keep_it_empty_if_not">Coinnigh folamh é mura bhfuil</string>
@@ -2626,7 +2626,7 @@
     <string name="rendering_attr_streetLightingNight_name">Taispeáin san oíche amháin</string>
     <string name="sunset_at">Luí gréine ag %1$s</string>
     <string name="permission_is_required">Is gá cead a fháil chun an rogha seo a úsáid.</string>
-    <string name="tracks_view_descr">Tá do rianta taifeadta i %1$s, nó an fillteán RoadCrew.</string>
+    <string name="tracks_view_descr">Tá do rianta taifeadta i %1$s, nó an fillteán OsmAnd.</string>
     <string name="default_speed_dialog_msg">Meastacháin am teachta do chineálacha bóthair anaithnid, agus teorainneacha luas do gach bóthar (d\'fhéadfadh tionchar a imirt ar ródú)</string>
     <string name="enter_path_to_folder">Iontráil conair an fhillteáin</string>
     <string name="rendering_attr_piste_difficulty_intermediate_name">Meánrang</string>
@@ -2644,8 +2644,8 @@
     <string name="route_add_start_point">Cuir pointe imeachta leis</string>
     <string name="rendering_attr_surface_unpaved_name">Gan phá</string>
     <string name="rendering_attr_surface_sand_name">Gaineamh</string>
-    <string name="ask_for_location_permission">Tabhair rochtain ar shuíomh RoadCrew le leanúint ar aghaidh.</string>
-    <string name="touring_view_render_descr">Stíl camchuairte le codarsnacht ard agus sonraí uasta. Áirítear gach rogha den stíl réamhshocraithe RoadCrew, agus an oiread sonraí agus is féidir á dtaispeáint, go háirithe bóithre, cosáin, agus bealaí eile chun taisteal. Idirdhealú soiléir \"atlas camchuairte\" idir cineálacha bóithre. Oiriúnach le haghaidh úsáide lae, oíche agus lasmuigh.</string>
+    <string name="ask_for_location_permission">Tabhair rochtain ar shuíomh OsmAnd le leanúint ar aghaidh.</string>
+    <string name="touring_view_render_descr">Stíl camchuairte le codarsnacht ard agus sonraí uasta. Áirítear gach rogha den stíl réamhshocraithe OsmAnd, agus an oiread sonraí agus is féidir á dtaispeáint, go háirithe bóithre, cosáin, agus bealaí eile chun taisteal. Idirdhealú soiléir \"atlas camchuairte\" idir cineálacha bóithre. Oiriúnach le haghaidh úsáide lae, oíche agus lasmuigh.</string>
     <string name="select_travel_book">Roghnaigh leabhar taistil</string>
     <string name="last_seven_days">Le 7 lá anuas</string>
     <string name="index_item_depth_points_northern_hemisphere">Pointí doimhneachta farraige leathsféar thuaidh</string>
@@ -2662,7 +2662,7 @@
     <string name="filter_poi_hint">Scag de réir ainm</string>
     <string name="shared_string_delete_all">Scrios gach rud</string>
     <string name="plugin_touringview_name">Amharc léarscáile camchuairte</string>
-    <string name="osmand_development_plugin_description">Soláthraíonn feidhmiúlacht a thástáil agus dífhabhtaithe RoadCrew: insamhladh bealaí nascleanúna, monatóireacht a dhéanamh ar rindreáil scáileán, feidhmíocht a sheiceáil, etc. Níl an breiseán seo ag teastáil le haghaidh gnáthúsáid feidhmchláir.</string>
+    <string name="osmand_development_plugin_description">Soláthraíonn feidhmiúlacht a thástáil agus dífhabhtaithe OsmAnd: insamhladh bealaí nascleanúna, monatóireacht a dhéanamh ar rindreáil scáileán, feidhmíocht a sheiceáil, etc. Níl an breiseán seo ag teastáil le haghaidh gnáthúsáid feidhmchláir.</string>
     <string name="traffic_warning_railways">Crosaire iarnróid</string>
     <string name="routing_attr_no_new_routing_name">Uimh v1.9 rialacha ródú</string>
     <string name="rendering_attr_transportStops_name">Stadanna iompair</string>
@@ -2738,7 +2738,7 @@
     <string name="global_settings">Socruithe Domhanda</string>
     <string name="local_index_items_uploaded">%1$d de %2$d mír(eanna) uaslódáilte.</string>
     <string name="voice_data_initializing">Sonraí gutha á n-thúsú…</string>
-    <string name="hello">RoadCrew nascleanúint app</string>
+    <string name="hello">OsmAnd nascleanúint app</string>
     <string name="search_online_address">Cuardach ar líne</string>
     <string name="max_level_download_tile">Uaslíon súmáil ar líne</string>
     <string name="sd_dir_not_accessible">Níl an fillteán stórála ar an gcárta cuimhne inrochtana!</string>
@@ -2796,16 +2796,16 @@
     <string name="shared_string_octagon">Ochtagán</string>
     <string name="osm_edit_commented_note">Nóta OSM tráchta</string>
     <string name="rendering_attr_currentTrackColor_name">Dath GPX</string>
-    <string name="shared_string_import2osmand">Iompórtáil chuig RoadCrew</string>
+    <string name="shared_string_import2osmand">Iompórtáil chuig OsmAnd</string>
     <string name="safe_mode_description">Rith an aip i mód sábháilte (níos moille).</string>
     <string name="travel_topics">Ábhair taistil</string>
     <string name="lang_ta_in">Tamailis (An India)</string>
     <string name="rendering_attr_padusDisplayMode_name">Modh taispeána tailte poiblí</string>
-    <string name="gps_filter_actions_description">Cuirfidh RoadCrew na hathruithe i bhfeidhm ar an rian gan an comhad a nuashonrú. Is féidir leat athruithe a shábháil de láimh.</string>
+    <string name="gps_filter_actions_description">Cuirfidh OsmAnd na hathruithe i bhfeidhm ar an rian gan an comhad a nuashonrú. Is féidir leat athruithe a shábháil de láimh.</string>
     <string name="speedometer_maximum">Uasmhéid</string>
     <string name="liter">l</string>
     <string name="percent_hour">%/hr</string>
-    <string name="connect_obd_instructions_title">Tacaíonn RoadCrew le naisc Bluetooth le scanóirí OBD-II.</string>
+    <string name="connect_obd_instructions_title">Tacaíonn OsmAnd le naisc Bluetooth le scanóirí OBD-II.</string>
     <string name="screen_is_unlocked">Díghlasáiltear an scáileán tadhaill.</string>
     <string name="navigation_action_descr">Osclaíonn seo nascleanúint.</string>
     <string name="my_location_action_descr">Léarscáil na nIonad ar do shuíomh reatha.</string>
@@ -2835,13 +2835,13 @@
     <string name="shared_string_uphill">Suas an cnoc</string>
     <string name="routing_attr_allow_intermittent_name">Ceadaigh bealaí uisce breac</string>
     <string name="release_3_9">• Rogha bhreise chun na sonraí go léir a easpórtáil agus a iompórtáil lena n-áirítear socruithe, acmhainní, m\'áiteanna\n\n• Bealach Plean: graif do dheighleoga rian le bealach, agus chuir sé leis an gcumas codanna ilriain a chruthú agus a chur in eagar\n\n• Modh fíordheimhnithe OAuth curtha leis do OpenStreetMap, UI feabhsaithe dialóga OSM\n\n• Tacú le dathanna saincheaptha do Favorites agus waypoints rian</string>
-    <string name="use_live_public_transport">RoadCrew Sonraí beo</string>
+    <string name="use_live_public_transport">OsmAnd Sonraí beo</string>
     <string name="routing_attr_avoid_footways_name">Seachain cosáin</string>
     <string name="layer_gpx_layer">Amhráin</string>
     <string name="lang_sat">Santali</string>
     <string name="lang_tg">Táidsíceastáin</string>
     <string name="lang_uz">Úisbéiceastáinis</string>
-    <string name="custom_osmand_plugin">Breiseán RoadCrew SaincheapthaComment</string>
+    <string name="custom_osmand_plugin">Breiseán OsmAnd SaincheapthaComment</string>
     <string name="main_actions_descr">Níl ach ceithre chnaipe ann.</string>
     <string name="route_recalculation_dist_title">Achar íosta chun an bealach a athríomh</string>
     <string name="clear_recorded_data">Glan sonraí taifeadta</string>
@@ -2859,7 +2859,7 @@
     <string name="show_closed_notes">Taispeáin nótaí dúnta</string>
     <string name="plugin_mapillary_descr">Íomhánna de radhairc ar leibhéal na sráide. Is féidir leat cur leat féin freisin. Chun na sonraí atá ann cheana a fheiceáil mar shraith léarscáile, cas ar \"Íomhánna ar leibhéal sráide\" sa roghchlár \"Cumraigh léarscáil\".</string>
     <string name="do_not_show_startup_messages">Ná taispeáin teachtaireachtaí tosaithe</string>
-    <string name="full_version_thanks">Go raibh maith agat as an leagan íoctha de RoadCrew a cheannach.</string>
+    <string name="full_version_thanks">Go raibh maith agat as an leagan íoctha de OsmAnd a cheannach.</string>
     <string name="gpx_no_tracks_title">Níl aon chomhaid rian agat go fóill</string>
     <string name="gpx_no_tracks_title_folder">Is féidir leat comhaid rian a chur leis an bhfillteán freisin</string>
     <string name="rendering_value_dark_brown_name">Donn dorcha</string>
@@ -2910,7 +2910,7 @@
     <string name="context_menu_item_create_poi">Cruthaigh POI</string>
     <string name="quick_action_empty_param_error">Líon amach na paraiméadair go léir</string>
     <string name="mappilary_no_internet_desc">Níl grianghraif ó Mapillary ar fáil ach ar líne.</string>
-    <string name="ant_plus_pair_bluetooth_prompt">Is féidir leat braiteoirí Bluetooth LE agus ANT + a phéireáil le RoadCrew.</string>
+    <string name="ant_plus_pair_bluetooth_prompt">Is féidir leat braiteoirí Bluetooth LE agus ANT + a phéireáil le OsmAnd.</string>
     <string name="included_in_your_current_plan">San áireamh i do phlean reatha \"%1$s\"</string>
     <string name="backup_version_history_removed">Baineadh stair na leagain ar fad.</string>
     <string name="please_provide_point_name_error">Tabhair ainm ar an bpointe</string>
@@ -2986,7 +2986,7 @@
     <string name="live_monitoring_tracking_interval">Eatramh rianaithe</string>
     <string name="shared_string_other">Eile</string>
     <string name="time_of_day">Am an lae</string>
-    <string name="import_gpx_failed_descr">Níorbh fhéidir an comhad a iompórtáil. Cinntigh le do thoil go bhfuil cead ag RoadCrew é a léamh.</string>
+    <string name="import_gpx_failed_descr">Níorbh fhéidir an comhad a iompórtáil. Cinntigh le do thoil go bhfuil cead ag OsmAnd é a léamh.</string>
     <string name="increase_search_radius">Méadaigh ga chuardaigh</string>
     <string name="rendering_attr_hideOverground_name">Réada os cionn talún</string>
     <string name="shared_string_move_down">Bog ↓</string>
@@ -3085,7 +3085,7 @@
     <string name="key_event_action_previous_app_profile">Próifíl an fheidhmchláir roimhe seo</string>
     <string name="key_event_action_next_app_profile">An chéad phróifíl app eile</string>
     <string name="key_event_action_open_search_view">Oscail an t- amharc cuardaigh</string>
-    <string name="enable_to_use_external_input_device">Cumasaigh gléas ionchurtha seachtrach a úsáid le RoadCrew</string>
+    <string name="enable_to_use_external_input_device">Cumasaigh gléas ionchurtha seachtrach a úsáid le OsmAnd</string>
     <string name="empty_smart_folder_description">Tá rianta meaitseála le feiceáil anseo</string>
     <string name="release_4_6">• Android Auto: Mód 3D curtha leis\n\n• Rianta: Tugadh isteach scagairí agus fillteáin cliste, cuimhne optamaithe do chomhaid níos mó\n\n• Painéil ghiuirléidí barr agus bun feabhsaithe chun freastal ar gach giuirléid\n\n• Bainistíocht acmhainní áitiúla feabhsaithe\n\n• Mapáil cnaipe customizable do rialaitheoirí seachtracha\n\n• Giuirléidí nua: \"Cóimheas Glide\" agus \"Suíomh na Gréine\"\n\n• OsmAnd Cloud: Anois rochtain a scriosadh comhaid\n\n• Dathú rian feabhsaithe i mód Fána le grádán siméadrach nua\n\n• Saincheisteanna réitithe le barra stádais trédhearcacha\n\n• Tacaíocht bhreise do ghiuirléid teochta ANT +\n\n• Tugadh isteach giuirléid \"RAM ar fáil\"</string>
     <string name="map_widget_group_glide_desc">Giuirléidí thaispeáint ar an cóimheas glide leis an sprioc nó cóimheas glide meán don turas atá ann faoi láthair.</string>
@@ -3124,7 +3124,7 @@
     <string name="storage_copying_files_size">Comhaid %1$s %2$s á gcóipeáil</string>
     <string name="shared_storage_third_step">Tabhair cead chun rochtain a fháil ar an bhfillteán. Gan é OsmAgus ní féidir comhaid a chóipeáil.</string>
     <string name="shared_storage_first_step">Brúigh \" %1$s\".\nOsclaíonn an bainisteoir comhad nuair is gá duit an fillteán osmand a aimsiú agus a oscailt.</string>
-    <string name="shared_storage_migration_descr">Mar gheall ar athruithe ar rochtain stórála Android, ní féidir le RoadCrew %1$s a úsáid a thuilleadh.\n\nCóipeáil do chuid sonraí go léir chuig an bhfillteán nua.</string>
+    <string name="shared_storage_migration_descr">Mar gheall ar athruithe ar rochtain stórála Android, ní féidir le OsmAnd %1$s a úsáid a thuilleadh.\n\nCóipeáil do chuid sonraí go léir chuig an bhfillteán nua.</string>
     <string name="folder_access_denied">Cead ag teastáil chun an fillteán roghnaithe a rochtain.</string>
     <string name="delete_history_items">Scrios %1$s mír(eanna) staire?</string>
     <string name="display_route_tracks_as_poi">Taispeáin rianta mar POI</string>
@@ -3134,7 +3134,7 @@
     <string name="routeInfo_tracktype_description">Dathaigh an bealach nó an líne rian ag a chomhdhéanamh dromchla. De ghnáth, bíonn feidhm aige nuair a bhíonn an gréasán bóithre neamhíoctha den chuid is mó.</string>
     <string name="connect_track_points_as">Pointí bealaigh Сonnect</string>
     <string name="not_enough_contributions_descr">Tá íosmhéid d\'athruithe %1$s le dhá mhí anuas de dhíth ar %2$s chun rochtain a fháil ar nuashonruithe léarscáile neamhtheoranta in aghaidh na huaire.</string>
-    <string name="enough_contributions_descr">Comhghairdeas, tá go leor ranníocaíochtaí OpenStreetMap curtha ar fáil agat agus is féidir leat taitneamh a bhaint as nuashonruithe léarscáile gan teorainn RoadCrew anois!</string>
+    <string name="enough_contributions_descr">Comhghairdeas, tá go leor ranníocaíochtaí OpenStreetMap curtha ar fáil agat agus is féidir leat taitneamh a bhaint as nuashonruithe léarscáile gan teorainn OsmAnd anois!</string>
     <string name="benefits_for_contributors_primary_descr">D\'fhéadfadh ranníocóirí gníomhacha le OpenStreetMap.org a bheith i dteideal nuashonruithe léarscáile neamhtheoranta in aghaidh na huaire.</string>
     <string name="on_hold_since">Ar feitheamh ó %1$s</string>
     <string name="backup_do_not_have_any">Níl aon chúltaca ar líne agat go fóill</string>
@@ -3177,7 +3177,7 @@
     <string name="start_finish_icons">Deilbhíní a thosú agus a chríochnú</string>
     <string name="release_3_8">• Plean nuashonraithe feidhm bealaigh: ceadaíonn úsáid a bhaint as cineálacha nascleanúna éagsúla in aghaidh na deighleog agus cuimsiú rianta\n\n• Roghchlár cuma nua le haghaidh rianta: roghnaigh dath, tiús, saigheada treo taispeána, deilbhíní tosaigh agus críochnaithe\n\n• Infheictheacht fheabhsaithe nóid rothar.\n\n• Tá rianta tappable anois, tá roghchlár comhthéacs le faisnéis bhunúsach.\n\n• Algartaim Chuardaigh fheabhsaithe\n\n• Feabhsaithe Lean roghanna rian i Nascleanúint\n\n• Saincheisteanna seasta le hiompórtáil / easpórtáil socruithe próifíle</string>
     <string name="all_next_segments_will_be_recalc">Déanfar gach deighleog ina dhiaidh sin a athríomh ag baint úsáide as an bpróifíl roghnaithe.</string>
-    <string name="disable_recording_once_app_killed_descrp">Cuirfear logáil rianta ar sos nuair a mharaítear an aip (trí aipeanna le déanaí). (Imíonn an tásc cúlra RoadCrew ón mbarra fógra Android.)</string>
+    <string name="disable_recording_once_app_killed_descrp">Cuirfear logáil rianta ar sos nuair a mharaítear an aip (trí aipeanna le déanaí). (Imíonn an tásc cúlra OsmAnd ón mbarra fógra Android.)</string>
     <string name="start_of_the_track">Tús an riain</string>
     <string name="navigate_to_track_descr">Téigh ó mo sheasamh go dtí an rian</string>
     <string name="import_track_descr">Roghnaigh comhad rian chun é a leanúint nó a allmhairiú ó do ghléas.</string>
@@ -3185,13 +3185,13 @@
     <string name="route_between_points">Bealach idir pointí</string>
     <string name="quick_action_showhide_mapillary_descr">Scoránaigh chun an ciseal Mapillary a thaispeáint nó a cheilt ar an léarscáil.</string>
     <string name="vessel_height_warning_link">Socraigh airde an tsoithigh</string>
-    <string name="speed_cameras_legal_descr">I roinnt tíortha nó réigiún, tá cosc ar aipeanna rabhaidh ceamara luais a úsáid de réir an dlí. \n\nNí mór duit rogha a dhéanamh ag brath ar dhlí do thíre. \n\nRoghnaigh %1$s agus gheobhaidh tú foláirimh agus rabhaidh faoi cheamaraí luais. \n\nRoghnaigh %2$s. Scriosfar na sonraí go léir a bhaineann le ceamaraí luais: foláirimh, fógraí, POIanna go dtí go n-athshuitear RoadCrew go hiomlán.</string>
+    <string name="speed_cameras_legal_descr">I roinnt tíortha nó réigiún, tá cosc ar aipeanna rabhaidh ceamara luais a úsáid de réir an dlí. \n\nNí mór duit rogha a dhéanamh ag brath ar dhlí do thíre. \n\nRoghnaigh %1$s agus gheobhaidh tú foláirimh agus rabhaidh faoi cheamaraí luais. \n\nRoghnaigh %2$s. Scriosfar na sonraí go léir a bhaineann le ceamaraí luais: foláirimh, fógraí, POIanna go dtí go n-athshuitear OsmAnd go hiomlán.</string>
     <string name="expire_time_descr">Déanfar tíleanna taisce a ath-íoslódáil tar éis an líon sonraithe nóiméad. Fág an réimse seo folamh gan tíleanna a athnuachan don fhoinse seo. \n\nTá lá amháin 1440 nóiméad.\nTá seachtain amháin 10 080 nóiméad.\nTá mí amháin 43 829 nóiméad.</string>
     <string name="map_source_zoom_levels_descr">Cuireann sé isteach ar an scáileán nuair a úsáidtear é mar léarscáil nó forleagan/forleagan. \n\n%1$s: Tá an léarscáil teoranta don raon leibhéal zúmála roghnaithe. \n\nIs iad %2$s na leibhéil ag a mbeidh na tíleanna bunaidh le feiceáil, tarlóidh uas-scálú nó íos-scálú lasmuigh de na luachanna seo.</string>
     <string name="map_source_zoom_levels">Socraigh íosleibhéal zúmála chun an léarscáil ar líne a thaispeáint nó a luchtú.</string>
     <string name="one_image_per_tile">Comhad íomhá amháin in aghaidh an tíl</string>
-    <string name="turn_screen_on_power_button_descr">Má bhrúnn tú cnaipe cumhachta an ghléis, casfaidh sé an scáileán air le RoadCrew ar bharr an scáileáin ghlais.</string>
-    <string name="turn_screen_on_descr">Roghnaigh roghanna múscailte scáileáin (déan cinnte go bhfuil RoadCrew sa tulra nuair atá an gléas á ghlasáil):</string>
+    <string name="turn_screen_on_power_button_descr">Má bhrúnn tú cnaipe cumhachta an ghléis, casfaidh sé an scáileán air le OsmAnd ar bharr an scáileáin ghlais.</string>
+    <string name="turn_screen_on_descr">Roghnaigh roghanna múscailte scáileáin (déan cinnte go bhfuil OsmAnd sa tulra nuair atá an gléas á ghlasáil):</string>
     <string name="system_screen_timeout">Úsáid teorainn ama scáileáin an chórais</string>
     <string name="lenght_limit_description">Cuir fad na feithicle ar fáil, d\'fhéadfaí srianta ar roinnt bealaí a chur i bhfeidhm ar fheithiclí fada.</string>
     <string name="weight_limit_description">Cuir meáchan d\'fheithicle ar fáil, d\'fhéadfadh roinnt srianta bealaigh a bheith i bhfeidhm ar fheithiclí troma.</string>
@@ -3203,7 +3203,7 @@
     <string name="restore_all_profile_settings">Athchóirigh gach socrú próifíle?</string>
     <string name="shared_string_importing">Iompórtáil</string>
     <string name="terrain_empty_state_text">Taispeánann seo cnocán nó fána ar an léarscáil. Léigh tuilleadh faoi na cineálacha léarscáile seo ar ár suíomh.</string>
-    <string name="listed_exist">Tá %1$s liostaithe, ann cheana féin in RoadCrew.</string>
+    <string name="listed_exist">Tá %1$s liostaithe, ann cheana féin in OsmAnd.</string>
     <string name="plugin_disabled_descr">Is feidhmchlár ar leith é an breiseán seo, agus ní bhaineann sé é.\n\nIs féidir é a dhíshuiteáil sa suíomh Android \'Apps\'.</string>
     <string name="release_3_6">• Próifílí: anois is féidir leat ordú a athrú, deilbhín a shocrú le haghaidh léarscáile, gach socrú le haghaidh próifílí bonn a athrú agus iad a chur ar ais chuig réamhshocruithe\n\n• Uimhir scoir bhreise sa nascleanúint\n\n• Socruithe breiseáin athoibrithe\n\n• Scáileán Socruithe Athoibrithe chun rochtain thapa a fháil ar gach próifíl\n\n• Rogha bhreise chun socruithe a chóipeáil ó phróifíl eile\n\n• Cumas breise chun ordú a athrú nó catagóirí POI a cheilt i gCuardach\n\n• Deilbhíní POI ailínithe i gceart ar an léarscáil\n\n• Sonraí luí gréine / éirí gréine curtha leis chun Léarscáil a Chumrú\n\n• Deilbhíní Baile/Oibre curtha leis ar an léarscáil\n\n• Tacaíocht bhreise do chur síos illíne i Socruithe\n\n• Traslitriú ceart curtha isteach i léarscáil na Seapáine\n\n• Léarscáil Antartaice curtha leis</string>
     <string name="shared_string_include_data">Cuir sonraí breise san áireamh</string>
@@ -3280,7 +3280,7 @@
     <string name="group_will_be_removed_after_restart">Beidh an grúpa imithe an chéad uair eile a thosóidh tú ar an aip.</string>
     <string name="show_arrows_on_the_map">Taispeáin saigheada ar an léarscáil</string>
     <string name="add_point_after">Cuir pointe leis tar éis</string>
-    <string name="measurement_tool_snap_to_road_descr">Nascfaidh RoadCrew na pointí le bealaí don phróifíl roghnaithe.</string>
+    <string name="measurement_tool_snap_to_road_descr">Nascfaidh OsmAnd na pointí le bealaí don phróifíl roghnaithe.</string>
     <string name="mapillary_menu_descr_tile_cache">Athluchtaigh tíleanna chun sonraí cothrom le dáta a fheiceáil.</string>
     <string name="mapillary_descr">Grianghraif ar líne ar leibhéal sráide do gach duine. Discover places, comhoibriú, a ghabháil ar fud an domhain.</string>
     <string name="private_access_routing_req">Tá do cheann scríbe suite i gceantar a bhfuil rochtain phríobháideach air. Ceadaigh bóithre príobháideacha a úsáid don turas seo?</string>
@@ -3326,7 +3326,7 @@
     <string name="osn_add_dialog_error">Níorbh fhéidir nóta a chruthú.</string>
     <string name="osn_close_dialog_success">Nóta dúnta</string>
     <string name="context_menu_item_edit_waypoint">Cuir pointe slí GPX in eagar</string>
-    <string name="share_osm_edits_subject">OSM edits roinnte trí RoadCrew</string>
+    <string name="share_osm_edits_subject">OSM edits roinnte trí OsmAnd</string>
     <string name="lang_nds">Gearmáinis Íseal</string>
     <string name="lang_als">Albáinis (Tosk)</string>
     <string name="read_more">Léigh tuilleadh</string>
@@ -3356,7 +3356,7 @@
     <string name="shared_string_do_not_use">Ná húsáid</string>
     <string name="shared_string_more_actions">Tuilleadh gníomhaíochtaí</string>
     <string name="shared_string_my_location">Mo Sheasamh</string>
-    <string name="osmand_rastermaps_plugin_description">Rochtain a fháil ar go leor cineálacha léarscáileanna ar líne (tíl nó raster mar a thugtar orthu), cosúil le tíleanna OSM réamhdhéanta, íomhánna satailíte, agus sraitheanna sainchuspóireacha cosúil le léarscáileanna aimsire, léarscáileanna aeráide, léarscáileanna geolaíochta, sraitheanna cnocshade, etc.\n\nIs féidir aon cheann de na léarscáileanna seo a thaispeáint mar an phríomhléarscáil (bonn), nó mar fhorleagan nó mar fhorleagan chuig bunléarscáil eile (cosúil le léarscáileanna veicteora as líne RoadCrew). Is féidir gnéithe áirithe de léarscáileanna veicteora RoadCrew a chur i bhfolach tríd an roghchlár \'Cumraigh léarscáil\' chun aon léarscáil underlay a dhéanamh níos infheicthe.\n\nÍoslódáil léarscáileanna tíl go díreach, nó iad a chóipeáil mar chomhaid bunachar sonraí SQLite chuig fillteán sonraí RoadCrew ag baint úsáide as ceann de na huirlisí ullmhúcháin léarscáil tríú páirtí go leor.</string>
+    <string name="osmand_rastermaps_plugin_description">Rochtain a fháil ar go leor cineálacha léarscáileanna ar líne (tíl nó raster mar a thugtar orthu), cosúil le tíleanna OSM réamhdhéanta, íomhánna satailíte, agus sraitheanna sainchuspóireacha cosúil le léarscáileanna aimsire, léarscáileanna aeráide, léarscáileanna geolaíochta, sraitheanna cnocshade, etc.\n\nIs féidir aon cheann de na léarscáileanna seo a thaispeáint mar an phríomhléarscáil (bonn), nó mar fhorleagan nó mar fhorleagan chuig bunléarscáil eile (cosúil le léarscáileanna veicteora as líne OsmAnd). Is féidir gnéithe áirithe de léarscáileanna veicteora OsmAnd a chur i bhfolach tríd an roghchlár \'Cumraigh léarscáil\' chun aon léarscáil underlay a dhéanamh níos infheicthe.\n\nÍoslódáil léarscáileanna tíl go díreach, nó iad a chóipeáil mar chomhaid bunachar sonraí SQLite chuig fillteán sonraí OsmAnd ag baint úsáide as ceann de na huirlisí ullmhúcháin léarscáil tríú páirtí go leor.</string>
     <string name="osm_editing_plugin_name">Eagarthóireacht OpenStreetMap</string>
     <string name="osm_editing_plugin_description">Déan ranníocaíochtaí le OpenStreetMap, pobal domhanda a choinníonn léarscáil chuimsitheach den domhan agus a sholáthraíonn sonraí foinse oscailte cothrom le dáta do gach úsáideoir. \n\nIs féidir leat treoracha a fháil maidir le conas an léarscáil a chur in eagar ar ár suíomh gréasáin %1$s.</string>
     <string name="device_memory">Cuimhne gléis</string>
@@ -3424,7 +3424,7 @@
     <string name="osmand_short_description_80_chars">Amharc agus nascleanúint léarscáile soghluaiste domhanda le haghaidh léarscáileanna OSM as líne agus ar líne</string>
     <string name="osmand_long_description_1000_chars">OsmAnd (Treoracha Loingseoireachta Uathoibrithe OSM)\n\nIs aip nascleanúna bogearraí foinse oscailte é OsmAnd le rochtain ar réimse leathan sonraí OSM domhanda. Is féidir na sonraí léarscáile go léir (léarscáileanna veicteora nó tíl) a stóráil ar an gcárta cuimhne teileafóin le haghaidh úsáide as líne. Cuirtear feidhmiúlacht ródaithe as líne agus ar líne ar fáil freisin, lena n-áirítear treoir ghutha cas-ar-cas.\n\nCuid de na príomhghnéithe:\n - Feidhmiúlacht iomlán as líne (stóráil léarscáileanna veicteora nó tíl íoslódáilte i stóráil an ghléis)\n - Léarscáileanna veicteora dlúth as líne don domhan ar fad atá ar fáil\n - Íoslódáil léarscáileanna tíre nó réigiúin go díreach ón aip\n - Forleagan roinnt sraitheanna léarscáile is féidir, cosúil le GPX nó rianta nascleanúna, pointí spéise, ceanáin, stadanna iompair phoiblí, léarscáileanna breise le trédhearcacht saincheaptha, gnéithe topagrafaíochta cosúil le línte comhrianta / cnocán / fána\n - Cuardach as líne le haghaidh seoltaí agus áiteanna (POInna)\n - Ródú as líne d\'achair mheánraoin\n - Carranna, rothar, agus modhanna coisithe le roghnach:\n - Lascadh amhairc uathoibríoch lae/oíche\n - Zúmáil léarscáile atá ag brath ar luas\n - Ailíniú léarscáile de réir compáis nó treo gluaisne\n - Treoir lána, taispeáint teorainn luais, guthanna taifeadta agus téacs-go-hurlabhra\n\nTeorainneacha an leagan saor in aisce seo de OsmAnd:\n - Líon na n-íoslódálacha léarscáile teoranta\n - Gan rochtain as líne ar POIanna Vicipéide\n\nTá OsmAnd á fhorbairt go gníomhach agus braitheann ár dtionscadal agus a dhul chun cinn leanúnach ar ranníocaíochtaí airgeadais chun feidhmiúlacht nua a fhorbairt agus a thástáil. Smaoinigh ar OsmAnd+ a cheannach, nó gnéithe nua ar leith a mhaoiniú nó síntiús ginearálta a dhéanamh ar https://osmand.net.</string>
     <string name="osmand_extended_description_part4">Sciáil\n OsmAgus léarscáileanna sciála breiseán ar chumas tú a fheiceáil rianta sciála le leibhéal castachta agus roinnt eolais breise, cosúil le suíomh ardaitheoirí agus áiseanna eile.</string>
-    <string name="osmand_extended_description_part1">Is aip léarscáile agus nascleanúna é RoadCrew (OSM Automated Navigation Directions) a bhfuil rochtain aige ar shonraí OSM saor in aisce, ar fud an domhain agus ar ardchaighdeán.\n\nBain sult as guth agus nascleantóir optúil, féachaint ar POIs (pointí spéise), rianta GPX a chruthú agus a bhainistiú, ag baint úsáide as léirshamhlú línte comhrianta agus eolas topagrafach (trí bhreiseán), rogha idir tiomáint, rothaíocht, modhanna coisithe, eagarthóireacht OSM agus i bhfad níos mó.</string>
+    <string name="osmand_extended_description_part1">Is aip léarscáile agus nascleanúna é OsmAnd (OSM Automated Navigation Directions) a bhfuil rochtain aige ar shonraí OSM saor in aisce, ar fud an domhain agus ar ardchaighdeán.\n\nBain sult as guth agus nascleantóir optúil, féachaint ar POIs (pointí spéise), rianta GPX a chruthú agus a bhainistiú, ag baint úsáide as léirshamhlú línte comhrianta agus eolas topagrafach (trí bhreiseán), rogha idir tiomáint, rothaíocht, modhanna coisithe, eagarthóireacht OSM agus i bhfad níos mó.</string>
     <string name="osmand_extended_description_part6">Ag siúl, ag siúl, turas cathrach\n • Taispeánann an léarscáil cosáin siúil agus siúil duit\n • Is féidir leis an Vicipéid i do rogha teanga go leor a insint duit le linn turas cathrach\n • Cabhraíonn stadanna iompair phoiblí (bus, tram, traein), lena n-áirítear ainmneacha líne, le nascleanúint a dhéanamh i gcathair nua\n • Tógann nascleanúint GPS i mód coisithe do bhealach ag baint úsáide as cosáin siúil\n • Bealach GPX a uaslódáil agus a leanúint nó taifead a dhéanamh agus do chuid féin a roinnt</string>
     <string name="osmand_extended_description_part8">OsmAgus tá sé forbartha go gníomhach bogearraí foinse oscailte. Is féidir le gach duine cur leis an aip trí fhabhtanna a thuairisciú, aistriúcháin a fheabhsú nó gnéithe nua a chódú. Ina theannta sin, braitheann an tionscadal ar ranníocaíochtaí airgeadais chun códú agus tástáil feidhmiúlachtaí nua a mhaoiniú.\n Neaschlúdach léarscáile agus cáilíocht:\n • Iarthar na hEorpa: ****\n • Oirthear na hEorpa: ***\n •An Rúis:***\n • Meiriceá Thuaidh: ***\n • Meiriceá Theas: **\n • An Áise: **\n • An tSeapáin agus an Chóiré: ***\n • An Meánoirthear: **\n • An Afraic: **\n • Antartaice: *\n Tá formhór na dtíortha ar fud na cruinne ar fáil le híoslódáil!\n Faigh nascleantóir iontaofa i do thír féin - bíodh sé an Fhrainc, an Ghearmáin, Meicsiceo, an Ríocht Aontaithe, an Spáinn, an Ísiltír, SAM, an Rúis, an Bhrasaíl nó aon cheann eile.</string>
     <string name="osmand_plus_extended_description_part2">Nascleanúint\n • Oibríonn tú ar líne (go tapa) nó as líne (gan aon táillí fánaíochta nuair a bhíonn tú thar lear)\n • Treoir ghutha cas-ar-cas (guthanna taifeadta agus sintéisithe)\n • Treoir roghnach lána, taispeáint sráidainmneacha, agus am teachta measta\n • Tacaíonn sé le pointí idirmheánacha ar do chúrsa taistil\n • Athródú uathoibríoch aon uair a imíonn tú ón mbealach\n • Cuardaigh áiteanna de réir seoladh, de réir cineáil (m.sh: Bialann, óstán, stáisiún gáis, músaem), nó de réir comhordanáidí geografacha</string>
@@ -3433,7 +3433,7 @@
     <string name="osmand_plus_extended_description_part7">Cur go díreach le OSM\n • Tuairiscigh fabhtanna sonraí\n • Uaslódáil rianta GPX chuig OSM go díreach ón aip\n • Cuir POIanna leis agus iad a uaslódáil go díreach chuig OSM (nó níos déanaí má tá siad as líne)\n • Taifeadadh turas roghnach freisin i mód cúlra (cé go bhfuil an gléas i mód codlata)\n OsmAgus tá sé forbartha go gníomhach bogearraí foinse oscailte. Is féidir le gach duine cur leis an aip trí fhabhtanna a thuairisciú, aistriúcháin a fheabhsú nó gnéithe nua a chódú. Ina theannta sin, braitheann an tionscadal ar ranníocaíochtaí airgeadais chun códú agus tástáil feidhmiúlachtaí nua a mhaoiniú.</string>
     <string name="native_app_allocated_memory_descr">Cuimhne dhúchasach iomlán leithdháilte ag feidhmchlár %1$s MB (Dalvik %2$s MB, eile%3$s MB).\n Cuimhne chomhréireach %4$s MB (teorainn Android %5$s MB, Dalvik %6$s MB).</string>
     <string name="osmand_parking_position_description">Suíomh d\'fheithicle páirceáilte. %1$s</string>
-    <string name="share_route_subject">Bealach roinnte trí RoadCrew</string>
+    <string name="share_route_subject">Bealach roinnte trí OsmAnd</string>
     <string name="map_online_data">Léarscáileanna ar líne agus tíl</string>
     <string name="local_openstreetmap_upload">Uaslódáil eagarthóireacht ar OSM</string>
     <string name="index_name_tts_voice">Leideanna gutha (TTS, is fearr)</string>
@@ -3504,7 +3504,7 @@
     <string name="routing_attr_freeride_policy_name">Lasmuigh den pheiste</string>
     <string name="routing_attr_freeride_policy_description">Is bealaí agus pasáistí neamhoifigiúla iad \'Freeride\' agus \'Off-piste\'. De ghnáth ungroomed, unmaintained agus ní sheiceáil sa tráthnóna. Cuir isteach ar do phriacal féin.</string>
     <string name="release_4_0">• Cúltaca scamall\n\n • Modh oíche curtha leis le haghaidh stíl léarscáile \"Topo\".\n\n • Rogha breise chun línte comhrianta a íoslódáil sna cosa\n\n • Is féidir rianta a dhathú anois de réir airde, luais nó fána\n\n • nuashonraithe \"taifeadadh turas\" dialóg\n\n • Bogtar an t-achar trí sconna ón rialóir Ga go rogha eile\n\n • Bealach a Phleanáil: Is féidir leat roghanna nascleanúna a athrú anois, rochtain a fháil ar chumraíocht na léarscáile agus cuardach a dhéanamh gan pleanáil an bhealaigh a fhágáil\n\n • Scáileán \"Ceannach\" nua le faisnéis mhionsonraithe maidir le ceannach\n\n • Rogha breise chun cuma na líne bealaigh a athrú\n\n • Bogadh nuashonruithe OsmAnd Live go \"Íoslódálacha &gt; Nuashonruithe\"</string>
-    <string name="change_data_storage_full_description">Bog comhaid sonraí RoadCrew chuig an gceann scríbe nua?\n%1$s &gt; %2$s</string>
+    <string name="change_data_storage_full_description">Bog comhaid sonraí OsmAnd chuig an gceann scríbe nua?\n%1$s &gt; %2$s</string>
     <string name="access_shared_string_not_installed">Gan a bheith suiteáilte</string>
     <string name="select_map_markers">Roghnaigh marcóirí léarscáile</string>
     <string name="plugin_nautical_name">Amharc léarscáile farraige</string>
@@ -3546,11 +3546,11 @@
     <string name="updated_map_time">Nuashonraithe: %1$s.</string>
     <string name="radius_rules_widget_desc">Taispeánann an uirlis ga-rialóir ciorcail achar timpeall pointe roghnaithe ar an léarscáil.</string>
     <string name="shared_string_skip_warning">Ná bac leis an imirce? OsmAgus níl rochtain a thuilleadh ar do chuid comhad i stóráil roinnte.\n\nTosóidh an aip ag baint úsáide as d\'fhillteán sonraí nua.</string>
-    <string name="backup_deleting_all_data_descr">Fan go dtí go scriosann RoadCrew do chuid sonraí ón scamall. Beidh na sonraí go léir ar an ngléas fós untouched.</string>
+    <string name="backup_deleting_all_data_descr">Fan go dtí go scriosann OsmAnd do chuid sonraí ón scamall. Beidh na sonraí go léir ar an ngléas fós untouched.</string>
     <string name="online_map_name_helper_text">Tabhair ainm d\'fhoinse na léarscáile ar líne.</string>
     <string name="rendering_attr_piste_type_downhill_name">Síos an Cnoc</string>
     <string name="osmand_routing_promo">Cuir do leagan modhnaithe féin den chomhad routing.xml isteach .. osmand / ródú</string>
-    <string name="visited_screens_collect_descr">Cuidíonn sé linn tuiscint a fháil ar RoadCrew gné-tóir.</string>
+    <string name="visited_screens_collect_descr">Cuidíonn sé linn tuiscint a fháil ar OsmAnd gné-tóir.</string>
     <string name="rendering_attr_surface_ground_name">Talamh</string>
     <string name="rendering_attr_surface_ice_name">Oighear</string>
     <string name="rendering_attr_surface_paved_name">Pábháilte</string>
@@ -3580,8 +3580,8 @@
     <string name="index_name_voice">Leideanna gutha (gnéithe taifeadta, teoranta)</string>
     <string name="local_index_items_deleted">Scriosadh %1$d de %2$d mír(eanna).</string>
     <string name="version_index_is_not_supported">Ní thacaítear leis an leagan den innéacs \'\'{0}\'\'</string>
-    <string name="install_selected_build">Suiteáil RoadCrew - {0} {1} {2} MB ?</string>
-    <string name="loading_builds">Tógann RoadCrew á luchtú…</string>
+    <string name="install_selected_build">Suiteáil OsmAnd - {0} {1} {2} MB ?</string>
+    <string name="loading_builds">Tógann OsmAnd á luchtú…</string>
     <string name="gps_status_app_not_found">Níl feidhmchlár stádais GPS suiteáilte. Cuardaigh sa mhargadh?</string>
     <string name="maps_could_not_be_downloaded">Níorbh fhéidir an léarscáil seo a íoslódáil</string>
     <string name="rotate_map_north_opt">Tá an Tuaisceart suas</string>
@@ -3656,7 +3656,7 @@
     <string name="multimedia_notes_view_descr">Tá do nótaí OSM i %1$s.</string>
     <string name="show_from_zoom_level">Tosaíonn an taispeáint ag an leibhéal zúmála</string>
     <string name="shared_string_clear_all">Glan gach rud</string>
-    <string name="osmand_accessibility_description">Cuireann gnéithe inrochtaineachta an ghléis ar fáil go díreach in RoadCrew. Éascaíonn sé seo, e.g. an ráta cainte a choigeartú le haghaidh guthanna téacs-go-hurlabhra, nascleanúint D-pad a chumrú, trackball a úsáid le haghaidh rialú zúmála, nó aiseolas téacs-go-hurlabhra, mar shampla chun do sheasamh a fhógairt go huathoibríoch.</string>
+    <string name="osmand_accessibility_description">Cuireann gnéithe inrochtaineachta an ghléis ar fáil go díreach in OsmAnd. Éascaíonn sé seo, e.g. an ráta cainte a choigeartú le haghaidh guthanna téacs-go-hurlabhra, nascleanúint D-pad a chumrú, trackball a úsáid le haghaidh rialú zúmála, nó aiseolas téacs-go-hurlabhra, mar shampla chun do sheasamh a fhógairt go huathoibríoch.</string>
     <string name="auto_zoom_map">Mapa súmáil uathoibríoch</string>
     <string name="snap_to_road">Léim go dtí an bóthar</string>
     <string name="right">ar dheis</string>
@@ -3701,7 +3701,7 @@
     <string name="move_point">Bog Pointe</string>
     <string name="height_limit_description">Cuir airde na feithicle ar fáil, d\'fhéadfadh roinnt srianta bealaigh a bheith i bhfeidhm ar fheithiclí arda.</string>
     <string name="height_legend_description">Úsáidtear léarscáileanna datha airde chun faoiseamh a shamhlú.</string>
-    <string name="required_maps_calculate_online_summary">Tá liosta na léarscáileanna atá ar iarraidh bunaithe ar an mbealach líne dhíreach. Chun liosta cruinn léarscáileanna a fháil, is féidir le RoadCrew do bhealach a réamh-ríomh ar líne.</string>
+    <string name="required_maps_calculate_online_summary">Tá liosta na léarscáileanna atá ar iarraidh bunaithe ar an mbealach líne dhíreach. Chun liosta cruinn léarscáileanna a fháil, is féidir le OsmAnd do bhealach a réamh-ríomh ar líne.</string>
     <string name="use_nearby_roads">Úsáid bóithre in aice láimhe</string>
     <string name="use_nearby_roads_summary">Úsáideann sé léarscáil as líne chun bóithre in aice láimhe &amp; sonraí airde a aimsiú. Is féidir céimseata rian a choigeartú.</string>
     <string name="rendering_attr_alpineHiking_description">Cineálacha aicmithe deacrachta do na bealaí.</string>
@@ -3728,7 +3728,7 @@
     <string name="months_2_4">Míonna</string>
     <string name="temporary_conditional_routing">Smaoinigh ar theorainneacha sealadacha</string>
     <string name="base_profile_descr_boat">Long, rámhaíocht, seoltóireacht</string>
-    <string name="public_transport_no_route_title">Ar an drochuair, níorbh fhéidir le RoadCrew bealach a aimsiú a bheadh oiriúnach le do shocruithe.</string>
+    <string name="public_transport_no_route_title">Ar an drochuair, níorbh fhéidir le OsmAnd bealach a aimsiú a bheadh oiriúnach le do shocruithe.</string>
     <string name="avoid_pt_types">Seachain cineálacha iompair…</string>
     <string name="save_poi_value_exceed_length">Giorraigh fad na clibe \"%s\" go níos lú ná 255 carachtar.</string>
     <string name="rendering_attr_surface_cobblestone_name">Cloch dhuirlinge</string>
@@ -3772,7 +3772,7 @@
     <string name="fav_point_dublicate_message">Athainmníodh an ceann is fearr leat go%1$s chun dúbláil a sheachaint.</string>
     <string name="traffic_warning_speed_camera">Ceamara luais</string>
     <string name="way_alarms">Rabhaidh tráchta</string>
-    <string name="calculate_osmand_route_without_internet">Ríomh as líne de deighleog bealaigh RoadCrew</string>
+    <string name="calculate_osmand_route_without_internet">Ríomh as líne de deighleog bealaigh OsmAnd</string>
     <string name="gpx_option_calculate_first_last_segment">Ríomh OsmAgus bealach don chéad deighleog bealaigh agus deireanach</string>
     <string name="keep_and_add_destination_point">Cuir leis mar cheann scríbe ina dhiaidh sin</string>
     <string name="animate_routing_route_not_calculated">Ríomh an bealach ar dtús</string>
@@ -3862,7 +3862,7 @@
     <string name="osmand_plus_extended_description_part5">Gnéithe Sábháilteachta\n • Athrú roghnach uathoibrithe amhairc lae / oíche\n • Taispeáint roghnach luasteorainn luais, le meabhrúchán má sháraíonn tú é\n • Zúmáil roghnach luas-spleách\n • Roinn do shuíomh ionas gur féidir le do chairde tú a aimsiú</string>
     <string name="level_to_switch_vector_raster">Leibhéal zúmála veicteora íosta</string>
     <string name="show_location">Taispeáin do sheasamh</string>
-    <string name="do_you_like_osmand">An maith leat RoadCrew?</string>
+    <string name="do_you_like_osmand">An maith leat OsmAnd?</string>
     <string name="user_hates_app_get_feedback_long">Cuir in iúl dúinn aon mholtaí.</string>
     <string name="failed_to_upload">Níorbh fhéidir uasluchtú</string>
     <string name="quick_actions_delete_text">Scrios an gníomh \"%s\"?</string>
@@ -3902,7 +3902,7 @@
     <string name="quick_action_search_view_title">Amharc cuardaigh</string>
     <string name="add_widget_below">Cuir giuirléid leis thíos</string>
     <string name="add_widget_to_the_left">Cuir giuirléid leis an taobh clé</string>
-    <string name="detailed_track_guidance_description">Beidh RoadCrew mheaitseáil do rian ar bhóithre in aice láimhe le haghaidh treoir cas-ar-cas feabhsaithe.</string>
+    <string name="detailed_track_guidance_description">Beidh OsmAnd mheaitseáil do rian ar bhóithre in aice láimhe le haghaidh treoir cas-ar-cas feabhsaithe.</string>
     <string name="quick_action_directions_from">Pointe tosaigh</string>
     <string name="quick_action_destination">Ceann Scríbe</string>
     <string name="quick_action_to_my_location">Go dtí Mo Shuíomh</string>
@@ -3916,7 +3916,7 @@
     <string name="rendering_attr_showMtbScale_description">Taispeáin cosáin de réir a scála MTB.</string>
     <string name="air_pressure_widget_desc">Taispeánann seo brú an aeir don ionad léarscáile reatha.</string>
     <string name="simulate_location_by_gpx">Insamhladh suíomh ag GPX</string>
-    <string name="calculate_online_altitude_descr">Ríomh ingearchló ar líne ar fhreastalaithe RoadCrew, bunaithe ar íomhánna satailíte agus samhlacha ingearchló digiteacha. Is féidir difríochtaí vs airde taifeadta gléas a úsáid mar cheartú ingearchló.</string>
+    <string name="calculate_online_altitude_descr">Ríomh ingearchló ar líne ar fhreastalaithe OsmAnd, bunaithe ar íomhánna satailíte agus samhlacha ingearchló digiteacha. Is féidir difríochtaí vs airde taifeadta gléas a úsáid mar cheartú ingearchló.</string>
     <string name="transport_hazmat_yes_desc">Roghnaigh an chatagóir is infheidhme.</string>
     <string name="apply_to_existing_points_descr">Athruithe a chur i bhfeidhm ar phointí reatha an ghrúpa nó ar phointí nua amháin?</string>
     <string name="apply_to_existing_favorites_descr">Cuir athruithe i bhfeidhm ar na pointí is fearr leat atá ann cheana féin sa ghrúpa nó ar nua amháin?</string>
@@ -3932,8 +3932,8 @@
     <string name="shared_storage_last_step">Is féidir leat fillteán sonraí nua a shonrú ina dhiaidh sin.</string>
     <string name="history_is_disabled_descr">Cumasaigh an stair chun rochtain níos tapúla a fháil ar na torthaí is déanaí a úsáideadh.</string>
     <string name="android_auto_map_placeholder_descr">Dícheangail do ghléas ó Android Auto chun an léarscáil san aip a fheiceáil.</string>
-    <string name="location_access_request_title">RoadCrew riachtanais Suíomh cead chun nascleanúint a dhéanamh.</string>
-    <string name="internal_app_storage_description">Stóráil inmheánach, i bhfolach ó gach úsáideoir agus apps eile, mar sin ní féidir ach RoadCrew rochtain a fháil ar do shonraí.</string>
+    <string name="location_access_request_title">OsmAnd riachtanais Suíomh cead chun nascleanúint a dhéanamh.</string>
+    <string name="internal_app_storage_description">Stóráil inmheánach, i bhfolach ó gach úsáideoir agus apps eile, mar sin ní féidir ach OsmAnd rochtain a fháil ar do shonraí.</string>
     <string name="mapillary_menu_filter_description_new">Scag íomhánna de réir dáta nó cineáil. Níl sé gníomhach ach amháin i súmáil closeup.</string>
     <string name="srtm_unit_format">Malairt aonaid línte comhrianta</string>
     <string name="customize_route_line">Saincheap líne an bhealaigh</string>
@@ -3950,7 +3950,7 @@
     <string name="uninstall_speed_cameras">Díshuiteáil ceamaraí luais</string>
     <string name="file_import_error">Earráid iompórtála%1$s:%2$s</string>
     <string name="data_storage_preference_summary">%1$s • %2$s</string>
-    <string name="change_osmand_data_folder_question">Athraigh fillteán sonraí RoadCrew?</string>
+    <string name="change_osmand_data_folder_question">Athraigh fillteán sonraí OsmAnd?</string>
     <string name="rendering_attr_piste_difficulty_extreme_name">An-mhór</string>
     <string name="public_transport_try_change_settings">Bain triail as na socruithe a athrú.</string>
     <string name="add_intermediate">Cuir ceann scríbe idirmheánach leis</string>
@@ -3986,7 +3986,7 @@
     <string name="av_locations_descr">Comhad GPX le suíomhanna.</string>
     <string name="rendering_value_defaultTranslucentCyan_name">Réamhshocrú (cian tréshoilseach)</string>
     <string name="srtm_plugin_description">Soláthraíonn sé tír-raon agus topagrafaíocht mhionsonraithe le haghaidh tuiscint amhairc ar fhaoiseamh tírdhreacha agus inrochtaineacht, ag baint úsáide as línte comhrianta, scáthú cnoic nó dathú fána, agus radharc 3T.\n\nChun na gnéithe seo a chumasú do réigiún, ní mór duit an léarscáil Línte Comhrianta agus/nó Tír-raon (3T) a íoslódáil freisin, arna tiomsú ó shonraí SRTM agus ASTER.\n\nTuilleadh léitheoireachta ag %1$s.</string>
-    <string name="plugin_touringview_descr">Athraíonn an dearcadh seo stíl léarscáile RoadCrew go \'Amharc camchuairte\', is dearcadh speisialta ard-mhionsonraithe é seo do thaistealaithe agus do thiománaithe gairmiúla. \n\nSoláthraíonn an t-amharc seo, ag aon zúmáil léarscáile ar leith, an t-uasmhéid sonraí taistil atá ar fáil sna sonraí léarscáile (go háirithe bóithre, rianta, cosáin, agus marcanna treoshuímh). \n\nLéiríonn sé go soiléir freisin gach cineál bóithre gan débhrí trí chódú datha, rud atá úsáideach nuair a bhíonn feithiclí móra á dtiomáint, mar shampla. \n\nAgus soláthraíonn sé roghanna speisialta camchuairte ar nós bealaí rothar nó bealaí sléibhe Alpach a thaispeáint. \n\nNíl gá le híoslódáil léarscáile speisialta, cruthaítear an t-amharc ónár léarscáileanna caighdeánacha. \n\nIs féidir an t-amharc seo a chur ar ais trí é a dhíghníomhachtú arís anseo, nó tríd an \'Stíl Léarscáile\' a athrú faoi \'Cumraigh léarscáil\' de réir mar is gá.</string>
+    <string name="plugin_touringview_descr">Athraíonn an dearcadh seo stíl léarscáile OsmAnd go \'Amharc camchuairte\', is dearcadh speisialta ard-mhionsonraithe é seo do thaistealaithe agus do thiománaithe gairmiúla. \n\nSoláthraíonn an t-amharc seo, ag aon zúmáil léarscáile ar leith, an t-uasmhéid sonraí taistil atá ar fáil sna sonraí léarscáile (go háirithe bóithre, rianta, cosáin, agus marcanna treoshuímh). \n\nLéiríonn sé go soiléir freisin gach cineál bóithre gan débhrí trí chódú datha, rud atá úsáideach nuair a bhíonn feithiclí móra á dtiomáint, mar shampla. \n\nAgus soláthraíonn sé roghanna speisialta camchuairte ar nós bealaí rothar nó bealaí sléibhe Alpach a thaispeáint. \n\nNíl gá le híoslódáil léarscáile speisialta, cruthaítear an t-amharc ónár léarscáileanna caighdeánacha. \n\nIs féidir an t-amharc seo a chur ar ais trí é a dhíghníomhachtú arís anseo, nó tríd an \'Stíl Léarscáile\' a athrú faoi \'Cumraigh léarscáil\' de réir mar is gá.</string>
     <string name="rendering_attr_coloredBuildings_name">Foirgnimh cód datha de réir cineáil</string>
     <string name="rendering_attr_showSurfaces_name">Taispeáin dromchla an bhóthair</string>
     <string name="gpx_info_subtracks">Forianta: %1$s</string>
@@ -4004,7 +4004,7 @@
     <string name="map_transparency">Trédhearcacht na bunléarscáile</string>
     <string name="version_index_is_big_for_memory">Níor oir an t-innéacs \'\'{0}\'\' don chuimhne</string>
     <string name="osmand_net_previously_installed">Tacóidh an ceann nua leis na sonraí as líne go léir sa sean-aip suiteáilte, ach ní mór na pointí is fearr leat a onnmhairiú ón sean-aip agus ansin iad a allmhairiú sa cheann nua.</string>
-    <string name="loading_builds_failed">Níorbh fhéidir liosta na bhfoirgneamh RoadCrew a aisghabháil</string>
+    <string name="loading_builds_failed">Níorbh fhéidir liosta na bhfoirgneamh OsmAnd a aisghabháil</string>
     <string name="rendering_exception">Níorbh fhéidir an limistéar roghnaithe a tharraingt.</string>
     <string name="gpx_files_not_found">Níor aimsíodh aon chomhaid GPX san fhillteán rianta</string>
     <string name="error_calculating_route">Níorbh fhéidir an bealach a ríomh.</string>
@@ -4015,7 +4015,7 @@
     <string name="dashboard_or_drawer_description">Cuirtear rogha ar fáil chun an aip a rialú go príomha tríd an painéal solúbtha nó roghchlár statach. Is féidir do rogha a athrú i gcónaí i socruithe na nIonstraimí.</string>
     <string name="quick_action_take_audio_note_descr">Cnaipe chun nóta fuaime a chur i lár an scáileáin.</string>
     <string name="quick_action_add_parking_descr">Cnaipe chun suíomh páirceála a chur leis i lár an scáileáin.</string>
-    <string name="quick_action_switch_day_night_descr">Scoránú chun athrú idir modhanna lae agus oíche d\'RoadCrew.</string>
+    <string name="quick_action_switch_day_night_descr">Scoránú chun athrú idir modhanna lae agus oíche d\'OsmAnd.</string>
     <string name="quick_action_interim_dialog">Taispeáin dialóg eatramhach</string>
     <string name="quick_action_duplicate">Dúblach ainm an ghnímh ghasta</string>
     <string name="quick_action_poi_list">Liosta POI</string>
@@ -4075,7 +4075,7 @@
     <string name="update_all_maps_now">Nuashonraigh gach léarscáil anois?</string>
     <string name="routing_attr_short_way_name">Bealach atá éifeachtúil ó thaobh breosla de</string>
     <string name="replace_favorite_confirmation">Ionadaigh an ceann is fearr le \" %1$s\"?</string>
-    <string name="share_history_subject">roinnte trí RoadCrew</string>
+    <string name="share_history_subject">roinnte trí OsmAnd</string>
     <string name="access_direction_haptic_feedback">Treoracha haptic</string>
     <string name="access_direction_audio_feedback">Treoracha fuaime</string>
     <string name="access_direction_audio_feedback_descr">Léirigh treo an spriocphointe de réir fuaime.</string>
@@ -4103,10 +4103,10 @@
     <string name="poi_context_menu_showdescription">Taispeáin cur síos POI.</string>
     <string name="amenity_type_user_defined">Sainithe ag an úsáideoir</string>
     <string name="user_name">D\'ainm úsáideora OSM</string>
-    <string name="osmand_service_descr">Ritheann RoadCrew sa chúlra leis an scáileán as.</string>
+    <string name="osmand_service_descr">Ritheann OsmAnd sa chúlra leis an scáileán as.</string>
     <string name="file_can_not_be_renamed">Níorbh fhéidir an comhad a athainmniú.</string>
     <string name="build_installed">Suiteáladh tógáil {0} ({1}).</string>
-    <string name="select_build_to_install">Roghnaigh an RoadCrew thógáil a shuiteáil</string>
+    <string name="select_build_to_install">Roghnaigh an OsmAnd thógáil a shuiteáil</string>
     <string name="error_reading_gpx">Níorbh fhéidir sonraí GPX a léamh.</string>
     <string name="voice_data_unavailable">Níl pacáiste pras gutha roghnaithe ar fáil</string>
     <string name="rendering_attr_alpineHiking_name">Cosáin hiking grád deacrachta</string>
@@ -4146,8 +4146,8 @@
     <string name="copy_from_other_profile">Cóipeáil ó phróifíl eile</string>
     <string name="precision_hdop">Cruinneas cothrománach: %s</string>
     <string name="downloaded_maps_collect_descr">Cuidíonn sé linn tuiscint a fháil ar an tóir atá ar léarscáileanna tíre agus réigiúin.</string>
-    <string name="make_osmand_better_descr">Lig do RoadCrew sonraí úsáide feidhmchláir gan ainm a bhailiú agus a phróiseáil. Ní bhailítear aon sonraí faoi do sheasamh ná faoi na suíomhanna a bhféachann tú orthu ar an léarscáil.\n\nCumraigh am ar bith i \'Socruithe\' → \'Príobháideacht agus Slándáil\'.</string>
-    <string name="profile_alert_cant_delete_base">Ní féidir leat bunphróifílí RoadCrew a scriosadh</string>
+    <string name="make_osmand_better_descr">Lig do OsmAnd sonraí úsáide feidhmchláir gan ainm a bhailiú agus a phróiseáil. Ní bhailítear aon sonraí faoi do sheasamh ná faoi na suíomhanna a bhféachann tú orthu ar an léarscáil.\n\nCumraigh am ar bith i \'Socruithe\' → \'Príobháideacht agus Slándáil\'.</string>
+    <string name="profile_alert_cant_delete_base">Ní féidir leat bunphróifílí OsmAnd a scriosadh</string>
     <string name="profile_alert_delete_msg">Scrios an phróifíl \"%s\"</string>
     <string name="rendering_attr_surface_asphalt_name">Asfalt</string>
     <string name="rendering_attr_surface_wood_name">Adhmad</string>
@@ -4305,7 +4305,7 @@
     <string name="search_nothing_found">Níor aimsíodh aon rud</string>
     <string name="driving_region_uk">Ríocht Aontaithe agus a leithéid</string>
     <string name="map_widget_distance_by_tap">Fad ar sconna</string>
-    <string name="weather_data_sources_prompt">Soláthraíonn RoadCrew sonraí aimsire ó dhá fhoinse:</string>
+    <string name="weather_data_sources_prompt">Soláthraíonn OsmAnd sonraí aimsire ó dhá fhoinse:</string>
     <string name="data_source">Foinse Sonraí</string>
     <string name="weather_source_GFS_title">GFS</string>
     <string name="getting_list_of_required_maps">Liosta de na léarscáileanna riachtanacha á bhfáil…</string>
@@ -4416,7 +4416,7 @@
     <string name="opening_changeset">Tacar athruithe á oscailt…</string>
     <string name="liter_per_hour">L / h</string>
     <string name="remove_key_assignment_summary">Bainfear an tasc eochrach don ghníomh roghnaithe.</string>
-    <string name="retrieve_elevation_data_summary">Is féidir le RoadCrew sonraí ingearchló a aisghabháil ó bhóithre nó léarscáileanna tír-raoin in aice láimhe.</string>
+    <string name="retrieve_elevation_data_summary">Is féidir le OsmAnd sonraí ingearchló a aisghabháil ó bhóithre nó léarscáileanna tír-raoin in aice láimhe.</string>
     <string name="key_event_action_emit_navigation_hint">Leid nascleanúna a astú</string>
     <string name="sort_name_descending">Ainm: Z - A</string>
     <string name="access_expanded_list">Liosta leathnaithe</string>
@@ -4473,7 +4473,7 @@
     <string name="routing_attr_avoid_toll_description">Seachnaíonn sé dola-bhóithre</string>
     <string name="routing_attr_avoid_ferries_description">Seachnaíonn sé báid farantóireachta</string>
     <string name="auto_zoom_map_descr">Leibhéal Zúmála de réir do luais (cé go bhfuil an léarscáil sioncronaithe leis an suíomh reatha).</string>
-    <string name="osmand_play_title_30_chars">Léarscáileanna &amp; Nascleanúint RoadCrew</string>
+    <string name="osmand_play_title_30_chars">Léarscáileanna &amp; Nascleanúint OsmAnd</string>
     <string name="poi_error_info_not_loaded">Níor luchtaíodh eolas faoi nód</string>
     <string name="edit_filter_create_message">Cruthaíodh scagaire \' %1$s\'</string>
     <string name="av_camera_focus_macro">Mód fócais Macra (gar-suas)</string>
@@ -4568,7 +4568,7 @@
     <string name="destination_first">Ceann scríbe ar dtús</string>
     <string name="poi_source">Foinse POI</string>
     <string name="wikidata">Vicísonraí</string>
-    <string name="prediction_time_description">Beochan deilbhín suímh in RoadCrew le gach nuashonrú GPS (uair amháin sa soicind). D’fhéadfadh moill bheag tarlú, go háirithe le linn gluaiseachta tapa nó nuair a bhíonn an comhartha GPS éagobhsaí.</string>
+    <string name="prediction_time_description">Beochan deilbhín suímh in OsmAnd le gach nuashonrú GPS (uair amháin sa soicind). D’fhéadfadh moill bheag tarlú, go háirithe le linn gluaiseachta tapa nó nuair a bhíonn an comhartha GPS éagobhsaí.</string>
     <string name="prediction_time_advanced_description">Coigeartaigh an t-am tuartha chun moill a laghdú.</string>
     <string name="prediction_time">Am tuar</string>
     <string name="shared_string_no_animation">Uimh beochan</string>
@@ -5075,9 +5075,9 @@
     <string name="ais_own_mmsi">MMSI Féin (Aitheantas Seirbhíse Soghluaiste Muirí)</string>
     <string name="ais_own_mmsi_description">Aithin an MMSI (luach uimhriúil 9 ndigit) de do réada AIS féin.</string>
     <string name="ais_display_own_position">Sainigh an dtaispeánfar an réad AIS féin.</string>
-    <string name="ais_display_own_position_description">De ghnáth, taispeántar an suíomh pearsanta le RoadCrew. D’fhéadfadh an taispeáint bhreise den réada AIS pearsanta a bheith mearbhalltach agus is féidir é a dhíchumasú anseo.</string>
-    <string name="ais_receive_in_background">Faigh sonraí AIS fiú má tá RoadCrew ar sos.</string>
-    <string name="ais_receive_in_background_description">Má tá sé cumasaithe, fanann an éisteoir teachtaireachtaí AIS ag rith má tá RoadCrew ar sos nó sa chúlra. Mura bhfuil sé cumasaithe, ní fhaightear aon teachtaireachtaí má tá RoadCrew sa chúlra.</string>
+    <string name="ais_display_own_position_description">De ghnáth, taispeántar an suíomh pearsanta le OsmAnd. D’fhéadfadh an taispeáint bhreise den réada AIS pearsanta a bheith mearbhalltach agus is féidir é a dhíchumasú anseo.</string>
+    <string name="ais_receive_in_background">Faigh sonraí AIS fiú má tá OsmAnd ar sos.</string>
+    <string name="ais_receive_in_background_description">Má tá sé cumasaithe, fanann an éisteoir teachtaireachtaí AIS ag rith má tá OsmAnd ar sos nó sa chúlra. Mura bhfuil sé cumasaithe, ní fhaightear aon teachtaireachtaí má tá OsmAnd sa chúlra.</string>
     <string name="android_auto_missing_maps_desc">Íoslódáil léarscáileanna atá ar iarraidh le go leanfaidh an bealach ar aghaidh.</string>
     <string name="android_auto_possible_missing_maps_desc">Léarscáileanna féideartha ar iarraidh. Bain triail as léarscáileanna atá ann cheana a úsáid chun leanúint ar aghaidh.</string>
     <string name="route_calculation_calculating_route">Ag ríomh an bhealaigh...</string>

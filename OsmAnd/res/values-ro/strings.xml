@@ -33,7 +33,7 @@
     <string name="auto_zoom_map">Zoom automat hartă</string>
     <string name="snap_to_road">Poziționează pe drum</string>
     <string name="osmand_short_description_80_chars">Vizualizare și navigare pe hartă mobilă globală pentru hărți OSM offline și online</string>
-    <string name="osmand_long_description_1000_chars">RoadCrew (Indicații automate de navigație OSM)
+    <string name="osmand_long_description_1000_chars">OsmAnd (Indicații automate de navigație OSM)
 \n
 \n OsmAnd este o aplicație de navigație software open source cu acces la o mare varietate de date OSM globale. Toate datele hărților (hărți vectoriale sau hărți de tip tile) pot fi stocate pe cardul de memorie al telefonului pentru utilizare offline. Se oferă, de asemenea, funcționalitate de rutare offline și online, inclusiv ghidare vocală pas cu pas.
 \n
@@ -50,7 +50,7 @@
 \n - Alinierea hărții în funcție de busolă sau de direcția de deplasare
 \n - Ghidare pe bandă, afișare a limitelor de viteză, voci înregistrate și text-to-speech
 \n
-\n Limitări ale acestei versiuni gratuite a RoadCrew:
+\n Limitări ale acestei versiuni gratuite a OsmAnd:
 \n - Numărul de descărcări de hărți este limitat
 \n - Nu există acces offline la POI-urile din Wikipedia
 \n
@@ -151,18 +151,18 @@
     <string name="shared_string_online_maps">Hărți online</string>
     <string name="osmand_rastermaps_plugin_description">Accesați mai multe tipuri de hărți online (așa-numitele hărți segmentate sau raster), cum ar fi hărți OSM preredimensionate, imagini din satelit și straturi cu destinație specială, cum ar fi hărți meteorologice, hărți climatice, hărți geologice, straturi cu nuanțe de dealuri etc.
 \n
-\n Oricare dintre aceste hărți poate fi afișată ca hartă principală (de bază) sau ca suprapunere sau subpunere la o altă hartă de bază (cum ar fi hărțile vectoriale offline ale RoadCrew). Anumite elemente ale hărților vectoriale RoadCrew pot fi ascunse prin intermediul meniului \"Configure map\" (Configurare hartă) pentru a face mai vizibilă orice hartă subiacentă.
+\n Oricare dintre aceste hărți poate fi afișată ca hartă principală (de bază) sau ca suprapunere sau subpunere la o altă hartă de bază (cum ar fi hărțile vectoriale offline ale OsmAnd). Anumite elemente ale hărților vectoriale OsmAnd pot fi ascunse prin intermediul meniului \"Configure map\" (Configurare hartă) pentru a face mai vizibilă orice hartă subiacentă.
 \n
-\n Descărcați direct hărțile segmentate sau copiați-le ca fișiere de bază de date SQLite în filderul de date al RoadCrew folosind unul dintre numeroasele instrumente de pregătire a hărților de la terți.</string>
-    <string name="osmand_accessibility_description">Face ca funcțiile de accesibilitate ale dispozitivului să fie disponibile direct în RoadCrew. Acest lucru facilitează, de exemplu, ajustarea ratei de vorbire pentru vocile text-to-speech, configurarea navigației prin D-pad, utilizarea unui trackball pentru controlul zoom-ului sau feedback text-to-speech, de exemplu pentru a vă anunța automat poziția.</string>
-    <string name="osmand_development_plugin_description">Oferă funcționalități pentru testarea și depanarea RoadCrew: simulează rutele de navigare, monitorizează redarea ecranului, verifică performanța etc. Acest plugin nu este necesar pentru utilizarea normală a aplicației.</string>
+\n Descărcați direct hărțile segmentate sau copiați-le ca fișiere de bază de date SQLite în filderul de date al OsmAnd folosind unul dintre numeroasele instrumente de pregătire a hărților de la terți.</string>
+    <string name="osmand_accessibility_description">Face ca funcțiile de accesibilitate ale dispozitivului să fie disponibile direct în OsmAnd. Acest lucru facilitează, de exemplu, ajustarea ratei de vorbire pentru vocile text-to-speech, configurarea navigației prin D-pad, utilizarea unui trackball pentru controlul zoom-ului sau feedback text-to-speech, de exemplu pentru a vă anunța automat poziția.</string>
+    <string name="osmand_development_plugin_description">Oferă funcționalități pentru testarea și depanarea OsmAnd: simulează rutele de navigare, monitorizează redarea ecranului, verifică performanța etc. Acest plugin nu este necesar pentru utilizarea normală a aplicației.</string>
     <string name="plugins_screen">Pluginuri</string>
     <string name="prefs_plugins">Gestionare pluginuri</string>
     <string name="osm_editing_plugin_description">Contribuiți la OpenStreetMap, o comunitate globală care întreține o hartă cuprinzătoare a lumii și care oferă fiecărui utilizator date open-source de actualitate.
 \n
 \nPuteți găsi instrucțiuni despre cum să editați harta pe site-ul nostru %1$s.</string>
     <string name="play_commands_of_currently_selected_voice">Selectează o voce și testează redând anunțuri:</string>
-    <string name="debugging_and_development">Dezvoltare RoadCrew</string>
+    <string name="debugging_and_development">Dezvoltare OsmAnd</string>
     <string name="test_voice_prompts">Testați mesajele vocale</string>
     <string name="gpx_visibility_txt">Vizibilitate</string>
     <string name="gpx_tags_txt">Tag-uri</string>
@@ -250,7 +250,7 @@
     <string name="user_name">Numele de utilizator OSM</string>
     <string name="user_password">Parolă</string>
     <string name="osmand_service">Modul fundal</string>
-    <string name="osmand_service_descr">RoadCrew rulează în fundal cu ecranul închis.</string>
+    <string name="osmand_service_descr">OsmAnd rulează în fundal cu ecranul închis.</string>
     <string name="download_files_not_enough_space">Nu există spațiu suficient pentru descărcarea a %1$s MB (liber: %2$s).</string>
     <string name="download_files_question_space">Descărcați {0} fișier(e)\?
 \n {1} MB (din {2} MB) vor fi utilizați.</string>
@@ -373,10 +373,10 @@
     <string name="osmand_net_previously_installed">Toate datele offline din vechea aplicație instalată vor fi acceptate de noua aplicație, dar punctele favorite trebuie exportate din vechea aplicație și apoi importate în cea nouă.</string>
     <string name="build_installed">Construcția {0} a fost instalată ({1}).</string>
     <string name="downloading_build">Se descarcă noua versiune…</string>
-    <string name="install_selected_build">Instalați RoadCrew - {0} din {1} {2} MB \?</string>
-    <string name="loading_builds_failed">Nu a putut fi recuperată lista de construcții RoadCrew</string>
-    <string name="loading_builds">Se încarcă lista de versiuni RoadCrew…</string>
-    <string name="select_build_to_install">Selectați varianta RoadCrew pentru instalare</string>
+    <string name="install_selected_build">Instalați OsmAnd - {0} din {1} {2} MB \?</string>
+    <string name="loading_builds_failed">Nu a putut fi recuperată lista de construcții OsmAnd</string>
+    <string name="loading_builds">Se încarcă lista de versiuni OsmAnd…</string>
+    <string name="select_build_to_install">Selectați varianta OsmAnd pentru instalare</string>
     <string name="contribution_activity">Instalare versiune</string>
     <string name="gps_status_app_not_found">Aplicația de stare GPS nu este instalată. Căutați în market\?</string>
     <string name="daynight_mode_day">Zi</string>
@@ -421,7 +421,7 @@
     <string name="layer_map">Sursă hartă…</string>
     <string name="use_trackball_descr">Folosește un dispozitiv trackball pentru mișcarea hărții.</string>
     <string name="use_trackball">Folosește trackball</string>
-    <string name="process_navigation_service">Serviciul de navigare RoadCrew</string>
+    <string name="process_navigation_service">Serviciul de navigare OsmAnd</string>
     <string name="int_seconds">secunde</string>
     <string name="int_min">min.</string>
     <string name="search_poi_filter">Filtrare</string>
@@ -481,7 +481,7 @@
     <string name="invalid_locations">Coordonate invalide</string>
     <string name="shared_string_close">Închide</string>
     <string name="loading_data">Se încarcă date…</string>
-    <string name="previous_run_crashed">Ultima rulare RoadCrew s-a terminat anormal. Fișierul log este în {0}. Vă rog să raportați acest lucru și să atașați fișierul log.</string>
+    <string name="previous_run_crashed">Ultima rulare OsmAnd s-a terminat anormal. Fișierul log este în {0}. Vă rog să raportați acest lucru și să atașați fișierul log.</string>
     <string name="saving_gpx_tracks">Salvarea fișierului GPX…</string>
     <string name="finished_task">Terminat</string>
     <string name="data_settings">Date</string>
@@ -596,11 +596,11 @@
     <string name="routing_attr_avoid_motorway_description">Evită autostrăzi</string>
     <string name="routing_attr_weight_name">Greutate</string>
     <string name="routing_attr_weight_description">Specificați limita permisă a greutății vehiculului pe rute.</string>
-    <string name="android_19_location_disabled">Începând cu versiunea de Android 4.4 (KitKat) nu poți descărca și actualiza harta în directorul de stocare anterior (%s). Vrei să modifici locația de stocare la un permisivă și să copiezi toate fișierele RoadCrew acolo\?
+    <string name="android_19_location_disabled">Începând cu versiunea de Android 4.4 (KitKat) nu poți descărca și actualiza harta în directorul de stocare anterior (%s). Vrei să modifici locația de stocare la un permisivă și să copiezi toate fișierele OsmAnd acolo\?
 \n Nota 1: Fișierele vechi vor rămâne nemodificate (dar pot fi șterse manual).
 \n Nota 2: În noua locație de stocare nu va fi posibilă partajarea fișierelor între OsmAnd și OsmAnd+.</string>
-    <string name="copying_osmand_files">Se copiază fișierele RoadCrew…</string>
-    <string name="calculate_osmand_route_gpx">Calcularea traseului RoadCrew offline</string>
+    <string name="copying_osmand_files">Se copiază fișierele OsmAnd…</string>
+    <string name="calculate_osmand_route_gpx">Calcularea traseului OsmAnd offline</string>
     <string name="app_mode_truck">Camion</string>
     <string name="speech_rate_descr">Specificați viteza de vorbire pentru text-to-speech.</string>
     <string name="speech_rate">Viteză de vorbire</string>
@@ -889,7 +889,7 @@
     <string name="lang_uk">Ucraineană</string>
     <string name="lang_vi">Vietnameză</string>
     <string name="lang_cy">Galeză</string>
-    <string name="calculate_osmand_route_without_internet">Calcularea offline din segmentul de rută RoadCrew</string>
+    <string name="calculate_osmand_route_without_internet">Calcularea offline din segmentul de rută OsmAnd</string>
     <string name="rendering_value_default13_name">Implicit(13)</string>
     <string name="rendering_value_defaultTranslucentCyan_name">Implicit(cyan translucid)</string>
     <string name="rendering_attr_currentTrackColor_name">Culoare GPX</string>
@@ -981,7 +981,7 @@
     <string name="context_menu_item_delete_waypoint">Ștergi punctul de referință GPX?</string>
     <string name="context_menu_item_edit_waypoint">Editează punct intermediar GPX</string>
     <string name="shared_string_location">Locație</string>
-    <string name="share_osm_edits_subject">Editări OSM distribuite prin RoadCrew</string>
+    <string name="share_osm_edits_subject">Editări OSM distribuite prin OsmAnd</string>
     <string name="lang_nds">Germană redusă</string>
     <string name="lang_mk">Macedoneană</string>
     <string name="read_more">Citește mai multe</string>
@@ -1059,7 +1059,7 @@
     <string name="lang_et">Estoniană</string>
     <string name="lang_ceb">limba cebuano</string>
     <string name="disable_recording_once_app_killed">Prevenire logare automată</string>
-    <string name="shared_string_import2osmand">Importă în RoadCrew</string>
+    <string name="shared_string_import2osmand">Importă în OsmAnd</string>
     <string name="read_full_article">Citește tot articolul (online)</string>
     <string name="shared_string_wikipedia">Wikipedia (wiki)</string>
     <string name="shared_string_show_details">Arată detalii</string>
@@ -1312,7 +1312,7 @@
     <string name="exit_without_saving">Ieșiți fără a salva\?</string>
     <string name="add_point_before">Adauga punct inainte</string>
     <string name="add_point_after">Adaugă punct după</string>
-    <string name="measurement_tool_snap_to_road_descr">RoadCrew va conecta punctele cu rute pentru profilul selectat.</string>
+    <string name="measurement_tool_snap_to_road_descr">OsmAnd va conecta punctele cu rute pentru profilul selectat.</string>
     <string name="choose_navigation_type">Selectează profilul de navigație</string>
     <string name="none_point_error">Adăugați cel puțin un punct.</string>
     <string name="quick_action_resume_pause_navigation_descr">Buton pentru pauză sau reluare navigație.</string>
@@ -1325,7 +1325,7 @@
     <string name="shared_string_date">Dată</string>
     <string name="mapillary_menu_edit_text_hint">Scrie nume utilizator</string>
     <string name="mapillary_menu_descr_username">Vedeți doar imaginile adaugate de</string>
-    <string name="import_gpx_failed_descr">Nu s-a putut importa fișierul. Asigurați-vă că RoadCrew are permisiune pentru a-l citi.</string>
+    <string name="import_gpx_failed_descr">Nu s-a putut importa fișierul. Asigurați-vă că OsmAnd are permisiune pentru a-l citi.</string>
     <string name="distance_moving">Distanța corectată</string>
     <string name="mapillary_image">Imagine Mapillary</string>
     <string name="open_mapillary">Deschide Mapillary</string>
@@ -1369,7 +1369,7 @@
     <string name="shared_string_automatic">Automat</string>
     <string name="do_not_show_startup_messages">Nu arăta mesaje la pornire</string>
     <string name="parking_options">Opțiuni parcare</string>
-    <string name="full_version_thanks">Va muțumim pentru că ați cumpărat versiunea plătită RoadCrew.</string>
+    <string name="full_version_thanks">Va muțumim pentru că ați cumpărat versiunea plătită OsmAnd.</string>
     <string name="routing_attr_relief_smoothness_factor_hills_name">Deluros</string>
     <string name="routing_attr_relief_smoothness_factor_plains_name">Mai puțin deluros</string>
     <string name="routing_attr_relief_smoothness_factor_more_plains_name">Plat</string>
@@ -1402,7 +1402,7 @@
     <string name="download_all">Descărcați tot</string>
     <string name="shared_string_restart">Repornire aplicație</string>
     <string name="maps_you_need">Hărți de care ai nevoie</string>
-    <string name="osmand_team">Echipa RoadCrew</string>
+    <string name="osmand_team">Echipa OsmAnd</string>
     <string name="popular_destinations">Destinații populare</string>
     <string name="update_is_available">Actualizare disponibilă</string>
     <string name="download_file">Descarcă fișier</string>
@@ -1461,7 +1461,7 @@
     <string name="coords_search">Căutare coordonate</string>
     <string name="advanced_coords_search">Căutare avansată de coordonate</string>
     <string name="back_to_search">Înapoi la căutare</string>
-    <string name="share_history_subject">distribuit prin RoadCrew</string>
+    <string name="share_history_subject">distribuit prin OsmAnd</string>
     <string name="search_categories">Categorii</string>
     <string name="postcode">Cod poștal</string>
     <string name="shared_string_from">de la</string>
@@ -1524,10 +1524,10 @@
     <string name="driving_region_australia">Australia</string>
     <string name="download_wikipedia_maps">Wikipedia</string>
     <string name="interrupt_music">Întrerupeți muzica</string>
-    <string name="osmand_play_title_30_chars">Hărți și navigație RoadCrew</string>
+    <string name="osmand_play_title_30_chars">Hărți și navigație OsmAnd</string>
     <string name="osmand_plus_play_title_30_chars">Hărți și navigație OsmAnd+</string>
     <string name="share_route_as_gpx">Distribuiți ruta ca fișier GPX</string>
-    <string name="share_route_subject">Traseu distribuit prin RoadCrew</string>
+    <string name="share_route_subject">Traseu distribuit prin OsmAnd</string>
     <string name="arrival_distance_factor_early">Devreme</string>
     <string name="arrival_distance_factor_normally">Normală</string>
     <string name="arrival_distance_factor_late">Târziu</string>
@@ -1541,7 +1541,7 @@
     <string name="poi_dialog_reopen">Redeschide</string>
     <string name="plugin_install_needs_network">Trebuie să fiți online pentru a instala acest plugin.</string>
     <string name="shared_string_get">Obține</string>
-    <string name="do_you_like_osmand">Îți place RoadCrew?</string>
+    <string name="do_you_like_osmand">Îți place OsmAnd?</string>
     <string name="user_hates_app_get_feedback">Spune-ne de ce.</string>
     <string name="failed_to_upload">Nu s-a putut încărca</string>
     <string name="delete_change">Ștergeți modificarea</string>
@@ -1577,7 +1577,7 @@
     <string name="only_download_over_wifi">Descărcare doar pe Wi-Fi</string>
     <string name="live_update">Actualizări in timp real</string>
     <string name="update_now">Actualizați acum</string>
-    <string name="missing_write_external_storage_permission">RoadCrew nu are permisiunea de a utiliza cardul de memorie</string>
+    <string name="missing_write_external_storage_permission">OsmAnd nu are permisiunea de a utiliza cardul de memorie</string>
     <string name="cubic_m">m³</string>
     <string name="routing_attr_avoid_tram_name">Evită tramvaie</string>
     <string name="routing_attr_avoid_tram_description">Evită tramvaie</string>
@@ -1598,7 +1598,7 @@
     <string name="quick_action_day_night_mode">%s mod</string>
     <string name="avoid_pt_types">Evitare tipuri de transport…</string>
     <string name="shared_string_walk">Mergeți</string>
-    <string name="public_transport_warning_descr_blog">Aflați mai multe despre modul în care RoadCrew calculează rutele în blogul nostru.</string>
+    <string name="public_transport_warning_descr_blog">Aflați mai multe despre modul în care OsmAnd calculează rutele în blogul nostru.</string>
     <string name="public_transport_warning_title">În prezent, navigația pentru transportul public este în testare beta, așteptați erori și inexactități.</string>
     <string name="add_intermediate">Adăugați punct intermediar</string>
     <string name="transfers_size">%1$d transferuri</string>
@@ -1692,7 +1692,7 @@
     <string name="search_street">Căutare stradă</string>
     <string name="start_search_from_city">Specificați mai întâi municipiul/orașul/localitatea</string>
     <string name="shared_string_restore">Restaurați</string>
-    <string name="ask_for_location_permission">Acordați RoadCrew acces la locație pentru a continua.</string>
+    <string name="ask_for_location_permission">Acordați OsmAnd acces la locație pentru a continua.</string>
     <string name="thank_you_for_feedback">Mulțumim pentru părerea dvs</string>
     <string name="increase_search_radius_to">Crește raza de căutare la %1$s</string>
     <string name="shared_string_world">Lume</string>
@@ -1729,12 +1729,12 @@
     <string name="searching_gps">Se caută GPS</string>
     <string name="rate_dialog_descr">Acordați-ne 30 de secunde, trimiteți părerea dvs. și evaluați munca noastră pe Google Play.</string>
     <string name="shared_string_privacy_policy">Politica de confidențialitate</string>
-    <string name="help_us_make_osmand_better">Ajutați-ne să facem RoadCrew mai bun</string>
+    <string name="help_us_make_osmand_better">Ajutați-ne să facem OsmAnd mai bun</string>
     <string name="choose_data_to_share">Alegeți ce tip de date doriți să partajați:</string>
     <string name="downloaded_maps">Hărți descărcate</string>
     <string name="visited_screens">Ecrane vizitate</string>
     <string name="downloaded_maps_collect_descr">Colectăm aceste date pentru a înțelege hărțile regiunilor și țărilor care sunt cele mai populare.</string>
-    <string name="visited_screens_collect_descr">Colectăm aceste date pentru a înțelege cele mai populare caracteristici ale lui RoadCrew.</string>
+    <string name="visited_screens_collect_descr">Colectăm aceste date pentru a înțelege cele mai populare caracteristici ale lui OsmAnd.</string>
     <string name="privacy_and_security_change_descr">Faceți click pe \"Permite\" dacă sunteți de acord cu %1$s</string>
     <string name="settings_privacy_and_security">Confidențialitate și Securitate</string>
     <string name="settings_privacy_and_security_desc">Alegeți datele dvs. pentru a fi distribuite</string>
@@ -1755,7 +1755,7 @@
     <string name="profile_alert_need_profile_name_title">Introduceți numele profilului</string>
     <string name="profile_alert_need_profile_name_msg">Trebuie să specificați mai întâi un nume de profil.</string>
     <string name="profile_alert_duplicate_name_msg">Există deja un profil cu acest nume</string>
-    <string name="profile_alert_cant_delete_base">Nu puteți șterge profilurile de bază RoadCrew</string>
+    <string name="profile_alert_cant_delete_base">Nu puteți șterge profilurile de bază OsmAnd</string>
     <string name="profile_alert_delete_title">Șterge profil</string>
     <string name="profile_alert_delete_msg">Șterge profilul \"%s\"</string>
     <string name="select_base_profile_dialog_title">Selectați profilul de la care să porniți</string>
@@ -1767,7 +1767,7 @@
     <string name="base_profile_descr_aircraft">Avion, planor</string>
     <string name="routing_profile_geocoding">Geocodare</string>
     <string name="routing_profile_straightline">Linie dreaptă</string>
-    <string name="osmand_default_routing">Rutare RoadCrew</string>
+    <string name="osmand_default_routing">Rutare OsmAnd</string>
     <string name="special_routing_type">Rutare specială</string>
     <string name="third_party_routing_type">Rutare terță</string>
     <string name="application_profiles">Profiluri de aplicație</string>
@@ -1775,7 +1775,7 @@
     <string name="routing_attr_allow_intermediate_name">Permiteți rute intermediare</string>
     <string name="routing_attr_allow_advanced_name">Permiteți rute avansate</string>
     <string name="routing_attr_difficulty_preference_name">Dificultate preferată</string>
-    <string name="process_downloading_service">RoadCrew descarcă serviciul</string>
+    <string name="process_downloading_service">OsmAnd descarcă serviciul</string>
     <string name="shared_string_color_magenta">Purpuriu</string>
     <string name="shared_string_icon">Icoană</string>
     <string name="map_widget_map_rendering">Randare hartă</string>
@@ -1816,13 +1816,13 @@
     <string name="plugins_settings">Setări plugin</string>
     <string name="shared_string_by_default">În mod implicit</string>
     <string name="download_detailed_map">Descărcați harta %s detaliată pentru a vizualiza această zonă.</string>
-    <string name="change_data_storage_full_description">Mută fişierele de date RoadCrew la noua destinaţie\?\n%1$s &gt; %2$s</string>
+    <string name="change_data_storage_full_description">Mută fişierele de date OsmAnd la noua destinaţie\?\n%1$s &gt; %2$s</string>
     <string name="data_storage_preference_summary">%1$s %2$s</string>
     <string name="data_storage_space_description">%1$s GB free (of %2$s GB)</string>
     <string name="enter_path_to_folder">Introduceți calea către folder</string>
     <string name="shared_string_select_folder">Folderul…</string>
-    <string name="paste_Osmand_data_folder_path">Lipește calea către folderul cu datele RoadCrew</string>
-    <string name="change_osmand_data_folder_question">Schimbați folderul de date ale RoadCrew\?</string>
+    <string name="paste_Osmand_data_folder_path">Lipește calea către folderul cu datele OsmAnd</string>
+    <string name="change_osmand_data_folder_question">Schimbați folderul de date ale OsmAnd\?</string>
     <string name="move_maps_to_new_destination">Mută la noua destinație</string>
     <string name="change_data_storage_folder">Schimbați folderul de stocare</string>
     <string name="rendering_attr_piste_type_snow_park_name">Parc</string>
@@ -1848,7 +1848,7 @@
     <string name="rendering_attr_piste_difficulty_aerialway_name">Calea aeriană</string>
     <string name="rendering_attr_piste_difficulty_connection_name">Conexiune</string>
     <string name="shared_string_calculate">Calculează</string>
-    <string name="shared_string_osmand_usage">Utilizare RoadCrew</string>
+    <string name="shared_string_osmand_usage">Utilizare OsmAnd</string>
     <string name="shared_string_tiles">Segmente</string>
     <string name="shared_string_maps">Hărţi</string>
     <string name="shared_string_memory_tb_desc">%1$s TB</string>
@@ -1913,7 +1913,7 @@
     <string name="list_of_installed_plugins">Plugin-uri instalate</string>
     <string name="general_settings_profile_descr">Temă aplicație, unități, regiune</string>
     <string name="osmand_settings_descr">Pentru întreaga aplicație</string>
-    <string name="osmand_settings">Setări RoadCrew</string>
+    <string name="osmand_settings">Setări OsmAnd</string>
     <string name="copy_from_other_profile">Copiază din alt profil</string>
     <string name="turn_screen_on">Pornire ecran</string>
     <string name="map_during_navigation_info">Harta în timpul navigației</string>
@@ -1929,7 +1929,7 @@
     <string name="routing_attr_width_description">Specificați limita permisă pentru lățimea vehiculului pe rute.</string>
     <string name="dialogs_and_notifications_title">Dialoguri și notificări</string>
     <string name="shared_string_crash">Blocat</string>
-    <string name="last_launch_crashed">RoadCrew s-a blocat la ultima rulare. Ajutați la îmbunătățirea RoadCrew prin trimiterea mesajului de eroare.</string>
+    <string name="last_launch_crashed">OsmAnd s-a blocat la ultima rulare. Ajutați la îmbunătățirea OsmAnd prin trimiterea mesajului de eroare.</string>
     <string name="app_mode_ufo">OZN</string>
     <string name="release_3_4">• Creaza profile: creează un profil personalizat pentru nevoile tale, cu o pictogramă și o culoare personalizate
 \n
@@ -2028,7 +2028,7 @@
     <string name="desert_render_descr">Pentru deșerturi și alte zone slab populate. Mai detaliat.</string>
     <string name="delete_profiles_descr">Apăsând pe \'Aplică\' se vor șterge permanent profilurile eliminate.</string>
     <string name="select_color">Alegeți culoarea</string>
-    <string name="edit_profiles_descr">Profilurile implicite ale RoadCrew nu pot fi șterse, ci dezactivate (în ecranul anterior), sau pot fi sortate în partea de jos.</string>
+    <string name="edit_profiles_descr">Profilurile implicite ale OsmAnd nu pot fi șterse, ci dezactivate (în ecranul anterior), sau pot fi sortate în partea de jos.</string>
     <string name="edit_profiles">Editează profiluri</string>
     <string name="profile_appearance">Aspect profil</string>
     <string name="choose_icon_color_name">Pictogramă, culoare și nume</string>
@@ -2038,7 +2038,7 @@
     <string name="ski_map_render_descr">Pentru schi. Dispune de pârtii, teleschiuri, piste de fond, etc.</string>
     <string name="light_rs_render_descr">Stil simplu pentru condus. Mod de noapte blând, drumuri colorate portocaliu, contrastante, obiecte secundare de pe hartă întunecate, caracteristici topografice precum curbe de nivel.</string>
     <string name="topo_render_descr">Pentru drumeții, trekking și ciclism în natură. Lizibil chiar și în lumină puternică. Drumuri și obiecte naturale contrastante, diferite tipuri de rute, opțiuni avansate pentru curbe de nivel, detalii suplimentare. Ajustarea integrității suprafețelor relevă calitea drumului. Fără mod nocturn.</string>
-    <string name="touring_view_render_descr">Stil turistic cu contrast ridicat și detalii maxime. Include toate opțiunile stilului implicit RoadCrew, afișând în același timp cât mai multe detalii posibile, în special drumuri, căi și alte modalități de călătorie. Distincția clară \"atlas turistic\" între tipurile de drum. Potrivit pentru zi, noapte și în aer liber.</string>
+    <string name="touring_view_render_descr">Stil turistic cu contrast ridicat și detalii maxime. Include toate opțiunile stilului implicit OsmAnd, afișând în același timp cât mai multe detalii posibile, în special drumuri, căi și alte modalități de călătorie. Distincția clară \"atlas turistic\" între tipurile de drum. Potrivit pentru zi, noapte și în aer liber.</string>
     <string name="off_road_render_descr">Pentru conducere off-road, bazat pe stilul „Topo” și pentru utilizarea cu imagini din satelit verzi, ca substrat. Grosime redusă a drumului principal, grosime crescută a pistelor, cărărilor și rutelor pentru biciclete și altele.</string>
     <string name="quick_action_show_hide_gpx_tracks_descr">Un buton pentru a afișa sau ascunde traseele selectate pe hartă.</string>
     <string name="rendering_attr_surface_sett_name">Setãri</string>
@@ -2047,11 +2047,11 @@
     <string name="save_poi_value_exceed_length_title">Lungimea valorii \"%s\"</string>
     <string name="files_failed">Nu s-a putut copia fișierele %1$d (%2$s).</string>
     <string name="public_transport_ped_route_title">Traseul pe jos este de aproximativ %1$s, și poate fi mai rapid decât transportul public</string>
-    <string name="public_transport_no_route_title">Din păcate RoadCrew nu a găsit un traseu potrivit pentru setările dumneavoastră.</string>
+    <string name="public_transport_no_route_title">Din păcate OsmAnd nu a găsit un traseu potrivit pentru setările dumneavoastră.</string>
     <string name="coordinates_widget">Widget coordonate</string>
-    <string name="make_osmand_better_descr">Permiteți ca RoadCrew să colecteze și să proceseze date anonimizate despre utilizarea aplicației. Nu sunt colectate date despre poziția dumneavoastră sau despre locațiile pe care le vizualizați pe hartă.
+    <string name="make_osmand_better_descr">Permiteți ca OsmAnd să colecteze și să proceseze date anonimizate despre utilizarea aplicației. Nu sunt colectate date despre poziția dumneavoastră sau despre locațiile pe care le vizualizați pe hartă.
 \n
-\nConfigurați oricând în \'Setări RoadCrew\' → \'Confidențialitate și securitate\'.</string>
+\nConfigurați oricând în \'Setări OsmAnd\' → \'Confidențialitate și securitate\'.</string>
     <string name="osmand_routing_promo">Adăugați propria versiune modificată a fișierului routing.xml în ..osmand/routing</string>
     <string name="select_base_profile_dialog_message">Bazați-vă profilul personalizat pe unul dintre profilurile implicite ale aplicației; acest lucru definește configurarea de bază, cum ar fi vizibilitatea implicită a widgeturilor și unitățile de viteză și distanță. Acestea sunt profiluri implicite din aplicație, împreună cu exemple de profiluri personalizate la care pot fi extinse:</string>
     <string name="routing_profile_broutrer">Rutare (offline)</string>
@@ -2150,7 +2150,7 @@
 \n
 \nSelectați %1$s și veți primi alerte și avertismente cu privire la camerele de viteză.
 \n
-\nSelectați %2$s. Toate datele legate de camerele de viteză: alerte, notificări, puncte de interes vor fi șterse până când RoadCrew este reinstalat.</string>
+\nSelectați %2$s. Toate datele legate de camerele de viteză: alerte, notificări, puncte de interes vor fi șterse până când OsmAnd este reinstalat.</string>
     <string name="speed_cameras_alert">Alertele pentru camere de viteză sunt interzise de lege în anumite tări.</string>
     <string name="use_volume_buttons_as_zoom">Butoane de volum pentru zoom</string>
     <string name="set_working_days_to_continue">Setează zile lucrătoare pentru a continua</string>
@@ -2199,7 +2199,7 @@
     <string name="update_all_maps_added">Actualizați toate hărțile adăugate la %1$s\?</string>
     <string name="shared_string_feet">picioare</string>
     <string name="srtm_unit_format">Variantă unitate linii de contur</string>
-    <string name="srtm_download_list_help_message">RoadCrew oferă date privind curbele de nivel în metri și picioare. Va trebui să descărcați iar fișierul pentru a schimba formatul.</string>
+    <string name="srtm_download_list_help_message">OsmAnd oferă date privind curbele de nivel în metri și picioare. Va trebui să descărcați iar fișierul pentru a schimba formatul.</string>
     <string name="srtm_download_single_help_message">Selectați varianta. Va trebui să descărcați iar fișierul pentru a schimba formatul.</string>
     <string name="exit_number">Număr de ieșire</string>
     <string name="announce_when_exceeded">Anunț la depășire</string>
@@ -2224,7 +2224,7 @@
     <string name="backup_and_restore">Backup și restaurare</string>
     <string name="last_backup">Ultimul backup</string>
     <string name="duration_ago">În urmă cu %1$s</string>
-    <string name="osmand_cloud">Cloud RoadCrew</string>
+    <string name="osmand_cloud">Cloud OsmAnd</string>
     <string name="osmand_cloud_authorize_descr">Nu vă pierdeți niciodată datele. Faceți backup și restaurați toate informațiile cu ușurință.</string>
     <string name="local_backup">Backup local</string>
     <string name="backup_into_file">Fă backup ca fișier</string>
@@ -2347,7 +2347,7 @@
     <string name="logout_from_osmand_cloud">Deconectați-vă de la OsmAnd Cloud</string>
     <string name="logout_from_osmand_cloud_decsr">Vă deconectați\?
 \nVa trebui să vă conectați din nou pentru a face backup sau a restaura date.</string>
-    <string name="backup_deleting_all_data_descr">Așteptați până când RoadCrew vă șterge datele din cloud. Toate datele de pe dispozitiv vor rămâne neatinse.</string>
+    <string name="backup_deleting_all_data_descr">Așteptați până când OsmAnd vă șterge datele din cloud. Toate datele de pe dispozitiv vor rămâne neatinse.</string>
     <string name="backup_deleted_all_data_descr">Toate datele dumneavoastră au fost șterse cu succes din OsmAnd Cloud.</string>
     <string name="backup_version_history_removed">Tot istoricul versiunilor a fost eliminat.</string>
     <string name="backup_data_removed">Toate datele au fost eliminate.</string>
@@ -2364,11 +2364,11 @@
     <string name="promo_subscription">Abonament promoțional</string>
     <string name="track_has_no_needed_data">Traseului îi lipsesc datele respective.</string>
     <string name="system_screen_timeout">Utilizați timeout-ul ecranului setat de sistem</string>
-    <string name="turn_screen_on_descr">Selectați opțiunile de pornire ale ecranului (asigurați-vă că RoadCrew este în prim-plan atunci când dispozitivul este blocat):</string>
+    <string name="turn_screen_on_descr">Selectați opțiunile de pornire ale ecranului (asigurați-vă că OsmAnd este în prim-plan atunci când dispozitivul este blocat):</string>
     <string name="turn_screen_on_navigation_instructions_descr">Fiecare instrucțiune de navigare va activa ecranul.</string>
     <string name="turn_screen_on_navigation_instructions">Instrucțiuni de navigare</string>
     <string name="turn_screen_on_power_button_disabled">Dezactivat. Necesită \'Păstrare ecran pornit\' la \'Timpul de așteptare după trezire\'.</string>
-    <string name="turn_screen_on_power_button_descr">Apăsarea butonului de pornire al dispozitivului va activa ecranul cu RoadCrew în partea de sus a ecranului de blocare.</string>
+    <string name="turn_screen_on_power_button_descr">Apăsarea butonului de pornire al dispozitivului va activa ecranul cu OsmAnd în partea de sus a ecranului de blocare.</string>
     <string name="turn_screen_on_power_button">Buton de pornire</string>
     <string name="turn_screen_on_proximity_sensor">Senzor de proximitate</string>
     <string name="turn_screen_on_wake_time_descr">Selectați timeout-ul ecranului după trezire. (\"%1$s\" nu aplică niciun timeout.)</string>
@@ -2442,7 +2442,7 @@
     <string name="shared_string_file_name">Numele fișierului</string>
     <string name="number_of_gpx_files_selected_pattern">%s fișiere traseu selectate</string>
     <string name="monitoring_control_start">REC</string>
-    <string name="disable_recording_once_app_killed_descrp">Înregistrarea traseului se va suspenda atunci când aplicația este închisă (prin intermediul aplicațiilor recente). (Indicația de fundal RoadCrew dispare din bara de notificări Android.)</string>
+    <string name="disable_recording_once_app_killed_descrp">Înregistrarea traseului se va suspenda atunci când aplicația este închisă (prin intermediul aplicațiilor recente). (Indicația de fundal OsmAnd dispare din bara de notificări Android.)</string>
     <string name="system_default_theme">Setare implicită din sistem</string>
     <string name="all_next_segments">Toate segmentele ulterioare</string>
     <string name="previous_segment">Segmentul anterior</string>
@@ -2482,8 +2482,8 @@
     <string name="routing_attr_avoid_footways_description">Evită căi pietonale</string>
     <string name="routing_attr_avoid_footways_name">Evită căi pietonale</string>
     <string name="development">Dezvoltare</string>
-    <string name="use_live_public_transport">Date live RoadCrew</string>
-    <string name="use_live_routing">Date live RoadCrew</string>
+    <string name="use_live_public_transport">Date live OsmAnd</string>
+    <string name="use_live_routing">Date live OsmAnd</string>
     <string name="use_native_pt">Dezvoltare transport public autohton</string>
     <string name="use_native_pt_desc">Comutați la Java (safe) Public Transport pentru transportul public în comun</string>
     <string name="osm_edit_logout_success">Deconectat</string>
@@ -2540,7 +2540,7 @@
     <string name="track_has_no_altitude">Traseul nu conține date de altitudine.</string>
     <string name="track_has_no_speed">Traseul nu conține date privind viteza.</string>
     <string name="select_another_colorization">Selectați un alt tip de colorare.</string>
-    <string name="trip_recording_logging_interval_info">Intervalul de înregistrare stabilește perioada la care RoadCrew cere poziția curentă.</string>
+    <string name="trip_recording_logging_interval_info">Intervalul de înregistrare stabilește perioada la care OsmAnd cere poziția curentă.</string>
     <string name="trip_recording_save_and_continue">Salvează și continuă</string>
     <string name="lost_data_warning">Toate datele nesalvate vor fi pierdute.</string>
     <string name="show_start_dialog">Arată dialogul de pornire</string>
@@ -2553,7 +2553,7 @@
     <string name="empty_purchases_description">Dacă achizițiile voastre nu apar aici, apăsați pe \"%1$s\" sau contactați echipa noastră de asistență.</string>
     <string name="contact_support">Contactează suportul tehnic</string>
     <string name="troubleshooting">Deparare</string>
-    <string name="osmand_live">RoadCrew în direct</string>
+    <string name="osmand_live">OsmAnd în direct</string>
     <string name="annual_subscription">Abonament anual</string>
     <string name="monthly_subscription">Abonament lunar</string>
     <string name="three_months_subscription">Abonament pe trei luni</string>
@@ -2605,7 +2605,7 @@
     <string name="plan_route_split_before">Împarte înainte de</string>
     <string name="plan_route_split_after">Împarte după</string>
     <string name="plan_route_add_new_segment">Adaugă un nou segment</string>
-    <string name="profile_type_osmand_string">Profil RoadCrew</string>
+    <string name="profile_type_osmand_string">Profil OsmAnd</string>
     <string name="profile_type_user_string">Profilul utilizatorului</string>
     <string name="release_3_9">• A fost adăugată opțiunea de a exporta și importa toate datele, inclusiv setările, resursele, locurile mele \n \n • Planificare traseu: grafice pentru segmente de traseu cu traseu și s-a adăugat posibilitatea de a crea și edita mai multe segmente de traseu \n \n • A fost adăugată metoda de autentificare OAuth pentru OpenStreetMap, a fost îmbunătățită interfața de utilizare a dialogurilor OSM \n \n • Suportă culori personalizate pentru favorite și puncte de traseu</string>
     <string name="reverse_all_points">Inversați toate punctele</string>
@@ -2756,7 +2756,7 @@
 \n • Încărcați și urmați un traseu GPX sau înregistrați și partajați propriul traseu
 \n</string>
     <string name="osmand_extended_description_part4">Schi
-\n Plugin-ul RoadCrew ski maps vă permite să vedeți pârtiile de schi cu nivelul de complexitate și unele informații suplimentare, cum ar fi locația teleschiurilor și a altor facilități.</string>
+\n Plugin-ul OsmAnd ski maps vă permite să vedeți pârtiile de schi cu nivelul de complexitate și unele informații suplimentare, cum ar fi locația teleschiurilor și a altor facilități.</string>
     <string name="osmand_extended_description_part3">Harta
 \n • Afișează POI (puncte de interes) din jur
 \n • Ajustează harta în funcție de direcția de deplasare (sau de busolă)
@@ -2778,7 +2778,7 @@
 \n - Suportă punctele intermediare de pe itinerariul dvs.
 \n - Înregistrează-ți propriul traseu sau încarcă un traseu GPX și urmărește-l
 \n</string>
-    <string name="osmand_extended_description_part1">RoadCrew (OSM Automated Navigation Directions) este o aplicație de hărți și navigație cu acces la datele OSM gratuite, de înaltă calitate și la nivel mondial.
+    <string name="osmand_extended_description_part1">OsmAnd (OSM Automated Navigation Directions) este o aplicație de hărți și navigație cu acces la datele OSM gratuite, de înaltă calitate și la nivel mondial.
 \n
 \n Bucurați-vă de navigator vocal și optic, de vizualizarea POI (puncte de interes), de crearea și gestionarea de trasee GPX, de utilizarea vizualizării curbelor de nivel și a informațiilor topografice (prin intermediul unui plugin), de posibilitatea de a alege între modurile de condus, ciclism, pietonal, editare OSM și multe altele.</string>
     <string name="interrupt_music_descr">Indicațiile vocale pun pe pauză redarea muzicii.</string>
@@ -2801,7 +2801,7 @@
     <string name="auto_zoom_none">Fără focalizare automată</string>
     <string name="route_is_too_long_v2">Pentru distanțe lungi: adăugați destinații intermediare dacă nu se găsește nicio rută în 10 minute.</string>
     <string name="complex_route_calculation_failed">Calculul rapid al rutei a eșuat (%s), se revine la calculul lent.</string>
-    <string name="gpx_option_calculate_first_last_segment">Calculați ruta RoadCrew pentru primul și ultimul segment de rută</string>
+    <string name="gpx_option_calculate_first_last_segment">Calculați ruta OsmAnd pentru primul și ultimul segment de rută</string>
     <string name="lang_gn_py">Guarani</string>
     <string name="lang_sr_latn">Sârbă (latină)</string>
     <string name="lang_sc">Sardiniană</string>
@@ -2831,7 +2831,7 @@
 \n
 \nPentru mai multe informații, consultați %1$s.</string>
     <string name="plugin_nautical_name">Hartă nautică</string>
-    <string name="plugin_touringview_descr">Activarea acestei vizualizări schimbă stilul hărții RoadCrew în \"Touring view\", aceasta fiind o vizualizare specială, cu multe detalii, pentru călătorii și șoferii profesioniști.
+    <string name="plugin_touringview_descr">Activarea acestei vizualizări schimbă stilul hărții OsmAnd în \"Touring view\", aceasta fiind o vizualizare specială, cu multe detalii, pentru călătorii și șoferii profesioniști.
 \n
 \nAceastă vizualizare oferă, la un anumit zoom al hărții, cantitatea maximă de detalii de călătorie disponibile în datele hărții (în special drumuri, trasee, poteci și semne de orientare).
 \n
@@ -2878,7 +2878,7 @@
     <string name="rendering_attr_hideOverground_name">Obiecte supraterane</string>
     <string name="replace_favorite_confirmation">Înlocuiți favoritul \"%1$s\"\?</string>
     <string name="clear_tile_data">Șterge toate segmentele</string>
-    <string name="first_usage_wizard_desc">Lăsați RoadCrew să vă determine locația și să vă recomande hărți de descărcat pentru regiunea respectivă.</string>
+    <string name="first_usage_wizard_desc">Lăsați OsmAnd să vă determine locația și să vă recomande hărți de descărcat pentru regiunea respectivă.</string>
     <string name="osm_live_banner_desc">Obțineți descărcări nelimitate de hărți, adăugând actualizări săptămânale, zilnice sau chiar din oră în oră.</string>
     <string name="get_it">Ia-l</string>
     <string name="new_filter_desc">Introduceți un nume pentru noul filtru, acesta va fi adăugat la fila \'Categorii\'.</string>
@@ -2950,7 +2950,7 @@
     <string name="terrain_empty_state_text">Arată relieful umbrit sau panta pe hartă. Citiți mai multe despre aceste tipuri de hărți pe site-ul nostru.</string>
     <string name="shared_string_hillshade">Relief umbrit</string>
     <string name="import_complete_description">Ați importat toate datele din %1$s. Utilizați butoanele de mai jos pentru a deschide orice parte a aplicației pentru a o gestiona.</string>
-    <string name="checking_for_duplicate_description">RoadCrew verifică %1$s pentru duplicate cu elemente existente în aplicație.
+    <string name="checking_for_duplicate_description">OsmAnd verifică %1$s pentru duplicate cu elemente existente în aplicație.
 \n
 \nEste posibil să dureze ceva timp.</string>
     <string name="restore_all_profile_settings_descr">Toate setările profilului vor fi restabilite la starea lor inițială după crearea/importul acestui profil.</string>
@@ -2989,7 +2989,7 @@
     <string name="replace_point_descr">Înlocuiți un alt punct cu acesta.</string>
     <string name="app_mode_ski_touring">Schi turistic</string>
     <string name="app_mode_ski_snowmobile">Snowmobil</string>
-    <string name="custom_osmand_plugin">Plugin personalizat RoadCrew</string>
+    <string name="custom_osmand_plugin">Plugin personalizat OsmAnd</string>
     <string name="shared_string_items">Elemente</string>
     <string name="changes_applied_to_profile">Modificări aplicate profilului \"%1$s\".</string>
     <string name="settings_item_read_error">Nu s-a putut citi din \'%1$s\'.</string>
@@ -3039,7 +3039,7 @@
     <string name="search_poi_types_descr">Combinați tipuri de puncte de interes din diferite categorii. Atingeți comutatorul pentru a le selecta pe toate, atingeți partea stângă pentru a selecta categoria.</string>
     <string name="extra_maps_menu_group">Hărți suplimentare</string>
     <string name="download_unsupported_action">Acțiune neacceptată %1$s</string>
-    <string name="tracker_item">RoadCrew monitor</string>
+    <string name="tracker_item">OsmAnd monitor</string>
     <string name="quick_action_item">Acțiune rapidă</string>
     <string name="map_markers_item">Marcaje de hartă</string>
     <string name="favorites_item">Favorite</string>
@@ -3078,7 +3078,7 @@
     <string name="lenght_limit_description">Precizați lungimea autovehiculului, deoarece este posibil să se aplice anumite restricții de traseu pentru vehiculele lungi.</string>
     <string name="gpx_parse_error">Probleme găsite cu un fișier GPX.
 \n
-\nPuteți contacta serviciul de asistență RoadCrew pentru a investiga.</string>
+\nPuteți contacta serviciul de asistență OsmAnd pentru a investiga.</string>
     <string name="shared_string_always">Întotdeauna</string>
     <string name="screen_control">Control ecran</string>
     <string name="system_screen_timeout_descr">Oprește ecranul în funcție de expirarea timpului de așteptare a ecranului din sistem.</string>
@@ -3106,7 +3106,7 @@
     <string name="av_camera_focus_edof">Adâncime extinsă a câmpului (EDOF)</string>
     <string name="new_route_calculated_dist_dbg">Traseu: distanța %1$s, timpul de rută %2$s
 \nCalcul: %3$.1f sec, %4$d drumuri, %5$d segmente de hartă)</string>
-    <string name="share_fav_subject">Favorite împărtășite prin RoadCrew</string>
+    <string name="share_fav_subject">Favorite împărtășite prin OsmAnd</string>
     <string name="keep_informing_never">Doar manual (prin atingerea săgeții)</string>
     <string name="index_name_antarctica">Antarctica</string>
     <string name="live_monitoring_max_interval_to_send_desrc">Specificați un buffer de timp pentru a păstra locațiile pentru a trimite fără conexiune</string>
@@ -3144,7 +3144,7 @@
 \nMereu disponibile în \'Explorare\' → \'Opțiuni\'.</string>
     <string name="shared_string_do">Faceți</string>
     <string name="shared_string_dont">Nu</string>
-    <string name="wikivoyage_travel_guide_descr">Ghiduri către cele mai interesante locuri de pe planetă, în interiorul RoadCrew, fără conexiune la internet.</string>
+    <string name="wikivoyage_travel_guide_descr">Ghiduri către cele mai interesante locuri de pe planetă, în interiorul OsmAnd, fără conexiune la internet.</string>
     <string name="welcome_to_open_beta">Bine ați venit la open beta</string>
     <string name="start_editing_card_description">Puteți și ar trebui să editați orice articol de pe Wikivoyage. Împărtășiți cunoștințele, experiența, talentul și atenția dumneavoastră.</string>
     <string name="welcome_to_open_beta_description">Ghidurile de călătorie se bazează în prezent pe Wikivoyage. Testați gratuit toate caracteristicile în timpul testării beta deschise.</string>
@@ -3159,7 +3159,7 @@
     <string name="navigate_point_format_mgrs">MGRS</string>
     <string name="reset_all_profile_settings_descr">Resetează toate setările profilului la valorile implicite de instalare.</string>
     <string name="reset_confirmation_descr">Atingerea lui %1$s anulează toate modificările efectuate.</string>
-    <string name="tracks_view_descr">Traseele înregistrate se află în %1$s sau în folderul RoadCrew.</string>
+    <string name="tracks_view_descr">Traseele înregistrate se află în %1$s sau în folderul OsmAnd.</string>
     <string name="live_monitoring_descr">Permite partajarea locației curente folosindu-se de înregistrarea călătoriei.</string>
     <string name="import_routing_file">Importă fișier de rutare</string>
     <string name="multimedia_rec_split_title">Împărțire înregistrare</string>
@@ -3216,11 +3216,11 @@
     <string name="plugin_disabled_descr">Acest plugin este o aplicație separată, iar dezactivarea lui nu îl elimină.
 \n
 \nAcesta poate fi dezinstalat în setarea \'Apps\' din Android.</string>
-    <string name="import_duplicates_description">RoadCrew are deja elemente cu aceleași nume ca și cele importate.
+    <string name="import_duplicates_description">OsmAnd are deja elemente cu aceleași nume ca și cele importate.
 \n
 \nSelectați o acțiune.</string>
     <string name="keep_both_desc">Elementele importate vor fi adăugate cu prefixul</string>
-    <string name="listed_exist">Lista %1$s, există deja în RoadCrew.</string>
+    <string name="listed_exist">Lista %1$s, există deja în OsmAnd.</string>
     <string name="recalc_angle_dialog_title">Unghiul minim dintre locație și rută</string>
     <string name="recalc_angle_dialog_descr">Se va afișa un segment drept între locație și ruta calculată până la recalcularea rutei</string>
     <string name="transport_nearby_routes">În raza a</string>
@@ -3307,7 +3307,7 @@
     <string name="quick_action_duplicate">Acțiune rapidă de duplicare a numelui</string>
     <string name="quick_action_duplicates">Acțiunea rapidă a fost redenumită în %1$s pentru a evita duplicarea.</string>
     <string name="quick_action_interim_dialog">Arată un dialog intermediar</string>
-    <string name="quick_action_switch_day_night_descr">Un comutator pentru a schimba între modurile zi și noapte pentru RoadCrew.</string>
+    <string name="quick_action_switch_day_night_descr">Un comutator pentru a schimba între modurile zi și noapte pentru OsmAnd.</string>
     <string name="quick_action_add_parking_descr">Un buton pentru a adăuga o locație de parcare în mijlocul ecranului.</string>
     <string name="quick_action_navigation_voice_descr">O comutare pentru a dezactiva sau activa ghidarea vocală în timpul navigației.</string>
     <string name="quick_action_take_photo_note_descr">Un buton pentru a adăuga o notă foto în mijlocul ecranului.</string>
@@ -3334,7 +3334,7 @@
 \n - Printr-un plugin suplimentar puteți activa liniile de contur și hillshade</string>
     <string name="option_available_only_in_osmand_pro">Disponibil ca parte a abonamentului OsmAnd Pro.</string>
     <string name="purchases_feature_desc_pro_widgets">Obțineți acces la caracteristicile OsmAnd Pro: Colorarea traseelor și altele.</string>
-    <string name="explore_osmnad_plans_to_find_suitable">Explorați planurile RoadCrew pentru a găsi unul potrivit pentru dumneavoastră.</string>
+    <string name="explore_osmnad_plans_to_find_suitable">Explorați planurile OsmAnd pentru a găsi unul potrivit pentru dumneavoastră.</string>
     <string name="routes_color_by_type">Colorează rutele după…</string>
     <string name="shared_string_relation">Relația</string>
     <string name="rendering_value_walkingRoutesOSMC_description">Colorează rutele în funcție de culoarea lor locală individuală (dacă este prezentă pe OpenStreetMap) și de simbolul marcajului turistic.</string>
@@ -3350,7 +3350,7 @@
     <string name="benefits_for_contributors_primary_descr">Contributorii activi la OpenStreetMap.org pot avea dreptul la actualizări nelimitate ale hărților din oră în oră.</string>
     <string name="benefits_for_contributors_secondary_descr">Conectați-vă la OpenStreetMap pentru a verifica dacă sunteți eligibil pentru actualizări lunare și orare nelimitate ale hărților.</string>
     <string name="available_until">Disponibile până la %1$s</string>
-    <string name="enough_contributions_descr">Felicitări, ați avut suficiente contribuții la OpenStreetMap și acum vă puteți bucura de actualizări nelimitate ale hărții RoadCrew!</string>
+    <string name="enough_contributions_descr">Felicitări, ați avut suficiente contribuții la OpenStreetMap și acum vă puteți bucura de actualizări nelimitate ale hărții OsmAnd!</string>
     <string name="shared_string_contributions">Contribuții</string>
     <string name="contributions_may_calculate_with_delay">Calcularea contribuțiilor poate dura câteva ore.</string>
     <string name="map_updates_are_unavailable_yet">Actualizările hărților nu sunt încă disponibile. :-(</string>
@@ -3430,13 +3430,13 @@
 \n</string>
     <string name="shared_app_storage_description">Memoria partajată nu mai este disponibilă din cauza schimbării accesului la memoria Android.</string>
     <string name="purchases_feature_desc_android_auto">Aduce hărțile offline OsmAnd și navigația pe ecranul vehiculului dumneavoastră și se integrează cu comenzile vehiculului.</string>
-    <string name="internal_app_storage_description">Stocare internă, ascunsă de toți utilizatorii și de alte aplicații, astfel încât numai RoadCrew poate accesa datele tale.</string>
+    <string name="internal_app_storage_description">Stocare internă, ascunsă de toți utilizatorii și de alte aplicații, astfel încât numai OsmAnd poate accesa datele tale.</string>
     <string name="android_auto_map_placeholder_title">Harta este afișată pe ecranul vehiculului.</string>
     <string name="location_access_request_action">Acordă acces</string>
     <string name="android_auto_map_placeholder_descr">Deconectați dispozitivul de la Android Auto pentru a vizualiza harta în aplicație.</string>
     <string name="android_auto_purchase_request_title">Achiziționați OsmAnd Pro sau Maps+ pentru a utiliza OsmAnd cu Android Auto</string>
     <string name="continue_on_phone">Continuați pe dispozitivul mobil</string>
-    <string name="location_access_request_title">RoadCrew are nevoie de permisiunea Locație pentru a naviga.</string>
+    <string name="location_access_request_title">OsmAnd are nevoie de permisiunea Locație pentru a naviga.</string>
     <string name="transparent_status_bar">Bara de stare transparentă</string>
     <string name="map_markers_history">Istoricul marcajelor de hartă</string>
     <string name="navigation_history">Istoricul de navigație</string>
@@ -3492,10 +3492,10 @@
     <string name="icon_group_industrial">Industrie</string>
     <string name="rendering_attr_natureReserves_description">Arată rezervații naturale, zone protejate și parcuri naționale.</string>
     <string name="memory_allocated_for_routing">Memorie alocată pentru rutare</string>
-    <string name="shared_string_skip_warning">Săriți peste migrare\? RoadCrew nu mai are acces la fișierele dumneavoastră din stocarea partajată.
+    <string name="shared_string_skip_warning">Săriți peste migrare\? OsmAnd nu mai are acces la fișierele dumneavoastră din stocarea partajată.
 \n
 \nAplicația va începe să utilizeze noul folder de date.</string>
-    <string name="shared_storage_migration_descr">Din cauza modificărilor la accesarea spațiului de stocare Android, RoadCrew nu mai poate utiliza %1$s.
+    <string name="shared_storage_migration_descr">Din cauza modificărilor la accesarea spațiului de stocare Android, OsmAnd nu mai poate utiliza %1$s.
 \n
 \nCopiați toate datele în noul folder.</string>
     <string name="folder_access_denied">Permisiune necesară pentru a accesa folderul selectat.</string>
@@ -3507,13 +3507,13 @@
     <string name="storage_found_files_descr">Atingeți \"%1$s\" pentru a copia %2$s fișiere din \"%3$s\" în \"%4$s\". Este posibil să dureze ceva timp.</string>
     <string name="skip_confirmation">Da, sări peste</string>
     <string name="shared_storage_last_step">Puteți specifica ulterior un nou folder de date.</string>
-    <string name="shared_storage_third_step">Acordați permisiunea de a accesa folderul. Fără aceasta RoadCrew nu poate copia fișiere.</string>
+    <string name="shared_storage_third_step">Acordați permisiunea de a accesa folderul. Fără aceasta OsmAnd nu poate copia fișiere.</string>
     <string name="gps_filter_smoothing">Uniformizare</string>
     <string name="save_changes_into_file">Salvează modificările în fișier</string>
     <string name="save_as_copy">Salvează o copie</string>
-    <string name="gps_filter_actions_description">RoadCrew va aplica modificările la traseu fără a actualiza fișierul. Puteți salva modificările manual.</string>
+    <string name="gps_filter_actions_description">OsmAnd va aplica modificările la traseu fără a actualiza fișierul. Puteți salva modificările manual.</string>
     <string name="shared_string_gps_filter">Filtru GPS</string>
-    <string name="storage_migration_wrong_folder_warning">Nu s-au găsit date RoadCrew în folderul selectat. Încercați din nou.</string>
+    <string name="storage_migration_wrong_folder_warning">Nu s-au găsit date OsmAnd în folderul selectat. Încercați din nou.</string>
     <string name="shared_string_show_slope">Arată panta</string>
     <string name="exit_without_saving_warning">Ieșiți fără a salva modificările\?</string>
     <string name="shared_string_precision">Precizie</string>
@@ -3578,7 +3578,7 @@
     <string name="import_tracks_descr">%1$s, conține %2$s trasee separate. Alegeți traseele de importat.</string>
     <string name="google_play_services">Servicii Google Play</string>
     <string name="location_source">Sursa locației</string>
-    <string name="location_source_descr">În mod implicit, RoadCrew instalat din Google Play utilizează %1$s pentru a determina poziția.
+    <string name="location_source_descr">În mod implicit, OsmAnd instalat din Google Play utilizează %1$s pentru a determina poziția.
 \n
 \nDacă obțineți o poziționare inexactă sau dacă utilizați un dispozitiv fără %2$s, încercați să folosiți \"%3$s\"</string>
     <string name="android_api">API Android</string>
@@ -3690,7 +3690,7 @@
     <string name="av_notes_choose_action_widget_desc">Alegeți acțiunea.</string>
     <string name="current_speed_widget_desc">Arată viteza curentă așa cum este raportată de GPS.</string>
     <string name="magnetic_bearing_widget_desc">Unghiul dintre nordul magnetic și punctul țintă observat din poziția dumneavoastră.</string>
-    <string name="calculate_online_altitude_descr">Calculați elevația online pe serverele RoadCrew, pe baza imaginilor din satelit și a modelelor digitale de elevație. Diferențele față de altitudinea înregistrată de dispozitiv pot fi utilizate drept corecție a altitudinii.</string>
+    <string name="calculate_online_altitude_descr">Calculați elevația online pe serverele OsmAnd, pe baza imaginilor din satelit și a modelelor digitale de elevație. Diferențele față de altitudinea înregistrată de dispozitiv pot fi utilizate drept corecție a altitudinii.</string>
     <string name="routing_attr_freeride_policy_prefer_offpiste_name">Preferă în afara pârtiei</string>
     <string name="routing_attr_difficulty_preference_no_preference_name">Fără preferință</string>
     <string name="lang_sat">limba Santali</string>
@@ -3787,7 +3787,7 @@
     <string name="av_notes_video_widget_desc">Atingerea widgetului vă permite să înregistrați un video.</string>
     <string name="true_bearing_wdiget_desc">Unghiul dintre nordul geografic și punctul țintă observat din locația dumneavoastră.</string>
     <string name="second_marker_widget_desc">Puteți configura widgetul să arăte distanța sau timpul estimat până la sosirea la cel de-al doilea marcaj de pe hartă.</string>
-    <string name="auto_backup_preference_desc">În mod implicit, Android salvează backupuri ale favoritelor, ale token-urilor de hartă și ale setărilor RoadCrew pentru a le putea restaura pe dispozitive noi sau după reinstalare. Aceast backup este limitat la 25 MB.
+    <string name="auto_backup_preference_desc">În mod implicit, Android salvează backupuri ale favoritelor, ale token-urilor de hartă și ale setărilor OsmAnd pentru a le putea restaura pe dispozitive noi sau după reinstalare. Aceast backup este limitat la 25 MB.
 \nAtunci când utilizați OsmAnd Cloud, acest lucru poate duce la confuzii după reinstalare.</string>
     <string name="auto_backup_title">Backup automat</string>
     <string name="duplacate_widget_added_snackbar">Un widget duplicat este adăugat în listă.</string>
@@ -3807,10 +3807,10 @@
     <string name="download_complete">Descărcare completă</string>
     <string name="available_as_part_of_subscription_plan">Disponibil ca parte a abonamentului %1$s.</string>
     <string name="included_in_your_current_plan">Inclus în planul dumneavoastră actual \"%1$s\"</string>
-    <string name="rendering_engine_failed_descr">RoadCrew a revenit la \"Versiunea 1\" de randare a hărților. Puteți încerca să comutați înapoi la noul motor de randare \'Versiunea 2 (OpenGL)\' în Setări.
+    <string name="rendering_engine_failed_descr">OsmAnd a revenit la \"Versiunea 1\" de randare a hărților. Puteți încerca să comutați înapoi la noul motor de randare \'Versiunea 2 (OpenGL)\' în Setări.
 \n
 \nSusțineți îmbunătățirea aplicației prin trimiterea jurnalului de erori.</string>
-    <string name="send_uuid_preference_desc">Un UUID aleator este utilizat pentru a descărca hărți offline de pe serverele RoadCrew, pentru a monitoriza utilizarea echitabilă a resurselor serverului, pentru a prezice tiparele de trafic și pentru a genera rapoarte lunare anonime privind hărțile.</string>
+    <string name="send_uuid_preference_desc">Un UUID aleator este utilizat pentru a descărca hărți offline de pe serverele OsmAnd, pentru a monitoriza utilizarea echitabilă a resurselor serverului, pentru a prezice tiparele de trafic și pentru a genera rapoarte lunare anonime privind hărțile.</string>
     <string name="show_borders_of_downloaded_maps">Arată contururile hărților descărcate</string>
     <string name="map_rendering_engine">Motor de randare a hărților</string>
     <string name="favorites_backup">Backup pentru favorite</string>
@@ -3843,13 +3843,13 @@
     <string name="ant_go_to_store">Mergeți la magazin</string>
     <string name="ant_read_data">Citește datele</string>
     <string name="map_widget_target_distance">Distanța de la cameră la țintă</string>
-    <string name="rendering_engine_failed">Randarea hărții lui RoadCrew s-a blocat recent.</string>
+    <string name="rendering_engine_failed">Randarea hărții lui OsmAnd s-a blocat recent.</string>
     <string name="share_crash_log">Distribuiți jurnalul cu erori</string>
     <string name="dismiss_changes_descr">Toate modificările vor fi anulate.</string>
     <string name="restart_now">Repornește acum</string>
     <string name="map_rendering_engine_v1">Versiunea 1</string>
     <string name="map_rendering_engine_v2">Versiunea 2 (OpenGL)</string>
-    <string name="map_rendering_engine_descr">Versiunea 1 de redare a fost cea implicită înainte de RoadCrew 4.3 și este în continuare preferabilă pentru dispozitivele mai vechi.\nVersiunea 2 (OpenGL) este un motor de redare a hărților mai rapid, care oferă, de asemenea, o vizualizare 2.5D.</string>
+    <string name="map_rendering_engine_descr">Versiunea 1 de redare a fost cea implicită înainte de OsmAnd 4.3 și este în continuare preferabilă pentru dispozitivele mai vechi.\nVersiunea 2 (OpenGL) este un motor de redare a hărților mai rapid, care oferă, de asemenea, o vizualizare 2.5D.</string>
     <string name="show_map_symbols">Arată simbolurile hărții</string>
     <string name="show_map_symbols_desc">Text, indicatoare rutiere și altele.</string>
     <string name="shared_string_identifiers">Identificatori</string>
@@ -4035,7 +4035,7 @@
     <string name="switch_folder">Schimbă folderul</string>
     <string name="show_all_tracks">Arată toate traseele</string>
     <string name="shared_string_on_map">Pe hartă</string>
-    <string name="empty_tracks_description">Puteți importa, crea sau înregistra trasee folosind RoadCrew.</string>
+    <string name="empty_tracks_description">Puteți importa, crea sau înregistra trasee folosind OsmAnd.</string>
     <string name="change_appearance">Modifică aspect</string>
     <string name="shared_string_kilograms">kilograme</string>
     <string name="shared_string_yards">yarzi</string>
@@ -4133,7 +4133,7 @@
     <string name="ant_plus_pair_new_sensor">Împerecheați un nou senzor</string>
     <string name="ant_plus_pair_new_sensor_ble">Asociază senzor Bluetooth LE</string>
     <string name="ant_plus_pair_new_sensor_ant_plus">Asociază senzor ANT+</string>
-    <string name="ant_plus_pair_bluetooth_prompt">Puteți asocia senzori Bluetooth LE și ANT+ cu RoadCrew.</string>
+    <string name="ant_plus_pair_bluetooth_prompt">Puteți asocia senzori Bluetooth LE și ANT+ cu OsmAnd.</string>
     <string name="speak_route_deviation">Abatere de la traseu</string>
     <string name="ble_search_again">Căutați din nou</string>
     <string name="ant_plus_nothing_found_text">Nu se pot găsi senzori</string>
@@ -4164,7 +4164,7 @@
     <string name="map_3d_mode_description">Atingeți harta cu două degete și deplasați-le în sus și în jos pentru a regla înclinarea hărții.</string>
     <string name="external_device_characteristic_pulse_rate">Frecvența pulsului</string>
     <string name="ant_plus_help_title">Nu știu ce tip de senzor am</string>
-    <string name="ant_plus_searching_text_description">Țineți dispozitivul aproape de senzor. Trebuie să activați senzorul pentru ca RoadCrew să îl poată găsi.</string>
+    <string name="ant_plus_searching_text_description">Țineți dispozitivul aproape de senzor. Trebuie să activați senzorul pentru ca OsmAnd să îl poată găsi.</string>
     <string name="ant_plus_open_settings">Deschideți setările</string>
     <string name="external_device_characteristic_cuff_pressure">Presiunea manșetei</string>
     <string name="ant_plus_bluetooth_off_description">Porniți Bluetooth, găsiți și împerecheați senzorii.</string>
@@ -4240,7 +4240,7 @@
 \n
 \n • Added option to \"Announce deviation from the route\"
 \n
-\n • Start screen: added option restore RoadCrew state from file
+\n • Start screen: added option restore OsmAnd state from file
 \n
 \n • Added \"Hazardous Materials\" classes Truck navigation in North America
 \n
@@ -4330,7 +4330,7 @@
     <string name="help_article_map_map_context_menu_name">Meniul contextual al hărții</string>
     <string name="help_article_navigation_car_play_name">CarPlay</string>
     <string name="help_article_map_track_context_menu_name">Meniul contextual pentru trasee</string>
-    <string name="help_article_map_legend_osmand_name">Stil de hartă RoadCrew</string>
+    <string name="help_article_map_legend_osmand_name">Stil de hartă OsmAnd</string>
     <string name="sensor_temperature_desc">Afișează temperatura de la senzor</string>
     <string name="help_article_navigation_auto_car_name">Android Auto</string>
     <string name="help_article_navigation_routing_horse_routing_name">Rutare pentru călărie</string>
@@ -4343,7 +4343,7 @@
     <string name="help_article_map_interact_with_map_name">Interacționați cu harta</string>
     <string name="help_article_map_raster_maps_name">Hărți raster (online / offline)</string>
     <string name="help_article_map_legend_ski_map_name">Stil hartă de ski</string>
-    <string name="help_article_navigation_routing_osmand_routing_name">Despre navigația RoadCrew</string>
+    <string name="help_article_navigation_routing_osmand_routing_name">Despre navigația OsmAnd</string>
     <string name="help_article_plan_route_coordinate_input_name">Intrare coordonate</string>
     <string name="help_article_personal_import_export_name">Import / Export</string>
     <string name="help_article_plan_route_name">Planificare traseu</string>
@@ -4367,8 +4367,8 @@
     <string name="filter_tracks_count">Filtru: %d</string>
     <string name="app_mode_hang_gliding">Zbor cu parapanta</string>
     <string name="filter_screen_title">Filtru</string>
-    <string name="help_article_start_with_name">Începuturile cu RoadCrew</string>
-    <string name="about_osmand">Despre RoadCrew</string>
+    <string name="help_article_start_with_name">Începuturile cu OsmAnd</string>
+    <string name="about_osmand">Despre OsmAnd</string>
     <string name="send_logcat_log_descr">Fișier jurnal detaliat</string>
     <string name="help_article_widgets_markers_name">Widgeturi marcaje</string>
     <string name="track_filter_range_selected_format">%s - %s, %s</string>
@@ -4384,7 +4384,7 @@
     <string name="user_guide">Ghid utilizator</string>
     <string name="send_crash_log_descr">Conține doar informații despre erorile aplicației</string>
     <string name="contact_us">Contactați-ne</string>
-    <string name="free_versions_descr">Descarcă și instalează versiunea gratuită a RoadCrew</string>
+    <string name="free_versions_descr">Descarcă și instalează versiunea gratuită a OsmAnd</string>
     <string name="free_versions">Versiuni gratuite</string>
     <string name="open_issue_on_github_descr">Puneți întrebări, propuneți funcționalitate nouă</string>
     <string name="github_discussion">Discuții pe GitHub</string>
@@ -4475,7 +4475,7 @@
     <string name="shared_string_show_less">Afișează mai puțin</string>
     <string name="folder">Folder</string>
     <string name="change_button">Comută butonul</string>
-    <string name="enable_to_use_external_input_device">Activați utilizarea dispozitivului de intrare extern cu RoadCrew</string>
+    <string name="enable_to_use_external_input_device">Activați utilizarea dispozitivului de intrare extern cu OsmAnd</string>
     <string name="remove_type_q">Eliminați tipul \"%1$s\"?</string>
     <string name="add_new_type">Adăugă tip nou</string>
     <string name="rendering_attr_showToll_name">Arată restricțiile de taxare</string>
@@ -4582,7 +4582,7 @@
     <string name="use_terrain_maps_summary">Folosește hărți ale terenului pentru datele de altitudine. Geometria pistei rămâne neschimbată.</string>
     <string name="maps_that_also_be_used">Hărți ce vor fi de asemenea utilizate: %1$s</string>
     <string name="shared_string_scale">Scară</string>
-    <string name="required_maps_calculate_online_summary">Lista hărților lipsă se bazează pe traseul în linie dreaptă. Pentru a obține o listă precisă de hărți, RoadCrew vă poate precalcula traseul online.</string>
+    <string name="required_maps_calculate_online_summary">Lista hărților lipsă se bazează pe traseul în linie dreaptă. Pentru a obține o listă precisă de hărți, OsmAnd vă poate precalcula traseul online.</string>
     <string name="use_terrain_maps">Folosește hărți de teren</string>
     <string name="delete_actions_button_confirmation">Sunteți sigur că doriți să ștergeți \"%1$s\" cu toate acțiunile adăugate?</string>
     <string name="relief_3d_download_description">Sunt necesare hărți suplimentare pentru a vizualiza terenul pe hartă.</string>
@@ -4594,7 +4594,7 @@
     <string name="delete_actions_button">Buton de ștergere</string>
     <string name="use_nearby_roads_summary">Folosește harta offline pentru a găsi drumurile din apropiere și datele de altitudine. Poate ajusta geometria pistei.</string>
     <string name="use_nearby_roads">Folosește drumuri din apropiere</string>
-    <string name="retrieve_elevation_data_summary">RoadCrew poate prelua date de elevație de la drumurile din apropiere sau de la hărțile de teren.</string>
+    <string name="retrieve_elevation_data_summary">OsmAnd poate prelua date de elevație de la drumurile din apropiere sau de la hărțile de teren.</string>
     <string name="shared_string_osm_id">ID OSM</string>
     <string name="missing_maps_description">Unele hărți offline necesare pentru acest traseu lipsesc sau nu sunt actualizate. Vă rugăm să descărcați sau să actualizați aceste hărți.</string>
     <string name="vertical_exaggeration">Exagerare verticală</string>
@@ -4656,7 +4656,7 @@
     <string name="data_source">Sursa Datelor</string>
     <string name="weather_source_GFS_description">Sistemul de prognoză globală de la Centrele naționale pentru prognoza mediului</string>
     <string name="weather_source_GFS_title">GFS</string>
-    <string name="weather_data_sources_prompt">RoadCrew furnizează date meteorologice din două surse:</string>
+    <string name="weather_data_sources_prompt">OsmAnd furnizează date meteorologice din două surse:</string>
     <string name="weather_source_ecmwf_description">Centrul european pentru prognoze meteorologice pe termen mediu</string>
     <string name="weather_source_ecmwf_title">ECMWF</string>
     <string name="shared_string_modify">Modifică</string>
@@ -4733,7 +4733,7 @@
     <string name="hugerock_promo_description">Acces gratuit la funcții, inclusiv descărcări nelimitate de hărți, relief 3D etc. pentru %1$s luni</string>
     <string name="driving_region_uk">Regatul Unit și similare</string>
     <string name="quick_action_routes_summary">O comutare pentru a afișa sau a ascunde %1$s pe hartă.</string>
-    <string name="detailed_track_guidance_description">RoadCrew va potrivi traseul dumneavoastră cu drumurile din apropiere pentru o ghidare pas cu pas îmbunătățită.</string>
+    <string name="detailed_track_guidance_description">OsmAnd va potrivi traseul dumneavoastră cu drumurile din apropiere pentru o ghidare pas cu pas îmbunătățită.</string>
     <string name="hugerock_promo">Hugerock Promo pentru %1$s luni</string>
     <string name="route_roundabout_exit">Luați-o pe ieșirea %1$d</string>
     <string name="help_article_map_routes_name">Rute</string>
@@ -4857,7 +4857,7 @@
     <string name="obd_nothing_found_description">Vă rugăm să verificați următoarele:\n - Asigurați-vă că Bluetooth este activat\n - Motorul vehiculului este pornit\n - Asigurați-vă că dispozitivul dumneavoastră se află în raza de acțiune a scanerului.</string>
     <string name="route_guidance_desc">Oferă ghidare pe traseu în timp real, inclusiv distanța până la următorul viraj, numele drumului, numele actual al străzii și informații despre benzi. Widget-urile sunt active în timpul navigării.</string>
     <string name="obd_vehicle_info">Informații despre vehicul</string>
-    <string name="connect_obd_instructions_title">RoadCrew acceptă conexiuni Bluetooth la scanerele OBD-II.</string>
+    <string name="connect_obd_instructions_title">OsmAnd acceptă conexiuni Bluetooth la scanerele OBD-II.</string>
     <string name="obd_bluetooth_off_description">Activați Bluetooth pentru găsirea și conectarea scanerelor.</string>
     <string name="obd_device_forget_sensor">Uitați de scaner</string>
     <string name="shared_string_dynamic">Dinamică</string>
@@ -4956,7 +4956,7 @@
     <string name="map_widget_route_information">Informații despre traseu</string>
     <string name="wikidata">date Wiki</string>
     <string name="prediction_time_advanced_description">Reglați timpul de predicție pentru a minimiza întârzierea.</string>
-    <string name="prediction_time_description">Pictograma de poziție din RoadCrew se animă cu fiecare punct de date GPS primit (o dată pe secundă). O ușoară întârziere în mișcarea sa poate fi observată, în special atunci când utilizatorul se deplasează rapid sau când semnalul GPS fluctuează.</string>
+    <string name="prediction_time_description">Pictograma de poziție din OsmAnd se animă cu fiecare punct de date GPS primit (o dată pe secundă). O ușoară întârziere în mișcarea sa poate fi observată, în special atunci când utilizatorul se deplasează rapid sau când semnalul GPS fluctuează.</string>
     <string name="prediction_time">Durata de predicție</string>
     <string name="shared_string_no_animation">Fără animație</string>
     <string name="position_animation_empty_banner_description">Pictograma de poziție se mută la fiecare locație nouă primită fără animație.</string>
@@ -5000,7 +5000,7 @@
     <string name="ais_nmea_protocol_description">Alegeți protocolul pentru recepția datelor NMEA</string>
     <string name="ais_address_nmea_server">Adresa IP a sursei de date NMEA</string>
     <string name="ais_nmea_protocol">Protocol pentru recepția datelor NMEA</string>
-    <string name="ais_port_nmea_local_description">Definiți portul UPD unde RoadCrew primește date NMEA</string>
+    <string name="ais_port_nmea_local_description">Definiți portul UPD unde OsmAnd primește date NMEA</string>
     <string name="ais_address_nmea_server_description">Definiți adresa IP a sursei de date NMEA (dacă se utilizează TCP)</string>
     <string name="ais_port_nmea_server">Portul TCP al sursei de date NMEA</string>
     <string name="ais_port_nmea_server_description">Definiți numărul portului TCP al sursei de date NMEA</string>

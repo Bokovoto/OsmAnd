@@ -3,7 +3,7 @@
     <string name="plugins_screen">Spraudņu pārvaldnieks</string>
     <string name="prefs_plugins">Spraudņi</string>
     <string name="play_commands_of_currently_selected_voice">Atskaņot komandas izvēlētajai balsij</string>
-    <string name="debugging_and_development">RoadCrew izstrāde</string>
+    <string name="debugging_and_development">OsmAnd izstrāde</string>
     <string name="test_voice_prompts">Pārbaudīt balss komandas</string>
     <string name="gpx_visibility_txt">Redzamība</string>
     <string name="gpx_tags_txt">Iezīmes</string>
@@ -68,7 +68,7 @@
     <string name="live_monitoring_interval">Tiešaistes sekošanas intervāls</string>
     <string name="live_monitoring_url">Tiešsaistes sekošanas web adrese</string>
     <string name="show_current_gpx_title">Rādīt patreizējo trasi</string>
-    <string name="free_version_message">Bezmaksas RoadCrew versijai ir ierobežojums uz %1$s lejupielādēm un tā neatbalsta bezsaistes wikipedia rakstus.</string>
+    <string name="free_version_message">Bezmaksas OsmAnd versijai ir ierobežojums uz %1$s lejupielādēm un tā neatbalsta bezsaistes wikipedia rakstus.</string>
     <string name="free_version_title">Bezmaksas versija</string>
     <string name="poi_context_menu_showdescription">Rādīt POI aprakstu</string>
     <string name="index_name_north_america">Ziemeļamerika</string>
@@ -91,7 +91,7 @@
     <string name="user_name">OSM lietotāja vārds</string>
     <string name="user_password">Parole</string>
     <string name="osmand_service">Fona režīms</string>
-    <string name="osmand_service_descr">RoadCrew darbosies fonā ar izslēgtu ekrānu.</string>
+    <string name="osmand_service_descr">OsmAnd darbosies fonā ar izslēgtu ekrānu.</string>
     <string name="download_files_not_enough_space">Nepietiek brīvās vietas, lai lejupielādētu %1$s MB (brīvi: %2$s).</string>
     <string name="download_files_question_space">Vai lejupielādēt {0} failu(s)?
  Tam vajag {1} MB patstāvīgās vietas
@@ -215,13 +215,13 @@
     <string name="version_index_is_big_for_memory">Indekss \'\'{0}\'\' neietilpst atmiņā</string>
     <string name="version_index_is_not_supported">Indeksa versija \'\'{0}\'\' netiek atbalstīta</string>
     <string name="application_dir">Datu glabāšanas mape</string>
-    <string name="osmand_net_previously_installed">Ir atrasta vecāka RoadCrew versija. Bezsaistes dati ir atbalstīti jaunajā versijā,  bet izlasi vajadzēs eksportēt no vecās versijas, pēc tam importēt jaunajā versijā.</string>
+    <string name="osmand_net_previously_installed">Ir atrasta vecāka OsmAnd versija. Bezsaistes dati ir atbalstīti jaunajā versijā,  bet izlasi vajadzēs eksportēt no vecās versijas, pēc tam importēt jaunajā versijā.</string>
     <string name="build_installed">Versija {0} ir veiksmīgi uzinstalēta ({1}).</string>
     <string name="downloading_build">Lejupielādē versiju…</string>
-    <string name="install_selected_build">Vai vēlaties instalēt RoadCrew - {0} no {1} {2} MB ?</string>
-    <string name="loading_builds_failed">RoadCrew versiju saraksta saņemšana nav izdevusies</string>
-    <string name="loading_builds">Lejupielādē RoadCrew versijas…</string>
-    <string name="select_build_to_install">Izvēlieties, kuru RoadCrew versiju instalēt</string>
+    <string name="install_selected_build">Vai vēlaties instalēt OsmAnd - {0} no {1} {2} MB ?</string>
+    <string name="loading_builds_failed">OsmAnd versiju saraksta saņemšana nav izdevusies</string>
+    <string name="loading_builds">Lejupielādē OsmAnd versijas…</string>
+    <string name="select_build_to_install">Izvēlieties, kuru OsmAnd versiju instalēt</string>
     <string name="contribution_activity">Instalācijas versija</string>
     <string name="gps_status_app_not_found">GPS statusa lietotne nav instalēta. Meklēt Google Play veikalā\?</string>
     <string name="daynight_mode_day">Diena</string>
@@ -267,7 +267,7 @@
     <string name="layer_map">Kartes izcelsme…</string>
     <string name="use_trackball_descr">Lietojiet trackball, lai pārvietotu karti</string>
     <string name="use_trackball">Lietot trackball</string>
-    <string name="process_navigation_service">RoadCrew navigācijas serviss</string>
+    <string name="process_navigation_service">OsmAnd navigācijas serviss</string>
     <string name="int_seconds">sekundes</string>
     <string name="int_min">min.</string>
     <string name="search_poi_filter">Filtrs</string>
@@ -293,7 +293,7 @@
     <string name="transport_stops">pieturas</string>
     <string name="transport">Transports</string>
     <string name="shared_string_ok">Labi</string>
-    <string name="hello">RoadCrew navigācija</string>
+    <string name="hello">OsmAnd navigācija</string>
     <string name="favorite">Izlase</string>
     <string name="shared_string_clear_all">Notīrīt visu</string>
     <string name="shared_string_history">Vēsture</string>
@@ -327,7 +327,7 @@
     <string name="invalid_locations">Koordinātas nav derīgas!</string>
     <string name="shared_string_close">Aizvērt</string>
     <string name="loading_data">Ielādē datus…</string>
-    <string name="previous_run_crashed">Pēdējā RoadCrew palaišana beidzās ar avāriju. Žurnāla fails atrodas {0}. Lūdzu nosūtiet ziņojumu par kļūdu un klāt pievienojiet žurnāla failu.</string>
+    <string name="previous_run_crashed">Pēdējā OsmAnd palaišana beidzās ar avāriju. Žurnāla fails atrodas {0}. Lūdzu nosūtiet ziņojumu par kļūdu un klāt pievienojiet žurnāla failu.</string>
     <string name="saving_gpx_tracks">Saglabā GPX trasi SD kartē…</string>
     <string name="finished_task">Pabeigts</string>
     <string name="data_settings">Dati</string>
@@ -404,9 +404,9 @@
     <string name="shared_string_online_maps">Tiešsaistes kartes</string>
     <string name="osmand_rastermaps_plugin_description">"Ar šo spraudni jūs varēsiet piekļūt dažādām tiešsaistes (t.s. bilžu vai rastru) kartēm, sākot no iepriekš definētām OpenStreetMap bildēm (kā Mapnik) līdz satelītu fotoattēliem un īpašajiem klājumiem kā laikapstākļu kartes, klimata kartes, ğeoloğiskās kartes,  kalnu reljefi u.t.t.
 \n
-\nJebkuras no šīm kartēm var tik pielietotas kā pamata (bāzes) kartes vai kā virsklājs vai apakšklājs citai bāzes kartei (kā piemēram, RoadCrew standarta bezsaistes kartei). Lai apakšklāja kartes būtu labāk redzamas, noteiktus elementus no RoadCrew vektoru kartēm ir iespējams paslēpt caur kartes konfigurācijas izvēlni.
+\nJebkuras no šīm kartēm var tik pielietotas kā pamata (bāzes) kartes vai kā virsklājs vai apakšklājs citai bāzes kartei (kā piemēram, OsmAnd standarta bezsaistes kartei). Lai apakšklāja kartes būtu labāk redzamas, noteiktus elementus no OsmAnd vektoru kartēm ir iespējams paslēpt caur kartes konfigurācijas izvēlni.
 \n
-\nBilžu kartes var lietot no tiešsaistes avotiem vai sagatavot bezsaistes lietošanai (iekopējot RoadCrew datu mapē) kā SQLite databāzi, to izveidojot ar kādu no atsevišķi pieejamajām kartēšanas aplikācijām."</string>
+\nBilžu kartes var lietot no tiešsaistes avotiem vai sagatavot bezsaistes lietošanai (iekopējot OsmAnd datu mapē) kā SQLite databāzi, to izveidojot ar kādu no atsevišķi pieejamajām kartēšanas aplikācijām."</string>
     <string name="osmand_accessibility_description">Rādīt iestatījumus atsevišķām pieejamības iespējām kā TTS runas ātrums, atrašanās vietas izruna, ekrāna mērogošana u.t.t.</string>
     <string name="osmand_development_plugin_description">Rādīt izstrādes un atkļūdošanas iestatījumus, kā piemēram, animētā navigācija, renderēšanas izpildījuma attēlošana vai balss uzvednes. Šie iestatījumi ir paredzēti izstrādātājiem un nav vajadzīgi gala lietotājam.</string>
     <string name="navigate_point_format">Formāts</string>
@@ -491,18 +491,18 @@
     <string name="poi_filter_sightseeing">Apskates vietas</string>
     <string name="avoid_motorway">Bez automaģistrālēm</string>
     <string name="snap_to_road">Tuvināt ceļam</string>
-    <string name="osmand_short_description_80_chars">RoadCrew ir atvērtā koda navigācijas lietotne bezsaistes un tiešsaistes kartēm</string>
-    <string name="osmand_long_description_1000_chars">RoadCrew (OSM Automated Navigation Directions) 
+    <string name="osmand_short_description_80_chars">OsmAnd ir atvērtā koda navigācijas lietotne bezsaistes un tiešsaistes kartēm</string>
+    <string name="osmand_long_description_1000_chars">OsmAnd (OSM Automated Navigation Directions) 
 \n
-\nRoadCrew ir atvērtā koda navigācijas lietotne ar piekļuvi vispusīgiem OpenStreetMap (OSM) datiem. Visi kartes dati (vektoru un bilžu kartes) var tikt saglabāti telefona atmiņā, lai vēlāk tos izmantotu bezsaistē. RoadCrew piedāvā arī bezsaistes un tiešsaistes navigācijas funkcionalitāti t.sk. balss vadību.
+\nOsmAnd ir atvērtā koda navigācijas lietotne ar piekļuvi vispusīgiem OpenStreetMap (OSM) datiem. Visi kartes dati (vektoru un bilžu kartes) var tikt saglabāti telefona atmiņā, lai vēlāk tos izmantotu bezsaistē. OsmAnd piedāvā arī bezsaistes un tiešsaistes navigācijas funkcionalitāti t.sk. balss vadību.
 \n
 \n\t\tProgrammas pamata funcionalitāte iekļauj: \t\t - Pilnīga bezsaistes funkcionalitāte (vektoru un bilžu kartes saglabātas izvēlētajā mapē)
 \n \t\t- Kompaktas bezsaistes kartes visai pasaulei - valsts vai reģiona kartes lejupielādējamas tieši no aplikācijas \t\t - Iespējama vairāku karšu pārklāšana ar dažādiem caurspīdīguma līmeņiem (piem. GPX sekošanas ceļš, intereses vietas (POI), izlase, kontūra līnijas, sabiedriskā transporta pieturas, papildus kartes) \t\t - Bezsaistes adrešu un POI meklēšana. \t\t - Bezsaistes navigācija (eksperimentāla) \t\t - Auto, velo un kājāmgājēju režīmi \t\t - ieslēdzama dienas un nakts režīmu pārslēgšanās \t\t - ieslēdzama joslu uzrādīšana, ātruma ierobežojuma attēlošana, ierakstītas un TTS valodas.
 \n
-\n\t\t Šai bezmaksas RoadCrew versijai ir sekojoši ierobežojumi: \t\t - Ierobežots lejuplādējamo karšu skaits \t\t - Nav pieejams Wikipēdijas bezsaistes POI.
+\n\t\t Šai bezmaksas OsmAnd versijai ir sekojoši ierobežojumi: \t\t - Ierobežots lejuplādējamo karšu skaits \t\t - Nav pieejams Wikipēdijas bezsaistes POI.
 \n
 \n\t\tOsmAnd tiek atkīvi izstrādāts un mūsu projekta tālākais progress ir balstīts uz ziedojumiem, lai finansētu jaunas funkcionalitātes izstrādi un testēšanu. Lūdzu izvēlēties iespēju iegādāties OsmAnd+ vai izvēlieties finansēt speciālās funkcijas, vai arī ziedot tieši osmand.net.</string>
-    <string name="osmand_plus_short_description_80_chars">RoadCrew ir atvērtā koda navigācijas lietotne bezsaistes un tiešsaistes kartēm</string>
+    <string name="osmand_plus_short_description_80_chars">OsmAnd ir atvērtā koda navigācijas lietotne bezsaistes un tiešsaistes kartēm</string>
     <string name="day_night_info_description">Saullēkts: %1$s\nSaulriets: %2$s</string>
     <string name="day_night_info">Dienas/nakts info</string>
     <string name="map_widget_renderer">Renderēšanas veids</string>
@@ -623,7 +623,7 @@
     <string name="app_mode_boat">Kuģošana</string>
     <string name="local_osm_changes_delete_all_confirm">Tiks izdzēsti %1$d osm labojumi. Vai turpināt?</string>
     <string name="auto_zoom_none">Nav automātiskais mērogs</string>
-    <string name="osmand_play_title_30_chars">RoadCrew kartes &amp; navigācija</string>
+    <string name="osmand_play_title_30_chars">OsmAnd kartes &amp; navigācija</string>
     <string name="osmand_plus_play_title_30_chars">OsmAnd+ kartes &amp; navigācija</string>
     <string name="incomplete_locale">Nepabeigts</string>
     <string name="shared_string_downloading">Lejupielādē</string>
@@ -648,8 +648,8 @@
     <string name="complex_route_calculation_failed">Maršruta ātrā aprēķināšana neizdevās (%s), notiks lēnā aprēķināšana.</string>
     <string name="android_19_location_disabled">Pēc Android 4.4 (KitKat) atjauninājuma vecā karšu krātuve (%s) nav izmantojama. Vai vēlaties to nomainīt uz jaunu vietu un pārkopēt visus failus?
 \n Piezīme 1: vecie faili paliks neskarti..\n Piezīme 2: jaunajā krātuvē nebūs iespējams koplietot failus starp OsmAnd un OsmAnd+.</string>
-    <string name="copying_osmand_files">Kopē RoadCrew failus…</string>
-    <string name="calculate_osmand_route_gpx">Aprēķināt RoadCrew bezsaistes maršrutu</string>
+    <string name="copying_osmand_files">Kopē OsmAnd failus…</string>
+    <string name="calculate_osmand_route_gpx">Aprēķināt OsmAnd bezsaistes maršrutu</string>
     <string name="app_mode_truck">Kravas auto</string>
     <string name="routing_attr_prefer_motorway_name">Priekšroka automaģistrālēm</string>
     <string name="routing_attr_prefer_motorway_description">Maršruta plānošanā vispirms tiks dota priekšroka automaģistrālēm (ātrgaitas šosejām)</string>
@@ -668,8 +668,8 @@
     <string name="route_info">Maršruta informācija</string>
     <string name="keep_and_add_destination_point">Pievienot kā nākamo galamērķi</string>
     <string name="shared_string_favorite">Izlase</string>
-    <string name="calculate_osmand_route_without_internet">Aprēķināt RoadCrew maršruta segmentu bez interneta</string>
-    <string name="gpx_option_calculate_first_last_segment">Aprēķināt RoadCrew maršrutu pirmajam un pēdējam segmentam</string>
+    <string name="calculate_osmand_route_without_internet">Aprēķināt OsmAnd maršruta segmentu bez interneta</string>
+    <string name="gpx_option_calculate_first_last_segment">Aprēķināt OsmAnd maršrutu pirmajam un pēdējam segmentam</string>
     <string name="lang_en">Angļu</string>
     <string name="lang_af">Āfrikāņu</string>
     <string name="lang_hy">Armēņu</string>
@@ -719,14 +719,14 @@
     <string name="lang_zh">Ķīniešu</string>
     <string name="lang_pt_br">Portugāļu (Brazīlija)</string>
     <string name="interrupt_music">Pauzēt mūziku</string>
-    <string name="share_route_subject">Maršruts kopīgots caur RoadCrew</string>
+    <string name="share_route_subject">Maršruts kopīgots caur OsmAnd</string>
     <string name="keep_informing_never">Manuāli (nospiediet uz bultas)</string>
     <string name="keep_informing">Atkārtot navigācijas instrukcijas</string>
     <string name="navigation_intent_invalid">Nepareizs formāts: %s</string>
     <string name="interrupt_music_descr">Pilnībā nopauzēt mūziku paziņojumu brīžos</string>
     <string name="share_route_as_gpx">Koplietot maršrutu kā GPX failu</string>
     <string name="shared_string_share">Kopīgot</string>
-    <string name="share_fav_subject">Izlase kopīgota ar RoadCrew</string>
+    <string name="share_fav_subject">Izlase kopīgota ar OsmAnd</string>
     <string name="osmo_connect_menu">Pieslēgties</string>
     <string name="rendering_value_pink_name">rozā</string>
     <string name="rendering_value_brown_name">brūns</string>
@@ -978,7 +978,7 @@
     <string name="routing_attr_height_name">Augstuma robežas</string>
     <string name="routing_attr_avoid_borders_description">Neiebraukt citas valsts teritorijā</string>
     <string name="gps_network_not_enabled">GPS ir izslēgts. Vai ieslēgt to tagad?</string>
-    <string name="shared_string_import2osmand">Importēt RoadCrewā</string>
+    <string name="shared_string_import2osmand">Importēt OsmAndā</string>
     <string name="read_full_article">Lasīt visu rakstu (onlainā)</string>
     <string name="shared_string_wikipedia">Vikipēdija</string>
     <string name="shared_string_show_details">Rādīt detaļas</string>
@@ -1096,7 +1096,7 @@
     <string name="context_menu_item_delete_waypoint">Dzēst GPX kursa punktu?</string>
     <string name="context_menu_item_edit_waypoint">Labot GPX kursa punktu</string>
     <string name="shared_string_location">Vieta</string>
-    <string name="share_osm_edits_subject">OSM labojumi kopīgoti RoadCrew</string>
+    <string name="share_osm_edits_subject">OSM labojumi kopīgoti OsmAnd</string>
     <string name="lang_mk">Maķedoniešu</string>
     <string name="lang_als">Albāņu (tosku)</string>
     <string name="read_more">Lasīt vēl</string>
@@ -1204,7 +1204,7 @@
     <string name="favourites_context_menu_add">Pievienot izlasei</string>
     <string name="poi_action_delete">Izdzēst</string>
     <string name="poi_dialog_reopen">Atkārtoti atvērt</string>
-    <string name="do_you_like_osmand">Vai tev patīk RoadCrew?</string>
+    <string name="do_you_like_osmand">Vai tev patīk OsmAnd?</string>
     <string name="user_hates_app_get_feedback">Uzrakstiet kāpēc.</string>
     <string name="user_hates_app_get_feedback_long">Lūdzu uzrakstiet, ko gribētu mainīt šajā aplikācijā.</string>
     <string name="failed_to_upload">Augšupielāde neizdevās</string>
@@ -1298,7 +1298,7 @@ failu(s)?
     <string name="access_expanded_list">Izplests saraksts</string>
     <string name="access_shared_string_not_installed">Nav instalēts</string>
     <string name="access_shared_string_navigate_up">Uz augšu</string>
-    <string name="plugin_ski_descr">"Šis RoadCrew spraudnis ļauj piekļūt datiem par slēpošanas trasēm un maršrutiem, trošu vagoniem un pacēlājiem. Maršruti un trases tiek rādīti pēc krāsām, atkarībā no grūtības pakāpes un tiek attēlotas īpašā \"ziemas\" kartes stilā.
+    <string name="plugin_ski_descr">"Šis OsmAnd spraudnis ļauj piekļūt datiem par slēpošanas trasēm un maršrutiem, trošu vagoniem un pacēlājiem. Maršruti un trases tiek rādīti pēc krāsām, atkarībā no grūtības pakāpes un tiek attēlotas īpašā \"ziemas\" kartes stilā.
 \n
 \nAktivizējot spraudni, kartes stils tiek nomainīts uz \"Ziema un slēpošana,\" attēlojot visus ainavas elementus ziemas apstākļiem atbilstošus. Deaktivizēt spraudni var vai nu šeit vai nomainot kartes stilu kartes uzstādījumos. "</string>
     <string name="access_direction_audio_feedback">Skaņas indikācija kustībai</string>
@@ -1329,7 +1329,7 @@ failu(s)?
     <string name="si_mi_meters">Jūdzes/metri</string>
     <string name="search_another_country">Izvēlieties citu reģionu</string>
     <string name="search_map">Meklē karti…</string>
-    <string name="first_usage_wizard_desc">RoadCrew noteiks jūsu atrašanās vietu un piedāvās lejupielādēt šī reģiona karti.</string>
+    <string name="first_usage_wizard_desc">OsmAnd noteiks jūsu atrašanās vietu un piedāvās lejupielādēt šī reģiona karti.</string>
     <string name="location_not_found">Atrašanās vieta nav zināma</string>
     <string name="no_inet_connection">Nav interneta savienojuma</string>
     <string name="search_location">Meklē atrašanās vietu…</string>
@@ -1347,7 +1347,7 @@ failu(s)?
     <string name="confirmation_to_delete_history_items">Vai vēlaties izdzēst atzīmētās vienības no vēstures?</string>
     <string name="show_something_on_map">Rādīt %1$s uz kartes</string>
     <string name="dist_away_from_my_location">Meklēt %1$s no vietas</string>
-    <string name="share_history_subject">" Koplietots RoadCrew"</string>
+    <string name="share_history_subject">" Koplietots OsmAnd"</string>
     <string name="search_categories">Kategorijas</string>
     <string name="postcode">Pasta indekss</string>
     <string name="shared_string_from">no</string>
@@ -1558,7 +1558,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="right_side_navigation">Navigācija ar stūri labajā pusē</string>
     <string name="do_not_show_startup_messages">Nerādīt ziņojumus startējot</string>
     <string name="parking_options">Stāvvietas opcijas</string>
-    <string name="full_version_thanks">Paldies par RoadCrew pilnās versijas iegādi!</string>
+    <string name="full_version_thanks">Paldies par OsmAnd pilnās versijas iegādi!</string>
     <string name="routing_attr_relief_smoothness_factor_hills_name">Kalnains</string>
     <string name="routing_attr_relief_smoothness_factor_plains_name">Mazāk kalnains</string>
     <string name="routing_attr_relief_smoothness_factor_more_plains_name">Līdzens</string>
@@ -1570,7 +1570,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="route_is_too_long_v2">Maršruts varētu būt par garu kalkulācijai. Lūdzu pievienojiet starppunktus, ja rezultāts neparādās 10 minūtēs.</string>
     <string name="osmand_extended_description_part4">"
  Slēpošana
- RoadCrew slēpošanas karšu spraudnis ļauj redzēt slēpošanas trases ar dažādām sarežğītības pakāpēm un papildinformāciju par pacēlāju un citu būvju lokācijas vietām.
+ OsmAnd slēpošanas karšu spraudnis ļauj redzēt slēpošanas trases ar dažādām sarežğītības pakāpēm un papildinformāciju par pacēlāju un citu būvju lokācijas vietām.
  "</string>
     <string name="osmand_extended_description_part5">"
  Velobraukšana
@@ -1587,7 +1587,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="quick_action_auto_zoom_off">Automērogošana izslēgta</string>
     <string name="index_item_depth_points_southern_hemisphere">Jūras dziļuma punkti dienvidu puslodē</string>
     <string name="index_item_depth_points_northern_hemisphere">Jūras dziļuma punkti ziemeļu puslodē</string>
-    <string name="osmand_extended_description_part1">RoadCrew (OSM Automated Navigation Directions) ir karšu un navigācijas lietotne ar brīvu piekļuvi augstas kvalitātes OpenStreetMap (OSM) datiem no visas pasaules. 
+    <string name="osmand_extended_description_part1">OsmAnd (OSM Automated Navigation Directions) ir karšu un navigācijas lietotne ar brīvu piekļuvi augstas kvalitātes OpenStreetMap (OSM) datiem no visas pasaules. 
 \n 
 \n Izbaudiet balss un vizuālo navigatoru, skatiet POIs (interešu punktus), veidojiet un pārvaldiet GPX trekus, lietojiet kontūrlīniju vizualizāciju and altitūdas informāciju (caur spraudni), izvēlieties auto, velobraucēju, kājāmgājēju režīmus, labojiet OSM datus un daudz vairāk.</string>
     <string name="osmand_extended_description_part2">GPS navigācija
@@ -1604,7 +1604,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="osmand_extended_description_part3">"\n Karte\n • Rāda POIs (interešu punktus) jums apkārt\n • Pielāgo karti kustības virzienā (vai pēc kompasa)\n • Rāda, kur jūs atrodaties un uz kuru pusi esat pagriezies\n • Dalās ar jūsu atrašanās vietu, tā lai jūsu draugi var jūs atrast\n • Jūsu apmeklētās un svarīgās vietas tiek glabātas izlasē\n • Ļauj izvēlēties kā rādīt nosaukumus kartē: angļu valodā, vietējā vai fonētiski izrunātus\n • Rāda specializētas tiešsaistes bildes, satelīta attēlus (no Bing), dažādus virsklājus kā tūrisma/navigācijas GPX trekus un papildus klājumus ar maināmiem caurspīdīgumiem\n "</string>
     <string name="osmand_extended_description_part6">"\n Pastaigas, pārgājieni, tūrisms\n • Karte parāda pastaigu un pārgājienu takas\n • Wikipēdija izvēlētajā valodā pastāstīs jums daudz kā kā jauna pilsētas pastaigās\n • Sabiedriskā transorta pieturas, ieskaitot peronu nosaukumus, ļaus droši pārvietoties svešā pilsētā\n • GPS navigācija kājāmgājēju režīmā veido maršrutus pa gājēju celiņiem\n • Jūs varat augšupielādēt un sekot GPX maršrutam vai ierakstīt un kopīgot pats savu\n "</string>
     <string name="osmand_extended_description_part7">"\n Piedalīties OSM izstrādē\n • Ziņot par datu kļūdām\n • Caur aplikāciju augšupielādēt GPX trases uz OSM\n • Pievienot POIs un augšupielādēt tos uzreiz (vai vēlāk, ja esat bezsaistē) uz OSM\n "</string>
-    <string name="osmand_extended_description_part8">RoadCrew ir atvērtā koda lietotne, kas tiek aktīvi izstrādāta un pilnveidota. Ikviens var piedalīties tā izstrādē, ziņojot par kļūdām, uzlabojot tulkojumus vai kodējot jaunas papildiespējas. Šis projekts tiek nepārtraukti uzlabots, mijiedarbojoties aplikācijas izstrādātājiem ar tās lietotājiem. Projekta progress atkarīgs arī no finsansēm, lai atbalstītu kodēšanu un jaunas funkcionalitātes testēšanu.
+    <string name="osmand_extended_description_part8">OsmAnd ir atvērtā koda lietotne, kas tiek aktīvi izstrādāta un pilnveidota. Ikviens var piedalīties tā izstrādē, ziņojot par kļūdām, uzlabojot tulkojumus vai kodējot jaunas papildiespējas. Šis projekts tiek nepārtraukti uzlabots, mijiedarbojoties aplikācijas izstrādātājiem ar tās lietotājiem. Projekta progress atkarīgs arī no finsansēm, lai atbalstītu kodēšanu un jaunas funkcionalitātes testēšanu.
 \n Aptuvenais karšu pārklājums un detalizācija:
 \n • Rietumeiropa: ****
 \n • Austrumeiropa: ***
@@ -1650,7 +1650,7 @@ Apraksta laukumu: %1$s x %2$s</string>
 \n • Augšupielādējiet GPX trekus uz OSM caur aplikāciju
 \n • Pievienojiet POIs un augšupielādējiet uzreiz uz OSM (vai vēlāk, ja esat bezsaistē)
 \n • Optionāli ceļojuma ierakstīšana arī fona režīmā (kamēr ierīce atrodas miega režīmā)
-\n RoadCrew ir atvērtā koda un aktīvā izstrādē esoša lietotne. Ikviens var piedalīties tā veidošanā, ziņojot par kļūdām, uzlabojot tulkojumus vai kodējot jaunas iespējas. Projekts atrodas patstāvīgā mijiedarbībā starp izstrādātājiem un lietotnes lietotājiem. Tāpat arī projekta progress balstās uz finansiālajiem ziedojumiem aplikācijas kodēšanai un jauno iespēju testēšanai
+\n OsmAnd ir atvērtā koda un aktīvā izstrādē esoša lietotne. Ikviens var piedalīties tā veidošanā, ziņojot par kļūdām, uzlabojot tulkojumus vai kodējot jaunas iespējas. Projekts atrodas patstāvīgā mijiedarbībā starp izstrādātājiem un lietotnes lietotājiem. Tāpat arī projekta progress balstās uz finansiālajiem ziedojumiem aplikācijas kodēšanai un jauno iespēju testēšanai
 \n</string>
     <string name="shared_string_add_photos">Pievienot fotogrāfijas</string>
     <string name="mapillary_action_descr">Pievienojiet savus šīs vietas ielas līmeņa skatus caur Mapillary.</string>
@@ -1666,7 +1666,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="plugin_mapillary_descr">Ielas līmeņa fotoattēli ikvienam - atklājiet vietas, kopīgojiet, iemūžiniet pasauli.</string>
     <string name="show_from_zoom_level">Rādīt no zoom līmeņa</string>
     <string name="mapillary_image">Mapillary bilde</string>
-    <string name="import_gpx_failed_descr">RoadCrew nevar importēt failu. Pārliecinieties vai RoadCrew ir atļauja nolasīt failu dotajā mapē.</string>
+    <string name="import_gpx_failed_descr">OsmAnd nevar importēt failu. Pārliecinieties vai OsmAnd ir atļauja nolasīt failu dotajā mapē.</string>
     <string name="shared_string_permissions">Atļaujas</string>
     <string name="none_point_error">Lūdzu pievienojiet vismaz vienu punktu.</string>
     <string name="quick_action_resume_pause_navigation_descr">Pieskarieties pogai, lai nopauzētu vai atsāktu navigāciju.</string>
@@ -1711,7 +1711,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="descendingly">Dilstoši</string>
     <string name="ascendingly">Augoši</string>
     <string name="date_added">Pēc datuma</string>
-    <string name="measurement_tool_snap_to_road_descr">RoadCrew apvienos punktus ar maršrutiem izvēlētajam profilam.</string>
+    <string name="measurement_tool_snap_to_road_descr">OsmAnd apvienos punktus ar maršrutiem izvēlētajam profilam.</string>
     <string name="tap_on_map_to_hide_interface_descr">Pieskāriens uz kartes ieslēdz pogas un logrīkus.</string>
     <string name="tap_on_map_to_hide_interface">Pilnekrāna režīms</string>
     <string name="mark_passed">Atzīmēt izietos</string>
@@ -1788,8 +1788,8 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="rendering_attr_whiteWaterSports_name">Smaiļošana pa upēm</string>
     <string name="rate_dialog_descr">Lūdzu veltiet 30 sekundes laika atsauksmēm un novērtējiet mūsu darbu Google Play.</string>
     <string name="shared_string_privacy_policy">Privātuma politika</string>
-    <string name="help_us_make_osmand_better">Palīdziet mums veidot RoadCrew labāku!</string>
-    <string name="process_downloading_service">RoadCrew lejupielādes serviss</string>
+    <string name="help_us_make_osmand_better">Palīdziet mums veidot OsmAnd labāku!</string>
+    <string name="process_downloading_service">OsmAnd lejupielādes serviss</string>
     <string name="shared_string_color_magenta">Purpura</string>
     <string name="shared_string_icon">Ikona</string>
     <string name="press_again_to_change_the_map_orientation">Pieskarieties vēlreiz, lai mainītu kartes orientāciju</string>
@@ -1798,7 +1798,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="default_speed_setting_title">Noklusētais ātrums</string>
     <string name="default_speed_setting_descr">Mainīt noklusētā ātruma iestatījumus</string>
     <string name="new_profile">Jauns profils</string>
-    <string name="last_launch_crashed">Pēdējā RoadCrew palaišana beidzās ar avāriju. Palīdziet uzlabot RoadCrew, nosūtot kļūdas ziņojumu.</string>
+    <string name="last_launch_crashed">Pēdējā OsmAnd palaišana beidzās ar avāriju. Palīdziet uzlabot OsmAnd, nosūtot kļūdas ziņojumu.</string>
     <string name="app_mode_ufo">NLO</string>
     <string name="app_mode_personal_transporter">Segway</string>
     <string name="app_mode_monowheel">Monoritenis</string>
@@ -1839,7 +1839,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="poi_cannot_be_found">Vietu vai objektu nevar atrast.</string>
     <string name="search_no_results_feedback">Neko nevarēja atrast\?
 \nSūtiet mums atsauksmi</string>
-    <string name="ask_for_location_permission">Lai turpinātu, atļaujiet RoadCrew noteikt atrašanās vietu.</string>
+    <string name="ask_for_location_permission">Lai turpinātu, atļaujiet OsmAnd noteikt atrašanās vietu.</string>
     <string name="more_transport_on_stop_hint">Šajā pieturvietā ir arī citi transporlīdzekļi.</string>
     <string name="search_street">Meklēt ielu</string>
     <string name="start_search_from_city">Vispirms izvēlieties pilsētu</string>
@@ -1936,7 +1936,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="rendering_attr_highway_class_path_name">Takas</string>
     <string name="rendering_attr_highway_class_cycleway_name">Veloceliņi</string>
     <string name="rendering_attr_undefined_name">Nenoteikts</string>
-    <string name="public_transport_warning_descr_blog">Uzziniet vairāk kā RoadCrew aprēķina maršrutus mūsu blogā.</string>
+    <string name="public_transport_warning_descr_blog">Uzziniet vairāk kā OsmAnd aprēķina maršrutus mūsu blogā.</string>
     <string name="public_transport_warning_title">Publiskā transporta navigācija atrodas beta stadijā, tāpēc ir iespējamas kļūdas un neprecizitātes.</string>
     <string name="add_intermediate">Pievienot starppunktu</string>
     <string name="shared_string_walk">Ar kājām</string>
@@ -1964,21 +1964,21 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="files_failed">Nevarēja nokopēt %1$d failus (%2$s).</string>
     <string name="dont_move_maps">Nepārvietot</string>
     <string name="public_transport_ped_route_title">Ar kājām maršruts būtu apmēram %1$s un varētu būt ātrāks nekā ar sabiedrisko transportu</string>
-    <string name="public_transport_no_route_title">Diemžēl RoadCrew nevarēja atrast maršrutu, kas būtu piemērots jūsu iestatījumiem.</string>
+    <string name="public_transport_no_route_title">Diemžēl OsmAnd nevarēja atrast maršrutu, kas būtu piemērots jūsu iestatījumiem.</string>
     <string name="public_transport_try_ped">Mēģiniet kājāmgājēju navigāciju.</string>
     <string name="public_transport_try_change_settings">Mēģiniet mainīt iestatījumus.</string>
     <string name="public_transport_calc_pedestrian">Aprēķināt maršrutu ar kājām</string>
     <string name="public_transport_type">Transporta veids</string>
     <string name="searching_gps">Meklē GPS</string>
     <string name="coordinates_widget">Koordināšu logrīks</string>
-    <string name="make_osmand_better_descr">Ļaujiet RoadCrew iegūt un apstrādāt anonīmus lietotnes izmantošanas datus. Mēs neiekļaujam jūsu atrašanās vietas datus vai vietas, kuras pārlūkojat uz kartes.
+    <string name="make_osmand_better_descr">Ļaujiet OsmAnd iegūt un apstrādāt anonīmus lietotnes izmantošanas datus. Mēs neiekļaujam jūsu atrašanās vietas datus vai vietas, kuras pārlūkojat uz kartes.
 \n
 \nJūs variet mainīt izvēlēto jebkurā laikā Iestatījumos &gt; Privātums un Drošība.</string>
     <string name="choose_data_to_share">Izvēlieties, kādus datus gribiet koplietot:</string>
     <string name="downloaded_maps">Lejupielādētās kartes</string>
     <string name="visited_screens">Atvērtie ekrāni</string>
     <string name="downloaded_maps_collect_descr">Palīdziet mums saprast, kādas valstis un kartes ir vispopulārākās.</string>
-    <string name="visited_screens_collect_descr">Palīdziet mums saprast, kādas RoadCrew iespējas ir vispopulārākās.</string>
+    <string name="visited_screens_collect_descr">Palīdziet mums saprast, kādas OsmAnd iespējas ir vispopulārākās.</string>
     <string name="privacy_and_security_change_descr">Nospiežot uz \"Atļaut\" jūs piekrītat mūsu %1$s</string>
     <string name="settings_privacy_and_security">Privātums un drošība</string>
     <string name="settings_privacy_and_security_desc">Izvēlieties, kurus datus koplietot ar mums</string>
@@ -2000,7 +2000,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="profile_alert_need_profile_name_title">Ievadiet profila vārdu</string>
     <string name="profile_alert_need_profile_name_msg">Profila vārds nedrīkst būt tukšs!</string>
     <string name="profile_alert_duplicate_name_msg">Šāds profils jau eksistē</string>
-    <string name="profile_alert_cant_delete_base">Jūs nevarat izdzēst RoadCrew bāzes profilus</string>
+    <string name="profile_alert_cant_delete_base">Jūs nevarat izdzēst OsmAnd bāzes profilus</string>
     <string name="profile_alert_delete_title">Izdzēst profilu</string>
     <string name="profile_alert_delete_msg">Vai esiet pārliecināts, ka vēlaties izdzēst %s profilu</string>
     <string name="select_base_profile_dialog_title">Izvēlieties sākuma profilu</string>
@@ -2015,7 +2015,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="routing_profile_geocoding">Ģeodēzija</string>
     <string name="routing_profile_straightline">Taisnā līnija</string>
     <string name="routing_profile_broutrer">BRouter (bezsaistes)</string>
-    <string name="osmand_default_routing">RoadCrew navigācija</string>
+    <string name="osmand_default_routing">OsmAnd navigācija</string>
     <string name="special_routing_type">Specializētā navigācija</string>
     <string name="third_party_routing_type">Trešās puses navigācija</string>
     <string name="application_profiles">Lietotnes profili</string>
@@ -2183,7 +2183,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="wiki_article_not_found">Raksts nav atrasts</string>
     <string name="how_to_open_wiki_title">Kā atvērt Vikipēdijas rakstus\?</string>
     <string name="popular_destinations">Populārie galamērķi</string>
-    <string name="osmand_team">RoadCrew komanda</string>
+    <string name="osmand_team">OsmAnd komanda</string>
     <string name="maps_you_need_descr">Balstoties uz saglabātajām grāmatzīmēm, sekojošās kartes ir ieteicams lejupielādēt:</string>
     <string name="maps_you_need">Nepieciešamās kartes</string>
     <string name="shared_string_restart">Pārlādēt lietotni</string>
@@ -2204,7 +2204,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="unirs_render_descr">Uzlabots kontrasts kājāmgājēju un velosipēdu celiņiem. Izmanto vecākas Mapnik krāsas.</string>
     <string name="shared_string_gpx_file">GPX fails</string>
     <string name="shared_string_gpx_waypoints">Treku ceļapunkti</string>
-    <string name="wikivoyage_travel_guide_descr">Interesantāko vietu apraksti uz planētas RoadCrew lietotnē bez pieslēguma internetam.</string>
+    <string name="wikivoyage_travel_guide_descr">Interesantāko vietu apraksti uz planētas OsmAnd lietotnē bez pieslēguma internetam.</string>
     <string name="increase_search_radius_to">Palielināt meklēšanas rādiusu līdz %1$s</string>
     <string name="test_voice_desrc">Spiediet uz pogas un klausieties atbilstošo balss uzvedni, lai noteiktu trūkstošās vai kļūdainās uzvednes.</string>
     <string name="rendering_value_black_name">Melns</string>
@@ -2292,7 +2292,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="switch_profile">Mainīt profilu</string>
     <string name="reset_to_default">Atiestatīt uz noklusējumiem</string>
     <string name="osmand_settings_descr">Ietekmē visu aplikāciju</string>
-    <string name="osmand_settings">RoadCrew iestatījumi</string>
+    <string name="osmand_settings">OsmAnd iestatījumi</string>
     <string name="copy_from_other_profile">Kopēt no cita profila</string>
     <string name="turn_screen_on">Ieslēgt ekrānu</string>
     <string name="map_during_navigation_info">Karte navigācijas laikā</string>
@@ -2323,14 +2323,14 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="live_monitoring_descr">Atļaut koplietot tekošo lokāciju, lietojot ceļa ierakstīšanu.</string>
     <string name="live_monitoring">Sekošana tiešsaistē</string>
     <string name="save_track_logging_accuracy">žurnalēšanas precizitāte</string>
-    <string name="tracks_view_descr">Jūsu ierakstītie treki atrodas %1$s vai RoadCrew mapē.</string>
+    <string name="tracks_view_descr">Jūsu ierakstītie treki atrodas %1$s vai OsmAnd mapē.</string>
     <string name="multimedia_notes_view_descr">Jūsu OSM piezīmes atrodas %1$s.</string>
     <string name="video_notes">Video piezīmes</string>
     <string name="photo_notes">Foto piezīmes</string>
     <string name="accessibility_announce">Paziņošana</string>
     <string name="plugin_global_prefs_info">Šie iestatījumi ir globāli un darbosies visos profilos</string>
     <string name="osm_editing">OSM rediģēšana</string>
-    <string name="osm_edits_view_descr">Skatiet neaugšupielādētos labojumus vai OSM kļūdas %1$s mapē. Augšupielādētie punkti vairs netiek rādīti RoadCrew lietotnē.</string>
+    <string name="osm_edits_view_descr">Skatiet neaugšupielādētos labojumus vai OSM kļūdas %1$s mapē. Augšupielādētie punkti vairs netiek rādīti OsmAnd lietotnē.</string>
     <string name="app_mode_osm">OSM</string>
     <string name="logcat_buffer_descr">Skatiet un koplietojiet detalizētus lietotnes žurnālus</string>
     <string name="permission_is_required">Ir nepieciešama atļauja darbības veikšanai.</string>
@@ -2376,7 +2376,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="shared_string_revert">Atjaunot</string>
     <string name="reorder_profiles">Rediģēt profilu sarakstu</string>
     <string name="edit_profiles">Rediģēt profilus</string>
-    <string name="edit_profiles_descr">RoadCrew pamata profilus nevar izdzēst, bet atspējot (uz iepriekšējā ekrāna) vai pārkārtot uz leju.</string>
+    <string name="edit_profiles_descr">OsmAnd pamata profilus nevar izdzēst, bet atspējot (uz iepriekšējā ekrāna) vai pārkārtot uz leju.</string>
     <string name="selected_profile">Izvēlētais profils</string>
     <string name="shared_string_nothing_selected">Nekas nav izvēlēts</string>
     <string name="icon_group_emergency">Ārkārtas</string>
@@ -2482,8 +2482,8 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="logout_from_osmand_cloud">Izrakstīties no OsmAnd Cloud</string>
     <string name="logout_from_osmand_cloud_decsr">Izrakstīties\?
 \nJums vajadzēs no jauna pierakstīties, lai dublētu vai atjaunotu datus.</string>
-    <string name="backup_deleting_all_data_descr">Lūdzu uzgaidiet, kamēr RoadCrew izdzēsīs jūsu datus no cloud. Ierīces dati paliks neskarti.</string>
-    <string name="backup_deleted_all_data_descr">Jūsu dati tika veiksmīgi izdzēsti no RoadCrew Could.</string>
+    <string name="backup_deleting_all_data_descr">Lūdzu uzgaidiet, kamēr OsmAnd izdzēsīs jūsu datus no cloud. Ierīces dati paliks neskarti.</string>
+    <string name="backup_deleted_all_data_descr">Jūsu dati tika veiksmīgi izdzēsti no OsmAnd Could.</string>
     <string name="backup_version_history_removed">Versiju vēsture ir dzēsta.</string>
     <string name="backup_data_removed">Visi dati ir dzēsti.</string>
     <string name="shared_string_progress">Progress</string>
@@ -2500,14 +2500,14 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="shared_string_uninstall">Atinstalēt</string>
     <string name="uninstall_speed_cameras">Atinstalēt ātruma kameras</string>
     <string name="turn_screen_on_wake_time_descr">Ekrāna noildze pēc ieslēgšanas.( \"%1$s\" uzstādījumam nav noildzes.)</string>
-    <string name="turn_screen_on_power_button_descr">Nospiežot barošanas pogu, RoadCrew tiks parādīts virs bloķēšanas ekrāna.</string>
+    <string name="turn_screen_on_power_button_descr">Nospiežot barošanas pogu, OsmAnd tiks parādīts virs bloķēšanas ekrāna.</string>
     <string name="turn_screen_on_power_button_disabled">Neaktīvs. Nepieciešams ieslēgt \'turēt ekrānu ieslēgtu\' zem \'Noildze pēc pamošanās\'.</string>
     <string name="turn_screen_on_proximity_sensor">Tuvuma sensors</string>
     <string name="turn_screen_on_navigation_instructions">Navigācijas instrukcijas</string>
     <string name="weight_limit_description">Norādiet transportlīdzekļa svaru, smagākiem transportlīdzekļiem var tik piemēroti maršruta ierobežojumi.</string>
-    <string name="turn_screen_on_descr">Izvēlieties ekrāna pamošanās opcijas (pārliecinieties, ka RoadCrew atrodas priekšplānā, kad ekrāns tiek bloķēts):</string>
+    <string name="turn_screen_on_descr">Izvēlieties ekrāna pamošanās opcijas (pārliecinieties, ka OsmAnd atrodas priekšplānā, kad ekrāns tiek bloķēts):</string>
     <string name="shared_string_always">Vienmēr</string>
-    <string name="gpx_parse_error">RoadCrew GPX nav pareizi noformēts, lūdzu kontaktējieties ar atbalsta grupu, lai noskaidrotu iemeslus.</string>
+    <string name="gpx_parse_error">OsmAnd GPX nav pareizi noformēts, lūdzu kontaktējieties ar atbalsta grupu, lai noskaidrotu iemeslus.</string>
     <string name="height_limit_description">Norādiet transportlīdzekļa augstumu, augstākiem transportlīdzekļiem var tik piemēroti maršruta ierobežojumi.</string>
     <string name="width_limit_description">"Norādiet transportlīdzekļa platumu, platākiem  transportlīdzekļiem var tikt piemēroti maršruta ierobežojumi."</string>
     <string name="unsupported_type_error">Neatbalstīts tips</string>
@@ -2555,7 +2555,7 @@ Apraksta laukumu: %1$s x %2$s</string>
     <string name="speed_cameras_restart_descr">Lai dzēstu ātruma kameras datus, restartējiet lietotni.</string>
     <string name="customize_route_line">Personalizēt maršruta līniju</string>
     <string name="speed_camera_pois">Ātruma kameras POI\'s</string>
-    <string name="speed_cameras_legal_descr">"Dažās valstīs un reģionos brīdinājumi par ātruma kamerām ir aizliegti ar likumu.\n\n\n\nIzdariet izvēli, balstoties uz likuma prasībām jūs valstī..\n\n\n\nIzvēlieties %1$s un jūs saņemsiet brīdinājumus  par ātruma kamerām.\n\n\n\nIzvēlieties %2$s. Visi dati par ātruma kamerām: paziņojumi, brīdinājumi, POIs tiks izdzēsti līdz atkārtotai RoadCrew instalācijai."</string>
+    <string name="speed_cameras_legal_descr">"Dažās valstīs un reģionos brīdinājumi par ātruma kamerām ir aizliegti ar likumu.\n\n\n\nIzdariet izvēli, balstoties uz likuma prasībām jūs valstī..\n\n\n\nIzvēlieties %1$s un jūs saņemsiet brīdinājumus  par ātruma kamerām.\n\n\n\nIzvēlieties %2$s. Visi dati par ātruma kamerām: paziņojumi, brīdinājumi, POIs tiks izdzēsti līdz atkārtotai OsmAnd instalācijai."</string>
     <string name="speed_cameras_alert">Dažās valstīs brīdinājumi par ātruma kamerām ir aizliegti ar likumu.</string>
     <string name="speed_cameras_removed_descr">Šajā ierīcē nav ātruma kameru.</string>
 </resources>

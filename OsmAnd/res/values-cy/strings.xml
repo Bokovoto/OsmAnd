@@ -77,12 +77,12 @@
     <string name="map_online_plugin_is_not_installed">Galluogi mapiau plugin ar-lein i ddewis ffynonellau map gwahanol</string>
     <string name="map_online_data">Mapiau Ar-lein (teils)</string>
     <string name="shared_string_online_maps">Mapiau ar-lein</string>
-    <string name="osmand_accessibility_description">Mae\'n gwneud nodweddion hygyrchedd y ddyfais ar gael yn uniongyrchol yn RoadCrew. Mae\'n hwyluso, e.e. addasu cyflymder llefaru lleisiau testun-i-lafar, ffurfweddu llywio pad-D, defnyddio pelen lwybro ar gyfer rheoli chwyddo, neu adborth testun-i-lafar, er enghraifft i gyhoeddi eich lleoliad yn awtomatig.</string>
+    <string name="osmand_accessibility_description">Mae\'n gwneud nodweddion hygyrchedd y ddyfais ar gael yn uniongyrchol yn OsmAnd. Mae\'n hwyluso, e.e. addasu cyflymder llefaru lleisiau testun-i-lafar, ffurfweddu llywio pad-D, defnyddio pelen lwybro ar gyfer rheoli chwyddo, neu adborth testun-i-lafar, er enghraifft i gyhoeddi eich lleoliad yn awtomatig.</string>
     <string name="osmand_development_plugin_description">Gosodiadau ar gyfer nodweddion datblygu a dadfygio, megis efelychu llywio, perfformiad rendro, neu anogaeth llais. Bwriedir ar gyfer datblygwyr, heb fod ei angen wrth ddefnyddio\'r ap mewn dulliau arferol.</string>
     <string name="plugins_screen">Ategion</string>
     <string name="prefs_plugins">Ategion</string>
     <string name="play_commands_of_currently_selected_voice">Dewiswch lais a\'i brofi gan chwarae cyhoeddiadau:</string>
-    <string name="debugging_and_development">Datblygiad RoadCrew</string>
+    <string name="debugging_and_development">Datblygiad OsmAnd</string>
     <string name="test_voice_prompts">Profi cyfarwyddiadau llais</string>
     <string name="gpx_visibility_txt">Gwelededd</string>
     <string name="shared_string_description">Disgrifiad</string>
@@ -405,7 +405,7 @@
     <string name="show_parameter_seekbar">Dangos bar chwilio paramedrau</string>
     <string name="from_to_with_params">O %1$s i %2$s</string>
     <string name="storage_copied_files_size">Wedi copïo %1$s ffeil %2$s</string>
-    <string name="shared_storage_third_step">Rhoi caniatâd i gael at y ffolder. Hebddo, ni all RoadCrew gopïo ffeiliau.</string>
+    <string name="shared_storage_third_step">Rhoi caniatâd i gael at y ffolder. Hebddo, ni all OsmAnd gopïo ffeiliau.</string>
     <string name="shared_storage_first_step">Pwysa \"%1$s\".
 \nMae\'r rheolwr ffeiliau yn agor ble fydd angen canfod ac agor y ffolder osmand.</string>
     <string name="folder_access_denied">Angen caniatâd i gael at y ffolder dan sylw.</string>
@@ -417,7 +417,7 @@
     <string name="clear_all_history">Clirio\'r holl hanes</string>
     <string name="navigation_history">Hanes llywio</string>
     <string name="history_preferences_descr">Gellir analluogi logio hanes fesul math o hanes.</string>
-    <string name="location_access_request_title">Mae ar RoadCrew angen caniatâd lleoliad i lywio.</string>
+    <string name="location_access_request_title">Mae ar OsmAnd angen caniatâd lleoliad i lywio.</string>
     <string name="shared_app_storage_description">Dyw\'r storfa sy\'n cael ei rannu ddim ar gael mwyach oherwydd newid Android i fynediad at storfa.</string>
     <string name="icon_group_nautical">Morol</string>
     <string name="transparent_status_bar_descr">Dangos y map islaw\'r bar statws</string>
@@ -682,7 +682,7 @@
     <string name="import_tracks">Mewnforio traciau</string>
     <string name="import_tracks_descr">Mae %1$s yn cynnwys %2$s trac gwahanol. Dewiswch draciau i\'w mewnforio.</string>
     <string name="edit_category">Golygu categori</string>
-    <string name="location_source_descr">Fel rhagosodiad, mae RoadCrew wedi\'i osod o Google Play yn defnyddio %1$s i adnabod lleoliad.
+    <string name="location_source_descr">Fel rhagosodiad, mae OsmAnd wedi\'i osod o Google Play yn defnyddio %1$s i adnabod lleoliad.
 \n
 \nOs wyt yn cael gwybodaeth lleoliad anghywir neu\'n defnyddio dyfais heb %2$s, rho gynnig ar newid i \"%3$s\"</string>
     <string name="rendering_attr_seabedDetail_description">Gwybodaeth destun ychwanegol ar surface_qualification gwely\'r môr, cyfuniad o fathau o arwyneb, categorïau a thacson chwyn a morwellt</string>
@@ -701,7 +701,7 @@
     <string name="shared_storage_second_step">Clicia \"Defnyddio\'r ffolder hon\".</string>
     <string name="storage_found_files_descr">Tapia \"%1$s\" i gopïo %2$s ffeil o \"%3$s\" i \"%4$s\". Gall gymryd amser.</string>
     <string name="storage_copying_files_size">Yn copïo %1$s ffeil %2$s</string>
-    <string name="shared_storage_migration_descr">Oherwydd newidiadau i fynediad at storfa Android, ni all RoadCrew ddefnyddio %1$s mwyach.
+    <string name="shared_storage_migration_descr">Oherwydd newidiadau i fynediad at storfa Android, ni all OsmAnd ddefnyddio %1$s mwyach.
 \n
 \nCopïa dy holl ddata i\'r ffolder newydd.</string>
     <string name="use_external_timestamps_description">Defnyddio stampiau amser y llwybrydd ar-lein i addasu\'r amcangyfrif amser a chyflymder cyfartalog</string>
@@ -724,7 +724,7 @@
     <string name="connect_track_points_as">Cysylltu pwyntiau taith</string>
     <string name="map_updates_are_unavailable_yet">Dyw diweddariadau mapiau ddim eto ar gael. :-(</string>
     <string name="contributions_may_calculate_with_delay">Gall cyfrifo cyfraniadau gymryd rhai oriau.</string>
-    <string name="enough_contributions_descr">Llongyfarchiadau! Rwyt wedi cyfrannu digon i OpenStreetMap i allu diweddaru mapiau RoadCrew heb gyfyngiad!</string>
+    <string name="enough_contributions_descr">Llongyfarchiadau! Rwyt wedi cyfrannu digon i OpenStreetMap i allu diweddaru mapiau OsmAnd heb gyfyngiad!</string>
     <string name="benefits_for_contributors_secondary_descr">Mewngofnoda i OpenStreetMap i weld os wyt ti\'n gymwys i gael diweddariadau mapiau diderfyn.</string>
     <string name="walking_route_osmc_description">Lliwio llwybrau yn ôl eu lliwiau lleol (os ar OpenStreetMap) a math (rhyngwladol, rhanbarthol, lleol).</string>
     <string name="backup_data_removed">Mae\'r holl data wedi\'i dynnu.</string>
@@ -799,9 +799,9 @@
     <string name="add_as_last_destination_point">Ychwanegu fel cyrchfan ar y ffordd</string>
     <string name="add_as_first_destination_point">Ychwanegu fel cyrchfan ar y ffordd</string>
     <string name="new_destination_point_dialog">Rydych eisoes wedi gosod cyrchfan:</string>
-    <string name="osmand_long_description_1000_chars">RoadCrew (OSM Automated Navigation Directions)
+    <string name="osmand_long_description_1000_chars">OsmAnd (OSM Automated Navigation Directions)
 \n
-\n Mae RoadCrew yn ap llywio meddalwedd cod agored gyda mynediad at ystyr eang o ddata OSM byd-eang. Gellir cadw holl ddata\'r map (fectorau neu deils mapiau) yng ngherdyn storfa\'r ffôn ar gyfer defnydd all-lein. Mae\'n bosib llywio llwybrau ar-lein ac all-lein, gan gynnwys cyfarwyddiadau llais ar hyd y ffordd.
+\n Mae OsmAnd yn ap llywio meddalwedd cod agored gyda mynediad at ystyr eang o ddata OSM byd-eang. Gellir cadw holl ddata\'r map (fectorau neu deils mapiau) yng ngherdyn storfa\'r ffôn ar gyfer defnydd all-lein. Mae\'n bosib llywio llwybrau ar-lein ac all-lein, gan gynnwys cyfarwyddiadau llais ar hyd y ffordd.
 \n
 \n Rhai o\'r nodweddion craidd:
 \n - Nodweddion cyflawn all-lein (cadw mapiau teils neu fector yn storfa\'r ddyfais)
@@ -816,7 +816,7 @@
 \n - Alinio\'r map yn ôl y cwmpawd neu gyfeiriad teithio
 \n - Canllaw lonydd cywir, dangos cyfyngiadau cyflymder, lleisiau wedi\'i recordio a thestun-i-lais.
 \n
-\n Cyfyngiadau fersiwn am ddim RoadCrew:
+\n Cyfyngiadau fersiwn am ddim OsmAnd:
 \n - Cyfyngiad ar y nifer o fapiau gellir eu lawrlwytho
 \n - Dim mynediad all-lein i fannau o ddiddordeb o Wicipedia
 \n
@@ -901,7 +901,7 @@
     <string name="routing_engine_vehicle_type_scooter">Sgwter</string>
     <string name="edit_online_routing_engine">Golygu peiriant llwybro arlein</string>
     <string name="use_dev_url_descr">Newid i ddefnyddio dev.openstreetmap.org yn hytrach nag openstretmap.org i brofi iwchlytho OSM Note / POI / GPX.</string>
-    <string name="profile_type_osmand_string">Proffil RoadCrew</string>
+    <string name="profile_type_osmand_string">Proffil OsmAnd</string>
     <string name="plan_route_split_after">Hollti ar ôl</string>
     <string name="plan_route_split_before">Hollti cyn</string>
     <string name="export_not_enough_space_descr">Does gan dy ddyfais ond %1$s yn rhydd. Rhyddha rhywfaint o le neu ddad-ddewis rhai eitemau i beidio eu hallforio.</string>
@@ -1098,12 +1098,12 @@
     <string name="shared_storage_migration">Mudo storfa sy\'n cael ei rannu</string>
     <string name="icon_group_industrial">Diwydiannol</string>
     <string name="shared_string_details">Manylion</string>
-    <string name="internal_app_storage_description">Storfa fewnol, wedi\'i chuddio o bob defnyddiwr ac ap arall, fel mai ond RoadCrew gall cael at eich data.</string>
+    <string name="internal_app_storage_description">Storfa fewnol, wedi\'i chuddio o bob defnyddiwr ac ap arall, fel mai ond OsmAnd gall cael at eich data.</string>
     <string name="shared_string_mini">mini</string>
     <string name="map_updates_for_mappers">Diweddariadau mapiau i fapwyr</string>
     <string name="travel_routes">Llwybrau teithio</string>
     <string name="reset_to_original">Ailosod i\'r gwreiddiol</string>
-    <string name="backup_deleting_all_data_descr">Arhosa nes bod RoadCrew yn dileu dy ddata o\'r cwmwl. Bydd yr holl ddata ar y ddyfais yn aros yn ei le.</string>
+    <string name="backup_deleting_all_data_descr">Arhosa nes bod OsmAnd yn dileu dy ddata o\'r cwmwl. Bydd yr holl ddata ar y ddyfais yn aros yn ei le.</string>
     <string name="logout_from_osmand_cloud">Allgofnodi o OsmAnd Cloud</string>
     <string name="duration_moment_ago">moment yn ôl</string>
     <string name="shared_string_external">Allanol</string>
@@ -1153,7 +1153,7 @@
     <string name="home">Dashfwrdd</string>
     <string name="lang_cy">Cymraeg</string>
     <string name="intermediate_points_change_order">Newid trefn</string>
-    <string name="osmand_play_title_30_chars">Mapiau a Llywio RoadCrew</string>
+    <string name="osmand_play_title_30_chars">Mapiau a Llywio OsmAnd</string>
     <string name="routing_settings">Llywio</string>
     <string name="city_type_city">Dinas</string>
     <string name="favourites_edit_dialog_category">Categori</string>
@@ -1271,7 +1271,7 @@
     <string name="recording_context_menu_play">Chwarae</string>
     <string name="failed_op">methiant</string>
     <string name="upload_local_version">Uwchlwytho\'r fersiwn lleol</string>
-    <string name="gps_filter_actions_description">Bydd RoadCrew yn rhoi\'r newidiadau ar waith ar y trac heb ddiweddaru\'r ffeil. Gallwch gadw newidiadau eich hunain.</string>
+    <string name="gps_filter_actions_description">Bydd OsmAnd yn rhoi\'r newidiadau ar waith ar y trac heb ddiweddaru\'r ffeil. Gallwch gadw newidiadau eich hunain.</string>
     <string name="shared_storage_last_step">Gellir gosod ffolder data newydd wedyn.</string>
     <string name="backup_delete_all_data">Dileu fy nata</string>
     <string name="backup_view_conflicts">Gweld gwrthdrawiadau</string>
@@ -1651,9 +1651,9 @@
     <string name="quick_action_show_navigation_finish_dialog">Dangos deialog \'Llywio wedi gorffen\'</string>
     <string name="shared_string_undo_all">Dadnweud y cwbl</string>
     <string name="route_between_points_add_track_desc">Dewiswch ffeil trac i ychwanegu\'r segment newydd iddi.</string>
-    <string name="disable_recording_once_app_killed_descrp">Bydd logio trac ar saib pan fo\'r ap yn cael ei ladd (yn apiau diweddar). (Bydd arwydd bod RoadCrew yn y cefndir yn diflannu o far hysbysiadau Android.)</string>
-    <string name="tracker_item">Traciwr RoadCrew</string>
-    <string name="tracks_view_descr">Mae\'ch traciau wedi\'u recordio yn %1$s, neu ffolder RoadCrew.</string>
+    <string name="disable_recording_once_app_killed_descrp">Bydd logio trac ar saib pan fo\'r ap yn cael ei ladd (yn apiau diweddar). (Bydd arwydd bod OsmAnd yn y cefndir yn diflannu o far hysbysiadau Android.)</string>
+    <string name="tracker_item">Traciwr OsmAnd</string>
+    <string name="tracks_view_descr">Mae\'ch traciau wedi\'u recordio yn %1$s, neu ffolder OsmAnd.</string>
     <string name="track_saved">Cadwyd y trac</string>
     <string name="quick_action_show_hide_gpx_tracks_descr">Botwm i ddangos neu guddio traciau wedi\'u dewis ar y map.</string>
     <string name="select_waypoints_category_description">Ychwanegwch holl gyfeirbwyntiau\'r trac, neu ddewis categorïau ar wahân.</string>
@@ -1955,7 +1955,7 @@
     <string name="rendering_attr_OSMMapperAssistantIconsLowZooms_description">Arddangosiad sgematig eiconau ar lefelau chwyddo isel</string>
     <string name="files_with_route_restrictions">Ffeiliau gyda chyfyngiadau llwybrau</string>
     <string name="turn_arrows_descr">Dewiswch a ddylid dangos saethau troi ar linell y llwybr.</string>
-    <string name="shared_string_skip_warning">Neidio\'r mudo\? Ni fydd RoadCrew bellach â mynediad at eich ffeiliau yn y storfa sy\'n cael ei rannu.
+    <string name="shared_string_skip_warning">Neidio\'r mudo\? Ni fydd OsmAnd bellach â mynediad at eich ffeiliau yn y storfa sy\'n cael ei rannu.
 \n
 \nBydd yr ap yn dechrau defnyddio\'ch ffolder data newydd.</string>
     <string name="routing_attr_only_permitted_streets_description">Defnyddio dim ond strydoedd wedi\'u caniatáu yn benodol</string>
@@ -1981,7 +1981,7 @@
     <string name="explore_wikipedia_offline">Pori Wikipedia all-lein.</string>
     <string name="purchases_feature_desc_osmand_cloud">Cael OsmAnd Cloud i gadw holl ddata OsmAnd ar-lein. Dim colli data ar ôl ailosod. Cadw gwybodaeth wrth gefn a\'i hadfer yn hawdd.</string>
     <string name="purchases_feature_desc_pro_widgets">Cael mynediad at nodweddion OsmAnd Pro: Lliwio llwybrau a mwy.</string>
-    <string name="explore_osmnad_plans_to_find_suitable">Edrych ar gynlluniau RoadCrew i ganfod un sy\'n addas ar eich cyfer.</string>
+    <string name="explore_osmnad_plans_to_find_suitable">Edrych ar gynlluniau OsmAnd i ganfod un sy\'n addas ar eich cyfer.</string>
     <string name="backup_dont_have_any_descr">Trefnu cadw wrth gefn yn awtomatig a byth colli data.</string>
     <string name="backup_do_not_have_any">Nid oes gennych eto gopi wrth gefn ar-lein.</string>
     <string name="purchases_feature_desc_hourly_map_updates">Cael mynediad at ddiweddariadau mapiau\'n fwy aml. Diweddariadau wythnosol, dyddiol neu bob awr. Llwythir diweddariadau yn rhannol, dim ond ar gyfer yr ardaloedd wedi newid.</string>
@@ -2005,7 +2005,7 @@
     <string name="shared_string_interval">Cyfnod</string>
     <string name="purchases_feature_desc_nautical">Cael mynediad at wybodaeth dyfnder morwrol</string>
     <string name="route_line_use_gradient_coloring">Mae llinell y llwybr wedi\'i liwio yn ôl graddiant llethrau.</string>
-    <string name="srtm_download_list_help_message">Mae RoadCrew yn cynnig data cyfuchlinellau mewn metrau a throedfeddi. Bydd rhaid ail-lawrlwytho\'r ffeil i newid y fformat.</string>
+    <string name="srtm_download_list_help_message">Mae OsmAnd yn cynnig data cyfuchlinellau mewn metrau a throedfeddi. Bydd rhaid ail-lawrlwytho\'r ffeil i newid y fformat.</string>
     <string name="srtm_unit_format">Amrywiolyn uned cyfuchlinellau</string>
     <string name="rendering_attr_surface_asphalt_name">Asffelt</string>
     <string name="import_file">Mewnforio ffeil</string>
@@ -2028,7 +2028,7 @@
     <string name="routing_attr_hazmat_category_name">Categori Hazmat</string>
     <string name="routing_attr_hazmat_category_no_restrictions_name">A (Dim cyfyngiadau)</string>
     <string name="get_altitude_data">Cael data uchder</string>
-    <string name="edit_profiles_descr">Ni ellir dileu proffiliau RoadCrew, ond gellir eu hanalluogi (ar y sgrin flaenorol), neu eu trefnu ar y gwaelod.</string>
+    <string name="edit_profiles_descr">Ni ellir dileu proffiliau OsmAnd, ond gellir eu hanalluogi (ar y sgrin flaenorol), neu eu trefnu ar y gwaelod.</string>
     <string name="change_default_settings">Newid gosodiad</string>
     <string name="discard_changes">Anwybyddu\'r newid</string>
     <string name="coordinates_widget">Ategyn cyfesurynnau</string>
@@ -2072,7 +2072,7 @@
     <string name="configure_screen_widgets_descr">Dewiswch ochr o\'r sgrin i ychwanegu neu ail-drefnu ategion.</string>
     <string name="apply_preference_to_all_profiles">Rhoi\'r newid hwn ar waith ym mhob proffil neu broffil penodol.</string>
     <string name="saving_new_profile">Yn cadw\'r proffil newydd</string>
-    <string name="osmand_settings">Gosodiadau RoadCrew</string>
+    <string name="osmand_settings">Gosodiadau OsmAnd</string>
     <string name="si_nm_h">Milltir morwrol yr awr (notiau)</string>
     <string name="si_min_m">Munudau y filltir</string>
     <string name="fav_point_dublicate_message">Wedi ailenwi\'r ffefryn i %1$s er mwyn osgoi dyblygu.</string>
@@ -2106,9 +2106,9 @@
     <string name="turn_screen_on_power_button">Botwm pŵer</string>
     <string name="map_look_descr">Golwg y map</string>
     <string name="vehicle_parameters_descr">Pwysau, uchder, hyd, cyflymder</string>
-    <string name="process_downloading_service">Gwasanaeth lawrlwytho RoadCrew</string>
+    <string name="process_downloading_service">Gwasanaeth lawrlwytho OsmAnd</string>
     <string name="profile_type_descr_string">Math: %s</string>
-    <string name="profile_alert_cant_delete_base">Ni ellir dileu proffiliau craidd RoadCrew</string>
+    <string name="profile_alert_cant_delete_base">Ni ellir dileu proffiliau craidd OsmAnd</string>
     <string name="empty_state_av_notes_desc">Ychwanegwch nodiadau sain, video neu luniau at unrhyw bwynt ar y map gan ddefnyddio\'r dewislenni cyd-destun neu ategion.</string>
     <string name="move_all_to_history">Symud y cwbl i\'r hanes</string>
     <string name="animate_my_location">Animeiddio fy lleoliad</string>
@@ -2134,7 +2134,7 @@
     <string name="voices">Cyfarwyddiadau llais</string>
     <string name="map_orientation_default">Fel gosodiad y ddyfais</string>
     <string name="voice_announces_descr">Cyfarwyddiadau a chyhoeddiadau llywio</string>
-    <string name="turn_screen_on_power_button_descr">Bydd pwyso botwm pŵer y ddyfais yn troi\'r sgrin ymlaen gydag RoadCrew dros ben y sgrin cloi.</string>
+    <string name="turn_screen_on_power_button_descr">Bydd pwyso botwm pŵer y ddyfais yn troi\'r sgrin ymlaen gydag OsmAnd dros ben y sgrin cloi.</string>
     <string name="right_side_navigation">Gyrru ar y dde</string>
     <string name="use_volume_buttons_as_zoom_descr">Rheolwch lefel chwyddo\'r map gyda botymau sain y ddyfais.</string>
     <string name="select_color">Dewis lliw</string>
@@ -2173,9 +2173,9 @@
     <string name="use_system_screen_timeout">Defnyddio cyfnod diffodd sgrin y system</string>
     <string name="gpx_selection_route_points">%1$s
 \nPwyntiau llwybr %2$s</string>
-    <string name="measurement_tool_snap_to_road_descr">Bydd RoadCrew yn cysylltu\'r pwyntiau gyda llwybrau ar gyfer y proffil dan sylw.</string>
+    <string name="measurement_tool_snap_to_road_descr">Bydd OsmAnd yn cysylltu\'r pwyntiau gyda llwybrau ar gyfer y proffil dan sylw.</string>
     <string name="copy_from_other_profile">Copïo o broffil arall</string>
-    <string name="make_osmand_better_descr">Rhowch ganiatâd i RoadCrew i gasglu a phrosesu data defnydd yr ap yn anhysbys. Ni fydd unrhyw ddata am eich lleoliad na\'r lleoliadau rydych yn edrych arnynt ar y map yn cael eu casglu.
+    <string name="make_osmand_better_descr">Rhowch ganiatâd i OsmAnd i gasglu a phrosesu data defnydd yr ap yn anhysbys. Ni fydd unrhyw ddata am eich lleoliad na\'r lleoliadau rydych yn edrych arnynt ar y map yn cael eu casglu.
 \n
 \nFfurfweddwch unrhyw bryd yn \'Gosodiadau\' → \'Preifatrwydd a Diogelwch\'.</string>
     <string name="downloading_list_indexes">Yn llwytho rhestr o ardaloedd ar gael…</string>
@@ -2185,7 +2185,7 @@
 \n
 \nDewiswch %1$s, a byddwch yn cael rhybudd am gamerâu cyflymder.
 \n
-\nDewiswch %2$s, a chaiff yr holl ddata yn ymwneud â chamerâu: rhybuddion, hysbysiadau, pwyntiau o wybodaeth, ei ddileu nes bod RoadCrew yn cael ei ail-osod o\'r newydd.</string>
+\nDewiswch %2$s, a chaiff yr holl ddata yn ymwneud â chamerâu: rhybuddion, hysbysiadau, pwyntiau o wybodaeth, ei ddileu nes bod OsmAnd yn cael ei ail-osod o\'r newydd.</string>
     <string name="select_base_profile_dialog_title">Dewisa broffil i ddechrau gyda</string>
     <string name="routing_attr_allow_private_for_truck_name">Caniatáu mynediad preifat (lori)</string>
     <string name="routing_attr_allow_private_for_truck_description">Mae\'n caniatáu mynediad i lefydd preifat i lorïau.</string>
@@ -2231,7 +2231,7 @@
     <string name="start_up_message_pref">Neges wrth ddechrau</string>
     <string name="routeInfo_tracktype_name">Cadernid y wyneb</string>
     <string name="shared_string_privacy_policy">Polisi Preifatrwydd</string>
-    <string name="help_us_make_osmand_better">Helpwch ni i wneud RoadCrew yn well</string>
+    <string name="help_us_make_osmand_better">Helpwch ni i wneud OsmAnd yn well</string>
     <string name="profile_alert_need_profile_name_title">Rho enw i\'r proffil</string>
     <string name="profile_alert_need_profile_name_msg">Rhaid rhoi enw i\'r proffil gyntaf.</string>
     <string name="plan_route_change_route_type_before">Newid math o lwybr cyn</string>
@@ -2290,12 +2290,12 @@
     <string name="rendering_attr_tracktype_grade2_name">Caled (heb wyneb caled)</string>
     <string name="rendering_attr_tracktype_grade3_name">Caled yn bennaf</string>
     <string name="rendering_attr_tracktype_grade4_name">Meddal yn bennaf</string>
-    <string name="last_launch_crashed">Chwalodd RoadCrew tro diwethaf. Helpwch ni i wella RoadCrew gan rannu neges y gwall.</string>
+    <string name="last_launch_crashed">Chwalodd OsmAnd tro diwethaf. Helpwch ni i wella OsmAnd gan rannu neges y gwall.</string>
     <string name="downloaded_maps">Mapiau wedi\'u lawrlwytho</string>
     <string name="visited_screens">Sgriniau ymwelwyd â nhw</string>
     <string name="settings_privacy_and_security">Preifatrwydd a diogelwch</string>
     <string name="settings_privacy_and_security_desc">Dewiswch pa ddata rydych yn ei rannu</string>
-    <string name="visited_screens_collect_descr">Ein helpu i ddeall pa mor boblogaidd yw nodweddion RoadCrew.</string>
+    <string name="visited_screens_collect_descr">Ein helpu i ddeall pa mor boblogaidd yw nodweddion OsmAnd.</string>
     <string name="choose_navigation_type">Dewisa broffil llywio</string>
     <string name="plan_route_trim_before">Tocio cyn</string>
     <string name="navigation_profile">Proffil llywio</string>
@@ -2318,7 +2318,7 @@
     <string name="login_open_street_map">Mewngofnodi i OpenStreetMap</string>
     <string name="routing_attr_length_name">Terfyn hyd</string>
     <string name="custom_color">Lliw cyfaddas</string>
-    <string name="custom_osmand_plugin">Ategyn Custom RoadCrew</string>
+    <string name="custom_osmand_plugin">Ategyn Custom OsmAnd</string>
     <string name="divider_descr">Elfennau o dan y pwynt hwn wedi\'u gwahanu gan rannwr.</string>
     <string name="shared_string_zoom_levels">Lefelau chwyddo</string>
     <string name="shared_string_quick_actions">Gweithredoedd cyflym</string>
@@ -2340,7 +2340,7 @@
     <string name="rendering_attr_showFitnessTrails_description">Dangos llwybrau ffitrwydd</string>
     <string name="all_previous_segments_will_be_recalc">Bydd yr holl segmentau blaenorol yn cael eu hailgyfrifo gan ddefnyddio\'r proffil a ddewiswyd.</string>
     <string name="context_menu_actions">Gweithredoedd dewislen cyd-destun</string>
-    <string name="shared_string_osmand_usage">Defnydd o RoadCrew</string>
+    <string name="shared_string_osmand_usage">Defnydd o OsmAnd</string>
     <string name="plugins_settings">Gosodiadau ategyn</string>
     <string name="navigate_point_format_utm">Safon UTM</string>
     <string name="plugin_disabled">Dffodd ategyn</string>
@@ -2361,7 +2361,7 @@
     <string name="quick_action_transport_descr">Botwm yn dangos neu guddio trafnidiaeth gyhoeddus ar y map.</string>
     <string name="download_unsupported_action">Gweithred heb ei gefnogi %1$s</string>
     <string name="terrain_slider_description">Gosod y lefelau chwyddo isaf ac uchaf ar gyfer dangos yr haen.</string>
-    <string name="import_duplicates_description">Mae gan RoadCrew eisoes elfennau gyda\'r un enwau â\'r rhai a fewnforiwyd.
+    <string name="import_duplicates_description">Mae gan OsmAnd eisoes elfennau gyda\'r un enwau â\'r rhai a fewnforiwyd.
 \n
 \nDewis gweithred.</string>
     <string name="clear_recorded_data">Clirio\'r data a gofnodwyd</string>
@@ -2381,7 +2381,7 @@
     <string name="routing_attr_avoid_toll_name">Dim toll fyrdd</string>
     <string name="searching_gps">Chwilio am GPS</string>
     <string name="public_transport_calc_pedestrian">Cyfrifo\'r llwybr ar droed</string>
-    <string name="public_transport_no_route_title">Yn anffodus, nid yw RoadCrew yn gallu ddod o hyd i lwybr sy\'n addas ar gyfer eich gosodiadau.</string>
+    <string name="public_transport_no_route_title">Yn anffodus, nid yw OsmAnd yn gallu ddod o hyd i lwybr sy\'n addas ar gyfer eich gosodiadau.</string>
     <string name="public_transport_try_ped">Rho gynnig ar lywio ar droed.</string>
     <string name="public_transport_try_change_settings">Ceisia newid y gosodiadau.</string>
     <string name="routing_attr_avoid_train_name">Dim trenau</string>
@@ -2402,8 +2402,8 @@
     <string name="select_data_to_import">Dewis y data i\'w fewnforio.</string>
     <string name="open_settings">Agor gosodiadau</string>
     <string name="monitoring_prefs_descr">Llywio, cywirdeb logio</string>
-    <string name="paste_Osmand_data_folder_path">Gluda\'r llwybr i\'r ffolder gyda data RoadCrew</string>
-    <string name="change_osmand_data_folder_question">Newid ffolder data RoadCrew\?</string>
+    <string name="paste_Osmand_data_folder_path">Gluda\'r llwybr i\'r ffolder gyda data OsmAnd</string>
+    <string name="change_osmand_data_folder_question">Newid ffolder data OsmAnd\?</string>
     <string name="move_maps_to_new_destination">Symud i\'r gyrchfan newydd</string>
     <string name="rendering_attr_piste_type_snow_park_name">Parc tir</string>
     <string name="months_3">Tri mis</string>
@@ -2461,17 +2461,17 @@
     <string name="set_working_days_to_continue">Gosod diwrnodau gwaith i barhau</string>
     <string name="osm_edit_closed_note">Nodyn OSM caeedig</string>
     <string name="vessel_height_warning">Gosod uchder llong i osgoi pontydd isel. Os yw\'r bont yn symudol, defnyddir yr uchder pan fydd ar agor.</string>
-    <string name="turn_screen_on_descr">Dewis opsiynau deffro sgrin (gwna\'n yn siŵr bod RoadCrew yn y blaendir pan fydd y ddyfais yn cael ei chloi):</string>
-    <string name="gpx_parse_error">Nid yw RoadCrew GPX wedi\'i ffurfio\'n dda, cysyllta â\'r tîm cymorth i ymchwilio ymhellach.</string>
+    <string name="turn_screen_on_descr">Dewis opsiynau deffro sgrin (gwna\'n yn siŵr bod OsmAnd yn y blaendir pan fydd y ddyfais yn cael ei chloi):</string>
+    <string name="gpx_parse_error">Nid yw OsmAnd GPX wedi\'i ffurfio\'n dda, cysyllta â\'r tîm cymorth i ymchwilio ymhellach.</string>
     <string name="search_poi_types">Chwiliwch am fathau o POI</string>
     <string name="slope_download_description">Mae angen mapiau ychwanegol i weld llethrau ar y map.</string>
     <string name="hillshade_download_description">Mae angen mapiau ychwanegol i weld cysgodion bryniau ar y map.</string>
     <string name="osm_editing_prefs_descr">Mewngofnodi, cyfrinair, golygu all-lein</string>
-    <string name="change_data_storage_full_description">Symud ffeiliau data RoadCrew i\'r gyrchfan newydd\?
+    <string name="change_data_storage_full_description">Symud ffeiliau data OsmAnd i\'r gyrchfan newydd\?
 \n%1$s &gt; %2$s</string>
     <string name="mercator_projection">Tafluniad Mercator</string>
     <string name="turn_screen_on_proximity_sensor">Synhwyrydd agosrwydd</string>
-    <string name="checking_for_duplicate_description">RoadCrew i wirio %1$s am gopïau dyblyg o eitemau sydd eisoes yn bodoli yn yr ap.
+    <string name="checking_for_duplicate_description">OsmAnd i wirio %1$s am gopïau dyblyg o eitemau sydd eisoes yn bodoli yn yr ap.
 \n
 \nGall gymryd peth amser.</string>
     <string name="recalculate_route_distance_promo">Bydd y llwybr yn cael ei ailgyfrif os yw\'r pellter o\'r llwybr i\'r lleoliad presennol yn fwy na\'r gwerth a ddewiswyd.</string>
@@ -2515,7 +2515,7 @@
     <string name="announce_when_exceeded">Cyhoeddi pan dros y terfyn</string>
     <string name="srtm_download_single_help_message">Dewiswch yr amrywiad. Bydd angen i chi ail-lawrlwytho\'r ffeil i newid y fformat.</string>
     <string name="in_grace_period">Mewn cyfnod o aros</string>
-    <string name="trip_recording_logging_interval_info">Mae\'r cyfwng logio yn gosod y cyfnod amser pan fydd RoadCrew yn gofyn am ddata\'r safle cyfredol.</string>
+    <string name="trip_recording_logging_interval_info">Mae\'r cyfwng logio yn gosod y cyfnod amser pan fydd OsmAnd yn gofyn am ddata\'r safle cyfredol.</string>
     <string name="app_mode_motorboat">Cwch modur</string>
     <string name="contour_lines_thanks">Diolch am brynu \'Contour lines\'</string>
     <string name="sort_name_ascending">Enw: A - Z</string>
@@ -2732,7 +2732,7 @@
     <string name="shared_string_angle_param">Ongl: %s°</string>
     <string name="recalc_angle_dialog_descr">Bydd segment syth ychwanegol rhwng fy lleoliad a\'r llwybr a gyfrifwyd yn cael ei ddangos nes bod y llwybr wedi\'i ailgyfrifo</string>
     <string name="recalc_angle_dialog_title">Isafswm ongl rhwng fy lleoliad a\'r llwybr</string>
-    <string name="listed_exist">Rhestru %1$s, yn bodoli eisoes yn RoadCrew.</string>
+    <string name="listed_exist">Rhestru %1$s, yn bodoli eisoes yn OsmAnd.</string>
     <string name="replace_all_desc">Bydd eitemau o\'r ffeil yn cymryd lle\'r eitemau cyfredol</string>
     <string name="keep_both_desc">Bydd eitemau a fewnforiwyd yn cael eu hychwanegu gyda rhagddodiad</string>
     <string name="route_recalculation_dist_title">Y pellter lleiaf er mwyn ailgyfrifo\'r llwybr</string>
@@ -2814,7 +2814,7 @@
     <string name="quick_action_take_video_note_descr">Botwm i ychwanegu nodyn fideo yng nghanol y sgrin.</string>
     <string name="free_version_message">%1$s map i\'w llwytho neu ddiweddaru.</string>
     <string name="remove_the_tag">TYNNU\'R TAG</string>
-    <string name="public_transport_warning_descr_blog">Darllenwch fwy am lwybro RoadCrew ar ein blog.</string>
+    <string name="public_transport_warning_descr_blog">Darllenwch fwy am lwybro OsmAnd ar ein blog.</string>
     <string name="quick_action_add_first_intermediate_desc">Botwm i wneud i\'r sgrin ganoli ar y gyrchfan ar y ffordd gyntaf.</string>
     <string name="average_speed_time_interval_desc">Gosodwch y cyfnod amser y caiff y cyflymder cyfartaledd ei fesur drosto.</string>
     <string name="average_speed_widget_desc">Mae\'n dangos cyflymder cyfartaledd y cerbyd cyfredol.</string>
@@ -2847,7 +2847,7 @@
     <string name="local_index_items_deleted">%1$d o %2$d eitem wedi\'u dileu.</string>
     <string name="action_delete">Dileu gweithredu</string>
     <string name="index_item_depth_points_northern_hemisphere">Pwyntiau dyfnder morol hemisffer y gogledd</string>
-    <string name="osmand_extended_description_part8">Mae RoadCrew yn feddalwedd cod agored sy\'n datblygu o hyd. Gall unrhyw un gyfrannu at yr ap gan roi gwybod am broblemau, gwella cyfieithiadau, neu godio nodweddion newydd. Hefyd, mae\'r prosiect yn dibynnu ar roddion i ariannu codio a phrofi nodweddion newydd.
+    <string name="osmand_extended_description_part8">Mae OsmAnd yn feddalwedd cod agored sy\'n datblygu o hyd. Gall unrhyw un gyfrannu at yr ap gan roi gwybod am broblemau, gwella cyfieithiadau, neu godio nodweddion newydd. Hefyd, mae\'r prosiect yn dibynnu ar roddion i ariannu codio a phrofi nodweddion newydd.
 \n- Bras amcan o ansawdd a chyflawnder mapiau:
 \n • Gorllewin Ewrop: ****
 \n • Dwyrain Ewrop: ***
@@ -2889,7 +2889,7 @@
     <string name="import_as_favorites">Mewnforio fel Ffefrynnau</string>
     <string name="enter_new_name">Rho enw newydd</string>
     <string name="passed">Defnyddiwyd ddiwethaf: %1$s</string>
-    <string name="loading_builds">Yn llwytho adeileddau RoadCrew…</string>
+    <string name="loading_builds">Yn llwytho adeileddau OsmAnd…</string>
     <string name="osb_comment_dialog_author">Enw awdur</string>
     <string name="osb_author_dialog_password">Cyfrinair OSM (dewisol)</string>
     <string name="lang_nds">Almaeneg Isel</string>
@@ -2945,7 +2945,7 @@
     <string name="apply_filters">Gosod hidlyddion</string>
     <string name="amenity_type_user_defined">Dewis y defnyddiwr</string>
     <string name="map_transparency">Tryloywder map sylfaen</string>
-    <string name="hello">Ap llywio RoadCrew</string>
+    <string name="hello">Ap llywio OsmAnd</string>
     <string name="pref_overlay">Troshaen / ishaen</string>
     <string name="ttsvoice">Llais TTS</string>
     <string name="settings_direction_style">Arddull cyfeiriad</string>
@@ -2959,7 +2959,7 @@
     <string name="nm">nmi</string>
     <string name="lang_als">Albaneg (Tosk)</string>
     <string name="what_is_new">Beth sy\'n newydd</string>
-    <string name="shared_string_import2osmand">Mewnforio i RoadCrew</string>
+    <string name="shared_string_import2osmand">Mewnforio i OsmAnd</string>
     <string name="user_name">Dy enw defnyddiwr OSM</string>
     <string name="poi_filter_by_name">Chwilio enw</string>
     <string name="installing_new_resources">Yn dat-bacio data newydd…</string>
@@ -3045,10 +3045,10 @@
 \nHyd %2$s</string>
     <string name="osmand_rastermaps_plugin_description">Mae modd cyrchu lawer o fathau o fapiau ar-lein (teils neu raster fel y\'u gelwir), o deils OSM wedi\'u diffinio ymlaen llaw (fel Mapnik) i ddelweddau lloeren, a haenau pwrpas arbennig fel mapiau tywydd, mapiau hinsawdd, mapiau daearegol, haenau cysgod bryn, ac ati.
 \n
-\n Gellir defnyddio unrhyw un o\'r mapiau hyn naill ai fel y prif fap (sylfaenol) i\'w ddangos, neu fel troshaen neu is-haen i fap sylfaenol arall (fel mapiau all-lein safonol RoadCrew). Gellir cuddio rhai elfennau o fapiau fector RoadCrew trwy\'r ddewislen \'Ffurfweddu map\' i wneud unrhyw fap isgarth yn fwy gweladwy.
+\n Gellir defnyddio unrhyw un o\'r mapiau hyn naill ai fel y prif fap (sylfaenol) i\'w ddangos, neu fel troshaen neu is-haen i fap sylfaenol arall (fel mapiau all-lein safonol OsmAnd). Gellir cuddio rhai elfennau o fapiau fector OsmAnd trwy\'r ddewislen \'Ffurfweddu map\' i wneud unrhyw fap isgarth yn fwy gweladwy.
 \n
-\n Lawrlwythwch fapiau teils yn uniongyrchol ar-lein, neu eu paratoi i\'w defnyddio all-lein (wedi\'u copïo â llaw i ffolder data RoadCrew) fel cronfa ddata SQLite y gellir ei chynhyrchu gan amrywiaeth o offer paratoi mapiau trydydd parti.</string>
-    <string name="plugin_touringview_descr">Mae agor y golwg hwn yn newid arddull map RoadCrew i \'Golwg teithio\', mae hwn yn olwg o fanylder uchel iawn ar gyfer teithwyr a gyrwyr proffesiynol.
+\n Lawrlwythwch fapiau teils yn uniongyrchol ar-lein, neu eu paratoi i\'w defnyddio all-lein (wedi\'u copïo â llaw i ffolder data OsmAnd) fel cronfa ddata SQLite y gellir ei chynhyrchu gan amrywiaeth o offer paratoi mapiau trydydd parti.</string>
+    <string name="plugin_touringview_descr">Mae agor y golwg hwn yn newid arddull map OsmAnd i \'Golwg teithio\', mae hwn yn olwg o fanylder uchel iawn ar gyfer teithwyr a gyrwyr proffesiynol.
 \n
 \nMae\'r olwg hon yn darparu, ar unrhyw chwyddiad map penodol, uchafswm y manylion teithio sydd ar gael yn y data map (yn enwedig ffyrdd, traciau, llwybrau, a nodau cyfeiriad).
 \n
@@ -3067,8 +3067,8 @@
     <string name="osn_close_dialog_error">Methu cau nodyn.</string>
     <string name="whats_new">Beth sy\'n newydd yn</string>
     <string name="plugin_nautical_name">Golygfa map morol</string>
-    <string name="osmand_team">Tîm RoadCrew</string>
-    <string name="full_version_thanks">Diolch am brynu\'r fersiwn taledig o RoadCrew.</string>
+    <string name="osmand_team">Tîm OsmAnd</string>
+    <string name="full_version_thanks">Diolch am brynu\'r fersiwn taledig o OsmAnd.</string>
     <string name="shared_string_time_moving">Amser yn symud</string>
     <string name="rendering_attr_contourDensity_description">Dwysedd llinell gyfuchlin</string>
     <string name="rendering_attr_contourDensity_name">Dwysedd llinell gyfuchlin</string>
@@ -3082,7 +3082,7 @@
     <string name="simulate_your_location">Efelychu dy safle</string>
     <string name="back_to_map">Nôl i\'r map</string>
     <string name="routing_attr_no_new_routing_description">Peidio â defnyddio rheolau llwybro a gyflwynwyd yn v1.9.</string>
-    <string name="ask_for_location_permission">Rhowch fynediad i leoliad RoadCrew i barhau.</string>
+    <string name="ask_for_location_permission">Rhowch fynediad i leoliad OsmAnd i barhau.</string>
     <string name="send_search_query_description">Bydd ymholiadau chwilio yn cael eu hanfon at: \"%1$s\", ynghyd â\'ch lleoliad.
 \n
 \n Ni chesglir gwybodaeth bersonol, dim ond data chwilio sydd ei angen i wella\'r chwiliad.</string>
@@ -3103,7 +3103,7 @@
     <string name="osm_edit_commented_note">Sylw Nodyn OSM</string>
     <string name="osm_edit_created_note">Wedi creu Nodyn OSM</string>
     <string name="osn_add_dialog_error">Methu creu nodyn.</string>
-    <string name="share_osm_edits_subject">Golygiadau OSM a rennir trwy RoadCrew</string>
+    <string name="share_osm_edits_subject">Golygiadau OSM a rennir trwy OsmAnd</string>
     <string name="looking_up_address">Chwilio am gyfeiriad</string>
     <string name="av_locations_descr">Ffeil GPX gyda lleoliadau.</string>
     <string name="lang_pms">Piedmonaidd</string>
@@ -3118,7 +3118,7 @@
     <string name="more_transport_on_stop_hint">Mwy o drafnidiaeth ar gael o\'r arhosfan hon.</string>
     <string name="topo_render_descr">Ar gyfer heicio, merlota, a beicio natur. Darllenadwy yn yr awyr agored. Ffyrdd cyferbyniol a gwrthrychau naturiol, gwahanol fathau o lwybrau, opsiynau llinell gyfuchlin uwch, manylion ychwanegol. Mae addasu cywirdeb arwyneb yn gwahaniaethu rhwng ansawdd ffyrdd. Dim modd nos.</string>
     <string name="off_road_render_descr">Ar gyfer gyrru oddi ar y ffordd yn seiliedig ar arddull \'Topo\' ac i\'w ddefnyddio gyda delweddau lloeren gwyrdd fel isgarth. Llai o drwch prif ffyrdd, mwy o drwch traciau, llwybrau, beiciau a llwybrau eraill.</string>
-    <string name="touring_view_render_descr">Arddull teithiol gyda chyferbyniad uchel a manylder mwyaf. Yn cynnwys yr holl opsiynau o arddull rhagosodedig RoadCrew, tra\'n dangos cymaint o fanylion â phosibl, yn enwedig ffyrdd, llwybrau, a ffyrdd eraill o deithio. Gwahaniaeth clir yn yr \"atlas teithiol\" rhwng mathau o ffyrdd. Yn addas ar gyfer defnydd dydd, nos ac awyr agored.</string>
+    <string name="touring_view_render_descr">Arddull teithiol gyda chyferbyniad uchel a manylder mwyaf. Yn cynnwys yr holl opsiynau o arddull rhagosodedig OsmAnd, tra\'n dangos cymaint o fanylion â phosibl, yn enwedig ffyrdd, llwybrau, a ffyrdd eraill o deithio. Gwahaniaeth clir yn yr \"atlas teithiol\" rhwng mathau o ffyrdd. Yn addas ar gyfer defnydd dydd, nos ac awyr agored.</string>
     <string name="maps_you_need_descr">Yn seiliedig ar yr erthyglau y gwnes ti osod nod tudalen iddyn nhw, argymhellir y gelli lawrlwytho\'r mapiau canlynol:</string>
     <string name="wikivoyage_download_pics_descr">Gellir lawrlwytho delweddau erthygl i\'w defnyddio all-lein.
 \nAr gael bob amser yn \'Archwilio\' → \'Opsiynau\'.</string>
@@ -3187,7 +3187,7 @@
     <string name="osm_live_banner_desc">Cael lawrlwythiadau mapiau diderfyn, gan ychwanegu diweddariadau wythnosol, dyddiol neu hyd yn oed bob awr.</string>
     <string name="update_all_maps_now">Diweddaru pob map nawr\?</string>
     <string name="clear_tile_data">Clirio pob teils</string>
-    <string name="share_history_subject">rhanwyd trwy RoadCrew</string>
+    <string name="share_history_subject">rhanwyd trwy OsmAnd</string>
     <string name="access_smart_autoannounce_descr">Rhoi gwybod dim ond pan fydd cyfeiriad i\'r pwynt targed yn newid.</string>
     <string name="access_autoannounce_period_descr">Y cyfnod amser lleiaf rhwng cyhoeddiadau.</string>
     <string name="rec_split_desc">Ailysgrifennu clipiau pan fydd gofod a ddefnyddir yn fwy na\'r maint storio.</string>
@@ -3220,10 +3220,10 @@
     <string name="access_direction_audio_feedback_descr">Dangos cyfeiriad y pwynt targed yn ôl sain.</string>
     <string name="use_osm_live_routing_description">Galluogi llywio ar gyfer newidiadau OsmAnd Live.</string>
     <string name="add_time_span">Ychwanegu rhychwant amser</string>
-    <string name="plugin_ski_descr">Mae\'r ategyn hwn ar gyfer RoadCrew yn rhoi manylion llethrau sgïo lawr allt fyd-eang, rhediadau sgïo traws gwlad, llwybrau sgïo Alpaidd, ceir cebl a lifftiau sgïo ar flaenau eich bysedd. Mae llwybrau a pistes yn cael eu dangos â chod lliw yn ôl anhawster, a\'u darlunio mewn arddull map \'Gaeaf\' arbennig sy\'n cymathu tirwedd aeafol lliw eira. \n \nMae agor yr olwg hon yn newid arddull y map i \'Gaeaf a sgïo\', gan ddangos holl nodweddion y dirwedd dan amodau gaeafol. Gellir dychwelyd y wedd hon trwy naill ai ei gau eto yma, neu trwy newid yr \'Arddull Map\' o dan \'Ffurfweddu map\' fel y dymunir.</string>
+    <string name="plugin_ski_descr">Mae\'r ategyn hwn ar gyfer OsmAnd yn rhoi manylion llethrau sgïo lawr allt fyd-eang, rhediadau sgïo traws gwlad, llwybrau sgïo Alpaidd, ceir cebl a lifftiau sgïo ar flaenau eich bysedd. Mae llwybrau a pistes yn cael eu dangos â chod lliw yn ôl anhawster, a\'u darlunio mewn arddull map \'Gaeaf\' arbennig sy\'n cymathu tirwedd aeafol lliw eira. \n \nMae agor yr olwg hon yn newid arddull y map i \'Gaeaf a sgïo\', gan ddangos holl nodweddion y dirwedd dan amodau gaeafol. Gellir dychwelyd y wedd hon trwy naill ai ei gau eto yma, neu trwy newid yr \'Arddull Map\' o dan \'Ffurfweddu map\' fel y dymunir.</string>
     <string name="start_editing_card_description">Gallwch a dylech olygu unrhyw erthygl ar Wikivoyage. Rhannwch wybodaeth, profiad, talent, a\'ch sylw.</string>
     <string name="get_unlimited_access">Cael mynediad diderfyn</string>
-    <string name="import_gpx_failed_descr">Methu mewnforio ffeil. Sicrhewch fod gan RoadCrew ganiatâd i\'w ddarllen.</string>
+    <string name="import_gpx_failed_descr">Methu mewnforio ffeil. Sicrhewch fod gan OsmAnd ganiatâd i\'w ddarllen.</string>
     <string name="dist_away_from_my_location">Chwilio %1$s i ffwrdd</string>
     <string name="osm_live_ask_for_purchase">Prynwch danysgrifiad i OsmAnd Live yn gyntaf</string>
     <string name="lang_new">Newar / Bhasa Nepal</string>
@@ -3231,7 +3231,7 @@
     <string name="quick_action_auto_zoom">Map chwyddo awtomatig ymlaen/i ffwrdd</string>
     <string name="rendering_attr_surfaceIntegrity_name">Cywirdeb wyneb y ffordd</string>
     <string name="welcome_to_open_beta_description">Mae canllawiau teithio ar hyn o bryd yn seiliedig ar Wikivoyage. Profwch yr holl nodweddion yn ystod profion beta agored am ddim.</string>
-    <string name="wikivoyage_travel_guide_descr">Canllawiau i\'r lleoedd mwyaf diddorol ar y blaned, y tu mewn i RoadCrew, heb gysylltiad â\'r Rhyngrwyd.</string>
+    <string name="wikivoyage_travel_guide_descr">Canllawiau i\'r lleoedd mwyaf diddorol ar y blaned, y tu mewn i OsmAnd, heb gysylltiad â\'r Rhyngrwyd.</string>
     <string name="images_cache">Storfa delweddau</string>
     <string name="increase_search_radius">Cynyddu radiws chwilio</string>
     <string name="rec_split_storage_size_desc">Faint o le y gall pob clip wedi\'i recordio ei feddiannu.</string>
@@ -3284,11 +3284,11 @@
     <string name="external_device_menu_forget">Anghofio</string>
     <string name="new_file">Ffeil newydd</string>
     <string name="help_article_map_legend_nautical_map_name">Arddull map morol</string>
-    <string name="help_article_map_legend_osmand_name">Arddull map RoadCrew</string>
+    <string name="help_article_map_legend_osmand_name">Arddull map OsmAnd</string>
     <string name="help_article_personal_profiles_name">Proffiliau (Gosodiadau)</string>
     <string name="help_article_map_interact_with_map_name">Rhyngweithio â map</string>
     <string name="help_article_map_raster_maps_name">Mapiau Raster (Ar-lein / All-lein)</string>
-    <string name="help_article_start_with_name">Dechrau ag RoadCrew</string>
+    <string name="help_article_start_with_name">Dechrau ag OsmAnd</string>
     <string name="help_article_start_with_first_steps_name">Camau cyntaf</string>
     <string name="help_article_troubleshooting_track_recording_issues_name">Recordio traciau</string>
     <string name="ant_plus_searching">Wrthi\'n chwilio</string>
@@ -3405,7 +3405,7 @@
     <string name="multipoligon_related">Yn perthyn</string>
     <string name="route_part_of">Rhan o</string>
     <string name="wikidata">Wikidata</string>
-    <string name="prediction_time_description">Mae eicon lleoliad yn RoadCrew yn animeiddio gyda phob diweddariad GPS (unwaith yr eiliad). Gall oedi bach ddigwydd, yn enwedig yn ystod symudiad cyflym neu pan fydd y signal GPS yn ansefydlog.</string>
+    <string name="prediction_time_description">Mae eicon lleoliad yn OsmAnd yn animeiddio gyda phob diweddariad GPS (unwaith yr eiliad). Gall oedi bach ddigwydd, yn enwedig yn ystod symudiad cyflym neu pan fydd y signal GPS yn ansefydlog.</string>
     <string name="prediction_time_advanced_description">Addaswch yr amser rhagfynegi i leihau\'r oedi.</string>
     <string name="prediction_time">Amser rhagfynegi</string>
     <string name="shared_string_no_animation">Dim animeiddiad</string>
@@ -3450,7 +3450,7 @@
     <string name="ais_port_nmea_server">Porth TCP ffynhonnell ddata NMEA</string>
     <string name="ais_port_nmea_server_description">Diffinio rhif porth TCP y ffynhonnell ddata NMEA</string>
     <string name="ais_port_nmea_local">Porth UDP derbynnydd data NMEA lleol</string>
-    <string name="ais_port_nmea_local_description">Diffinio porth UPD lle mae RoadCrew yn derbyn data NMEA</string>
+    <string name="ais_port_nmea_local_description">Diffinio porth UPD lle mae OsmAnd yn derbyn data NMEA</string>
     <string name="ais_object_lost_timeouts">Gosodiadau terfyn amser ar gyfer derbyn signal AIS</string>
     <string name="ais_object_lost_timeout">Terfyn amser ar gyfer gwelededd pan gollir llong</string>
     <string name="ais_object_lost_timeout_description">Gosod amser terfyn ar gyfer gwelededd gwrthrych AIS: Os na dderbynnir signal o fewn y cyfnod penodedig, bydd y gwrthrych yn cael ei dynnu\'n awtomatig o\'r arddangosfa.</string>

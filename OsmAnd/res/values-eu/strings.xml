@@ -131,11 +131,11 @@
     <string name="auto_zoom_map_descr">Zooma maila abiaduraren arabera (mapa uneko kokapenarekin sinkronizatua dagoela).</string>
     <string name="auto_zoom_map">Auto zoom-a egin mapan</string>
     <string name="snap_to_road">Atxikitu errepidera</string>
-    <string name="osmand_play_title_30_chars">RoadCrew Maps &amp; Nabigazioa</string>
+    <string name="osmand_play_title_30_chars">OsmAnd Maps &amp; Nabigazioa</string>
     <string name="osmand_short_description_80_chars">Mapa ikusle eta nabigatzaile mugikor globala lineaz kanpoko eta sare bidezko OSM mapetarako</string>
-    <string name="osmand_long_description_1000_chars">RoadCrew (OSM Automated Navigation Directions)
+    <string name="osmand_long_description_1000_chars">OsmAnd (OSM Automated Navigation Directions)
 \n
-\nRoadCrew kode irekiko software bidezko nabigaziorako aplikazioa da, OpenStreetMapeko (OSM) mota askotako munduko mapetara sarbidearekin. Mapa guztiak (bektore edo tesela mapak) telefonoaren memoria txartelean gorde daitezke, lineaz kanpoko erabilpena bermatzeko. RoadCrewek ere lineaz kanpoko eta sareko ibilbide-kalkulua eskaintzen du, txandakako ahots gidaritzarekin.
+\nOsmAnd kode irekiko software bidezko nabigaziorako aplikazioa da, OpenStreetMapeko (OSM) mota askotako munduko mapetara sarbidearekin. Mapa guztiak (bektore edo tesela mapak) telefonoaren memoria txartelean gorde daitezke, lineaz kanpoko erabilpena bermatzeko. OsmAndek ere lineaz kanpoko eta sareko ibilbide-kalkulua eskaintzen du, txandakako ahots gidaritzarekin.
 \n
 \nEzaugarri nagusi batzuk:
 \n- Lineaz kanpoko erabateko erabilpena (bektore edo tesela mapak gorde ondoren aukeratu daitezken karpetetan)
@@ -150,7 +150,7 @@
 \n- Maparen lerrokatzea, iparrorratzaren edo norabidearen araberakoa
 \n- Errei gidaritza, abiadura muga bistaratzea, grabatutako edo testutik-ahotsera ahotsekin
 \n
-\nRoadCreweko dohaineko bertsioaren mugak
+\nOsmAndeko dohaineko bertsioaren mugak
 \n- Mapa kopuruak deskargatzeko muga
 \n- Wikipediako POIetara lineaz kanpoko sarbiderik ez
 \n
@@ -232,10 +232,10 @@
     <string name="shared_string_online_maps">Sareko mapak</string>
     <string name="osmand_rastermaps_plugin_description">Sar zaitez lineako mapa mota asko (lauza edo raster deitzen direnak), hala nola aldez aurretik errendatutako OSM fitxak, satelite-irudiak eta helburu bereziko geruzak (adibidez, eguraldi-mapak, klima-mapak, mapa geologikoak, muino-geruzak, etab.).
 \n
-\n Mapa hauetako edozein mapa nagusi (oinarrizko) gisa bistaratu daiteke, edo beste oinarrizko mapa baten gainjarri edo azpiko geruza gisa (RoadCrew-en lineaz kanpoko mapa bektorialak bezala). RoadCrew mapen bektorialetako zenbait elementu ezkutatu daitezke \'Konfiguratu mapa\' menuaren bidez, azpiko edozein mapa ikusgarriagoa izan dadin.
+\n Mapa hauetako edozein mapa nagusi (oinarrizko) gisa bistaratu daiteke, edo beste oinarrizko mapa baten gainjarri edo azpiko geruza gisa (OsmAnd-en lineaz kanpoko mapa bektorialak bezala). OsmAnd mapen bektorialetako zenbait elementu ezkutatu daitezke \'Konfiguratu mapa\' menuaren bidez, azpiko edozein mapa ikusgarriagoa izan dadin.
 \n
-\n Deskargatu fitxa-mapak zuzenean, edo kopiatu SQLite datu-baseko fitxategi gisa RoadCrew-en datuen karpetara hirugarrenen mapak prestatzeko tresnetako bat erabiliz.</string>
-    <string name="osmand_accessibility_description">Jarri gailuaren irisgarritasun ezaugarriak RoadCrew aplikazioan eskuragarri. Testutik-ahotsera ahotsen hizketaren abiadura moldatzea baimentzen du, D-Pad nabigazioa konfiguratzea, zooma trackball bidez kontrolatzea, edo testu-ahots bihurketaren bidezko erantzuna, adibidez zure kokalekua iragartzeko.</string>
+\n Deskargatu fitxa-mapak zuzenean, edo kopiatu SQLite datu-baseko fitxategi gisa OsmAnd-en datuen karpetara hirugarrenen mapak prestatzeko tresnetako bat erabiliz.</string>
+    <string name="osmand_accessibility_description">Jarri gailuaren irisgarritasun ezaugarriak OsmAnd aplikazioan eskuragarri. Testutik-ahotsera ahotsen hizketaren abiadura moldatzea baimentzen du, D-Pad nabigazioa konfiguratzea, zooma trackball bidez kontrolatzea, edo testu-ahots bihurketaren bidezko erantzuna, adibidez zure kokalekua iragartzeko.</string>
     <string name="osmand_development_plugin_description">Garapen eta arazte ezaugarrientzako ezarpenak, ibilbide-kalkuluaren simulazioa edo marrazketaren errendimenduaren bistaratzea, edo ahots abisuak esaterako. Erabiltzaile arruntek ez dute hau behar.</string>
     <string name="plugins_screen">Gehigarriak</string>
     <string name="prefs_plugins">Gehigarriak</string>
@@ -243,7 +243,7 @@
 \n
 \nMapa editatzeko argibideak gure webgunean aurki ditzakezu %1$s.</string>
     <string name="play_commands_of_currently_selected_voice">Aukeratu ahotsa eta probatu iragarpenak erreproduzituz:</string>
-    <string name="debugging_and_development">RoadCrew garapena</string>
+    <string name="debugging_and_development">OsmAnd garapena</string>
     <string name="test_voice_prompts">Probatu ahots iragarpenak</string>
     <string name="gpx_visibility_txt">Ikuserraztasuna</string>
     <string name="gpx_tags_txt">Etiketak</string>
@@ -330,7 +330,7 @@
     <string name="user_name">Zure OSM erabiltzailea</string>
     <string name="user_password">Pasahitza</string>
     <string name="osmand_service">Atzeko plano modua</string>
-    <string name="osmand_service_descr">RoadCrew bigarren planoan dabil pantaila itzalia dagoen bitartean.</string>
+    <string name="osmand_service_descr">OsmAnd bigarren planoan dabil pantaila itzalia dagoen bitartean.</string>
     <string name="download_files_not_enough_space">Ez dago leku nahikorik %1$s MB deskargatzeko (%2$s libre).</string>
     <string name="download_files_question_space">Deskargatu {0} fitxategi\? 
 \n{1} MB erabiliko dira ({2} MB eskuragarri).</string>
@@ -454,10 +454,10 @@
     <string name="osmand_net_previously_installed">Aplikazio zaharraren lineaz kanpoko datu guztiak aplikazio berrian erabiliko dira, baina gogoko puntuak aplikazio zaharrean esportatu eta gero berrian inportatu behar dira.</string>
     <string name="build_installed">{0} konpilazioa ongi instalatuta ({1}).</string>
     <string name="downloading_build">Eraikitzeko deskargatzen…</string>
-    <string name="install_selected_build">Instalatu RoadCrew - {0} {1}tik {2} MB ?</string>
-    <string name="loading_builds_failed">Ezin izan da RoadCrew eraikitzeen zerrenda berreskuratu</string>
-    <string name="loading_builds">Eraikitako RoadCrewak kargatzen…</string>
-    <string name="select_build_to_install">Hautatu instalatzeko RoadCrew konpilazioa</string>
+    <string name="install_selected_build">Instalatu OsmAnd - {0} {1}tik {2} MB ?</string>
+    <string name="loading_builds_failed">Ezin izan da OsmAnd eraikitzeen zerrenda berreskuratu</string>
+    <string name="loading_builds">Eraikitako OsmAndak kargatzen…</string>
+    <string name="select_build_to_install">Hautatu instalatzeko OsmAnd konpilazioa</string>
     <string name="gps_status_app_not_found">GPS status aplikazioa ez dago instalatua. Bilatu?</string>
     <string name="daynight_mode_day">Eguna</string>
     <string name="daynight_mode_night">Gaua</string>
@@ -499,7 +499,7 @@
     <string name="layer_map">Maparen iturburua…</string>
     <string name="use_trackball_descr">Erabili trackball gailu bat mapa mugitzeko.</string>
     <string name="use_trackball">Erabili trackball-a</string>
-    <string name="process_navigation_service">RoadCrewren nabigazio zerbitzua</string>
+    <string name="process_navigation_service">OsmAndren nabigazio zerbitzua</string>
     <string name="int_seconds">segundo</string>
     <string name="int_min">min.</string>
     <string name="search_poi_filter">Iragazkia</string>
@@ -525,7 +525,7 @@
     <string name="transport_stops">geltoki</string>
     <string name="transport">Garraioa</string>
     <string name="shared_string_ok">ADOS</string>
-    <string name="hello">RoadCrew nabigazio aplikazioa</string>
+    <string name="hello">OsmAnd nabigazio aplikazioa</string>
     <string name="favorite">Gogokoa</string>
     <string name="shared_string_clear_all">Garbitu guztiak</string>
     <string name="shared_string_history">Historiala</string>
@@ -560,7 +560,7 @@
     <string name="invalid_locations">Baliogabeko koordenatuak</string>
     <string name="shared_string_close">Itxi</string>
     <string name="loading_data">Datuak kargatzen…</string>
-    <string name="previous_run_crashed">Azkeneko RoadCrewen exekuzioak huts egin du. Log fitxategia {0} da. Mesedez gertatutakoa jakinarazi eta log fitxategia erantsi.</string>
+    <string name="previous_run_crashed">Azkeneko OsmAnden exekuzioak huts egin du. Log fitxategia {0} da. Mesedez gertatutakoa jakinarazi eta log fitxategia erantsi.</string>
     <string name="saving_gpx_tracks">GPX fitxategia gordetzen…</string>
     <string name="finished_task">Bukatua</string>
     <string name="data_settings">Datuak</string>
@@ -655,10 +655,10 @@
     <string name="routing_attr_avoid_motorway_description">Saihestu autobideak</string>
     <string name="routing_attr_weight_name">Pisua</string>
     <string name="routing_attr_weight_description">Zehaztu ibilbideetan baimendu tako ibilgailuaren pisua.</string>
-    <string name="android_19_location_disabled">Android 4.4 (KitKat) bertsioa geroztik aurreko biltegiratze kokapena (%s) zaharkituta dago. Kopiatu RoadCrew fitxategi guztiak kokapen berrira\?
+    <string name="android_19_location_disabled">Android 4.4 (KitKat) bertsioa geroztik aurreko biltegiratze kokapena (%s) zaharkituta dago. Kopiatu OsmAnd fitxategi guztiak kokapen berrira\?
 \n 1. Oharra : Fitxategi zaharrak mantenduko dira (baina eskuz ezabatu ditzakezu).
 \n 2. Oharra : Kokaleku berrian ezingo dira fitxategiak partekatu OsmAnd eta OsmAnd+ artean.</string>
-    <string name="copying_osmand_files">RoadCrew fitxategiak kopiatzen…</string>
+    <string name="copying_osmand_files">OsmAnd fitxategiak kopiatzen…</string>
     <string name="app_mode_truck">Kamioia</string>
     <string name="speech_rate_descr">Zehaztu testutik-ahotsera ahotsaren abiadura.</string>
     <string name="speech_rate">Ahots abiadura</string>
@@ -684,14 +684,14 @@
     <string name="av_camera_pic_size_descr">Aukeratu kameraren irudiaren tamaina</string>
     <string name="navigation_intent_invalid">Baliogabeko formatuak: %s</string>
     <string name="shared_string_share">Partekatu</string>
-    <string name="share_fav_subject">RoadCrew bidez partekatutako gogokoak</string>
+    <string name="share_fav_subject">OsmAnd bidez partekatutako gogokoak</string>
     <string name="keep_informing_never">Inoiz</string>
     <string name="keep_informing">Errepikatu nabigazio jarraibideak</string>
     <string name="arrival_distance_factor_early">Laster</string>
     <string name="arrival_distance_factor_normally">Arrunta</string>
     <string name="arrival_distance_factor_late">Berandu</string>
     <string name="arrival_distance_factor_at_last">Oso berandu</string>
-    <string name="share_route_subject">Ibilbidea RoadCrew bidez partekatu da</string>
+    <string name="share_route_subject">Ibilbidea OsmAnd bidez partekatu da</string>
     <string name="share_route_as_gpx">Partekatu ibilbidea GPX fitxategi bezala</string>
     <string name="interrupt_music_descr">Ahots iragarpenek musika pausatuko dute.</string>
     <string name="interrupt_music">Eten musika</string>
@@ -949,7 +949,7 @@
     <string name="light_theme">Argia</string>
     <string name="dark_theme">Iluna</string>
     <string name="gps_network_not_enabled">Kokapen zerbitzua itzalita dago. Aktibatu?</string>
-    <string name="shared_string_import2osmand">Inportatu RoadCrew-era</string>
+    <string name="shared_string_import2osmand">Inportatu OsmAnd-era</string>
     <string name="read_full_article">Irakurri artikulu osoa (linean)</string>
     <string name="shared_string_wikipedia">Wikipedia</string>
     <string name="shared_string_show_details">Erakutsi xehetasunak</string>
@@ -1037,10 +1037,10 @@
     <string name="rendering_category_routes">Ibilbideak</string>
     <string name="print_route">Inprimatu ibilbidea</string>
     <string name="rendering_attr_showCycleRoutes_name">Bizikleta ibilbideak</string>
-    <string name="calculate_osmand_route_without_internet">RoadCrew ibilbide segmentuaren lineaz kanpoko kalkulua</string>
-    <string name="gpx_option_calculate_first_last_segment">Kalkulatu RoadCrew ibilbidea ibilbideko lehen eta azken segmentuetarako</string>
+    <string name="calculate_osmand_route_without_internet">OsmAnd ibilbide segmentuaren lineaz kanpoko kalkulua</string>
+    <string name="gpx_option_calculate_first_last_segment">Kalkulatu OsmAnd ibilbidea ibilbideko lehen eta azken segmentuetarako</string>
     <string name="routing_attr_height_description">Zehaztu ibilbideetan baimendu beharreko ibilgailuaren altuera.</string>
-    <string name="calculate_osmand_route_gpx">RoadCrew ibilbidearen lineaz kanpoko kalkulua</string>
+    <string name="calculate_osmand_route_gpx">OsmAnd ibilbidearen lineaz kanpoko kalkulua</string>
     <string name="complex_route_calculation_failed">Ibilbidearen kalkulu azkarrak huts egin du (%s), kalkulu motelera aldatzen.</string>
     <string name="rendering_attr_roadStyle_name">Errepide estiloa</string>
     <string name="rendering_attr_roadStyle_description">Errepide estiloa</string>
@@ -1107,7 +1107,7 @@
     <string name="use_osm_live_routing_description">Gaitu nabigazioa OSM Live aldaketentzako (beta).</string>
     <string name="osm_edit_modified_poi">Aldatutako OSM POI-a</string>
     <string name="osm_edit_deleted_poi">Ezabatutako OSM POI-a</string>
-    <string name="share_osm_edits_subject">OSM edizioak RoadCrew bidez partekatuak</string>
+    <string name="share_osm_edits_subject">OSM edizioak OsmAnd bidez partekatuak</string>
     <string name="lang_nds">Behe-alemana</string>
     <string name="lang_mk">Mazedoniera</string>
     <string name="lang_fy">Frisiera</string>
@@ -1117,7 +1117,7 @@
     <string name="file_name_containes_illegal_char">Fitxategi-izenak karaktere baliogaberen bat du</string>
     <string name="show_something_on_map">Erakutsi %1$s mapan</string>
     <string name="dist_away_from_my_location">Bilatu %1$sra</string>
-    <string name="share_history_subject">RoadCrew bidez partekatua</string>
+    <string name="share_history_subject">OsmAnd bidez partekatua</string>
     <string name="search_categories">Kategoriak</string>
     <string name="postcode">Postakodea</string>
     <string name="shared_string_from">nondik</string>
@@ -1273,7 +1273,7 @@
     <string name="only_download_over_wifi">Deskargatu Wi-Fi bidez besterik ez</string>
     <string name="live_update">Berehalako eguneraketa</string>
     <string name="update_now">Eguneratu orain</string>
-    <string name="missing_write_external_storage_permission">RoadCrew aplikazioak ez du memoria txartela erabiltzeko baimenik</string>
+    <string name="missing_write_external_storage_permission">OsmAnd aplikazioak ez du memoria txartela erabiltzeko baimenik</string>
     <string name="dashboard_or_drawer_title">Kontrol panela edo kontrol menua</string>
     <string name="route_stops_before">%1$s geltoki falta dira</string>
     <string name="coords_search">Koordenatuen bilaketa</string>
@@ -1317,7 +1317,7 @@
     <string name="poi_action_delete">ezabatu</string>
     <string name="poi_dialog_reopen">Berrireki</string>
     <string name="shared_string_get">Eskuratu</string>
-    <string name="do_you_like_osmand">RoadCrew gogoko duzu?</string>
+    <string name="do_you_like_osmand">OsmAnd gogoko duzu?</string>
     <string name="user_hates_app_get_feedback">Esaguzu zergatik.</string>
     <string name="user_hates_app_get_feedback_long">Egin mesedez iradokizunak.</string>
     <string name="failed_to_upload">Ezin izan da igo</string>
@@ -1356,7 +1356,7 @@
     <string name="update_all">Eguneratu guztiak (%1$s MB)</string>
     <string name="other_menu_group">Beste bat</string>
     <string name="reports_for">Txostena</string>
-    <string name="plugin_touringview_descr">Ikuspegi hau aktibatzean RoadCrew mapa estiloa \'Bidai ikuspegi\'-ra aldatzen du, hau xehetasun handiko ikuspegi bat da bidaiarientzat eta gidari profesionalentzat.
+    <string name="plugin_touringview_descr">Ikuspegi hau aktibatzean OsmAnd mapa estiloa \'Bidai ikuspegi\'-ra aldatzen du, hau xehetasun handiko ikuspegi bat da bidaiarientzat eta gidari profesionalentzat.
 \n
 \nIkuspegi honek, edozein zoom mailan, maparen datuetan eskuragarri dagoen xehetasun maila handiena ematen du (bereziki errepideak, bideak, bidezidorrak eta orientazio markak).
 \n
@@ -1381,7 +1381,7 @@
     <string name="shared_string_change">Aldatu</string>
     <string name="search_another_country">Bilatu beste eskualde bat</string>
     <string name="search_map">Mapak bilatzen…</string>
-    <string name="first_usage_wizard_desc">Baimendu RoadCrew aplikazioari zure kokalekua zehaztea eta eskualderako mapa egokia deskargatzea iradokitzea.</string>
+    <string name="first_usage_wizard_desc">Baimendu OsmAnd aplikazioari zure kokalekua zehaztea eta eskualderako mapa egokia deskargatzea iradokitzea.</string>
     <string name="location_not_found">Ez da kokapena aurkitu</string>
     <string name="no_inet_connection">Ez dago Internet konexiorik</string>
     <string name="search_location">Kokalekua bilatzen…</string>
@@ -1529,7 +1529,7 @@
     <string name="shared_string_automatic">Automatikoa</string>
     <string name="do_not_show_startup_messages">Ez erakutsi mezuak abioan</string>
     <string name="parking_options">Aparkatzeko aukerak</string>
-    <string name="full_version_thanks">Eskerrik asko RoadCrew aplikazioaren ordainpeko bertsioa erosteagatik.</string>
+    <string name="full_version_thanks">Eskerrik asko OsmAnd aplikazioaren ordainpeko bertsioa erosteagatik.</string>
     <string name="routing_attr_relief_smoothness_factor_hills_name">Menditsua</string>
     <string name="routing_attr_relief_smoothness_factor_plains_name">Ez oso menditsua</string>
     <string name="routing_attr_relief_smoothness_factor_more_plains_name">Laua</string>
@@ -1564,7 +1564,7 @@
     <string name="restore_purchases">Berreskuratu erosketak</string>
     <string name="fonts_header">Maparen letra-tipoak</string>
     <string name="shared_string_paused">Pausatua</string>
-    <string name="osmand_extended_description_part1">RoadCrew (OSM Automated Navigation Directions) mapa eta nabigazio aplikazio bat da. Doako, mundu osoko eta kalitate altuko OSM mapak eskura jartzen dizkizuna.
+    <string name="osmand_extended_description_part1">OsmAnd (OSM Automated Navigation Directions) mapa eta nabigazio aplikazio bat da. Doako, mundu osoko eta kalitate altuko OSM mapak eskura jartzen dizkizuna.
 \n
 \nGozatu ahots bidezko nabigazioa edo nabigazio grafikoa, ikusi interesguneak (POI), sortu eta kudeatu GPX arrastoak, erabili sestra-kurbak eta topografia datuak (gehigarri baten bidez), aukeratu auto, bizikleta eta oinezko moduen artean, editatu OSM, eta askoz gehiago.</string>
     <string name="type_address">Idatzi helbidea</string>
@@ -1612,7 +1612,7 @@
     <string name="mapillary_menu_title_username">Erabiltzaile-izena</string>
     <string name="map_widget_ruler_control">Erradioaren erregela</string>
     <string name="shared_string_permissions">Baimenak</string>
-    <string name="import_gpx_failed_descr">Ezin izan da fitxategia inportatu. Egiaztatu RoadCrewek hau irakurtzeko baimenak dituen.</string>
+    <string name="import_gpx_failed_descr">Ezin izan da fitxategia inportatu. Egiaztatu OsmAndek hau irakurtzeko baimenak dituen.</string>
     <string name="distance_moving">Zuzendutako distantzia</string>
     <string name="mapillary_image">Mapillary irudia</string>
     <string name="open_mapillary">Ireki Mapillary</string>
@@ -1630,7 +1630,7 @@
     <string name="srtm_menu_download_descr">Deskargatu eskualde honetako sestra-kurben mapa.</string>
     <string name="shared_string_in_name">%1$s barne</string>
     <string name="osmand_extended_description_part4">Eskiatu
-\nRoadCrew eski-mapak gehigarriak eskiatzeko pistak ikustea baimentzen dizu, konplexutasun mailarekin eta bestelako informazio gehigarriarekin, arrasteak eta bestelako zerbitzuak.</string>
+\nOsmAnd eski-mapak gehigarriak eskiatzeko pistak ikustea baimentzen dizu, konplexutasun mailarekin eta bestelako informazio gehigarriarekin, arrasteak eta bestelako zerbitzuak.</string>
     <string name="osmand_extended_description_part7">Hartu parte OSMn
 \n• Eman datuen arazoen berri
 \n• Igo GPX arrastoak OSMra aplikaziotik bertatik
@@ -1688,7 +1688,7 @@
 \n• GPS nabigazioak oinezkoen moduan ibilbidea oinezkoentzako bideak barne-hartuz sortuko du
 \n• GPX ibilbide bat igo eta jarraitu dezakezu edo zurea grabatu eta partekatu
 \n</string>
-    <string name="osmand_extended_description_part8">RoadCrew librea da eta garapen aktiboan dago. Edonork egin ditzake ekarpenak, arazoen berri emanez, itzulpenak hobetuz, edo ezaugarri berriak programatuz. Proiektua hobekuntza jarraituan murgilduta dago garatzaile eta erabiltzaileen arteko elkarrekintza hau dela eta. Proiektuak diru-laguntzak eta dohaintzak behar ditu ere kodeketa lana ordaindu eta ezaugarri berriak probatzeko. 
+    <string name="osmand_extended_description_part8">OsmAnd librea da eta garapen aktiboan dago. Edonork egin ditzake ekarpenak, arazoen berri emanez, itzulpenak hobetuz, edo ezaugarri berriak programatuz. Proiektua hobekuntza jarraituan murgilduta dago garatzaile eta erabiltzaileen arteko elkarrekintza hau dela eta. Proiektuak diru-laguntzak eta dohaintzak behar ditu ere kodeketa lana ordaindu eta ezaugarri berriak probatzeko. 
 \nGutxi gora-beherako mapen kalitatea: 
 \n• Mendebaldeko Europa: **** 
 \n• Ekialdeko Europa: *** 
@@ -1743,7 +1743,7 @@
 \n• Igo GPX lorratzak zuzenean OSMra aplikaziotik 
 \n• Gehitu POI-ak eta igo zuzenean OSMra (edo geroago, konektatzen zarenean) 
 \n• Aukeran, grabatu bidaia bigarren planoan (gailua lo dagoela) 
-\nRoadCrew librea da eta garapen aktiboan dago. Edonork egin ditzake ekarpenak, arazoen berri emanez, itzulpenak hobetuz, edo ezaugarri berriak programatuz. Proiektuak dohaintza behar ditu funtzio berriak programatu eta probatzeko.
+\nOsmAnd librea da eta garapen aktiboan dago. Edonork egin ditzake ekarpenak, arazoen berri emanez, itzulpenak hobetuz, edo ezaugarri berriak programatuz. Proiektuak dohaintza behar ditu funtzio berriak programatu eta probatzeko.
 \n</string>
     <string name="quick_action_resume_pause_navigation_descr">Nabigazioa pausatu edo jarraitzeko botoia.</string>
     <string name="quick_action_show_navigation_finish_dialog">Erakutsi \'nabigazioa amaituta\' elkarrizketa-koadroa</string>
@@ -1765,7 +1765,7 @@
     <string name="sort_by">Ordenatu honela</string>
     <string name="do_not_use_animations">Animaziorik ez</string>
     <string name="exit_without_saving">Irten gorde gabe?</string>
-    <string name="measurement_tool_snap_to_road_descr">RoadCrewek puntuak hautatutako profilaren ibilbideekin lotuko ditu.</string>
+    <string name="measurement_tool_snap_to_road_descr">OsmAndek puntuak hautatutako profilaren ibilbideekin lotuko ditu.</string>
     <string name="choose_navigation_type">Hautatu nabigazio profila</string>
     <string name="empty_state_favourites">Gehitu gogokoak</string>
     <string name="empty_state_favourites_desc">Inportatu gogokoak, edo gehitu mapan puntuak markatuz.</string>
@@ -1958,12 +1958,12 @@
     <string name="use_two_digits_longitude">Erabili digitu bikoitzeko longitudea</string>
     <string name="shared_string_travel_guides">Bidaia</string>
     <string name="index_item_world_wikivoyage">Mundu osoko Wikivoyage artikuluak</string>
-    <string name="wikivoyage_travel_guide_descr">Planetako leku interesgarrienetarako gidak, RoadCrew-en bertan eta Internet konexiorik gabe.</string>
+    <string name="wikivoyage_travel_guide_descr">Planetako leku interesgarrienetarako gidak, OsmAnd-en bertan eta Internet konexiorik gabe.</string>
     <string name="wikivoyage_travel_guide">Bidai-gidak</string>
     <string name="monthly_map_updates">Hileroko mapa-eguneraketak</string>
     <string name="daily_map_updates">Ordueroko mapa-eguneraketak</string>
     <string name="in_app_purchase_desc">Ordainketa bakarra</string>
-    <string name="osmand_team">RoadCrew taldea</string>
+    <string name="osmand_team">OsmAnd taldea</string>
     <string name="popular_destinations">Ohiko helburuak</string>
     <string name="travel_card_update_descr">Wikivoyage datu berriak eskuragarri, eguneratu erabiltzeko.</string>
     <string name="update_is_available">Eguneraketa eskuragarri</string>
@@ -2017,7 +2017,7 @@
     <string name="search_no_results_feedback">Bilaketaren emaitzarik ez?
 \nEgin iruzkin bat</string>
     <string name="test_voice_desrc">Sakatu botoi bat eta entzun dagokion ahots-deskripzioa falta den edo gaizki dagoen antzemateko</string>
-    <string name="ask_for_location_permission">Eman RoadCrew-i kokalekua eskuratzeko baimena jarraitzeko.</string>
+    <string name="ask_for_location_permission">Eman OsmAnd-i kokalekua eskuratzeko baimena jarraitzeko.</string>
     <string name="rendering_value_black_name">Beltza</string>
     <string name="search_street">Bilatu kalea</string>
     <string name="start_search_from_city">Hautatu hiria/herria/tokia lehenbizi</string>
@@ -2065,7 +2065,7 @@
     <string name="add_work">Gehitu lantokia</string>
     <string name="work_button">Lantokia</string>
     <string name="avoid_roads_descr">Hautatu saihestu nahi duzun bidea mapan edo beheko zerrendan:</string>
-    <string name="quick_action_switch_day_night_descr">RoadCrew egun eta gau moduen artean txandakatzeko botoia.</string>
+    <string name="quick_action_switch_day_night_descr">OsmAnd egun eta gau moduen artean txandakatzeko botoia.</string>
     <string name="use_osm_live_public_transport_description">Gaitu garraio publikoa OsmAnd Live aldaketetan.</string>
     <string name="time_of_day">Eguneko ordua</string>
     <string name="by_transport_type">Egilea: %1$s</string>
@@ -2149,7 +2149,7 @@
     <string name="files_failed">Ezin izan dira %1$d fitxategi kopiatu (%2$s).</string>
     <string name="dont_move_maps">Ez mugitu</string>
     <string name="public_transport_ped_route_title">Ibilbidea oinez gutxi gora behera %1$s da eta garraio publikoa baino azkarrago izan daiteke</string>
-    <string name="public_transport_no_route_title">Tamalez, RoadCrew-ek ezin izan du zure ezarpenetarako bide egokirik aurkitu.</string>
+    <string name="public_transport_no_route_title">Tamalez, OsmAnd-ek ezin izan du zure ezarpenetarako bide egokirik aurkitu.</string>
     <string name="public_transport_try_ped">Saiatu oinezko nabigazioa.</string>
     <string name="public_transport_try_change_settings">Saiatu ezarpenak aldatzen.</string>
     <string name="public_transport_calc_pedestrian">Kalkulatu oinezko ibilbidea</string>
@@ -2162,12 +2162,12 @@
     <string name="searching_gps">GPSa bilatzen</string>
     <string name="coordinates_widget">Koordenatuen trepeta</string>
     <string name="rate_dialog_descr">Eman zure iritzia eta baloratu gure lana Google Play-n.</string>
-    <string name="help_us_make_osmand_better">Lagundu gaitzazu RoadCrew hobetzen</string>
+    <string name="help_us_make_osmand_better">Lagundu gaitzazu OsmAnd hobetzen</string>
     <string name="choose_data_to_share">Aukeratu ze motako datuak partekatu nahi dituzun:</string>
     <string name="downloaded_maps">Deskargatutako mapak</string>
     <string name="visited_screens">Bisitatutako pantailak</string>
     <string name="downloaded_maps_collect_descr">Lagundu gaitzazu mapa eta eskualdeen erabilera ulertzen.</string>
-    <string name="visited_screens_collect_descr">Lagundu gaitzazu RoadCrew-en ezaugarrien erabilera ulertzen.</string>
+    <string name="visited_screens_collect_descr">Lagundu gaitzazu OsmAnd-en ezaugarrien erabilera ulertzen.</string>
     <string name="privacy_and_security_change_descr">\"Onartu\" sakatzean gure %1$s onartzen duzu</string>
     <string name="settings_privacy_and_security">Pribatutasuna eta segurtasuna</string>
     <string name="settings_privacy_and_security_desc">Hautatu partekatu nahi dituzun datuak</string>
@@ -2187,7 +2187,7 @@
     <string name="profile_alert_need_profile_name_title">Sartu profilaren izena</string>
     <string name="profile_alert_need_profile_name_msg">Aurrerik profilaren izena zehaztu behar duzu.</string>
     <string name="profile_alert_duplicate_name_msg">Badago izen bereko beste profil bat</string>
-    <string name="profile_alert_cant_delete_base">Ezin dituzu RoadCrew-eko oinarrizko profilak ezabatu</string>
+    <string name="profile_alert_cant_delete_base">Ezin dituzu OsmAnd-eko oinarrizko profilak ezabatu</string>
     <string name="profile_alert_delete_title">Ezabatu profila</string>
     <string name="profile_alert_delete_msg">Ezabatu \"%s\" profila</string>
     <string name="select_base_profile_dialog_title">Hautatu hasierako profila</string>
@@ -2198,7 +2198,7 @@
     <string name="application_profiles">Aplikazio-profilak</string>
     <string name="routing_attr_freeride_policy_name">Pistatik kanpo</string>
     <string name="shared_string_privacy_policy">Pribatutasun-politika</string>
-    <string name="make_osmand_better_descr">RoadCrew aplikazioari erabilera-datu anonimoak bildu eta prozesatzea baimendu diezaiokezu. Ez da zure kokalekuari buruzko daturik biltzen, ezta mapan begiratzen dituzun tokiena ere. 
+    <string name="make_osmand_better_descr">OsmAnd aplikazioari erabilera-datu anonimoak bildu eta prozesatzea baimendu diezaiokezu. Ez da zure kokalekuari buruzko daturik biltzen, ezta mapan begiratzen dituzun tokiena ere. 
 \n 
 \nGero ere konfigurazioa hemen aldatu dezakezu: \'Ezarpenak\' &gt; \'Pribatutasuna eta segurtasuna\'.</string>
     <string name="app_mode_shuttle_bus">Autobus lotura-linea</string>
@@ -2209,7 +2209,7 @@
     <string name="base_profile_descr_boat">Barkua, arrauna, bela</string>
     <string name="base_profile_descr_aircraft">Hegazkina, planeatzailea</string>
     <string name="routing_profile_geocoding">Geokodetzea</string>
-    <string name="osmand_default_routing">RoadCrew ibilbide-kalkulua</string>
+    <string name="osmand_default_routing">OsmAnd ibilbide-kalkulua</string>
     <string name="special_routing_type">Ibilbide-kalkulu berezia</string>
     <string name="third_party_routing_type">Hirugarrengoen ibilbide-kalkulua</string>
     <string name="quick_action_need_to_add_item_to_list">Gehitu gutxienez elementu bat zerrendara \'Ekintza azkarra\' ezarpenetan</string>
@@ -2234,7 +2234,7 @@
     <string name="routing_attr_difficulty_preference_name">Hobetsitako zailtasuna</string>
     <string name="routing_attr_difficulty_preference_description">Hobetsi zailtasun hau duten ibilbideak, baina laburragoa bada pista zailago edo errazagoak hartu daitezke.</string>
     <string name="routing_attr_freeride_policy_description">Pista kanpoko ibilbideak ibilbide eta pasabide ez ofizialak dira. Orokorrean konpondu eta prestatu gabekoak eta gauez zaindu gabeak. Sartu zure ardurapean.</string>
-    <string name="process_downloading_service">RoadCrew deskarga zerbitzua</string>
+    <string name="process_downloading_service">OsmAnd deskarga zerbitzua</string>
     <string name="shared_string_color_magenta">Magenta</string>
     <string name="shared_string_icon">Ikonoa</string>
     <string name="press_again_to_change_the_map_orientation">Sakatu berriro maparen orientazioa aldatzeko</string>
@@ -2244,7 +2244,7 @@
     <string name="default_speed_setting_descr">Aldatu lehenetsitako abiadura-ezarpenak</string>
     <string name="new_profile">Profil berria</string>
     <string name="shared_string_crash">Kraskatzea</string>
-    <string name="last_launch_crashed">Aurrekoan RoadCrew kraskatu da. Lagundu gaitzazu RoadCrew hobetzen errore mezua partekatuz.</string>
+    <string name="last_launch_crashed">Aurrekoan OsmAnd kraskatu da. Lagundu gaitzazu OsmAnd hobetzen errore mezua partekatuz.</string>
     <string name="app_mode_ufo">OHE (objektu hegalari ezezagun)</string>
     <string name="app_mode_personal_transporter">Garraio pertsonala</string>
     <string name="app_mode_monowheel">Monozikloa</string>
@@ -2345,7 +2345,7 @@
     <string name="switch_profile">Aldatu profila</string>
     <string name="reset_to_default">Leheneratu lehenetsikoetara</string>
     <string name="osmand_settings_descr">Aplikazio osoari eragiten dio</string>
-    <string name="osmand_settings">RoadCrew ezarpenak</string>
+    <string name="osmand_settings">OsmAnd ezarpenak</string>
     <string name="copy_from_other_profile">Kopiatu beste profil batetik</string>
     <string name="turn_screen_on">Piztu pantaila</string>
     <string name="map_during_navigation_info">Mapa nabigazioan zehar</string>
@@ -2364,12 +2364,12 @@
     <string name="plugins_settings">Gehigarriaren ezarpenak</string>
     <string name="shared_string_by_default">Lehenetsita</string>
     <string name="download_detailed_map">Deskargatu %s(e)ko mapa xehetsua ingurune hau ikusteko.</string>
-    <string name="change_data_storage_full_description">Eraman RoadCrew datu fitxategiak xede berrira\?
+    <string name="change_data_storage_full_description">Eraman OsmAnd datu fitxategiak xede berrira\?
 \n%1$s &gt; %2$s</string>
     <string name="enter_path_to_folder">Sartu karpetara bidea</string>
     <string name="shared_string_select_folder">Karpeta…</string>
-    <string name="paste_Osmand_data_folder_path">Itsatsi RoadCrew datuak dituen karpetara bidea</string>
-    <string name="change_osmand_data_folder_question">Aldatu RoadCrew datuen karpeta\?</string>
+    <string name="paste_Osmand_data_folder_path">Itsatsi OsmAnd datuak dituen karpetara bidea</string>
+    <string name="change_osmand_data_folder_question">Aldatu OsmAnd datuen karpeta\?</string>
     <string name="move_maps_to_new_destination">Eraman xede berrira</string>
     <string name="change_data_storage_folder">Aldatu biltegiratzeko karpeta</string>
     <string name="rendering_attr_piste_type_snow_park_name">Elur parkea</string>
@@ -2401,7 +2401,7 @@
     <string name="rendering_attr_piste_difficulty_aerialway_name">Teleaulkia</string>
     <string name="rendering_attr_piste_difficulty_connection_name">Konexioa</string>
     <string name="shared_string_calculate">Kalkulatu</string>
-    <string name="shared_string_osmand_usage">RoadCrew erabilera</string>
+    <string name="shared_string_osmand_usage">OsmAnd erabilera</string>
     <string name="shared_string_tiles">Teselak</string>
     <string name="shared_string_maps">Mapak</string>
     <string name="shared_string_memory_tb_desc">%1$s TB</string>
@@ -2474,7 +2474,7 @@
     <string name="desert_render_descr">Desertu eta populazio gutxiko eremuentzat. Xehetasun gehiago.</string>
     <string name="delete_profiles_descr">\'Aplikatu\' sakatzean kendutako profilak behin betiko ezabatuko dira.</string>
     <string name="select_color">Hautatu kolorea</string>
-    <string name="edit_profiles_descr">Ezin dira RoadCrew-en lehenetsitako profilak ezabatu, baina aurreko pantailan desgaitu ditzakezu, edo behealdera mugitu.</string>
+    <string name="edit_profiles_descr">Ezin dira OsmAnd-en lehenetsitako profilak ezabatu, baina aurreko pantailan desgaitu ditzakezu, edo behealdera mugitu.</string>
     <string name="edit_profiles">Editatu profilak</string>
     <string name="profile_appearance">Profilaren itxura</string>
     <string name="choose_icon_color_name">Ikonoa, kolorea eta izena</string>
@@ -2563,14 +2563,14 @@
     <string name="button_rate">Baloratu</string>
     <string name="ltr_or_rtl_combine_via_space">%1$s %2$s</string>
     <string name="ltr_or_rtl_combine_via_colon">%1$s: %2$s</string>
-    <string name="tracks_view_descr">Zure grabatutako arrastoak, %1$s, edo RoadCrew karpetan daude.</string>
+    <string name="tracks_view_descr">Zure grabatutako arrastoak, %1$s, edo OsmAnd karpetan daude.</string>
     <string name="multimedia_notes_view_descr">Zure OSM oharrak hemen zaude: %1$s.</string>
     <string name="video_notes">Bideo oharrak</string>
     <string name="photo_notes">Argazki oharrak</string>
     <string name="accessibility_announce">Iragarri</string>
     <string name="plugin_global_prefs_info">Ezarpen hauek orokorrak dira, eta profil guztiei aplikatzen zaizkie</string>
     <string name="osm_editing">OSM edizioa</string>
-    <string name="osm_edits_view_descr">Oraindik igo gabeko aldaketak edo OSM akatsak hemen ikusi ditzakezu: %1$s. Igotako puntuak ez dira RoadCrew-en erakutsiko.</string>
+    <string name="osm_edits_view_descr">Oraindik igo gabeko aldaketak edo OSM akatsak hemen ikusi ditzakezu: %1$s. Igotako puntuak ez dira OsmAnd-en erakutsiko.</string>
     <string name="app_mode_osm">OSM</string>
     <string name="monitoring_min_accuracy_descr_remark">Oharra: Grabatzen hasi aurretik GPSa itzalita egon bada, neurtutako lehen puntuak zehaztasun txikia izan dezake. Gure kodean puntu bat grabatu aurretik segundo bat itxaron genezake (edo jarraian grabatutako hirutik onena hartu, etab.), baina oraindik ez da hau garatu.</string>
     <string name="monitoring_min_distance_descr">Iragazki honek puntu bikoiztuak grabatzea saihesten du mugimendu txikiegia egon bada. Gero prozesatu ez diren arrastoetan itxura hobe bat lortzen da.</string>
@@ -2593,12 +2593,12 @@
     <string name="shared_string_nothing_selected">Ez da ezer hautatu</string>
     <string name="shared_string_quick_actions">Ekintza azkarrak</string>
     <string name="shared_string_profiles">Profilak</string>
-    <string name="listed_exist">Zerrendatutako %1$s, badago dagoeneko RoadCrew-en.</string>
+    <string name="listed_exist">Zerrendatutako %1$s, badago dagoeneko OsmAnd-en.</string>
     <string name="replace_all_desc">Uneko elementuak fitxategiko elementuekin ordeztuko dira</string>
     <string name="replace_all">Ordeztu guztiak</string>
     <string name="keep_both">Mantendu biak</string>
     <string name="keep_both_desc">Inportatutako elementuak aurrizkiarekin gehituko dira</string>
-    <string name="import_duplicates_description">RoadCrew-ek dagoeneko izen berdinak dituzten elementuak ditu.
+    <string name="import_duplicates_description">OsmAnd-ek dagoeneko izen berdinak dituzten elementuak ditu.
 \n
 \nAukeratu ekintza bat.</string>
     <string name="import_duplicates_title">Dagoeneko zenbait elementu existitzen dira</string>
@@ -2611,7 +2611,7 @@
     <string name="clear_recorded_data_warning">Garbitu grabatutako datuak\?</string>
     <string name="importing_from">Inportatu datuak %1$s-tik</string>
     <string name="shared_string_importing">Inportatzen</string>
-    <string name="checking_for_duplicate_description">%1$s-ren bikoizketen egiaztaketa RoadCrew aplikazioan dauden elementuekin.
+    <string name="checking_for_duplicate_description">%1$s-ren bikoizketen egiaztaketa OsmAnd aplikazioan dauden elementuekin.
 \n
 \nDenboratxo bat hartu lezake.</string>
     <string name="items_added">Gehitutako elementuak</string>
@@ -2644,7 +2644,7 @@
     <string name="replace_point_descr">Ordeztu beste puntua honekin.</string>
     <string name="app_mode_ski_touring">Mendiko eskia</string>
     <string name="app_mode_ski_snowmobile">Elur-motorra</string>
-    <string name="custom_osmand_plugin">RoadCrew gehigarri pertsonala</string>
+    <string name="custom_osmand_plugin">OsmAnd gehigarri pertsonala</string>
     <string name="changes_applied_to_profile">Aldaketak aplikatuta \'%1$s\' profilean.</string>
     <string name="settings_item_read_error">Ezin izan da %1$s-tik irakurri.</string>
     <string name="settings_item_write_error">Ezin izan da %1$s-ra idatzi.</string>
@@ -2675,7 +2675,7 @@
     <string name="quick_action_item">Ekintza azkarra</string>
     <string name="map_markers_item">Mapa-markatzaileak</string>
     <string name="favorites_item">Gogokoak</string>
-    <string name="tracker_item">RoadCrew aztarnaria</string>
+    <string name="tracker_item">OsmAnd aztarnaria</string>
     <string name="shared_string_resume">Jarraitu</string>
     <string name="ui_customization_description">Pertsonalizatu \"Tiradera\", \"Konfiguratu mapa\" eta \"Laster-menua\" ataletan dauden elementu kopurua.
 \n
@@ -2695,7 +2695,7 @@
     <string name="additional_actions_descr">“%1$s” botoia sakatuz atzitu ditzakezu ekintza hauek.</string>
     <string name="developer_plugin">Garatzaileen gehigarria</string>
     <string name="shared_string_items">Elementuak</string>
-    <string name="turn_screen_on_power_button_descr">Gailuaren itzaltze botoia sakatzean pantaila piztuko da RoadCrew blokeo-pantailaren gainean dagoela.</string>
+    <string name="turn_screen_on_power_button_descr">Gailuaren itzaltze botoia sakatzean pantaila piztuko da OsmAnd blokeo-pantailaren gainean dagoela.</string>
     <string name="lang_zhyue">Kantonera</string>
     <string name="lang_zhminnan">Hegoaldeko Min</string>
     <string name="lang_yo">Jorubera</string>
@@ -2748,12 +2748,12 @@
 \n</string>
     <string name="gpx_parse_error">GPX fitxategi batean aurkitutako arazoak.
 \n
-\nRoadCrew laguntzarekin jar zaitezke harremanetan ikertzeko.</string>
+\nOsmAnd laguntzarekin jar zaitezke harremanetan ikertzeko.</string>
     <string name="shared_string_always">Beti</string>
     <string name="screen_control">Pantailaren kontrola</string>
     <string name="system_screen_timeout_descr">Pantaila itzaltzen du sistemako pantailaren denbora-muga agortzean.</string>
     <string name="system_screen_timeout">Erabili sistemako pantailaren denbora-muga</string>
-    <string name="turn_screen_on_descr">Hautatu pantailako esnatzeko aukerak (ziurtatu RoadCrew lehen planoan dagoela gailua blokeatzean):</string>
+    <string name="turn_screen_on_descr">Hautatu pantailako esnatzeko aukerak (ziurtatu OsmAnd lehen planoan dagoela gailua blokeatzean):</string>
     <string name="turn_screen_on_navigation_instructions_descr">Nabigazio instrukzio bakoitzak pantaila piztuko du.</string>
     <string name="turn_screen_on_navigation_instructions">Nabigaziorako argibideak</string>
     <string name="turn_screen_on_power_button">Itzaltze botoia</string>
@@ -2854,7 +2854,7 @@
 \n
 \nAukeratu %1$s eta abiadura-kamerei buruzko alertak eta abisuak jasoko dituzu.
 \n
-\nAukeratu %2$s eta abiadura-kameren inguruko datu guztiak, alertak, jakinarazpenak, interesguneak ezabatuko dira RoadCrew erabat berriro instalatu arte.</string>
+\nAukeratu %2$s eta abiadura-kameren inguruko datu guztiak, alertak, jakinarazpenak, interesguneak ezabatuko dira OsmAnd erabat berriro instalatu arte.</string>
     <string name="quick_action_showhide_mapillary_descr">Mapillary geruza mapan erakutsi edo ezkutatzeko botoia.</string>
     <string name="plan_route_trim_after">Moztu ondoren</string>
     <string name="release_3_8">• Eguneratutako ibilbidea planifinatzeko funtzioa: Segmentu bakoitzeko nabigazio mota desberdinak erabiltzea eta lorratzak sartzea ahalbidetzen du
@@ -2894,7 +2894,7 @@
     <string name="osm_login_descr">Hasi saioa OAuth metodoa edo zure OSM erabiltzaile-izena eta pasahitza erabiliz.</string>
     <string name="shared_string_bearing">Norabidea</string>
     <string name="plan_route_trim_before">Moztu aurretik</string>
-    <string name="disable_recording_once_app_killed_descrp">Arrastoaren erregistroa eten egingo da aplikazioa ixtean (azken aplikazioen bidez). (RoadCrew atzeko adierazlea Android jakinarazpen-barratik desagertzen da.)</string>
+    <string name="disable_recording_once_app_killed_descrp">Arrastoaren erregistroa eten egingo da aplikazioa ixtean (azken aplikazioen bidez). (OsmAnd atzeko adierazlea Android jakinarazpen-barratik desagertzen da.)</string>
     <string name="gpx_monitoring_stop">Pausatu bidaiaren grabazioa</string>
     <string name="gpx_monitoring_start">Berrekin bidaiaren grabazioa</string>
     <string name="system_default_theme">Sisteman lehenetsia</string>
@@ -2934,8 +2934,8 @@
     <string name="routing_attr_avoid_footways_description">Saihestu oinezkoen bideak</string>
     <string name="routing_attr_avoid_footways_name">Saihestu oinezkoen bideak</string>
     <string name="development">Garapena</string>
-    <string name="use_live_public_transport">RoadCrew zuzeneko datuak</string>
-    <string name="use_live_routing">RoadCrew zuzeneko datuak</string>
+    <string name="use_live_public_transport">OsmAnd zuzeneko datuak</string>
+    <string name="use_live_routing">OsmAnd zuzeneko datuak</string>
     <string name="use_native_pt">Garraio publikoaren garapen natiboa</string>
     <string name="use_native_pt_desc">Aldatu garraio publikoaren ibilbidearen kalkulua Javara (segurua)</string>
     <string name="message_graph_will_be_available_after_recalculation">Itxaron mesedez.
@@ -3042,7 +3042,7 @@
     <string name="update_all_maps_added">%1$s-ra gehitutako mapa guztiak eguneratu\?</string>
     <string name="shared_string_feet">oin</string>
     <string name="srtm_unit_format">Sestra-marren unitate aldaketa</string>
-    <string name="srtm_download_list_help_message">RoadCrew-ek sestra-kurben datuak metro eta oinetan ematen ditu. Fitxategia berriro deskargatu beharko duzu formatua aldatzeko.</string>
+    <string name="srtm_download_list_help_message">OsmAnd-ek sestra-kurben datuak metro eta oinetan ematen ditu. Fitxategia berriro deskargatu beharko duzu formatua aldatzeko.</string>
     <string name="srtm_download_single_help_message">Aukeratu beste bat. Fitxategia berriro deskargatu beharko duzu formatua aldatzeko.</string>
     <string name="announce_when_exceeded">Abisatu gainditzen denean</string>
     <string name="user_points">Erabiltzailearen puntuak</string>
@@ -3082,7 +3082,7 @@
 \nDatuen uneko bertsioa zerbitzarian gordeko da, baina ezin izango duzu lehen egindako aldaketetara itzuli.</string>
     <string name="backup_data">Datuen babeskopia</string>
     <string name="select_backup_data_descr">Aukeratu datuak eta karpetak babeskopiarako.</string>
-    <string name="restore_from_osmand_cloud">Leheneratu RoadCrew hodeitik</string>
+    <string name="restore_from_osmand_cloud">Leheneratu OsmAnd hodeitik</string>
     <string name="backup_version_history">Bertsioen historia</string>
     <string name="backup_storage_taken">Biltegiratzea</string>
     <string name="backup_version_history_delete_descr">OsmAnd Cloud-etik zaharkitutako datu-moten aldaketa-erregistroa ezabatu\?</string>
@@ -3171,20 +3171,20 @@
     <string name="shared_string_precision">Zehaztasuna</string>
     <string name="skip_confirmation">Bai, saltatu</string>
     <string name="save_changes_into_file">Gorde aldaketan fitxategian</string>
-    <string name="storage_migration_wrong_folder_warning">Ez da RoadCrew daturik aurkitu hautatutako karpetan. Saiatu berriro mesedez.</string>
-    <string name="gps_filter_actions_description">RoadCrew-ek aldaketak arrastoan aplikatuko ditu fitxategia eguneratu gabe. Aldaketak eskuz gorde ditzakezu.</string>
+    <string name="storage_migration_wrong_folder_warning">Ez da OsmAnd daturik aurkitu hautatutako karpetan. Saiatu berriro mesedez.</string>
+    <string name="gps_filter_actions_description">OsmAnd-ek aldaketak arrastoan aplikatuko ditu fitxategia eguneratu gabe. Aldaketak eskuz gorde ditzakezu.</string>
     <string name="shared_storage_first_step">Sakatu \"%1$s\".
 \nFitxategi-kudeatzailea «osmand» karpeta aurkitu eta ireki behar duzun tokian irekitzen da.</string>
     <string name="storage_found_files_descr">Sakatu \"%1$s\" kopiatzeko %2$s fitxategiak \"%3$s\"-tik \"%4$s\"-ra. Baliteke denbora pixka bat behar izatea.</string>
     <string name="copying_completed">Kopiatuta</string>
     <string name="memory_allocated_for_routing">Nabigazioari esleitutako memoria</string>
     <string name="display_groups_visibility_dialog_description">Taldeen ikusgarritasuna kontrola dezakezu mapan. Arrastoa ezkutuan badago, talde guztiak ere ezkutatu egingo dira.</string>
-    <string name="shared_string_skip_warning">Migrazioa saltatu\? RoadCrew-ek jada ez du zure fitxategietarako sarbiderik biltegiratze partekatuan.
+    <string name="shared_string_skip_warning">Migrazioa saltatu\? OsmAnd-ek jada ez du zure fitxategietarako sarbiderik biltegiratze partekatuan.
 \n
 \nAplikazioa zure datu-karpeta berria erabiltzen hasiko da.</string>
     <string name="shared_storage_last_step">Datuen karpeta berri bat zehaztu dezakezu gero.</string>
-    <string name="shared_storage_third_step">Eman baimena karpetara sartzeko. Hori gabe RoadCrew-ek ezin ditu fitxategiak kopiatu.</string>
-    <string name="shared_storage_migration_descr">Android biltegiratzeko sarbidean aldaketak direla eta, RoadCrewek ezin du jada %1$s erabili.
+    <string name="shared_storage_third_step">Eman baimena karpetara sartzeko. Hori gabe OsmAnd-ek ezin ditu fitxategiak kopiatu.</string>
+    <string name="shared_storage_migration_descr">Android biltegiratzeko sarbidean aldaketak direla eta, OsmAndek ezin du jada %1$s erabili.
 \n
 \nKopiatu zure datu guztiak karpeta berrira.</string>
     <string name="folder_access_denied">Hautatutako karpeta atzitzeko baimena behar da.</string>
@@ -3234,7 +3234,7 @@
     <string name="rendering_attr_showWaterwayTunnels_name">Ubideetako tunelen ikusgarritasuna areagotzea</string>
     <string name="rendering_attr_OSMMapperAssistantIconsLowZooms_name">Zoom txikitako ikonoak</string>
     <string name="icon_group_education">Hezkuntza</string>
-    <string name="location_source_descr">Lehenespenez, Google Play-tik instalatutako RoadCrew-ek %1$s erabiltzen du kokapena zehazteko. \n \nZehaztasunik gabeko kokapen informazioa lortzen baduzu edo gailua %2$s gabe erabiltzen baduzu, saiatu \"%3$s\"-ra aldatzen</string>
+    <string name="location_source_descr">Lehenespenez, Google Play-tik instalatutako OsmAnd-ek %1$s erabiltzen du kokapena zehazteko. \n \nZehaztasunik gabeko kokapen informazioa lortzen baduzu edo gailua %2$s gabe erabiltzen baduzu, saiatu \"%3$s\"-ra aldatzen</string>
     <string name="import_tracks">Inportatu arrastoak</string>
     <string name="shared_string_shape">Forma</string>
     <string name="stop_download_desc">Deskarga ez da osatu. Deskarga orain eteten baduzu, lauzen kopuru bat bakarrik egongo da ikusgai ikusteko.</string>
@@ -3370,7 +3370,7 @@
 \n
 \n</string>
     <string name="android_auto_purchase_request_title">Erosi OsmAnd Pro edo Maps+ OsmAnd Android Auto-rekin erabiltzeko</string>
-    <string name="location_access_request_title">RoadCrew-ek kokapen-baimena behar du nabigatzeko.</string>
+    <string name="location_access_request_title">OsmAnd-ek kokapen-baimena behar du nabigatzeko.</string>
     <string name="location_access_request_action">Baimena eman</string>
     <string name="shared_string_details">Xehetasunak</string>
     <string name="shared_app_storage_description">Partekatutako memoria jada ez dago erabilgarri, Android biltegiratze sarbidea aldatu delako.</string>
@@ -3382,7 +3382,7 @@
     <string name="backup_welcome_back_descr">Leheneratu gailu honetako datuak OsmAnd Cloud erabiliz.</string>
     <string name="promo_subscription">Sustapeneko harpidetza</string>
     <string name="on_hold_since">Zain %1$s geroztik</string>
-    <string name="backup_deleting_all_data_descr">Mesedez, itxaron RoadCrew-ek zure datuak hodeitik ezabatzen dituen arte. Gailuko datu guztiak ukitu gabe geratuko dira.</string>
+    <string name="backup_deleting_all_data_descr">Mesedez, itxaron OsmAnd-ek zure datuak hodeitik ezabatzen dituen arte. Gailuko datu guztiak ukitu gabe geratuko dira.</string>
     <string name="duration_moment_ago">duela gutxi</string>
     <string name="transparent_status_bar">Egoera-barra gardena</string>
     <string name="routeInfo_winter_ice_road_description">Margotu ibilbidea edo arrastoa neguko errepideen sailkapenaren arabera.</string>
@@ -3393,7 +3393,7 @@
     <string name="attribute">Atributua</string>
     <string name="android_auto_map_placeholder_title">Mapa ibilgailuaren pantailan bistaratzen da.</string>
     <string name="android_auto_map_placeholder_descr">Deskonektatu gailua Android Auto-tik mapa aplikazioan ikusteko.</string>
-    <string name="internal_app_storage_description">Barne biltegiratzea, erabiltzaile guztientzat eta beste aplikaziorentzat ezkutatuta, beraz, RoadCrew-ek bakarrik atzi ditzake zure datuak.</string>
+    <string name="internal_app_storage_description">Barne biltegiratzea, erabiltzaile guztientzat eta beste aplikaziorentzat ezkutatuta, beraz, OsmAnd-ek bakarrik atzi ditzake zure datuak.</string>
     <string name="purchases_feature_desc_android_auto">OsmAnd lineaz kanpoko mapak eta nabigazioa zure ibilgailuaren pantailara ekartzen ditu eta zure ibilgailuaren kontrolekin integratzen da.</string>
     <string name="icon_group_nautical">Itsasokoa</string>
     <string name="transparent_status_bar_descr">Erakutsi mapa egoera-barraren azpian</string>
@@ -3416,7 +3416,7 @@
     <string name="routing_attr_only_permitted_ways_description">Erabili soilik berariaz baimenduta dauden bideak (bide-zidorrak, bideak, etab.)</string>
     <string name="shared_string_mini">mini</string>
     <string name="sample_wikivoyage">Wikibidaien adibidea</string>
-    <string name="explore_osmnad_plans_to_find_suitable">Aztertu RoadCrew Planak zuretzat egokia den bat aurkitzeko.</string>
+    <string name="explore_osmnad_plans_to_find_suitable">Aztertu OsmAnd Planak zuretzat egokia den bat aurkitzeko.</string>
     <string name="active_till">Aktibo %1$s arte</string>
     <string name="explore_wikipedia_offline">Arakatu Wikipedia lineaz kanpo.</string>
     <string name="shared_string_purchased">Erosita</string>
@@ -3481,7 +3481,7 @@
     <string name="show_start_dialog">Erakutsi hasierako elkarrizketa-koadroa</string>
     <string name="lost_data_warning">Gorde gabeko datu guztiak galduko dira.</string>
     <string name="trip_recording_save_and_continue">Gorde eta jarraitu</string>
-    <string name="trip_recording_logging_interval_info">Erregistratzeko tarteak RoadCrewek uneko posizioaren datuak eskatuko dituen denbora-tartea ezartzen du.</string>
+    <string name="trip_recording_logging_interval_info">Erregistratzeko tarteak OsmAndek uneko posizioaren datuak eskatuko dituen denbora-tartea ezartzen du.</string>
     <string name="track_has_no_speed">Arrastoak ez du abiadura daturik.</string>
     <string name="shared_string_interval">Tartea</string>
     <string name="track_recording_stop_without_saving">Gelditu gorde gabe</string>
@@ -3709,7 +3709,7 @@
     <string name="air_pressure_widget_desc">Uneko mapa-zentrorako presio atmosferikoa bistaratzen du.</string>
     <string name="terms_of_service_desc">Mapak deskargatuz %1$s eta %2$s onartzen dituzu.</string>
     <string name="weather_prefs_descr">24 orduko eta 7 eguneko iragarpena, 3 orduz behin eguneratua</string>
-    <string name="rendering_engine_failed">RoadCrew-en mapa errendatzeak huts egin du duela gutxi.</string>
+    <string name="rendering_engine_failed">OsmAnd-en mapa errendatzeak huts egin du duela gutxi.</string>
     <string name="restart_now">Berrabiarazi orain</string>
     <string name="map_widget_ant_bicycle_power">Bizikletaren potentzia</string>
     <string name="set_up_backup">Konfiguratu babeskopia</string>
@@ -3804,12 +3804,12 @@
     <string name="purchases_feature_desc_external_sensors">Bistaratu eta grabatu kanpoko sentsoreen datuak: bizikletaren abiadura, potentzia eta kadentzia, eta bihotz-taupadak.</string>
     <string name="map_rendering_engine_v1">1. bertsioa</string>
     <string name="map_rendering_engine_v2">2. bertsioa (OpenGL)</string>
-    <string name="rendering_engine_failed_descr">RoadCrew mapak errendatzeko \"1. bertsioa\"ra itzuli da. Saia zaitezke \"2. bertsioa (OpenGL)\" errendatze-motor berrira itzultzen Ezarpenetan.
+    <string name="rendering_engine_failed_descr">OsmAnd mapak errendatzeko \"1. bertsioa\"ra itzuli da. Saia zaitezke \"2. bertsioa (OpenGL)\" errendatze-motor berrira itzultzen Ezarpenetan.
 \n
 \nMesedez, lagundu hobekuntzak egiten zure erroreen erregistroa emanez.</string>
     <string name="dismiss_changes_descr">Aldaketa guztiak baztertu egingo dira.</string>
     <string name="show_map_symbols">Erakutsi mapen ikurrak</string>
-    <string name="map_rendering_engine_descr">1 bertsioa errendatzea lehenetsia zen RoadCrew 4.3 baino lehen, eta oraindik hobe da gailu zaharrentzako.\n2. bertsioa (OpenGL) mapak errendatzeko motor azkarragoa da, 2.5D ikuspegia ere badu.</string>
+    <string name="map_rendering_engine_descr">1 bertsioa errendatzea lehenetsia zen OsmAnd 4.3 baino lehen, eta oraindik hobe da gailu zaharrentzako.\n2. bertsioa (OpenGL) mapak errendatzeko motor azkarragoa da, 2.5D ikuspegia ere badu.</string>
     <string name="map_rendering_engine">Mapak errendatzeko motorra</string>
     <string name="external_sensors_support">Onartzen diren kanpoko sentsoreak</string>
     <string name="map_widget_altitude_desc">Uneko geokokapenaren altitudea edo uneko maparen erdigunearen altitudea erakusten du</string>
@@ -3823,7 +3823,7 @@
     <string name="location_simulation_cutoff">Simulazioak lehen metroak saltatzen ditu</string>
     <string name="location_simulation_speedup">Simulazioaren bizkortzea</string>
     <string name="shared_string_identifiers">Identifikatzaileak</string>
-    <string name="send_uuid_preference_desc">Ausazko UUID bat erabiltzen da RoadCrew zerbitzarietatik lineaz kanpoko mapak deskargatzeko, zerbitzariaren baliabideen bidezko erabilera kontrolatzeko, trafiko-ereduak aurreikusteko eta hileroko mapen txosten anonimoak sortzeko.</string>
+    <string name="send_uuid_preference_desc">Ausazko UUID bat erabiltzen da OsmAnd zerbitzarietatik lineaz kanpoko mapak deskargatzeko, zerbitzariaren baliabideen bidezko erabilera kontrolatzeko, trafiko-ereduak aurreikusteko eta hileroko mapen txosten anonimoak sortzeko.</string>
     <string name="send_uuid_preference">Bidali erabiltzaile-identifikatzaile bakarra (UUID)</string>
     <string name="shared_string_terms_of_use">Erabilera baldintzak</string>
     <string name="map_widget_ant_heart_rate_desc">Jarduera jakin batean erabiltzailearen bihotz-taupadak erakusten ditu denbora errealean</string>
@@ -3958,7 +3958,7 @@
     <string name="rendering_attr_showShareTaxiRoutes_name">Lotura bideak</string>
     <string name="import_as_one_track">Inportatu arrasto bakarrean</string>
     <string name="last_synchronized">Azken sinkronizatua</string>
-    <string name="calculate_online_altitude_descr">Kalkulatu kota linean RoadCrew zerbitzarietan, satelite bidezko irudietan eta kota eredu digitaletan oinarrituta. Desberdintasunak gailuak erregistratutako altueran kota zuzentzeko erabil daitezke.</string>
+    <string name="calculate_online_altitude_descr">Kalkulatu kota linean OsmAnd zerbitzarietan, satelite bidezko irudietan eta kota eredu digitaletan oinarrituta. Desberdintasunak gailuak erregistratutako altueran kota zuzentzeko erabil daitezke.</string>
     <string name="routing_attr_motor_type_electric_name">Elektrikoa</string>
     <string name="transport_hazmat_no_desc">Errepideek eta tunel batzuek material arriskutsuak garraiatzea muga dezakete.</string>
     <string name="radius_ruler_mode_desc">Trepeta sakatzean, Radius erregela modura aldatzen da.</string>
@@ -4050,7 +4050,7 @@
     <string name="no_visible_tracks_description">Hautatu arrastoak mapan bistaratzeko.</string>
     <string name="shared_string_yards">yarda</string>
     <string name="recently_visible">Duela gutxi ikusgai %1$s</string>
-    <string name="empty_tracks_description">RoadCrew erabiliz arrasto-fitxategiak inportatu, sortu edo grabatu ditzakezu.</string>
+    <string name="empty_tracks_description">OsmAnd erabiliz arrasto-fitxategiak inportatu, sortu edo grabatu ditzakezu.</string>
     <string name="shared_string_kilograms">kilogramoak</string>
     <string name="no_visible_tracks">Ez dago arrastorik mapan</string>
     <string name="shared_string_select_recent">Hautatu azkena</string>
@@ -4136,7 +4136,7 @@
     <string name="ant_plus_bluetooth_off">Bluetootha desaktibatuta dago</string>
     <string name="ant_plus_bluetooth_off_description">Aktibatu Bluetooth-a bilatzeko eta parekatu sentsoreak.</string>
     <string name="ble_search_again">Bilatu berriro</string>
-    <string name="ant_plus_searching_text_description">Eduki gailua sentsoretik gertu. Sentsorea aktibatu behar duzu RoadCrew-ek aurki dezan.</string>
+    <string name="ant_plus_searching_text_description">Eduki gailua sentsoretik gertu. Sentsorea aktibatu behar duzu OsmAnd-ek aurki dezan.</string>
     <string name="ant_plus_searching_text">Sentsoreen bilaketa</string>
     <string name="ant_plus_help_title">Ez dakit zer sentsore mota daukadan</string>
     <string name="ant_plus_searching">Bilatzen</string>
@@ -4144,7 +4144,7 @@
     <string name="ant_plus_open_settings">Ireki ezarpenak</string>
     <string name="learn_more_about_sensors_link">Lortu informazio gehiago sentsoreei buruz.</string>
     <string name="ant_plus_pair_new_sensor_ant_plus">Parekatu ANT+ sentsorea</string>
-    <string name="ant_plus_pair_bluetooth_prompt">Bluetooth LE eta ANT+ sentsoreak RoadCrew-ekin parekatu ditzakezu.</string>
+    <string name="ant_plus_pair_bluetooth_prompt">Bluetooth LE eta ANT+ sentsoreak OsmAnd-ekin parekatu ditzakezu.</string>
     <string name="external_device_forget_sensor">Ahaztu sentsorea</string>
     <string name="rendering_attr_lightDetail_name">Argitasuna</string>
     <string name="nav_profile_confirm_delete">\"%1$s\" ezabatu?</string>
@@ -4263,7 +4263,7 @@
 \n
 \n • \"Ibilbidetik desbideratzea iragarri\" aukera gehitu da
 \n
-\n • Hasierako pantaila: fitxategitik RoadCrew egoera berreskuratzeko aukera gehitu da
+\n • Hasierako pantaila: fitxategitik OsmAnd egoera berreskuratzeko aukera gehitu da
 \n
 \n • \"Material arriskutsuak\" klaseak gehitu dira Kamioietako nabigazioa Ipar Amerikan
 \n
@@ -4322,7 +4322,7 @@
     <string name="wheel_circumference">Gurpilen zirkunferentzia</string>
     <string name="external_sensor_name_property_description">Sentsorearen izena</string>
     <string name="shared_string_temperature">Tenperatura</string>
-    <string name="help_article_map_legend_osmand_name">RoadCrew mapa estiloa</string>
+    <string name="help_article_map_legend_osmand_name">OsmAnd mapa estiloa</string>
     <string name="help_article_map_legend_ski_map_name">Eski mapa estiloa</string>
     <string name="help_article_navigation_guidance_name">Orientazioa</string>
     <string name="help_article_navigation_guidance_voice_navigation_name">Ahots-abisuak / Jakinarazpenak</string>
@@ -4376,7 +4376,7 @@
     <string name="help_article_navigation_routing_horse_routing_name">Zaldi ibilbideak</string>
     <string name="help_article_navigation_routing_moped_routing_name">Ziklomotor ibilbideak</string>
     <string name="help_article_navigation_routing_online_routing_name">Lineako ibilbideak</string>
-    <string name="help_article_navigation_routing_osmand_routing_name">RoadCrew ibilbidei buruz</string>
+    <string name="help_article_navigation_routing_osmand_routing_name">OsmAnd ibilbidei buruz</string>
     <string name="help_article_navigation_routing_pedestrian_routing_name">Oinezko ibilbideak</string>
     <string name="help_article_navigation_routing_public_transport_navigation_name">Garraio publikoko ibilbideak</string>
     <string name="app_mode_baby_transport">Haurren garraioa</string>
@@ -4398,16 +4398,16 @@
     <string name="help_article_widgets_name">Mapen trepetak</string>
     <string name="shared_string_setup">Konfigurazioa</string>
     <string name="help_article_search_search_poi_name">Bilatu interesguneak</string>
-    <string name="help_article_start_with_name">Hasi RoadCrew-ekin</string>
+    <string name="help_article_start_with_name">Hasi OsmAnd-ekin</string>
     <string name="report_an_issues">Arazo baten berri eman</string>
     <string name="copy_build_version">Kopiatu eraikitze bertsioa</string>
     <string name="most_viewed">Gehien ikusiak</string>
     <string name="contact_us">Jarri gurekin harremanetan</string>
     <string name="free_versions">Doako bertsioak</string>
     <string name="telegram_chats">Telegram txatak</string>
-    <string name="about_osmand">RoadCrew-i buruz</string>
+    <string name="about_osmand">OsmAnd-i buruz</string>
     <string name="github_discussion">GitHub-eko eztabaida</string>
-    <string name="free_versions_descr">Deskargatu eta instalatu doako RoadCrew bertsioa</string>
+    <string name="free_versions_descr">Deskargatu eta instalatu doako OsmAnd bertsioa</string>
     <string name="send_logcat_log_descr">Erregistro fitxategi zehatza</string>
     <string name="send_crash_log_descr">Erroreei buruzko informazioa bakarrik dauka</string>
     <string name="help_article_purchases_ios_name">iOS erosketak</string>
@@ -4437,7 +4437,7 @@
     <string name="key_event_action_zoom_in">Handiagotu</string>
     <string name="key_assignments">Laster-teklak</string>
     <string name="change_button">Aldatu botoia</string>
-    <string name="enable_to_use_external_input_device">Gaitu RoadCrew-ekin kanpoko sarrerako gailua erabiltzeko</string>
+    <string name="enable_to_use_external_input_device">Gaitu OsmAnd-ekin kanpoko sarrerako gailua erabiltzeko</string>
     <string name="key_event_action_change_map_orientation">Aldatu maparen orientazioa</string>
     <string name="key_event_action_previous_app_profile">Aplikazioaren aurreko profila</string>
     <string name="show_toast_about_key_pressed">Erakutsi sakatutako teklari buruzko laguntza</string>
@@ -4645,7 +4645,7 @@
     <string name="delete_actions_button">Ezabatu botoia</string>
     <string name="getting_list_of_required_maps">Beharrezko mapen zerrenda eskuratzen…</string>
     <string name="missing_maps_header">Falta diren edo zaharkituak dauden mapak</string>
-    <string name="required_maps_calculate_online_summary">Falta diren mapen zerrenda lerro zuzeneko ibilbidean oinarritzen da. Mapen zerrenda zehatza lortzeko, RoadCrewek zure ibilbidea aurrez kalkula dezake linean.</string>
+    <string name="required_maps_calculate_online_summary">Falta diren mapen zerrenda lerro zuzeneko ibilbidean oinarritzen da. Mapen zerrenda zehatza lortzeko, OsmAndek zure ibilbidea aurrez kalkula dezake linean.</string>
     <string name="use_terrain_maps_summary">Lurreko mapak erabiltzen ditu kota datuetarako. Pistaren geometria ez da aldatu.</string>
     <string name="required_maps">Behar diren mapak</string>
     <string name="missing_maps_description">Ibilbide honetarako beharrezkoak diren lineaz kanpoko mapa batzuk falta dira edo ez daude eguneratuta. Mesedez, deskargatu edo eguneratu mapa hauek.</string>
@@ -4654,7 +4654,7 @@
     <string name="delete_actions_button_confirmation">Ziur \"%1$s\" ezabatu nahi duzula gehitutako ekintza guztiekin?</string>
     <string name="use_nearby_roads_summary">Lineaz kanpoko mapa erabiltzen du inguruko errepideak eta kota datuak aurkitzeko. Arrastoaren geometria doi dezake.</string>
     <string name="use_nearby_roads">Erabili gertuko errepideak</string>
-    <string name="retrieve_elevation_data_summary">RoadCrewek inguruko errepideetatik edo lur-mapetatik kota-datuak berreskura ditzake.</string>
+    <string name="retrieve_elevation_data_summary">OsmAndek inguruko errepideetatik edo lur-mapetatik kota-datuak berreskura ditzake.</string>
     <string name="relief_3d_download_description">Mapa gehigarriak behar dira lurra mapan ikusteko.</string>
     <string name="vertical_exaggeration_description">Eskalaren balioa aldatuz, 3D erliebea nabarmendu dezakezu.</string>
     <string name="apply_only_to_new">Aplikatu berriei soilik</string>
@@ -4744,7 +4744,7 @@
     <string name="weather_source_ecmwf_title">ECMWF</string>
     <string name="weather_source_GFS_title">GFS</string>
     <string name="data_source">Datu-iturria</string>
-    <string name="weather_data_sources_prompt">RoadCrew-ek bi iturritatik eskaintzen ditu eguraldiaren datuak:</string>
+    <string name="weather_data_sources_prompt">OsmAnd-ek bi iturritatik eskaintzen ditu eguraldiaren datuak:</string>
     <string name="backup_error_failed_to_transfer_file">Ezin izan dira hodeiko fitxategiak transferitu.</string>
     <string name="clear_all_key_shortcuts_summary">Hautatutako motarako tekla-esleipen guztiak kenduko dira.</string>
     <string name="contact_support_retry">Saiatu berriro edo jarri laguntzarekin harremanetan</string>
@@ -4795,7 +4795,7 @@
     <string name="shared_string_automatically">Automatikoki</string>
     <string name="ask_every_time">Galdetu aldiro</string>
     <string name="detailed_track_guidance">Arrastoaren gida zehatza</string>
-    <string name="detailed_track_guidance_description">RoadCrew-ek zure arrastoa inguruko errepideekin bateratuko du, urratsez urratseko jarraibideak hobetzeko.</string>
+    <string name="detailed_track_guidance_description">OsmAnd-ek zure arrastoa inguruko errepideekin bateratuko du, urratsez urratseko jarraibideak hobetzeko.</string>
     <string name="quick_action_routes_summary">Etengailu bat %1$s mapan erakusteko edo ezkutatzeko.</string>
     <string name="auto_25_chars_route_tr">Biratu eskuinera</string>
     <string name="auto_25_chars_route_tu">Eman buelta</string>
@@ -4870,7 +4870,7 @@
     <string name="screen_is_unlocked">Ukipen-pantaila desblokeatuta dago.</string>
     <string name="screen_is_locked_by_action_button">Ukipen-pantaila blokeatuta dago. Sakatu botoia desblokeatzeko.</string>
     <string name="obd_vehicle_info">Ibilgailuaren informazioa</string>
-    <string name="connect_obd_instructions_title">RoadCrew-ek Bluetooth konexioak onartzen ditu OBD-II eskanerretarako.</string>
+    <string name="connect_obd_instructions_title">OsmAnd-ek Bluetooth konexioak onartzen ditu OBD-II eskanerretarako.</string>
     <string name="obd_how_to_connect">Nola konektatu:</string>
     <string name="connect_obd_instructions_step1">Konektatu eskanerra zure ibilgailuaren OBD-II atakara.</string>
     <string name="connect_obd_instructions_step2">Piztu ibilgailuaren motorra</string>
@@ -4879,7 +4879,7 @@
     <string name="learn_more_about_obd_sensors">Lortu informazio gehiago sentsoreei buruz.</string>
     <string name="release_4_9">• Pantaila osoko galeria-ikustaile bat gehitu da Wikimediako irudietarako\n\n • \"Ibilgailuen neurketak\" plugin berri bat aurkeztu du ibilgailuen errendimendua OBD-II protokoloa erabiliz kontrolatzeko\n\n • Arrastoei jarduerak esleitzeko eta horren arabera iragazteko gaitasuna gehitu da\n\n • Bidaiak grabatzeko eta ukipen-pantaila blokeatzeko ekintza azkar berriak ezarri dira\n\n • Maparen botoiaren itxura pertsonalizagarria eta sareta zehatza sartu ditu\n\n • Testuinguru-menua eta \"Berrezarri batez besteko abiadura\" ekintza bat gehitu ditu trepetetan\n\n • Ibilbide geruza berria gehitu da \"Motocros ibilbideak\"\n\n • \"Auto-grabatu arrastoa nabigazioan\" konpondu da\n\n • Arazoa konpondu da RTL-n iraulitako koordenatuekin\n\n • Unean grabatutako arrastoetarako galdutako sentsoreen datuak konpondu dira\n\n • Hautatutako punturako inguruko eremuei buruzko informazioa gehitu da\n\n • Ekintza azkarra gehitu da OSM edizioen ikusgarritasuna kontrolatzeko\n\n • Lurra koloreztatzeko aukeren ikusgarritasun parametro bereiziak\n\n • Saka daitekeen ikono bat gehitu da sarbidea edo beste errepide edo bide-atributu batzuk bistaratzeko</string>
     <string name="ais_load_data">Kargatu AIS datuak fitxategitik</string>
-    <string name="ais_port_nmea_local_description">Definitu UPD ataka non RoadCrew-ek NMEA datuak jasotzen dituen</string>
+    <string name="ais_port_nmea_local_description">Definitu UPD ataka non OsmAnd-ek NMEA datuak jasotzen dituen</string>
     <string name="ais_object_lost_timeout_description">Ezarri AIS objektuak ikusteko denbora-muga: Seinalerik jaso gabe, AIS objektua pantailatik kenduko da.</string>
     <string name="ais_address_settings">IP helbideen ezarpenak</string>
     <string name="ais_address_settings_description">Aukeratu NMEA protokoloa (UDP / TCP) eta zehaztu helbideak</string>
@@ -4895,7 +4895,7 @@
     <string name="ais_cpa_settings">CPAren ezarpenak</string>
     <string name="ais_cpa_warning_time">Hurbiltze puntu hurbilenera (CPA) iristeko abisua</string>
     <string name="travel_guides">Gidak</string>
-    <string name="prediction_time_description">RoadCrew-en kokapen-ikonoa jasotako GPS datu-puntu bakoitzarekin animatzen da (segundoko behin). Bere mugimenduan atzerapen txiki bat nabari daiteke, batez ere erabiltzailea azkar mugitzen denean edo GPS seinalea ezegonkorra denean.</string>
+    <string name="prediction_time_description">OsmAnd-en kokapen-ikonoa jasotako GPS datu-puntu bakoitzarekin animatzen da (segundoko behin). Bere mugimenduan atzerapen txiki bat nabari daiteke, batez ere erabiltzailea azkar mugitzen denean edo GPS seinalea ezegonkorra denean.</string>
     <string name="unit_of_temperature_description">Aukeratutako unitateak uneko profilean dauden tenperatura datu guztiei aplikatuko zaizkie.</string>
     <string name="deactivated_map">Mapa desaktibatuta</string>
     <string name="suggest_activate_map_msg">%1$s mapa desaktibatuta dago,\naktibatu zona hau ikusteko.</string>
@@ -5000,7 +5000,7 @@
     <string name="backup_delete_data_warning_extended">Ekintza honek hodeitik hautatutako datu guztiak betirako ezabatuko ditu. Gero ezingo dira lehengoratu.</string>
     <string name="amount_of_total_used">%2$stik %1$s erabilita</string>
     <string name="delete_data">Ezabatu datua</string>
-    <string name="manage_storage_delete_data_dialog_summary">Ziur zaude %1$s ezabatu nahi duzula RoadCrew hodeitik?\n\nLehengoratu dezakezu zakarrontzitik 30 egunetan.</string>
+    <string name="manage_storage_delete_data_dialog_summary">Ziur zaude %1$s ezabatu nahi duzula OsmAnd hodeitik?\n\nLehengoratu dezakezu zakarrontzitik 30 egunetan.</string>
     <string name="manage_storage">Kudeatu biltegiratzea</string>
     <string name="copy_as_new_folder">Kopiatu karpeta berri gisa</string>
     <string name="add_to_a_folder">Gehitu karpeta batera</string>

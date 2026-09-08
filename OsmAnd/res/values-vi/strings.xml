@@ -106,10 +106,10 @@
     <string name="osmand_net_previously_installed">Tất cả dữ liệu ngoại tuyến trong ứng dụng cũ sẽ được hỗ trợ bởi ứng dụng mới, nhưng điểm yêu thích phải được xuất từ ứng dụng cũ và sau đó nhập vào ứng dụng mới.</string>
     <string name="build_installed">Bản dựng {0} đã được cài đặt ({1}).</string>
     <string name="downloading_build">Đang download phiên bản…</string>
-    <string name="install_selected_build">Cài đặt RoadCrew - {0} của {1} {2} MB ?</string>
-    <string name="loading_builds_failed">Không thể lấy được danh sách các bản dựng RoadCrew</string>
-    <string name="loading_builds">Đang tải các bản dựng của RoadCrew…</string>
-    <string name="select_build_to_install">Lựa chọn bản dựng RoadCrew để cài đặt</string>
+    <string name="install_selected_build">Cài đặt OsmAnd - {0} của {1} {2} MB ?</string>
+    <string name="loading_builds_failed">Không thể lấy được danh sách các bản dựng OsmAnd</string>
+    <string name="loading_builds">Đang tải các bản dựng của OsmAnd…</string>
+    <string name="select_build_to_install">Lựa chọn bản dựng OsmAnd để cài đặt</string>
     <string name="contribution_activity">Cài đặt phiên bản</string>
     <string name="gps_status_app_not_found">Ứng dụng trạng thái tín hiệu GPS chưa được cài đặt. Tìm trong cửa hàng?</string>
     <string name="daynight_mode_day">Ngày</string>
@@ -121,7 +121,7 @@
     <string name="shared_string_refresh">Làm mới</string>
     <string name="general_settings">Thiết lập chung</string>
     <string name="osmand_service">Chế độ nền</string>
-    <string name="osmand_service_descr">RoadCrew chạy ở chế độ nền với màn hình tắt.</string>
+    <string name="osmand_service_descr">OsmAnd chạy ở chế độ nền với màn hình tắt.</string>
     <string name="fast_route_mode">Nhanh nhất</string>
     <string name="fast_route_mode_descr">Cho phép tính toán tuyến đường nhanh nhất hoặc tắt cho tuyến đường tiết kiệm nhiên liệu.</string>
     <string name="shared_string_download_map">Tải bản đồ</string>
@@ -157,7 +157,7 @@
     <string name="layer_map">Nguồn bản đồ…</string>
     <string name="use_trackball_descr">Sử dụng thiết bị bi xoay để di chuyển bản đồ.</string>
     <string name="use_trackball">Dùng trackball</string>
-    <string name="process_navigation_service">Dịch vụ dẫn đường RoadCrew</string>
+    <string name="process_navigation_service">Dịch vụ dẫn đường OsmAnd</string>
     <string name="int_seconds">giây</string>
     <string name="int_min">phút</string>
     <string name="routing_settings">Chỉ đường</string>
@@ -184,7 +184,7 @@
     <string name="transport_stops">điểm dừng</string>
     <string name="transport">Phương tiện công cộng</string>
     <string name="shared_string_ok">OK</string>
-    <string name="hello">Ứng dụng tìm đường RoadCrew</string>
+    <string name="hello">Ứng dụng tìm đường OsmAnd</string>
     <string name="favorite">Ưa thích</string>
     <string name="shared_string_clear_all">Xóa hết</string>
     <string name="shared_string_history">Lịch sử</string>
@@ -341,7 +341,7 @@
     <string name="width_limit_description">Cung cấp chiều rộng của chiếc xe của bạn, một số tuyến đường có thể hạn chế các phương tiện quá rộng.</string>
     <string name="shared_string_yards">yard</string>
     <string name="recently_visible">Hiển thị gần đây %1$s</string>
-    <string name="empty_tracks_description">Bạn có thể nhập, tạo hoặc ghi tệp hành trình bằng RoadCrew.</string>
+    <string name="empty_tracks_description">Bạn có thể nhập, tạo hoặc ghi tệp hành trình bằng OsmAnd.</string>
     <string name="shared_string_apply_changes">Áp dụng các thay đổi</string>
     <string name="no_visible_tracks_description">Chọn các hành trình để hiển thị chúng trên bản đồ.</string>
     <string name="no_visible_tracks">Không có hành trình trên bản đồ</string>
@@ -384,7 +384,7 @@
     <string name="compass_click_north_is_up">Để thay đổi hướng xoay, bấm và giữ</string>
     <string name="driving_region_india">Ấn Độ</string>
     <string name="navigation_position">Vị trí điều hướng</string>
-    <string name="detailed_track_guidance_description">RoadCrew sẽ khớp hành trình của bạn với những con đường ở gần để cải thiện việc chỉ đường tại từng lối rẽ.</string>
+    <string name="detailed_track_guidance_description">OsmAnd sẽ khớp hành trình của bạn với những con đường ở gần để cải thiện việc chỉ đường tại từng lối rẽ.</string>
     <string name="quick_action_move_map_left">Bản đồ sang bên trái</string>
     <string name="quick_action_terrain_color_scheme">Hệ màu địa hình</string>
     <string name="quick_action_directions_from">Điểm bắt đầu</string>
@@ -524,7 +524,7 @@
     <string name="shared_string_modify">Chỉnh sửa</string>
     <string name="user_palette">Bảng màu người dùng</string>
     <string name="quick_action_map_underlay">Lớp phủ dưới</string>
-    <string name="weather_data_sources_prompt">RoadCrew cung cấp dữ liệu thời tiết từ hai nguồn:</string>
+    <string name="weather_data_sources_prompt">OsmAnd cung cấp dữ liệu thời tiết từ hai nguồn:</string>
     <string name="max_sensor_heartrate">Nhịp tim, cao nhất</string>
     <string name="avg_sensor_cadence">Nhịp đạp xe, trung bình</string>
     <string name="tripltek_promo_description">Truy cập miễn phí các tính năng bao gồm việc tải bản đồ không giới hạn, hình 3D v.v. trong %1$s tháng</string>
@@ -533,7 +533,7 @@
     <string name="deletion_error">Lỗi xoá</string>
     <string name="map_widget_sun_position_desc">Hiện thời gian cho đến bình minh hoặc hoàng hôn.</string>
     <string name="quick_action_map_style">Kiểu bản đồ</string>
-    <string name="enable_to_use_external_input_device">Cho phép để sử dụng thiết bị nhập bên ngoài với RoadCrew</string>
+    <string name="enable_to_use_external_input_device">Cho phép để sử dụng thiết bị nhập bên ngoài với OsmAnd</string>
     <string name="press_button_to_link_with_action">Nhấn nút trên thiết bị của bạn để gán nó cho hành động: %1$s</string>
     <string name="shared_string_action">Hành động</string>
     <string name="shared_string_rows">Những dòng</string>
@@ -551,27 +551,27 @@
     <string name="filter_screen_title">Lọc</string>
     <string name="help_article_navigation_routing_moped_routing_name">Tìm đường cho xe gắn máy</string>
     <string name="help_article_navigation_routing_boat_navigation_name">Tìm đường cho tàu thuỷ</string>
-    <string name="about_osmand">Về RoadCrew</string>
+    <string name="about_osmand">Về OsmAnd</string>
     <string name="contact_us">Liên hệ với chúng tôi</string>
     <string name="folder">Thư mục</string>
     <string name="delete_map_description">Xoá bản đồ %1$s?</string>
     <string name="help_article_map_legend_ski_map_name">Kiểu bản đồ trượt tuyết</string>
     <string name="help_article_map_interact_with_map_name">Tương tác với bản đồ</string>
-    <string name="trash_is_empty_banner_desc">Những tệp được loại bỏ khỏi đám mây RoadCrew sẽ có ở đây trong %1$s ngày sau đó.</string>
+    <string name="trash_is_empty_banner_desc">Những tệp được loại bỏ khỏi đám mây OsmAnd sẽ có ở đây trong %1$s ngày sau đó.</string>
     <string name="shared_string_trash">Thùng rác</string>
     <string name="root_folder">Thư mục gốc</string>
     <string name="loading_tracks">Đang tải lại các hành trình</string>
     <string name="shared_string_show_icon">Hiện biểu tượng</string>
     <string name="sort_size_ascending">Kích thước nhỏ trước</string>
     <string name="sort_country_name_descending">Tên quốc gia: Z - A</string>
-    <string name="help_article_navigation_routing_osmand_routing_name">Về việc tìm đường của RoadCrew</string>
+    <string name="help_article_navigation_routing_osmand_routing_name">Về việc tìm đường của OsmAnd</string>
     <string name="help_article_navigation_routing_straight_line_routing_name">Tìm đường thẳng (Máy bay)</string>
     <string name="help_article_plan_route_name">Vẽ tuyến đường</string>
     <string name="help_article_troubleshooting_maps_data_name">Bản đồ và Dữ liệu</string>
     <string name="help_article_troubleshooting_track_recording_issues_name">Ghi hành trình</string>
     <string name="help_article_widgets_info_widgets_name">Widget cung cấp thông tin</string>
     <string name="help_article_widgets_radius_ruler_name">Thước bán kính và Thước</string>
-    <string name="free_versions_descr">Tải và cài đặt phiên bản RoadCrew miễn phí</string>
+    <string name="free_versions_descr">Tải và cài đặt phiên bản OsmAnd miễn phí</string>
     <string name="send_logcat_log_descr">Tệp nhật ký chi tiết</string>
     <string name="open_issue_on_github_descr">Đặt câu hỏi, đề xuất tính năng</string>
     <string name="open_issue_on_github">Tạo vấn đề trên GitHub</string>
@@ -582,7 +582,7 @@
     <string name="sensor_temperature_desc">Hiện nhiệt độ từ cảm biến</string>
     <string name="help_article_map_raster_maps_name">Những mảng bản đồ (Trực tuyến / Ngoại tuyến)</string>
     <string name="help_article_map_tracks_on_map_name">Hành trình và Tuyến đường</string>
-    <string name="help_article_map_legend_osmand_name">Kiểu bản đồ RoadCrew</string>
+    <string name="help_article_map_legend_osmand_name">Kiểu bản đồ OsmAnd</string>
     <string name="help_article_search_search_coordinates_name">Tìm toạ độ</string>
     <string name="help_article_navigation_routing_horse_routing_name">Tìm đường cho cưỡi ngựa</string>
     <string name="help_article_navigation_setup_route_navigation_name">Chuẩn bị tuyến đường</string>
@@ -609,7 +609,7 @@
     <string name="github_discussion">Thảo luận trên GitHub</string>
     <string name="empty_smart_folder_description">Các hành trình phù hợp xuất hiện ở đây</string>
     <string name="standard_maps">Những bản đồ tiêu chuẩn</string>
-    <string name="help_article_start_with_name">Bắt đầu với RoadCrew</string>
+    <string name="help_article_start_with_name">Bắt đầu với OsmAnd</string>
     <string name="user_guide">Hướng dẫn sử dụng</string>
     <string name="free_versions">Những phiên bản miễn phí</string>
     <string name="filter_tracks_count">Lọc: %d</string>
@@ -702,7 +702,7 @@
     <string name="height_legend_description">Những bản đồ màu sắc của độ cao được dùng để thể hiện địa hình một cách trực quan.</string>
     <string name="shared_string_license">Giấy phép</string>
     <string name="ltr_or_rtl_combine_with_brackets">%1$s (%2$s)</string>
-    <string name="map_rendering_engine_descr">Phiên bản 1 là mặc định trước RoadCrew 4.3 và phù hợp cho những thiết bị cũ hơn.\nPhiên bản 2 (OpenGL) hiện đại hơn và bổ sung thêm nhiều tính năng như chế độ xem 3D.</string>
+    <string name="map_rendering_engine_descr">Phiên bản 1 là mặc định trước OsmAnd 4.3 và phù hợp cho những thiết bị cũ hơn.\nPhiên bản 2 (OpenGL) hiện đại hơn và bổ sung thêm nhiều tính năng như chế độ xem 3D.</string>
     <string name="compass_always_visible">Luôn hiện</string>
     <string name="routing_attr_avoid_fords_description">Tránh khúc sông cạn</string>
     <string name="configure_map_description">Thay đổi phong cách bản đồ, các lớp, và các cài đặt khác.</string>
@@ -758,7 +758,7 @@
     <string name="routing_attr_avoid_4wd_only_description">Tránh đường chỉ thích hợp cho xe 4WD</string>
     <string name="gps_info_widget_desc">Hiện số lượng vệ tinh hiện có và được sử dụng.</string>
     <string name="shared_string_layers">Lớp</string>
-    <string name="rendering_engine_failed_descr">RoadCrew đã quay lại kết xuất bản đồ \'Phiên bản 1\'. Bạn có thể chọn công cụ kết xuất \'Phiên bản 2 (OpenGL)\' mới hơn trong phần cài đặt.\n\nVui lòng hỗ trợ sự cải thiện bằng cách cung cấp nhật ký lỗi.</string>
+    <string name="rendering_engine_failed_descr">OsmAnd đã quay lại kết xuất bản đồ \'Phiên bản 1\'. Bạn có thể chọn công cụ kết xuất \'Phiên bản 2 (OpenGL)\' mới hơn trong phần cài đặt.\n\nVui lòng hỗ trợ sự cải thiện bằng cách cung cấp nhật ký lỗi.</string>
     <string name="dismiss_changes_descr">Tất cả thay đổi sẽ bị loại bỏ.</string>
     <string name="shared_string_speedometer">Đồng hồ chỉ tốc độ</string>
     <string name="average_speed_widget_desc">Hiện tốc độ trung bình của chuyến đi hiện tại.</string>
@@ -769,7 +769,7 @@
     <string name="storage_migration_fragment_close_descr">Việc sao chép chỉ hoàn thành được %1$s %. Nếu bạn dừng bây giờ, ứng dụng có thể không hoạt động bình thường.</string>
     <string name="map_settings_weather_wind">Gió</string>
     <string name="weather_wind_mph">dặm/giờ</string>
-    <string name="rendering_engine_failed">Việc kết xuất bản đồ của RoadCrew mới đây đã bị hỏng.</string>
+    <string name="rendering_engine_failed">Việc kết xuất bản đồ của OsmAnd mới đây đã bị hỏng.</string>
     <string name="shared_string_no_internet_connection">Không có kết nối mạng</string>
     <string name="no_internet_descr">Vui lòng kiểm tra kết nối của bạn và thử lại.</string>
     <string name="change_zoom_action_descr">Thay đổi mức thu phóng bản đồ.</string>
@@ -973,7 +973,7 @@
     <string name="number_of_tiles">Số lượng các mảng</string>
     <string name="map_marker_options">Những tuỳ chọn điểm đánh dấu bản đồ</string>
     <string name="app_modes_options">Chọn các chế độ ứng dụng</string>
-    <string name="gps_filter_actions_description">RoadCrew sẽ áp dụng những thay đổi đến hành trình mà không cập nhật tệp. Bạn có thể lưu những thay đổi một cách thủ công.</string>
+    <string name="gps_filter_actions_description">OsmAnd sẽ áp dụng những thay đổi đến hành trình mà không cập nhật tệp. Bạn có thể lưu những thay đổi một cách thủ công.</string>
     <string name="shared_string_memory">Bộ nhớ</string>
     <string name="driving_region_canada">Ca-na-đa</string>
     <string name="rendering_attr_showDirtbikeTrails_name">Lối đi cho xe đạp địa hình</string>
@@ -1040,7 +1040,7 @@
     <string name="connect_obd_instructions_step1">Kết nối máy quét tới cổng OBD-II trên xe của bạn.</string>
     <string name="connect_obd_instructions_step2">Bật động cơ xe</string>
     <string name="obd_vehicle_info">Thông tin xe</string>
-    <string name="connect_obd_instructions_title">RoadCrew hỗ trợ kết nối Bluetooth tới những máy quét OBD-II.</string>
+    <string name="connect_obd_instructions_title">OsmAnd hỗ trợ kết nối Bluetooth tới những máy quét OBD-II.</string>
     <string name="routing_attr_avoid_cobblestone_name">Tránh đá cuội</string>
     <string name="top_and_bottom">Đỉnh và đáy</string>
     <string name="title_3d_track">Đường dẫn 3D</string>
@@ -1051,7 +1051,7 @@
     <string name="rendering_value_omit_name">Bỏ</string>
     <string name="memory_allocated_for_routing_ds">Phân bổ nhiều bộ nhớ hơn sẽ tăng tốc việc tính toán những tuyến đường dài (trên 500 km), nhưng có thể ảnh hưởng đến hoạt động của những ứng dụng khác.\nKhông có tác động đến tốc độ tính toán những tuyến đường ngắn.</string>
     <string name="memory_allocated_for_routing">Bộ nhớ được phân bổ cho việc chỉ đường</string>
-    <string name="shared_string_skip_warning">Bỏ qua việc di chuyển? RoadCrew không còn quyền truy cập đến những tệp của bạn ở bộ nhớ dùng chung.\n\nỨng dụng sẽ bắt đầu sử dụng thư mục dữ liệu mới của bạn.</string>
+    <string name="shared_string_skip_warning">Bỏ qua việc di chuyển? OsmAnd không còn quyền truy cập đến những tệp của bạn ở bộ nhớ dùng chung.\n\nỨng dụng sẽ bắt đầu sử dụng thư mục dữ liệu mới của bạn.</string>
     <string name="copying_completed">Đã sao chép</string>
     <string name="exit_import">Thoát?</string>
     <string name="recording_context_menu_show">Hiện</string>
@@ -1074,7 +1074,7 @@
     <string name="obd_fuel_type_bifuel_ethanol">Ethanol nhiên liệu kép</string>
     <string name="fixed_height">Độ cao cố định</string>
     <string name="bottom">Đáy</string>
-    <string name="retrieve_elevation_data_summary">RoadCrew có thể lấy được dữ liệu độ cao từ những đường ở gần hoặc các bản đồ địa thế.</string>
+    <string name="retrieve_elevation_data_summary">OsmAnd có thể lấy được dữ liệu độ cao từ những đường ở gần hoặc các bản đồ địa thế.</string>
     <string name="maps_that_also_be_used">Các bản đồ cũng sẽ được dùng: %1$s</string>
     <string name="download_cloud_versions">Tải xuống những phiên bản đám mây</string>
     <string name="rendering_attr_padusDisplayMode_description">Bằng kiểu truy cập hoặc tên quản lý</string>
@@ -1162,7 +1162,7 @@
     <string name="write_bearing">Viết độ lệch</string>
     <string name="write_heading">Viết độ hướng đi</string>
     <string name="rendering_attr_seabedDetail_name">Chi tiết đáy biển</string>
-    <string name="shared_storage_third_step">Cho phép quyền truy cập đến thư mục. Nếu không RoadCrew không thể sao chép các tệp.</string>
+    <string name="shared_storage_third_step">Cho phép quyền truy cập đến thư mục. Nếu không OsmAnd không thể sao chép các tệp.</string>
     <string name="storage_found_files_size">Đã tìm thấy %1$s tệp %2$s</string>
     <string name="skip_confirmation">Có, bỏ qua</string>
     <string name="shared_storage">Bộ nhớ dùng chung</string>
@@ -1175,7 +1175,7 @@
     <string name="change_default_appearance">Thay đổi hình thức mặc định</string>
     <string name="rendering_attr_showTramRoutes_name">Tuyến tàu điện nhỏ</string>
     <string name="shared_string_used">Được dùng</string>
-    <string name="osmand_cloud_delete_account_confirmation_descr">Xoá tài khoản RoadCrew?\n\nHành động này không thể hoàn tác.</string>
+    <string name="osmand_cloud_delete_account_confirmation_descr">Xoá tài khoản OsmAnd?\n\nHành động này không thể hoàn tác.</string>
     <string name="display_groups_visibility_dialog_description">Bạn có thể kiểm soát sự xuất hiện của nhóm trên bản đồ. Nếu hành trình bị ẩn, tất cả các nhóm cũng sẽ bị ẩn.</string>
     <string name="rendering_attr_showRunningRoutes_name">Tuyến đường chạy bộ</string>
     <string name="driving_region_japan">Nhật Bản</string>
@@ -1217,7 +1217,7 @@
     <string name="missing_maps_description">Một số bản đồ ngoại tuyến cần thiết cho tuyến đường này đang thiếu hoặc chưa được cập nhật. Vui lòng tải xuống hoặc cập nhật những bản đồ này.</string>
     <string name="lang_ta_in">Tamil (Ấn Độ)</string>
     <string name="relief_3d_download_description">Cần thêm bản đồ để xem Địa thế trên bản đồ.</string>
-    <string name="required_maps_calculate_online_summary">Danh sách các bản đồ còn thiếu được dựa trên tuyến đường thẳng. Để lấy danh sách bản đồ chính xác, RoadCrew có thể tính trước tuyến đường của bạn qua mạng.</string>
+    <string name="required_maps_calculate_online_summary">Danh sách các bản đồ còn thiếu được dựa trên tuyến đường thẳng. Để lấy danh sách bản đồ chính xác, OsmAnd có thể tính trước tuyến đường của bạn qua mạng.</string>
     <string name="with_waypoints">Với các điểm đặt</string>
     <string name="ltr_or_rtl_combine_via_colon_with_space">%1$s : %2$s</string>
     <string name="help_article_map_legend_nautical_map_name">Kiểu bản đồ đường biển</string>
@@ -1260,9 +1260,9 @@
     <string name="shared_string_not_checked">Không kiểm tra</string>
     <string name="ltr_or_rtl_triple_combine_via_bold_point">%1$s • %2$s • %3$s</string>
     <string name="cache_size">Kích thước bộ nhớ đệm</string>
-    <string name="storage_migration_wrong_folder_warning">Không có dữ liệu RoadCrew nào được tìm thấy trong thư mục đã chọn. Vui lòng thử lại.</string>
+    <string name="storage_migration_wrong_folder_warning">Không có dữ liệu OsmAnd nào được tìm thấy trong thư mục đã chọn. Vui lòng thử lại.</string>
     <string name="display_route_tracks">Hiển thị hành trình</string>
-    <string name="shared_storage_migration_descr">Do những thay đổi với quyền truy cập bộ nhớ của Android, RoadCrew không còn có thể dùng %1$s.\n\nSao chép tất cả dữ liệu của bạn đến thư mục mới.</string>
+    <string name="shared_storage_migration_descr">Do những thay đổi với quyền truy cập bộ nhớ của Android, OsmAnd không còn có thể dùng %1$s.\n\nSao chép tất cả dữ liệu của bạn đến thư mục mới.</string>
     <string name="icon_group_industrial">Công nghiệp</string>
     <string name="recording_context_menu_play">Chơi</string>
     <string name="external_device_blood_pressure">Huyết áp</string>
@@ -1362,7 +1362,7 @@
     <string name="mtb_scale">Thang độ khó MTB</string>
     <string name="weather_pressure_mmhg">mmHg</string>
     <string name="shared_string_close_the_dialog">Đóng hội thoại</string>
-    <string name="ant_plus_searching_text_description">Vui lòng giữ thiết bị gần cảm biến. Bạn cần kích hoạt cảm biến để RoadCrew có thể tìm thấy nó.</string>
+    <string name="ant_plus_searching_text_description">Vui lòng giữ thiết bị gần cảm biến. Bạn cần kích hoạt cảm biến để OsmAnd có thể tìm thấy nó.</string>
     <string name="cloud_changes">Thay đổi đám mây</string>
     <string name="shared_string_uploaded">Đã tải lên</string>
     <string name="external_device_characteristic_speed">Vận tốc</string>
@@ -1495,7 +1495,7 @@
     <string name="ant_plus_searching_text">Đang tìm kiếm cảm biến</string>
     <string name="ant_plus_help_title">Tôi không biết mình có loại cảm biến nào</string>
     <string name="ant_plus_searching">Đang tìm kiếm</string>
-    <string name="ant_plus_pair_bluetooth_prompt">Bạn có thể ghép nối cảm biến Bluetooth và ANT+ với RoadCrew.</string>
+    <string name="ant_plus_pair_bluetooth_prompt">Bạn có thể ghép nối cảm biến Bluetooth và ANT+ với OsmAnd.</string>
     <string name="ant_plus_pair_new_sensor_ant_plus">Ghép nối với cảm biến ANT+</string>
     <string name="shutter_sound">Âm thanh màn chụp</string>
     <string name="speak_route_deviation">Thông báo việc đi lệch khỏi tuyến đường</string>
@@ -1518,7 +1518,7 @@
     <string name="display_position">Vị trí hiển thị</string>
     <string name="included_in_your_current_plan">Được bao gồm trong kế hoạch \"%1$s\" hiện tại của bạn</string>
     <string name="external_sensors_plugin_description">Truy cập cảm biến bên ngoài để đọc nhịp tim, vận tốc xe đạp, sức mạnh đạp xe, hoặc nhịp đạp của bạn. Yêu cầu thiết bị của bạn được kết nối tới cảm biến tương ứng thông qua giao thức mạng không dây cá nhân ANT+.</string>
-    <string name="send_uuid_preference_desc">Một mã xác định người dùng ngẫu nhiên được dùng để tải các bản đồ ngoại tuyến từ máy chủ RoadCrew để giám sát việc sử dụng hợp lý các tài nguyên máy chủ, dự đoán mẫu hình lượng truy cập, và tạo các báo cáo bản đồ ẩn danh hàng tháng.</string>
+    <string name="send_uuid_preference_desc">Một mã xác định người dùng ngẫu nhiên được dùng để tải các bản đồ ngoại tuyến từ máy chủ OsmAnd để giám sát việc sử dụng hợp lý các tài nguyên máy chủ, dự đoán mẫu hình lượng truy cập, và tạo các báo cáo bản đồ ẩn danh hàng tháng.</string>
     <string name="ant_missing_dependency_descr">Không thể tìm được dịch vụ cần thiết \"%1$s\".\nBạn cần cài đặt hoặc cập nhật Dịch vụ Phần bổ trợ ANT+.\nBạn có muốn mở Play Store để làm điều đó?</string>
     <string name="ant_read_data">Đọc dữ liệu</string>
     <string name="map_widget_ant_heart_rate">Nhịp tim</string>
@@ -1561,7 +1561,7 @@
     <string name="favorite_delete_group">Xoá nhóm</string>
     <string name="rendering_attr_showMtbScaleIMBATrails_description">Hiện lối đi riêng cho xe đạp địa hình.</string>
     <string name="how_to_use">Cách dùng:</string>
-    <string name="calculate_online_altitude_descr">Tính độ cao trực tuyến trên máy chủ RoadCrew, dựa trên hình ảnh vệ tinh và các mẫu độ cao kỹ thuật số. Những sự khác biệt với độ cao được đo bởi thiết bị có thể được dùng để làm chính xác số liệu.</string>
+    <string name="calculate_online_altitude_descr">Tính độ cao trực tuyến trên máy chủ OsmAnd, dựa trên hình ảnh vệ tinh và các mẫu độ cao kỹ thuật số. Những sự khác biệt với độ cao được đo bởi thiết bị có thể được dùng để làm chính xác số liệu.</string>
     <string name="map_widget_rendering_fps">FPS kết xuất bản đồ</string>
     <string name="map_widget_altitude_map_center_desc">Hiện độ cao trên mực nước biển của trung tâm bản đồ hiện tại.</string>
     <string name="map_widget_zoom_level">Mức độ thu phóng</string>
@@ -1655,7 +1655,7 @@
     <string name="release_4_2">• Thiết kế lại tiện ích: Giao diện mới, nhóm theo Trang, thay đổi thứ tự và kết hợp theo ý muốn.\n\n• Lộ trình đi bộ đường dài/đạp xe/du lịch: chạm vào biểu tượng lộ trình và nhận thông tin đầy đủ về lộ trình.\n\n• Nhóm yêu thích: đặt giao diện mặc định cho các điểm mới trong nhóm\n\n• Sửa lỗi: tự động cập nhật bản đồ ô trực tuyến</string>
     <string name="routing_attr_carriage_restrictions_description">Xem xét quyền truy cập của những phương tiện được ngựa kéo</string>
     <string name="rendering_attr_seabedDetail_description">Thông tin văn bản bổ sung về phẩm chất bề mặt đáy biển, các loại bề mặt kết hợp, danh mục và phân loại rong biển hoặc cỏ biển</string>
-    <string name="location_source_descr">Theo mặc định, RoadCrew được cài từ Cửa hàng Play sử dụng %1$s để xác định vị trí.\n\nNếu bạn thấy thông tin vị trí không đúng hoặc dùng thiết bị không có %2$s, hãy thử chuyển sang \"%3$s\"</string>
+    <string name="location_source_descr">Theo mặc định, OsmAnd được cài từ Cửa hàng Play sử dụng %1$s để xác định vị trí.\n\nNếu bạn thấy thông tin vị trí không đúng hoặc dùng thiết bị không có %2$s, hãy thử chuyển sang \"%3$s\"</string>
     <string name="predefined_waypoint_appearance_description">Việc chọn hành động này sẽ tự động lưu điểm dừng với các tham số đã được xác định trước.</string>
     <string name="record_obd_data">Ghi các số liệu về phương tiện</string>
     <string name="fuel_tank_capacity_description">Nhập dung tích bình xăng để theo dõi mức nhiên liệu và mức tiêu thụ</string>
@@ -1711,7 +1711,7 @@
     <string name="rendering_category_transport">Phương tiện công cộng</string>
     <string name="rendering_attr_surface_asphalt_name">Nhựa đường</string>
     <string name="turn_screen_on_wake_time_descr">Chọn thời gian chờ tắt màn hình sau khi thức dậy. (Thời gian chờ không áp dụng khi chọn \"%1$s\".)</string>
-    <string name="turn_screen_on_descr">Chọn các tuỳ biến đánh thức màn hình (đảm bảo rằng RoadCrew đang chạy ở màn hình chính điện thoại khi tắt màn hình):</string>
+    <string name="turn_screen_on_descr">Chọn các tuỳ biến đánh thức màn hình (đảm bảo rằng OsmAnd đang chạy ở màn hình chính điện thoại khi tắt màn hình):</string>
     <string name="shared_string_quick_actions">Hành động nhanh</string>
     <string name="application_profiles">Hồ sơ ứng dụng</string>
     <string name="previous_route">Tuyến đường trước</string>
@@ -1832,7 +1832,7 @@
     <string name="routing_attr_avoid_unpaved_name">Không đi vào đường chưa lát</string>
     <string name="routing_attr_avoid_stairs_name">Không đi cầu thang</string>
     <string name="routing_attr_avoid_stairs_description">Tránh cầu thang</string>
-    <string name="calculate_osmand_route_gpx">Tính toán tuyến đường RoadCrew ngoại tuyến</string>
+    <string name="calculate_osmand_route_gpx">Tính toán tuyến đường OsmAnd ngoại tuyến</string>
     <string name="av_camera_focus_auto">Tự động lấy nét</string>
     <string name="configure_screen_quick_action">Hành động nhanh</string>
     <string name="show_tunnels">Đường hầm</string>
@@ -1934,7 +1934,7 @@
     <string name="routing_engine_vehicle_type_scooter">Xe ga</string>
     <string name="terrain_empty_state_text">Hiện bóng đồi núi và mức độ dốc của bề mặt trên bản đồ. Đọc thêm về những loại bản đồ này trên trang của chúng tôi.</string>
     <string name="save_track_logging_accuracy">Sự chính xác khi ghi nhật ký</string>
-    <string name="tracks_view_descr">Hành trình đã ghi của bạn nằm ở %1$s, hoặc thư mục RoadCrew.</string>
+    <string name="tracks_view_descr">Hành trình đã ghi của bạn nằm ở %1$s, hoặc thư mục OsmAnd.</string>
     <string name="show_more">Hiện thêm</string>
     <string name="new_directions_point_dialog">Bạn đã đặt điểm đến trung gian rồi.</string>
     <string name="arrival_distance_factor_early">Sớm</string>
@@ -1960,7 +1960,7 @@
     <string name="poi_context_menu_modify_osm_change">Sửa thay đổi OSM</string>
     <string name="auto_zoom_3d_angle">Góc tự động thu phóng 3D</string>
     <string name="osmand_online_routing_promo">Dùng mẫu sẵn có, hoặc thêm OSRM, GraphHopper, openrouteservice, hoặc chỉ đường trực tuyến GPX.</string>
-    <string name="trip_recording_logging_interval_info">Quãng thời gian ghi nhật ký đặt ra khoảng thời gian mà sau đó RoadCrew sẽ lấy dữ liệu vị trí hiện tại.</string>
+    <string name="trip_recording_logging_interval_info">Quãng thời gian ghi nhật ký đặt ra khoảng thời gian mà sau đó OsmAnd sẽ lấy dữ liệu vị trí hiện tại.</string>
     <string name="activity_type_car_name">Ô tô</string>
     <string name="announcement_time_intervals">Thời gian và quãng đường</string>
     <string name="system_default_theme">Mặc định hệ thống</string>
@@ -2225,7 +2225,7 @@
     <string name="your_edits">Chỉnh sửa của bạn</string>
     <string name="rendering_attr_transportStops_name">Điểm dừng phương tiện công cộng</string>
     <string name="navigate_point_olc_info_area">OLC đầy đủ hợp lệ\nTương ứng với khu vực: %1$s x %2$s</string>
-    <string name="disable_recording_once_app_killed_descrp">Việc ghi nhật ký hành trình sẽ tạm dừng khi ứng dụng bị xoá (qua màn hình những ứng dụng gần đây). (Dấu hiệu RoadCrew chạy nền biến mất khỏi thanh thông báo Android.)</string>
+    <string name="disable_recording_once_app_killed_descrp">Việc ghi nhật ký hành trình sẽ tạm dừng khi ứng dụng bị xoá (qua màn hình những ứng dụng gần đây). (Dấu hiệu OsmAnd chạy nền biến mất khỏi thanh thông báo Android.)</string>
     <string name="monitoring_min_distance_descr">Bật bộ lọc này cho phép bạn tránh việc ghi dữ liệu bổ sung khi chuyển động gần như không được phát hiện. Nó cũng cải thiện hình dáng của các hành trình mà không cần xử lý thêm.</string>
     <string name="map_during_navigation_info">Bản đồ trong khi điều hướng</string>
     <string name="map_during_navigation">Bản đồ trong khi điều hướng</string>
@@ -2288,7 +2288,7 @@
     <string name="coordinates_widget">Widget toạ độ</string>
     <string name="base_profile_descr_bicycle">Xe đạp địa hình, xe đạp điện, ngựa</string>
     <string name="rendering_attr_hideWaterPolygons_name">Nước</string>
-    <string name="change_data_storage_full_description">Chuyển các tệp dữ liệu RoadCrew đến địa chỉ mới?\n%1$s&gt;%2$s</string>
+    <string name="change_data_storage_full_description">Chuyển các tệp dữ liệu OsmAnd đến địa chỉ mới?\n%1$s&gt;%2$s</string>
     <string name="storage_permission_restart_is_required">Ứng dụng đã được phép ghi vào bộ nhớ ngoài, nhưng phải được khởi động lại để làm vậy.</string>
     <string name="shared_string_resources">Các tài nguyên</string>
     <string name="tap_on_map_to_hide_interface">Chế độ toàn màn hình</string>
@@ -2296,7 +2296,7 @@
     <string name="shared_string_items">Các mục</string>
     <string name="shared_string_profiles">Hồ sơ</string>
     <string name="map_widget_ruler_control">Thước đo bán kính</string>
-    <string name="debugging_and_development">Phát triển RoadCrew</string>
+    <string name="debugging_and_development">Phát triển OsmAnd</string>
     <string name="winter_and_ski_renderer">Mùa đông và trượt tuyết</string>
     <string name="history_preferences_descr">Bạn có thể vô hiệu việc ghi nhật ký lịch sử một cách độc lập cho từng loại lịch sử.</string>
     <string name="navigation_history">Lịch sử điều hướng</string>
@@ -2312,9 +2312,9 @@
     <string name="rendering_attr_hideOverground_name">Các vật thể trên mặt đất</string>
     <string name="rendering_value_boldOutline_name">Đường viền đậm</string>
     <string name="osmand_parking_plugin_description">Đánh dấu vị trí đỗ xe của bạn, và thông báo cho lịch của bạn khi đồng hồ đo giờ đỗ xe sắp hết. Để đặt đánh dấu, chọn một vị trí trên bản đồ, vào \"Hành động\", và chạm vào \"Thêm điểm đỗ xe\".</string>
-    <string name="osmand_development_plugin_description">Cung cấp chức năng để kiểm tra và gỡ lỗi RoadCrew: mô phỏng các tuyến đường điều hướng, giám sát việc hiển thị trên màn hình, kiểm tra hiệu suất, v.v. Plugin này không cần thiết cho việc sử dụng ứng dụng bình thường.</string>
+    <string name="osmand_development_plugin_description">Cung cấp chức năng để kiểm tra và gỡ lỗi OsmAnd: mô phỏng các tuyến đường điều hướng, giám sát việc hiển thị trên màn hình, kiểm tra hiệu suất, v.v. Plugin này không cần thiết cho việc sử dụng ứng dụng bình thường.</string>
     <string name="shared_string_accessibility">Khả năng tiếp cận</string>
-    <string name="osmand_accessibility_description">Làm cho các tính năng hỗ trợ tiếp cận của thiết bị có sẵn trực tiếp trong RoadCrew. Điều này giúp dễ dàng điều chỉnh tốc độ đọc văn bản cho giọng nói, cấu hình điều hướng D-pad, sử dụng trackball để điều khiển zoom, hoặc phản hồi chuyển văn bản thành giọng nói, ví dụ như tự động thông báo vị trí của bạn.</string>
+    <string name="osmand_accessibility_description">Làm cho các tính năng hỗ trợ tiếp cận của thiết bị có sẵn trực tiếp trong OsmAnd. Điều này giúp dễ dàng điều chỉnh tốc độ đọc văn bản cho giọng nói, cấu hình điều hướng D-pad, sử dụng trackball để điều khiển zoom, hoặc phản hồi chuyển văn bản thành giọng nói, ví dụ như tự động thông báo vị trí của bạn.</string>
     <string name="osm_editing_plugin_description">Đóng góp cho OpenStreetMap, một cộng đồng toàn cầu duy trì bản đồ bao quát thế giới và cung cấp dữ liệu mã nguồn mở và luôn cập nhật cho mọi người dùng.\n\nBạn có thể tìm hướng dẫn cách chỉnh sửa bản đồ trên trang web của chúng tôi %1$s.</string>
     <string name="rendering_attr_showCycleRoutes_name">Tuyến đường xe đạp</string>
     <string name="import_from_file">Nhập từ tệp</string>
@@ -2336,13 +2336,13 @@
     <string name="activity_type_snowmobile_name">Xe trượt tuyết</string>
     <string name="rendering_value_walkingRoutesScopeOSMC_description">Tô màu theo mạng lưới liên kết.</string>
     <string name="rendering_attr_coloredBuildings_name">Toà nhà được tô màu theo loại</string>
-    <string name="internal_app_storage_description">Bộ nhớ trong, được ẩn khỏi tất cả người dùng và ứng dụng khác, nên chỉ có RoadCrew có thể truy cập dữ liệu của bạn.</string>
+    <string name="internal_app_storage_description">Bộ nhớ trong, được ẩn khỏi tất cả người dùng và ứng dụng khác, nên chỉ có OsmAnd có thể truy cập dữ liệu của bạn.</string>
     <string name="routes_color_by_type">Tô màu tuyến đường theo…</string>
     <string name="shared_string_mini">nhỏ</string>
-    <string name="edit_profiles_descr">Những hồ sơ RoadCrew mặc định không thể bị xoá, nhưng có thể bị tắt (ở màn hình trước), hoặc được xếp xuống dưới cùng.</string>
+    <string name="edit_profiles_descr">Những hồ sơ OsmAnd mặc định không thể bị xoá, nhưng có thể bị tắt (ở màn hình trước), hoặc được xếp xuống dưới cùng.</string>
     <string name="export_import_quick_actions_with_profiles_promo">Nhập hoặc xuất hành động nhanh cùng những hồ sơ ứng dụng.</string>
     <string name="osmand_parking_hours">Tiếng</string>
-    <string name="osmand_settings">Cài đặt RoadCrew</string>
+    <string name="osmand_settings">Cài đặt OsmAnd</string>
     <string name="no_updates_available">Không có bản cập nhật nào</string>
     <string name="download_tab_updates">Bản cập nhật</string>
     <string name="looking_up_address">Đang tìm địa chỉ</string>
@@ -2353,7 +2353,7 @@
     <string name="light_rs_render_descr">Kiểu lái xe đơn giản. Giao diện tối nhẹ nhàng, đường có màu cam tương phản, làm mờ các đối tượng phụ trên bản đồ, các đặc điểm địa hình như đường đồng mức.</string>
     <string name="plugin_ski_name">Xem bản đồ trượt tuyết</string>
     <string name="map_widget_gps_info">Thông tin GPS</string>
-    <string name="touring_view_render_descr">Kiểu đi du lịch với độ tương phản cao và chi tiết tối đa. Bao gồm tất cả các tùy chọn của kiểu RoadCrew mặc định, trong khi hiển thị càng nhiều chi tiết càng tốt, đặc biệt là các tuyến đường, lối đi và các phương thức di chuyển khác. Sự phân biệt rõ ràng giống như \'atlas du lịch\' giữa các loại đường. Phù hợp để sử dụng vào ban ngày, ban đêm và ngoài trời.</string>
+    <string name="touring_view_render_descr">Kiểu đi du lịch với độ tương phản cao và chi tiết tối đa. Bao gồm tất cả các tùy chọn của kiểu OsmAnd mặc định, trong khi hiển thị càng nhiều chi tiết càng tốt, đặc biệt là các tuyến đường, lối đi và các phương thức di chuyển khác. Sự phân biệt rõ ràng giống như \'atlas du lịch\' giữa các loại đường. Phù hợp để sử dụng vào ban ngày, ban đêm và ngoài trời.</string>
     <string name="rendering_attr_hideHouseNumbers_name">Số nhà</string>
     <string name="map_magnifier">Kính phóng đại bản đồ</string>
     <string name="osmand_parking_minutes">Phút</string>
@@ -2419,7 +2419,7 @@
     <string name="rendering_attr_natureReserves_description">Hiện khu bảo tồn thiên nhiên, các khu vực được bảo vệ, và các công viên quốc gia.</string>
     <string name="settings_privacy_and_security">Quyền riêng tư và bảo mật</string>
     <string name="privacy_and_security_change_descr">Chọn \"Cho phép\" nếu bạn đồng ý với %1$s của chúng tôi</string>
-    <string name="visited_screens_collect_descr">Giúp chúng tôi biết được sự phổ biến của tính năng RoadCrew.</string>
+    <string name="visited_screens_collect_descr">Giúp chúng tôi biết được sự phổ biến của tính năng OsmAnd.</string>
     <string name="downloaded_maps_collect_descr">Giúp chúng tôi hiểu sự phổ biến của bản đồ các nước và vùng.</string>
     <string name="rendering_attr_hidePOILabels_name">Các nhãn POI</string>
     <string name="show_from_zoom_level">Việc hiển thị bắt đầu từ mức thu phóng</string>
@@ -2434,7 +2434,7 @@
     <string name="osmand_parking_am">AM (đồng hồ 12 giờ)</string>
     <string name="rendering_attr_natureReserves_name">Khu bảo tồn thiên nhiên và Các khu vực được bảo vệ</string>
     <string name="average_altitude">Độ cao trung bình</string>
-    <string name="missing_write_external_storage_permission">RoadCrew thiếu quyền truy cập đến thẻ nhớ</string>
+    <string name="missing_write_external_storage_permission">OsmAnd thiếu quyền truy cập đến thẻ nhớ</string>
     <string name="dialog_add_action_title">Thêm hành động</string>
     <string name="fonts_header">Phông chữ bản đồ</string>
     <string name="delete_search_history">Xoá lịch sử tìm kiếm</string>
@@ -2444,13 +2444,13 @@
     <string name="reorder_profiles">Sửa danh sách hồ sơ</string>
     <string name="storage_directory_external">Bộ nhớ ngoài</string>
     <string name="welmode_download_maps">Tải bản đồ</string>
-    <string name="shared_string_osmand_usage">RoadCrew đã dùng</string>
+    <string name="shared_string_osmand_usage">OsmAnd đã dùng</string>
     <string name="shared_string_uphill">Lên dốc</string>
     <string name="routing_attr_avoid_low_emission_zone_description">Tránh các vùng phát thải thấp</string>
     <string name="shared_string_downhill">Xuống dốc</string>
     <string name="backup_into_file">Sao lưu dưới dạng tệp</string>
     <string name="elevation_profile">Hồ sơ độ cao</string>
-    <string name="public_transport_no_route_title">Rất tiếc, RoadCrew không thể tìm một tuyến đường phù hợp với cài đặt của bạn.</string>
+    <string name="public_transport_no_route_title">Rất tiếc, OsmAnd không thể tìm một tuyến đường phù hợp với cài đặt của bạn.</string>
     <string name="rendering_attr_hmRendered_name">Hiện thêm chi tiết của bản đồ</string>
     <string name="rendering_attr_hmRendered_description">Tăng số lượng chi tiết của bản đồ được hiển thị.</string>
     <string name="free">Còn trống %1$s</string>
@@ -2462,7 +2462,7 @@
     <string name="ski_map_render_descr">Dành cho việc trượt tuyết. Bao gồm các đường trượt, cáp treo, các tuyến đường chạy dọc theo quốc gia, v.v. Làm mờ các đối tượng bản đồ phụ.</string>
     <string name="show_polygons">Hiện các hình đa giác</string>
     <string name="world_map_download_descr">Bản đồ thế giới (thể hiện toàn thế giới ở mức thu phóng thấp) không có hoặc đã quá cũ. Vui lòng cân nhắc việc tải nó để xem toàn cảnh thế giới.</string>
-    <string name="make_osmand_better_descr">Cho phép RoadCrew thu thập và xử lý dữ liệu sử dụng ứng dụng ẩn danh. Không có dữ liệu nào về vị trí của bạn hoặc các địa điểm bạn xem trên bản đồ được thu thập.\n\nĐiều chỉnh bất kỳ lúc nào trong \'Cài đặt\' → \'Quyền riêng tư và bảo mật\'.</string>
+    <string name="make_osmand_better_descr">Cho phép OsmAnd thu thập và xử lý dữ liệu sử dụng ứng dụng ẩn danh. Không có dữ liệu nào về vị trí của bạn hoặc các địa điểm bạn xem trên bản đồ được thu thập.\n\nĐiều chỉnh bất kỳ lúc nào trong \'Cài đặt\' → \'Quyền riêng tư và bảo mật\'.</string>
     <string name="default_price_currency_format">%1$.2f %2$s</string>
     <string name="walking_route_osmc_description">Tô màu tuyến đường theo từng màu địa phương riêng (nếu có trên OpenStreetMap) và loại (quốc tế, khu vực, địa phương).</string>
     <string name="purchases_feature_desc_wikipedia">Cung cấp ngoại tuyến tất cả các bài viết Wikipedia liên quan đến địa điểm, giúp bạn tìm hiểu về các địa điểm bạn thăm trong chuyến đi chỉ bằng cách chạm vào bản đồ. Đừng quên tải xuống các tệp bản đồ Wikipedia cho các khu vực tương ứng.</string>
@@ -2478,7 +2478,7 @@
     <string name="srtm_plugin_description">Thông tin địa hình, như các đường đồng mức, bóng đồi núi, độ dốc bề mặt theo chiều cao, giúp bạn đánh giá trực quan về đặc điểm địa hình, sự nổi khối, khả năng điều hướng, và nhiều hơn nữa. Thông tin địa hình có thể được thể hiện trên bản đồ bằng các đường đồng mức, bóng đồi núi và/hoặc màu sắc độ dốc.\n\nDữ liệu cơ sở đến từ SRTM và ASTER.\n\nĐọc thêm tại %1$s.</string>
     <string name="storage_directory_manual">Được nhập bằng tay</string>
     <string name="settings_privacy_and_security_desc">Chọn dữ liệu mà bạn chia sẻ</string>
-    <string name="osmand_rastermaps_plugin_description">Truy cập nhiều loại bản đồ trực tuyến (gọi là bản đồ mảng hoặc raster), như các mảng bản đồ OSM đã được dựng sẵn, hình ảnh vệ tinh, và các lớp bản đồ mục đích đặc biệt như bản đồ thời tiết, bản đồ khí hậu, bản đồ địa chất, bóng đồi núi, v.v.\n\nBất kỳ bản đồ nào trong số này có thể được hiển thị là bản đồ chính (bản đồ nền tảng), hoặc là lớp phủ trên hoặc lớp phủ nền cho một bản đồ nền tảng khác (như các bản đồ vector ngoại tuyến của RoadCrew). Một số yếu tố của bản đồ vector RoadCrew có thể được ẩn qua menu \'Điều chỉnh bản đồ\' để làm cho bất kỳ bản đồ phủ nền nào dễ nhìn hơn.\n\nTải xuống các bản đồ mảng trực tiếp, hoặc sao chép chúng dưới dạng tệp cơ sở dữ liệu SQLite vào thư mục dữ liệu của RoadCrew bằng cách sử dụng một trong các công cụ chuẩn bị bản đồ của bên thứ ba.</string>
+    <string name="osmand_rastermaps_plugin_description">Truy cập nhiều loại bản đồ trực tuyến (gọi là bản đồ mảng hoặc raster), như các mảng bản đồ OSM đã được dựng sẵn, hình ảnh vệ tinh, và các lớp bản đồ mục đích đặc biệt như bản đồ thời tiết, bản đồ khí hậu, bản đồ địa chất, bóng đồi núi, v.v.\n\nBất kỳ bản đồ nào trong số này có thể được hiển thị là bản đồ chính (bản đồ nền tảng), hoặc là lớp phủ trên hoặc lớp phủ nền cho một bản đồ nền tảng khác (như các bản đồ vector ngoại tuyến của OsmAnd). Một số yếu tố của bản đồ vector OsmAnd có thể được ẩn qua menu \'Điều chỉnh bản đồ\' để làm cho bất kỳ bản đồ phủ nền nào dễ nhìn hơn.\n\nTải xuống các bản đồ mảng trực tiếp, hoặc sao chép chúng dưới dạng tệp cơ sở dữ liệu SQLite vào thư mục dữ liệu của OsmAnd bằng cách sử dụng một trong các công cụ chuẩn bị bản đồ của bên thứ ba.</string>
     <string name="use_routing_fallback">Dự phòng chỉ đường ngoại tuyến</string>
     <string name="gps_filter_precision">Độ chính xác GPS</string>
     <string name="obd_air_intake_temp_desc">Hiển thị nhiệt độ của không khí đi vào bộ ống nạp của động cơ.</string>
@@ -2553,7 +2553,7 @@
     <string name="android_auto_purchase_request_title">Mua OsmAnd Pro hoặc Maps+ để dùng OsmAnd với Android Auto</string>
     <string name="shared_string_files">Các tệp</string>
     <string name="android_auto_map_placeholder_descr">Ngắt thiết bị của bạn khỏi Android Auto để xem bản đồ trong ứng dụng.</string>
-    <string name="location_access_request_title">RoadCrew cần quyền Vị trí để chỉ đường.</string>
+    <string name="location_access_request_title">OsmAnd cần quyền Vị trí để chỉ đường.</string>
     <string name="location_access_request_action">Cho phép truy cập</string>
     <string name="routing_attr_only_permitted_ways_name">Những lối đi được phép rõ ràng</string>
     <string name="sample_wikivoyage">Ví dụ Wikivoyage</string>
@@ -2601,7 +2601,7 @@
     <string name="ais_port_nmea_local">Cổng UDP của máy nhận dữ liệu NMEA địa phương</string>
     <string name="ais_port_nmea_server">Cổng TCP của nguồn dữ liệu NMEA</string>
     <string name="ais_port_nmea_server_description">Chỉ định số cổng TCP của nguồn dữ liệu NMEA</string>
-    <string name="ais_port_nmea_local_description">Chỉ định cổng UDP nơi RoadCrew nhận dữ liệu NMEA</string>
+    <string name="ais_port_nmea_local_description">Chỉ định cổng UDP nơi OsmAnd nhận dữ liệu NMEA</string>
     <string name="ais_object_lost_timeout">Thời gian chờ cho sự hiển thị khi tàu bị mất</string>
     <string name="ais_object_lost_timeouts">Cài đặt thời gian chờ cho sự tiếp nhận dữ liệu AIS</string>
     <string name="ais_object_lost_timeout_description">Đặt thời gian chờ cho sự hiển thị của các đối tượng AIS: Sau khoảng thời gian này mà không có tín hiệu nào, đối tượng sẽ tự động bị loại bỏ khỏi màn hình.</string>
@@ -2651,7 +2651,7 @@
     <string name="backup_delete_all_data">Xoá tất cả dữ liệu của tôi</string>
     <string name="backup_view_conflicts">Xem các xung đột</string>
     <string name="resend_verification_code">Gửi lại</string>
-    <string name="srtm_download_list_help_message">RoadCrew cung cấp dữ liệu đường đồng mức theo mét và feet. Bạn sẽ cần tải xuống tệp một lần nữa để thay đổi định dạng.</string>
+    <string name="srtm_download_list_help_message">OsmAnd cung cấp dữ liệu đường đồng mức theo mét và feet. Bạn sẽ cần tải xuống tệp một lần nữa để thay đổi định dạng.</string>
     <string name="next_billing_date">Ngày thanh toán tiếp theo: %1$s</string>
     <string name="monthly_subscription">Đăng ký hàng tháng</string>
     <string name="troubleshooting">Khắc phục sự cố</string>
@@ -2716,7 +2716,7 @@
     <string name="shared_string_migration">Di chuyển dữ liệu</string>
     <string name="available_until">Có sẵn cho đến %1$s</string>
     <string name="pro_features">Những tính năng chuyên nghiệp</string>
-    <string name="explore_osmnad_plans_to_find_suitable">Khám phá các kế hoạch RoadCrew để tìm một cái phù hợp với bạn.</string>
+    <string name="explore_osmnad_plans_to_find_suitable">Khám phá các kế hoạch OsmAnd để tìm một cái phù hợp với bạn.</string>
     <string name="promo_subscription">Gói đăng ký khuyến mại</string>
     <string name="shared_string_purchased">Đã mua</string>
     <string name="backup_welcome_back_descr">Khôi phục dữ liệu trên thiết bị này bằng OsmAnd Cloud.</string>
@@ -2778,7 +2778,7 @@
     <string name="delete_version_history">Xoá lịch sử phiên bản</string>
     <string name="activity_type_mountainbike_name">Xe đạp địa hình</string>
     <string name="plan_route_add_new_segment">Thêm một đoạn mới</string>
-    <string name="profile_type_osmand_string">Hồ sơ RoadCrew</string>
+    <string name="profile_type_osmand_string">Hồ sơ OsmAnd</string>
     <string name="app_mode_light_aircraft">Máy bay hạng nhẹ</string>
     <string name="ltr_or_rtl_combine_via_star">%1$s * %2$s</string>
     <string name="not_enough_contributions_descr">Tối thiểu %1$s thay đổi trong khoảng thời gian 2 tháng gần nhất %2$s là bắt buộc để có quyền truy cập đến các bản cập nhật bản đồ hàng tiếng không giới hạn.</string>
@@ -2852,7 +2852,7 @@
     <string name="setting_supported_by_style">Cài đặt này được cung cấp bởi kiểu bản đồ \'%1$s\'</string>
     <string name="shared_string_not_included">Không được bao gồm</string>
     <string name="shared_string_progress">Tiến trình</string>
-    <string name="backup_deleting_all_data_descr">Vui lòng đợi đến khi RoadCrew xoá dữ liệu của bạn khỏi đám mây. Tất cả dữ liệu trên thiết bị vẫn nguyên vẹn.</string>
+    <string name="backup_deleting_all_data_descr">Vui lòng đợi đến khi OsmAnd xoá dữ liệu của bạn khỏi đám mây. Tất cả dữ liệu trên thiết bị vẫn nguyên vẹn.</string>
     <string name="send_logcat_log">Gửi nhật ký logcat</string>
     <string name="lost_data_warning">Tất cả dữ liệu chưa được lưu sẽ bị mất.</string>
     <string name="backup_version_history_removed">Tất cả lịch sử phiên bản đã được loại bỏ.</string>
@@ -2865,7 +2865,7 @@
     <string name="message_server_error">Lỗi máy chủ: %1$s</string>
     <string name="only_selected_segment_recalc">Chỉ đoạn được chọn sẽ được tính lại sử dụng hồ sơ đã chọn.</string>
     <string name="osm_live_payment_subscription_management_amz">Khoản thanh toán sẽ được trừ từ tài khoản Amazon của bạn khi xác nhận mua hàng.\n\nViệc này sẽ tự động gia hạn trừ khi bạn hủy trước thời gian gia hạn đã chọn.\n\nBạn có thể quản lý hoặc hủy các đăng ký của mình từ cài đặt Amazon bất kỳ lúc nào.</string>
-    <string name="enough_contributions_descr">Chúc mừng, bạn đã cung cấp đủ đóng góp cho OpenStreetMap và bây giờ có thể tận hưởng các bản cập nhật bản đồ RoadCrew không giới hạn!</string>
+    <string name="enough_contributions_descr">Chúc mừng, bạn đã cung cấp đủ đóng góp cho OpenStreetMap và bây giờ có thể tận hưởng các bản cập nhật bản đồ OsmAnd không giới hạn!</string>
     <string name="track_has_no_needed_data">Hành trình đang thiếu các dữ liệu tương ứng.</string>
     <string name="map_updates_for_mappers">Những bản cập nhật bản đồ cho những người lập bản đồ</string>
     <string name="option_available_only_in_osmand_pro">Có sẵn trong một phần của gói đăng ký OsmAnd Pro.</string>
@@ -3001,14 +3001,14 @@
     <string name="prime_meridian">Kinh tuyến gốc</string>
     <string name="show_image_previews">Hiện bản xem trước của hình ảnh</string>
     <string name="shared_string_map_center">Trung tâm bản đồ</string>
-    <string name="prediction_time_description">Biểu tượng vị trí trong RoadCrew chuyển động theo từng cập nhật GPS (một lần mỗi giây). Có thể có độ trễ nhỏ, đặc biệt khi đi nhanh hoặc tín hiệu GPS không ổn định.</string>
+    <string name="prediction_time_description">Biểu tượng vị trí trong OsmAnd chuyển động theo từng cập nhật GPS (một lần mỗi giây). Có thể có độ trễ nhỏ, đặc biệt khi đi nhanh hoặc tín hiệu GPS không ổn định.</string>
     <string name="routing_attr_allow_ferries_name">Cho phép phà</string>
     <string name="turn_screen_on_navigation_instructions">Hướng dẫn điều hướng</string>
     <string name="grid_color">Màu của lưới ô vuông</string>
     <string name="one_image_per_tile">Một tệp ảnh cho mỗi mảng</string>
     <string name="customize_grid_color">Cài đặt màu của lưới ô vuông</string>
     <string name="release_5_0">Khám phá các điểm POI hàng đầu với chế độ Khám phá mới\n\nTất cả các tuyến đường OSM hiện có thể tìm kiếm! Đi bộ đường dài, đạp xe, MTB và nhiều hơn nữa\n\nTiện ích điều hướng mới kết hợp mũi tên rẽ và hướng dẫn điều hướng\n\nTiện ích thông tin tuyến đường hiện tại: hiển thị thời gian đến dự kiến (ETA), thời gian đến và khoảng cách\n\nChọn dốc trượt tuyết và đường MTB trên bản đồ để xem thông tin chi tiết\n\nKhả năng chọn kích thước tiện ích cho bảng bên trái và bên phải\n\nĐã thêm lưới tọa độ với tọa độ địa lý\n\nThêm khả năng tùy chỉnh giao diện mặc định của các nhóm yêu thích\n\nAndroid Auto: xem ETA và khoảng cách đến điểm dừng tiếp theo; tên thành phố giờ xuất hiện trong kết quả tìm kiếm\nCác đỉnh núi nổi bật hiện có thể khám phá qua bản đồ và tìm kiếm\n\nChiều cao đỉnh núi hiển thị theo đơn vị feet\n\nĐã thêm: vách đá và khu vực leo núi trên bản đồ\n\nCải thiện tìm kiếm địa chỉ tại Mỹ\n\nĐã thêm tính năng đọc văn bản tiếng Hebrew (TTS) cho điều hướng</string>
-    <string name="speed_cameras_legal_descr">Ở một số quốc gia hoặc khu vực, việc dùng ứng dụng cảnh báo camera tốc độ bị cấm bởi luật. \n\nBạn cần đưa ra lựa chọn dựa theo luật pháp tại đất nước của bạn. \n\nChọn %1$s và bạn sẽ nhận được cảnh báo về camera tốc độ. \n\nChọn %2$s. Tất cả dữ liệu liên quan đến camera tốc độ: cảnh báo, thông báo, POI sẽ bị xóa đến khi RoadCrew được cài đặt lại hoàn toàn.</string>
+    <string name="speed_cameras_legal_descr">Ở một số quốc gia hoặc khu vực, việc dùng ứng dụng cảnh báo camera tốc độ bị cấm bởi luật. \n\nBạn cần đưa ra lựa chọn dựa theo luật pháp tại đất nước của bạn. \n\nChọn %1$s và bạn sẽ nhận được cảnh báo về camera tốc độ. \n\nChọn %2$s. Tất cả dữ liệu liên quan đến camera tốc độ: cảnh báo, thông báo, POI sẽ bị xóa đến khi OsmAnd được cài đặt lại hoàn toàn.</string>
     <string name="meridian_180">Kinh tuyến 180</string>
     <string name="shared_string_offline_only">Chỉ ngoại tuyến</string>
     <string name="shared_string_manual">Thủ công</string>
@@ -3020,7 +3020,7 @@
     <string name="choose_location">Chọn một vị trí</string>
     <string name="point_location">Vị trí điểm</string>
     <string name="edit_online_source">Chỉnh sửa nguồn trực tuyến</string>
-    <string name="turn_screen_on_power_button_descr">Nhấn nút nguồn của thiết bị sẽ bật màn hình cùng RoadCrew ở trên màn hình khóa.</string>
+    <string name="turn_screen_on_power_button_descr">Nhấn nút nguồn của thiết bị sẽ bật màn hình cùng OsmAnd ở trên màn hình khóa.</string>
     <string name="layer_coordinates_grid">Lưới tọa độ</string>
     <string name="poi_source">Nguồn POI</string>
     <string name="intermediate_first">Điểm trung gian trước</string>
@@ -3049,7 +3049,7 @@
     <string name="weight_limit_description">Vui lòng cung cấp trọng lượng phương tiện của bạn, vì một số tuyến đường có thể bị hạn chế đối với các phương tiện nặng.</string>
     <string name="lang_gu">Tiếng Gujarat</string>
     <string name="lang_tg">Tiếng Tajik</string>
-    <string name="custom_osmand_plugin">Plugin RoadCrew tùy chỉnh</string>
+    <string name="custom_osmand_plugin">Plugin OsmAnd tùy chỉnh</string>
     <string name="replace_all_desc">Các mục hiện tại sẽ bị thay thế bởi các mục trong tệp</string>
     <string name="accessibility_prefs_descr">Chọn biểu tượng, màu sắc và tên</string>
     <string name="shared_string_import_complete">Đã hoàn thành việc nhập</string>
@@ -3101,7 +3101,7 @@
     <string name="select_track_file">Chọn tệp hành trình</string>
     <string name="import_duplicates_title">Một số mục đã tồn tại</string>
     <string name="keep_both">Giữ cả hai</string>
-    <string name="import_duplicates_description">RoadCrew đã có các phần tử trùng tên với những phần tử được nhập.\n\nChọn một hành động.</string>
+    <string name="import_duplicates_description">OsmAnd đã có các phần tử trùng tên với những phần tử được nhập.\n\nChọn một hành động.</string>
     <string name="please_provide_profile_name_message">Vui lòng chọn một tên cho hồ sơ</string>
     <string name="add_custom_category">Thêm danh mục tùy chỉnh</string>
     <string name="plugin_disabled">Tắt plugin</string>
@@ -3122,7 +3122,7 @@
     <string name="quick_action_item">Hành động nhanh</string>
     <string name="lang_my">Tiếng Miến Điện</string>
     <string name="clear_recorded_data_warning">Xóa dữ liệu đã ghi?</string>
-    <string name="checking_for_duplicate_description">RoadCrew sẽ kiểm tra %1$s để phát hiện trùng lặp với các mục đã có trong ứng dụng.\n\nQuá trình này có thể mất một chút thời gian.</string>
+    <string name="checking_for_duplicate_description">OsmAnd sẽ kiểm tra %1$s để phát hiện trùng lặp với các mục đã có trong ứng dụng.\n\nQuá trình này có thể mất một chút thời gian.</string>
     <string name="shared_string_preparing">Đang chuẩn bị</string>
     <string name="terrain_slider_description">Đặt mức thu phóng tối thiểu và tối đa mà lớp phủ sẽ được hiển thị.</string>
     <string name="create_custom_categories_list_promo">Thay đổi thứ tự danh sách và ẩn danh mục. Nhập hoặc xuất tất cả thay đổi thành hồ sơ.</string>
@@ -3151,7 +3151,7 @@
     <string name="quick_action_switch_profile_descr">Nút hành động chuyển đổi giữa các hồ sơ đã chọn.</string>
     <string name="multipoligon_related">Có liên quan</string>
     <string name="parking_positions">Vị trí đỗ xe</string>
-    <string name="gpx_parse_error">Phát hiện sự cố với một tệp GPX.\n\nBạn có thể liên hệ với bộ phận hỗ trợ của RoadCrew để được kiểm tra.</string>
+    <string name="gpx_parse_error">Phát hiện sự cố với một tệp GPX.\n\nBạn có thể liên hệ với bộ phận hỗ trợ của OsmAnd để được kiểm tra.</string>
     <string name="quick_action_transport_descr">Nút hiện hoặc ẩn giao thông công cộng trên bản đồ.</string>
     <string name="lang_ne">Tiếng Nepal</string>
     <string name="lang_tt">Tiếng Tatar</string>
@@ -3183,7 +3183,7 @@
     <string name="select_wikipedia_article_langs">Chọn ngôn ngữ cho các bài viết Wikipedia trên bản đồ. Chuyển sang bất kỳ ngôn ngữ nào trong khi đọc bài viết.</string>
     <string name="n_items_of_z">%1$s của %2$s</string>
     <string name="recalc_angle_dialog_title">Góc tối thiểu giữa vị trí của tôi và tuyến đường</string>
-    <string name="listed_exist">%1$s đã liệt kê, đã tồn tại trong RoadCrew.</string>
+    <string name="listed_exist">%1$s đã liệt kê, đã tồn tại trong OsmAnd.</string>
     <string name="keep_both_desc">Các mục được nhập sẽ được thêm với tiền tố</string>
     <string name="select_data_to_import">Chọn dữ liệu sẽ được nhập.</string>
     <string name="live_monitoring_descr">Cho phép chia sẻ vị trí hiện tại bằng việc ghi hành trình.</string>
@@ -3258,7 +3258,7 @@
     <string name="quick_action_contour_lines_descr">Nút dùng để hiện hoặc ẩn đường đồng mức trên bản đồ.</string>
     <string name="update_all_maps">Cập nhật tất cả bản đồ</string>
     <string name="shared_string_select_folder">Thư mục…</string>
-    <string name="change_osmand_data_folder_question">Đổi thư mục dữ liệu RoadCrew?</string>
+    <string name="change_osmand_data_folder_question">Đổi thư mục dữ liệu OsmAnd?</string>
     <string name="rendering_attr_piste_type_sled_name">Xe trượt</string>
     <string name="enter_path_to_folder">Nhập đường dẫn đến thư mục</string>
     <string name="rendering_attr_piste_type_connection_name">Sự kết nối</string>
@@ -3289,7 +3289,7 @@
     <string name="shared_string_maps">Bản đồ</string>
     <string name="navigate_point_format_swiss_grid">Lưới tọa độ Thụy Sĩ (CH1903)</string>
     <string name="navigate_point_format_swiss_grid_plus">Lưới tọa độ Thụy Sĩ (CH1903+)</string>
-    <string name="process_downloading_service">Dịch vụ tải xuống RoadCrew</string>
+    <string name="process_downloading_service">Dịch vụ tải xuống OsmAnd</string>
     <string name="routing_attr_avoid_ice_roads_fords_description">Tránh đường băng tuyết hoặc lội suối.</string>
     <string name="shared_string_waypoint">Điểm dừng</string>
     <string name="routing_attr_prefer_motorway_name">Ưu tiên đường cao tốc</string>
@@ -3345,7 +3345,7 @@
     <string name="routeInfo_steepness_name">Độ dốc</string>
     <string name="private_access_routing_req">Đích đến của bạn nằm trong khu vực riêng tư. Cho phép sử dụng những đường đi riêng tư cho chuyến đi này?</string>
     <string name="avoid_road">Tránh đường</string>
-    <string name="paste_Osmand_data_folder_path">Dán đường dẫn đến thư mục chứa dữ liệu RoadCrew</string>
+    <string name="paste_Osmand_data_folder_path">Dán đường dẫn đến thư mục chứa dữ liệu OsmAnd</string>
     <string name="routeInfo_piste_difficulty_name">Độ khó của đường trượt tuyết</string>
     <string name="reset_all_profile_settings_descr">Đặt lại tất cả cài đặt hồ sơ về trạng thái mặc định khi cài đặt.</string>
     <string name="release_3_7">Bản đồ độ dốc (Slope) mới dùng offline\n\n• Tùy chỉnh hoàn toàn Mục ưa thích và Điểm đánh dấu GPX – màu sắc, biểu tượng, hình dạng tùy chọn\n\n• Tùy chỉnh thứ tự các mục trong \"Menu ngữ cảnh\", \"Cấu hình bản đồ\" và \"Ngăn kéo\"\n\n• Wikipedia là một lớp riêng trong phần Cấu hình bản đồ, cho phép chọn ngôn ngữ cần thiết\n\n• Tạo bộ lọc POI / bản đồ riêng với khả năng tùy chỉnh hoàn toàn\n\n• Thêm tùy chọn khôi phục cài đặt cho các hồ sơ tùy chỉnh\n\n• Các tuyến đường GPX đầy đủ hỗ trợ làn đường giao thông và hướng rẽ chi tiết\n\n• Sửa kích thước giao diện người dùng trên máy tính bảng\n\n• Sửa lỗi hiển thị với giao diện từ phải sang trái (RTL)\n\n</string>
@@ -3379,7 +3379,7 @@
     <string name="shared_string_crash">Sập</string>
     <string name="app_mode_monowheel">Xe một bánh</string>
     <string name="release_3_4">Hồ sơ ứng dụng: Tạo hồ sơ tùy chỉnh cho nhu cầu của bạn, với biểu tượng và màu sắc tùy chỉnh.\n\nTùy chỉnh tốc độ mặc định và tốc độ tối thiểu/tối đa cho bất kỳ hồ sơ nào.\n\nThêm widget hiển thị tọa độ hiện tại.\n\nThêm tùy chọn hiển thị la bàn và thước đo bán kính trên bản đồ.\n\nSửa lỗi ghi lại hành trình trong nền.\n\nCải thiện việc tải bản đồ trong nền.\n\nKhôi phục tùy chọn \'Bật màn hình\'.\n\nSửa lỗi chọn ngôn ngữ trên Wikipedia.\n\nSửa lỗi hành vi của nút la bàn trong quá trình điều hướng.\n\nCác bản sửa lỗi khác</string>
-    <string name="last_launch_crashed">Lần chạy RoadCrew cuối cùng bị sập. Vui lòng giúp chúng tôi cải thiện RoadCrew bằng cách chia sẻ tin nhắn báo lỗi.</string>
+    <string name="last_launch_crashed">Lần chạy OsmAnd cuối cùng bị sập. Vui lòng giúp chúng tôi cải thiện OsmAnd bằng cách chia sẻ tin nhắn báo lỗi.</string>
     <string name="press_again_to_change_the_map_orientation">Chạm lần nữa để thay đổi hướng xoay bản đồ</string>
     <string name="shared_string_color_magenta">Màu hồng sẫm</string>
     <string name="button_rate">Đánh giá</string>
@@ -3392,7 +3392,7 @@
     <string name="precision_hdop_and_vdop">Độ chính xác theo phương ngang: %1$s, theo phương dọc: %2$s</string>
     <string name="rendering_attr_winter_road_name">Đường mùa đông</string>
     <string name="rendering_attr_tracktype_grade1_name">Cứng (được lát)</string>
-    <string name="help_us_make_osmand_better">Giúp chúng tôi cải thiện RoadCrew</string>
+    <string name="help_us_make_osmand_better">Giúp chúng tôi cải thiện OsmAnd</string>
     <string name="shared_string_allow">Cho phép</string>
     <string name="read_on">Đọc trên %1$s</string>
     <string name="suggest_activate_map_msg">Bản đồ %1$s bị vô hiệu hóa,\nkích hoạt để xem khu vực này.</string>
@@ -3422,18 +3422,18 @@
     <string name="add_as_last_destination_point">Thêm thành điểm đến trung gian cuối cùng</string>
     <string name="app_mode_wagon">Xe wagon</string>
     <string name="profile_alert_duplicate_name_msg">Đã có hồ sơ sử dụng tên đó</string>
-    <string name="profile_alert_cant_delete_base">Bạn không thể xóa các hồ sơ cơ bản của RoadCrew</string>
+    <string name="profile_alert_cant_delete_base">Bạn không thể xóa các hồ sơ cơ bản của OsmAnd</string>
     <string name="profile_alert_need_profile_name_title">Nhập tên hồ sơ</string>
     <string name="files_failed">Không thể sao chép %1$d tệp (%2$s).</string>
     <string name="select_nav_profile_dialog_title">Chọn loại điều hướng</string>
-    <string name="osmand_default_routing">Dẫn đường RoadCrew</string>
+    <string name="osmand_default_routing">Dẫn đường OsmAnd</string>
     <string name="profile_alert_delete_title">Xóa hồ sơ</string>
     <string name="profile_alert_delete_msg">Xóa hồ sơ \"%s\"</string>
     <string name="shared_string_walk">Đi bộ</string>
     <string name="avoid_pt_types">Tránh các loại phương tiện giao thông…</string>
     <string name="rendering_attr_currentTrackWidth_description">Độ rộng GPX</string>
     <string name="searching_gps">Đang tìm GPS</string>
-    <string name="tracker_item">Công cụ theo dõi RoadCrew</string>
+    <string name="tracker_item">Công cụ theo dõi OsmAnd</string>
     <string name="routing_profile_geocoding">Mã hóa địa lí</string>
     <string name="base_profile_descr_aircraft">Máy bay, tàu lượn</string>
     <string name="base_profile_descr_public_transport">Phương tiện công cộng</string>
@@ -3536,7 +3536,7 @@
     <string name="by_transport_type">Đi %1$s</string>
     <string name="shared_string_height">Chiều cao</string>
     <string name="release_5_1">Hỗ trợ mua hàng qua web và đa nền tảng: Đã thêm hỗ trợ mua hàng trên web và giữa các nền tảng khác nhau.\n\nCải tiến cài đặt: Đã chuyển đơn vị nhiệt độ vào phần Cài đặt chung để dễ truy cập hơn.\n\nCập nhật cảm biến BLE: Thêm hiển thị mức pin cho các cảm biến Bluetooth Low Energy (BLE).\n\nCải tiến Điều hướng: Giao diện chọn điểm trong tính năng Điều hướng mới, trực quan hơn.\n\nHiển thị Widget: Tăng khả năng hiển thị cho các widget với viền ngoài rõ nét hơn.\n\nPhân tích độ cao: Bổ sung công cụ phân tích Lên dốc/Xuống dốc.\n\nMở rộng dữ liệu POI: Tăng cường tích hợp Wikipedia &amp; Wikivoyage để cung cấp thêm các điểm quan tâm (POIs).</string>
-    <string name="public_transport_warning_descr_blog">Đọc thêm về tìm đường RoadCrew trên blog của chúng tôi.</string>
+    <string name="public_transport_warning_descr_blog">Đọc thêm về tìm đường OsmAnd trên blog của chúng tôi.</string>
     <string name="add_destination_point">Đặt điểm đến</string>
     <string name="thank_you_for_feedback">Cảm ơn bạn vì đã đóng góp ý kiến</string>
     <string name="shared_string_world">Thế giới</string>
@@ -3559,7 +3559,7 @@
     <string name="popular_destinations">Các điểm đến nổi tiếng</string>
     <string name="start_editing_card_image_text">Cẩm nang du lịch miễn phí toàn cầu mà ai cũng có thể đóng góp chỉnh sửa.</string>
     <string name="edit_map_marker">Chỉnh sửa điểm đánh dấu bản đồ</string>
-    <string name="osmand_team">Nhóm RoadCrew</string>
+    <string name="osmand_team">Nhóm OsmAnd</string>
     <string name="markers_remove_dialog_msg">Xóa điểm đánh dấu bản đồ \'%s\'?</string>
     <string name="send_search_query_description">Truy vấn tìm kiếm của bạn sẽ được gửi đến: \"%1$s\", cùng với vị trí của bạn.\n\nThông tin cá nhân không bị thu thập, chỉ dữ liệu tìm kiếm cần thiết để cải thiện tính năng tìm kiếm.</string>
     <string name="coord_input_edit_point">Chỉnh sửa điểm</string>
@@ -3567,7 +3567,7 @@
     <string name="download_file">Tải tệp xuống</string>
     <string name="coord_input_save_as_track_descr">Bạn đã thêm %1$s điểm. Nhập một tên tệp và chọn \"Lưu\".</string>
     <string name="keep_passed_markers_descr">Các điểm đánh dấu được thêm dưới dạng một nhóm Yêu thích hoặc điểm dừng GPX được đánh dấu là Đã qua sẽ vẫn hiển thị trên bản đồ. Nếu nhóm đó không hoạt động, các điểm đánh dấu sẽ biến mất khỏi bản đồ.</string>
-    <string name="ask_for_location_permission">Vui lòng cấp quyền truy cập vị trí cho RoadCrew để tiếp tục.</string>
+    <string name="ask_for_location_permission">Vui lòng cấp quyền truy cập vị trí cho OsmAnd để tiếp tục.</string>
     <string name="poi_cannot_be_found">Không thể tìm được nút hoặc đường.</string>
     <string name="download_all">Tải xuống tất cả</string>
     <string name="maps_you_need_descr">Dựa trên các bài viết bạn đã thêm vào dấu trang, các bản đồ sau được gợi ý cho bạn để tải xuống:</string>
@@ -3577,7 +3577,7 @@
     <string name="osm_live_ask_for_purchase">Vui lòng mua gói đăng ký OsmAnd Live trước</string>
     <string name="welcome_to_open_beta">Chào mừng bạn tham gia thử nghiệm beta công khai</string>
     <string name="wikivoyage_travel_guide">Hướng dẫn du lịch</string>
-    <string name="wikivoyage_travel_guide_descr">Hướng dẫn đến những nơi thú vị nhất trên hành tinh, nằm trong RoadCrew, không cần kết nối mạng.</string>
+    <string name="wikivoyage_travel_guide_descr">Hướng dẫn đến những nơi thú vị nhất trên hành tinh, nằm trong OsmAnd, không cần kết nối mạng.</string>
     <string name="monthly_map_updates">Các bản cập nhật bản đồ hàng tháng</string>
     <string name="daily_map_updates">Các bản cập nhật bản đồ hàng giờ</string>
     <string name="in_app_purchase_desc">Thanh toán một lần</string>
@@ -3687,7 +3687,7 @@
     <string name="backup_delete_data_warning_extended">Hành động này sẽ xóa vĩnh viễn tất cả dữ liệu đã chọn khỏi đám mây. Bạn sẽ không thể khôi phục tất cả dữ liệu đó.</string>
     <string name="amount_of_total_used">Đã dùng %1$s của %2$s</string>
     <string name="delete_data">Xóa dữ liệu</string>
-    <string name="manage_storage_delete_data_dialog_summary">Bạn có muốn xóa %1$s khỏi Đám mây RoadCrew?\n\nBạn có thể khôi phục chúng từ Thùng rác trong 30 ngày.</string>
+    <string name="manage_storage_delete_data_dialog_summary">Bạn có muốn xóa %1$s khỏi Đám mây OsmAnd?\n\nBạn có thể khôi phục chúng từ Thùng rác trong 30 ngày.</string>
     <string name="manage_storage">Quản lý dung lượng lưu trữ</string>
     <string name="copy_as_new_folder">Sao chép thành thư mục mới</string>
     <string name="add_to_a_folder">Thêm vào một thư mục</string>
@@ -4083,13 +4083,13 @@
     <string name="astro_set">Lặn</string>
     <string name="show_expand_button">Hiện nút mở rộng</string>
     <string name="imprecise_coordinates">Toạ độ xấp xỉ</string>
-    <string name="measurement_tool_snap_to_road_descr">RoadCrew sẽ kết nối các điểm với tuyến đường cho hồ sơ đã chọn.</string>
+    <string name="measurement_tool_snap_to_road_descr">OsmAnd sẽ kết nối các điểm với tuyến đường cho hồ sơ đã chọn.</string>
     <string name="wrong_user_name">Tên người dùng sai</string>
     <string name="mapillary_menu_descr_dates">Chỉ xem những ảnh đã được thêm vào</string>
     <string name="mapillary_menu_edit_text_hint">Nhập tên người dùng</string>
     <string name="mapillary_menu_descr_username">Chỉ xem những ảnh được thêm bởi</string>
     <string name="shared_string_permissions">Quyền</string>
-    <string name="import_gpx_failed_descr">Không thể nhập tệp. Vui lòng đảm bảo rằng RoadCrew có quyền để đọc nó.</string>
+    <string name="import_gpx_failed_descr">Không thể nhập tệp. Vui lòng đảm bảo rằng OsmAnd có quyền để đọc nó.</string>
     <string name="distance_moving">Khoảng cách đã được hiệu chỉnh</string>
     <string name="mapillary_image">Ảnh Mapillary</string>
     <string name="open_mapillary">Mở Mapillary</string>
@@ -4316,7 +4316,7 @@
     <string name="index_item_depth_points_northern_hemisphere">Các điểm độ sâu đường biển ở Bắc bán cầu</string>
     <string name="restore_purchases">Khôi phục các giao dịch mua</string>
     <string name="parking_options">Các tùy chọn đỗ xe</string>
-    <string name="full_version_thanks">Cảm ơn bạn đã mua phiên bản trả phí của RoadCrew.</string>
+    <string name="full_version_thanks">Cảm ơn bạn đã mua phiên bản trả phí của OsmAnd.</string>
     <string name="routing_attr_relief_smoothness_factor_plains_name">Ít dốc hơn</string>
     <string name="routing_attr_driving_style_safety_name">Ưu tiên đường vòng</string>
     <string name="add_new_folder">Thêm thư mục mới</string>
@@ -4379,7 +4379,7 @@
     <string name="osm_live_banner_desc">Không giới hạn tải xuống bản đồ, thêm các bản cập nhật hàng tuần, hàng ngày, hoặc hàng giờ.</string>
     <string name="si_mi_meters">Dặm/mét</string>
     <string name="search_map">Đang tìm bản đồ…</string>
-    <string name="first_usage_wizard_desc">Để RoadCrew xác định vị trí của bạn và gợi ý các bản đồ để tải xuống cho khu vực đó.</string>
+    <string name="first_usage_wizard_desc">Để OsmAnd xác định vị trí của bạn và gợi ý các bản đồ để tải xuống cho khu vực đó.</string>
     <string name="location_not_found">Không tìm thấy vị trí</string>
     <string name="no_inet_connection">Không có kết nối mạng</string>
     <string name="search_location">Đang tìm vị trí…</string>
@@ -4391,7 +4391,7 @@
     <string name="back_to_search">Quay lại tìm kiếm</string>
     <string name="confirmation_to_delete_history_items">Xóa các mục đã chọn khỏi \'Lịch sử\'?</string>
     <string name="dist_away_from_my_location">Tìm bán kính %1$s</string>
-    <string name="share_history_subject">đã được chia sẻ qua RoadCrew</string>
+    <string name="share_history_subject">đã được chia sẻ qua OsmAnd</string>
     <string name="city_type_district">Quận</string>
     <string name="city_type_neighbourhood">Khu phố</string>
     <string name="map_widget_search">Tìm kiếm</string>
@@ -4478,7 +4478,7 @@
     <string name="osn_close_dialog_error">Không thể đóng ghi chú.</string>
     <string name="osb_author_dialog_password">Mật khẩu OSM (không bắt buộc)</string>
     <string name="context_menu_item_edit_waypoint">Chỉnh sửa điểm dừng GPX</string>
-    <string name="share_osm_edits_subject">Thay đổi OSM đã được chia sẻ qua RoadCrew</string>
+    <string name="share_osm_edits_subject">Thay đổi OSM đã được chia sẻ qua OsmAnd</string>
     <string name="whats_new">Có gì mới trong</string>
     <string name="what_is_new">Có gì mới</string>
     <string name="osm_edit_created_poi">Đã tạo OSM POI</string>
@@ -4523,7 +4523,7 @@
     <string name="rendering_value_translucent_pink_name">Màu hồng mờ</string>
     <string name="rendering_value_translucent_purple_name">Màu tím mờ</string>
     <string name="restart_is_required">Cần khởi động lại để áp dụng thay đổi.</string>
-    <string name="shared_string_import2osmand">Nhập đến RoadCrew</string>
+    <string name="shared_string_import2osmand">Nhập đến OsmAnd</string>
     <string name="read_full_article">Đọc bài viết đầy đủ (trực tuyến)</string>
     <string name="shared_string_show_details">Hiện chi tiết</string>
     <string name="specified_directiory_not_writeable">Các bản đồ không thể được tạo ở thư mục đã chọn</string>

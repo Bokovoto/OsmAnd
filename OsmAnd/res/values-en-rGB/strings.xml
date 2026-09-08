@@ -47,7 +47,7 @@
     <string name="favorite_delete_multiple">You are going to delete %1$d favourite(s) and %2$d favourite group(s). Are you sure?</string>
     <string name="fav_imported_sucessfully">Favourites successfully imported</string>
     <string name="no_fav_to_save">No favourite points to save</string>
-    <string name="share_fav_subject">Favourites shared via RoadCrew</string>
+    <string name="share_fav_subject">Favourites shared via OsmAnd</string>
     <string name="favourites_context_menu_add">Add favourite</string>
     <string name="favourites_context_menu_edit">Edit favourite</string>
     <string name="favourites_context_menu_delete">Delete favourite</string>
@@ -367,7 +367,7 @@
     <string name="gradient_no_data_point_summary">Colour applied when data is missing or undefined.</string>
     <string name="help_article_map_legend_nautical_map_name">Nautical map style</string>
     <string name="gradient_input_value_too_low_warn">Minimum allowed value is %1$s.</string>
-    <string name="help_article_map_legend_osmand_name">RoadCrew map style</string>
+    <string name="help_article_map_legend_osmand_name">OsmAnd map style</string>
     <string name="gradient_input_value_too_high_warn">Maximum allowed value is %1$s.</string>
     <string name="help_article_map_legend_ski_map_name">Ski map style</string>
     <string name="gradient_input_value_duplicate_warn">This value already exists in the palette.</string>
@@ -411,7 +411,7 @@
     <string name="delete_colors_palette_dialog_summary">Are you sure you want to delete %1$s palette?</string>
     <string name="help_article_navigation_routing_online_routing_name">Online routing</string>
     <string name="astro_min_magnitude">Min. magnitude</string>
-    <string name="help_article_navigation_routing_osmand_routing_name">About RoadCrew routing</string>
+    <string name="help_article_navigation_routing_osmand_routing_name">About OsmAnd routing</string>
     <string name="intersection">Intersection</string>
     <string name="help_article_navigation_routing_pedestrian_routing_name">Pedestrian routing</string>
     <string name="help_article_navigation_routing_public_transport_navigation_name">Public Transport routing</string>
@@ -454,7 +454,7 @@
     <string name="help_article_search_search_coordinates_name">Search Coordinates</string>
     <string name="help_article_search_search_poi_name">Search POI</string>
     <string name="building_3d_low_details_content_desc">3d buildings low details</string>
-    <string name="help_article_start_with_name">Begin with RoadCrew</string>
+    <string name="help_article_start_with_name">Begin with OsmAnd</string>
     <string name="building_3d_high_details_content_desc">3d buildings high</string>
     <string name="help_article_start_with_first_steps_name">First steps</string>
     <string name="building_3d_near_distance_content_desc">3d buildings distance near</string>
@@ -506,7 +506,7 @@
     <string name="organize_by_summary">Automatically organise your tracks into groups based on a selected parameter like activity, speed, or location.</string>
     <string name="shared_string_accessibility">Accessibility</string>
     <string name="organize_by">Organise by</string>
-    <string name="tracker_item">RoadCrew tracker</string>
+    <string name="tracker_item">OsmAnd tracker</string>
     <string name="group_general">General</string>
     <string name="settings_preset">Default profile</string>
     <string name="group_date_time">Date &amp; Time</string>
@@ -801,7 +801,7 @@
     <string name="route_part_of">Part of</string>
     <string name="wikidata">Wikidata</string>
     <string name="position_on_map_bottom">Bottom</string>
-    <string name="prediction_time_description">Position icon in RoadCrew animates with each GPS update (once per second). A slight delay may occur, particularly during rapid movement or when the GPS sigis unstable.</string>
+    <string name="prediction_time_description">Position icon in OsmAnd animates with each GPS update (once per second). A slight delay may occur, particularly during rapid movement or when the GPS sigis unstable.</string>
     <string name="prediction_time_advanced_description">Adjust the prediction time to minimise delay.</string>
     <string name="map_widget_compass">Compass</string>
 </resources>

@@ -23,18 +23,18 @@
     <string name="shared_string_online_maps">Онлайн-мапи</string>
     <string name="osmand_rastermaps_plugin_description">Надає доступ до різноманітних онлайн-мап (растрових), таких як попередньо згенеровані тайли OSM, супутникові знімки та мапи спеціального призначення, як-от метеорологічні, кліматичні, геологічні мапи, рельєф тощо.
 \n
-\nБудь-яка з цих мап може бути основною мапою в RoadCrew, або допоміжним шаром чи тлом до іншої основної мапи (наприклад, векторної офлайн-мапи RoadCrew). Певні елементи векторної мапи RoadCrew за бажанням можна легко сховати в меню «Налаштування мапи», щоб зробити фоновий шар помітнішим.
+\nБудь-яка з цих мап може бути основною мапою в OsmAnd, або допоміжним шаром чи тлом до іншої основної мапи (наприклад, векторної офлайн-мапи OsmAnd). Певні елементи векторної мапи OsmAnd за бажанням можна легко сховати в меню «Налаштування мапи», щоб зробити фоновий шар помітнішим.
 \n
-\nЗавантажуйте тайли мап безпосередньо або скопіюйте їх як файли бази даних SQLite в теку даних RoadCrew за допомогою одного з багатьох засобів підготовки мап сторонніх розробників.</string>
-    <string name="osmand_accessibility_description">Надає доступ до функції доступності пристрою безпосередньо в RoadCrew. Це полегшує, наприклад, налаштування швидкості озвучування голосових сповіщень, налаштування навігації пультом керування інвалідним візком (Direction-Pad), використання трекбола для керування масштабом або перетворенням тексту в мовлення, наприклад, для автоматичного озвучування вашого місця перебування.</string>
-    <string name="osmand_development_plugin_description">Надає функціональність для тестування та налагодження RoadCrew: моделювання маршрутів навігації, моніторинг рендерингу зображення, перевірка швидкодії тощо. Цей плагін не обовʼязковий для повсякденного користування застосунком.</string>
+\nЗавантажуйте тайли мап безпосередньо або скопіюйте їх як файли бази даних SQLite в теку даних OsmAnd за допомогою одного з багатьох засобів підготовки мап сторонніх розробників.</string>
+    <string name="osmand_accessibility_description">Надає доступ до функції доступності пристрою безпосередньо в OsmAnd. Це полегшує, наприклад, налаштування швидкості озвучування голосових сповіщень, налаштування навігації пультом керування інвалідним візком (Direction-Pad), використання трекбола для керування масштабом або перетворенням тексту в мовлення, наприклад, для автоматичного озвучування вашого місця перебування.</string>
+    <string name="osmand_development_plugin_description">Надає функціональність для тестування та налагодження OsmAnd: моделювання маршрутів навігації, моніторинг рендерингу зображення, перевірка швидкодії тощо. Цей плагін не обовʼязковий для повсякденного користування застосунком.</string>
     <string name="plugins_screen">Плагіни</string>
     <string name="prefs_plugins">Плагіни</string>
     <string name="osm_editing_plugin_description">Зробіть внесок в OpenStreetMap — всесвітній проєкт, спільнота якого наповнює мапу світу та надає актуальні відкриті дані кожному користувачеві.
 \n
 \nІнструкції з редагування мапи можна знайти на нашому сайті %1$s.</string>
     <string name="play_commands_of_currently_selected_voice">Виберіть голос і перевірте його, відтворюючи оголошення:</string>
-    <string name="debugging_and_development">Налагодження і розробка RoadCrew</string>
+    <string name="debugging_and_development">Налагодження і розробка OsmAnd</string>
     <string name="test_voice_prompts">Перевірити голосові підказки</string>
     <string name="gpx_visibility_txt">Видимість</string>
     <string name="gpx_tags_txt">Теґи</string>
@@ -121,7 +121,7 @@
     <string name="user_name">Імʼя користувача OSM</string>
     <string name="user_password">Пароль</string>
     <string name="osmand_service">Фоновий режим</string>
-    <string name="osmand_service_descr">RoadCrew працює у фоновому режимі з вимкненим екраном.</string>
+    <string name="osmand_service_descr">OsmAnd працює у фоновому режимі з вимкненим екраном.</string>
     <string name="download_files_not_enough_space">Не вистачає місця для завантаження %1$s MB (вільно: %2$s).</string>
     <string name="download_files_question_space">Завантажити {0} файл(ів)\?
 \n{1} МБ (із {2} МБ) буде використано.</string>
@@ -247,10 +247,10 @@
     <string name="application_dir">Тека даних</string>
     <string name="build_installed">Збірку {0} було встановлено ({1}).</string>
     <string name="downloading_build">Завантажується збірка…</string>
-    <string name="install_selected_build">Встановити RoadCrew - {0} з {1} {2} MB\?</string>
-    <string name="loading_builds_failed">Не вдалося отримати список збірок RoadCrew</string>
-    <string name="loading_builds">Завантажуються збірки RoadCrew…</string>
-    <string name="select_build_to_install">Виберіть одну зі збірок RoadCrew для встановлення</string>
+    <string name="install_selected_build">Встановити OsmAnd - {0} з {1} {2} MB\?</string>
+    <string name="loading_builds_failed">Не вдалося отримати список збірок OsmAnd</string>
+    <string name="loading_builds">Завантажуються збірки OsmAnd…</string>
+    <string name="select_build_to_install">Виберіть одну зі збірок OsmAnd для встановлення</string>
     <string name="contribution_activity">Встановити версію</string>
     <string name="gps_status_app_not_found">Програма «GPS status» не встановлена. Шукати в маркеті\?</string>
     <string name="daynight_mode_day">День</string>
@@ -295,7 +295,7 @@
     <string name="layer_map">Джерело мапи…</string>
     <string name="use_trackball_descr">Використовувати трекбол для переміщення мапи.</string>
     <string name="use_trackball">Використовувати трекбол</string>
-    <string name="process_navigation_service">Сервіс навігації RoadCrew</string>
+    <string name="process_navigation_service">Сервіс навігації OsmAnd</string>
     <string name="int_seconds">сек</string>
     <string name="int_min">хв.</string>
     <string name="search_poi_filter">Фільтр</string>
@@ -321,7 +321,7 @@
     <string name="transport_stops">зупинок</string>
     <string name="transport">Транспорт</string>
     <string name="shared_string_ok">Так</string>
-    <string name="hello">Навігаційна програма RoadCrew</string>
+    <string name="hello">Навігаційна програма OsmAnd</string>
     <string name="favorite">Закладки</string>
     <string name="shared_string_clear_all">Очистити все</string>
     <string name="shared_string_history">Історія</string>
@@ -355,7 +355,7 @@
     <string name="invalid_locations">Невірні координати</string>
     <string name="shared_string_close">Закрити</string>
     <string name="loading_data">Завантаження даних…</string>
-    <string name="previous_run_crashed">Останній запуск RoadCrew завершився некоректно. Файл журналу знаходиться в {0}. Будь ласка, повідомте про проблему та додайте файл журналу.</string>
+    <string name="previous_run_crashed">Останній запуск OsmAnd завершився некоректно. Файл журналу знаходиться в {0}. Будь ласка, повідомте про проблему та додайте файл журналу.</string>
     <string name="saving_gpx_tracks">Збереження GPX-файлу…</string>
     <string name="finished_task">Закінчено</string>
     <string name="data_settings">Дані</string>
@@ -555,12 +555,12 @@
     <string name="email">e-mail</string>
     <string name="map_widget_gps_info">GPS дані</string>
     <string name="layer_recordings">Шар записів</string>
-    <string name="osmand_play_title_30_chars">RoadCrew Мапи та Навігація</string>
+    <string name="osmand_play_title_30_chars">OsmAnd Мапи та Навігація</string>
     <string name="osmand_plus_play_title_30_chars">OsmAnd+ Мапи та Навігація</string>
     <string name="download_regular_maps">Стандартна мапа</string>
-    <string name="osmand_long_description_1000_chars">RoadCrew (OSM Automated Navigation Directions)
+    <string name="osmand_long_description_1000_chars">OsmAnd (OSM Automated Navigation Directions)
 \n
-\n RoadCrew — навігаційний застосунок з відкритим кодом з доступом до різноманітних картографічних даних з OSM. Всі дані (векторні та растрові) можуть бути збережені на карті пам’яті телефону для подальшого автономного користування. Також надається можливість прокладання маршрутів в офлайн та онлайн режимі, включно з покроковими голосовими підказками.
+\n OsmAnd — навігаційний застосунок з відкритим кодом з доступом до різноманітних картографічних даних з OSM. Всі дані (векторні та растрові) можуть бути збережені на карті пам’яті телефону для подальшого автономного користування. Також надається можливість прокладання маршрутів в офлайн та онлайн режимі, включно з покроковими голосовими підказками.
 \n
 \n Кілька основних можливостей:
 \n - повноцінна робота без інтернет-з’єднання (просто збережіть векторні чи растрові дані на пристрій)
@@ -575,7 +575,7 @@
 \n - можливістю орієнтації мапи за компасом чи напрямком руху
 \n - інформація про напрямки руху по смугах, показ обмежень швидкості, голосові повідомлення записані та синтезовані (TTS)
 \n
-\n Обмеження цієї безплатної версії RoadCrew:
+\n Обмеження цієї безплатної версії OsmAnd:
 \n - кількість завантажень мап обмежена
 \n - відсутній офлайн-доступ до точок інтересу з Вікіпедії
 \n
@@ -758,8 +758,8 @@
     <string name="lang_zh_tw">Китайська (традиційна)</string>
     <string name="lang_vi">Вʼєтнамська</string>
     <string name="lang_cy">Валлійська</string>
-    <string name="calculate_osmand_route_without_internet">Прокладання відрізка маршруту в RoadCrew офлайн</string>
-    <string name="gpx_option_calculate_first_last_segment">Прокласти маршрут в RoadCrew для першого та останнього відрізків маршруту</string>
+    <string name="calculate_osmand_route_without_internet">Прокладання відрізка маршруту в OsmAnd офлайн</string>
+    <string name="gpx_option_calculate_first_last_segment">Прокласти маршрут в OsmAnd для першого та останнього відрізків маршруту</string>
     <string name="keep_and_add_destination_point">Додати як наступний пункт призначення</string>
     <string name="route_descr_select_destination">Встановіть пункт призначення</string>
     <string name="shared_string_select_on_map">Обрати на мапі</string>
@@ -777,11 +777,11 @@
     <string name="routing_attr_avoid_motorway_description">Уникати автомагістралей</string>
     <string name="routing_attr_weight_name">Вага</string>
     <string name="routing_attr_weight_description">Задайте дозволену вагу автомобіля для прокладання маршруту.</string>
-    <string name="android_19_location_disabled">Починаючи з Android версії 4.4 (KitKat) Ви не в змозі завантажувати та оновлювати мапи у попередню теку (%s). Скопіювати всі файли RoadCrew в нове місце\?
+    <string name="android_19_location_disabled">Починаючи з Android версії 4.4 (KitKat) Ви не в змозі завантажувати та оновлювати мапи у попередню теку (%s). Скопіювати всі файли OsmAnd в нове місце\?
 \n Примітка 1: Ваші старі файли залишаться недоторканими (їх можна вилучити вручну).
 \n Примітка 2: в новій теці спільне використання файлів програмами OsmAnd та OsmAnd+ неможливе.</string>
-    <string name="copying_osmand_files">Копіювання файлів даних RoadCrew…</string>
-    <string name="calculate_osmand_route_gpx">Прокладання маршруту в RoadCrew офлайн</string>
+    <string name="copying_osmand_files">Копіювання файлів даних OsmAnd…</string>
+    <string name="calculate_osmand_route_gpx">Прокладання маршруту в OsmAnd офлайн</string>
     <string name="app_mode_truck">Вантажівка</string>
     <string name="speech_rate_descr">Вказати швидкість вимови для TTS.</string>
     <string name="speech_rate">Швидкість вимови</string>
@@ -808,11 +808,11 @@
     <string name="interrupt_music_descr">Голосові повідомлення призупиняють відтворення музики.</string>
     <string name="interrupt_music">Призупиняти музику</string>
     <string name="share_route_as_gpx">Поділитись маршрутом у вигляді файлу GPX</string>
-    <string name="share_route_subject">Маршрут поширений через RoadCrew</string>
+    <string name="share_route_subject">Маршрут поширений через OsmAnd</string>
     <string name="keep_informing_never">Вручну (натисканням на стрілку)</string>
     <string name="keep_informing">Повторювати навігаційні інструкції</string>
     <string name="shared_string_share">Поділитися</string>
-    <string name="share_fav_subject">Закладки, якими поділились через RoadCrew</string>
+    <string name="share_fav_subject">Закладки, якими поділились через OsmAnd</string>
     <string name="navigation_intent_invalid">Невірний формат: %s</string>
     <string name="rendering_attr_coloredBuildings_name">Кольорове маркування будівель за типом</string>
     <string name="continue_navigation">Продовжити навігацію</string>
@@ -993,7 +993,7 @@
     <string name="shared_string_go">Вирушаємо</string>
     <string name="shared_string_do_not_use">Не використовувати</string>
     <string name="shared_string_address">Адреса</string>
-    <string name="plugin_touringview_descr">Змінює стиль мапи RoadCrew на «Туристичну мапу» – особливий стиль з докладною деталізацією для мандрівників та професіональних водіїв.
+    <string name="plugin_touringview_descr">Змінює стиль мапи OsmAnd на «Туристичну мапу» – особливий стиль з докладною деталізацією для мандрівників та професіональних водіїв.
 \n
 \nЦей стиль, на будь-якому масштабі, має найбільшу кількість відомостей потрібних для подорожніх (дороги, путівці, стежки та орієнтири).
 \n
@@ -1009,7 +1009,7 @@
     <string name="specified_directiory_not_writeable">Не вдалося створити мапи у вказаній теці</string>
     <string name="storage_directory_external">Зовнішнє сховище</string>
     <string name="storage_directory_multiuser">Спільне сховище для декількох користувачів</string>
-    <string name="storage_directory_internal_app">Внутрішнє сховище RoadCrew</string>
+    <string name="storage_directory_internal_app">Внутрішнє сховище OsmAnd</string>
     <string name="storage_directory_manual">Вказано вручну</string>
     <string name="shared_string_copy">Копіювати</string>
     <string name="filter_poi_hint">Фільтрувати за назвою</string>
@@ -1070,7 +1070,7 @@
     <string name="lang_ceb">Себуано</string>
     <string name="gps_network_not_enabled">Служба визначення розташування вимкнена. Увімкнути\?</string>
     <string name="disable_recording_once_app_killed">Зупиняти запис після виходу із застосунку</string>
-    <string name="shared_string_import2osmand">Імпортувати до RoadCrew</string>
+    <string name="shared_string_import2osmand">Імпортувати до OsmAnd</string>
     <string name="read_full_article">Читати повну статтю (онлайн)</string>
     <string name="shared_string_show_details">Показати подробиці</string>
     <string name="rendering_value_disabled_name">Вимкнено</string>
@@ -1177,7 +1177,7 @@
     <string name="favourites_context_menu_add">Додати Закладку</string>
     <string name="poi_action_delete">вилучити</string>
     <string name="poi_dialog_reopen">Повторно відкрити</string>
-    <string name="do_you_like_osmand">Чи подобається вам RoadCrew\?</string>
+    <string name="do_you_like_osmand">Чи подобається вам OsmAnd\?</string>
     <string name="user_hates_app_get_feedback">Розкажіть нам, чому.</string>
     <string name="failed_to_upload">Не вдалося надіслати</string>
     <string name="delete_change">Вилучити зміни</string>
@@ -1230,7 +1230,7 @@
     <string name="show_free_version_banner">Показати банер безплатної версії</string>
     <string name="use_dashboard_btn">Використовувати панель керування</string>
     <string name="use_drawer_btn">Використовувати меню</string>
-    <string name="share_osm_edits_subject">OSM правки, надіслані з RoadCrew</string>
+    <string name="share_osm_edits_subject">OSM правки, надіслані з OsmAnd</string>
     <string name="rendering_attr_showProposed_name">Заплановані обʼєкти</string>
     <string name="save_poi_without_poi_type_message">Зберегти POI без типу\?</string>
     <string name="no_location_permission">Надати доступу до даних про розташування.</string>
@@ -1243,7 +1243,7 @@
     <string name="select_voice_provider_descr">Виберіть або завантажте голосові інструкції для вашої мови.</string>
     <string name="shared_string_sound">Звук</string>
     <string name="poi_deleted_localy">POI буде вилучено після надсилання змін</string>
-    <string name="missing_write_external_storage_permission">RoadCrew не має дозволу на використання карти памʼяті</string>
+    <string name="missing_write_external_storage_permission">OsmAnd не має дозволу на використання карти памʼяті</string>
     <string name="hourly">Щогодинно</string>
     <string name="daily">Щоденно</string>
     <string name="shared_string_remove">Вилучити</string>
@@ -1409,7 +1409,7 @@
     <string name="si_mi_meters">Милі/метри</string>
     <string name="search_another_country">Виберіть інший регіон</string>
     <string name="search_map">Пошук мапи…</string>
-    <string name="first_usage_wizard_desc">RoadCrew визначить ваше місцеперебування і запропонує завантажити мапи для цього регіону.</string>
+    <string name="first_usage_wizard_desc">OsmAnd визначить ваше місцеперебування і запропонує завантажити мапи для цього регіону.</string>
     <string name="location_not_found">Розташування не визначене</string>
     <string name="no_inet_connection">Зʼєднання з Інтернетом відсутнє</string>
     <string name="search_location">Визначення локації…</string>
@@ -1427,7 +1427,7 @@
     <string name="confirmation_to_delete_history_items">Вилучити вибране з історії пошуку\?</string>
     <string name="show_something_on_map">Показати %1$s на мапі</string>
     <string name="dist_away_from_my_location">Шукати за %1$s від місця розташування</string>
-    <string name="share_history_subject">поділилися через RoadCrew</string>
+    <string name="share_history_subject">поділилися через OsmAnd</string>
     <string name="search_categories">Категорії</string>
     <string name="postcode">Поштовий індекс</string>
     <string name="shared_string_from">від</string>
@@ -1533,7 +1533,7 @@
     <string name="routing_attr_driving_style_speed_name">Коротші маршрути</string>
     <string name="animate_my_location">Анімувати моє положення</string>
     <string name="do_not_show_startup_messages">Не показувати повідомлення під час запуску</string>
-    <string name="subscribe_email_desc">Підпишіться на нашу email-розсилку про знижки на RoadCrew та отримаєте 3 додаткові завантаження мап!</string>
+    <string name="subscribe_email_desc">Підпишіться на нашу email-розсилку про знижки на OsmAnd та отримаєте 3 додаткові завантаження мап!</string>
     <string name="restart_search">Шукати знову</string>
     <string name="increase_search_radius">Збільшити радіус пошуку</string>
     <string name="nothing_found">Нічого не знайдено</string>
@@ -1581,20 +1581,20 @@
     <string name="restore_purchases">Відновлення покупок</string>
     <string name="shared_string_automatic">Автоматично</string>
     <string name="parking_options">Стоянка (параметри)</string>
-    <string name="full_version_thanks">Дякуємо за придбання платної версії RoadCrew.</string>
+    <string name="full_version_thanks">Дякуємо за придбання платної версії OsmAnd.</string>
     <string name="routing_attr_relief_smoothness_factor_hills_name">Горбисто</string>
     <string name="routing_attr_relief_smoothness_factor_plains_name">Менш горбисто</string>
     <string name="routing_attr_relief_smoothness_factor_more_plains_name">Рівнинно</string>
     <string name="routing_attr_relief_smoothness_factor_name">Вибрати діапазон зміни висот</string>
     <string name="shared_string_paused">Призупинено</string>
     <string name="route_is_too_long_v2">Для великих відстаней: Додайте проміжні пункти призначення, якщо протягом 10 хвилин не буде знайдено жодного маршруту.</string>
-    <string name="osmand_extended_description_part1">RoadCrew (OSM Automated Navigation Directions) — застосунок для показу мап та навігації з доступом до вільних глобальних високоякісних даних OpenStreetMap (OSM).
+    <string name="osmand_extended_description_part1">OsmAnd (OSM Automated Navigation Directions) — застосунок для показу мап та навігації з доступом до вільних глобальних високоякісних даних OpenStreetMap (OSM).
 \n
 \nНасолоджуйтесь голосовою та візуальною навігацією, переглядом точок інтересу (англ. POI), створенням та керуванням GPX-треками, використовуючи показ ізоліній і топографічних даних (за допомогою плагінів), вибором режимів для автомобілістів, велосипедистів й пішоходів, редагуванням OSM та ще багато чим іншим.</string>
     <string name="osmand_extended_description_part2">GPS навігація\n• Виберіть режим офлайн (без плати за роумінг, коли ви перебуваєте за кордоном) або онлайн (швидший).\n• Покрокові голосові підказки ведуть вас по дорозі (записані та синтезовані голоси)\n• Маршрут перебудовується щоразу, коли ви відхиляєтеся від нього\n• Вказівки щодо смуг руху, назви вулиць і орієнтовний час прибуття допоможуть у дорозі\n• Щоб ваша подорож була безпечнішою, режим день/ніч перемикається автоматично\n• Показувати обмеження швидкості та отримувати нагадування, якщо ви її перевищите\n• Масштаб карти регулюється відповідно до вашої швидкості\n• Шукайте пункти призначення за адресою, типом (наприклад, автостоянка, ресторан, готель, АЗС, музей) або географічними координатами\n• Підтримує проміжні пункти вашого маршруту\n• Запишіть свій власний або завантажте трек GPX і слідкуйте за ним</string>
     <string name="osmand_extended_description_part3">Мапа\n• Показує POI (точки інтересу) поруч з вами\n• Мапа змінює орієнтацію за напрямком вашого руху (чи за компасом)\n• Показує ваше розташування та в який бік ви дивитесь\n• Діліться своїм розташуванням, щоб друзі змогли знайти вас\n• Зберігає потрібні вам місця у \'Закладки\'\n• Дозволяє вам вибрати вигляд назв на мапі: англійською мовою, локальною мовою або фонетичним написанням\n• Показує спеціалізовані онлайн-мапи, супутниковий вид (від Bing), різні допоміжні шари на кшталт туристичних/навігаційних GPX-треків та додаткові шари з налаштовуваною прозорістю</string>
     <string name="osmand_extended_description_part4">Катання на лижах
-\nПлагін для RoadCrew з лижними мапами дає змогу бачити лижні траси разом з їх рівнем складності та деякими додатковими відомостями на зразок розташування витягів та інших обʼєктів.</string>
+\nПлагін для OsmAnd з лижними мапами дає змогу бачити лижні траси разом з їх рівнем складності та деякими додатковими відомостями на зразок розташування витягів та інших обʼєктів.</string>
     <string name="osmand_extended_description_part5">Їзда на велосипеді
 \n • Знаходьте велосипедні доріжки на мапі
 \n • GPS-навігація у велосипедному режимі будує маршрут з використанням велосипедних доріжок
@@ -1642,7 +1642,7 @@
 \n• Додатково, записування подорожей в локальний GPX-файл чи онлайн-сервіс
 \n• Додатково, показ швидкості та набору висоти
 \n• Показ ізоліній та рельєфу (за допомогою додаткового плагіна)</string>
-    <string name="osmand_plus_extended_description_part7">Беріть участь в покращені OSM\n• Повідомляйте про помилки в даних\n• Надсилайте GPX треки в OSM безпосередньо із застосунку\n• Додавайте POI (точки інтересу) та надсилайте їх в OSM (зараз, або пізніше, якщо офлайн)\n• Запис треку також можливий у фоновому режимі (коли екран пристрою вимкнений)\nRoadCrew — вільне й відкрите програмне забезпечення, яке активно розвивається. Кожен може допомогти, звітуючи про помилки, поліпшуючи переклад чи розробляючи нові функції. Також проєкт покладається на фінансові внески для оплати розробки та тестування нових функцій.</string>
+    <string name="osmand_plus_extended_description_part7">Беріть участь в покращені OSM\n• Повідомляйте про помилки в даних\n• Надсилайте GPX треки в OSM безпосередньо із застосунку\n• Додавайте POI (точки інтересу) та надсилайте їх в OSM (зараз, або пізніше, якщо офлайн)\n• Запис треку також можливий у фоновому режимі (коли екран пристрою вимкнений)\nOsmAnd — вільне й відкрите програмне забезпечення, яке активно розвивається. Кожен може допомогти, звітуючи про помилки, поліпшуючи переклад чи розробляючи нові функції. Також проєкт покладається на фінансові внески для оплати розробки та тестування нових функцій.</string>
     <string name="osmand_plus_extended_description_part8">Приблизне покриття карти та якість:\n• Західна Європа: ****\n• Східна Європа: ***\n• Росія: ***\n• Північна Америка: ***\n• Південна Америка: **\n• Азія: **\n• Японія та Корея: ***\n• Близький Схід: **\n• Африка: **\n• Антарктида: *\nБільшість країн світу доступні для завантаження\nВід Афганістану до Зімбабве, від Австралії до США. Аргентина, Бразилія, Канада, Франція, Німеччина, Мексика, Великобританія, Іспанія, …</string>
     <string name="save_poi_too_many_uppercase">Назва містить забагато великих літер. Продовжити\?</string>
     <string name="shared_string_add_photos">Додати світлини</string>
@@ -1659,7 +1659,7 @@
     <string name="mapillary_image">Зображення Mapillary</string>
     <string name="distance_moving">Скоригована відстань</string>
     <string name="shared_string_permissions">Дозволи</string>
-    <string name="import_gpx_failed_descr">RoadCrew не може імпортувати файл. Будь ласка, перевірте, чи RoadCrew має дозвіл на читання файлу з його місця розташування.</string>
+    <string name="import_gpx_failed_descr">OsmAnd не може імпортувати файл. Будь ласка, перевірте, чи OsmAnd має дозвіл на читання файлу з його місця розташування.</string>
     <string name="map_widget_ruler_control">Радіусна лінійка</string>
     <string name="shared_string_reload">Перезавантажити</string>
     <string name="mapillary_menu_descr_tile_cache">Перезавантажити тайли, щоб мати актуальні дані.</string>
@@ -1697,7 +1697,7 @@
     <string name="add_point_before">Додати точку перед</string>
     <string name="add_point_after">Додати точку опісля</string>
     <string name="shared_string_options">Параметри</string>
-    <string name="measurement_tool_snap_to_road_descr">RoadCrew з’єднає точки з маршрутами для обраного профілю.</string>
+    <string name="measurement_tool_snap_to_road_descr">OsmAnd з’єднає точки з маршрутами для обраного профілю.</string>
     <string name="choose_navigation_type">Виберіть профіль навігації</string>
     <string name="empty_state_favourites">Додати до Закладок</string>
     <string name="empty_state_favourites_desc">Імпортувати Закладки або додати їх шляхом позначення точок на мапі.</string>
@@ -1884,13 +1884,13 @@
     <string name="off_road_render_descr">Для руху бездоріжжям, заснований на стилі «Топо», та для використання із зеленими супутниковими зображеннями на тлі. Зменшенна товщина основних доріг, збільшена товщина доріжок, путівців, велосипедних та інших маршрутів.</string>
     <string name="light_rs_render_descr">Простий і контрастний стиль для автомобільної навігації. Зручний для сприйняття вночі. Головні особливості: контрастні помаранчеві дороги, затемнені другорядні об\'єкти мапи, топографічні функції, такі як ізолінії.</string>
     <string name="topo_render_descr">Для походів, пішого та вело туризму. Добре читається на вулиці. Контрастні дороги та природні об’єкти, різні типи маршрутів, розширені варіанти ізоліній, більше подробиць. Налаштування однорідності поверхні дозволяє відрізняти якість дороги. Нічного режиму немає.</string>
-    <string name="touring_view_render_descr">Туристичний стиль з високим контрастом та високою деталізацією. Включає всі типові параметри стилю RoadCrew, показуючи при цьому докладні відомості, зокрема дороги, стежки та інші шляхи для подорожі. \"Туристичний атлас\" чітко показує різницю між типами доріг. Підходить для денного, нічного та використання на природі.</string>
+    <string name="touring_view_render_descr">Туристичний стиль з високим контрастом та високою деталізацією. Включає всі типові параметри стилю OsmAnd, показуючи при цьому докладні відомості, зокрема дороги, стежки та інші шляхи для подорожі. \"Туристичний атлас\" чітко показує різницю між типами доріг. Підходить для денного, нічного та використання на природі.</string>
     <string name="default_render_descr">Стиль загального призначення. Щільно забудовані міста показуються охайно. Містить маршрути, відомості про якість дорожнього покриття, обмеження доступу, дорожні вказівники, показ стежок за шкалою SAC/CAI, елементи сплавних водних видів спорту, топографічні функції, такі як ізолінії.</string>
     <string name="read_wikipedia_offline_description">Передплатіть OsmAnd Live, щоб читати статті з Вікіпедії та Вікімандрів в офлайн режимі.</string>
     <string name="read_wikipedia_offline">Читати Вікіпедію в офлайн режимі</string>
     <string name="maps_you_need_descr">Зважаючи на збережені вами статті, ми рекомендуємо завантажити наступні мапи:</string>
     <string name="maps_you_need">Потрібні вам мапи</string>
-    <string name="osmand_team">Команда RoadCrew</string>
+    <string name="osmand_team">Команда OsmAnd</string>
     <string name="popular_destinations">Популярні напрямки</string>
     <string name="travel_card_update_descr">Доступні нові дані Вікімандрів, оновіть їх, щоб користуватися ними.</string>
     <string name="travel_card_download_descr">Завантажте путівники Вікімандрів, щоб переглянути статті про місця в усьому світі без підключення до Інтернету.</string>
@@ -1903,7 +1903,7 @@
     <string name="get_unlimited_access">Отримати необмежений доступ</string>
     <string name="welcome_to_open_beta">Ласкаво просимо на відкрите бета-тестування</string>
     <string name="wikivoyage_travel_guide">Туристичні путівники</string>
-    <string name="wikivoyage_travel_guide_descr">Путівники до найцікавіших місць на планеті – всередині RoadCrew і без підключення до Інтернету.</string>
+    <string name="wikivoyage_travel_guide_descr">Путівники до найцікавіших місць на планеті – всередині OsmAnd і без підключення до Інтернету.</string>
     <string name="clear_all_intermediates">Очистити всі проміжні пункти призначення</string>
     <string name="increase_search_radius_to">Розширити ділянку пошуку до %1$s</string>
     <string name="send_search_query_description">Ваш пошуковий запит разом із вашим положенням буде надіслано до: \"%1$s\".
@@ -1953,7 +1953,7 @@
     <string name="search_no_results_feedback">Немає результатів пошуку\?
 \nНадішліть нам відгук</string>
     <string name="test_voice_desrc">Натисніть кнопку та прослухайте відповідну голосову інструкцію, щоб визначити відсутні або хибні повідомлення</string>
-    <string name="ask_for_location_permission">Будь ласка, для продовження роботи надайте RoadCrew дозвіл визначати ваше положення.</string>
+    <string name="ask_for_location_permission">Будь ласка, для продовження роботи надайте OsmAnd дозвіл визначати ваше положення.</string>
     <string name="rendering_value_black_name">Чорний</string>
     <string name="search_street">Пошук вулиці</string>
     <string name="start_search_from_city">Спершу оберіть місто</string>
@@ -2008,7 +2008,7 @@
     <string name="routeInfo_steepness_name">Крутість</string>
     <string name="shared_string_walk">Пішки</string>
     <string name="save_poi_value_exceed_length">Довжина теґу \"%s\" має бути меншою за 255 символів.</string>
-    <string name="public_transport_warning_descr_blog">Докладніше про те, як RoadCrew прокладає маршрути, читайте в нашому блозі.</string>
+    <string name="public_transport_warning_descr_blog">Докладніше про те, як OsmAnd прокладає маршрути, читайте в нашому блозі.</string>
     <string name="public_transport_warning_title">Навігація громадським транспортом на даний час проходить тестування, можливі помилки та неточності.</string>
     <string name="add_intermediate">Додати проміжний пункт призначення</string>
     <string name="transfers_size">%1$d пересадки</string>
@@ -2085,13 +2085,13 @@
     <string name="points_of_interests">Точки інтересу (POI)</string>
     <string name="avoid_roads_descr">Оберіть на мапі, або зі списку нижче, дороги яких ви хочете уникати під час навігації:</string>
     <string name="show_along_the_route">Показувати вздовж маршруту</string>
-    <string name="quick_action_switch_day_night_descr">Перемикач денного та нічного режимів RoadCrew.</string>
+    <string name="quick_action_switch_day_night_descr">Перемикач денного та нічного режимів OsmAnd.</string>
     <string name="routing_attr_avoid_sett_name">Уникати бруківки</string>
     <string name="routing_attr_avoid_sett_description">Уникати бруківки</string>
     <string name="files_failed">Не вдалося скопіювати %1$d файлів (%2$s).</string>
     <string name="dont_move_maps">Не переміщувати</string>
     <string name="public_transport_ped_route_title">Маршрут пішки приблизно %1$s, і може бути швидшим за громадський транспорт</string>
-    <string name="public_transport_no_route_title">На жаль, RoadCrew не зміг підібрати маршрут, який би відповідав вашим налаштуванням.</string>
+    <string name="public_transport_no_route_title">На жаль, OsmAnd не зміг підібрати маршрут, який би відповідав вашим налаштуванням.</string>
     <string name="public_transport_try_ped">Спробуйте пішохідну навігацію.</string>
     <string name="public_transport_try_change_settings">Спробуйте змінити налаштування.</string>
     <string name="public_transport_calc_pedestrian">Прокласти пішохідний маршрут</string>
@@ -2100,15 +2100,15 @@
     <string name="coordinates_widget">Віджет координат</string>
     <string name="rate_dialog_descr">Поділіться своїми відгуками та оцініть нашу роботу в Google Play.</string>
     <string name="shared_string_privacy_policy">Політика конфіденційності</string>
-    <string name="help_us_make_osmand_better">Допоможіть нам зробити RoadCrew кращим</string>
-    <string name="make_osmand_better_descr">Дозвольте RoadCrew збирати та обробляти анонімні дані про використання застосунку. Ми не збираємо і не зберігаємо дані про ваше розташування або будь-які інші місця, які ви переглядаєте на мапі.
+    <string name="help_us_make_osmand_better">Допоможіть нам зробити OsmAnd кращим</string>
+    <string name="make_osmand_better_descr">Дозвольте OsmAnd збирати та обробляти анонімні дані про використання застосунку. Ми не збираємо і не зберігаємо дані про ваше розташування або будь-які інші місця, які ви переглядаєте на мапі.
 \n
 \nВи можете змінити свій вибір у будь-який час через «Налаштування» → «Конфіденційність та безпека».</string>
     <string name="choose_data_to_share">Оберіть тип даних, які ви хочете поширити:</string>
     <string name="downloaded_maps">Мап завантажено</string>
     <string name="visited_screens">Екранів відвідано</string>
     <string name="downloaded_maps_collect_descr">Це допомагає нам зрозуміти мапи яких країн та регіонів є популярними.</string>
-    <string name="visited_screens_collect_descr">Допомагає нам зрозуміти, які можливості RoadCrew є найпопулярнішими.</string>
+    <string name="visited_screens_collect_descr">Допомагає нам зрозуміти, які можливості OsmAnd є найпопулярнішими.</string>
     <string name="privacy_and_security_change_descr">Торкніться «Дозволити», якщо ви згодні з нашими %1$s</string>
     <string name="settings_privacy_and_security">Конфіденційність та безпека</string>
     <string name="settings_privacy_and_security_desc">Оберіть, якими даними ви хочете ділитись</string>
@@ -2130,11 +2130,11 @@
     <string name="profile_alert_need_profile_name_title">Введіть назву профілю</string>
     <string name="profile_alert_need_profile_name_msg">Спочатку слід вказати назву профілю.</string>
     <string name="profile_alert_duplicate_name_msg">Профіль з такою назвою вже існує</string>
-    <string name="profile_alert_cant_delete_base">Ви не можете вилучити основні профілі RoadCrew</string>
+    <string name="profile_alert_cant_delete_base">Ви не можете вилучити основні профілі OsmAnd</string>
     <string name="profile_alert_delete_title">Вилучити профіль</string>
     <string name="profile_alert_delete_msg">Видалити профіль \"%s\"</string>
     <string name="select_base_profile_dialog_title">Виберіть профіль для початку</string>
-    <string name="process_downloading_service">Служба завантаження RoadCrew</string>
+    <string name="process_downloading_service">Служба завантаження OsmAnd</string>
     <string name="shared_string_color_magenta">Пурпуровий</string>
     <string name="shared_string_icon">Піктограма</string>
     <string name="press_again_to_change_the_map_orientation">Натисніть ще раз для зміни орієнтації мапи</string>
@@ -2144,7 +2144,7 @@
     <string name="default_speed_setting_descr">Змінити налаштування стандартної швидкості</string>
     <string name="new_profile">Новий профіль</string>
     <string name="shared_string_crash">Збій</string>
-    <string name="last_launch_crashed">Під час останнього запуску RoadCrew сталася помилка. Допоможіть нам покращити RoadCrew — надішліть повідомлення про помилку.</string>
+    <string name="last_launch_crashed">Під час останнього запуску OsmAnd сталася помилка. Допоможіть нам покращити OsmAnd — надішліть повідомлення про помилку.</string>
     <string name="app_mode_ufo">НЛО</string>
     <string name="release_3_4">• Профілі застосунку: створюйте власний профіль з довільною піктограмою та кольором для ваших особистих потреб\n\n• Налаштуйте типові обмеження мінімальної/максимальної швидкості у профілі\n\n• Додано віджет з поточними координатами\n\n• Додано можливість показувати на мапі компас і радіусну лінійку\n\n• Виправлено запис треку у фоновому режимі\n\n• Поліпшено завантаження мап у фоновому режимі\n\n• Повернено параметр «Увімкнути екран»\n\n• Виправлено вибір мови Вікіпедії\n\n• Виправлено поведінку кнопки компаса під час навігації\n\n• Виправлення інших помилок</string>
     <string name="app_mode_personal_transporter">Моноколесо, Гіроборд</string>
@@ -2163,7 +2163,7 @@
     <string name="routing_profile_geocoding">Геокодування</string>
     <string name="routing_profile_straightline">Пряма лінія</string>
     <string name="routing_profile_broutrer">BRouter (офлайн)</string>
-    <string name="osmand_default_routing">Прокладання маршрутів RoadCrew</string>
+    <string name="osmand_default_routing">Прокладання маршрутів OsmAnd</string>
     <string name="special_routing_type">Прокладання спеціалізованих маршрутів</string>
     <string name="third_party_routing_type">Сторонній сервіс прокладання маршрутів</string>
     <string name="application_profiles">Профілі застосунку</string>
@@ -2259,7 +2259,7 @@
     <string name="configure_profile">Налаштування профілю</string>
     <string name="switch_profile">Змінити профіль</string>
     <string name="reset_to_default">Скинути на типові</string>
-    <string name="osmand_settings">Налаштування RoadCrew</string>
+    <string name="osmand_settings">Налаштування OsmAnd</string>
     <string name="copy_from_other_profile">Копіювати з іншого профілю</string>
     <string name="turn_screen_on">Увімкнути екран</string>
     <string name="map_during_navigation_info">Мапа під час навігації</string>
@@ -2284,14 +2284,14 @@
     <string name="shared_string_by_default">Типово</string>
     <string name="default_speed_dialog_msg">Використовується для оцінки часу прибуття для невідомих типів доріг та обмеження швидкості для всіх доріг (може вплинути на прокладання маршрутів)</string>
     <string name="download_detailed_map">Завантажте докладну мапу %s, щоб переглянути цю область.</string>
-    <string name="change_data_storage_full_description">Перемістити файли даних RoadCrew у нове місце\?
+    <string name="change_data_storage_full_description">Перемістити файли даних OsmAnd у нове місце\?
 \n%1$s &gt; %2$s</string>
     <string name="data_storage_preference_summary">%1$s • %2$s</string>
     <string name="data_storage_space_description">%1$s ГБ вільно (з %2$s ГБ)</string>
     <string name="enter_path_to_folder">Введіть шлях до теки</string>
     <string name="shared_string_select_folder">Тека…</string>
-    <string name="paste_Osmand_data_folder_path">Вставте шлях до теки з даними RoadCrew</string>
-    <string name="change_osmand_data_folder_question">Змінити теку даних RoadCrew\?</string>
+    <string name="paste_Osmand_data_folder_path">Вставте шлях до теки з даними OsmAnd</string>
+    <string name="change_osmand_data_folder_question">Змінити теку даних OsmAnd\?</string>
     <string name="move_maps_to_new_destination">Перемістити у нове місце</string>
     <string name="change_data_storage_folder">Зміна теки сховища</string>
     <string name="rendering_attr_piste_type_snow_park_name">Ландшафтний парк</string>
@@ -2319,7 +2319,7 @@
     <string name="rendering_attr_piste_difficulty_aerialway_name">Канатна дорога</string>
     <string name="rendering_attr_piste_difficulty_connection_name">Зʼєднання</string>
     <string name="shared_string_calculate">Обчислити</string>
-    <string name="shared_string_osmand_usage">Використання RoadCrew</string>
+    <string name="shared_string_osmand_usage">Використання OsmAnd</string>
     <string name="shared_string_tiles">Тайли</string>
     <string name="shared_string_maps">Мапи</string>
     <string name="shared_string_memory_tb_desc">%1$s ТБ</string>
@@ -2375,7 +2375,7 @@
     <string name="desert_render_descr">Для пустель та інших малонаселених місцевостей. Докладніше.</string>
     <string name="delete_profiles_descr">Натискання на «Застосувати» вилучить профілі назавжди.</string>
     <string name="select_color">Виберіть колір</string>
-    <string name="edit_profiles_descr">Типові профілі RoadCrew не вилучено, проте вимкнуто (на попередньому екрані) чи перенесено вниз.</string>
+    <string name="edit_profiles_descr">Типові профілі OsmAnd не вилучено, проте вимкнуто (на попередньому екрані) чи перенесено вниз.</string>
     <string name="edit_profiles">Редагувати профілі</string>
     <string name="profile_appearance">Зовнішній вигляд профілю</string>
     <string name="choose_icon_color_name">Піктограма, колір і назва</string>
@@ -2398,7 +2398,7 @@
     <string name="live_monitoring_descr">Дозволяє поширювати дані про вашу поточну локацію використовуючи функції запису треків.</string>
     <string name="live_monitoring">Онлайн моніторинг</string>
     <string name="save_track_logging_accuracy">Точність запису</string>
-    <string name="tracks_view_descr">Ви можете знайти всі записи в %1$s або в теці RoadCrew.</string>
+    <string name="tracks_view_descr">Ви можете знайти всі записи в %1$s або в теці OsmAnd.</string>
     <string name="multimedia_notes_view_descr">Ваші Нотатки OSM знаходяться в %1$s.</string>
     <string name="video_notes">Відеопримітки</string>
     <string name="photo_notes">Фотопримітки</string>
@@ -2470,12 +2470,12 @@
     <string name="shared_string_nothing_selected">Нічого не вибрано</string>
     <string name="shared_string_quick_actions">Швидкі дії</string>
     <string name="shared_string_profiles">Профілі</string>
-    <string name="listed_exist">Перелічені %1$s вже існують в RoadCrew.</string>
+    <string name="listed_exist">Перелічені %1$s вже існують в OsmAnd.</string>
     <string name="replace_all_desc">Поточні елементи будуть замінені на елементи з файлу</string>
     <string name="replace_all">Замінити все</string>
     <string name="keep_both">Зберегти обидва</string>
     <string name="keep_both_desc">Імпортовані елементи будуть додані з префіксом</string>
-    <string name="import_duplicates_description">RoadCrew вже містить елементи з такими ж назвами, що й імпортовані.
+    <string name="import_duplicates_description">OsmAnd вже містить елементи з такими ж назвами, що й імпортовані.
 \n
 \nВиберіть дію.</string>
     <string name="import_duplicates_title">Деякі елементи вже є</string>
@@ -2488,7 +2488,7 @@
     <string name="clear_recorded_data_warning">Очистити записані дані\?</string>
     <string name="importing_from">Імпорт даних з %1$s</string>
     <string name="shared_string_importing">Імпорт</string>
-    <string name="checking_for_duplicate_description">RoadCrew перевірить %1$s на наявність подвоєнь із наявними елементами у програмі.
+    <string name="checking_for_duplicate_description">OsmAnd перевірить %1$s на наявність подвоєнь із наявними елементами у програмі.
 \n
 \nЦе може зайняти деякий час.</string>
     <string name="items_added">Елементи додано</string>
@@ -2580,7 +2580,7 @@
     <string name="extra_maps_menu_group">Додаткові мапи</string>
     <string name="download_unsupported_action">Непідтримувана дія %1$s</string>
     <string name="ltr_or_rtl_combine_via_slash_with_space">%1$s / %2$s</string>
-    <string name="tracker_item">RoadCrew трекер</string>
+    <string name="tracker_item">OsmAnd трекер</string>
     <string name="quick_action_item">Швидка дія</string>
     <string name="map_markers_item">Позначки</string>
     <string name="favorites_item">Закладки</string>
@@ -2606,15 +2606,15 @@
     <string name="unsupported_type_error">Непідтримуваний тип</string>
     <string name="gpx_parse_error">Виявлено проблеми з файлом GPX.
 \n
-\nВи можете звернутися до служби підтримки RoadCrew для детальнішого вивчення ситуації.</string>
+\nВи можете звернутися до служби підтримки OsmAnd для детальнішого вивчення ситуації.</string>
     <string name="shared_string_always">Завжди</string>
     <string name="screen_control">Керування екраном</string>
     <string name="system_screen_timeout_descr">Вимикає екран відповідно до часу очікування, встановленого в системі.</string>
     <string name="system_screen_timeout">Використовувати системний час очікування</string>
-    <string name="turn_screen_on_descr">Параметри увімкнення екрана (переконайтесь, що RoadCrew показується на екрані перед блокуванням пристрою):</string>
+    <string name="turn_screen_on_descr">Параметри увімкнення екрана (переконайтесь, що OsmAnd показується на екрані перед блокуванням пристрою):</string>
     <string name="turn_screen_on_navigation_instructions_descr">Екран увімкнеться для показу навігаційних інструкцій.</string>
     <string name="turn_screen_on_navigation_instructions">Навігаційні інструкції</string>
-    <string name="turn_screen_on_power_button_descr">Натисніть кнопку живлення пристрою, щоб увімкнути екран з RoadCrew поверх екрана блокування.</string>
+    <string name="turn_screen_on_power_button_descr">Натисніть кнопку живлення пристрою, щоб увімкнути екран з OsmAnd поверх екрана блокування.</string>
     <string name="turn_screen_on_power_button">Кнопка живлення</string>
     <string name="turn_screen_on_proximity_sensor">Датчик наближення</string>
     <string name="turn_screen_on_wake_time_descr">Виберіть час очікування екрана після пробудження. (\"%1$s\" не застосовує час очікування.)</string>
@@ -2669,7 +2669,7 @@
 \n
 \nВиберіть %1$s і ви отримуватимете сповіщення та попередження про камери контролю швидкості.
 \n
-\nВиберіть %2$s, щоб вилучити всі дані, повʼязані з камерами контролю швидкості (повідомлення, попередження і POI), до повного перевстановлення RoadCrew.</string>
+\nВиберіть %2$s, щоб вилучити всі дані, повʼязані з камерами контролю швидкості (повідомлення, попередження і POI), до повного перевстановлення OsmAnd.</string>
     <string name="keep_active">Лишати увімкненим</string>
     <string name="shared_string_uninstall">Вилучити</string>
     <string name="speed_cameras_alert">Попередження про камери контролю швидкості в деяких країнах заборонено законом.</string>
@@ -2762,7 +2762,7 @@
     <string name="open_saved_track">Відкрити збережений трек</string>
     <string name="shared_string_is_saved">збережено</string>
     <string name="one_point_error">Додайте принаймні дві точки.</string>
-    <string name="disable_recording_once_app_killed_descrp">Запис треку буде зупинено після примусового припинення роботи застосунку (у нещодавно запущених застосунках). (Індикатор, що повідомляє про роботу RoadCrew у фоні зникне з панелі сповіщень Android).</string>
+    <string name="disable_recording_once_app_killed_descrp">Запис треку буде зупинено після примусового припинення роботи застосунку (у нещодавно запущених застосунках). (Індикатор, що повідомляє про роботу OsmAnd у фоні зникне з панелі сповіщень Android).</string>
     <string name="simplified_track">Спрощений трек</string>
     <string name="simplified_track_description">Буде збережено лише лінію маршруту, а проміжні точки буде вилучено.</string>
     <string name="shared_string_file_name">Назва файлу</string>
@@ -2844,7 +2844,7 @@
     <string name="plan_route_split_after">Розділити після</string>
     <string name="plan_route_add_new_segment">Додати новий сегмент</string>
     <string name="release_3_9">• Додано можливість експортувати та імпортувати всі дані, включно з налаштуваннями, ресурсами, моїми місцями\n\n• План маршруту: графіки для відрізків треків з маршрутом та додано можливість створення і зміни кількох відрізків треку\n\n• Додано метод автентифікації OAuth для OpenStreetMap, покращено вигляд діалогів OSM\n\n• Підтримка власних кольорів закладок та маршрутних точок треку</string>
-    <string name="profile_type_osmand_string">Профіль RoadCrew</string>
+    <string name="profile_type_osmand_string">Профіль OsmAnd</string>
     <string name="profile_type_user_string">Профіль користувача</string>
     <string name="reverse_all_points">Інвертувати всі точки</string>
     <string name="profile_by_default_description">Виберіть профіль, який застосовуватиметься під час запуску.</string>
@@ -2957,7 +2957,7 @@
     <string name="track_has_no_altitude">Трек не містить даних про висоту.</string>
     <string name="track_has_no_speed">Трек не містить даних про швидкість.</string>
     <string name="select_another_colorization">Виберіть інший тип забарвлення.</string>
-    <string name="trip_recording_logging_interval_info">Інтервал запису встановлює проміжок часу, впродовж якого RoadCrew запитуватиме дані про поточне розташування.</string>
+    <string name="trip_recording_logging_interval_info">Інтервал запису встановлює проміжок часу, впродовж якого OsmAnd запитуватиме дані про поточне розташування.</string>
     <string name="trip_recording_save_and_continue">Зберегти й продовжити</string>
     <string name="lost_data_warning">Усі незбережені дані буде втрачено.</string>
     <string name="show_start_dialog">Показувати початковий діалог</string>
@@ -2986,7 +2986,7 @@
     <string name="announce_when_exceeded">Повідомляти про перевищення</string>
     <string name="user_points">Точки користувача</string>
     <string name="output">Вивід</string>
-    <string name="srtm_download_list_help_message">RoadCrew надає дані про ізолінії в метрах і футах. Щоб змінити формат, потрібно повторно завантажити файл.</string>
+    <string name="srtm_download_list_help_message">OsmAnd надає дані про ізолінії в метрах і футах. Щоб змінити формат, потрібно повторно завантажити файл.</string>
     <string name="srtm_unit_format">Одиниці вимірювання ізоліній</string>
     <string name="shared_string_feet">фути</string>
     <string name="srtm_download_single_help_message">Виберіть потрібний формат. Щоб змінити його, потрібно повторно завантажити файл.</string>
@@ -3112,7 +3112,7 @@
 \nЩоб створити резервну копію даних або відновити їх, потрібно буде ввійти ще раз.</string>
     <string name="backup_error_subscription_was_expired_descr">Термін дії передплати OsmAnd Pro завершився, поновіть її, щоб користуватись резервним копіюванням. Ви досі можете відновити дані з Хмари.</string>
     <string name="contour_lines_hillshade_slope">Ізолінії, затінення рельєфу, схили</string>
-    <string name="backup_deleting_all_data_descr">Зачекайте, поки RoadCrew вилучить ваші дані з хмари. Усі дані на пристрої залишаться незміненими.</string>
+    <string name="backup_deleting_all_data_descr">Зачекайте, поки OsmAnd вилучить ваші дані з хмари. Усі дані на пристрої залишаться незміненими.</string>
     <string name="backup_deleted_all_data_descr">Усі ваші дані було успішно вилучено з OsmAnd Cloud.</string>
     <string name="backup_version_history_removed">Усю історію версій було вилучено.</string>
     <string name="backup_data_removed">Усі дані було вилучено.</string>
@@ -3131,7 +3131,7 @@
     <string name="benefits_for_contributors_primary_descr">Активні учасники OpenStreetMap.org мають право на необмежене погодинне оновлення мап.</string>
     <string name="benefits_for_contributors_secondary_descr">Увійдіть в OpenStreetMap, щоб перевірити, чи маєте ви право отримувати необмежені щомісячні та погодинні оновлення мап.</string>
     <string name="available_until">Доступно до %1$s</string>
-    <string name="enough_contributions_descr">Вітаємо, ви зробили достатньо змін в OpenStreetMap і тепер можете насолоджуватися необмеженою кількістю оновлень мап RoadCrew!</string>
+    <string name="enough_contributions_descr">Вітаємо, ви зробили достатньо змін в OpenStreetMap і тепер можете насолоджуватися необмеженою кількістю оновлень мап OsmAnd!</string>
     <string name="not_enough_contributions_descr">Щоб отримати безплатні щогодинні оновлення, зробіть щонайменше %1$s змін за останні два місяці %2$s.</string>
     <string name="shared_string_contributions">Кількість змін</string>
     <string name="contributions_may_calculate_with_delay">Обробка внесків може тривати кілька годин.</string>
@@ -3139,7 +3139,7 @@
     <string name="connect_track_points_as">Зʼєднати точки маршруту</string>
     <string name="option_available_only_in_osmand_pro">Доступно як частина передплати OsmAnd Pro.</string>
     <string name="purchases_feature_desc_pro_widgets">Отримайте доступ до можливостей OsmAnd Pro: Забарвлення маршрутів та багато іншого.</string>
-    <string name="explore_osmnad_plans_to_find_suitable">Ознайомтеся з тарифними планами RoadCrew, щоб знайти відповідний для вас.</string>
+    <string name="explore_osmnad_plans_to_find_suitable">Ознайомтеся з тарифними планами OsmAnd, щоб знайти відповідний для вас.</string>
     <string name="routes_color_by_type">Забарвлення маршрутів від…</string>
     <string name="shared_string_relation">Звʼязок</string>
     <string name="rendering_value_walkingRoutesOSMC_description">Забарвлення маршрутів згідно з їхнім індивідуальним місцевим кольором (якщо він присутній в OpenStreetMap) і символом на туристичному маршруті.</string>
@@ -3195,14 +3195,14 @@
     <string name="shared_app_storage_description">Спільне сховище більше не доступне через зміну правил доступу до сховища в Android.</string>
     <string name="purchases_feature_desc_android_auto">Офлайн-мапи та навігація OsmAnd на екрані вашого автомобіля. Зручна інтеграція з органами керування вашого автомобіля.</string>
     <string name="shared_string_details">Подробиці</string>
-    <string name="internal_app_storage_description">Користувачі та інші застосунки не мають доступу до внутрішнього сховища, тому лише RoadCrew може отримати доступ до ваших даних.</string>
+    <string name="internal_app_storage_description">Користувачі та інші застосунки не мають доступу до внутрішнього сховища, тому лише OsmAnd може отримати доступ до ваших даних.</string>
     <string name="rendering_attr_natureReserves_description">Показати заповідники, заповідні території та національні парки.</string>
     <string name="included_categories">Включені категорії</string>
     <string name="shared_string_articles">Статті</string>
     <string name="release_4_1">• Додано початкову підтримку Android Auto\n\n• Оновлення інтерфейсу користувача для пошуку координат UTM\n\n• GPS-фільтр для треків GPX\n\n• Віджет висоти (Pro)\n\n• Закладки: додана можливість перегляду нещодавно використаних піктограм\n\n• Планування маршруту: вибраний профіль буде використаний після запуску\n\n• Виправлено шар Mapillary, плагін тепер типово вимкнений\n\n• Додано сторінку керування всією історією в застосунку\n\n• Орієнтація мапи не скидається після перезапуску застосунку\n\n• Покращено вигляд позначок висоти SRTM \n\n• Виправлено показ написів арабською на мапі \n\n• Виправлені різні проблеми маршрутизації</string>
     <string name="android_auto_purchase_request_title">Придбати OsmAnd Pro або Maps+ для використання OsmAnd з Android Auto</string>
     <string name="continue_on_phone">Продовжити на мобільному пристрої</string>
-    <string name="location_access_request_title">RoadCrew потрібен доступ до GPS для навігації.</string>
+    <string name="location_access_request_title">OsmAnd потрібен доступ до GPS для навігації.</string>
     <string name="android_auto_map_placeholder_title">Мапа показується на екрані в автомобілі.</string>
     <string name="android_auto_map_placeholder_descr">Відʼєднайте пристрій від Android Auto, щоб переглядати мапу в застосунку.</string>
     <string name="location_access_request_action">Надати доступ</string>
@@ -3239,7 +3239,7 @@
     <string name="storage_copying_files_size">Копіювання %1$s файлів %2$s</string>
     <string name="storage_found_files_size">Знайдено %1$s файлів %2$s</string>
     <string name="shared_storage_last_step">Після цього можна вказати нову теку даних.</string>
-    <string name="shared_storage_third_step">Надайте дозвіл на доступ до теки. Без цього RoadCrew не може копіювати файли.</string>
+    <string name="shared_storage_third_step">Надайте дозвіл на доступ до теки. Без цього OsmAnd не може копіювати файли.</string>
     <string name="shared_storage_first_step">Натисніть \"%1$s\".\nВідкривається файловий менеджер, де потрібно знайти і відкрити папку osmand.</string>
     <string name="copying_completed">Скопійовано</string>
     <string name="shared_string_copy_to">Копіювати до</string>
@@ -3249,13 +3249,13 @@
     <string name="skip_confirmation">Так, пропустити</string>
     <string name="shared_storage_migration">Міграція Спільного сховища</string>
     <string name="icon_group_industrial">Промисловість</string>
-    <string name="shared_string_skip_warning">Пропустити міграцію\? RoadCrew більше не має доступу до ваших файлів у спільному сховищі.
+    <string name="shared_string_skip_warning">Пропустити міграцію\? OsmAnd більше не має доступу до ваших файлів у спільному сховищі.
 \n
 \nЗастосунок почне використовувати вашу нову теку даних.</string>
     <string name="shared_storage">Спільне сховище</string>
     <string name="files_remaining">Файлів лишилося: %1$s %2$s</string>
     <string name="shared_storage_second_step">Натисніть «Використовувати цю папку».</string>
-    <string name="shared_storage_migration_descr">Через зміни доступу до сховища в Android, RoadCrew більше не може використовувати %1$s.
+    <string name="shared_storage_migration_descr">Через зміни доступу до сховища в Android, OsmAnd більше не може використовувати %1$s.
 \n
 \nСкопіюйте всі дані до нової теки.</string>
     <string name="icon_group_education">Освіта</string>
@@ -3293,9 +3293,9 @@
     <string name="gps_filter_smoothing">Згладжування</string>
     <string name="save_changes_into_file">Зберегти зміни у файл</string>
     <string name="save_as_copy">Зберегти як копію</string>
-    <string name="gps_filter_actions_description">RoadCrew застосовує зміни до треку без збереження його у файлі. Ви можете зберегти зміни вручну.</string>
+    <string name="gps_filter_actions_description">OsmAnd застосовує зміни до треку без збереження його у файлі. Ви можете зберегти зміни вручну.</string>
     <string name="shared_string_gps_filter">GPS-фільтр</string>
-    <string name="storage_migration_wrong_folder_warning">У вибраній теці не має даних RoadCrew. Спробуйте ще раз.</string>
+    <string name="storage_migration_wrong_folder_warning">У вибраній теці не має даних OsmAnd. Спробуйте ще раз.</string>
     <string name="use_routing_fallback_description">Використовуйте офлайн-маршрутизацію, коли онлайн-маршрутизація недоступна.</string>
     <string name="use_routing_fallback">Запасний варіант офлайн-маршрутизації</string>
     <string name="turn_arrows_descr">Оберіть, чи показувати стрілки повороту на лінії маршруту.</string>
@@ -3342,7 +3342,7 @@
     <string name="exit_import">Вийти\?</string>
     <string name="import_tracks">Імпорт треків</string>
     <string name="import_tracks_descr">%1$s, містить %2$s окремі треки. Виберіть треки, які потрібно імпортувати.</string>
-    <string name="location_source_descr">За умовчанням RoadCrew, встановлений із Google Play, використовує %1$s для визначення місцезнаходження.\n\nЯкщо ви отримуєте неточну інформацію про місцезнаходження або використовуєте пристрій без %2$s, спробуйте переключитися на \"%3$s\"</string>
+    <string name="location_source_descr">За умовчанням OsmAnd, встановлений із Google Play, використовує %1$s для визначення місцезнаходження.\n\nЯкщо ви отримуєте неточну інформацію про місцезнаходження або використовуєте пристрій без %2$s, спробуйте переключитися на \"%3$s\"</string>
     <string name="location_source">Джерело даних про місцеположення</string>
     <string name="shared_string_shape">Форма</string>
     <string name="default_appearance_desc">Типовий колір, піктограма та форма застосовуватимуться до доданих точок у групі закладок.</string>
@@ -3514,7 +3514,7 @@
     <string name="altitude_correction">Корекція висоти</string>
     <string name="updated_map_time">Оновлено: %1$s.</string>
     <string name="includes_osm_changes_until">Містить зміни з OSM, зроблені до %1$s.</string>
-    <string name="calculate_online_altitude_descr">Отримуйте висоти онлайн з серверів RoadCrew на основі супутникових знімків та цифрових моделей висот. Розбіжність із записаною пристроєм висотою може бути використана для коригування висоти.</string>
+    <string name="calculate_online_altitude_descr">Отримуйте висоти онлайн з серверів OsmAnd на основі супутникових знімків та цифрових моделей висот. Розбіжність із записаною пристроєм висотою може бути використана для коригування висоти.</string>
     <string name="marker_2nd">Друга позначка</string>
     <string name="goods_delivery_desc_2">Дороги, рух по яких для малотоннажних транспортних засобів заборонений, не будуть використовуватись.</string>
     <string name="goods_delivery_desc_4">Використовуйте профіль «Вантажівка» для автомобілів з масою понад 3,5 тонни.</string>
@@ -3547,7 +3547,7 @@
     <string name="compass_click_desc">Двічі торкніться віджета компаса, щоб змінити режим орієнтації мапи.</string>
     <string name="compass_desc">Показує напрямок на північ.</string>
     <string name="rendering_attr_depthContourColorScheme_description">Колір ізоліній глибин</string>
-    <string name="auto_backup_preference_desc">Типово Android створює резервні копії Закладок, ключів мап і налаштувань RoadCrew, щоб відновити їх на нових пристроях або після перевстановлення. Ця резервна копія має обмеження у 25 МБ.
+    <string name="auto_backup_preference_desc">Типово Android створює резервні копії Закладок, ключів мап і налаштувань OsmAnd, щоб відновити їх на нових пристроях або після перевстановлення. Ця резервна копія має обмеження у 25 МБ.
 \nКоли ви використовуєте OsmAnd Cloud, це може призвести до непорозумінь після перевстановлення.</string>
     <string name="first_marker_widget_desc">Ви можете налаштувати віджет, щоб показувати відстань або орієнтовний час прибуття до першої позначки на мапі.</string>
     <string name="time_to_intermediate_widget_desc">Віджет показує «Час прибуття» або «Час йти» до першого проміжного пункту. Час постійно оновлюється під час навігації, коли пройдено проміжні точки, час буде оновлено до наступної проміжної точки.</string>
@@ -3622,7 +3622,7 @@
     <string name="simulate_location_by_gpx">Симулювати локацію за допомогою GPX</string>
     <string name="location_simulation_cutoff">Симуляція пропускає перші метри</string>
     <string name="location_simulation_speedup">Прискорення симуляції</string>
-    <string name="send_uuid_preference_desc">Випадковий UUID використовується для завантаження офлайнових мап з серверів RoadCrew з метою відстеження добросовісного використання ресурсів серверів, прогнозування моделей трафіку та створення анонімних щомісячних звітів щодо мап.</string>
+    <string name="send_uuid_preference_desc">Випадковий UUID використовується для завантаження офлайнових мап з серверів OsmAnd з метою відстеження добросовісного використання ресурсів серверів, прогнозування моделей трафіку та створення анонімних щомісячних звітів щодо мап.</string>
     <string name="send_uuid_preference">Надсилати унікальний ідентифікатор користувача (UUID)</string>
     <string name="shared_string_terms_of_use">Умови використання</string>
     <string name="external_sensors_plugin_name">Зовнішні датчики</string>
@@ -3643,14 +3643,14 @@
     <string name="show_map_symbols_desc">Текст, дорожні знаки тощо.</string>
     <string name="show_borders_of_downloaded_maps">Показувати межі завантажених мап</string>
     <string name="show_map_symbols">Показати символи мапи</string>
-    <string name="rendering_engine_failed_descr">RoadCrew повернувся до рендерингу мап \"Version 1\". Ви можете спробувати перемкнутися на новий рушій рендерингу «Версії 2 (OpenGL)» у Налаштуваннях.
+    <string name="rendering_engine_failed_descr">OsmAnd повернувся до рендерингу мап \"Version 1\". Ви можете спробувати перемкнутися на новий рушій рендерингу «Версії 2 (OpenGL)» у Налаштуваннях.
 \n
 \nБудь ласка, підтримайте вдосконалення, надавши свій журнал помилок.</string>
     <string name="map_rendering_engine_v2">Версія 2 (OpenGL)</string>
     <string name="dismiss_changes_descr">Усі зміни буде відхилено.</string>
     <string name="restart_now">Перезапустити зараз</string>
-    <string name="map_rendering_engine_descr">Версія 1 була стандартною до RoadCrew 4.3 і підходить для старіших пристроїв.\n\nВерсія 2 (OpenGL) є більш просунутою та додає такі функції, як 3D-перегляд.</string>
-    <string name="rendering_engine_failed">Стався збій рендерингу мап RoadCrew.</string>
+    <string name="map_rendering_engine_descr">Версія 1 була стандартною до OsmAnd 4.3 і підходить для старіших пристроїв.\n\nВерсія 2 (OpenGL) є більш просунутою та додає такі функції, як 3D-перегляд.</string>
+    <string name="rendering_engine_failed">Стався збій рендерингу мап OsmAnd.</string>
     <string name="share_crash_log">Поділитися журналом збоїв</string>
     <string name="map_rendering_engine_v1">Версія 1</string>
     <string name="map_rendering_engine">Рушій рендерингу мап</string>
@@ -3792,7 +3792,7 @@
     <string name="display_position_automatic_descr">Залежить від орієнтації мапи: внизу - для напрямку руху, в центрі - для всіх інших.</string>
     <string name="shared_string_apply_changes">Застосувати зміни</string>
     <string name="no_visible_tracks_description">Виберіть треки, щоб показати їх на мапі.</string>
-    <string name="empty_tracks_description">За допомогою RoadCrew ви можете імпортувати, створювати або записувати файли треків.</string>
+    <string name="empty_tracks_description">За допомогою OsmAnd ви можете імпортувати, створювати або записувати файли треків.</string>
     <string name="no_visible_tracks">Немає треків на мапі</string>
     <string name="recently_visible">Нещодавно переглянуті %1$s</string>
     <string name="empty_tracks">У вас немає файлів треків.</string>
@@ -3884,12 +3884,12 @@
     <string name="ant_plus_pair_new_sensor">Сполучити новий датчик</string>
     <string name="ant_plus_bluetooth_off_description">Увімкнути функцію пошуку та сполучення датчиків через Bluetooth.</string>
     <string name="ant_plus_pair_new_sensor_ble">Сполучити датчик Bluetooth LE</string>
-    <string name="ant_plus_searching_text_description">Тримайте пристрій близько до датчика. Датчик повинен бути активований, щоб RoadCrew міг його знайти.</string>
+    <string name="ant_plus_searching_text_description">Тримайте пристрій близько до датчика. Датчик повинен бути активований, щоб OsmAnd міг його знайти.</string>
     <string name="ant_plus_open_settings">Відкрити налаштування</string>
     <string name="ant_plus_help_title">Я не знаю, який у мене тип датчика</string>
     <string name="ant_plus_searching">Пошук</string>
     <string name="ant_plus_pair_new_sensor_ant_plus">Сполучити датчик ANT+</string>
-    <string name="ant_plus_pair_bluetooth_prompt">З RoadCrew можна сполучати датчики Bluetooth LE та ANT+.</string>
+    <string name="ant_plus_pair_bluetooth_prompt">З OsmAnd можна сполучати датчики Bluetooth LE та ANT+.</string>
     <string name="learn_more_about_sensors_link">Докладніше про датчики.</string>
     <string name="is_imported">%1$s імпортовано.</string>
     <string name="file_already_exists_description">\"%1$s\". Файл із такою назвою вже існує. Замінити перезапише всі зміни, внесені в поточну версію.</string>
@@ -4018,7 +4018,7 @@
     <string name="wheel_circumference">Окружність колеса</string>
     <string name="external_sensor_name_property_description">Назва датчика</string>
     <string name="help_article_map_legend_nautical_map_name">Стиль морської мапи</string>
-    <string name="help_article_map_legend_osmand_name">Стиль мапи RoadCrew</string>
+    <string name="help_article_map_legend_osmand_name">Стиль мапи OsmAnd</string>
     <string name="help_article_map_legend_ski_map_name">Стиль гірськолижної мапи</string>
     <string name="help_article_navigation_auto_car_name">Android Auto</string>
     <string name="help_article_map_interact_with_map_name">Взаємодія з мапою</string>
@@ -4034,7 +4034,7 @@
     <string name="help_article_navigation_car_play_name">CarPlay</string>
     <string name="help_article_navigation_guidance_map_during_navigation_name">Екран мапи під час навігації</string>
     <string name="help_article_navigation_routing_name">Параметри маршруту</string>
-    <string name="help_article_navigation_routing_osmand_routing_name">Про маршрутизацію RoadCrew</string>
+    <string name="help_article_navigation_routing_osmand_routing_name">Про маршрутизацію OsmAnd</string>
     <string name="help_article_map_track_context_menu_name">Контекстне меню треків</string>
     <string name="help_article_navigation_routing_bicycle_based_routing_name">Веломаршрути (MTB)</string>
     <string name="help_article_map_tracks_on_map_name">Треки та маршрути</string>
@@ -4073,7 +4073,7 @@
     <string name="help_article_purchases_giveaway_name">Подарунок</string>
     <string name="help_article_purchases_ios_name">Придбання iOS</string>
     <string name="help_article_search_search_poi_name">Пошук POI</string>
-    <string name="help_article_start_with_name">Початок роботи з RoadCrew</string>
+    <string name="help_article_start_with_name">Початок роботи з OsmAnd</string>
     <string name="help_article_troubleshooting_crash_logs_name">Журнал збоїв</string>
     <string name="help_article_troubleshooting_maps_data_name">Мапи й дані</string>
     <string name="help_article_troubleshooting_track_recording_issues_name">Запис треку</string>
@@ -4088,10 +4088,10 @@
     <string name="telegram_chats_descr">Приєднуйтесь до одного з наших локальних телеграм-чатів.</string>
     <string name="telegram_chats">Телеграм-бесіди</string>
     <string name="github_discussion">Обговорення GitHub</string>
-    <string name="free_versions_descr">Завантажити й установити безплатну версію RoadCrew</string>
+    <string name="free_versions_descr">Завантажити й установити безплатну версію OsmAnd</string>
     <string name="send_logcat_log_descr">Докладний файл журналу</string>
     <string name="free_versions">Безплатні версії</string>
-    <string name="about_osmand">Про RoadCrew</string>
+    <string name="about_osmand">Про OsmAnd</string>
     <string name="live_monitoring_adress_descr">Вкажіть вебадресу з параметром syntax: lat={0}, lon={1}, timestamp={2}, hdop={3}, altitude={4}, speed={5}, bearing={6}, eta={7}, etfa={8}, eda={9}, edfa={10}, batproc={11}.</string>
     <string name="shared_string_temperature">Температура</string>
     <string name="sensor_temperature_desc">Показує температуру з сенсорів</string>
@@ -4144,7 +4144,7 @@
     <string name="cloud_trash_clear_confirmation">Видалити всі елементи зі смітника остаточно?</string>
     <string name="key_event_action_zoom_in">Збільшити масштаб</string>
     <string name="change_button">Змінити кнопку</string>
-    <string name="enable_to_use_external_input_device">Увімкнути зовнішній пристрій введення з RoadCrew</string>
+    <string name="enable_to_use_external_input_device">Увімкнути зовнішній пристрій введення з OsmAnd</string>
     <string name="key_event_action_change_map_orientation">Змінити орієнтацію мапи</string>
     <string name="root_folder">Коренева папка</string>
     <string name="key_event_action_previous_app_profile">Попередній профіль програми</string>
@@ -4267,7 +4267,7 @@
     <string name="shared_string_scale">масштаб</string>
     <string name="use_terrain_maps_summary">Використовує карти місцевості для даних про висоту. Геометрія треку залишається незмінною.</string>
     <string name="use_terrain_maps">Використовувати мапи місцевості</string>
-    <string name="retrieve_elevation_data_summary">RoadCrew може отримувати дані про висоту з найближчих доріг або мап місцевості.</string>
+    <string name="retrieve_elevation_data_summary">OsmAnd може отримувати дані про висоту з найближчих доріг або мап місцевості.</string>
     <string name="precise">Точно</string>
     <string name="auto_zoom_discrete">Дискретно</string>
     <string name="gpx_approximation_cpp">На основі маршрутизації (C++)</string>
@@ -4325,7 +4325,7 @@
     <string name="shared_string_osm_id">OSM ID</string>
     <string name="wall_color">Колір стіни</string>
     <string name="top">Зверху</string>
-    <string name="required_maps_calculate_online_summary">Список відсутніх мап базується на прямому маршруті. Щоб отримати точний список мап, RoadCrew може попередньо обчислити ваш маршрут онлайн.</string>
+    <string name="required_maps_calculate_online_summary">Список відсутніх мап базується на прямому маршруті. Щоб отримати точний список мап, OsmAnd може попередньо обчислити ваш маршрут онлайн.</string>
     <string name="missing_maps_header">Відсутні або застарілі мапи</string>
     <string name="delete_actions_button_confirmation">Ви впевнені, що хочете видалити \"%1$s\" з усіма доданими діями?</string>
     <string name="track_vertical_exaggeration_description">Змінюючи масштаб, ви можете змінювати висоту 3D-трека.</string>
@@ -4399,7 +4399,7 @@
     <string name="key_event_action_continuous_zoom_out">Безперервне зменшення масштабу</string>
     <string name="shared_string_modify">Модифікувати</string>
     <string name="data_source">Джерело даних</string>
-    <string name="weather_data_sources_prompt">RoadCrew надає погодні дані з двох джерел:</string>
+    <string name="weather_data_sources_prompt">OsmAnd надає погодні дані з двох джерел:</string>
     <string name="weather_source_GFS_description">Глобальна система прогнозування від національних центрів екологічного прогнозування</string>
     <string name="weather_source_ecmwf_description">Європейський центр середньострокових прогнозів погоди</string>
     <string name="weather_source_ecmwf_title">ЄЦСПП (ECMWF)</string>
@@ -4448,7 +4448,7 @@
     <string name="hugerock_promo_description">Безплатний доступ до функцій, включно з необмеженою кількістю завантажень мап, 3D-рельєф тощо на %1$s місяця</string>
     <string name="driving_region_india">Індія</string>
     <string name="hugerock_promo">Промо Hugerock на %1$s місяців</string>
-    <string name="detailed_track_guidance_description">RoadCrew зіставить ваш трек із сусідніми дорогами для покращеного покрокового супроводу.</string>
+    <string name="detailed_track_guidance_description">OsmAnd зіставить ваш трек із сусідніми дорогами для покращеного покрокового супроводу.</string>
     <string name="quick_action_routes_summary">Перемикач, щоб показати або прибрати %1$s на мапі.</string>
     <string name="detailed_track_guidance">Детальне керівництво трасою</string>
     <string name="ask_every_time">Запитуйте кожен раз</string>
@@ -4680,7 +4680,7 @@
     <string name="ais_address_nmea_server_description">Визначте IP-адресу джерела даних NMEA (якщо використовується TCP)</string>
     <string name="ais_port_nmea_server">Порт TCP джерела даних NMEA</string>
     <string name="ais_port_nmea_local">Порт UDP локального приймача даних NMEA</string>
-    <string name="ais_port_nmea_local_description">Визначте порт UPD, через який RoadCrew отримує дані NMEA</string>
+    <string name="ais_port_nmea_local_description">Визначте порт UPD, через який OsmAnd отримує дані NMEA</string>
     <string name="ais_object_lost_timeouts">Параметри тайм-ауту для прийому сигналу AIS</string>
     <string name="ais_object_lost_timeout">Тайм-аут для видимості, коли судно втрачено</string>
     <string name="ais_cpa_settings">Налаштування, пов\'язані з CPA</string>
@@ -4726,7 +4726,7 @@
     <string name="poi_source">Джерело POI</string>
     <string name="read_on">Прочитайте у %1$s</string>
     <string name="wikidata">Вікідані</string>
-    <string name="prediction_time_description">Значок позиції в RoadCrew анімується з кожним оновленням GPS (раз на секунду). Може виникнути невелика затримка, особливо під час швидкого руху або коли сигнал GPS нестабільний.</string>
+    <string name="prediction_time_description">Значок позиції в OsmAnd анімується з кожним оновленням GPS (раз на секунду). Може виникнути невелика затримка, особливо під час швидкого руху або коли сигнал GPS нестабільний.</string>
     <string name="prediction_time_advanced_description">Налаштуйте час передбачення, щоб мінімізувати затримку.</string>
     <string name="prediction_time">Час передбачення</string>
     <string name="shared_string_no_animation">Без анімація</string>
@@ -5227,9 +5227,9 @@
     <string name="ais_own_mmsi">Власний MMSI (ідентифікатор морської мобільної служби)</string>
     <string name="ais_own_mmsi_description">Визначте MMSI (9-значне числове значення) власного об\'єкта AIS.</string>
     <string name="ais_display_own_position">Визначте, чи має відображатися власний об\'єкт AIS.</string>
-    <string name="ais_display_own_position_description">Зазвичай власне положення відображається RoadCrew. Додаткове відображення власного об\'єкта AIS може бути заплутаним і його можна вимкнути тут.</string>
-    <string name="ais_receive_in_background">Отримуйте дані AIS, навіть якщо RoadCrew призупинено.</string>
-    <string name="ais_receive_in_background_description">Якщо ввімкнено, слухач повідомлень AIS продовжує працювати, навіть якщо RoadCrew призупинено або працює у фоновому режимі. Якщо вимкнено, повідомлення не надходять, якщо RoadCrew працює у фоновому режимі.</string>
+    <string name="ais_display_own_position_description">Зазвичай власне положення відображається OsmAnd. Додаткове відображення власного об\'єкта AIS може бути заплутаним і його можна вимкнути тут.</string>
+    <string name="ais_receive_in_background">Отримуйте дані AIS, навіть якщо OsmAnd призупинено.</string>
+    <string name="ais_receive_in_background_description">Якщо ввімкнено, слухач повідомлень AIS продовжує працювати, навіть якщо OsmAnd призупинено або працює у фоновому режимі. Якщо вимкнено, повідомлення не надходять, якщо OsmAnd працює у фоновому режимі.</string>
     <string name="navigate_point_format_maidenhead">Мейденгед</string>
     <string name="search_around">Пошук навколо</string>
     <string name="search_around_map_center_description">%1$s від вашого місцезнаходження</string>

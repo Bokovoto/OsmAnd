@@ -5,7 +5,7 @@
     <string name="shared_string_hillshade">التضاريس</string>
     <string name="map_widget_distance_to_intermediate">مسافة متوسط وقت الوصول</string>
     <string name="coords_search">بحث عن إحداثيات</string>
-    <string name="location_source_descr">بشكل افتراضي ، يستخدم RoadCrew المثبت من متجر بلاي %1$s لتحديد الموقع.
+    <string name="location_source_descr">بشكل افتراضي ، يستخدم OsmAnd المثبت من متجر بلاي %1$s لتحديد الموقع.
 \n
 \nإذا تحصلت على معلومات غير دقيقة عن الموقع أو استخدمت جهازًا بدون %2$s ، فحاول التبديل إلى \"%3$s\"</string>
     <string name="shared_string_done">تم</string>
@@ -353,7 +353,7 @@
     <string name="si_km_m">كم ، م</string>
     <string name="shared_string_include_data">تضمين بيانات إضافية</string>
     <string name="export_to_file">تصدير إلى ملف</string>
-    <string name="enough_contributions_descr">تهانينا ، لقد قدمت ما يكفي من مساهمات OpenStreetMap ويمكنك الآن الاستمتاع بتحديثات خرائط RoadCrew غير محدودة!</string>
+    <string name="enough_contributions_descr">تهانينا ، لقد قدمت ما يكفي من مساهمات OpenStreetMap ويمكنك الآن الاستمتاع بتحديثات خرائط OsmAnd غير محدودة!</string>
     <string name="copy_poi_name">نسخ اسم POI</string>
     <string name="poi_dialog_comment_default">متغير POI</string>
     <string name="external_device_characteristic_speed">السرعة</string>
@@ -885,7 +885,7 @@
     <string name="map_widget_ruler_control">دوائر القياس</string>
     <string name="delete_account">حذف الحساب</string>
     <string name="max_min">أقصى/أدنى</string>
-    <string name="internal_app_storage_description">التخزين الداخلي ، مخفي عن جميع المستخدمين والتطبيقات الأخرى ، لذلك لا أحد يمكنه الوصول إلى بياناتك باستثناء RoadCrew.</string>
+    <string name="internal_app_storage_description">التخزين الداخلي ، مخفي عن جميع المستخدمين والتطبيقات الأخرى ، لذلك لا أحد يمكنه الوصول إلى بياناتك باستثناء OsmAnd.</string>
     <string name="app_mode_public_transport">النقل العام</string>
     <string name="show_arrows_on_the_map">سهم متجه للهدف</string>
     <string name="access_shared_string_navigate_up">انتقال للأعلى</string>
@@ -1524,7 +1524,7 @@
     <string name="voice_provider">التوجيه الصوتي</string>
     <string name="rendering_attr_piste_difficulty_connection_name">اتصال</string>
     <string name="finish_navigation">إنهاء الملاحة</string>
-    <string name="loading_builds_failed">تعذر استرداد قائمة RoadCrew builds</string>
+    <string name="loading_builds_failed">تعذر استرداد قائمة OsmAnd builds</string>
     <string name="external_device_forget_sensor">إزالة المستشعر</string>
     <string name="no_address_found">لم يتم تحديد عنوان</string>
     <string name="transparent_status_bar_descr">اعرض الخريطة تحت شريط المعلومات</string>
@@ -1614,7 +1614,7 @@
     <string name="lang_nds">الألمانية الدنيا</string>
     <string name="import_as_gpx">استيراد كملف GPX</string>
     <string name="app_mode_aircraft">طائرة</string>
-    <string name="backup_deleting_all_data_descr">الرجاء الانتظار حتى يقوم RoadCrew بحذف بياناتك من السحابة. ستبقى جميع البيانات على الجهاز دون مساس.</string>
+    <string name="backup_deleting_all_data_descr">الرجاء الانتظار حتى يقوم OsmAnd بحذف بياناتك من السحابة. ستبقى جميع البيانات على الجهاز دون مساس.</string>
     <string name="downloads">التحميلات</string>
     <string name="monthly_subscription">اشتراك شهري</string>
     <string name="rendering_attr_surface_mud_name">وحل</string>
@@ -1907,7 +1907,7 @@
     <string name="read_wikipedia_offline_description">الحصول على اشتراك أوسماند لايف لقراءة مقالات ويكيبيديا و ويكي الرحلات دون اتصال.</string>
     <string name="mapillary_menu_edit_text_hint">اسم المستخدم</string>
     <string name="quick_action_day_night_mode">%s وضع</string>
-    <string name="location_access_request_title">RoadCrew يحتاج إذن خاصية الموقع من أجل التنقل.</string>
+    <string name="location_access_request_title">OsmAnd يحتاج إذن خاصية الموقع من أجل التنقل.</string>
     <string name="access_smart_autoannounce_descr">الإشعار فقط عند تغير الوجهة نحو نقطة الهدف.</string>
     <string name="live_monitoring_url">التتبع مباشرة عبر عنوان ويب</string>
     <string name="add_as_last_destination_point">إضافة كآخر وجهة وسيطة</string>
@@ -1946,7 +1946,7 @@
     <string name="no_location_permission">منح إذن الوصول إلى بيانات الموقع.</string>
     <string name="lang_sat">السنتالية</string>
     <string name="error_occurred_saving_gpx">خطأ أثناء حفظ GPX.</string>
-    <string name="checking_for_duplicate_description">RoadCrew يتحقق من %1$s للتكرارات مع العناصر الموجودة في التطبيق.
+    <string name="checking_for_duplicate_description">OsmAnd يتحقق من %1$s للتكرارات مع العناصر الموجودة في التطبيق.
 \n
 \nقد يستغرق الأمر بعض الوقت.</string>
     <string name="purchases_feature_desc_osmand_cloud">احصل على سحابة أوسماند لتخزين جميع بيانات أوسماند عبر الإنترنت. لن تفقد بياناتك بعد إعادة التثبيت. نسخ الاحتياطي واستعادة جميع المعلومات بسهولة.</string>
@@ -2050,7 +2050,7 @@
     <string name="shared_string_search_history">سجل البحث</string>
     <string name="gpxup_identifiable">يمكن تحديدها</string>
     <string name="add_home">إضافة المنزل</string>
-    <string name="make_osmand_better_descr">السماح ل RoadCrew بجمع ومعالجة بيانات استخدام التطبيق المجهول. لا يتم جمع بيانات حول موقعك أو المواقع التي تعرضها على الخريطة.
+    <string name="make_osmand_better_descr">السماح ل OsmAnd بجمع ومعالجة بيانات استخدام التطبيق المجهول. لا يتم جمع بيانات حول موقعك أو المواقع التي تعرضها على الخريطة.
 \n
 \nقم بإعدادها في أي وقت لاحق في \'الإعدادات\' ← \'الخصوصية والأمان\'.</string>
     <string name="file_does_not_contain_routing_rules">\'%1$s\' لا يحتوي الملف على قواعد توجيه ،يرجى اختيار ملف آخر.</string>
@@ -2644,7 +2644,7 @@
     <string name="select_another_colorization">الرجاء اختيار أنواع أخرى من التلوين.</string>
     <string name="replace_all">استبدل الكل</string>
     <string name="route_recalculation_dist_title">الحد الأدنى من المسافة لإعادة حساب المسار</string>
-    <string name="import_duplicates_description">RoadCrew يحتوي بالفعل على عناصر بنفس الأسماء مثل التي استوردتها.
+    <string name="import_duplicates_description">OsmAnd يحتوي بالفعل على عناصر بنفس الأسماء مثل التي استوردتها.
 \n
 \nحدد إجراء.</string>
     <string name="routing_attr_avoid_highway_description">تجنب الطرق السريعة</string>
@@ -2824,7 +2824,7 @@
     <string name="send_crash_log">إرسال سجل الأعطال</string>
     <string name="set_up_backup">إنشاء نسخة احتياطية</string>
     <string name="rendering_attr_OSMMapperAssistantIconsLowZooms_description">عرض تخطيطي للأيقونات عند التكبيرات المنخفضة</string>
-    <string name="shared_string_skip_warning">تخطي الهجرة؟ RoadCrew لم يعد لديه حق الوصول إلى ملفاتك في التخزين المشترك.
+    <string name="shared_string_skip_warning">تخطي الهجرة؟ OsmAnd لم يعد لديه حق الوصول إلى ملفاتك في التخزين المشترك.
 \n
 \nسيبدأ التطبيق في استخدام مجلد البيانات الجديد.</string>
     <string name="live_monitoring_start">بدء التتبع على الإنترنت</string>
@@ -2905,7 +2905,7 @@
     <string name="wikivoyage_search_hint">البحث : بلد أو مدينة أو منطقة</string>
     <string name="monitoring_control_start">تسجيل</string>
     <string name="osm_live_payment_month_cost_descr_ex">%1$.2f %2$s / شهر</string>
-    <string name="shared_storage_migration_descr">بسبب التغييرات في الوصول إلى تخزين Android ، لم يعد بإمكان RoadCrew استخدام %1$s.
+    <string name="shared_storage_migration_descr">بسبب التغييرات في الوصول إلى تخزين Android ، لم يعد بإمكان OsmAnd استخدام %1$s.
 \n
 \nانسخ جميع بياناتك إلى المجلد الجديد.</string>
     <string name="message_graph_will_be_available_after_recalculation">في انتظار إعادة حساب الطريق
@@ -2933,7 +2933,7 @@
     <string name="lang_scn">الصقلية</string>
     <string name="monitoring_min_distance_descr_side_effect">لم يتم تسجيل فترات الراحة على الإطلاق أو كنقطة واحدة فقط. يمكن تصفية الحركات البسيطة (على سبيل المثال ، على جانب الطريق لتحديد منعطف محتمل في رحلتك). لاحظ أنه سيحتوي ملفك على معلومات أقل للمعالجة اللاحقة ، وفي الوقت نفسه يمكن أن يحفظ عناصر GPS الأثرية الناتجة عن ضعف الاستقبال أو تأثيرات مجموعة الشرائح.</string>
     <string name="export_not_enough_space">لا يوجد مساحة كافية</string>
-    <string name="storage_migration_wrong_folder_warning">لم يتم العثور على بيانات RoadCrew في المجلد المحدد. حاول مرة اخرى.</string>
+    <string name="storage_migration_wrong_folder_warning">لم يتم العثور على بيانات OsmAnd في المجلد المحدد. حاول مرة اخرى.</string>
     <string name="app_mode_wheelchair">منحدرات</string>
     <string name="edit_filter">تحرير الفلتر</string>
     <string name="shared_string_angle_param">الزاوية: %s°</string>
@@ -2957,7 +2957,7 @@
     <string name="tracks_on_map">المسارات المعروضة</string>
     <string name="visible_in_3d_mode">مرئي في الوضع ثلاثي الأبعاد</string>
     <string name="replace_point_descr">استبدل نقطة أخرى بالحالية.</string>
-    <string name="osmand_live">RoadCrew لايف</string>
+    <string name="osmand_live">OsmAnd لايف</string>
     <string name="init_native_library">تهيئة المكتبة الأصيلة…</string>
     <string name="shared_string_groups">مجموعات</string>
     <string name="routing_attr_prefer_motorway_description">تفضيل طرق الدراجات النارية</string>
@@ -3533,7 +3533,7 @@
     <string name="settings_item_read_error">لايمكن قراءة %1$s.</string>
     <string name="compass_always_visible">مرئي دائما</string>
     <string name="test_route_calculation">اختبار حساب مسار</string>
-    <string name="backup_deleted_all_data_descr">تم حذف جميع بياناتك بنجاح من سحابة RoadCrew.</string>
+    <string name="backup_deleted_all_data_descr">تم حذف جميع بياناتك بنجاح من سحابة OsmAnd.</string>
     <string name="app_mode_bus">حافلة</string>
     <string name="quick_action_directions_from_desc">زر لجعل مركز الشاشة نقطة الانطلاق. سيطلب بعد ذلك تعيين الوجهة أو تشغيل حساب المسار.</string>
     <string name="rendering_value_category_name">الفئة</string>
@@ -3787,7 +3787,7 @@
     <string name="routing_attr_allow_skating_only_name">السماح بالتزلج على الطرق فقط</string>
     <string name="app_modes_choose">تطبيق الوضع</string>
     <string name="lang_oc">الأوكسيتانية</string>
-    <string name="public_transport_warning_descr_blog">اقرأ المزيد حول ملاحة RoadCrew على مدونتنا.</string>
+    <string name="public_transport_warning_descr_blog">اقرأ المزيد حول ملاحة OsmAnd على مدونتنا.</string>
     <string name="gpx_file_name">GPX اسم الملف</string>
     <string name="shared_string_turn_off">إيقاف تشغيل</string>
     <string name="rendering_attr_horseScale_name">مسارات الخيول الوعرة</string>
@@ -4214,7 +4214,7 @@
     <string name="error_reading_gpx">خطأ في قراءة بيانات GPX.</string>
     <string name="changes">التغييرات %1$s</string>
     <string name="routing_engine_vehicle_type_cycling_regular">ركوب الدراجات</string>
-    <string name="backup_version_history_delete_descr">حذف سجل التغييرات لأنواع البيانات المهملة من سحابة RoadCrew ؟</string>
+    <string name="backup_version_history_delete_descr">حذف سجل التغييرات لأنواع البيانات المهملة من سحابة OsmAnd ؟</string>
     <string name="lang_ur">الأوردية</string>
     <string name="shared_string_trash">سلة المهملات</string>
     <string name="replace_favorite_confirmation">استبدال \"%1$s\" المفضلة؟</string>
