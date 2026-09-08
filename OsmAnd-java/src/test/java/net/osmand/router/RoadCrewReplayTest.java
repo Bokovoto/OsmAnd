@@ -86,10 +86,11 @@ public class RoadCrewReplayTest {
 					+ result.diagnostics.uncoveredMatchedFixCount());
 			for (String name : new String[]{"roads_loaded", "load_truncated", "pipeline_reset",
 					"passages_started", "passages_emitted", "observations_created",
+					"passages_discarded_under_min_progress",
 					"observations_dropped_no_geometry", "observations_dropped_geometry_mismatch",
 					"observations_dropped_no_span", "no_match", "missing_road", "missing_way_id",
 					"invalid_indices", "canonicalisation_failed"}) {
-				System.out.println("  " + pad(name) + result.diagnostics.counter(name));
+				System.out.println("  " + pad(name) + " " + result.diagnostics.counter(name));
 			}
 			System.out.println("------------------------------------------------------------");
 
