@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NavigableSet;
+import java.util.TreeSet;
 
 /**
  * Replays a recorded drive through the very pipeline the phone runs (ROADMAP
@@ -72,6 +74,16 @@ public final class RoadCrewReplay {
 		public final List<String> fixTrace = new ArrayList<>();
 		public int legacyObservations;
 		public int fixesReplayed;
+		// Exact baseline for offline measurement, never part of phone telemetry.
+		private final NavigableSet<Long> matchedFixSequences = new TreeSet<>();
+
+		void recordMatchedFix(long fixSequence) {
+			matchedFixSequences.add(fixSequence);
+		}
+
+		public int matchedFixCount() {
+			return matchedFixSequences.size();
+		}
 
 		/**
 		 * The passages as text, in a form two builds can be compared line by
@@ -100,11 +112,11 @@ public final class RoadCrewReplay {
 			return lines;
 		}
 
-		/** What the report calls pipeline recall, computed the same way. */
-		public double directedRecall() {
-			int matched = diagnostics.counter("matched_fixes");
-			if (matched == 0) {
-				return 0;
+		/** Matched fixes covered by accepted observations; null means unavailable. */
+		public Long directedCoveredMatchedFixCount() {
+			if (!diagnostics.isCoverageComplete()
+					|| matchedFixSequences.size() != diagnostics.matchedFixCount()) {
+				return null;
 			}
 			long covered = 0;
 			long previousEnd = -1;
@@ -114,13 +126,23 @@ public final class RoadCrewReplay {
 			}
 			ranges.sort((a, b) -> Long.compare(a[0], b[0]));
 			for (long[] range : ranges) {
+				if (range[1] <= previousEnd) {
+					continue;
+				}
 				long from = Math.max(range[0], previousEnd + 1);
 				if (range[1] >= from) {
-					covered += range[1] - from + 1;
+					covered += matchedFixSequences.subSet(from, true, range[1], true).size();
 					previousEnd = range[1];
 				}
 			}
-			return (double) covered / matched;
+			return covered;
+		}
+
+		/** Observation coverage, not passage coverage. NaN means no valid denominator. */
+		public double directedRecall() {
+			Long covered = directedCoveredMatchedFixCount();
+			return covered == null || matchedFixSequences.isEmpty()
+					? Double.NaN : (double) covered / matchedFixSequences.size();
 		}
 	}
 
@@ -221,9 +243,16 @@ public final class RoadCrewReplay {
 				loadedLongitude = fix.longitude;
 				loadedAtElapsed = fix.elapsedRealtimeMillis;
 			}
-			pipeline.accept(new RoadCrewSegmentMatcher.GpsFix(fix.latitude, fix.longitude,
+			long matchedBefore = result.diagnostics.matchedFixCount();
+			RoadCrewObservationPipeline.ProcessingResult processed =
+					pipeline.accept(new RoadCrewSegmentMatcher.GpsFix(fix.latitude, fix.longitude,
 							fix.accuracyMeters, fix.speedMetersPerSecond, fix.bearingDegrees),
 					fix.elapsedRealtimeMillis, fix.wallClockMillis);
+			// Use canonical acceptance, not merely the upstream match status, and
+			// the same pipeline timeline used by observation intervals.
+			if (result.diagnostics.matchedFixCount() == matchedBefore + 1) {
+				result.recordMatchedFix(processed.getFixSequence());
+			}
 			result.fixesReplayed++;
 		}
 		pipeline.reset();

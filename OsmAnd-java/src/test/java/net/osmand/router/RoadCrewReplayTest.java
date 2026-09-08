@@ -74,8 +74,12 @@ public class RoadCrewReplayTest {
 					+ (seen == 0 ? "-" : Math.round(1000.0 * matched / seen) / 10.0 + "%"));
 			System.out.println("  rcs1 observations     " + result.legacyObservations);
 			System.out.println("  rcs2 observations     " + result.directed.size());
-			System.out.println("  rcs2 recall           "
-					+ Math.round(1000.0 * result.directedRecall()) / 10.0 + "%");
+			double recall = result.directedRecall();
+			Long covered = result.directedCoveredMatchedFixCount();
+			System.out.println("  observation recall    "
+					+ (Double.isNaN(recall) ? "N/A" : Math.round(10000.0 * recall) / 100.0 + "%"));
+			System.out.println("  observation covered   " + (covered == null ? "N/A" : covered));
+			System.out.println("  replay matched ids    " + result.matchedFixCount());
 			System.out.println("  streaming covered     "
 					+ result.diagnostics.coveredMatchedFixCount());
 			System.out.println("  streaming uncovered   "
@@ -110,6 +114,12 @@ public class RoadCrewReplayTest {
 					result.diagnostics.counter("observations_dropped_geometry_mismatch"));
 			Assert.assertTrue("the replay must finish its coverage summary",
 					result.diagnostics.isCoverageComplete());
+			Assert.assertEquals("the replay baseline must contain every canonical match",
+					result.diagnostics.matchedFixCount(), result.matchedFixCount());
+			if (matched > 0) {
+				Assert.assertTrue("observation recall must be measurable and within [0,1]",
+						recall >= 0 && recall <= 1);
+			}
 			Assert.assertEquals("matched = covered + uncovered",
 					result.diagnostics.matchedFixCount(),
 					result.diagnostics.coveredMatchedFixCount()
@@ -166,6 +176,9 @@ public class RoadCrewReplayTest {
 				on.diagnostics.longestUncoveredRun());
 		Assert.assertEquals("every passage identical",
 				off.passageFingerprint(), on.passageFingerprint());
+		Assert.assertEquals("exact replay matched ids", off.matchedFixCount(), on.matchedFixCount());
+		Assert.assertEquals("observation covered matched fixes",
+				off.directedCoveredMatchedFixCount(), on.directedCoveredMatchedFixCount());
 		Assert.assertTrue("the trace recorded nothing while off", off.fixTrace.isEmpty());
 		Assert.assertFalse("the trace recorded nothing while on", on.fixTrace.isEmpty());
 		System.out.println();
