@@ -11,5 +11,5 @@ test('Details Start starts road navigation, while transport Show only dismisses'
   const end = source.indexOf('\n\t@Override', start);
   assert.notEqual(end, -1, 'Following method boundary must exist');
   const callback = source.slice(start, end);
-  assert.match(callback, /dismiss\(false\);\s*if \(!app\.getRoutingHelper\(\)\.isPublicTransportMode\(\)\) \{\s*mapActivity\.getMapActions\(\)\.startNavigation\(\);\s*\}/);
+  assert.match(callback, /dismiss\(false\);\s*if \(!app\.getRoutingHelper\(\)\.isPublicTransportMode\(\)\) \{\s*mapActivity\.getMapActions\(\)\.startNavigation\(\);[^}]*\}/);
 });

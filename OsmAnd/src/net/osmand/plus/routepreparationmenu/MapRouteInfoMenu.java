@@ -2605,6 +2605,15 @@ public class MapRouteInfoMenu implements IRouteInformationListener, CardListener
 		return holder;
 	}
 
+	// Starting navigation from Details ends the planning flow: closing Details has
+	// already remembered it, so take back only that and leave the main panel, which
+	// carries Stop, as the place the Route tab returns to.
+	void forgetRouteDetails() {
+		if (!menuBackStack.empty() && menuBackStack.peek().getType() == ROUTE_DETAILS) {
+			menuBackStack.pop();
+		}
+	}
+
 	private void showInternal(int menuState) {
 		if (menuState == DEFAULT_MENU_STATE) {
 			menuState = getInitialMenuState();

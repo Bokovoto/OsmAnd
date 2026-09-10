@@ -904,6 +904,7 @@ public class ChooseRouteFragment extends BaseFullScreenFragment implements Conte
 			dismiss(false);
 			if (!app.getRoutingHelper().isPublicTransportMode()) {
 				mapActivity.getMapActions().startNavigation();
+				mapActivity.getMapRouteInfoMenu().forgetRouteDetails();
 			}
 		});
 	}
