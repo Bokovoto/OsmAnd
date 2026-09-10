@@ -902,7 +902,7 @@ public class ChooseRouteFragment extends BaseFullScreenFragment implements Conte
 	public void onNavigationRequested() {
 		callMapActivity(mapActivity -> {
 			dismiss(false);
-			if (app.getRoutingHelper().isPublicTransportMode()) {
+			if (!app.getRoutingHelper().isPublicTransportMode()) {
 				mapActivity.getMapActions().startNavigation();
 			}
 		});
