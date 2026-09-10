@@ -352,7 +352,7 @@ public final class RoadCrewNeonHud {
 		addNavigationItem(footer, activity, landscape, 1, R.drawable.ic_action_map_routes,
 				R.string.roadcrew_neon_nav_route, v -> {
 					setNavigationSelection(footer, 1);
-					activity.getMapActions().enterRoutePlanningModeGivenGpx(null, null, null, true, true);
+					activity.getMapActions().doRoute();
 				});
 		addNavigationItem(footer, activity, landscape, 2, R.drawable.ic_roadcrew_report,
 				R.string.roadcrew_neon_nav_reports, v -> showReports(activity));
