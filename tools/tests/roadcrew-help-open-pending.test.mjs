@@ -46,6 +46,17 @@ test('it opens only when this same activity is resumed and the layer is attached
   assert.match(body(activity, 'protected void onResume()'), /RoadCrewReportsLayer\.tryOpenPending\(this\)/);
 });
 
+// Seen on the phone in Test 99 (logged): IntentHelper.parseContentIntent clears
+// every intent that has extras, synchronously in onNewIntent, so the push taken
+// 300 ms later found kind=null - a tap on a running app opened only the map.
+test('a new intent is taken before IntentHelper clears its extras', () => {
+  const newIntent = body(activity, 'protected void onNewIntent(Intent intent)');
+  const take = newIntent.indexOf('RoadCrewReportsLayer.handlePushIntent(this, intent);');
+  assert.notEqual(take, -1, 'taken directly, not after a delay');
+  assert.ok(take < newIntent.indexOf('intentHelper.parseLaunchIntents()'), 'before the intent is parsed');
+  assert.doesNotMatch(newIntent, /runInUIThread\(\(\) -> RoadCrewReportsLayer\.handlePushIntent/);
+});
+
 test('the notice, its confirmation and the inbox open the request by id', () => {
   const route = body(layer, 'private void openPushReference(');
   assert.match(route, /KIND_HELP_PROBABLY_RESOLVED\.equals\(kind\)\) \{\s*openHelpRequest\(mapActivity, referenceId, false\)/);

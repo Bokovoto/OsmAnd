@@ -528,7 +528,9 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		setIntent(intent);
-		app.runInUIThread(() -> RoadCrewReportsLayer.handlePushIntent(this, intent), 300);
+		// Taken now: IntentHelper.parseContentIntent below clears every intent with
+		// extras. It is opened by tryOpenPending once this activity is resumed.
+		RoadCrewReportsLayer.handlePushIntent(this, intent);
 
 		importHelper.setUiActivity(this);
 		if (!intentHelper.parseLaunchIntents()) {
