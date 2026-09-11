@@ -61,9 +61,23 @@ test('a new intent is taken before IntentHelper clears its extras', () => {
 
 test('the initial intent is taken before any launch or content parser', () => {
   const create = body(activity, 'public void onCreate(Bundle savedInstanceState)');
-  const take = create.indexOf('RoadCrewReportsLayer.handlePushIntent(this, getIntent());');
+  const take = create.indexOf('RoadCrewReportsLayer.takeInitialPushIntent(this, getIntent(), savedInstanceState != null);');
   assert.notEqual(take, -1, 'onNewIntent does not cover a fresh Activity');
   assert.ok(take < create.indexOf('intentHelper.parseLaunchIntents()'));
+});
+
+// Seen on the phone after Test 100 (ROADMAP 245): opened fresh from a push, the
+// process killed in the background, the app brought back from the launcher -
+// the restored Activity got its original launch Intent, extras and all, and the
+// same request opened a second time with no new tap.
+test('a restored or history launch drops the old push instead of opening it', () => {
+  const initial = body(layer, 'public static void takeInitialPushIntent(');
+  const drop = initial.indexOf('if (restored || (intent.getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0)');
+  assert.notEqual(drop, -1);
+  const dropped = initial.slice(drop, initial.indexOf('return;', drop));
+  assert.match(dropped, /intent\.removeExtra\(PUSH_KIND_EXTRA\);\s*intent\.removeExtra\(PUSH_REFERENCE_ID_EXTRA\);/);
+  assert.doesNotMatch(dropped, /handlePushIntent|pendingOpen/, 'dropped, not opened');
+  assert.match(initial.slice(drop), /return;\s*\}\s*handlePushIntent\(mapActivity, intent\);/, 'a new launch still opens');
 });
 
 test('the notice, its confirmation and the inbox open the request by id', () => {

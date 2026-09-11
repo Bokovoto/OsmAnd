@@ -239,6 +239,25 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		activeLayer.showNearbyHelpReportsDialog(mapActivity);
 	}
 
+	/**
+	 * The Intent a MapActivity was created with. A restored Activity - after its
+	 * process was killed in the background - and a launch from recents get the
+	 * original launch Intent back, push extras and all; that is the old tap, not a
+	 * new one, and must not open its request a second time (seen on the phone).
+	 */
+	public static void takeInitialPushIntent(@NonNull MapActivity mapActivity, @Nullable Intent intent,
+			boolean restored) {
+		if (intent == null) {
+			return;
+		}
+		if (restored || (intent.getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0) {
+			intent.removeExtra(PUSH_KIND_EXTRA);
+			intent.removeExtra(PUSH_REFERENCE_ID_EXTRA);
+			return;
+		}
+		handlePushIntent(mapActivity, intent);
+	}
+
 	public static boolean handlePushIntent(@NonNull MapActivity mapActivity, @Nullable Intent intent) {
 		// Taken even before the layer exists: on a cold start it does not yet, and the
 		// tap used to be lost. It is opened by tryOpenPending once the activity and the

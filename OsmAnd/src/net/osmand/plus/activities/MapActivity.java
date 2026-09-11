@@ -243,7 +243,7 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 		supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
 		setRequestedOrientation(AndroidUiHelper.getScreenOrientation(this));
 		super.onCreate(savedInstanceState);
-		RoadCrewReportsLayer.handlePushIntent(this, getIntent());
+		RoadCrewReportsLayer.takeInitialPushIntent(this, getIntent(), savedInstanceState != null);
 
 		lockHelper = app.getLockHelper();
 		mapScrollHelper = new MapScrollHelper(app);
