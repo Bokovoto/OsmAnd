@@ -1,5 +1,6 @@
 package net.osmand.plus.roadcrew;
 
+import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,7 @@ public final class RoadCrewReportsSync {
 	private static final long AUTO_SYNC_INTERVAL_MILLIS = 60 * 1000;
 
 	private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
+	private static final RoadCrewProfileSyncState profileSyncState = new RoadCrewProfileSyncState();
 	private static boolean syncRunning;
 	private static long lastAutoSyncMillis;
 
@@ -378,7 +380,16 @@ public final class RoadCrewReportsSync {
 			}
 		}
 		body.put("plates", plates);
-		postJson("/v1/devices/profile", deviceId, body);
+		String payload = body.toString();
+		long now = SystemClock.elapsedRealtime();
+		if (!profileSyncState.beginSync(deviceId, payload, now)) {
+			return;
+		}
+		JSONObject response = postJson("/v1/devices/profile", deviceId, body);
+		if (!Boolean.TRUE.equals(response.opt("ok"))) {
+			throw new IOException("Profile update was not acknowledged");
+		}
+		profileSyncState.acknowledge(deviceId, payload, now);
 	}
 
 	private static void syncPendingReports(@NonNull OsmandApplication app, @NonNull String deviceId)
