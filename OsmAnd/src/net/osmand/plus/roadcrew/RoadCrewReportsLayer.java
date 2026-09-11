@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
 import androidx.annotation.StringRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -66,6 +67,13 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private static final int HELP_CHAT_MESSAGE_MAX_LENGTH = 1000;
 	private static final String PUSH_KIND_EXTRA = "roadcrew_push_kind";
 	private static final String PUSH_REFERENCE_ID_EXTRA = "roadcrew_push_reference_id";
+	static final String KIND_HELP_PROBABLY_RESOLVED = "HELP_PROBABLY_RESOLVED";
+	// Not a server kind: the notice's "Проблем е решен" opens the confirmation.
+	static final String KIND_HELP_RESOLVE_CONFIRM = "HELP_RESOLVE_CONFIRM";
+	// What a tapped notice asked to open, kept until an activity can open it. Only
+	// the payload is kept, never an activity. Two quick taps: the last one wins.
+	private static String pendingKind;
+	private static String pendingReferenceId;
 
 	private final Paint markerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint markerIconPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
@@ -204,6 +212,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			activeLayer.showDirectChatNotificationDialog(mapActivity, notification);
 		} else if ("PLATE_SAFETY_ALERT".equals(entry.kind)) {
 			activeLayer.showPlateSafetyAlertDialog(mapActivity, notification);
+		} else if (KIND_HELP_PROBABLY_RESOLVED.equals(entry.kind)) {
+			activeLayer.openHelpRequest(mapActivity, entry.referenceId, false);
 		} else {
 			activeLayer.showGenericNotificationDialog(mapActivity, notification);
 		}
@@ -224,7 +234,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	}
 
 	public static boolean handlePushIntent(@NonNull MapActivity mapActivity, @Nullable Intent intent) {
-		if (activeLayer == null || intent == null) {
+		// Taken even before the layer exists: on a cold start it does not yet, and the
+		// tap used to be lost. It is opened by tryOpenPending once the activity and the
+		// layer are ready.
+		if (intent == null) {
 			return false;
 		}
 		String kind = intent.getStringExtra(PUSH_KIND_EXTRA);
@@ -234,10 +247,41 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 		intent.removeExtra(PUSH_KIND_EXTRA);
 		intent.removeExtra(PUSH_REFERENCE_ID_EXTRA);
+		pendingKind = kind;
+		pendingReferenceId = referenceId;
+		tryOpenPending(mapActivity);
+		return true;
+	}
+
+	/**
+	 * Opens what a tapped notice asked for, when - and only when - this same activity
+	 * is resumed and not finishing, and the layer is attached to it. Called on resume
+	 * and when the layer is attached; neither alone guarantees the other, and a fixed
+	 * delay guarantees nothing. Consumed once, when it is actually opened.
+	 */
+	public static void tryOpenPending(@NonNull MapActivity mapActivity) {
+		String kind = pendingKind;
+		String referenceId = pendingReferenceId;
+		RoadCrewReportsLayer layer = activeLayer;
+		if (kind == null || referenceId == null || layer == null
+				|| layer.getMapActivity() != mapActivity
+				|| mapActivity.isFinishing() || mapActivity.isDestroyed()
+				|| !mapActivity.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+			return;
+		}
+		pendingKind = null;
+		pendingReferenceId = null;
 		RoadCrewNotificationInbox.markByReference(mapActivity, kind, referenceId);
 		RoadCrewNeonHud.apply(mapActivity);
-		activeLayer.openPushReference(mapActivity, kind, referenceId);
-		return true;
+		layer.openPushReference(mapActivity, kind, referenceId);
+	}
+
+	@Override
+	public void setMapActivity(@Nullable MapActivity mapActivity) {
+		super.setMapActivity(mapActivity);
+		if (mapActivity != null) {
+			getApplication().runInUIThread(() -> tryOpenPending(mapActivity));
+		}
 	}
 
 	@Override
@@ -918,6 +962,46 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	// The author's answer from the panel names no clock: the author is looking at
 	// the request now and means the current one. The notice's button names its own.
+	// The request as the server holds it now: its panel, or - from the notice's
+	// "Проблем е решен" - the same confirmation the panel's own button asks for.
+	// Closed, missing or unreachable is said plainly; no buttons for a gone state.
+	private void openHelpRequest(@NonNull MapActivity mapActivity, @NonNull String reportId,
+			boolean confirmResolve) {
+		getApplication().showShortToastMessage(R.string.roadcrew_help_request_loading);
+		RoadCrewReportsSync.fetchReport(getApplication(), reportId, new RoadCrewReportsSync.ReportLookupCallback() {
+			@Override
+			public void onFound(@NonNull RoadCrewReport report) {
+				if (mapActivity.isFinishing() || mapActivity.isDestroyed()) {
+					return;
+				}
+				getMapView().refreshMap();
+				if (report.getType() != RoadCrewReportType.HELP) {
+					getApplication().showToastMessage(R.string.roadcrew_help_answer_not_found);
+				} else if (confirmResolve) {
+					confirmResolveHelpReport(mapActivity, report);
+				} else {
+					showHelpReportDetailsDialog(mapActivity, report);
+				}
+			}
+
+			@Override
+			public void onClosed() {
+				getMapView().refreshMap();
+				getApplication().showToastMessage(R.string.roadcrew_help_answer_closed);
+			}
+
+			@Override
+			public void onNotFound() {
+				getApplication().showToastMessage(R.string.roadcrew_help_answer_not_found);
+			}
+
+			@Override
+			public void onError(@NonNull Exception error) {
+				getApplication().showToastMessage(R.string.roadcrew_help_request_offline);
+			}
+		});
+	}
+
 	private void answerHelpClockFromPanel(@NonNull RoadCrewReport report) {
 		RoadCrewReportsSync.answerHelpClock(getApplication(), report.getId(), null, outcome -> {
 			getMapView().refreshMap();
@@ -1242,6 +1326,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			showDirectChatDialog(mapActivity, referenceId);
 		} else if ("PLATE_SAFETY_ALERT".equals(kind)) {
 			openPlateAlertChat(mapActivity, referenceId);
+		} else if (KIND_HELP_PROBABLY_RESOLVED.equals(kind)) {
+			openHelpRequest(mapActivity, referenceId, false);
+		} else if (KIND_HELP_RESOLVE_CONFIRM.equals(kind)) {
+			openHelpRequest(mapActivity, referenceId, true);
 		}
 	}
 

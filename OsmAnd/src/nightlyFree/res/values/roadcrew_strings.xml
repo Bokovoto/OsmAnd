@@ -186,6 +186,8 @@
     <string name="roadcrew_help_answer_closed">This Help request is already closed.</string>
     <string name="roadcrew_help_answer_not_found">This Help request was not found.</string>
     <string name="roadcrew_help_answer_unconfirmed">Your answer was not confirmed. Open RoadCrew.</string>
+    <string name="roadcrew_help_request_loading">Opening the Help request…</string>
+    <string name="roadcrew_help_request_offline">No connection. Try again.</string>
     <string name="roadcrew_help_resolve_title">Mark Help resolved?</string>
     <string name="roadcrew_help_resolve_body">Nearby drivers will stop being notified. Joined drivers can still use the chat.</string>
     <string name="roadcrew_help_resolve_demo_failed">Demo Help report cannot be resolved.</string>

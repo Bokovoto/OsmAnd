@@ -616,6 +616,7 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 		RestartActivity.showRestartDialogIfNeeded(this);
 
 		importHelper.setUiActivity(this);
+		app.runInUIThread(() -> RoadCrewReportsLayer.tryOpenPending(this));
 		app.getLocationProvider().ensureLatestLocation();
 
 		long time = System.currentTimeMillis();

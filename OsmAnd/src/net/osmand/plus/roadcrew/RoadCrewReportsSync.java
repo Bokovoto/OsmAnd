@@ -524,6 +524,61 @@ public final class RoadCrewReportsSync {
 		return responseBody.isEmpty() ? new JSONObject() : new JSONObject(responseBody);
 	}
 
+	public interface ReportLookupCallback {
+		void onFound(@NonNull RoadCrewReport report);
+
+		void onClosed();
+
+		void onNotFound();
+
+		void onError(@NonNull Exception error);
+	}
+
+	/**
+	 * One report by its id, whatever its status - so a notice can open its request on
+	 * a phone that has no nearby list: just started, or the author has driven on. An
+	 * active report is taken as the server holds it; a closed one is only reported.
+	 */
+	public static void fetchReport(@NonNull OsmandApplication app, @NonNull String reportId,
+			@NonNull ReportLookupCallback callback) {
+		EXECUTOR.execute(() -> {
+			try {
+				String deviceId = RoadCrewReportsRepository.getLocalDeviceId(app);
+				HttpURLConnection connection = openConnection("/v1/reports/" + reportId, deviceId, "GET", false);
+				int responseCode = connection.getResponseCode();
+				String responseBody = readResponseBody(connection, responseCode);
+				connection.disconnect();
+				if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+					app.runInUIThread(callback::onNotFound);
+					return;
+				}
+				if (responseCode < 200 || responseCode >= 300) {
+					throw new IOException("RoadCrew API report " + reportId + " failed with HTTP " + responseCode);
+				}
+				JSONObject json = new JSONObject(responseBody).optJSONObject("report");
+				if (json == null) {
+					app.runInUIThread(callback::onNotFound);
+					return;
+				}
+				if (!"ACTIVE".equals(json.optString("status", ""))) {
+					RoadCrewReportsRepository.removeReport(app, reportId);
+					app.runInUIThread(callback::onClosed);
+					return;
+				}
+				RoadCrewReport report = readRemoteReport(json);
+				if (report == null) {
+					app.runInUIThread(callback::onNotFound);
+					return;
+				}
+				RoadCrewReportsRepository.applyServerState(app, report);
+				app.runInUIThread(() -> callback.onFound(report));
+			} catch (IOException | JSONException e) {
+				Log.w(TAG, "RoadCrew report lookup failed", e);
+				app.runInUIThread(() -> callback.onError(e));
+			}
+		});
+	}
+
 	public interface HelpAnswerCallback {
 		void onOutcome(@NonNull HelpAnswerOutcome outcome);
 	}
