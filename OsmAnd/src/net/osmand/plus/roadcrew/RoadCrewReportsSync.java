@@ -389,7 +389,15 @@ public final class RoadCrewReportsSync {
 			} else if (report.getSyncState() == RoadCrewReportSyncState.PENDING_UPDATE
 					&& report.hasLocalVote()
 					&& isRemoteReport(report)) {
-				syncRemoteVote(deviceId, report, report.getId());
+				try {
+					syncRemoteVote(deviceId, report, report.getId());
+				} catch (ReportNoLongerActiveException e) {
+					// Closed on the server: the vote has nowhere to go. Drop the local copy
+					// and go on - one closed report must not stall the others.
+					Log.i(TAG, "RoadCrew vote dropped, report no longer active: " + report.getId());
+					RoadCrewReportsRepository.removeReport(app, report.getId());
+					continue;
+				}
 				RoadCrewReportsRepository.markReportSynced(app, report.getId(), report.getId(),
 						report.getExpiresAtMillis());
 			}
@@ -499,13 +507,35 @@ public final class RoadCrewReportsSync {
 		int responseCode = connection.getResponseCode();
 		String responseBody = readResponseBody(connection, responseCode);
 		connection.disconnect();
+		// A 409 on a vote is success only when the server says it is a duplicate. A
+		// report that is no longer active is not "sent": taking it for success recorded
+		// votes on closed requests as delivered, and failing the whole sync on it would
+		// stall every other pending report. syncPendingReports handles it per report.
 		if (allowDuplicateVote && responseCode == HttpURLConnection.HTTP_CONFLICT) {
-			return new JSONObject();
+			if (isDuplicateVote(responseBody)) {
+				return new JSONObject();
+			}
+			throw new ReportNoLongerActiveException(path, responseBody);
 		}
 		if (responseCode < 200 || responseCode >= 300) {
 			throw new IOException("RoadCrew API " + path + " failed with HTTP " + responseCode + ": " + responseBody);
 		}
 		return responseBody.isEmpty() ? new JSONObject() : new JSONObject(responseBody);
+	}
+
+	private static boolean isDuplicateVote(@NonNull String responseBody) {
+		try {
+			return !responseBody.isEmpty() && new JSONObject(responseBody).optBoolean("duplicate", false);
+		} catch (JSONException e) {
+			return false;
+		}
+	}
+
+	/** The server refused a vote because the report is no longer active. */
+	static final class ReportNoLongerActiveException extends IOException {
+		ReportNoLongerActiveException(@NonNull String path, @NonNull String body) {
+			super("RoadCrew API " + path + " refused, report no longer active: " + body);
+		}
 	}
 
 	@NonNull
