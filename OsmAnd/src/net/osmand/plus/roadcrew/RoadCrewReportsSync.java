@@ -3,6 +3,7 @@ package net.osmand.plus.roadcrew;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import net.osmand.Location;
 import net.osmand.data.LatLon;
@@ -521,6 +522,95 @@ public final class RoadCrewReportsSync {
 			throw new IOException("RoadCrew API " + path + " failed with HTTP " + responseCode + ": " + responseBody);
 		}
 		return responseBody.isEmpty() ? new JSONObject() : new JSONObject(responseBody);
+	}
+
+	public interface HelpAnswerCallback {
+		void onOutcome(@NonNull HelpAnswerOutcome outcome);
+	}
+
+	/**
+	 * The author's "still need help", as its own command rather than a stored vote.
+	 *
+	 * A stored vote is one per report and device, and the author must be able to
+	 * answer every clock. It goes out at once and reports what the server did; the
+	 * report is then refreshed from the server, so the map shows the truth rather
+	 * than an optimistic local colour. There is no automatic retry: a lost reply is
+	 * UNCONFIRMED and said so. {@code clock} names the clock being answered, or null
+	 * for the current one.
+	 */
+	public static void answerHelpClock(@NonNull OsmandApplication app, @NonNull String reportId,
+			@Nullable Integer clock, @NonNull HelpAnswerCallback callback) {
+		EXECUTOR.execute(() -> {
+			HelpAnswerOutcome outcome = answerHelpClockBlocking(app, reportId, clock, 0, 0, true);
+			app.runInUIThread(() -> callback.onOutcome(outcome));
+		});
+	}
+
+	/**
+	 * The same, on the caller's thread; timeouts of 0 keep the defaults. A notice's
+	 * button has about ten seconds in all, so it passes short timeouts and no refresh:
+	 * the report is refreshed by the next sync instead of by a second request here.
+	 */
+	@NonNull
+	public static HelpAnswerOutcome answerHelpClockBlocking(@NonNull OsmandApplication app,
+			@NonNull String reportId, @Nullable Integer clock, int connectTimeoutMillis, int readTimeoutMillis,
+			boolean refreshAfter) {
+		try {
+			String deviceId = RoadCrewReportsRepository.getLocalDeviceId(app);
+			JSONObject body = new JSONObject();
+			body.put("vote", "CONFIRMED");
+			if (clock != null) {
+				body.put("clock", clock.intValue());
+			}
+			HttpURLConnection connection = openConnection("/v1/reports/" + reportId + "/votes", deviceId);
+			if (connectTimeoutMillis > 0) {
+				connection.setConnectTimeout(connectTimeoutMillis);
+			}
+			if (readTimeoutMillis > 0) {
+				connection.setReadTimeout(readTimeoutMillis);
+			}
+			byte[] bytes = body.toString().getBytes(StandardCharsets.UTF_8);
+			connection.setFixedLengthStreamingMode(bytes.length);
+			try (OutputStream outputStream = connection.getOutputStream()) {
+				outputStream.write(bytes);
+			}
+			int responseCode = connection.getResponseCode();
+			String responseBody = readResponseBody(connection, responseCode);
+			connection.disconnect();
+			String result = "";
+			try {
+				result = responseBody.isEmpty() ? "" : new JSONObject(responseBody).optString("result", "");
+			} catch (JSONException e) {
+				result = "";
+			}
+			HelpAnswerOutcome outcome = HelpAnswerOutcome.from(responseCode, result);
+			if (outcome.requestIsActive() && refreshAfter) {
+				refreshReportFromServer(app, deviceId, reportId);
+			} else if (outcome.requestIsClosed()) {
+				RoadCrewReportsRepository.removeReport(app, reportId);
+				app.runInUIThread(() -> app.getOsmandMap().refreshMap());
+			}
+			return outcome;
+		} catch (IOException | JSONException e) {
+			Log.w(TAG, "RoadCrew Help answer not confirmed", e);
+			return HelpAnswerOutcome.UNCONFIRMED;
+		}
+	}
+
+	/** One report, as the server holds it now; a failure here leaves the local copy as it was. */
+	private static void refreshReportFromServer(@NonNull OsmandApplication app, @NonNull String deviceId,
+			@NonNull String reportId) {
+		try {
+			JSONObject response = getJson("/v1/reports/" + reportId, deviceId);
+			JSONObject json = response.optJSONObject("report");
+			RoadCrewReport report = json == null ? null : readRemoteReport(json);
+			if (report != null) {
+				RoadCrewReportsRepository.applyServerState(app, report);
+				app.runInUIThread(() -> app.getOsmandMap().refreshMap());
+			}
+		} catch (IOException | JSONException e) {
+			Log.w(TAG, "RoadCrew report refresh failed", e);
+		}
 	}
 
 	private static boolean isDuplicateVote(@NonNull String responseBody) {

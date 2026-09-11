@@ -180,6 +180,12 @@
     <string name="roadcrew_help_still_need_help">Все още ми трябва помощ</string>
     <string name="roadcrew_help_resolved">Решено</string>
     <string name="roadcrew_help_looks_resolved">Изглежда решено</string>
+    <string name="roadcrew_help_answer_applied">Заявката за помощ е отново активна.</string>
+    <string name="roadcrew_help_answer_already_active">Заявката за помощ е активна.</string>
+    <string name="roadcrew_help_answer_stale">Междувременно някой пак я отбеляза. Отворете RoadCrew.</string>
+    <string name="roadcrew_help_answer_closed">Тази заявка за помощ вече е затворена.</string>
+    <string name="roadcrew_help_answer_not_found">Заявката за помощ не беше намерена.</string>
+    <string name="roadcrew_help_answer_unconfirmed">Отговорът не е потвърден. Отворете RoadCrew.</string>
     <string name="roadcrew_help_resolve_title">Помощта решена ли е?</string>
     <string name="roadcrew_help_resolve_body">Шофьорите наблизо няма повече да получават известие. Включилите се шофьори ще могат да ползват чата.</string>
     <string name="roadcrew_help_resolve_demo_failed">Демо заявката за помощ не може да се приключи.</string>

@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
@@ -915,13 +916,40 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		return Math.round(distanceMeters / 100.0) / 10.0 + " km";
 	}
 
+	// The author's answer from the panel names no clock: the author is looking at
+	// the request now and means the current one. The notice's button names its own.
+	private void answerHelpClockFromPanel(@NonNull RoadCrewReport report) {
+		RoadCrewReportsSync.answerHelpClock(getApplication(), report.getId(), null, outcome -> {
+			getMapView().refreshMap();
+			getApplication().showToastMessage(helpAnswerMessage(outcome));
+		});
+	}
+
+	@StringRes
+	static int helpAnswerMessage(@NonNull HelpAnswerOutcome outcome) {
+		switch (outcome) {
+			case APPLIED:
+				return R.string.roadcrew_help_answer_applied;
+			case ALREADY_ACTIVE:
+				return R.string.roadcrew_help_answer_already_active;
+			case STALE:
+				return R.string.roadcrew_help_answer_stale;
+			case NO_LONGER_ACTIVE:
+				return R.string.roadcrew_help_answer_closed;
+			case NOT_FOUND:
+				return R.string.roadcrew_help_answer_not_found;
+			default:
+				return R.string.roadcrew_help_answer_unconfirmed;
+		}
+	}
+
 	private void addHelpPanelActions(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report,
 			@NonNull LinearLayout actions, @NonNull AlertDialog dialog) {
 		if (isReportAuthor(report) && !report.getId().startsWith("seed-")) {
 			if (report.isHelpProbablyResolved()) {
 				actions.addView(createActionButton(mapActivity, mapActivity.getString(R.string.roadcrew_help_still_need_help), () -> {
 					dialog.dismiss();
-					handleReportVote(report, true);
+					answerHelpClockFromPanel(report);
 				}));
 				actions.addView(createActionButton(mapActivity, mapActivity.getString(R.string.roadcrew_help_resolved), () -> {
 					dialog.dismiss();

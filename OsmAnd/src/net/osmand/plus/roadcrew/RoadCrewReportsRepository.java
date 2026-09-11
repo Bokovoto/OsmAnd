@@ -99,6 +99,24 @@ public final class RoadCrewReportsRepository {
 		return changed;
 	}
 
+	/**
+	 * One report as the server now holds it, after an action whose outcome the server
+	 * has just stated. Unlike mergeRemoteReports it does not skip a pending local
+	 * copy: for this report the server's answer is the newer truth. The local vote
+	 * value is kept.
+	 */
+	public static synchronized void applyServerState(@NonNull OsmandApplication app,
+			@NonNull RoadCrewReport remoteReport) {
+		ensureLoaded(app);
+		int index = findReportIndex(remoteReport.getId());
+		if (index == -1) {
+			REPORTS.add(remoteReport);
+		} else {
+			REPORTS.set(index, remoteReport.withLocalVote(REPORTS.get(index).getLocalVote()));
+		}
+		save(app);
+	}
+
 	@NonNull
 	public static synchronized List<RoadCrewReport> getReports(@NonNull OsmandApplication app) {
 		ensureLoaded(app);

@@ -180,6 +180,12 @@
     <string name="roadcrew_help_still_need_help">Still need help</string>
     <string name="roadcrew_help_resolved">Resolved</string>
     <string name="roadcrew_help_looks_resolved">Looks resolved</string>
+    <string name="roadcrew_help_answer_applied">Your Help request is active again.</string>
+    <string name="roadcrew_help_answer_already_active">Your Help request is active.</string>
+    <string name="roadcrew_help_answer_stale">Someone marked it again in the meantime. Open RoadCrew.</string>
+    <string name="roadcrew_help_answer_closed">This Help request is already closed.</string>
+    <string name="roadcrew_help_answer_not_found">This Help request was not found.</string>
+    <string name="roadcrew_help_answer_unconfirmed">Your answer was not confirmed. Open RoadCrew.</string>
     <string name="roadcrew_help_resolve_title">Mark Help resolved?</string>
     <string name="roadcrew_help_resolve_body">Nearby drivers will stop being notified. Joined drivers can still use the chat.</string>
     <string name="roadcrew_help_resolve_demo_failed">Demo Help report cannot be resolved.</string>
