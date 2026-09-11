@@ -56,7 +56,10 @@ test('the answer is a broadcast named by report and clock; the solve opens the c
 
 test('the confirmation from the button takes its notice away and reads its inbox entry', () => {
   const layer = read('src/net/osmand/plus/roadcrew/RoadCrewReportsLayer.java');
-  assert.match(body(layer, 'private void openHelpRequest('), /if \(confirmResolve\) \{\s*\/\/[^\n]*\n\s*RoadCrewHelpNotice\.cancel\(mapActivity, reportId\);/);
+  const presentation = body(layer, 'private void showPendingHelpResult(');
+  assert.match(presentation, /RoadCrewHelpNotice\.cancel\(mapActivity, request\.referenceId\);/);
+  assert.ok(presentation.indexOf('RoadCrewHelpNotice.cancel') > presentation.indexOf('confirmResolveHelpReport('),
+    'do not dismiss the notice while its lookup is still pending');
   assert.match(body(layer, 'public static void tryOpenPending('),
     /markByReference\(mapActivity,\s*KIND_HELP_RESOLVE_CONFIRM\.equals\(kind\) \? KIND_HELP_PROBABLY_RESOLVED : kind, referenceId\)/);
   assert.match(body(notice, 'static void cancel('), /cancel\(tag\(reportId\), NOTICE_ID\)/);

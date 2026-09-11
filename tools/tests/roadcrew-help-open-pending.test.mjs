@@ -31,7 +31,7 @@ function body(source, signature) {
 test('a tap is kept, not lost, when the layer is not ready', () => {
   const push = body(layer, 'public static boolean handlePushIntent(');
   assert.doesNotMatch(push, /activeLayer == null/, 'a cold start must not drop the tap');
-  assert.match(push, /pendingKind = kind;\s*pendingReferenceId = referenceId;\s*tryOpenPending\(mapActivity\);/);
+  assert.match(push, /pendingOpen\.accept\(kind, referenceId\);\s*tryOpenPending\(mapActivity\);/);
   assert.doesNotMatch(push, /openPushReference\(/, 'opening happens only in tryOpenPending');
 });
 
@@ -41,7 +41,9 @@ test('it opens only when this same activity is resumed and the layer is attached
     /isAtLeast\(Lifecycle\.State\.RESUMED\)/]) {
     assert.match(open, guard);
   }
-  assert.ok(open.indexOf('pendingKind = null') < open.indexOf('openPushReference('), 'consumed once, when opened');
+  assert.ok(open.indexOf('pendingOpen.consume(request)') > open.indexOf('showPendingHelpResult('),
+    'lookup completion is not presentation');
+  assert.match(open, /if \(request\.outcome == null\) \{\s*return;/);
   assert.match(body(layer, 'public void setMapActivity('), /tryOpenPending\(mapActivity\)/);
   assert.match(body(activity, 'protected void onResume()'), /RoadCrewReportsLayer\.tryOpenPending\(this\)/);
 });
@@ -57,15 +59,36 @@ test('a new intent is taken before IntentHelper clears its extras', () => {
   assert.doesNotMatch(newIntent, /runInUIThread\(\(\) -> RoadCrewReportsLayer\.handlePushIntent/);
 });
 
+test('the initial intent is taken before any launch or content parser', () => {
+  const create = body(activity, 'public void onCreate(Bundle savedInstanceState)');
+  const take = create.indexOf('RoadCrewReportsLayer.handlePushIntent(this, getIntent());');
+  assert.notEqual(take, -1, 'onNewIntent does not cover a fresh Activity');
+  assert.ok(take < create.indexOf('intentHelper.parseLaunchIntents()'));
+});
+
 test('the notice, its confirmation and the inbox open the request by id', () => {
   const route = body(layer, 'private void openPushReference(');
   assert.match(route, /KIND_HELP_PROBABLY_RESOLVED\.equals\(kind\)\) \{\s*openHelpRequest\(mapActivity, referenceId, false\)/);
   assert.match(route, /KIND_HELP_RESOLVE_CONFIRM\.equals\(kind\)\) \{\s*openHelpRequest\(mapActivity, referenceId, true\)/);
   assert.match(body(layer, 'static void openInboxNotification('), /KIND_HELP_PROBABLY_RESOLVED\.equals\(entry\.kind\)/);
-  const opening = body(layer, 'private void openHelpRequest(');
+  assert.match(body(layer, 'private void openHelpRequest('), /pendingOpen\.accept/);
+  const opening = body(layer, 'private static void loadPendingHelp(');
   assert.match(opening, /RoadCrewReportsSync\.fetchReport\(/);
-  assert.match(opening, /confirmResolve\) \{\s*confirmResolveHelpReport\(mapActivity, report\);\s*\} else \{\s*showHelpReportDetailsDialog\(mapActivity, report\);/);
+  assert.doesNotMatch(opening, /mapActivity|showHelpReportDetailsDialog|confirmResolveHelpReport/,
+    'lookup callback must not retain or present to an old activity');
+  const present = body(layer, 'private void showPendingHelpResult(');
+  assert.match(present, /activeHelpOpenDialog = confirmResolveHelpReport\(mapActivity, report\)/);
+  assert.match(present, /activeHelpOpenDialog = showHelpReportDetailsDialog\(mapActivity, report\)/);
   for (const outcome of ['onClosed', 'onNotFound', 'onError']) assert.match(opening, new RegExp(`public void ${outcome}\\(`));
+});
+
+test('all lookup results use the latest request and current resumed host', () => {
+  const complete = body(layer, 'private static void completePendingHelp(');
+  assert.match(complete, /if \(!pendingOpen\.completeLookup\(request, outcome, report\)\) \{\s*return;/);
+  assert.match(complete, /layer\.getMapActivity\(\)/);
+  assert.match(complete, /tryOpenPending\(currentActivity\)/);
+  assert.doesNotMatch(complete, /dialog\.show|confirmResolveHelpReport/);
+  assert.match(body(layer, 'public static void tryOpenPending('), /dismissActiveHelpOpenDialog\(\)/);
 });
 
 test('the lookup takes an active report as the server holds it, and only reports a closed one', () => {

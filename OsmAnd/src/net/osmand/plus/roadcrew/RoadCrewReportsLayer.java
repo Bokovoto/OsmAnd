@@ -72,8 +72,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	static final String KIND_HELP_RESOLVE_CONFIRM = "HELP_RESOLVE_CONFIRM";
 	// What a tapped notice asked to open, kept until an activity can open it. Only
 	// the payload is kept, never an activity. Two quick taps: the last one wins.
-	private static String pendingKind;
-	private static String pendingReferenceId;
+	private static final RoadCrewPendingOpen<RoadCrewReport> pendingOpen = new RoadCrewPendingOpen<>();
 
 	private final Paint markerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint markerIconPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
@@ -114,6 +113,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	@Nullable
 	private AlertDialog activeNotificationDialog;
 	@Nullable
+	private AlertDialog activeHelpOpenDialog;
+	@Nullable
 	private RoadCrewVoiceAlerts voiceAlerts;
 	@Nullable
 	private RoadCrewTruckRestrictionsProvider truckRestrictionsProvider;
@@ -153,10 +154,15 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		validationController = new RoadCrewValidationController(getApplication(), this::getMapActivity,
 				() -> notificationPromptVisible || proximityPromptVisible);
 		createResources();
+		MapActivity mapActivity = getMapActivity();
+		if (mapActivity != null) {
+			getApplication().runInUIThread(() -> tryOpenPending(mapActivity));
+		}
 	}
 
 	@Override
 	public void destroyLayer() {
+		dismissActiveHelpOpenDialog();
 		if (validationController != null) { validationController.close(); validationController = null; }
 		super.destroyLayer();
 		if (activeLayer == this) {
@@ -247,8 +253,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 		intent.removeExtra(PUSH_KIND_EXTRA);
 		intent.removeExtra(PUSH_REFERENCE_ID_EXTRA);
-		pendingKind = kind;
-		pendingReferenceId = referenceId;
+		pendingOpen.accept(kind, referenceId);
 		tryOpenPending(mapActivity);
 		return true;
 	}
@@ -260,25 +265,41 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	 * delay guarantees nothing. Consumed once, when it is actually opened.
 	 */
 	public static void tryOpenPending(@NonNull MapActivity mapActivity) {
-		String kind = pendingKind;
-		String referenceId = pendingReferenceId;
+		RoadCrewPendingOpen.Request<RoadCrewReport> request = pendingOpen.current();
 		RoadCrewReportsLayer layer = activeLayer;
-		if (kind == null || referenceId == null || layer == null
+		if (request == null || layer == null
 				|| layer.getMapActivity() != mapActivity
 				|| mapActivity.isFinishing() || mapActivity.isDestroyed()
 				|| !mapActivity.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
 			return;
 		}
-		pendingKind = null;
-		pendingReferenceId = null;
+		String kind = request.kind;
+		String referenceId = request.referenceId;
+		if (KIND_HELP_PROBABLY_RESOLVED.equals(kind) || KIND_HELP_RESOLVE_CONFIRM.equals(kind)) {
+			if (pendingOpen.beginLookup(request)) {
+				layer.dismissActiveHelpOpenDialog();
+				layer.dismissActiveNotificationDialog();
+				loadPendingHelp(mapActivity.getApp(), request);
+			}
+			if (request.outcome == null) {
+				return;
+			}
+			layer.showPendingHelpResult(mapActivity, request);
+		} else {
+			layer.dismissActiveHelpOpenDialog();
+			layer.openPushReference(mapActivity, kind, referenceId);
+		}
+		pendingOpen.consume(request);
 		RoadCrewNotificationInbox.markByReference(mapActivity,
 				KIND_HELP_RESOLVE_CONFIRM.equals(kind) ? KIND_HELP_PROBABLY_RESOLVED : kind, referenceId);
 		RoadCrewNeonHud.apply(mapActivity);
-		layer.openPushReference(mapActivity, kind, referenceId);
 	}
 
 	@Override
 	public void setMapActivity(@Nullable MapActivity mapActivity) {
+		if (mapActivity != getMapActivity()) {
+			dismissActiveHelpOpenDialog();
+		}
 		super.setMapActivity(mapActivity);
 		if (mapActivity != null) {
 			getApplication().runInUIThread(() -> tryOpenPending(mapActivity));
@@ -858,7 +879,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		dialog.show();
 	}
 
-	private void showHelpReportDetailsDialog(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report) {
+	private AlertDialog showHelpReportDetailsDialog(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report) {
 		LinearLayout content = RoadCrewUi.createPanel(mapActivity, report.getType().getTitle(mapActivity));
 		RoadCrewUi.addBody(mapActivity, content, createReportDetailsMessage(report));
 
@@ -889,6 +910,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			prepareHelpPanelChat(mapActivity, report, messagesView, sendButton, dialog);
 		});
 		dialog.show();
+		return dialog;
 	}
 
 	private void showNearbyHelpReportsDialog(@NonNull MapActivity mapActivity) {
@@ -966,43 +988,76 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	// Closed, missing or unreachable is said plainly; no buttons for a gone state.
 	private void openHelpRequest(@NonNull MapActivity mapActivity, @NonNull String reportId,
 			boolean confirmResolve) {
-		if (confirmResolve) {
-			// A button does not take its notice away as a tap on the notice does.
-			RoadCrewHelpNotice.cancel(mapActivity, reportId);
-		}
-		getApplication().showShortToastMessage(R.string.roadcrew_help_request_loading);
-		RoadCrewReportsSync.fetchReport(getApplication(), reportId, new RoadCrewReportsSync.ReportLookupCallback() {
+		pendingOpen.accept(confirmResolve ? KIND_HELP_RESOLVE_CONFIRM : KIND_HELP_PROBABLY_RESOLVED, reportId);
+		tryOpenPending(mapActivity);
+	}
+
+	private static void loadPendingHelp(@NonNull OsmandApplication app,
+			@NonNull RoadCrewPendingOpen.Request<RoadCrewReport> request) {
+		app.showShortToastMessage(R.string.roadcrew_help_request_loading);
+		RoadCrewReportsSync.fetchReport(app, request.referenceId, new RoadCrewReportsSync.ReportLookupCallback() {
 			@Override
 			public void onFound(@NonNull RoadCrewReport report) {
-				if (mapActivity.isFinishing() || mapActivity.isDestroyed()) {
-					return;
-				}
-				getMapView().refreshMap();
-				if (report.getType() != RoadCrewReportType.HELP) {
-					getApplication().showToastMessage(R.string.roadcrew_help_answer_not_found);
-				} else if (confirmResolve) {
-					confirmResolveHelpReport(mapActivity, report);
-				} else {
-					showHelpReportDetailsDialog(mapActivity, report);
-				}
+				completePendingHelp(request, RoadCrewPendingOpen.Outcome.FOUND, report);
 			}
 
 			@Override
 			public void onClosed() {
-				getMapView().refreshMap();
-				getApplication().showToastMessage(R.string.roadcrew_help_answer_closed);
+				completePendingHelp(request, RoadCrewPendingOpen.Outcome.CLOSED, null);
 			}
 
 			@Override
 			public void onNotFound() {
-				getApplication().showToastMessage(R.string.roadcrew_help_answer_not_found);
+				completePendingHelp(request, RoadCrewPendingOpen.Outcome.NOT_FOUND, null);
 			}
 
 			@Override
 			public void onError(@NonNull Exception error) {
-				getApplication().showToastMessage(R.string.roadcrew_help_request_offline);
+				completePendingHelp(request, RoadCrewPendingOpen.Outcome.ERROR, null);
 			}
 		});
+	}
+
+	private static void completePendingHelp(@NonNull RoadCrewPendingOpen.Request<RoadCrewReport> request,
+			@NonNull RoadCrewPendingOpen.Outcome outcome, @Nullable RoadCrewReport report) {
+		if (!pendingOpen.completeLookup(request, outcome, report)) {
+			return;
+		}
+		RoadCrewReportsLayer layer = activeLayer;
+		MapActivity currentActivity = layer == null ? null : layer.getMapActivity();
+		if (currentActivity != null) {
+			tryOpenPending(currentActivity);
+		}
+	}
+
+	private void showPendingHelpResult(@NonNull MapActivity mapActivity,
+			@NonNull RoadCrewPendingOpen.Request<RoadCrewReport> request) {
+		getMapView().refreshMap();
+		RoadCrewReport report = request.value;
+		if (request.outcome == RoadCrewPendingOpen.Outcome.FOUND && report != null
+				&& report.getType() == RoadCrewReportType.HELP) {
+			dismissActiveHelpOpenDialog();
+			if (KIND_HELP_RESOLVE_CONFIRM.equals(request.kind)) {
+				activeHelpOpenDialog = confirmResolveHelpReport(mapActivity, report);
+				// Cancel only after the confirmation is actually displayed.
+				RoadCrewHelpNotice.cancel(mapActivity, request.referenceId);
+			} else {
+				activeHelpOpenDialog = showHelpReportDetailsDialog(mapActivity, report);
+			}
+		} else if (request.outcome == RoadCrewPendingOpen.Outcome.CLOSED) {
+			getApplication().showToastMessage(R.string.roadcrew_help_answer_closed);
+		} else if (request.outcome == RoadCrewPendingOpen.Outcome.ERROR) {
+			getApplication().showToastMessage(R.string.roadcrew_help_request_offline);
+		} else {
+			getApplication().showToastMessage(R.string.roadcrew_help_answer_not_found);
+		}
+	}
+
+	private void dismissActiveHelpOpenDialog() {
+		if (activeHelpOpenDialog != null) {
+			activeHelpOpenDialog.dismiss();
+			activeHelpOpenDialog = null;
+		}
 	}
 
 	// The author's answer from the panel names no clock: the author is looking at
@@ -1110,7 +1165,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		return getContext().getString(R.string.roadcrew_report_status_active);
 	}
 
-	private void confirmResolveHelpReport(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report) {
+	private AlertDialog confirmResolveHelpReport(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report) {
 		LinearLayout content = RoadCrewUi.createPanel(mapActivity, mapActivity.getString(R.string.roadcrew_help_resolve_title));
 		RoadCrewUi.addBody(mapActivity, content,
 				mapActivity.getString(R.string.roadcrew_help_resolve_body));
@@ -1122,6 +1177,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			handleResolveHelpReport(report);
 		});
 		dialog.show();
+		return dialog;
 	}
 
 	private void handleResolveHelpReport(@NonNull RoadCrewReport report) {
