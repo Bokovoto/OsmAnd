@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class RoadCrewFirebaseMessagingService extends FirebaseMessagingService {
 
-	private static final String CHANNEL_ID = "roadcrew_alerts_sound_v1";
+	static final String CHANNEL_ID = "roadcrew_alerts_sound_v1";
 	private static final int NOTIFICATION_ID_BASE = 42000;
 
 	@Override
@@ -46,13 +46,14 @@ public class RoadCrewFirebaseMessagingService extends FirebaseMessagingService {
 		String body = valueOrDefault(data.get("body"), getString(R.string.roadcrew_push_default_body));
 		String kind = valueOrDefault(data.get("kind"), "ROADCREW_EVENT");
 		String referenceId = valueOrDefault(data.get("referenceId"), "");
+		String helpClock = data.get("helpClock");
 		RoadCrewNotificationInbox.storePush((OsmandApplication) getApplication(),
 				kind, referenceId, title, body);
-		showNotification(title, body, kind, referenceId);
+		showNotification(title, body, kind, referenceId, helpClock);
 	}
 
 	private void showNotification(@NonNull String title, @NonNull String body,
-			@NonNull String kind, @NonNull String referenceId) {
+			@NonNull String kind, @NonNull String referenceId, String helpClock) {
 		if (!AndroidUtils.hasPostNotificationPermission(this)) {
 			return;
 		}
@@ -76,6 +77,13 @@ public class RoadCrewFirebaseMessagingService extends FirebaseMessagingService {
 				.setSound(defaultNotificationSound())
 				.setAutoCancel(true)
 				.setContentIntent(pendingIntent);
+		int clock = parseClock(helpClock);
+		if (RoadCrewReportsLayer.KIND_HELP_PROBABLY_RESOLVED.equals(kind) && clock > 0 && !referenceId.isEmpty()) {
+			RoadCrewHelpNotice.addActions(this, builder, referenceId, clock);
+			NotificationManagerCompat.from(this).notify(RoadCrewHelpNotice.tag(referenceId),
+					RoadCrewHelpNotice.NOTICE_ID, builder.build());
+			return;
+		}
 		NotificationManagerCompat.from(this).notify(notificationId, builder.build());
 	}
 
@@ -103,6 +111,15 @@ public class RoadCrewFirebaseMessagingService extends FirebaseMessagingService {
 	@NonNull
 	private Uri defaultNotificationSound() {
 		return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+	}
+
+	/** The clock a looks-resolved notice answers; 0 when absent (an older server). */
+	private static int parseClock(String value) {
+		try {
+			return value == null ? 0 : Integer.parseInt(value.trim());
+		} catch (NumberFormatException e) {
+			return 0;
+		}
 	}
 
 	private int notificationId(@NonNull String kind, @NonNull String referenceId) {

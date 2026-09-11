@@ -65,8 +65,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private static final float MARKER_IMAGE_SIZE_DP = 54;
 	private static final float MARKER_LABEL_OFFSET_DP = 31;
 	private static final int HELP_CHAT_MESSAGE_MAX_LENGTH = 1000;
-	private static final String PUSH_KIND_EXTRA = "roadcrew_push_kind";
-	private static final String PUSH_REFERENCE_ID_EXTRA = "roadcrew_push_reference_id";
+	static final String PUSH_KIND_EXTRA = "roadcrew_push_kind";
+	static final String PUSH_REFERENCE_ID_EXTRA = "roadcrew_push_reference_id";
 	static final String KIND_HELP_PROBABLY_RESOLVED = "HELP_PROBABLY_RESOLVED";
 	// Not a server kind: the notice's "Проблем е решен" opens the confirmation.
 	static final String KIND_HELP_RESOLVE_CONFIRM = "HELP_RESOLVE_CONFIRM";
@@ -271,7 +271,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 		pendingKind = null;
 		pendingReferenceId = null;
-		RoadCrewNotificationInbox.markByReference(mapActivity, kind, referenceId);
+		RoadCrewNotificationInbox.markByReference(mapActivity,
+				KIND_HELP_RESOLVE_CONFIRM.equals(kind) ? KIND_HELP_PROBABLY_RESOLVED : kind, referenceId);
 		RoadCrewNeonHud.apply(mapActivity);
 		layer.openPushReference(mapActivity, kind, referenceId);
 	}
@@ -960,13 +961,15 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		return Math.round(distanceMeters / 100.0) / 10.0 + " km";
 	}
 
-	// The author's answer from the panel names no clock: the author is looking at
-	// the request now and means the current one. The notice's button names its own.
 	// The request as the server holds it now: its panel, or - from the notice's
 	// "Проблем е решен" - the same confirmation the panel's own button asks for.
 	// Closed, missing or unreachable is said plainly; no buttons for a gone state.
 	private void openHelpRequest(@NonNull MapActivity mapActivity, @NonNull String reportId,
 			boolean confirmResolve) {
+		if (confirmResolve) {
+			// A button does not take its notice away as a tap on the notice does.
+			RoadCrewHelpNotice.cancel(mapActivity, reportId);
+		}
 		getApplication().showShortToastMessage(R.string.roadcrew_help_request_loading);
 		RoadCrewReportsSync.fetchReport(getApplication(), reportId, new RoadCrewReportsSync.ReportLookupCallback() {
 			@Override
@@ -1002,6 +1005,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		});
 	}
 
+	// The author's answer from the panel names no clock: the author is looking at
+	// the request now and means the current one. The notice's button names its own.
 	private void answerHelpClockFromPanel(@NonNull RoadCrewReport report) {
 		RoadCrewReportsSync.answerHelpClock(getApplication(), report.getId(), null, outcome -> {
 			getMapView().refreshMap();

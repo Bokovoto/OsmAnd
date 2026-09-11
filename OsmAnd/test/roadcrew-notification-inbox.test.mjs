@@ -31,5 +31,7 @@ test('opening or acknowledging an item marks it read and routes to its action', 
   assert.match(layer, /HELP_CHAT_MESSAGE[\s\S]*showHelpChatMessageNotificationDialog/);
   assert.match(layer, /DIRECT_CHAT_MESSAGE[\s\S]*showDirectChatNotificationDialog/);
   assert.match(layer, /PLATE_SAFETY_ALERT[\s\S]*showPlateSafetyAlertDialog/);
-  assert.match(layer, /markByReference\(mapActivity, kind, referenceId\)/);
+  // The notice's "Проблем е решен" arrives as HELP_RESOLVE_CONFIRM; it reads the
+  // looks-resolved entry it came from.
+  assert.match(layer, /markByReference\(mapActivity,\s*(KIND_HELP_RESOLVE_CONFIRM\.equals\(kind\) \? KIND_HELP_PROBABLY_RESOLVED : )?kind, referenceId\)/);
 });

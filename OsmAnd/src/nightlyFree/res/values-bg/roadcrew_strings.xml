@@ -188,6 +188,8 @@
     <string name="roadcrew_help_answer_unconfirmed">Отговорът не е потвърден. Отворете RoadCrew.</string>
     <string name="roadcrew_help_request_loading">Отваряне на заявката за помощ…</string>
     <string name="roadcrew_help_request_offline">Няма връзка. Опитайте отново.</string>
+    <string name="roadcrew_help_notice_problem_solved">Проблем е решен</string>
+    <string name="roadcrew_help_notice_outcome_title">Заявка за помощ</string>
     <string name="roadcrew_help_resolve_title">Помощта решена ли е?</string>
     <string name="roadcrew_help_resolve_body">Шофьорите наблизо няма повече да получават известие. Включилите се шофьори ще могат да ползват чата.</string>
     <string name="roadcrew_help_resolve_demo_failed">Демо заявката за помощ не може да се приключи.</string>
