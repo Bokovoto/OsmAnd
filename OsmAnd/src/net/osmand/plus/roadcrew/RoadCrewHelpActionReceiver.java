@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -22,6 +23,7 @@ import java.util.List;
  */
 public class RoadCrewHelpActionReceiver extends BroadcastReceiver {
 
+	private static final String TAG = "RoadCrewHelpAction";
 	private static final int CONNECT_TIMEOUT_MILLIS = 4_000;
 	private static final int READ_TIMEOUT_MILLIS = 4_000;
 
@@ -50,6 +52,10 @@ public class RoadCrewHelpActionReceiver extends BroadcastReceiver {
 			try {
 				outcome = RoadCrewReportsSync.answerHelpClockBlocking(app, reportId, clock,
 						CONNECT_TIMEOUT_MILLIS, READ_TIMEOUT_MILLIS, false);
+			} catch (RuntimeException e) {
+				// Uncaught here it would stop the app from the background; the answer
+				// stays unconfirmed, as the notice will say.
+				Log.w(TAG, "RoadCrew Help answer from the notice failed", e);
 			} finally {
 				try {
 					RoadCrewHelpNotice.showOutcome(appContext, reportId, clock, outcome);

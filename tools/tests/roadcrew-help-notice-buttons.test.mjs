@@ -78,6 +78,8 @@ test('the receiver is bounded, honest and always finishes', () => {
   const readTimeout = Number(receiver.match(/READ_TIMEOUT_MILLIS = ([\d_]+)/)[1].replace(/_/g, ''));
   assert.ok(connect + readTimeout < 10_000, 'within the time a broadcast gets');
   assert.match(receive, /HelpAnswerOutcome outcome = HelpAnswerOutcome\.UNCONFIRMED;/, 'no reply is not success');
+  // An unexpected failure on this thread would kill the app from the background.
+  assert.match(receive, /\} catch \(RuntimeException e\) \{/);
 });
 
 test('the receiver is declared, not exported, and the button speaks Bulgarian', () => {
