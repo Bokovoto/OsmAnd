@@ -23,6 +23,8 @@ public final class RoadCrewReportsRepository {
 	private static final String PREFS_NAME = "roadcrew_reports";
 	private static final String KEY_REPORTS_JSON = "reports_json";
 	private static final String KEY_LOCAL_DEVICE_ID = "local_device_id";
+	private static final String KEY_SYNCED_IDS_JSON = "synced_ids_json";
+	private static final int MAX_SYNCED_IDS = 50;
 
 	private static final List<RoadCrewReport> REPORTS = new ArrayList<>();
 	private static boolean loaded;
@@ -52,6 +54,7 @@ public final class RoadCrewReportsRepository {
 			if (report.getId().equals(reportId)) {
 				REPORTS.set(i, report.withSynced(syncedReportId, syncedExpiresAtMillis));
 				save(app);
+				rememberSyncedId(app, reportId, syncedReportId);
 				return true;
 			}
 		}
@@ -161,6 +164,75 @@ public final class RoadCrewReportsRepository {
 			}
 		}
 		return "";
+	}
+
+	/**
+	 * The server request "Приключи" closes for a Help that may still be held under
+	 * its local id: dialogs and the map keep the report they were opened with,
+	 * while the sync renames it to the server id and the next fetch replaces its
+	 * content with the server's copy.
+	 */
+	@NonNull
+	static synchronized RoadCrewHelpResolveTarget findHelpResolveTarget(@NonNull OsmandApplication app,
+			@NonNull RoadCrewReport report) {
+		ensureLoaded(app);
+		String reportId = report.getId();
+		int index = findReportIndex(reportId);
+		boolean stillPendingLocally = index != -1
+				&& REPORTS.get(index).getSyncState() == RoadCrewReportSyncState.PENDING_CREATE;
+		String localDeviceId = getLocalDeviceId(app);
+		List<RoadCrewHelpResolveTarget.OwnHelp> ownHelps = new ArrayList<>();
+		for (RoadCrewReport candidate : REPORTS) {
+			if (candidate.getType() == RoadCrewReportType.HELP
+					&& candidate.getSyncState() == RoadCrewReportSyncState.SYNCED
+					&& RoadCrewHelpResolveTarget.isServerId(candidate.getId())
+					&& localDeviceId.equals(candidate.getCreatedBy())) {
+				LatLon location = candidate.getLocation();
+				ownHelps.add(new RoadCrewHelpResolveTarget.OwnHelp(candidate.getId(),
+						location.getLatitude(), location.getLongitude()));
+			}
+		}
+		LatLon location = report.getLocation();
+		return RoadCrewHelpResolveTarget.choose(reportId, stillPendingLocally, syncedIdFor(app, reportId),
+				findSyncedReportIdMatching(app, report),
+				RoadCrewHelpResolveTarget.onlyOwnHelpNear(location.getLatitude(), location.getLongitude(), ownHelps));
+	}
+
+	/** Which server id a local report became; kept for the last MAX_SYNCED_IDS reports. */
+	private static void rememberSyncedId(@NonNull OsmandApplication app, @NonNull String localId,
+			@NonNull String syncedId) {
+		if (localId.equals(syncedId) || RoadCrewHelpResolveTarget.isServerId(localId)) {
+			return;
+		}
+		JSONObject ids = readSyncedIds(app);
+		try {
+			ids.put(localId, syncedId);
+		} catch (JSONException ignored) {
+			return;
+		}
+		while (ids.length() > MAX_SYNCED_IDS) {
+			Iterator<String> oldest = ids.keys();
+			ids.remove(oldest.next());
+		}
+		getPreferences(app).edit().putString(KEY_SYNCED_IDS_JSON, ids.toString()).commit();
+	}
+
+	@NonNull
+	private static String syncedIdFor(@NonNull OsmandApplication app, @NonNull String localId) {
+		return readSyncedIds(app).optString(localId, "");
+	}
+
+	@NonNull
+	private static JSONObject readSyncedIds(@NonNull OsmandApplication app) {
+		String json = getPreferences(app).getString(KEY_SYNCED_IDS_JSON, null);
+		if (json != null) {
+			try {
+				return new JSONObject(json);
+			} catch (JSONException ignored) {
+				// Unreadable: start over; the fallbacks in findHelpResolveTarget still apply.
+			}
+		}
+		return new JSONObject();
 	}
 
 	private static void ensureLoaded(@NonNull OsmandApplication app) {

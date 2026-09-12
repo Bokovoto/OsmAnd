@@ -258,15 +258,20 @@ public final class RoadCrewReportsSync {
 			try {
 				String deviceId = RoadCrewReportsRepository.getLocalDeviceId(app);
 				String originalReportId = report.getId();
-				String reportId = originalReportId;
-				if (!isRemoteReport(report)) {
-					reportId = RoadCrewReportsRepository.findSyncedReportIdMatching(app, report);
-					if (reportId.isEmpty()) {
-						RoadCrewReportsRepository.removeReport(app, originalReportId);
-						app.runInUIThread(callback::onSuccess);
-						return;
-					}
+				RoadCrewHelpResolveTarget target = RoadCrewReportsRepository.findHelpResolveTarget(app, report);
+				if (target.kind == RoadCrewHelpResolveTarget.Kind.UNKNOWN) {
+					// Never "closed" without the server: it would stay open for every driver.
+					IOException error = new IOException("No server id for help " + originalReportId);
+					Log.w(TAG, "RoadCrew resolve help failed", error);
+					app.runInUIThread(() -> callback.onError(error));
+					return;
 				}
+				if (target.kind == RoadCrewHelpResolveTarget.Kind.LOCAL_ONLY) {
+					RoadCrewReportsRepository.removeReport(app, originalReportId);
+					app.runInUIThread(callback::onSuccess);
+					return;
+				}
+				String reportId = target.serverId;
 				postJson("/v1/help-requests/" + reportId + "/resolve", deviceId, new JSONObject());
 				RoadCrewReportsRepository.removeReport(app, originalReportId);
 				if (!reportId.equals(originalReportId)) {
