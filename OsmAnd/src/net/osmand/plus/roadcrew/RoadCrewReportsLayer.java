@@ -57,7 +57,6 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private static final long PROXIMITY_CHECK_INTERVAL_MILLIS = 5 * 1000;
 	private static final long PROXIMITY_STARTUP_GRACE_MILLIS = 15 * 1000;
 	private static final long MIN_REPORT_AGE_FOR_PROMPT_MILLIS = 2 * 60 * 1000;
-	private static final long NOTIFICATION_CHECK_INTERVAL_MILLIS = 20 * 1000;
 	private static final long HELP_CHAT_REFRESH_INTERVAL_MILLIS = 2 * 1000;
 	private static final double PROMPT_RADIUS_METERS = 700;
 	private static final float MARKER_TOUCH_RADIUS_DP = 36;
@@ -102,6 +101,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private final Set<String> shownNotificationIds = new HashSet<>();
 	private final Set<String> openHelpReportIds = new HashSet<>();
 	private final Set<String> openDirectChatRoomIds = new HashSet<>();
+	private final Set<String> joinedHelpReportIds = new HashSet<>();
 	private final EnumMap<RoadCrewReportType, Bitmap> markerIcons =
 			new EnumMap<>(RoadCrewReportType.class);
 	private static RoadCrewReportsLayer activeLayer;
@@ -1262,9 +1262,35 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		return report.getCreatedBy().equals(RoadCrewReportsRepository.getLocalDeviceId(getApplication()));
 	}
 
+	// A phone taking part in a Help keeps the 20 s notifications poll: its author,
+	// a driver who joined it, or one with a Help or driver chat open. Everyone else
+	// polls every 2 minutes (RoadCrewNotificationPollPolicy).
+	private boolean isTakingPartInHelp() {
+		if (!openHelpReportIds.isEmpty() || !openDirectChatRoomIds.isEmpty()) {
+			return true;
+		}
+		for (RoadCrewReport report : RoadCrewReportsRepository.getVisibleReports(getApplication())) {
+			if (report.getType() == RoadCrewReportType.HELP
+					&& (isReportAuthor(report) || joinedHelpReportIds.contains(report.getId()))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private void checkHelpNotifications() {
 		long now = System.currentTimeMillis();
-		if (notificationPromptVisible || now - lastNotificationCheckMillis < NOTIFICATION_CHECK_INTERVAL_MILLIS) {
+		if (notificationPromptVisible) {
+			return;
+		}
+		// onDraw runs this on every frame; the participation test walks the visible
+		// reports, so it is asked at most every 20 s.
+		long elapsed = now - lastNotificationCheckMillis;
+		if (lastNotificationCheckMillis != 0 && elapsed >= 0
+				&& elapsed < RoadCrewNotificationPollPolicy.PARTICIPANT_INTERVAL_MILLIS) {
+			return;
+		}
+		if (!RoadCrewNotificationPollPolicy.shouldCheck(now, lastNotificationCheckMillis, isTakingPartInHelp())) {
 			return;
 		}
 		MapActivity mapActivity = getMapActivity();
@@ -1470,6 +1496,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		RoadCrewReportsSync.joinHelpChat(getApplication(), reportId, new RoadCrewReportsSync.HelpChatCallback() {
 			@Override
 			public void onSuccess(@NonNull String chatRoomId) {
+				joinedHelpReportIds.add(reportId);
 				showHelpChatDialog(mapActivity, reportId);
 			}
 
@@ -1493,6 +1520,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 					new RoadCrewReportsSync.HelpReportChatCallback() {
 						@Override
 						public void onSuccess(@NonNull String reportId, @NonNull String chatRoomId) {
+							joinedHelpReportIds.add(reportId);
 							getMapView().refreshMap();
 							showHelpChatDialog(mapActivity, reportId);
 						}
@@ -1578,6 +1606,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 					new RoadCrewReportsSync.HelpReportChatCallback() {
 						@Override
 						public void onSuccess(@NonNull String reportId, @NonNull String chatRoomId) {
+							joinedHelpReportIds.add(reportId);
 							getMapView().refreshMap();
 							joinHelpChatForPanel(reportId, messagesView, sendButton, dialog);
 						}
