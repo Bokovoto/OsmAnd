@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 
 import net.osmand.plus.OsmandApplication;
 import net.osmand.router.RoadCrewShadowIndex;
-import net.osmand.util.MapUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,31 +26,48 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/** Downloads bounded evidence; routing separately consumes only validated, exact preferences. */
+/**
+ * Downloads bounded evidence; routing separately consumes only validated, exact preferences.
+ *
+ * Since Test 106 the evidence comes as fixed tiles (RoadCrewShadowTiles): the 2x2
+ * block around the phone from /v1/truck-map/shadow-tiles/, each tile fetched again
+ * only when it is older than one 15-minute epoch. The tiles are merged and saved in
+ * the snapshot format the rest of the app already reads.
+ */
 final class RoadCrewShadowSnapshotDownloader {
 
 	private static final String TAG = "RoadCrewShadow";
-	private static final String API_URL =
-			"https://roadcrew-api.galin-b-vasilev1.workers.dev/v1/truck-map/shadow-segments";
+	private static final String TILES_URL =
+			"https://roadcrew-api.galin-b-vasilev1.workers.dev/v1/truck-map/shadow-tiles/";
 	private static final String DEVICE_ID_HEADER = "X-RoadCrew-Device-Id";
-	private static final double SNAPSHOT_RADIUS_METERS = 15_000;
-	private static final double MIN_REFRESH_DISTANCE_METERS = 5_000;
-	private static final long MIN_REFRESH_INTERVAL_MILLIS = 15 * 60_000L;
-	private static final int SEGMENT_LIMIT = 500;
+	/** Up to four tiles of up to 500 segments each. */
+	private static final int MAX_SNAPSHOT_SEGMENTS = 4 * RoadCrewShadowTiles.MAX_SEGMENTS_PER_TILE;
 	private static final int CONNECT_TIMEOUT_MILLIS = 10_000;
 	private static final int READ_TIMEOUT_MILLIS = 20_000;
 	private static final int MAX_RESPONSE_CHARS = 2_000_000;
+	private static final int MAX_SNAPSHOT_CHARS = 8_000_000;
 	private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
 	private static boolean running;
-	private static long lastSuccessfulRequestAtMillis;
-	private static double lastSuccessfulLatitude = Double.NaN;
-	private static double lastSuccessfulLongitude = Double.NaN;
+	/** Tiles fetched in this process, by key; only the current coverage is kept. */
+	private static final Map<String, FetchedTile> TILES = new HashMap<>();
+	private static List<String> publishedCoverage = new ArrayList<>();
+
+	private static final class FetchedTile {
+		final RoadCrewShadowTiles.Tile tile;
+		final long fetchedAtMillis;
+
+		FetchedTile(RoadCrewShadowTiles.Tile tile, long fetchedAtMillis) {
+			this.tile = tile;
+			this.fetchedAtMillis = fetchedAtMillis;
+		}
+	}
 
 	private RoadCrewShadowSnapshotDownloader() {
 	}
@@ -63,36 +79,55 @@ final class RoadCrewShadowSnapshotDownloader {
 			return;
 		}
 		long now = System.currentTimeMillis();
-		if (lastSuccessfulRequestAtMillis > 0
-				&& now - lastSuccessfulRequestAtMillis < MIN_REFRESH_INTERVAL_MILLIS
-				&& MapUtils.getDistance(lastSuccessfulLatitude, lastSuccessfulLongitude,
-						latitude, longitude) < MIN_REFRESH_DISTANCE_METERS) {
+		List<String> coverage = RoadCrewShadowTiles.coverage(latitude, longitude);
+		List<String> stale = new ArrayList<>();
+		for (String key : coverage) {
+			FetchedTile fetched = TILES.get(key);
+			if (fetched == null || now - fetched.fetchedAtMillis >= RoadCrewShadowTiles.TILE_EPOCH_MILLIS) {
+				stale.add(key);
+			}
+		}
+		if (stale.isEmpty() && coverage.equals(publishedCoverage)) {
 			return;
 		}
 		running = true;
-		EXECUTOR.execute(() -> download(app, latitude, longitude));
+		EXECUTOR.execute(() -> download(app, coverage, stale));
 	}
 
 	private static void download(@NonNull OsmandApplication app,
-			double latitude, double longitude) {
+			@NonNull List<String> coverage, @NonNull List<String> stale) {
 		try {
 			if (!RoadCrewMapObservationConsent.hasCommunityRoutingAccess(app)) {
 				return;
 			}
-			String response = requestSnapshot(app, latitude, longitude);
-			RoadCrewShadowIndex index = parseSnapshot(response);
+			for (String key : stale) {
+				RoadCrewShadowTiles.Tile tile = parseTile(requestTile(app, key), key);
+				synchronized (RoadCrewShadowSnapshotDownloader.class) {
+					TILES.put(key, new FetchedTile(tile, System.currentTimeMillis()));
+				}
+			}
+			List<RoadCrewShadowTiles.Tile> parts = new ArrayList<>();
+			synchronized (RoadCrewShadowSnapshotDownloader.class) {
+				TILES.keySet().retainAll(coverage);
+				for (String key : coverage) {
+					FetchedTile fetched = TILES.get(key);
+					parts.add(fetched == null ? null : fetched.tile);
+				}
+			}
+			String snapshot = snapshotJson(coverage, RoadCrewShadowTiles.merge(coverage, parts));
+			RoadCrewShadowIndex index = parseSnapshot(snapshot);
 			if (!RoadCrewMapObservationConsent.hasCommunityRoutingAccess(app)) {
 				return;
 			}
-			persist(app, response);
+			persist(app, snapshot);
 			synchronized (RoadCrewShadowSnapshotDownloader.class) {
-				lastSuccessfulRequestAtMillis = System.currentTimeMillis();
-				lastSuccessfulLatitude = latitude;
-				lastSuccessfulLongitude = longitude;
+				publishedCoverage = new ArrayList<>(coverage);
 			}
-			Log.i(TAG, "Cached read-only Shadow snapshot with " + index.size() + " segments");
+			Log.i(TAG, "Cached read-only Shadow snapshot with " + index.size() + " segments from "
+					+ coverage.size() + " tiles (" + stale.size() + " fetched)");
 		} catch (IOException | JSONException | IllegalArgumentException e) {
-			Log.w(TAG, "Read-only Shadow snapshot refresh failed", e);
+			// The previous snapshot stays; the tiles still stale are asked for next time.
+			Log.w(TAG, "Read-only Shadow tile refresh failed", e);
 		} finally {
 			synchronized (RoadCrewShadowSnapshotDownloader.class) {
 				running = false;
@@ -101,16 +136,8 @@ final class RoadCrewShadowSnapshotDownloader {
 	}
 
 	@NonNull
-	private static String requestSnapshot(@NonNull OsmandApplication app,
-			double latitude, double longitude) throws IOException {
-		double latitudeDelta = SNAPSHOT_RADIUS_METERS / 111_320.0;
-		double longitudeScale = Math.max(0.01, Math.cos(Math.toRadians(latitude)));
-		double longitudeDelta = SNAPSHOT_RADIUS_METERS / (111_320.0 * longitudeScale);
-		String query = String.format(Locale.US,
-				"?minLat=%.6f&maxLat=%.6f&minLon=%.6f&maxLon=%.6f&limit=%d",
-				latitude - latitudeDelta, latitude + latitudeDelta,
-				longitude - longitudeDelta, longitude + longitudeDelta, SEGMENT_LIMIT);
-		HttpURLConnection connection = (HttpURLConnection) new URL(API_URL + query).openConnection();
+	private static String requestTile(@NonNull OsmandApplication app, @NonNull String key) throws IOException {
+		HttpURLConnection connection = (HttpURLConnection) new URL(TILES_URL + key).openConnection();
 		connection.setRequestMethod("GET");
 		connection.setConnectTimeout(CONNECT_TIMEOUT_MILLIS);
 		connection.setReadTimeout(READ_TIMEOUT_MILLIS);
@@ -118,12 +145,74 @@ final class RoadCrewShadowSnapshotDownloader {
 		connection.setRequestProperty(DEVICE_ID_HEADER,
 				RoadCrewReportsRepository.getLocalDeviceId(app));
 		int responseCode = connection.getResponseCode();
-		String response = readResponse(connection, responseCode);
+		String response = readResponse(connection, responseCode, MAX_RESPONSE_CHARS);
 		connection.disconnect();
 		if (responseCode < 200 || responseCode >= 300) {
-			throw new IOException("RoadCrew Shadow API failed with HTTP " + responseCode);
+			throw new IOException("RoadCrew Shadow tile " + key + " failed with HTTP " + responseCode);
 		}
 		return response;
+	}
+
+	/** A tile as the server sends it (truck-map-tiles.ts, shadowTileCache in index.ts). */
+	@NonNull
+	static RoadCrewShadowTiles.Tile parseTile(@NonNull String body, @NonNull String expectedKey) throws JSONException {
+		JSONObject root = new JSONObject(body);
+		if (root.getInt("schemaVersion") != RoadCrewShadowIndex.SCHEMA_VERSION
+				|| !RoadCrewShadowIndex.ROUTING_EFFECT_NONE.equals(root.getString("routingEffect"))
+				|| !expectedKey.equals(root.getString("tile"))) {
+			throw new JSONException("Unexpected RoadCrew Shadow tile metadata");
+		}
+		JSONArray segments = root.getJSONArray("segments");
+		if (segments.length() > RoadCrewShadowTiles.MAX_SEGMENTS_PER_TILE) {
+			throw new JSONException("Too many segments in RoadCrew Shadow tile");
+		}
+		List<RoadCrewShadowTiles.Segment> parsed = new ArrayList<>(segments.length());
+		for (int index = 0; index < segments.length(); index++) {
+			JSONObject segment = segments.getJSONObject(index);
+			JSONObject preference = segment.optJSONObject("routingPreference");
+			boolean eligible = preference != null && preference.optBoolean("eligible", false);
+			double validUntil = preference != null && preference.has("validUntil")
+					? preference.getDouble("validUntil") : Double.POSITIVE_INFINITY;
+			parsed.add(new RoadCrewShadowTiles.Segment(segment.getString("segmentId"), eligible, validUntil,
+					segment.toString()));
+		}
+		return new RoadCrewShadowTiles.Tile(expectedKey, root.getLong("generatedAt"),
+				root.getBoolean("complete"), parsed);
+	}
+
+	/** The merged tiles in the snapshot format parseSnapshot and the cache already use. */
+	@NonNull
+	static String snapshotJson(@NonNull List<String> coverage, @NonNull RoadCrewShadowTiles.Merge merge)
+			throws JSONException {
+		if (merge.generatedAtMillis <= 0) {
+			throw new JSONException("No RoadCrew Shadow tile to publish");
+		}
+		double minLatitude = 90, maxLatitude = -90, minLongitude = 180, maxLongitude = -180;
+		for (String key : coverage) {
+			double[] bounds = RoadCrewShadowTiles.bounds(key);
+			minLatitude = Math.min(minLatitude, bounds[0]);
+			maxLatitude = Math.max(maxLatitude, bounds[1]);
+			minLongitude = Math.min(minLongitude, bounds[2]);
+			maxLongitude = Math.max(maxLongitude, bounds[3]);
+		}
+		JSONArray segments = new JSONArray();
+		for (RoadCrewShadowTiles.Segment segment : merge.segments) {
+			segments.put(new JSONObject(segment.json));
+		}
+		JSONObject bounds = new JSONObject();
+		bounds.put("minLatitude", minLatitude);
+		bounds.put("maxLatitude", maxLatitude);
+		bounds.put("minLongitude", minLongitude);
+		bounds.put("maxLongitude", maxLongitude);
+		JSONObject root = new JSONObject();
+		root.put("schemaVersion", RoadCrewShadowIndex.SCHEMA_VERSION);
+		root.put("generatedAt", merge.generatedAtMillis);
+		root.put("routingEffect", RoadCrewShadowIndex.ROUTING_EFFECT_NONE);
+		root.put("truncated", !merge.complete);
+		root.put("bounds", bounds);
+		root.put("tiles", new JSONArray(coverage));
+		root.put("segments", segments);
+		return root.toString();
 	}
 
 	@NonNull
@@ -133,7 +222,7 @@ final class RoadCrewShadowSnapshotDownloader {
 			throw new JSONException("Missing RoadCrew Shadow completeness flag");
 		}
 		JSONArray segments = root.optJSONArray("segments");
-		if (segments == null || segments.length() > SEGMENT_LIMIT) {
+		if (segments == null || segments.length() > MAX_SNAPSHOT_SEGMENTS) {
 			throw new JSONException("Invalid RoadCrew Shadow segment collection");
 		}
 		List<RoadCrewShadowIndex.Entry> entries = new ArrayList<>(segments.length());
@@ -226,27 +315,27 @@ final class RoadCrewShadowSnapshotDownloader {
 	@NonNull
 	private static String readFile(@NonNull File file) throws IOException {
 		try (FileInputStream stream = new FileInputStream(file)) {
-			return readStream(stream);
+			return readStream(stream, MAX_SNAPSHOT_CHARS);
 		}
 	}
 
 	@NonNull
-	private static String readResponse(@NonNull HttpURLConnection connection, int responseCode)
+	private static String readResponse(@NonNull HttpURLConnection connection, int responseCode, int maxChars)
 			throws IOException {
 		InputStream stream = responseCode >= 200 && responseCode < 300
 				? connection.getInputStream() : connection.getErrorStream();
-		return stream == null ? "" : readStream(stream);
+		return stream == null ? "" : readStream(stream, maxChars);
 	}
 
 	@NonNull
-	private static String readStream(@NonNull InputStream stream) throws IOException {
+	private static String readStream(@NonNull InputStream stream, int maxChars) throws IOException {
 		try (BufferedReader reader = new BufferedReader(
 				new InputStreamReader(stream, StandardCharsets.UTF_8))) {
 			StringBuilder result = new StringBuilder();
 			char[] buffer = new char[8_192];
 			int read;
 			while ((read = reader.read(buffer)) >= 0) {
-				if (result.length() + read > MAX_RESPONSE_CHARS) {
+				if (result.length() + read > maxChars) {
 					throw new IOException("RoadCrew Shadow response is too large");
 				}
 				result.append(buffer, 0, read);
