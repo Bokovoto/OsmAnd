@@ -108,6 +108,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	private long lastProximityCheckMillis;
 	private long lastNotificationCheckMillis;
+	private long lastParticipationCheckMillis;
+	private boolean takingPartInHelp;
 	private boolean proximityPromptVisible;
 	private boolean notificationPromptVisible;
 	@Nullable
@@ -1290,7 +1292,11 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 				&& elapsed < RoadCrewNotificationPollPolicy.PARTICIPANT_INTERVAL_MILLIS) {
 			return;
 		}
-		if (!RoadCrewNotificationPollPolicy.shouldCheck(now, lastNotificationCheckMillis, isTakingPartInHelp())) {
+		if (RoadCrewNotificationPollPolicy.shouldCheck(now, lastParticipationCheckMillis, true)) {
+			takingPartInHelp = isTakingPartInHelp();
+			lastParticipationCheckMillis = now;
+		}
+		if (!RoadCrewNotificationPollPolicy.shouldCheck(now, lastNotificationCheckMillis, takingPartInHelp)) {
 			return;
 		}
 		MapActivity mapActivity = getMapActivity();

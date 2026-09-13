@@ -16,6 +16,7 @@ public final class RoadCrewNotificationPollPolicyTest {
 		bystanderChecksEveryTwoMinutes();
 		clockRollbackChecks();
 		measureOneHour();
+		measureFrameRateScanGate();
 		System.out.println("notification poll policy scenarios PASS");
 	}
 
@@ -47,6 +48,26 @@ public final class RoadCrewNotificationPollPolicyTest {
 		check(participant == 180, "participant checks in an hour: " + participant);
 		check(bystander == 30, "bystander checks in an hour: " + bystander);
 		System.out.println("one_hour participant_checks=" + participant + " bystander_checks=" + bystander);
+	}
+
+	private static void measureFrameRateScanGate() {
+		long start = 600_000L;
+		long lastPoll = 0;
+		long lastScan = 0;
+		int scans = 0;
+		int polls = 0;
+		for (long now = start; now < start + 3_600_000L; now += 16) {
+			if (RoadCrewNotificationPollPolicy.shouldCheck(now, lastScan, true)) {
+				lastScan = now;
+				scans++;
+			}
+			if (RoadCrewNotificationPollPolicy.shouldCheck(now, lastPoll, false)) {
+				lastPoll = now;
+				polls++;
+			}
+		}
+		check(scans == 180 && polls == 30, "independent clocks: scans=" + scans + " polls=" + polls);
+		System.out.println("one_hour frame_step_ms=16 participation_scans=" + scans + " bystander_polls=" + polls);
 	}
 
 	/** Checks in one hour when the map redraws every second, as in onDraw. */

@@ -22,7 +22,7 @@ const method = (name, next) => {
 
 test('the layer asks the policy, and only a Help participant keeps the 20 s poll', () => {
   const check = method('void checkHelpNotifications()');
-  assert.match(check, /RoadCrewNotificationPollPolicy\.shouldCheck\(now, lastNotificationCheckMillis, isTakingPartInHelp\(\)\)/);
+  assert.match(check, /RoadCrewNotificationPollPolicy\.shouldCheck\(now, lastNotificationCheckMillis, takingPartInHelp\)/);
   const participant = method('boolean isTakingPartInHelp()');
   assert.match(participant, /openHelpReportIds\.isEmpty\(\)/);
   assert.match(participant, /openDirectChatRoomIds\.isEmpty\(\)/);
@@ -35,6 +35,12 @@ test('the layer asks the policy, and only a Help participant keeps the 20 s poll
   assert.match(join, /joinedHelpReportIds\.add\(reportId\);\s*showHelpChatDialog\(mapActivity, reportId\);/);
   const fromReport = method('void openHelpChatFromReport(');
   assert.match(fromReport, /joinedHelpReportIds\.add\(reportId\);\s*getMapView\(\)\.refreshMap\(\);/);
+});
+
+test('participation scan has its own timestamp, independent of the network poll', () => {
+  const check = method('void checkHelpNotifications()');
+  assert.match(check, /if \(RoadCrewNotificationPollPolicy\.shouldCheck\(now, lastParticipationCheckMillis, true\)\) \{\s*takingPartInHelp = isTakingPartInHelp\(\);\s*lastParticipationCheckMillis = now;\s*\}/);
+  assert.equal(check.split('isTakingPartInHelp()').length - 1, 1);
 });
 
 // Real dependency-free production policy, not a reimplementation.
