@@ -15,7 +15,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public final class RoadCrewReportsRepository {
@@ -27,6 +29,8 @@ public final class RoadCrewReportsRepository {
 	private static final int MAX_SYNCED_IDS = 50;
 
 	private static final List<RoadCrewReport> REPORTS = new ArrayList<>();
+	// Deliberately not restored: after a restart a pending POST may have committed.
+	private static final Set<String> NEVER_ATTEMPTED_IDS = new HashSet<>();
 	private static boolean loaded;
 
 	private RoadCrewReportsRepository() {
@@ -35,7 +39,15 @@ public final class RoadCrewReportsRepository {
 	public static synchronized void addReport(@NonNull OsmandApplication app, @NonNull RoadCrewReport report) {
 		ensureLoaded(app);
 		REPORTS.add(report);
+		if (report.getSyncState() == RoadCrewReportSyncState.PENDING_CREATE
+				&& report.getId().startsWith("local-")) {
+			NEVER_ATTEMPTED_IDS.add(report.getId());
+		}
 		save(app);
+	}
+
+	static synchronized void beginReportCreate(@NonNull String reportId) {
+		NEVER_ATTEMPTED_IDS.remove(reportId);
 	}
 
 	public static synchronized boolean confirmReport(@NonNull OsmandApplication app, @NonNull String reportId) {
@@ -53,6 +65,7 @@ public final class RoadCrewReportsRepository {
 			RoadCrewReport report = REPORTS.get(i);
 			if (report.getId().equals(reportId)) {
 				REPORTS.set(i, report.withSynced(syncedReportId, syncedExpiresAtMillis));
+				NEVER_ATTEMPTED_IDS.remove(reportId);
 				save(app);
 				rememberSyncedId(app, reportId, syncedReportId);
 				return true;
@@ -66,6 +79,7 @@ public final class RoadCrewReportsRepository {
 		for (int i = 0; i < REPORTS.size(); i++) {
 			if (REPORTS.get(i).getId().equals(reportId)) {
 				REPORTS.remove(i);
+				NEVER_ATTEMPTED_IDS.remove(reportId);
 				save(app);
 				return true;
 			}
@@ -180,31 +194,21 @@ public final class RoadCrewReportsRepository {
 		int index = findReportIndex(reportId);
 		boolean stillPendingLocally = index != -1
 				&& REPORTS.get(index).getSyncState() == RoadCrewReportSyncState.PENDING_CREATE;
-		String localDeviceId = getLocalDeviceId(app);
-		List<RoadCrewHelpResolveTarget.OwnHelp> ownHelps = new ArrayList<>();
-		for (RoadCrewReport candidate : REPORTS) {
-			if (candidate.getType() == RoadCrewReportType.HELP
-					&& candidate.getSyncState() == RoadCrewReportSyncState.SYNCED
-					&& RoadCrewHelpResolveTarget.isServerId(candidate.getId())
-					&& localDeviceId.equals(candidate.getCreatedBy())) {
-				LatLon location = candidate.getLocation();
-				ownHelps.add(new RoadCrewHelpResolveTarget.OwnHelp(candidate.getId(),
-						location.getLatitude(), location.getLongitude()));
-			}
-		}
-		LatLon location = report.getLocation();
-		return RoadCrewHelpResolveTarget.choose(reportId, stillPendingLocally, syncedIdFor(app, reportId),
-				findSyncedReportIdMatching(app, report),
-				RoadCrewHelpResolveTarget.onlyOwnHelpNear(location.getLatitude(), location.getLongitude(), ownHelps));
+		return RoadCrewHelpResolveTarget.choose(reportId,
+				stillPendingLocally && NEVER_ATTEMPTED_IDS.contains(reportId), syncedIdFor(app, reportId),
+				findSyncedReportIdMatching(app, report));
 	}
 
 	/** Which server id a local report became; kept for the last MAX_SYNCED_IDS reports. */
-	private static void rememberSyncedId(@NonNull OsmandApplication app, @NonNull String localId,
+	static synchronized void rememberSyncedId(@NonNull OsmandApplication app, @NonNull String localId,
 			@NonNull String syncedId) {
 		if (localId.equals(syncedId) || RoadCrewHelpResolveTarget.isServerId(localId)) {
 			return;
 		}
 		JSONObject ids = readSyncedIds(app);
+		if (syncedId.equals(ids.optString(localId, ""))) {
+			return;
+		}
 		try {
 			ids.put(localId, syncedId);
 		} catch (JSONException ignored) {
@@ -350,6 +354,7 @@ public final class RoadCrewReportsRepository {
 			RoadCrewReport report = iterator.next();
 			if (report.isExpired(now)) {
 				iterator.remove();
+				NEVER_ATTEMPTED_IDS.remove(report.getId());
 				changed = true;
 			}
 		}

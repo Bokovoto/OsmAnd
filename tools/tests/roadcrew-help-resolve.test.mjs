@@ -43,7 +43,20 @@ test('the sync records which server id a local report became, and the lookup use
   assert.match(target, /RoadCrewHelpResolveTarget\.choose\(/);
   assert.match(target, /syncedIdFor\(app, /);
   assert.match(target, /RoadCrewReportSyncState\.PENDING_CREATE/);
-  assert.match(target, /RoadCrewHelpResolveTarget\.onlyOwnHelpNear\(/);
+  assert.match(target, /stillPendingLocally && NEVER_ATTEMPTED_IDS\.contains\(reportId\)/);
+  assert.doesNotMatch(target, /onlyOwnHelpNear|OwnHelp|SAME_PLACE/);
+});
+
+test('a create attempt is remembered before POST and its returned identity before any optional vote', () => {
+  const create = body(sync, 'private static String createRemoteReport(');
+  const begin = create.indexOf('RoadCrewReportsRepository.beginReportCreate(report.getId())');
+  const post = create.indexOf('postJson("/v1/reports"');
+  const remember = create.indexOf('RoadCrewReportsRepository.rememberSyncedId(');
+  const vote = create.indexOf('syncRemoteVote(');
+  assert.ok(begin >= 0 && begin < post && post < remember && remember < vote);
+  const load = body(repository, 'private static void loadPersistedReports(');
+  assert.doesNotMatch(load, /NEVER_ATTEMPTED_IDS\.add/);
+  assert.match(body(repository, 'static synchronized void beginReportCreate('), /NEVER_ATTEMPTED_IDS\.remove/);
 });
 
 // Real dependency-free production class, not a reimplementation.

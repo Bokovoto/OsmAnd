@@ -485,8 +485,10 @@ public final class RoadCrewReportsSync {
 			body.put("directionBearing", report.getDirectionBearing());
 		}
 
+		RoadCrewReportsRepository.beginReportCreate(report.getId());
 		JSONObject response = postJson("/v1/reports", deviceId, body);
 		String remoteReportId = response.getString("reportId");
+		RoadCrewReportsRepository.rememberSyncedId(app, report.getId(), remoteReportId);
 		long remoteExpiresAt = response.optLong("expiresAt", report.getExpiresAtMillis());
 		if (report.hasLocalVote()) {
 			syncRemoteVote(deviceId, report, remoteReportId);

@@ -1,7 +1,5 @@
 package net.osmand.plus.roadcrew;
 
-import java.util.List;
-
 /**
  * Which server request "Приключи" closes. On the drive test of 2026-09-12 the
  * button held the Help under its local id (local-...) after the sync had renamed
@@ -21,22 +19,6 @@ final class RoadCrewHelpResolveTarget {
 		UNKNOWN
 	}
 
-	/** A synced Help of this phone's own, as candidate for a report held under an old local id. */
-	static final class OwnHelp {
-		final String id;
-		final double lat;
-		final double lon;
-
-		OwnHelp(String id, double lat, double lon) {
-			this.id = id;
-			this.lat = lat;
-			this.lon = lon;
-		}
-	}
-
-	/** Closer than this to where the Help was asked counts as the same Help. */
-	static final double SAME_PLACE_METERS = 200;
-
 	final Kind kind;
 	final String serverId;
 
@@ -50,47 +32,24 @@ final class RoadCrewHelpResolveTarget {
 	}
 
 	/**
-	 * @param stillPendingLocally the local copy still waits for its first send
+	 * @param neverAttempted true only when this process knows no create was attempted;
+	 *                       PENDING_CREATE alone cannot establish this after a lost response
 	 * @param syncedId            the server id recorded when the sync renamed it, or ""
 	 * @param contentMatchId      a synced report with exactly the same content, or ""
-	 * @param onlyOwnHelpNearbyId the one own synced Help at the same place, or ""
 	 */
-	static RoadCrewHelpResolveTarget choose(String reportId, boolean stillPendingLocally, String syncedId,
-			String contentMatchId, String onlyOwnHelpNearbyId) {
+	static RoadCrewHelpResolveTarget choose(String reportId, boolean neverAttempted, String syncedId,
+			String contentMatchId) {
 		if (isServerId(reportId)) {
 			return new RoadCrewHelpResolveTarget(Kind.SERVER, reportId);
 		}
-		if (stillPendingLocally) {
-			return new RoadCrewHelpResolveTarget(Kind.LOCAL_ONLY, "");
-		}
-		for (String id : new String[] {syncedId, contentMatchId, onlyOwnHelpNearbyId}) {
+		for (String id : new String[] {syncedId, contentMatchId}) {
 			if (!id.isEmpty()) {
 				return new RoadCrewHelpResolveTarget(Kind.SERVER, id);
 			}
 		}
-		return new RoadCrewHelpResolveTarget(Kind.UNKNOWN, "");
-	}
-
-	/** The id of the single own Help within SAME_PLACE_METERS, or "" when there is none or more than one. */
-	static String onlyOwnHelpNear(double lat, double lon, List<OwnHelp> ownHelps) {
-		String found = "";
-		for (OwnHelp help : ownHelps) {
-			if (distanceMeters(lat, lon, help.lat, help.lon) <= SAME_PLACE_METERS) {
-				if (!found.isEmpty()) {
-					return "";
-				}
-				found = help.id;
-			}
+		if (neverAttempted) {
+			return new RoadCrewHelpResolveTarget(Kind.LOCAL_ONLY, "");
 		}
-		return found;
-	}
-
-	private static double distanceMeters(double lat1, double lon1, double lat2, double lon2) {
-		double dLat = Math.toRadians(lat2 - lat1);
-		double dLon = Math.toRadians(lon2 - lon1);
-		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-				+ Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-				* Math.sin(dLon / 2) * Math.sin(dLon / 2);
-		return 6_371_000 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		return new RoadCrewHelpResolveTarget(Kind.UNKNOWN, "");
 	}
 }
