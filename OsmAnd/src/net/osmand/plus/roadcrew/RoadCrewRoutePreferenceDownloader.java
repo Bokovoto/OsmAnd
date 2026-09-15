@@ -35,7 +35,7 @@ public final class RoadCrewRoutePreferenceDownloader {
 
 	private static final String TAG = "RoadCrewRoutePrefs";
 	private static final String API_URL =
-			"https://roadcrew-api.galin-b-vasilev1.workers.dev/v1/truck-map/routing-preferences";
+			RoadCrewEndpoints.API_BASE_URL + "/v1/truck-map/routing-preferences";
 	private static final String DEVICE_ID_HEADER = "X-RoadCrew-Device-Id";
 	private static final double ROUTE_MARGIN_DEGREES = 0.15;
 	private static final double MAX_TILE_SPAN_DEGREES = 1.8;

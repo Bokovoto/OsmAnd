@@ -43,6 +43,8 @@ dist/
 gen/
 local.properties
 raw/
+# RoadCrew Test 107: the certificate roots for the own server (network security config).
+!/res/raw/
 obj/
 libgnustl/
 libc++/

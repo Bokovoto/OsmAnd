@@ -44,7 +44,7 @@ final class RoadCrewShadowSnapshotDownloader {
 
 	private static final String TAG = "RoadCrewShadow";
 	private static final String TILES_URL =
-			"https://roadcrew-api.galin-b-vasilev1.workers.dev/v1/truck-map/shadow-tiles/";
+			RoadCrewEndpoints.API_BASE_URL + "/v1/truck-map/shadow-tiles/";
 	private static final String DEVICE_ID_HEADER = "X-RoadCrew-Device-Id";
 	/** Up to four tiles of up to 500 segments each. */
 	private static final int MAX_SNAPSHOT_SEGMENTS = 4 * RoadCrewShadowTiles.MAX_SEGMENTS_PER_TILE;

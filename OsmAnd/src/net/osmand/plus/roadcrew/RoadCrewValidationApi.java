@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 
 final class RoadCrewValidationApi {
 
-	private static final String API = "https://roadcrew-api.galin-b-vasilev1.workers.dev/v2/truck-map/";
+	private static final String API = RoadCrewEndpoints.API_BASE_URL + "/v2/truck-map/";
 
 	static String existingToken(OsmandApplication app) {
 		return RoadCrewMapObservationUploader.getExistingInstallationToken(app);

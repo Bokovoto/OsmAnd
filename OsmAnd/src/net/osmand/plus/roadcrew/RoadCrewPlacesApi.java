@@ -28,7 +28,7 @@ import java.util.concurrent.Executors;
 final class RoadCrewPlacesApi {
 
 	private static final String TAG = "RoadCrewPlacesApi";
-	private static final String API_BASE_URL = "https://roadcrew-api.galin-b-vasilev1.workers.dev";
+	private static final String API_BASE_URL = RoadCrewEndpoints.API_BASE_URL;
 	private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
 	private RoadCrewPlacesApi() {

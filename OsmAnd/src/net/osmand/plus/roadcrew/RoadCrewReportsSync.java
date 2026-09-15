@@ -30,7 +30,7 @@ import java.util.concurrent.Executors;
 public final class RoadCrewReportsSync {
 
 	private static final String TAG = "RoadCrewReportsSync";
-	private static final String API_BASE_URL = "https://roadcrew-api.galin-b-vasilev1.workers.dev";
+	private static final String API_BASE_URL = RoadCrewEndpoints.API_BASE_URL;
 	private static final String DEVICE_ID_HEADER = "X-RoadCrew-Device-Id";
 	private static final int CONNECT_TIMEOUT_MILLIS = 10 * 1000;
 	private static final int READ_TIMEOUT_MILLIS = 15 * 1000;

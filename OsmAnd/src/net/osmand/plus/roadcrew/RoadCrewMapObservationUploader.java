@@ -43,9 +43,9 @@ final class RoadCrewMapObservationUploader {
 
 	private static final String TAG = "RoadCrewMapUploader";
 	private static final String REGISTER_URL =
-			"https://roadcrew-api.galin-b-vasilev1.workers.dev/v2/installations/register";
+			RoadCrewEndpoints.API_BASE_URL + "/v2/installations/register";
 	private static final String CHUNK_URL =
-			"https://roadcrew-api.galin-b-vasilev1.workers.dev/v2/truck-map/chunks";
+			RoadCrewEndpoints.API_BASE_URL + "/v2/truck-map/chunks";
 	private static final String PREFERENCES = "roadcrew_truck_map_ingest_v2";
 	private static final String INSTALLATION_TOKEN = "installation_token";
 

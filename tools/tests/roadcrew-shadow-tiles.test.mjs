@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync, mkdtempSync, rmSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve, dirname, basename } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -35,8 +35,34 @@ function compile() {
   };
 }
 
+// Test 107 (Galin, 2026-09-15): the phone talks to the project's own server
+// directly; Cloudflare only forwards for older versions until they are gone.
+test('every RoadCrew request goes to the own server, none to Cloudflare workers.dev', () => {
+  const folder = join(root, 'OsmAnd/src/net/osmand/plus/roadcrew');
+  const endpoints = readFileSync(join(folder, 'RoadCrewEndpoints.java'), 'utf8');
+  assert.match(endpoints, /static final String API_BASE_URL = "https:\/\/api\.roadcrew\.meriltrans\.com";/);
+  const offenders = readdirSync(folder).filter(file => file.endsWith('.java'))
+    .filter(file => /workers\.dev|galin-b-vasilev1/.test(readFileSync(join(folder, file), 'utf8')));
+  assert.deepEqual(offenders, []);
+});
+
+test('the own server is trusted on every Android version the app supports', () => {
+  const manifest = readFileSync(join(root, 'OsmAnd/AndroidManifest.xml'), 'utf8');
+  assert.match(manifest, /android:networkSecurityConfig="@xml\/roadcrew_network_security_config"/);
+  // With a config present the manifest's cleartext flag is ignored; it must be kept here.
+  assert.match(manifest, /android:usesCleartextTraffic="true"/);
+  const config = readFileSync(join(root, 'OsmAnd/res/xml/roadcrew_network_security_config.xml'), 'utf8');
+  assert.match(config, /<base-config cleartextTrafficPermitted="true">/);
+  assert.match(config, /<domain includeSubdomains="false">api\.roadcrew\.meriltrans\.com<\/domain>/);
+  for (const root_ of ['x1', 'x2']) {
+    assert.match(config, new RegExp(`@raw/roadcrew_isrg_root_${root_}`));
+    const pem = readFileSync(join(root, `OsmAnd/res/raw/roadcrew_isrg_root_${root_}.pem`), 'utf8');
+    assert.match(pem, /-----BEGIN CERTIFICATE-----/);
+  }
+});
+
 test('the downloader asks for tiles, never for its own box', () => {
-  assert.match(downloader, /"https:\/\/roadcrew-api\.galin-b-vasilev1\.workers\.dev\/v1\/truck-map\/shadow-tiles\/"/);
+  assert.match(downloader, /RoadCrewEndpoints\.API_BASE_URL \+ "\/v1\/truck-map\/shadow-tiles\/"/);
   assert.doesNotMatch(downloader, /shadow-segments/);
   assert.match(downloader, /RoadCrewShadowTiles\.coverage\(latitude, longitude\)/);
   assert.match(downloader, /RoadCrewShadowTiles\.merge\(coverage, parts\)/);

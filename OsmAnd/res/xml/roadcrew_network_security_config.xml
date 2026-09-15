@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RoadCrew Test 107: the phone calls the project's own server directly
+     (RoadCrewEndpoints.API_BASE_URL). Its Let's Encrypt certificate ends at ISRG
+     Root X1 (RSA) or X2 (ECDSA); Android 7.0 knows neither, Android before 14
+     does not know X2. Both roots travel with the app, for this one host only. -->
+<network-security-config>
+	<!-- Everything else exactly as before this file existed: once it exists,
+	     android:usesCleartextTraffic in the manifest is ignored, so it is repeated
+	     here; system certificates only, the default since Android 7. -->
+	<base-config cleartextTrafficPermitted="true">
+		<trust-anchors>
+			<certificates src="system" />
+		</trust-anchors>
+	</base-config>
+	<domain-config cleartextTrafficPermitted="false">
+		<domain includeSubdomains="false">api.roadcrew.meriltrans.com</domain>
+		<trust-anchors>
+			<certificates src="system" />
+			<certificates src="@raw/roadcrew_isrg_root_x1" />
+			<certificates src="@raw/roadcrew_isrg_root_x2" />
+		</trust-anchors>
+	</domain-config>
+</network-security-config>

@@ -52,7 +52,7 @@ public final class RoadCrewShadowValidation {
 	private static final String QUEUE_FILE_NAME = "roadcrew-shadow-observations.json";
 	private static final String RECORDING_DIRECTORY_NAME = "roadcrew-recordings";
 	private static final String VALIDATION_MODE_URL =
-			"https://roadcrew-api.galin-b-vasilev1.workers.dev/v2/truck-map/validation-mode";
+			RoadCrewEndpoints.API_BASE_URL + "/v2/truck-map/validation-mode";
 	private static final long DEFAULT_REFRESH_MILLIS = 6 * 60 * 60 * 1_000L;
 	/** Do not hammer the server when it is unreachable. */
 	private static final long RETRY_AFTER_FAILURE_MILLIS = 30 * 60 * 1_000L;

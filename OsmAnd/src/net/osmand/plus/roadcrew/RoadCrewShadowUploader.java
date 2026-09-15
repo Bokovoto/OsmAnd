@@ -35,7 +35,7 @@ final class RoadCrewShadowUploader {
 
 	private static final String TAG = "RoadCrewShadowUpload";
 	private static final String SHADOW_CHUNK_URL =
-			"https://roadcrew-api.galin-b-vasilev1.workers.dev/v2/truck-map/shadow-chunks";
+			RoadCrewEndpoints.API_BASE_URL + "/v2/truck-map/shadow-chunks";
 	/** Which client produced the sample, so two of them cannot be mixed into one result. */
 	private static final int PIPELINE_VERSION = 1;
 	private static final int CONNECT_TIMEOUT_MILLIS = 10_000;
