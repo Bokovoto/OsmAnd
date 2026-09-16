@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -161,6 +163,64 @@ public class RoadCrewShadowOutboxTest {
 			}
 		}
 		Assert.assertEquals(0, outbox.pendingCount());
+	}
+
+	/**
+	 * Measured on the server, 16.09: a phone driving queues roughly fifty
+	 * observations a minute. Rewriting the whole queue for each of them is what
+	 * the phone pays for holding data longer before sending - so queueing must
+	 * not touch the records already written.
+	 */
+	@Test
+	public void queueingOneObservationDoesNotRewriteTheOnesBeforeIt() throws Exception {
+		File file = queueFile("append.json");
+		RoadCrewShadowOutbox outbox = open(file);
+		outbox.add(RoadCrewShadowOutbox.PIPELINE_LEGACY, "group-a", "{\"id\":\"first\"}");
+		// A queue that has never been sent has no written-whole file yet: the
+		// observations are only in the log. Either way, what is already written
+		// must not be touched again by the observations that follow.
+		byte[] afterFirst = file.isFile() ? Files.readAllBytes(file.toPath()) : new byte[0];
+
+		for (int index = 0; index < 50; index++) {
+			outbox.add(RoadCrewShadowOutbox.PIPELINE_DIRECT, "group-a", "{\"id\":\"n" + index + "\"}");
+		}
+
+		Assert.assertArrayEquals("the records already written are left alone",
+				afterFirst, file.isFile() ? Files.readAllBytes(file.toPath()) : new byte[0]);
+		Assert.assertEquals(51, open(file).pendingCount());
+	}
+
+	@Test
+	public void aQueueCutOffMidWriteKeepsEverythingBeforeIt() throws Exception {
+		File file = queueFile("torn.json");
+		RoadCrewShadowOutbox outbox = open(file);
+		for (int index = 0; index < 5; index++) {
+			outbox.add(RoadCrewShadowOutbox.PIPELINE_LEGACY, "group-a", "{\"id\":\"n" + index + "\"}");
+		}
+		File log = new File(file.getParentFile(), file.getName() + ".log");
+		Assert.assertTrue("the additions are appended, not rewritten", log.isFile());
+		byte[] bytes = Files.readAllBytes(log.toPath());
+		// The phone died halfway through writing the last observation.
+		Files.write(log.toPath(), Arrays.copyOf(bytes, bytes.length - 12));
+
+		Assert.assertEquals("the torn one is dropped, the rest survive", 4, open(file).pendingCount());
+	}
+
+	@Test
+	public void sendingCompactsTheQueueBackIntoOneFile() throws Exception {
+		File file = queueFile("compact.json");
+		RoadCrewShadowOutbox outbox = open(file);
+		for (int index = 0; index < 4; index++) {
+			outbox.add(RoadCrewShadowOutbox.PIPELINE_LEGACY, "group-a", "{\"id\":\"n" + index + "\"}");
+		}
+		RoadCrewShadowOutbox.Batch batch = outbox.nextBatch(now, 2);
+		outbox.markUploaded(batch.getIds());
+
+		File log = new File(file.getParentFile(), file.getName() + ".log");
+		Assert.assertTrue("what was sent is not left in the log", !log.isFile() || log.length() == 0);
+		Assert.assertEquals(2, open(file).pendingCount());
+		Assert.assertTrue("the queue file holds what is left",
+				new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8).contains("n2"));
 	}
 
 	private File queueFile(String name) throws Exception {

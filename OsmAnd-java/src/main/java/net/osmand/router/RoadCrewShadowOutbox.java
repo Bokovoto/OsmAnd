@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -61,6 +62,15 @@ public final class RoadCrewShadowOutbox {
 	private final File file;
 	private final File temporaryFile;
 	private final File backupFile;
+	/**
+	 * New observations are appended here, one line each, instead of rewriting the
+	 * whole queue for every one of them. A phone driving queues about fifty a
+	 * minute (measured on the server, 16.09): rewriting cost roughly the square of
+	 * how long the queue is held, which is what made sending less often expensive.
+	 * The queue is written whole again only when something is sent, dropped or
+	 * cleared, and the log is then gone.
+	 */
+	private final File logFile;
 	private final Clock clock;
 	private final IdGenerator idGenerator;
 	private final int maxRecords;
@@ -186,6 +196,7 @@ public final class RoadCrewShadowOutbox {
 		this.file = file;
 		this.temporaryFile = new File(file.getParentFile(), file.getName() + ".tmp");
 		this.backupFile = new File(file.getParentFile(), file.getName() + ".bak");
+		this.logFile = logFileFor(file);
 		this.clock = clock;
 		this.idGenerator = idGenerator;
 		this.maxRecords = maxRecords;
@@ -247,8 +258,11 @@ public final class RoadCrewShadowOutbox {
 		record.attemptCount = 0;
 		record.nextAttemptAtMillis = 0;
 		records.add(record);
-		prune(now);
-		persist();
+		if (prune(now)) {
+			persist();
+		} else {
+			append(record);
+		}
 	}
 
 	/** Whether the flush rule of section 168 says it is time to send. */
@@ -443,12 +457,52 @@ public final class RoadCrewShadowOutbox {
 		if (state.records == null) {
 			state.records = new ArrayList<>();
 		}
+		readLog(logFileFor(file), state.records);
 		for (Iterator<Record> iterator = state.records.iterator(); iterator.hasNext(); ) {
 			if (!iterator.next().valid()) {
 				iterator.remove();
 			}
 		}
 		return state;
+	}
+
+	/**
+	 * The observations appended since the queue was last written whole. The last
+	 * line can be half-written - the phone died in the middle of it - and is
+	 * dropped; everything before it stands. A record already in the state file is
+	 * not added twice, in case a crash fell between writing that file and
+	 * dropping the log.
+	 */
+	private static void readLog(File log, List<Record> records) {
+		if (!log.isFile()) {
+			return;
+		}
+		Set<String> known = new HashSet<>();
+		for (Record record : records) {
+			if (record != null && record.id != null) {
+				known.add(record.id);
+			}
+		}
+		try (BufferedReader reader = new BufferedReader(
+				new InputStreamReader(new FileInputStream(log), StandardCharsets.UTF_8))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (line.isEmpty()) {
+					continue;
+				}
+				try {
+					Record record = GSON.fromJson(line, Record.class);
+					if (record != null && record.valid() && known.add(record.id)) {
+						records.add(record);
+					}
+				} catch (JsonParseException torn) {
+					// The line the phone did not finish writing; nothing after it.
+					break;
+				}
+			}
+		} catch (IOException unreadable) {
+			// The queue file itself is the record of what was there; keep going.
+		}
 	}
 
 	private static State readState(File file) {
@@ -466,7 +520,33 @@ public final class RoadCrewShadowOutbox {
 		}
 	}
 
+	static File logFileFor(File file) {
+		return new File(file.getParentFile(), file.getName() + ".log");
+	}
+
+	/** One observation, one line, and on the disk before this returns. */
+	private void append(Record record) throws IOException {
+		try (FileOutputStream output = new FileOutputStream(logFile, true)) {
+			Writer writer = new OutputStreamWriter(output, StandardCharsets.UTF_8);
+			writer.write(GSON.toJson(record));
+			writer.write("\n");
+			writer.flush();
+			output.getFD().sync();
+		}
+	}
+
 	private void persist() throws IOException {
+		writeState();
+		// Everything in the log is now inside the state file. Dropping it keeps
+		// the next load from adding those records a second time.
+		if (logFile.exists() && !logFile.delete()) {
+			try (FileOutputStream truncate = new FileOutputStream(logFile)) {
+				truncate.getFD().sync();
+			}
+		}
+	}
+
+	private void writeState() throws IOException {
 		State state = new State();
 		state.schemaVersion = SCHEMA_VERSION;
 		state.records = records;
