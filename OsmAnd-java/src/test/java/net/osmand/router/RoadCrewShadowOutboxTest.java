@@ -121,7 +121,7 @@ public class RoadCrewShadowOutboxTest {
 	}
 
 	@Test
-	public void theFlushRuleIsTwentyObservationsOrTwoMinutes() throws Exception {
+	public void theFlushRuleIsAFullPortionOrFifteenMinutes() throws Exception {
 		RoadCrewShadowOutbox outbox = open(queueFile("flush.json"));
 		Assert.assertFalse("nothing waiting is not a reason to send", outbox.shouldFlush(now));
 
@@ -133,7 +133,7 @@ public class RoadCrewShadowOutboxTest {
 		for (int index = 1; index < RoadCrewShadowOutbox.FLUSH_OBSERVATION_COUNT; index++) {
 			outbox.add(RoadCrewShadowOutbox.PIPELINE_DIRECT, "group-a", "{\"n\":" + index + "}");
 		}
-		Assert.assertTrue("twenty waiting is a reason on its own", outbox.shouldFlush(now));
+		Assert.assertTrue("a full portion is a reason on its own", outbox.shouldFlush(now));
 	}
 
 	@Test

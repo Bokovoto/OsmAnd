@@ -55,10 +55,10 @@ final class RoadCrewMapObservationUploader {
 	private static final String QUEUE_RECOVERY_VERSION = "queue_recovery_version";
 	private static final int CURRENT_QUEUE_RECOVERY_VERSION = 1;
 	private static final int SCHEMA_VERSION = 2;
-	private static final int BATCH_SIZE = 100;
-	private static final int IMMEDIATE_BATCH_THRESHOLD = 100;
+	private static final int BATCH_SIZE = 1_000;
+	private static final int IMMEDIATE_BATCH_THRESHOLD = 1_000;
 	private static final int MAX_BATCHES_PER_RUN = 4;
-	private static final long NORMAL_FLUSH_DELAY_MILLIS = 10 * 60 * 1_000L;
+	private static final long NORMAL_FLUSH_DELAY_MILLIS = 15 * 60 * 1_000L;
 	private static final int CONNECT_TIMEOUT_MILLIS = 10_000;
 	private static final int READ_TIMEOUT_MILLIS = 20_000;
 

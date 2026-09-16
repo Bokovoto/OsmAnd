@@ -46,10 +46,19 @@ public final class RoadCrewShadowOutbox {
 	/** A comparison sample older than this is of no use; the server expires it too. */
 	public static final long DEFAULT_MAX_AGE_MILLIS = 3L * 24 * 60 * 60 * 1_000;
 	/** Send when this many are waiting... */
-	public static final int FLUSH_OBSERVATION_COUNT = 20;
-	/** ...or when the oldest has waited this long, whichever comes first. */
-	public static final long FLUSH_INTERVAL_MILLIS = 2 * 60 * 1_000L;
-	public static final int MAX_BATCH_RECORDS = 100;
+	public static final int FLUSH_OBSERVATION_COUNT = 500;
+	/**
+	 * ...or when the oldest has waited this long, whichever comes first.
+	 *
+	 * Fifteen minutes, not two (Galin, 16.09). A phone driving made about fifty
+	 * files an hour, and 96% of everything the server stores is this comparison;
+	 * at this cadence it makes a handful. Nothing is observed less: the queue is
+	 * on the disk, survives the phone being killed, and goes out whole at the end
+	 * of a drive. Appending instead of rewriting is what makes the wait cheap.
+	 */
+	public static final long FLUSH_INTERVAL_MILLIS = 15 * 60 * 1_000L;
+	/** The server takes a thousand observations in one file (4d98b7f). */
+	public static final int MAX_BATCH_RECORDS = 1_000;
 	public static final long RETRY_BASE_DELAY_MILLIS = 60_000;
 	public static final long RETRY_MAX_DELAY_MILLIS = 30 * 60 * 1_000L;
 
