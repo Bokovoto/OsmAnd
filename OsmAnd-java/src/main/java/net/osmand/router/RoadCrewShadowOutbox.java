@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.RandomAccessFile;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -41,7 +42,12 @@ import java.util.UUID;
 public final class RoadCrewShadowOutbox {
 
 	public static final int SCHEMA_VERSION = 1;
-	/** Enough for a long day of driving on both branches, and no more. */
+	/**
+	 * About half an hour of driving on both branches at the rate measured on the
+	 * server (roughly fifty observations a minute), not a day - the older ones are
+	 * dropped past this and counted in droppedCount (Codex 16.09: the promise that
+	 * everything eventually goes out was not true, and is not made here).
+	 */
 	public static final int DEFAULT_MAX_RECORDS = 1_500;
 	/** A comparison sample older than this is of no use; the server expires it too. */
 	public static final long DEFAULT_MAX_AGE_MILLIS = 3L * 24 * 60 * 60 * 1_000;
@@ -80,6 +86,8 @@ public final class RoadCrewShadowOutbox {
 	 * cleared, and the log is then gone.
 	 */
 	private final File logFile;
+	/** The number written at the head of the log this queue is appending to. */
+	private int logGeneration;
 	private final Clock clock;
 	private final IdGenerator idGenerator;
 	private final int maxRecords;
@@ -193,6 +201,13 @@ public final class RoadCrewShadowOutbox {
 
 	private static final class State {
 		int schemaVersion;
+		/**
+		 * Which log belongs to this state. persist() writes the state for the NEXT
+		 * log and only then drops the current one, so a log left behind by a crash
+		 * in between carries the previous number, is ignored, and cannot bring back
+		 * records that were sent or cleared (Codex 16.09).
+		 */
+		int logGeneration;
 		List<Record> records;
 		int legacyFailures;
 		int directFailures;
@@ -206,6 +221,7 @@ public final class RoadCrewShadowOutbox {
 		this.temporaryFile = new File(file.getParentFile(), file.getName() + ".tmp");
 		this.backupFile = new File(file.getParentFile(), file.getName() + ".bak");
 		this.logFile = logFileFor(file);
+		this.logGeneration = Math.max(0, state.logGeneration);
 		this.clock = clock;
 		this.idGenerator = idGenerator;
 		this.maxRecords = maxRecords;
@@ -466,7 +482,7 @@ public final class RoadCrewShadowOutbox {
 		if (state.records == null) {
 			state.records = new ArrayList<>();
 		}
-		readLog(logFileFor(file), state.records);
+		readLog(logFileFor(file), state.records, state.logGeneration);
 		for (Iterator<Record> iterator = state.records.iterator(); iterator.hasNext(); ) {
 			if (!iterator.next().valid()) {
 				iterator.remove();
@@ -476,13 +492,19 @@ public final class RoadCrewShadowOutbox {
 	}
 
 	/**
-	 * The observations appended since the queue was last written whole. The last
-	 * line can be half-written - the phone died in the middle of it - and is
-	 * dropped; everything before it stands. A record already in the state file is
-	 * not added twice, in case a crash fell between writing that file and
-	 * dropping the log.
+	 * The observations appended since the queue was last written whole.
+	 *
+	 * A log belongs to one state: its first line names the generation, and a log
+	 * from an earlier one is what a crash between writing the state and dropping
+	 * the log leaves behind. Reading it would bring back records that were sent or
+	 * cleared, so it is ignored and removed (Codex 16.09, reproduced).
+	 *
+	 * The last line can be half-written - the phone died in the middle of it. It
+	 * is dropped AND cut from the file: otherwise the next observation is appended
+	 * behind the damage, and every later reading stops at the same place, losing
+	 * everything written after it (Codex 16.09, reproduced).
 	 */
-	private static void readLog(File log, List<Record> records) {
+	private static void readLog(File log, List<Record> records, int generation) {
 		if (!log.isFile()) {
 			return;
 		}
@@ -492,25 +514,99 @@ public final class RoadCrewShadowOutbox {
 				known.add(record.id);
 			}
 		}
-		try (BufferedReader reader = new BufferedReader(
-				new InputStreamReader(new FileInputStream(log), StandardCharsets.UTF_8))) {
-			String line;
-			while ((line = reader.readLine()) != null) {
-				if (line.isEmpty()) {
-					continue;
+		byte[] bytes;
+		try {
+			bytes = readAll(log);
+		} catch (IOException unreadable) {
+			// The state file is the record of what was there; keep going.
+			return;
+		}
+		String text = new String(bytes, StandardCharsets.UTF_8);
+		int consumed = 0;
+		boolean header = false;
+		int start = 0;
+		while (start < text.length()) {
+			int end = text.indexOf('\n', start);
+			if (end < 0) {
+				// No newline: the phone stopped in the middle of this line.
+				break;
+			}
+			String line = text.substring(start, end);
+			int next = end + 1;
+			if (!header) {
+				header = true;
+				if (!line.startsWith(GENERATION_PREFIX) || !matches(line, generation)) {
+					// Not this state's log. Nothing in it may be believed.
+					delete(log);
+					return;
 				}
+				consumed = next;
+				start = next;
+				continue;
+			}
+			if (!line.isEmpty()) {
 				try {
 					Record record = GSON.fromJson(line, Record.class);
-					if (record != null && record.valid() && known.add(record.id)) {
+					if (record == null || !record.valid()) {
+						break;
+					}
+					if (known.add(record.id)) {
 						records.add(record);
 					}
 				} catch (JsonParseException torn) {
-					// The line the phone did not finish writing; nothing after it.
 					break;
 				}
 			}
-		} catch (IOException unreadable) {
-			// The queue file itself is the record of what was there; keep going.
+			consumed = next;
+			start = next;
+		}
+		if (consumed < bytes.length) {
+			truncate(log, consumed);
+		}
+	}
+
+	private static boolean matches(String header, int generation) {
+		try {
+			return Integer.parseInt(header.substring(GENERATION_PREFIX.length()).trim()) == generation;
+		} catch (NumberFormatException unreadable) {
+			return false;
+		}
+	}
+
+	private static byte[] readAll(File file) throws IOException {
+		long length = file.length();
+		if (length <= 0 || length > Integer.MAX_VALUE) {
+			return new byte[0];
+		}
+		byte[] bytes = new byte[(int) length];
+		try (FileInputStream input = new FileInputStream(file)) {
+			int read = 0;
+			while (read < bytes.length) {
+				int chunk = input.read(bytes, read, bytes.length - read);
+				if (chunk < 0) {
+					byte[] shorter = new byte[read];
+					System.arraycopy(bytes, 0, shorter, 0, read);
+					return shorter;
+				}
+				read += chunk;
+			}
+		}
+		return bytes;
+	}
+
+	/** Cuts the damage away, so the next observation is appended to sound bytes. */
+	private static void truncate(File log, long length) {
+		try (RandomAccessFile handle = new RandomAccessFile(log, "rw")) {
+			handle.setLength(length);
+			handle.getFD().sync();
+		} catch (IOException stillDamaged) {
+			// Better to keep reading what is sound than to lose the queue.
+		}
+	}
+
+	private static void delete(File log) {
+		if (log.isFile() && !log.delete()) {
+			truncate(log, 0);
 		}
 	}
 
@@ -529,14 +625,23 @@ public final class RoadCrewShadowOutbox {
 		}
 	}
 
-	static File logFileFor(File file) {
+	/** The head of a log names the state it belongs to. */
+	private static final String GENERATION_PREFIX = "#generation ";
+
+	public static File logFileFor(File file) {
 		return new File(file.getParentFile(), file.getName() + ".log");
 	}
 
 	/** One observation, one line, and on the disk before this returns. */
 	private void append(Record record) throws IOException {
+		boolean fresh = !logFile.isFile() || logFile.length() == 0;
 		try (FileOutputStream output = new FileOutputStream(logFile, true)) {
 			Writer writer = new OutputStreamWriter(output, StandardCharsets.UTF_8);
+			if (fresh) {
+				writer.write(GENERATION_PREFIX);
+				writer.write(Integer.toString(logGeneration));
+				writer.write("\n");
+			}
 			writer.write(GSON.toJson(record));
 			writer.write("\n");
 			writer.flush();
@@ -545,6 +650,7 @@ public final class RoadCrewShadowOutbox {
 	}
 
 	private void persist() throws IOException {
+		logGeneration++;
 		writeState();
 		// Everything in the log is now inside the state file. Dropping it keeps
 		// the next load from adding those records a second time.
@@ -558,6 +664,7 @@ public final class RoadCrewShadowOutbox {
 	private void writeState() throws IOException {
 		State state = new State();
 		state.schemaVersion = SCHEMA_VERSION;
+		state.logGeneration = logGeneration;
 		state.records = records;
 		state.legacyFailures = legacyFailures;
 		state.directFailures = directFailures;

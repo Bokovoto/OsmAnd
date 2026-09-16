@@ -439,6 +439,11 @@ public final class RoadCrewShadowValidation {
 		deleteIfPresent(file);
 		deleteIfPresent(new File(file.getPath() + ".bak"));
 		deleteIfPresent(new File(file.getPath() + ".tmp"));
+		// The log holds observations that were only appended, never written into
+		// the queue file. Leaving it behind - which is what happened when the
+		// outbox was not open yet, or clear() had thrown - left traces on the disk
+		// that the next open would take back (Codex 16.09).
+		deleteIfPresent(RoadCrewShadowOutbox.logFileFor(file));
 		// The recordings are the most sensitive thing this build writes, so
 		// withdrawing consent takes them with everything else.
 		stopRecording();
