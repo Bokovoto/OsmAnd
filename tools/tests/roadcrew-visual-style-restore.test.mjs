@@ -31,14 +31,36 @@ test('the bright route colour follows the dark map, not the panels', () => {
   assert.doesNotMatch(neonDay, /isNeonBeta\(context\)/);
 });
 
-test('the light map is the plain automatic one, never a second dark look', () => {
+test('light means light, at any hour - the switch has no automatic position', () => {
   const restore = STYLE.slice(STYLE.indexOf('private static boolean restoreClassicTheme('),
     STYLE.indexOf('private static DayNightMode parseDayNightMode('));
-  assert.match(restore, /setModeValue\(mode, DayNightMode\.AUTO\)/);
+  // Galin, 20.09 evening, after the light map stayed dark at nine o'clock:
+  // "искам хората да си избират дали да е светла или да е тъмна, точка".
+  // AUTO was the defect. It is light by day and dark by night, so after
+  // sunset both positions of a two-position switch gave the same dark map
+  // and the button looked dead - exactly to the driver who needs the light
+  // map, at the hour he needs it most.
+  assert.match(restore, /setModeValue\(mode, DayNightMode\.DAY\)/,
+    'the light position must be DAY, not a time-of-day decision');
+  assert.doesNotMatch(restore, /DayNightMode\.AUTO/,
+    'no automatic position anywhere in the light branch');
   assert.doesNotMatch(restore, /parseDayNightMode\(storedMode\)/,
     'a stored NIGHT must not be handed back - that is what made the switch look broken');
   const resets = restore.match(/resetModeToDefault\(mode\)/g) || [];
   assert.ok(resets.length >= 2, `neon's own route colour must be let go, found ${resets.length}`);
+});
+
+test('both positions reach every profile, not only the one in use', () => {
+  // Galin, 20.09: "във всички режими". The colour is the driver's choice, so
+  // switching profile must not hand him back the colour he turned off.
+  const apply = STYLE.slice(STYLE.indexOf('private static boolean applyNeonTheme('),
+    STYLE.indexOf('private static boolean restoreClassicTheme('));
+  assert.match(apply, /for \(ApplicationMode other : ApplicationMode\.allPossibleValues\(\)\)[\s\S]*DayNightMode\.NIGHT/,
+    'the dark position must cover every profile');
+  const restore = STYLE.slice(STYLE.indexOf('private static boolean restoreClassicTheme('),
+    STYLE.indexOf('private static DayNightMode parseDayNightMode('));
+  assert.match(restore, /for \(ApplicationMode mode : ApplicationMode\.allPossibleValues\(\)\)[\s\S]*DayNightMode\.DAY/,
+    'and so must the light one');
 });
 
 test('the two switches are separate actions', () => {

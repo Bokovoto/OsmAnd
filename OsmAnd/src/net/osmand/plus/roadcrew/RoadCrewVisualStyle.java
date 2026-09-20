@@ -164,9 +164,15 @@ public final class RoadCrewVisualStyle {
 		editor.apply();
 
 		boolean changed = false;
-		if (settings.DAYNIGHT_MODE.getModeValue(mode) != DayNightMode.NIGHT) {
-			settings.DAYNIGHT_MODE.setModeValue(mode, DayNightMode.NIGHT);
-			changed = true;
+		// Every profile, not just the one in use, and the light branch does the
+		// same. Galin, 20.09: "във всички режими". A driver who switches from
+		// truck to car must not find the colour he did not ask for waiting in
+		// the other profile.
+		for (ApplicationMode other : ApplicationMode.allPossibleValues()) {
+			if (settings.DAYNIGHT_MODE.getModeValue(other) != DayNightMode.NIGHT) {
+				settings.DAYNIGHT_MODE.setModeValue(other, DayNightMode.NIGHT);
+				changed = true;
+			}
 		}
 
 		boolean actualNight = isNeonNight(app);
@@ -196,20 +202,24 @@ public final class RoadCrewVisualStyle {
 		SharedPreferences.Editor editor = preferences.edit();
 		for (ApplicationMode mode : ApplicationMode.allPossibleValues()) {
 			String modeKey = mode.getStringKey();
-			// Classic is not a second dark look: it is the plain OpenStreetMap
-			// map, light by day. That is the whole reason it exists - Galin,
-			// 20.09: older drivers cannot make out anything on the dark map, and
-			// need the ordinary one, the way a phone map normally looks.
+			// The switch has two positions and says what they are, so it gives
+			// exactly that: DAY, at any hour. No automatic position anywhere.
 			//
-			// So the day/night setting is put to AUTO outright, not back to
-			// whatever was noted down before. Restoring the note was the earlier
-			// attempt and it failed exactly where it mattered: if the note itself
-			// said NIGHT, classic came back dark and the switch looked broken.
-			// AUTO still gives a dark map after sunset, when dark is the kind
-			// thing to do.
+			// AUTO was here until the evening of 20.09 and it was the defect.
+			// AUTO means light by day and dark after sunset, so from sunset on,
+			// both positions produced the same dark map and the button looked
+			// dead. It failed for the very driver it exists for - the one who
+			// cannot read the dark map - at the hour he needs it most, and it
+			// would have looked fine to anyone who tried it before sunset.
+			// Galin: "искам хората да си избират дали да е светла или да е
+			// тъмна, точка".
+			//
+			// The stored note is still dropped rather than handed back: if the
+			// note itself said NIGHT, the light position came back dark, which
+			// was the same complaint one step earlier.
 			editor.remove(previousDayNightKey(mode));
-			if (settings.DAYNIGHT_MODE.getModeValue(mode) != DayNightMode.AUTO) {
-				settings.DAYNIGHT_MODE.setModeValue(mode, DayNightMode.AUTO);
+			if (settings.DAYNIGHT_MODE.getModeValue(mode) != DayNightMode.DAY) {
+				settings.DAYNIGHT_MODE.setModeValue(mode, DayNightMode.DAY);
 				changed = true;
 			}
 			String colorDayKey = previousRouteColorDayKey(modeKey);
