@@ -207,6 +207,8 @@
     <string name="roadcrew_notification_channel_description">Заявки за помощ, предупреждения към шофьори и RoadCrew чат известия.</string>
     <string name="roadcrew_button_join_chat">Включи се в чата</string>
 	<string name="roadcrew_button_open_chat">Отвори чата</string>
+	<string name="roadcrew_map_colours_button">Светла или тъмна карта</string>
+	<string name="roadcrew_panels_button">Панели: RoadCrew или OsmAnd</string>
 	<string name="roadcrew_visual_style_title">Външен вид</string>
 	<string name="roadcrew_visual_style_body">Classic запазва сегашния интерфейс. RoadCrew Neon е незадължителен бета скин за контролите на картата и менюто със сигнали; не променя навигацията, сигналите, чатовете или данните ви.</string>
 	<string name="roadcrew_visual_style_classic">Classic</string>

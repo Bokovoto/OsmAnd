@@ -7,6 +7,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.widget.TextViewCompat;
 
 import net.osmand.Location;
 import net.osmand.plus.R;
@@ -39,6 +42,7 @@ import java.util.Map;
 public final class RoadCrewNeonHud {
 
 	private static final String HUD_TAG = "roadcrew_neon_beta_hud";
+	/** The small button classic mode keeps, so the neon look can be brought back. */
 	private static final String HEADER_TAG = "roadcrew_neon_header";
 	private static final String NAV_ICON_TAG_PREFIX = "roadcrew_neon_nav_icon_";
 	private static final String NAV_TEXT_TAG_PREFIX = "roadcrew_neon_nav_text_";
@@ -82,6 +86,10 @@ public final class RoadCrewNeonHud {
 				mapHud.removeView(existing);
 			}
 			setNativeHudOffsets(mapHud, false, false, false);
+			// The way back out of classic, and the map-colour switch, are both
+			// RoadCrewStyleButton now - ordinary map buttons on OsmAnd's own
+			// grid, which keeps them clear of the green report button in
+			// landscape (Galin, 20.09) instead of guessing at margins.
 			if (mapThemeChanged) {
 				activity.updateMapSettings(true);
 			}
@@ -265,14 +273,20 @@ public final class RoadCrewNeonHud {
 				new LinearLayout.LayoutParams(dp(activity, landscape ? 36 : 46),
 						dp(activity, landscape ? 36 : 46)));
 
-		TextView brand = new TextView(activity);
+		AppCompatTextView brand = new AppCompatTextView(activity);
 		SpannableString brandText = new SpannableString("RoadCrew");
 		brandText.setSpan(new ForegroundColorSpan(PRIMARY), 4, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		brand.setText(brandText);
 		brand.setTextColor(TEXT);
-		brand.setTextSize(landscape ? 18 : 22);
 		brand.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 		brand.setGravity(Gravity.CENTER);
+		// Galin, 20.09: the name broke across two lines in portrait. Taking the
+		// map-colour button out of the header is what makes room for it, and the
+		// name has to read as one word again, as it did before. One line always,
+		// shrinking a little rather than breaking on a narrow phone.
+		brand.setMaxLines(1);
+		TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(brand,
+				landscape ? 13 : 15, landscape ? 18 : 22, 1, TypedValue.COMPLEX_UNIT_SP);
 		LinearLayout.LayoutParams brandParams = new LinearLayout.LayoutParams(0,
 				ViewGroup.LayoutParams.MATCH_PARENT, 1f);
 		header.addView(brand, brandParams);
@@ -315,12 +329,39 @@ public final class RoadCrewNeonHud {
 				Gravity.TOP | Gravity.END));
 		header.addView(pendingReviews, new LinearLayout.LayoutParams(
 				dp(activity, landscape ? 36 : 44), dp(activity, landscape ? 36 : 44)));
-		header.addView(iconButton(activity, R.drawable.ic_action_compass_north,
-				activity.getString(CompassMode.NORTH_IS_UP.getTitleId()),
-				v -> resetMapNorth(activity), landscape ? 8 : 11),
+		// The map-colour switch used to sit here. Galin, 20.09: it has to stand
+		// in one fixed place whichever look is on, "so that after a tap he does
+		// not have to go looking for it somewhere else" - so it left the header
+		// for the map itself, above the green report button, in both looks. See
+		// RoadCrewStyleButton. The panel switch stays here, where it belongs to
+		// the neon look it turns off.
+		header.addView(iconButton(activity, R.drawable.ic_action_appearance,
+				activity.getString(R.string.roadcrew_visual_style_classic),
+				v -> toggleVisualStyle(activity), landscape ? 8 : 11),
 				new LinearLayout.LayoutParams(dp(activity, landscape ? 36 : 44),
 						dp(activity, landscape ? 36 : 44)));
 		return header;
+	}
+
+	/**
+	 * Light map or dark map - nothing else. Galin, 20.09: an older driver who
+	 * cannot read the dark map needs the ordinary light OpenStreetMap one, and
+	 * that must not drag the panels along with it. Available from both looks.
+	 */
+	static void toggleMapColours(@NonNull MapActivity activity) {
+		RoadCrewVisualStyle.setDarkMap(activity, !RoadCrewVisualStyle.isDarkMap(activity));
+		if (RoadCrewVisualStyle.syncMapTheme(activity)) {
+			activity.updateMapSettings(true);
+		}
+		apply(activity);
+		activity.getMapView().refreshMap();
+	}
+
+	/** Which panels are on screen: RoadCrew's or OsmAnd's. Leaves the map's colours alone. */
+	static void toggleVisualStyle(@NonNull MapActivity activity) {
+		RoadCrewVisualStyle.setNeonBeta(activity.getApp(), !RoadCrewVisualStyle.isNeonBeta(activity));
+		apply(activity);
+		activity.getMapView().refreshMap();
 	}
 
 	@NonNull
@@ -656,8 +697,16 @@ public final class RoadCrewNeonHud {
 		float zoomOffset = enabled && !footerHidden ? -dp(mapHud, landscape ? 48 : 58) : 0;
 		setTranslationY(mapHud.findViewById(R.id.map_zoom_in_button), zoomOffset);
 		setTranslationY(mapHud.findViewById(R.id.map_zoom_out_button), zoomOffset);
-		float reportOffset = enabled && !footerHidden ? zoomOffset * 2 : 0;
-		setTranslationY(mapHud.findViewById(R.id.roadcrew_report_button), reportOffset);
+		// One lift for the whole right-hand column - zoom out, zoom in, the map
+		// colour switch, the report button - so it stays a single solid stack.
+		// Galin, 20.09: the report button used to take TWICE this, and that extra
+		// button height was the gap in the middle; it also made the stack one cell
+		// taller than the screen had room for, so the top button disappeared
+		// behind the header. The grid already keeps them in order; all the lift
+		// has to do is clear the footer.
+		setTranslationY(mapHud.findViewById(R.id.roadcrew_report_button), zoomOffset);
+		setTranslationY(mapHud.findViewById(R.id.roadcrew_map_colours_button), zoomOffset);
+		setTranslationY(mapHud.findViewById(R.id.roadcrew_panels_button), zoomOffset);
 	}
 
 	@NonNull
@@ -687,7 +736,6 @@ public final class RoadCrewNeonHud {
 		}
 	}
 
-	@NonNull
 	private static ImageButton iconButton(@NonNull MapActivity activity, @DrawableRes int iconRes,
 			@NonNull String description, @NonNull View.OnClickListener listener, int paddingDp) {
 		ImageButton button = new ImageButton(activity);

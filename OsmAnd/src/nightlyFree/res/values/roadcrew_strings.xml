@@ -207,6 +207,8 @@
     <string name="roadcrew_notification_channel_description">Help requests, driver warnings, and RoadCrew chat alerts.</string>
     <string name="roadcrew_button_join_chat">Join chat</string>
 	<string name="roadcrew_button_open_chat">Open chat</string>
+	<string name="roadcrew_map_colours_button">Light or dark map</string>
+	<string name="roadcrew_panels_button">Panels: RoadCrew or OsmAnd</string>
 	<string name="roadcrew_visual_style_title">Appearance</string>
 	<string name="roadcrew_visual_style_body">Classic keeps the current interface. RoadCrew Neon is an optional beta skin for the map controls and report menu; it does not change navigation, reports, chats or your data.</string>
 	<string name="roadcrew_visual_style_classic">Classic</string>

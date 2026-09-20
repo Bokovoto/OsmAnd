@@ -148,7 +148,15 @@ public class MapControlsLayer extends OsmandMapLayer {
 		addMapButton(createMapButton(inflater, R.layout.drawer_menu_button));
 		addMapButton(createMapButton(inflater, R.layout.navigation_menu_button));
 		if (RoadCrewReportsLayer.isEnabled(app)) {
+			// Order matters. The grid arranges each button against the ones
+			// registered before it and can only push a new one FURTHER from its
+			// anchor edge - here, upwards. So the colour switch is registered
+			// first to take the lower slot and end up directly UNDER the green
+			// report button, where Galin asked for it (20.09); registered after
+			// it, it was pushed above and ran into the neon header.
+			addMapButton(createMapButton(inflater, R.layout.roadcrew_map_colours_button));
 			addMapButton(createMapButton(inflater, R.layout.roadcrew_report_button));
+			addMapButton(createMapButton(inflater, R.layout.roadcrew_panels_button));
 		}
 
 		MapButton button = createMapButton(inflater, R.layout.map_3d_button);
