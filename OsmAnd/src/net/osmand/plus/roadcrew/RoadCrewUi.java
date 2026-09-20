@@ -184,6 +184,39 @@ final class RoadCrewUi {
 		return dialog;
 	}
 
+	/**
+	 * A panel along the bottom that leaves the map above it usable: the same
+	 * content as {@link #createDialog}, but anchored low, not dimming, and -
+	 * the part that matters - not swallowing touches outside itself. Galin,
+	 * 19.09: with the map merely visible behind a modal panel it "is not a map,
+	 * it is a picture" - he could not pan, zoom or turn it, which on a long
+	 * drive leaves nothing to get one's bearings by. FLAG_NOT_TOUCH_MODAL sends
+	 * everything outside the panel to the map behind, so it stays a real map.
+	 */
+	@NonNull
+	static AlertDialog createMapDialog(@NonNull Context context, @NonNull LinearLayout content) {
+		ScrollView scrollView = new ScrollView(context);
+		scrollView.setFillViewport(false);
+		scrollView.addView(content);
+		AlertDialog dialog = new AlertDialog.Builder(context)
+				.setView(scrollView)
+				.create();
+		dialog.setOnShowListener(d -> {
+			applyWindow(dialog);
+			Window window = dialog.getWindow();
+			if (window != null) {
+				window.setGravity(Gravity.BOTTOM);
+				window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+				window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+				window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+				WindowManager.LayoutParams attributes = window.getAttributes();
+				attributes.dimAmount = 0f;
+				window.setAttributes(attributes);
+			}
+		});
+		return dialog;
+	}
+
 	@NonNull
 	static AlertDialog createBottomDialog(@NonNull Context context, @NonNull View content) {
 		AlertDialog dialog = new AlertDialog.Builder(context)

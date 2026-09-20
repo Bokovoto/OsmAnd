@@ -11,7 +11,6 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -38,7 +37,9 @@ internal class RoadCrewTripReview(
     private var busy = false
     private val content = RoadCrewUi.createPanel(activity, activity.getString(R.string.roadcrew_trip_review_title))
     private val map = JourneyMap(activity, rows)
-    @JvmField val dialog: AlertDialog = RoadCrewUi.createDialog(activity, content)
+    // Anchored low, dimming very little: the drive is drawn on the real map
+    // behind this panel now, so the map has to stay readable (Galin, 19.09).
+    @JvmField val dialog: AlertDialog = RoadCrewUi.createMapDialog(activity, content)
 
     init {
         (content.getChildAt(0) as TextView).textSize = 22f
@@ -51,7 +52,10 @@ internal class RoadCrewTripReview(
                 .format(rows.sumOf { it.record.segmentKey.lengthMeters } / 1000)))
         RoadCrewUi.addSectionTitle(activity, content,
             activity.getString(R.string.roadcrew_trip_review_simple_question))
-        content.addView(map, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, RoadCrewUi.dp(activity, 240f)))
+        // The journey is no longer drawn inside this panel on a blank canvas -
+        // RoadCrewReportsLayer puts it on the map itself, over the maps the
+        // driver has downloaded. The view is kept so setMapContext stays valid,
+        // but it is never attached, so it asks for no road context either.
         map.sectionSelectionEnabled = false
         map.onContextNeeded = { focus.accept(rows[it]) }
         button(activity, R.string.roadcrew_trip_review_save, true) {

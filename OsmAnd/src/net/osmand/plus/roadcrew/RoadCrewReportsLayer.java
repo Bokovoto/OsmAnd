@@ -127,6 +127,21 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private RoadCrewValidationController validationController;
 	private final long createdAtMillis = System.currentTimeMillis();
 
+	/**
+	 * The trip the driver is reviewing, drawn here on the real map instead of on
+	 * the review dialog's own blank canvas (Galin, 19.09: the bare lines said too
+	 * little, he wants the drive over the maps he has already downloaded). Each
+	 * entry is one section, flattened as lat, lon, lat, lon...; null while no
+	 * review is open. A section with fewer than two points is skipped rather than
+	 * drawn as a guessed straight line - the same rule the dialog's own view kept.
+	 */
+	private static volatile List<double[]> tripReviewJourney;
+	private final Paint tripReviewPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+	static void setTripReviewJourney(@Nullable List<double[]> journey) {
+		tripReviewJourney = journey;
+	}
+
 	public RoadCrewReportsLayer(@NonNull OsmandApplication app) {
 		super(app);
 	}
@@ -443,6 +458,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			checkNearbyReports(reports);
 		}
 		checkVoiceAlerts(reports);
+		// Before the zoom gate: a whole trip is usually looked at zoomed further
+		// out than the reports are worth drawing at.
+		drawTripReviewJourney(canvas, tileBox);
 		if (tileBox.getZoom() < MIN_ZOOM) {
 			return;
 		}
@@ -458,6 +476,43 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			float x = tileBox.getPixXFromLatLon(latLon.getLatitude(), latLon.getLongitude());
 			float y = tileBox.getPixYFromLatLon(latLon.getLatitude(), latLon.getLongitude());
 			drawReport(canvas, tileBox, report, x, y);
+		}
+	}
+
+	/**
+	 * Draws the reviewed trip over whatever the map itself is rendering. A white
+	 * halo under the line keeps it readable over any map style, dark or light,
+	 * without the layer needing to know which one is in use.
+	 */
+	private void drawTripReviewJourney(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox) {
+		List<double[]> journey = tripReviewJourney;
+		if (journey == null || journey.isEmpty()) {
+			return;
+		}
+		tripReviewPaint.setStyle(Paint.Style.STROKE);
+		tripReviewPaint.setStrokeCap(Paint.Cap.ROUND);
+		tripReviewPaint.setStrokeJoin(Paint.Join.ROUND);
+		Path path = new Path();
+		for (double[] section : journey) {
+			if (section == null || section.length < 4) {
+				continue;
+			}
+			path.rewind();
+			for (int i = 0; i + 1 < section.length; i += 2) {
+				float x = tileBox.getPixXFromLatLon(section[i], section[i + 1]);
+				float y = tileBox.getPixYFromLatLon(section[i], section[i + 1]);
+				if (i == 0) {
+					path.moveTo(x, y);
+				} else {
+					path.lineTo(x, y);
+				}
+			}
+			tripReviewPaint.setColor(0xCCFFFFFF);
+			tripReviewPaint.setStrokeWidth(dp(9f));
+			canvas.drawPath(path, tripReviewPaint);
+			tripReviewPaint.setColor(0xFF1E88E5);
+			tripReviewPaint.setStrokeWidth(dp(5f));
+			canvas.drawPath(path, tripReviewPaint);
 		}
 	}
 

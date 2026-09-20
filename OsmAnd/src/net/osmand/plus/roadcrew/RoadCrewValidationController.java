@@ -12,18 +12,25 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import net.osmand.data.QuadRect;
+import net.osmand.data.RotatedTileBox;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.R;
 import net.osmand.plus.activities.MapActivity;
+import net.osmand.plus.views.OsmandMapTileView;
 import net.osmand.router.RoadCrewValidationStopGate;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -338,10 +345,17 @@ final class RoadCrewValidationController {
 				});
 			}, 300);
 		});
+		// The drive itself goes on the real map behind the panel, over whatever
+		// the driver has downloaded, instead of onto the dialog's own blank
+		// canvas (Galin, 19.09).
+		QuadRect tripBounds = showTripOnMap(activity, trip);
 		dialog = editor[0].dialog;
 		dialog.setCancelable(false);
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.setOnDismissListener(d -> {
+			RoadCrewReportsLayer.setTripReviewJourney(null);
+			MapActivity current = activitySupplier.get();
+			if (current != null) { current.refreshMap(); }
 			tripMapRequest.incrementAndGet();
 			if (!saving[0]) {
 				RoadCrewMapObservationCoordinator.getInstance(app).saveTripReview(trip.id,
@@ -352,6 +366,75 @@ final class RoadCrewValidationController {
 			if (dialog == editor[0].dialog) { dialog = null; }
 		});
 		dialog.show();
+		// Only now move the map. Fitting it before the panel existed let the
+		// app's own centring - on the driver, while navigating - put the drive
+		// back off screen, so it had to be hunted for (Galin, 19.09). Twice,
+		// because that centring can still land once after the panel appears.
+		if (tripBounds != null) {
+			handler.postDelayed(() -> fitMapToTrip(activity, tripBounds), 300);
+			handler.postDelayed(() -> fitMapToTrip(activity, tripBounds), 1200);
+		}
+	}
+
+	/**
+	 * Hands the reviewed drive to the map layer and returns the area it covers,
+	 * for the caller to move the map to once the panel is up. Geometry that
+	 * cannot be read is left out rather than approximated: a section without a
+	 * real line is simply not drawn.
+	 */
+	@Nullable
+	private QuadRect showTripOnMap(MapActivity activity, RoadCrewTripJournal.Trip trip) {
+		List<double[]> journey = new ArrayList<>();
+		QuadRect bounds = null;
+		for (RoadCrewTripJournal.Row row : trip.rows) {
+			try {
+				JSONArray points = new JSONArray(row.geometry);
+				if (points.length() < 2) { continue; }
+				double[] section = new double[points.length() * 2];
+				for (int i = 0; i < points.length(); i++) {
+					JSONArray point = points.getJSONArray(i);
+					double latitude = point.getDouble(0);
+					double longitude = point.getDouble(1);
+					section[i * 2] = latitude;
+					section[i * 2 + 1] = longitude;
+					if (bounds == null) {
+						bounds = new QuadRect(longitude, latitude, longitude, latitude);
+					} else {
+						bounds.left = Math.min(bounds.left, longitude);
+						bounds.right = Math.max(bounds.right, longitude);
+						bounds.top = Math.max(bounds.top, latitude);
+						bounds.bottom = Math.min(bounds.bottom, latitude);
+					}
+				}
+				journey.add(section);
+			} catch (JSONException e) {
+				Log.w("RoadCrewValidation", "Trip section geometry unreadable", e);
+			}
+		}
+		RoadCrewReportsLayer.setTripReviewJourney(journey.isEmpty() ? null : journey);
+		activity.refreshMap();
+		return bounds;
+	}
+
+	/**
+	 * Puts the whole drive in view: north up, off the driver's own position, and
+	 * zoomed to the part of the map the panel leaves visible. Called after the
+	 * panel is up, and once more shortly after, because the app's own centring
+	 * on the driver can otherwise put the drive back off screen.
+	 */
+	private void fitMapToTrip(MapActivity activity, QuadRect bounds) {
+		if (closed || activity.isFinishing() || activity.isDestroyed()) { return; }
+		OsmandMapTileView mapView = activity.getMapView();
+		RotatedTileBox box = mapView.getRotatedTileBox();
+		int width = box.getPixWidth();
+		int height = box.getPixHeight();
+		if (width <= 0 || height <= 0) { return; }
+		// A drive is read like a map, not like a windscreen.
+		activity.getMapViewTrackingUtilities().setMapLinkedToLocation(false);
+		mapView.setRotate(0, true);
+		mapView.fitRectToMap(bounds.left, bounds.right, bounds.top, bounds.bottom,
+				width, Math.max(height / 2, height - RoadCrewUi.dp(activity, 320f)), 0);
+		activity.refreshMap();
 	}
 
 	private void show(MapActivity activity, RoadCrewValidationApi.Question question,
