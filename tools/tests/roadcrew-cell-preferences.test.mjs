@@ -68,7 +68,7 @@ test('both sources rank the same road, and neither can go below one', () => {
   const planner = readFileSync(new URL(
     '../../OsmAnd-java/src/main/java/net/osmand/router/BinaryRoutePlanner.java',
     import.meta.url), 'utf8');
-  const call = planner.slice(planner.indexOf('double roadCrewFactor = Math.min('),
+  const call = planner.slice(planner.indexOf('boolean hasSegmentEvidence ='),
     planner.indexOf('return obstacle + heightObstacle + distTimeOnRoadToPass * roadCrewFactor;'));
   assert.match(call, /roadCrewPreferenceMatcher\.costFactor/, 'the old segments still rank');
   assert.match(call, /roadCrewCellMatcher\.costFactor/, 'and the cells rank beside them');
@@ -79,4 +79,26 @@ test('both sources rank the same road, and neither can go below one', () => {
     import.meta.url), 'utf8');
   assert.equal((context.match(/roadCrewCellMatcher = /g) || []).length, 2,
     'both constructors build it, or one route kind would silently ignore the evidence');
+});
+
+test('a source with no evidence does not vote', () => {
+  // The A* test caught this on 21.09: an empty matcher answered 1, the
+  // minimum of the two then made every road look proven, and the ranking
+  // disappeared without a single error.
+  const planner = readFileSync(new URL(
+    '../../OsmAnd-java/src/main/java/net/osmand/router/BinaryRoutePlanner.java',
+    import.meta.url), 'utf8');
+  const block = planner.slice(planner.indexOf('boolean hasSegmentEvidence ='),
+    planner.indexOf('return obstacle + heightObstacle + distTimeOnRoadToPass * roadCrewFactor;'));
+  assert.match(block, /hasSegmentEvidence && hasCellEvidence/,
+    'both sides speak only when both have something to say');
+  assert.match(block, /else if \(hasSegmentEvidence\)/);
+  assert.match(block, /else if \(hasCellEvidence\)/);
+  for (const path of [
+    '../../OsmAnd-java/src/main/java/net/osmand/router/RoadCrewCellPreferences.java',
+    '../../OsmAnd-java/src/main/java/net/osmand/router/RoadCrewRoutePreferences.java',
+  ]) {
+    assert.match(readFileSync(new URL(path, import.meta.url), 'utf8'),
+      /public boolean hasEvidence\(\)/, `${path} must be able to say it has nothing`);
+  }
 });

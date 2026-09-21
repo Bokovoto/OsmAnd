@@ -92,6 +92,9 @@ public final class RoadCrewRoutePreferences {
 	public final class Matcher {
 		private final Map<RouteDataObject, Ranges> cache = new WeakHashMap<>();
 
+		/** Whether this side has anything to say; an empty one must not vote. */
+		public boolean hasEvidence() { return !isEmpty(); }
+
 		public double costFactor(RouteDataObject road, int from, int to) {
 			if (isEmpty()) { return 1; }
 			List<RoadCrewSegmentIdentity.SegmentKey> candidates = byWay.get(ObfConstants.getOsmObjectId(road));

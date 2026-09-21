@@ -30,7 +30,10 @@ import net.osmand.plus.onlinerouting.engine.OnlineRoutingEngine.OnlineRoutingRes
 import net.osmand.plus.render.NativeOsmandLibrary;
 import net.osmand.plus.roadcrew.RoadCrewRoutePreferenceDownloader;
 import net.osmand.plus.roadcrew.routing.RoadCrewRoutingOverlayStore;
+import net.osmand.plus.roadcrew.RoadCrewCellPreferenceStore;
+import net.osmand.plus.roadcrew.RoadCrewCellTileDownloader;
 import net.osmand.plus.roadcrew.RoadCrewRoutePreferenceStore;
+import net.osmand.router.RoadCrewCellPreferences;
 import net.osmand.router.RoadCrewRoutePreferences;
 import net.osmand.plus.routing.GPXRouteParams.GPXRouteParamsBuilder;
 import net.osmand.plus.settings.backend.ApplicationMode;
@@ -298,11 +301,12 @@ public class RouteProvider {
 
 	protected RoutingEnvironment calculateRoutingEnvironment(RouteCalculationParams params, boolean calcGPXRoute, boolean skipComplex) throws IOException {
 		return calculateRoutingEnvironment(params, calcGPXRoute, skipComplex,
-				RoadCrewRoutePreferences.EMPTY, null);
+				RoadCrewRoutePreferences.EMPTY, RoadCrewCellPreferences.EMPTY, null);
 	}
 
 	private RoutingEnvironment calculateRoutingEnvironment(RouteCalculationParams params, boolean calcGPXRoute,
 			boolean skipComplex, RoadCrewRoutePreferences preferences,
+			RoadCrewCellPreferences cellPreferences,
 			PrecalculatedRouteDirection suppliedPrecalculated) throws IOException {
 		BinaryMapIndexReader[] files = params.ctx.getResourceManager().getRoutingMapFiles();
 		RoutePlannerFrontEnd router = new RoutePlannerFrontEnd();
@@ -357,6 +361,7 @@ public class RouteProvider {
 			return null;
 		}
 		cf.roadCrewPreferences = preferences;
+		cf.roadCrewCellPreferences = cellPreferences;
 		if (communityRanking) {
 			log.info("RoadCrew directed soft ranking: " + preferences.size() + " validated sections, Java A*");
 		}
@@ -450,13 +455,18 @@ public class RouteProvider {
 		// Keep global route discovery on HH/native. Only the second, base-route-guided pass
 		// uses Java A* so validated RoadCrew preferences can affect nearby alternatives.
 		RoadCrewRoutePreferenceDownloader.refreshForRouteBlocking(params.ctx, baseRoute);
+		RoadCrewCellTileDownloader.refreshForRouteBlocking(params.ctx, baseRoute);
 		RoadCrewRoutePreferences preferences = RoadCrewRoutePreferenceStore.load(params.ctx, params.mode);
+		RoadCrewCellPreferences cellPreferences =
+				RoadCrewCellPreferenceStore.load(params.ctx, params.mode);
 		double[] routeBounds = routeBounds(baseRoute);
 		if (routeBounds != null) {
 			preferences = preferences.within(routeBounds[0] - 0.15, routeBounds[1] + 0.15,
 					routeBounds[2] - 0.15, routeBounds[3] + 0.15);
 		}
-		if (preferences.isEmpty()) {
+		// The second pass costs a whole calculation, so it runs only when there
+		// is something to rank with - from either identity while they change over.
+		if (preferences.isEmpty() && cellPreferences.isEmpty()) {
 			return baseResult;
 		}
 		PrecalculatedRouteDirection routeDirection = PrecalculatedRouteDirection.build(
@@ -465,7 +475,7 @@ public class RouteProvider {
 			return baseResult;
 		}
 		RoutingEnvironment refinedEnv = calculateRoutingEnvironment(params, false, true,
-				preferences, routeDirection);
+				preferences, cellPreferences, routeDirection);
 		if (refinedEnv == null) {
 			return baseResult;
 		}

@@ -463,9 +463,18 @@ public class BinaryRoutePlanner {
 		// old segments and the rcs2 cells. A road proven by either costs one;
 		// neither can push a cost below that, so the A* lower bound holds
 		// whichever answers.
-		double roadCrewFactor = Math.min(
-				ctx.roadCrewPreferenceMatcher.costFactor(road, prevSegmentInd, segmentInd),
-				ctx.roadCrewCellMatcher.costFactor(road, prevSegmentInd, segmentInd));
+		boolean hasSegmentEvidence = ctx.roadCrewPreferenceMatcher.hasEvidence();
+		boolean hasCellEvidence = ctx.roadCrewCellMatcher.hasEvidence();
+		double roadCrewFactor = 1;
+		if (hasSegmentEvidence && hasCellEvidence) {
+			roadCrewFactor = Math.min(
+					ctx.roadCrewPreferenceMatcher.costFactor(road, prevSegmentInd, segmentInd),
+					ctx.roadCrewCellMatcher.costFactor(road, prevSegmentInd, segmentInd));
+		} else if (hasSegmentEvidence) {
+			roadCrewFactor = ctx.roadCrewPreferenceMatcher.costFactor(road, prevSegmentInd, segmentInd);
+		} else if (hasCellEvidence) {
+			roadCrewFactor = ctx.roadCrewCellMatcher.costFactor(road, prevSegmentInd, segmentInd);
+		}
 		return obstacle + heightObstacle + distTimeOnRoadToPass * roadCrewFactor;
 
 	}

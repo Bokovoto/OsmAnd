@@ -21,6 +21,7 @@ public final class RoadCrewMapObservationConsent {
 	private static final String OUTBOX_FILE_NAME = "roadcrew-map-observations.json";
 	private static final String SHADOW_SNAPSHOT_FILE_NAME = "roadcrew-shadow-snapshot.json";
 	private static final String ROUTING_PREFERENCES_FILE_NAME = "roadcrew-routing-preferences.json";
+	private static final String CELL_PREFERENCES_FILE_NAME = "roadcrew-cell-preferences.json";
 	private static final long UPLOAD_ERROR_GRACE_MILLIS = 15L * 60 * 1_000;
 
 	private RoadCrewMapObservationConsent() {
@@ -146,6 +147,11 @@ public final class RoadCrewMapObservationConsent {
 		return new File(context.getFilesDir(), ROUTING_PREFERENCES_FILE_NAME);
 	}
 
+	/** The rcs2 snapshot, which goes the same way as the older one on revocation. */
+	static File getCellPreferencesFile(@NonNull Context context) {
+		return new File(context.getFilesDir(), CELL_PREFERENCES_FILE_NAME);
+	}
+
 	static void deleteLocalObservations(@NonNull Context context) {
 		RoadCrewShadowRouteDiagnostics.clear(context);
 		// The comparison queue holds copies of the same drives, so revoking
@@ -161,6 +167,7 @@ public final class RoadCrewMapObservationConsent {
 		deleteIfPresent(new File(snapshot.getPath() + ".tmp"));
 		File preferences = getRoutingPreferencesFile(context);
 		deleteIfPresent(preferences);
+		deleteIfPresent(getCellPreferencesFile(context));
 		deleteIfPresent(new File(preferences.getPath() + ".bak"));
 		deleteIfPresent(new File(preferences.getPath() + ".tmp"));
 	}

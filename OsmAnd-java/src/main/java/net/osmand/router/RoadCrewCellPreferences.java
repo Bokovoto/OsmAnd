@@ -165,6 +165,16 @@ public final class RoadCrewCellPreferences {
 		private Matcher(long now) { this.now = now; }
 
 		/**
+		 * Whether this side has anything to say at all.
+		 *
+		 * A matcher with no evidence must not answer 1 and be taken for "this
+		 * road is proven": combined with the other side by a minimum, that
+		 * silently made every road proven and the ranking vanished. Caught by
+		 * the A* test on 21.09.
+		 */
+		public boolean hasEvidence() { return !byWay.isEmpty(); }
+
+		/**
 		 * 1 for a stretch other lorries have driven, the ordinary cost for
 		 * everything else. Never below 1: the A* lower bound has to hold.
 		 */
