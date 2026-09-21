@@ -142,6 +142,16 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		tripReviewJourney = journey;
 	}
 
+	/**
+	 * Whether a drive is currently drawn for review. The field is static, so it
+	 * outlives the panel's window: Galin, 21.09, was left with the drive on the
+	 * map and no buttons anywhere. Whoever owns the panel checks this and clears
+	 * the drawing rather than leaving a course on screen that cannot be answered.
+	 */
+	static boolean hasTripReviewJourney() {
+		return tripReviewJourney != null;
+	}
+
 	public RoadCrewReportsLayer(@NonNull OsmandApplication app) {
 		super(app);
 	}

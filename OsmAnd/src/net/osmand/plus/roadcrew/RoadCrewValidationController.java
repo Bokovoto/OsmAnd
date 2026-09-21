@@ -146,7 +146,16 @@ final class RoadCrewValidationController {
 		boolean consent = RoadCrewMapObservationConsent.isEnabled(app);
 		RoadCrewMapObservationCoordinator.observeTripContext(app);
 		safe = updateSafety();
-		if (!safe && isShowing()) { dialog.dismiss(); }
+		if (isShowing() && mustCloseOpenPanel()) { dialog.dismiss(); }
+		// A drive drawn with no panel to answer it cannot happen: the drawing
+		// lives on a static field in the layer and outlives the window, so
+		// losing the panel used to leave the course on the map with no buttons
+		// anywhere (Galin, 21.09). The trip stays unreviewed and is offered
+		// again by the ordinary path below.
+		if (!isShowing() && RoadCrewReportsLayer.hasTripReviewJourney()) {
+			RoadCrewReportsLayer.setTripReviewJourney(null);
+			if (activity != null) { activity.refreshMap(); }
+		}
 		if (!consent) {
 			if (prefs.contains("answer")) { clearLocalAnswers(app); }
 			return;
@@ -164,6 +173,29 @@ final class RoadCrewValidationController {
 		manualUntil = 0;
 		if (review) { nextReviewElapsed = SystemClock.elapsedRealtime() + 5000; }
 		executor.execute(() -> work(token, pending, manual, review, question));
+	}
+
+	/**
+	 * Whether an open panel has to be taken away - a different question from
+	 * whether a new one may be offered.
+	 *
+	 * Galin, 21.09: "когато не успя да потвърдя курса и реално изчезна питането
+	 * докато пипам картата". `updateSafety()` is false while a route is being
+	 * calculated, and moving the map can start one, so the tick was dismissing a
+	 * panel he was reading - after which the drive could not be confirmed at
+	 * all. That gate exists to avoid interrupting a driver, not to withdraw a
+	 * confirmation already in front of him.
+	 *
+	 * So an open panel closes only for the things that really rule it out:
+	 * navigation actually starting, the map going away, or consent withdrawn.
+	 */
+	private boolean mustCloseOpenPanel() {
+		MapActivity activity = activitySupplier.get();
+		return closed
+				|| !RoadCrewMapObservationConsent.isEnabled(app)
+				|| activity == null || activity.isFinishing() || activity.isDestroyed()
+				|| app.getRoutingHelper().isFollowingMode()
+				|| app.getLocationProvider().getLocationSimulation().isRouteAnimating();
 	}
 
 	private boolean updateSafety() {
@@ -371,8 +403,18 @@ final class RoadCrewValidationController {
 		// back off screen, so it had to be hunted for (Galin, 19.09). Twice,
 		// because that centring can still land once after the panel appears.
 		if (tripBounds != null) {
-			handler.postDelayed(() -> fitMapToTrip(activity, tripBounds), 300);
-			handler.postDelayed(() -> fitMapToTrip(activity, tripBounds), 1200);
+			// North first, then the whole course in the window - Galin's own
+			// order, 21.09: "трябва първо да се даде картата на N и след това да
+			// има правило да се покаже на целия прозорец на екрана".
+			//
+			// Rotation is animated, so a fit computed while it is still turning
+			// is undone by the rest of the turn - which is why the course
+			// appeared and was then lost. Worse, the second pass used to ask for
+			// the rotation again with force, starting it over and throwing away
+			// the fit that had just been made.
+			handler.post(() -> faceNorth(activity));
+			handler.postDelayed(() -> fitMapToTrip(activity, tripBounds), 700);
+			handler.postDelayed(() -> fitMapToTrip(activity, tripBounds), 1600);
 		}
 	}
 
@@ -422,6 +464,15 @@ final class RoadCrewValidationController {
 	 * panel is up, and once more shortly after, because the app's own centring
 	 * on the driver can otherwise put the drive back off screen.
 	 */
+	/** A drive is read like a map, not like a windscreen: north up, once. */
+	private void faceNorth(MapActivity activity) {
+		if (closed || activity.isFinishing() || activity.isDestroyed()) { return; }
+		activity.getMapViewTrackingUtilities().setMapLinkedToLocation(false);
+		// Not forced: when the map is already north there is nothing to turn,
+		// and asking anyway would start an animation that spoils the fit.
+		activity.getMapView().setRotate(0, false);
+	}
+
 	private void fitMapToTrip(MapActivity activity, QuadRect bounds) {
 		if (closed || activity.isFinishing() || activity.isDestroyed()) { return; }
 		OsmandMapTileView mapView = activity.getMapView();
@@ -429,9 +480,7 @@ final class RoadCrewValidationController {
 		int width = box.getPixWidth();
 		int height = box.getPixHeight();
 		if (width <= 0 || height <= 0) { return; }
-		// A drive is read like a map, not like a windscreen.
 		activity.getMapViewTrackingUtilities().setMapLinkedToLocation(false);
-		mapView.setRotate(0, true);
 		mapView.fitRectToMap(bounds.left, bounds.right, bounds.top, bounds.bottom,
 				width, Math.max(height / 2, height - RoadCrewUi.dp(activity, 320f)), 0);
 		activity.refreshMap();

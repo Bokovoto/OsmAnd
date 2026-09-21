@@ -59,15 +59,23 @@ test('the map is moved to the trip only after the panel is up, and again after t
   const source = read(CONTROLLER);
   const show = source.indexOf('dialog.show();');
   assert.notEqual(show, -1);
-  const after = source.slice(show, show + 600);
+  // Wide enough to survive the comment that explains the order (21.09); what
+  // matters is that the fits come after dialog.show(), not how far after.
+  const after = source.slice(show, show + 1600);
   // Fitting before the panel existed let the app re-centre on the driver and
   // leave the drive off screen (Galin, 19.09).
   const fits = after.match(/fitMapToTrip\(activity, tripBounds\)/g) || [];
   assert.ok(fits.length >= 2, `the fit must be repeated, found ${fits.length}`);
   const body = source.slice(source.indexOf('private void fitMapToTrip('));
   assert.match(body, /fitRectToMap\(/, 'the map must move so the whole trip is in view');
-  assert.match(body, /setRotate\(0, true\)/, 'north up');
   assert.match(body, /setMapLinkedToLocation\(false\)/, 'and not snapping back to the driver');
+  // North up used to be asked for here, with force, on every pass. Galin,
+  // 21.09: the course was shown whole and then lost as the map turned. The
+  // rotation is animated, so a fit made during it is undone by the rest of it,
+  // and the second pass restarted the turn. It is now its own step, once,
+  // before the fits - see roadcrew-trip-review-panel.test.mjs.
+  assert.doesNotMatch(body, /setRotate/, 'the fit must not turn the map');
+  assert.match(source, /private void faceNorth\(MapActivity activity\)/, 'north up, once');
 });
 
 test('the review panel no longer carries its own map, and lets the map behind stay readable', () => {
