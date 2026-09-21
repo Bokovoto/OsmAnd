@@ -112,3 +112,19 @@ test('the course is still open when the directed observations arrive', () => {
     import.meta.url), 'utf8');
   assert.match(pipeline, /public synchronized void flushDirect\(\)/);
 });
+
+test('the phone reports where the chain breaks, without being asked', () => {
+  // A whole day went on guessing why the live path was empty, because every
+  // step failed quietly. These counters ride to the server with the ordinary
+  // diagnostics, so the next silence names its own cause (21.09).
+  const coordinator = read(COORDINATOR);
+  assert.match(coordinator, /evidence_journal_stored/);
+  assert.match(coordinator, /evidence_journal_no_course/,
+    'an observation with no course to attach to must be counted, not dropped in silence');
+  const uploader = read(UPLOADER);
+  assert.match(uploader, /evidence_upload_attempted/);
+  assert.match(uploader, /evidence_uploaded/);
+  assert.match(uploader, /evidence_upload_failed/);
+  assert.match(read(JOURNAL), /fun captureDirect\(id: String, bucket: Long, json: String\): Boolean/,
+    'the journal has to say whether it stored, or the counter would be a guess');
+});

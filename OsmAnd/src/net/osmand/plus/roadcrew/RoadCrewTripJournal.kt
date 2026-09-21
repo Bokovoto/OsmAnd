@@ -136,13 +136,17 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
      * phone is not asked to rebuild a wire format it has already produced.
      */
     @Synchronized
-    fun captureDirect(id: String, bucket: Long, json: String) {
-        if (!RoadCrewMapObservationConsent.isEnabled(app)) return
-        val trip = activeTrip ?: return
+    fun captureDirect(id: String, bucket: Long, json: String): Boolean {
+        if (!RoadCrewMapObservationConsent.isEnabled(app)) return false
+        // Says whether it was stored. The caller counts the refusals, because a
+        // silently dropped observation is what cost a whole day of guessing
+        // about why the live path was empty (21.09).
+        val trip = activeTrip ?: return false
         val db = database()
         db.execSQL(
             "INSERT OR IGNORE INTO direct_sections(trip_id, observation_id, bucket, json)"
                 + " VALUES (?, ?, ?, ?)", arrayOf(trip, id, bucket, json))
+        return true
     }
 
     /** A way's shape as this phone's map draws it, kept until the server asks. */

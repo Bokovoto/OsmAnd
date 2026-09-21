@@ -558,8 +558,13 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 		for (RoadCrewDirectObservation observation : observations) {
 			try {
 				String id = UUID.randomUUID().toString();
-				journal.captureDirect(id, observation.observedAtBucketMillis,
+				boolean stored = journal.captureDirect(id, observation.observedAtBucketMillis,
 						RoadCrewShadowValidation.evidenceJson(observation, id));
+				// Counted, not assumed. These ride to the server with the
+				// diagnostics, so the next silence can be diagnosed without
+				// chasing the phone onto a petrol station's wifi.
+				RoadCrewShadowValidation.diagnostics().count(
+						stored ? "evidence_journal_stored" : "evidence_journal_no_course");
 				rememberWayShape(pipeline, journal, observation);
 			} catch (Exception e) {
 				// One unreadable observation must not cost the rest of the course.

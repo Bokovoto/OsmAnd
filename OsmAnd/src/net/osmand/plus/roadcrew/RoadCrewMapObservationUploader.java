@@ -350,6 +350,7 @@ final class RoadCrewMapObservationUploader {
 			if (rows.isEmpty()) {
 				return;
 			}
+			RoadCrewShadowValidation.diagnostics().count("evidence_upload_attempted", rows.size());
 			try {
 				Set<String> accepted = postDirectBatch(app, rows);
 				List<Long> done = new ArrayList<>();
@@ -360,6 +361,7 @@ final class RoadCrewMapObservationUploader {
 					}
 				}
 				journal.markDirectTransferred(done);
+				RoadCrewShadowValidation.diagnostics().count("evidence_uploaded", done.size());
 				if (done.size() < rows.size()) {
 					// Some were not acknowledged; stop rather than spin on them.
 					return;
@@ -368,6 +370,7 @@ final class RoadCrewMapObservationUploader {
 				// The rows stay CONFIRMED and the next run tries again. A drive
 				// is not lost because the network was.
 				Log.w(TAG, "Cannot upload confirmed directed observations", e);
+				RoadCrewShadowValidation.diagnostics().count("evidence_upload_failed");
 				return;
 			}
 		}
