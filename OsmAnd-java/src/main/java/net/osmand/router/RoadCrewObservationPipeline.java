@@ -123,6 +123,19 @@ public final class RoadCrewObservationPipeline {
 	 * The alternative is asking a free public service for every road ten
 	 * thousand phones drive, which is not a plan.
 	 */
+	/**
+	 * Hands over the passages the directed accumulator is still holding.
+	 *
+	 * Called while the course they belong to is still open. Doing it the other
+	 * way round - closing the course, then flushing - is how the last stretches
+	 * of every drive were dropped: they arrived with nothing to attach them to.
+	 */
+	public synchronized void flushDirect() {
+		if (directPipeline != null) {
+			directPipeline.flush();
+		}
+	}
+
 	public synchronized RouteDataObject roadForOsmWay(long osmWayId) {
 		for (RouteDataObject road : roadsById.values()) {
 			if (road != null && ObfConstants.getOsmObjectId(road) == osmWayId) {

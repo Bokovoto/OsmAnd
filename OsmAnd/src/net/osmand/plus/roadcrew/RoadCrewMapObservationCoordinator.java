@@ -138,6 +138,11 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 		navigationSessionActive = false;
 		RoadCrewRecordingService.refreshFromForeground(app);
 		queueTripBoundary(() -> {
+			// Empty the directed accumulator FIRST. Closing the course first and
+			// flushing after is how the last stretches of every drive were lost:
+			// they arrived with no active course and the journal had nothing to
+			// attach them to (21.09, found with the live path silent).
+			flushDirectPipeline();
 			RoadCrewTripJournal.get(app).navigationFinished();
 			app.runInUIThread(() -> RoadCrewValidationController.onNavigationFinished(app));
 		});
@@ -185,7 +190,10 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 		// Also handles consent enabled during an already active navigation session.
 		if (app.getRoutingHelper().isFollowingMode()) { beginNavigationSession(); }
 		if (previousCollectionContext && !context) {
-			queueTripBoundary(() -> RoadCrewTripJournal.get(app).collectionPaused());
+			queueTripBoundary(() -> {
+				flushDirectPipeline();
+				RoadCrewTripJournal.get(app).collectionPaused();
+			});
 		}
 		previousCollectionContext = context;
 		long elapsed = SystemClock.elapsedRealtime();
@@ -201,7 +209,11 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 		return executor.submit(() -> {
 			if (!enabled) { return null; }
 			RoadCrewTripJournal journal = RoadCrewTripJournal.get(app);
-			if (manual && !navigationSessionActive) { journal.collectionPaused(); resetPipeline(); }
+			if (manual && !navigationSessionActive) {
+				flushDirectPipeline();
+				journal.collectionPaused();
+				resetPipeline();
+			}
 			return journal.review(manual);
 		}).get();
 	}
@@ -517,6 +529,21 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			created.setDirectDiagnostics(RoadCrewShadowValidation.diagnostics());
 		} catch (RuntimeException e) {
 			LOG.warn("Could not start the directed segmentation; recording continues", e);
+		}
+	}
+
+	/**
+	 * Hands over whatever the directed accumulator is still holding, while the
+	 * course it belongs to is still open.
+	 */
+	private void flushDirectPipeline() {
+		try {
+			RoadCrewObservationPipeline current = pipeline;
+			if (current != null) {
+				current.flushDirect();
+			}
+		} catch (RuntimeException e) {
+			LOG.warn("Could not flush the directed observations", e);
 		}
 	}
 

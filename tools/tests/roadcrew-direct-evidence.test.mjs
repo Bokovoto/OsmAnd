@@ -92,3 +92,23 @@ test('the phone answers for the shape of a way, so a free service need not', () 
     'sent when the server asks, not with every observation');
   assert.match(uploader, /way-geometry/, 'to the endpoint that verifies them');
 });
+
+test('the course is still open when the directed observations arrive', () => {
+  // Found with the live path silent while the comparison stream filled: the
+  // course was closed first and the accumulator emptied after, so the last
+  // stretches of every drive had no course to attach to and were dropped
+  // (21.09). The comparison stream never noticed - it needs no course.
+  const coordinator = read(COORDINATOR);
+  assert.match(coordinator, /private void flushDirectPipeline\(\)/);
+  for (const closing of ['navigationFinished\(\)', 'collectionPaused\(\)']) {
+    const at = coordinator.search(new RegExp(closing));
+    assert.notEqual(at, -1, `${closing} must exist`);
+    const before = coordinator.slice(Math.max(0, at - 400), at);
+    assert.match(before, /flushDirectPipeline\(\);/,
+      `the accumulator must be emptied before ${closing}`);
+  }
+  const pipeline = readFileSync(new URL(
+    '../../OsmAnd-java/src/main/java/net/osmand/router/RoadCrewObservationPipeline.java',
+    import.meta.url), 'utf8');
+  assert.match(pipeline, /public synchronized void flushDirect\(\)/);
+});
