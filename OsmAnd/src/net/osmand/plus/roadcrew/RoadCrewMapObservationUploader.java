@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -149,6 +150,10 @@ final class RoadCrewMapObservationUploader {
 			if (app != null && outbox != null && RoadCrewMapObservationConsent.isEnabled(app)) {
 				prepareQueueRecovery(app, outbox);
 				uploadAvailable(app, outbox);
+				// The directed observations of confirmed courses go the same way
+				// and in the same run: they are the evidence the map is built
+				// from now (Galin, 21.09).
+				uploadConfirmedDirect(app);
 			}
 		} finally {
 			synchronized (RoadCrewMapObservationUploader.class) {
@@ -318,6 +323,113 @@ final class RoadCrewMapObservationUploader {
 		return responseCode == HttpURLConnection.HTTP_BAD_REQUEST
 				|| responseCode == HttpURLConnection.HTTP_ENTITY_TOO_LARGE;
 	}
+
+	/**
+	 * The directed observations of courses the driver has confirmed.
+	 *
+	 * They are held in the trip journal until then, so nothing here can upload
+	 * a course nobody agreed to. What travels is the JSON the journal stored,
+	 * unchanged - the phone does not rebuild a wire format it already produced.
+	 */
+	static void uploadConfirmedDirect(@NonNull OsmandApplication app) {
+		if (!RoadCrewMapObservationConsent.isEnabled(app)) {
+			return;
+		}
+		RoadCrewTripJournal journal = RoadCrewTripJournal.get(app);
+		for (int batch = 0; batch < MAX_BATCHES_PER_RUN; batch++) {
+			List<RoadCrewTripJournal.DirectRow> rows;
+			try {
+				rows = journal.confirmedDirect(DIRECT_BATCH_SIZE);
+			} catch (RuntimeException e) {
+				Log.w(TAG, "Cannot read confirmed directed observations", e);
+				return;
+			}
+			if (rows.isEmpty()) {
+				return;
+			}
+			try {
+				Set<String> accepted = postDirectBatch(app, rows);
+				List<Long> done = new ArrayList<>();
+				for (RoadCrewTripJournal.DirectRow row : rows) {
+					String id = new JSONObject(row.json).optString("id", "");
+					if (accepted.contains(id)) {
+						done.add(row.seq);
+					}
+				}
+				journal.markDirectTransferred(done);
+				if (done.size() < rows.size()) {
+					// Some were not acknowledged; stop rather than spin on them.
+					return;
+				}
+			} catch (Exception e) {
+				// The rows stay CONFIRMED and the next run tries again. A drive
+				// is not lost because the network was.
+				Log.w(TAG, "Cannot upload confirmed directed observations", e);
+				return;
+			}
+		}
+	}
+
+	@NonNull
+	private static Set<String> postDirectBatch(@NonNull OsmandApplication app,
+			@NonNull List<RoadCrewTripJournal.DirectRow> rows) throws IOException, JSONException {
+		JSONObject body = new JSONObject();
+		body.put("schemaVersion", SCHEMA_VERSION);
+		JSONArray observations = new JSONArray();
+		StringBuilder seed = new StringBuilder();
+		for (RoadCrewTripJournal.DirectRow row : rows) {
+			JSONObject observation = new JSONObject(row.json);
+			observations.put(observation);
+			seed.append(observation.optString("id", "")).append(';');
+		}
+		body.put("chunkId", UUID.nameUUIDFromBytes(
+				seed.toString().getBytes(StandardCharsets.UTF_8)).toString());
+		body.put("observations", observations);
+		byte[] compressed = gzip(body.toString().getBytes(StandardCharsets.UTF_8));
+
+		for (int attempt = 0; attempt < 2; attempt++) {
+			String token = getOrRegisterInstallationToken(app);
+			HttpURLConnection connection = (HttpURLConnection) new URL(CHUNK_URL).openConnection();
+			connection.setRequestMethod("POST");
+			connection.setConnectTimeout(CONNECT_TIMEOUT_MILLIS);
+			connection.setReadTimeout(READ_TIMEOUT_MILLIS);
+			connection.setRequestProperty("Content-Type", "application/vnd.roadcrew.truck-map+gzip");
+			connection.setRequestProperty("Accept", "application/json");
+			connection.setRequestProperty("Authorization", "Bearer " + token);
+			connection.setDoOutput(true);
+			connection.setFixedLengthStreamingMode(compressed.length);
+			try (OutputStream output = connection.getOutputStream()) {
+				output.write(compressed);
+			}
+			int responseCode = connection.getResponseCode();
+			String responseBody = readResponse(connection, responseCode);
+			connection.disconnect();
+			if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED && attempt == 0) {
+				clearInstallationToken(app);
+				continue;
+			}
+			if (responseCode < 200 || responseCode >= 300) {
+				throw new HttpStatusException(responseCode, responseBody);
+			}
+			JSONObject parsed = new JSONObject(responseBody);
+			JSONArray accepted = parsed.optJSONArray("acceptedIds");
+			if (accepted == null) {
+				throw new IOException("RoadCrew truck map API returned no acknowledgements");
+			}
+			Set<String> acceptedIds = new HashSet<>();
+			for (int index = 0; index < accepted.length(); index++) {
+				String id = accepted.optString(index, "");
+				if (!id.isEmpty()) {
+					acceptedIds.add(id);
+				}
+			}
+			return acceptedIds;
+		}
+		throw new IOException("RoadCrew truck map API refused the installation token twice");
+	}
+
+	/** One course's worth at a time; the server takes a thousand observations. */
+	private static final int DIRECT_BATCH_SIZE = 500;
 
 	@NonNull
 	private static Set<String> postBatch(@NonNull OsmandApplication app,

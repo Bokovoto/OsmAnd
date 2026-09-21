@@ -19,6 +19,7 @@ import net.osmand.router.RoadCrewObservationOutbox;
 import net.osmand.router.RoadCrewDiagnostics;
 import net.osmand.router.RoadCrewLocationRecorder;
 import net.osmand.router.RoadCrewDirectPassageAccumulator;
+import net.osmand.router.RoadCrewDirectObservation;
 import net.osmand.router.RoadCrewObservationPipeline;
 import net.osmand.router.RoadCrewRecordingPolicy;
 import net.osmand.router.RoadCrewSegmentMatcher;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -493,19 +495,43 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	 * switching it off leaves the ordinary recording exactly as it was.
 	 */
 	private void enableComparison(@NonNull RoadCrewObservationPipeline created) {
-		if (!RoadCrewShadowValidation.isEnabled(app)) {
-			return;
-		}
 		try {
+			// The directed segmentation runs for everybody now, not only for the
+			// phones in the comparison: it is what the map is filled from
+			// (Galin, 21.09). Its observations go into the trip journal, so they
+			// wait for the driver's confirmation exactly like the old ones - a
+			// course nobody confirmed is still never uploaded.
 			created.enableDirectPipeline(
 					RoadCrewDirectPassageAccumulator.Config.DEFAULT_V1, passage -> { });
-			created.setDirectObservationSink(observations ->
-					RoadCrewShadowValidation.captureDirect(app, observations, comparisonGroupId));
-			created.setDirectMapVersion(RoadCrewShadowValidation.isEnabled(app)
-					? currentMapVersion() : "");
+			created.setDirectObservationSink(observations -> {
+				captureDirectEvidence(observations);
+				if (RoadCrewShadowValidation.isEnabled(app)) {
+					RoadCrewShadowValidation.captureDirect(app, observations, comparisonGroupId);
+				}
+			});
+			created.setDirectMapVersion(currentMapVersion());
 			created.setDirectDiagnostics(RoadCrewShadowValidation.diagnostics());
 		} catch (RuntimeException e) {
-			LOG.warn("Could not start the segmentation comparison; recording continues", e);
+			LOG.warn("Could not start the directed segmentation; recording continues", e);
+		}
+	}
+
+	/** Into the journal, as the JSON the server accepts, with a stable id. */
+	private void captureDirectEvidence(@Nullable List<RoadCrewDirectObservation> observations) {
+		if (observations == null || observations.isEmpty()
+				|| !RoadCrewMapObservationConsent.isEnabled(app)) {
+			return;
+		}
+		RoadCrewTripJournal journal = RoadCrewTripJournal.get(app);
+		for (RoadCrewDirectObservation observation : observations) {
+			try {
+				String id = UUID.randomUUID().toString();
+				journal.captureDirect(id, observation.observedAtBucketMillis,
+						RoadCrewShadowValidation.evidenceJson(observation, id));
+			} catch (Exception e) {
+				// One unreadable observation must not cost the rest of the course.
+				LOG.warn("Could not store a directed observation", e);
+			}
 		}
 	}
 

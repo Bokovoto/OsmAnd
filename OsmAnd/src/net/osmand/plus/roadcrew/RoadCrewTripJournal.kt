@@ -18,11 +18,13 @@ import java.util.UUID
 /** Local-only review journal. Nothing here is eligible for upload until explicitly confirmed. */
 internal class RoadCrewTripJournal private constructor(private val app: OsmandApplication) {
     private val helper = object : SQLiteOpenHelper(app,
-        File(app.noBackupFilesDir, "roadcrew-trip-review.db").absolutePath, null, 2) {
+        File(app.noBackupFilesDir, "roadcrew-trip-review.db").absolutePath, null, 3) {
         override fun onCreate(db: SQLiteDatabase) {
             db.execSQL(TRIPS_SQL)
             db.execSQL(SECTIONS_SQL)
             db.execSQL("CREATE INDEX trip_review_pending ON sections(state, seq)")
+            db.execSQL(DIRECT_SECTIONS_SQL)
+            db.execSQL("CREATE INDEX trip_review_direct_pending ON direct_sections(state, seq)")
             db.execSQL("CREATE TABLE consent_generation (value TEXT NOT NULL)")
         }
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -32,6 +34,13 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
                 db.execSQL("ALTER TABLE trips ADD COLUMN ended_at INTEGER NOT NULL DEFAULT 0")
                 // Version 1 picked arbitrary start/middle/end questions, not explicit driver requests.
                 db.execSQL("UPDATE sections SET question = 0")
+            }
+            if (oldVersion < 3) {
+                // The directed observations of a course, kept beside the old
+                // ones until the old identity is retired. They travel on the
+                // same yes: nothing here is uploaded before the driver confirms.
+                db.execSQL(DIRECT_SECTIONS_SQL)
+                db.execSQL("CREATE INDEX trip_review_direct_pending ON direct_sections(state, seq)")
             }
         }
     }
@@ -109,6 +118,50 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
         }
         lastPassageAt = at
         updateSummary(db)
+    }
+
+    /**
+     * The directed (rcs2) observations of the course being recorded.
+     *
+     * They wait for the same yes as everything else here: a course nobody
+     * confirmed is never uploaded. Held as the JSON the server accepts, so the
+     * phone is not asked to rebuild a wire format it has already produced.
+     */
+    @Synchronized
+    fun captureDirect(id: String, bucket: Long, json: String) {
+        if (!RoadCrewMapObservationConsent.isEnabled(app)) return
+        val trip = activeTrip ?: return
+        val db = database()
+        db.execSQL(
+            "INSERT OR IGNORE INTO direct_sections(trip_id, observation_id, bucket, json)"
+                + " VALUES (?, ?, ?, ?)", arrayOf(trip, id, bucket, json))
+    }
+
+    /** A confirmed, not yet uploaded directed observation. */
+    class DirectRow(@JvmField val seq: Long, @JvmField val json: String)
+
+    /** Confirmed and not yet uploaded, oldest first. */
+    @Synchronized
+    fun confirmedDirect(limit: Int = 500): List<DirectRow> {
+        val db = database()
+        val rows = ArrayList<DirectRow>()
+        db.rawQuery("SELECT seq, json FROM direct_sections WHERE state = 'CONFIRMED'"
+            + " ORDER BY seq LIMIT ?", arrayOf(limit.coerceIn(1, 1000).toString())).use { c ->
+            while (c.moveToNext()) rows.add(DirectRow(c.getLong(0), c.getString(1)))
+        }
+        return rows
+    }
+
+    @Synchronized
+    fun markDirectTransferred(seqs: List<Long>) {
+        if (seqs.isEmpty()) return
+        val db = database()
+        transaction(db) {
+            for (seq in seqs) {
+                db.execSQL("UPDATE direct_sections SET state = 'TRANSFERRED'"
+                    + " WHERE seq = ? AND state = 'CONFIRMED'", arrayOf(seq))
+            }
+        }
     }
 
     @Synchronized
@@ -193,6 +246,15 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
                     db.execSQL("UPDATE sections SET state = 'CONFIRMED', included = 1, question = ? WHERE seq = ?",
                         arrayOf(if (row.seq in questions) 1 else 0, row.seq))
                 }
+            }
+            // The directed observations of this course travel on the same
+            // decision. A discarded course leaves nothing behind in either
+            // identity; there is no half-kept drive.
+            if (discardAll) {
+                db.execSQL("DELETE FROM direct_sections WHERE trip_id = ?", arrayOf(trip))
+            } else {
+                db.execSQL("UPDATE direct_sections SET state = 'CONFIRMED'"
+                    + " WHERE trip_id = ? AND state = 'STAGED'", arrayOf(trip))
             }
             db.execSQL("UPDATE trips SET reviewed = 1 WHERE id = ?", arrayOf(trip))
         }
@@ -344,6 +406,12 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
             reviewed INTEGER NOT NULL DEFAULT 0 CHECK(reviewed IN (0,1)), snooze_until INTEGER NOT NULL DEFAULT 0,
             auto_review INTEGER NOT NULL DEFAULT 0 CHECK(auto_review IN (0,1)),
             prompted INTEGER NOT NULL DEFAULT 0 CHECK(prompted IN (0,1)), ended_at INTEGER NOT NULL DEFAULT 0)
+        """
+        private val DIRECT_SECTIONS_SQL = """CREATE TABLE direct_sections (
+            seq INTEGER PRIMARY KEY AUTOINCREMENT, trip_id TEXT NOT NULL, observation_id TEXT NOT NULL,
+            bucket INTEGER NOT NULL, json TEXT NOT NULL,
+            state TEXT NOT NULL DEFAULT 'STAGED' CHECK(state IN ('STAGED','CONFIRMED','TRANSFERRED')),
+            UNIQUE(trip_id, observation_id))
         """
         private val SECTIONS_SQL = """CREATE TABLE sections (
             seq INTEGER PRIMARY KEY AUTOINCREMENT, trip_id TEXT NOT NULL, observation_key TEXT NOT NULL,

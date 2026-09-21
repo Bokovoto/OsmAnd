@@ -514,11 +514,31 @@ public final class RoadCrewShadowValidation {
 		return json;
 	}
 
+	/**
+	 * The same observation, addressed to the live endpoint instead of the
+	 * comparison. One builder for both so the two can never drift: what the
+	 * server accepts as evidence is what the comparison was measured on.
+	 *
+	 * The id is given rather than generated, because the journal has to be able
+	 * to say "this one again" after a failed upload.
+	 */
+	@NonNull
+	public static String evidenceJson(@NonNull RoadCrewDirectObservation observation,
+			@NonNull String id) throws JSONException {
+		return directJson(observation, null, id).toString();
+	}
+
 	@NonNull
 	private static JSONObject directJson(@NonNull RoadCrewDirectObservation observation,
 			@Nullable String comparisonGroupId) throws JSONException {
+		return directJson(observation, comparisonGroupId, UUID.randomUUID().toString());
+	}
+
+	@NonNull
+	private static JSONObject directJson(@NonNull RoadCrewDirectObservation observation,
+			@Nullable String comparisonGroupId, @NonNull String id) throws JSONException {
 		JSONObject json = new JSONObject();
-		json.put("id", UUID.randomUUID().toString());
+		json.put("id", id);
 		JSONObject segment = new JSONObject();
 		segment.put("version", RoadCrewDirectObservation.SEGMENT_KEY_VERSION);
 		segment.put("osmWayId", Long.toString(observation.osmWayId));
