@@ -458,8 +458,15 @@ public class BinaryRoutePlanner {
 			return -1;
 		}
 		// Ranking only, after all hard constraints. Reverse search uses actual travel direction.
-		return obstacle + heightObstacle + distTimeOnRoadToPass
-				* ctx.roadCrewPreferenceMatcher.costFactor(road, prevSegmentInd, segmentInd);
+		//
+		// Two sources of the same hint while the identities change over: the
+		// old segments and the rcs2 cells. A road proven by either costs one;
+		// neither can push a cost below that, so the A* lower bound holds
+		// whichever answers.
+		double roadCrewFactor = Math.min(
+				ctx.roadCrewPreferenceMatcher.costFactor(road, prevSegmentInd, segmentInd),
+				ctx.roadCrewCellMatcher.costFactor(road, prevSegmentInd, segmentInd));
+		return obstacle + heightObstacle + distTimeOnRoadToPass * roadCrewFactor;
 
 	}
 

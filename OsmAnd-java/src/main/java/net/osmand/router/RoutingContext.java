@@ -51,6 +51,7 @@ public class RoutingContext {
 	// Final context variables
 	public final RoutingConfiguration config;
 	final RoadCrewRoutePreferences.Matcher roadCrewPreferenceMatcher;
+	final RoadCrewCellPreferences.Matcher roadCrewCellMatcher;
 	public final RouteCalculationMode calculationMode;
 	public final Map<BinaryMapIndexReader, List<RouteSubregion>> map = new LinkedHashMap<BinaryMapIndexReader, List<RouteSubregion>>();
 	public final Map<RouteRegion, BinaryMapIndexReader> reverseMap = new LinkedHashMap<RouteRegion, BinaryMapIndexReader>();
@@ -119,6 +120,7 @@ public class RoutingContext {
 	RoutingContext(RoutingContext cp) {
 		this.config = cp.config;
 		this.roadCrewPreferenceMatcher = config.roadCrewPreferences.newMatcher();
+		this.roadCrewCellMatcher = config.roadCrewCellPreferences.newMatcher(System.currentTimeMillis());
 		this.map.putAll(cp.map);
 		this.calculationMode = cp.calculationMode;
 		this.leftSideNavigation = cp.leftSideNavigation;
@@ -145,6 +147,7 @@ public class RoutingContext {
 		}
 		this.config = config;
 		this.roadCrewPreferenceMatcher = config.roadCrewPreferences.newMatcher();
+		this.roadCrewCellMatcher = config.roadCrewCellPreferences.newMatcher(System.currentTimeMillis());
 		this.nativeLib = nativeLibrary;
 		this.intermediatesX = new int[0];
 		this.intermediatesY = new int[0];

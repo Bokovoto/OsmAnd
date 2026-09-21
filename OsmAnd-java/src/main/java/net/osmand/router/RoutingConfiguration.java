@@ -53,6 +53,8 @@ public class RoutingConfiguration {
 	// use GeneralRouter and not interface to simplify native access !
 	public GeneralRouter router = new GeneralRouter(GeneralRouterProfile.CAR, new LinkedHashMap<String, String>());
 	public RoadCrewRoutePreferences roadCrewPreferences = RoadCrewRoutePreferences.EMPTY;
+	/** The same hint read from the rcs2 cell tiles; empty until a tile is loaded. */
+	public RoadCrewCellPreferences roadCrewCellPreferences = RoadCrewCellPreferences.EMPTY;
 	public String routerName = "";
 	
 	// 1.4 Used to calculate route in movement
