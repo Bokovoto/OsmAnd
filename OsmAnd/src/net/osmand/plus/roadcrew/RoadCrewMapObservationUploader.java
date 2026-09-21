@@ -7,6 +7,7 @@ import android.net.Network;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import net.osmand.plus.OsmandApplication;
 import net.osmand.router.RoadCrewObservationOutbox;
@@ -47,6 +48,8 @@ final class RoadCrewMapObservationUploader {
 			RoadCrewEndpoints.API_BASE_URL + "/v2/installations/register";
 	private static final String CHUNK_URL =
 			RoadCrewEndpoints.API_BASE_URL + "/v2/truck-map/chunks";
+	private static final String WAY_GEOMETRY_URL =
+			RoadCrewEndpoints.API_BASE_URL + "/v2/truck-map/way-geometry";
 	private static final String PREFERENCES = "roadcrew_truck_map_ingest_v2";
 	private static final String INSTALLATION_TOKEN = "installation_token";
 
@@ -412,6 +415,10 @@ final class RoadCrewMapObservationUploader {
 				throw new HttpStatusException(responseCode, responseBody);
 			}
 			JSONObject parsed = new JSONObject(responseBody);
+			// The server names the geometries it has never verified. Answering
+			// costs one round trip per geometry, not per passage, and it is what
+			// gives a way its length - without which no cell can be placed.
+			uploadRequestedDescriptors(app, parsed.optJSONArray("needGeometryDescriptors"));
 			JSONArray accepted = parsed.optJSONArray("acceptedIds");
 			if (accepted == null) {
 				throw new IOException("RoadCrew truck map API returned no acknowledgements");
@@ -426,6 +433,89 @@ final class RoadCrewMapObservationUploader {
 			return acceptedIds;
 		}
 		throw new IOException("RoadCrew truck map API refused the installation token twice");
+	}
+
+	/**
+	 * Sends the way shapes the server has just asked for.
+	 *
+	 * Once per geometry, never with an observation: a thousand drives down one
+	 * road answer this once. A shape this phone no longer has is simply not
+	 * sent - another phone that drives the road will answer instead.
+	 */
+	private static void uploadRequestedDescriptors(@NonNull OsmandApplication app,
+			@Nullable JSONArray requested) {
+		if (requested == null || requested.length() == 0) {
+			return;
+		}
+		try {
+			List<RoadCrewTripJournal.WayDescriptor> asked = new ArrayList<>();
+			for (int index = 0; index < requested.length(); index++) {
+				JSONObject request = requested.optJSONObject(index);
+				if (request == null) {
+					continue;
+				}
+				asked.add(new RoadCrewTripJournal.WayDescriptor(
+						request.optString("osmWayId", ""),
+						request.optInt("fingerprintAlgorithm", 0),
+						request.optString("canonicalFingerprint", ""),
+						"", ""));
+			}
+			List<RoadCrewTripJournal.WayDescriptor> known =
+					RoadCrewTripJournal.get(app).wayShapes(asked);
+			if (known.isEmpty()) {
+				return;
+			}
+			JSONArray descriptors = new JSONArray();
+			for (RoadCrewTripJournal.WayDescriptor descriptor : known) {
+				JSONObject points = new JSONObject(descriptor.points);
+				JSONObject json = new JSONObject();
+				json.put("osmWayId", descriptor.osmWayId);
+				json.put("mapVersion", descriptor.mapVersion);
+				json.put("fingerprintAlgorithm", descriptor.algorithm);
+				json.put("canonicalFingerprint", descriptor.fingerprint);
+				json.put("pointsX", points.optJSONArray("pointsX"));
+				json.put("pointsY", points.optJSONArray("pointsY"));
+				descriptors.put(json);
+			}
+			JSONObject body = new JSONObject();
+			body.put("descriptors", descriptors);
+			postJson(app, WAY_GEOMETRY_URL, body);
+		} catch (Exception e) {
+			// The server will ask again with the next chunk; nothing is lost.
+			Log.w(TAG, "Cannot answer the way geometry request", e);
+		}
+	}
+
+	private static void postJson(@NonNull OsmandApplication app, @NonNull String url,
+			@NonNull JSONObject body) throws IOException, JSONException {
+		byte[] payload = body.toString().getBytes(StandardCharsets.UTF_8);
+		for (int attempt = 0; attempt < 2; attempt++) {
+			String token = getOrRegisterInstallationToken(app);
+			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+			connection.setRequestMethod("POST");
+			connection.setConnectTimeout(CONNECT_TIMEOUT_MILLIS);
+			connection.setReadTimeout(READ_TIMEOUT_MILLIS);
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setRequestProperty("Accept", "application/json");
+			connection.setRequestProperty("Authorization", "Bearer " + token);
+			connection.setDoOutput(true);
+			connection.setFixedLengthStreamingMode(payload.length);
+			try (OutputStream output = connection.getOutputStream()) {
+				output.write(payload);
+			}
+			int responseCode = connection.getResponseCode();
+			String responseBody = readResponse(connection, responseCode);
+			connection.disconnect();
+			if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED && attempt == 0) {
+				clearInstallationToken(app);
+				continue;
+			}
+			if (responseCode < 200 || responseCode >= 300) {
+				throw new HttpStatusException(responseCode, responseBody);
+			}
+			return;
+		}
+		throw new IOException("RoadCrew API refused the installation token twice");
 	}
 
 	/** One course's worth at a time; the server takes a thousand observations. */

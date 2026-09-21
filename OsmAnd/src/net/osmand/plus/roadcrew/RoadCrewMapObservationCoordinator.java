@@ -19,8 +19,12 @@ import net.osmand.router.RoadCrewObservationOutbox;
 import net.osmand.router.RoadCrewDiagnostics;
 import net.osmand.router.RoadCrewLocationRecorder;
 import net.osmand.router.RoadCrewDirectPassageAccumulator;
+import net.osmand.binary.RouteDataObject;
 import net.osmand.router.RoadCrewDirectObservation;
 import net.osmand.router.RoadCrewObservationPipeline;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import net.osmand.router.RoadCrewRecordingPolicy;
 import net.osmand.router.RoadCrewSegmentMatcher;
 import net.osmand.util.MapUtils;
@@ -504,7 +508,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			created.enableDirectPipeline(
 					RoadCrewDirectPassageAccumulator.Config.DEFAULT_V1, passage -> { });
 			created.setDirectObservationSink(observations -> {
-				captureDirectEvidence(observations);
+				captureDirectEvidence(created, observations);
 				if (RoadCrewShadowValidation.isEnabled(app)) {
 					RoadCrewShadowValidation.captureDirect(app, observations, comparisonGroupId);
 				}
@@ -517,7 +521,8 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	}
 
 	/** Into the journal, as the JSON the server accepts, with a stable id. */
-	private void captureDirectEvidence(@Nullable List<RoadCrewDirectObservation> observations) {
+	private void captureDirectEvidence(@NonNull RoadCrewObservationPipeline pipeline,
+			@Nullable List<RoadCrewDirectObservation> observations) {
 		if (observations == null || observations.isEmpty()
 				|| !RoadCrewMapObservationConsent.isEnabled(app)) {
 			return;
@@ -528,10 +533,44 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 				String id = UUID.randomUUID().toString();
 				journal.captureDirect(id, observation.observedAtBucketMillis,
 						RoadCrewShadowValidation.evidenceJson(observation, id));
+				rememberWayShape(pipeline, journal, observation);
 			} catch (Exception e) {
 				// One unreadable observation must not cost the rest of the course.
 				LOG.warn("Could not store a directed observation", e);
 			}
+		}
+	}
+
+	/**
+	 * Keeps the shape of the way this observation is on, once per geometry.
+	 *
+	 * The server asks for it when it sees a geometry it has not verified, takes
+	 * the way's length from it, and only then can place cells. Reading it here,
+	 * while the road is still loaded, is the only moment the phone has it.
+	 */
+	private void rememberWayShape(@NonNull RoadCrewObservationPipeline pipeline,
+			@NonNull RoadCrewTripJournal journal,
+			@NonNull RoadCrewDirectObservation observation) {
+		try {
+			RouteDataObject road = pipeline.roadForOsmWay(observation.osmWayId);
+			if (road == null || road.getPointsLength() < 2) {
+				return;
+			}
+			JSONArray x = new JSONArray();
+			JSONArray y = new JSONArray();
+			for (int index = 0; index < road.getPointsLength(); index++) {
+				x.put(road.getPoint31XTile(index));
+				y.put(road.getPoint31YTile(index));
+			}
+			JSONObject points = new JSONObject();
+			points.put("pointsX", x);
+			points.put("pointsY", y);
+			journal.rememberWayShape(Long.toString(observation.osmWayId),
+					observation.geometryFingerprintAlgorithm, observation.geometryFingerprint,
+					observation.mapVersion, points.toString(), System.currentTimeMillis());
+		} catch (Exception e) {
+			// A shape we cannot read costs one road's length, not the drive.
+			LOG.warn("Could not store a way shape", e);
 		}
 	}
 

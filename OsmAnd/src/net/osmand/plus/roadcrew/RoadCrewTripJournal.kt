@@ -18,13 +18,14 @@ import java.util.UUID
 /** Local-only review journal. Nothing here is eligible for upload until explicitly confirmed. */
 internal class RoadCrewTripJournal private constructor(private val app: OsmandApplication) {
     private val helper = object : SQLiteOpenHelper(app,
-        File(app.noBackupFilesDir, "roadcrew-trip-review.db").absolutePath, null, 3) {
+        File(app.noBackupFilesDir, "roadcrew-trip-review.db").absolutePath, null, 4) {
         override fun onCreate(db: SQLiteDatabase) {
             db.execSQL(TRIPS_SQL)
             db.execSQL(SECTIONS_SQL)
             db.execSQL("CREATE INDEX trip_review_pending ON sections(state, seq)")
             db.execSQL(DIRECT_SECTIONS_SQL)
             db.execSQL("CREATE INDEX trip_review_direct_pending ON direct_sections(state, seq)")
+            db.execSQL(WAY_DESCRIPTORS_SQL)
             db.execSQL("CREATE TABLE consent_generation (value TEXT NOT NULL)")
         }
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -34,6 +35,13 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
                 db.execSQL("ALTER TABLE trips ADD COLUMN ended_at INTEGER NOT NULL DEFAULT 0")
                 // Version 1 picked arbitrary start/middle/end questions, not explicit driver requests.
                 db.execSQL("UPDATE sections SET question = 0")
+            }
+            if (oldVersion < 4) {
+                // The shape of a way, as this phone's map draws it. The server
+                // asks for it once per geometry and gets the length from it;
+                // without it every cell waits on a free service that is
+                // currently refusing (21.09).
+                db.execSQL(WAY_DESCRIPTORS_SQL)
             }
             if (oldVersion < 3) {
                 // The directed observations of a course, kept beside the old
@@ -135,6 +143,61 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
         db.execSQL(
             "INSERT OR IGNORE INTO direct_sections(trip_id, observation_id, bucket, json)"
                 + " VALUES (?, ?, ?, ?)", arrayOf(trip, id, bucket, json))
+    }
+
+    /** A way's shape as this phone's map draws it, kept until the server asks. */
+    class WayDescriptor(
+        @JvmField val osmWayId: String,
+        @JvmField val algorithm: Int,
+        @JvmField val fingerprint: String,
+        @JvmField val mapVersion: String,
+        @JvmField val points: String,
+    )
+
+    /**
+     * Remembers the shape of a way this phone has just observed.
+     *
+     * The server verifies the identity against it and takes the way's length
+     * from it - and a cell cannot be placed without that length. Until the
+     * phone sends these, the server has to ask OpenStreetMap, which is a free
+     * service answering 504 today and will not carry ten thousand phones.
+     *
+     * One row per geometry, not per passage: a thousand drives down one road
+     * store it once.
+     */
+    @Synchronized
+    fun rememberWayShape(
+        osmWayId: String, algorithm: Int, fingerprint: String,
+        mapVersion: String, points: String, now: Long,
+    ) {
+        if (!RoadCrewMapObservationConsent.isEnabled(app)) return
+        if (osmWayId.isEmpty() || fingerprint.isEmpty() || points.isEmpty()) return
+        val db = database()
+        db.execSQL(
+            "INSERT OR IGNORE INTO way_descriptors(osm_way_id, algorithm, fingerprint,"
+                + " map_version, points, seen_at) VALUES (?, ?, ?, ?, ?, ?)",
+            arrayOf(osmWayId, algorithm, fingerprint, mapVersion, points, now))
+    }
+
+    /** The shapes the server asked for, as far as this phone still has them. */
+    @Synchronized
+    fun wayShapes(requested: List<WayDescriptor>): List<WayDescriptor> {
+        if (requested.isEmpty()) return emptyList()
+        val db = database()
+        val found = ArrayList<WayDescriptor>()
+        for (request in requested.take(MAX_DESCRIPTORS_PER_REPLY)) {
+            db.rawQuery(
+                "SELECT map_version, points FROM way_descriptors"
+                    + " WHERE osm_way_id = ? AND algorithm = ? AND fingerprint = ?",
+                arrayOf(request.osmWayId, request.algorithm.toString(), request.fingerprint)
+            ).use { c ->
+                if (c.moveToFirst()) {
+                    found.add(WayDescriptor(request.osmWayId, request.algorithm,
+                        request.fingerprint, c.getString(0), c.getString(1)))
+                }
+            }
+        }
+        return found
     }
 
     /** A confirmed, not yet uploaded directed observation. */
@@ -406,6 +469,14 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
             reviewed INTEGER NOT NULL DEFAULT 0 CHECK(reviewed IN (0,1)), snooze_until INTEGER NOT NULL DEFAULT 0,
             auto_review INTEGER NOT NULL DEFAULT 0 CHECK(auto_review IN (0,1)),
             prompted INTEGER NOT NULL DEFAULT 0 CHECK(prompted IN (0,1)), ended_at INTEGER NOT NULL DEFAULT 0)
+        """
+        /** The server takes at most this many in one reply. */
+        const val MAX_DESCRIPTORS_PER_REPLY = 20
+
+        private val WAY_DESCRIPTORS_SQL = """CREATE TABLE way_descriptors (
+            osm_way_id TEXT NOT NULL, algorithm INTEGER NOT NULL, fingerprint TEXT NOT NULL,
+            map_version TEXT NOT NULL, points TEXT NOT NULL, seen_at INTEGER NOT NULL,
+            PRIMARY KEY(osm_way_id, algorithm, fingerprint))
         """
         private val DIRECT_SECTIONS_SQL = """CREATE TABLE direct_sections (
             seq INTEGER PRIMARY KEY AUTOINCREMENT, trip_id TEXT NOT NULL, observation_id TEXT NOT NULL,

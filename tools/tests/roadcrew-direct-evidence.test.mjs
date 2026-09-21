@@ -19,7 +19,8 @@ test('the directed observations of a course wait in the journal', () => {
     'they are kept beside the old ones until the old identity is retired');
   assert.match(source, /state TEXT NOT NULL DEFAULT 'STAGED' CHECK\(state IN \('STAGED','CONFIRMED','TRANSFERRED'\)\)/,
     'and go through the same three states, so nothing uploads before the yes');
-  assert.match(source, /null, 3\)/, 'the journal schema is version 3');
+  // Version 4 adds the way shapes the server asks for; 3 added these rows.
+  assert.match(source, /null, 4\)/, 'the journal schema is version 4');
   assert.match(source, /fun captureDirect\(/);
   assert.match(source, /fun confirmedDirect\(/);
   assert.match(source, /fun markDirectTransferred\(/);
@@ -41,7 +42,7 @@ test('the directed segmentation runs for every phone, not only the comparison', 
     source.indexOf('private void captureDirectEvidence('));
   assert.doesNotMatch(enable, /if \(!RoadCrewShadowValidation\.isEnabled\(app\)\) \{\s*return;/,
     'it is what the map is filled from; it cannot depend on being in a programme');
-  assert.match(enable, /captureDirectEvidence\(observations\)/,
+  assert.match(enable, /captureDirectEvidence\(created, observations\)/,
     'its observations reach the journal');
   assert.match(enable, /if \(RoadCrewShadowValidation\.isEnabled\(app\)\)/,
     'and the comparison still gets its copy while it runs');
@@ -67,4 +68,27 @@ test('confirmed directed observations are uploaded to the live endpoint', () => 
   assert.match(post, /acceptedIds/, 'nothing is crossed off that the server did not acknowledge');
   // The run does both: the old queue and the confirmed directed rows.
   assert.match(source, /uploadAvailable\(app, outbox\);[\s\S]{0,300}uploadConfirmedDirect\(app\)/);
+});
+
+test('the phone answers for the shape of a way, so a free service need not', () => {
+  // The server takes a way's length from this, and without the length no cell
+  // can be placed. Asking OpenStreetMap for it instead is a public service
+  // answering 504 today, and it will not carry ten thousand phones (21.09).
+  const journal = read(JOURNAL);
+  assert.match(journal, /CREATE TABLE way_descriptors/);
+  assert.match(journal, /PRIMARY KEY\(osm_way_id, algorithm, fingerprint\)/,
+    'one row per geometry: a thousand drives down one road store it once');
+  assert.match(journal, /fun rememberWayShape\(/);
+  assert.match(journal, /fun wayShapes\(/);
+
+  const coordinator = read(COORDINATOR);
+  assert.match(coordinator, /roadForOsmWay\(observation\.osmWayId\)/,
+    'read while the road is still loaded - the only moment the phone has it');
+  assert.match(coordinator, /getPoint31XTile\(index\)/,
+    'the map file\'s own coordinates, which is what the server recomputes from');
+
+  const uploader = read(UPLOADER);
+  assert.match(uploader, /uploadRequestedDescriptors\(app, parsed\.optJSONArray\("needGeometryDescriptors"\)\)/,
+    'sent when the server asks, not with every observation');
+  assert.match(uploader, /way-geometry/, 'to the endpoint that verifies them');
 });

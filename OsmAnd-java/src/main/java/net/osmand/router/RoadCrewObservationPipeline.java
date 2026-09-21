@@ -1,5 +1,6 @@
 package net.osmand.router;
 
+import net.osmand.binary.ObfConstants;
 import net.osmand.binary.RouteDataObject;
 
 import java.io.IOException;
@@ -112,6 +113,23 @@ public final class RoadCrewObservationPipeline {
 		void capture(RoadCrewPassageDetector.PassageEvidence evidence, long observedAtMillis,
 				RouteDataObject road, RoadCrewSegmentIdentity.SegmentBinding binding,
 				long firstFixSequence, long lastFixSequence) throws IOException;
+	}
+
+	/**
+	 * The loaded road carrying this OSM way, if it is still in memory.
+	 *
+	 * Used to send the server the way's shape once per geometry, which is where
+	 * its length comes from - and a cell cannot be placed without that length.
+	 * The alternative is asking a free public service for every road ten
+	 * thousand phones drive, which is not a plan.
+	 */
+	public synchronized RouteDataObject roadForOsmWay(long osmWayId) {
+		for (RouteDataObject road : roadsById.values()) {
+			if (road != null && ObfConstants.getOsmObjectId(road) == osmWayId) {
+				return road;
+			}
+		}
+		return null;
 	}
 
 	public synchronized int replaceRoads(Iterable<RouteDataObject> roads) {
