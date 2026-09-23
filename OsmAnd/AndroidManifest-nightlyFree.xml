@@ -3,7 +3,15 @@
           xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-	
+
+    <!--
+        RoadCrew only, not stock OsmAnd (this file is the nightlyFree overlay):
+        experimental tachograph card access through a plain USB smart-card
+        reader. required="false" so it never blocks install on a phone or
+        tablet without USB host support - the reader is optional hardware.
+    -->
+    <uses-feature android:name="android.hardware.usb.host" android:required="false" />
+
     <application
         android:icon="@drawable/ic_launcher_roadcrew"
         android:hasFragileUserData="true"
@@ -12,6 +20,24 @@
             android:name="net.osmand.plus.activities.MapActivity"
             android:theme="@style/FirstSplashScreenNightlyFree"
             tools:replace="android:theme"/>
+
+        <!--
+            Experimental reader, not a complete DDD downloader. Deliberately
+            its own activity, not MapActivity, so plugging in the reader never
+            touches navigation and the whole thing can be pulled out cleanly.
+        -->
+        <activity
+            android:name="net.osmand.plus.roadcrew.tacho.RoadCrewTachoCardActivity"
+            android:exported="true"
+            android:label="@string/roadcrew_tacho_waiting_for_reader"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/roadcrew_tacho_usb_filter" />
+        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"

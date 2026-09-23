@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
+    <string name="roadcrew_tacho_test_date_title">Experimental card only</string>
+    <string name="roadcrew_tacho_test_date_warning">This test updates only the last-download date on the inserted driver card to the current phone time. It does NOT download a DDD file. Use only your experimental card, never your working card. Continue?</string>
+    <string name="roadcrew_tacho_waiting_for_reader">Waiting for the card reader…</string>
+    <string name="roadcrew_tacho_retry">Try again</string>
+    <string name="roadcrew_tacho_no_permission">Reader plugged in, but permission to use it was not granted.</string>
+    <string name="roadcrew_tacho_no_device">No matching card reader is connected.</string>
+    <string name="roadcrew_tacho_reading">Reading the card…</string>
+    <string name="roadcrew_tacho_error">Could not read the card: %1$s</string>
+    <string name="roadcrew_tacho_scan">Scan files</string>
+    <string name="roadcrew_tacho_write_test">Test download date</string>
+    <string name="roadcrew_tacho_scanning">Scanning file ids…</string>
+    <string name="roadcrew_tacho_writing">Testing download date and verifying…</string>
+    <string name="roadcrew_tacho_scan_first">Scan for files first.</string>
     <string name="roadcrew_report_direction_title">Which direction?</string>
     <string name="roadcrew_report_direction_body">Choose where this %1$s report applies.</string>
     <string name="roadcrew_report_direction_mine">My direction</string>

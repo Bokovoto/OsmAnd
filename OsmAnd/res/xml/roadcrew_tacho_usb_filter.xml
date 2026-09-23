@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Which USB devices should offer to open RoadCrew's tachograph-card reader.
+	ACR39U ICC Reader (ACS): the reader Galin already has and tested against -
+	vendor 0x072F / product 0xB100 (decimal 1839 / 45312), confirmed a standard
+	USB CCID-class interface (bInterfaceClass=11) by dumpsys on 18.09, so it needs
+	no vendor driver - only the public CCID protocol.
+-->
+<resources>
+	<usb-device vendor-id="1839" product-id="45312" />
+</resources>
