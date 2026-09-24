@@ -239,14 +239,14 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	}
 
 	void saveTripReview(String tripId, long[] included, long[] questions, boolean confirm, boolean discard,
-			Consumer<Boolean> completed) {
+			boolean suitabilityConfirmed, Consumer<Boolean> completed) {
 		// This executor outlives MapActivity, so rotation cannot lose the user's selection.
 		executor.execute(() -> {
 			boolean saved = false;
 			try {
 				if (enabled) {
 					RoadCrewTripJournal journal = RoadCrewTripJournal.get(app);
-					if (confirm) { journal.confirm(tripId, included, questions, discard); }
+					if (confirm) { journal.confirm(tripId, included, questions, discard, suitabilityConfirmed); }
 					else { journal.saveDraft(tripId, included, questions); }
 					saved = true;
 					if (confirm) { transferConfirmed(); }

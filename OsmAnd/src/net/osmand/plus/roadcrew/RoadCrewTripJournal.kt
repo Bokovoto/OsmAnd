@@ -12,6 +12,7 @@ import net.osmand.router.RoadCrewSegmentIdentity
 import net.osmand.router.RoadCrewTripLifecycle
 import net.osmand.util.MapUtils
 import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
 import java.util.UUID
 
@@ -292,7 +293,8 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
     }
 
     @Synchronized
-    fun confirm(trip: String, selectedIds: LongArray, questionIds: LongArray, discardAll: Boolean) {
+    fun confirm(trip: String, selectedIds: LongArray, questionIds: LongArray, discardAll: Boolean,
+                suitabilityConfirmed: Boolean) {
         check(RoadCrewMapObservationConsent.isEnabled(app)) { "Sharing is disabled" }
         val db = database()
         val rows = readRows(db, "trip_id = ? AND state = 'STAGED'", arrayOf(trip))
@@ -301,7 +303,9 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
         require(rows.map { it.seq }.containsAll(requested)) { "Review contains foreign sections" }
         val selected = if (discardAll) emptyList() else rows.filter { it.seq in requested }
         require(discardAll || selected.isNotEmpty()) { "No truck sections selected" }
-        // Vehicle confirmation alone never creates a road-suitability answer or question.
+        require(!suitabilityConfirmed || (!discardAll && selected.size == rows.size)) {
+            "Suitability confirmation requires the whole displayed course"
+        }
         val questions = questionIds.toSet()
         require(rows.map { it.seq }.containsAll(questions)) { "Review contains foreign questions" }
         transaction(db) {
@@ -320,6 +324,29 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
             if (discardAll) {
                 db.execSQL("DELETE FROM direct_sections WHERE trip_id = ?", arrayOf(trip))
             } else {
+                if (suitabilityConfirmed) {
+                    val approved = ArrayList<Pair<Long, String>>()
+                    db.rawQuery("SELECT seq, json FROM direct_sections WHERE trip_id = ? AND state = 'STAGED'",
+                        arrayOf(trip)).use { cursor ->
+                        while (cursor.moveToNext()) {
+                            val json = try {
+                                val observation = JSONObject(cursor.getString(1))
+                                check(observation.getJSONObject("segmentKey").getInt("version") == 2
+                                    && observation.optString("comparisonGroupId").isNotBlank()) {
+                                    "Directed observation has no course identity"
+                                }
+                                observation.put("suitabilityConfirmed", true).toString()
+                            } catch (error: Exception) {
+                                throw IllegalStateException("Cannot confirm directed observation", error)
+                            }
+                            approved.add(cursor.getLong(0) to json)
+                        }
+                    }
+                    for ((seq, json) in approved) {
+                        db.execSQL("UPDATE direct_sections SET json = ? WHERE seq = ? AND state = 'STAGED'",
+                            arrayOf(json, seq))
+                    }
+                }
                 db.execSQL("UPDATE direct_sections SET state = 'CONFIRMED'"
                     + " WHERE trip_id = ? AND state = 'STAGED'", arrayOf(trip))
             }

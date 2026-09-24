@@ -12,6 +12,25 @@ const JOURNAL = '../../OsmAnd/src/net/osmand/plus/roadcrew/RoadCrewTripJournal.k
 const COORDINATOR = '../../OsmAnd/src/net/osmand/plus/roadcrew/RoadCrewMapObservationCoordinator.java';
 const UPLOADER = '../../OsmAnd/src/net/osmand/plus/roadcrew/RoadCrewMapObservationUploader.java';
 const SHADOW = '../../OsmAnd/src/net/osmand/plus/roadcrew/RoadCrewShadowValidation.java';
+const CONTROLLER = '../../OsmAnd/src/net/osmand/plus/roadcrew/RoadCrewValidationController.java';
+
+test('only the explicit whole-course suitability action stamps staged direct rows', () => {
+  const source = read(JOURNAL);
+  const confirm = source.slice(source.indexOf('fun confirm('), source.indexOf('fun saveDraft('));
+  assert.match(confirm, /suitabilityConfirmed: Boolean/);
+  assert.match(confirm, /require\(!suitabilityConfirmed \|\| \(!discardAll && selected\.size == rows\.size\)\)/);
+  const transaction = confirm.slice(confirm.indexOf('transaction(db)'));
+  assert.match(transaction, /if \(suitabilityConfirmed\)/);
+  assert.match(transaction, /SELECT seq, json FROM direct_sections WHERE trip_id = \? AND state = 'STAGED'/);
+  assert.match(transaction, /\.put\("suitabilityConfirmed", true\)/);
+  assert.match(transaction, /UPDATE direct_sections SET json = \? WHERE seq = \? AND state = 'STAGED'/);
+  assert.doesNotMatch(transaction, /randomUUID/);
+  const reader = source.slice(source.indexOf('fun confirmedDirect('), source.indexOf('fun markDirectTransferred('));
+  assert.doesNotMatch(reader, /suitabilityConfirmed/,
+    'old already-confirmed rows must not be rewritten when read for upload');
+  assert.match(read(CONTROLLER), /questionIds\(\), true, discard, !discard, saved/);
+  assert.match(read(COORDINATOR), /journal\.confirm\(tripId, included, questions, discard, suitabilityConfirmed\)/);
+});
 
 test('the directed observations of a course wait in the journal', () => {
   const source = read(JOURNAL);

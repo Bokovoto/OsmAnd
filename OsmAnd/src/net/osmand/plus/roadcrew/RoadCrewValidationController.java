@@ -349,11 +349,11 @@ final class RoadCrewValidationController {
 			saving[0] = true;
 			editor[0].disableActions();
 			RoadCrewMapObservationCoordinator.getInstance(app).saveTripReview(trip.id,
-					editor[0].selectedIds(), editor[0].questionIds(), true, discard, saved -> {
+					editor[0].selectedIds(), editor[0].questionIds(), true, discard, !discard, saved -> {
 				if (!saved) {
 					// Preserve the draft even when confirmation failed; never pretend it was uploaded.
 					RoadCrewMapObservationCoordinator.getInstance(app).saveTripReview(trip.id,
-							editor[0].selectedIds(), editor[0].questionIds(), false, false, ignored -> { });
+							editor[0].selectedIds(), editor[0].questionIds(), false, false, false, ignored -> { });
 				}
 				editor[0].dialog.dismiss();
 				prefs.edit().putLong("next_question_attempt", 0).apply();
@@ -391,7 +391,7 @@ final class RoadCrewValidationController {
 			tripMapRequest.incrementAndGet();
 			if (!saving[0]) {
 				RoadCrewMapObservationCoordinator.getInstance(app).saveTripReview(trip.id,
-						editor[0].selectedIds(), editor[0].questionIds(), false, false, saved -> {
+						editor[0].selectedIds(), editor[0].questionIds(), false, false, false, saved -> {
 					if (!saved) { notifyUser(R.string.roadcrew_trip_review_error); }
 				});
 			}
