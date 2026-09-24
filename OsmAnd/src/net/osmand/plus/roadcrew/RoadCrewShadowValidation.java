@@ -524,8 +524,10 @@ public final class RoadCrewShadowValidation {
 	 */
 	@NonNull
 	public static String evidenceJson(@NonNull RoadCrewDirectObservation observation,
-			@NonNull String id) throws JSONException {
-		return directJson(observation, null, id).toString();
+			@Nullable String comparisonGroupId, @NonNull String id) throws JSONException {
+		// The course the fix sequences are numbered in. Without it the server
+		// cannot chain passages, and a suitability answer is refused (ROADMAP 314).
+		return directJson(observation, comparisonGroupId, id).toString();
 	}
 
 	@NonNull

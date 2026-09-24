@@ -559,7 +559,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			try {
 				String id = UUID.randomUUID().toString();
 				boolean stored = journal.captureDirect(id, observation.observedAtBucketMillis,
-						RoadCrewShadowValidation.evidenceJson(observation, id));
+						RoadCrewShadowValidation.evidenceJson(observation, comparisonGroupId, id));
 				// Counted, not assumed. These ride to the server with the
 				// diagnostics, so the next silence can be diagnosed without
 				// chasing the phone onto a petrol station's wifi.

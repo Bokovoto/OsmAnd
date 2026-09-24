@@ -329,16 +329,21 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
                     db.rawQuery("SELECT seq, json FROM direct_sections WHERE trip_id = ? AND state = 'STAGED'",
                         arrayOf(trip)).use { cursor ->
                         while (cursor.moveToNext()) {
-                            val json = try {
-                                val observation = JSONObject(cursor.getString(1))
-                                check(observation.getJSONObject("segmentKey").getInt("version") == 2
-                                    && observation.optString("comparisonGroupId").isNotBlank()) {
-                                    "Directed observation has no course identity"
+                            val observation = try {
+                                JSONObject(cursor.getString(1)).also {
+                                    check(it.getJSONObject("segmentKey").getInt("version") == 2) {
+                                        "Directed observation is not RCS2"
+                                    }
                                 }
-                                observation.put("suitabilityConfirmed", true).toString()
                             } catch (error: Exception) {
                                 throw IllegalStateException("Cannot confirm directed observation", error)
                             }
+                            // Rows stored before 314 carry no course. They are still
+                            // confirmed for passability; the answer is not attached,
+                            // since the server refuses it without a course, and no
+                            // course is invented for them. Missing means unknown.
+                            if (observation.optString("comparisonGroupId").isBlank()) continue
+                            val json = observation.put("suitabilityConfirmed", true).toString()
                             approved.add(cursor.getLong(0) to json)
                         }
                     }

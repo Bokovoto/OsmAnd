@@ -71,8 +71,30 @@ test('what is uploaded is what was stored, with a stable id', () => {
   assert.match(read(SHADOW), /public static String evidenceJson\(/,
     'one builder for both paths, so the two cannot drift');
   const source = read(COORDINATOR);
-  assert.match(source, /String id = UUID\.randomUUID\(\)\.toString\(\);[\s\S]{0,200}evidenceJson\(observation, id\)/,
+  assert.match(source, /String id = UUID\.randomUUID\(\)\.toString\(\);[\s\S]{0,200}evidenceJson\(observation, comparisonGroupId, id\)/,
     'the id is fixed when the observation is stored, so a failed upload can name it again');
+});
+
+// ROADMAP 314: the journal stored no course id, and confirm() demanded one, so
+// every suitability confirmation rolled back and the review came back (24.09).
+test('journal evidence carries the course its fix sequences are numbered in', () => {
+  const shadow = read(SHADOW);
+  const builder = shadow.slice(shadow.indexOf('public static String evidenceJson('));
+  assert.match(builder, /^public static String evidenceJson\(@NonNull RoadCrewDirectObservation observation,\s*@Nullable String comparisonGroupId, @NonNull String id\)/);
+  assert.match(builder.slice(0, builder.indexOf('}')), /directJson\(observation, comparisonGroupId, id\)/,
+    'not null: without it the server can only credit full cells, never a turn');
+});
+
+test('a legacy row without a course id cannot make the review loop', () => {
+  const source = read(JOURNAL);
+  const confirm = source.slice(source.indexOf('fun confirm('), source.indexOf('fun saveDraft('));
+  assert.doesNotMatch(confirm, /Directed observation has no course identity/,
+    'a missing course id must not roll back the whole review');
+  const transaction = confirm.slice(confirm.indexOf('transaction(db)'));
+  assert.match(transaction, /optString\("comparisonGroupId"\)\.isBlank\(\)[\s\S]{0,200}continue/,
+    'such a row is confirmed for passability but not stamped: the server rejects the flag without a course');
+  assert.doesNotMatch(transaction, /put\("comparisonGroupId"/,
+    'no course id is invented for an old row');
 });
 
 test('confirmed directed observations are uploaded to the live endpoint', () => {
