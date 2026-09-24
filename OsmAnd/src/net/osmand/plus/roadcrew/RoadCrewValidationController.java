@@ -428,7 +428,27 @@ final class RoadCrewValidationController {
 	private QuadRect showTripOnMap(MapActivity activity, RoadCrewTripJournal.Trip trip) {
 		List<double[]> journey = new ArrayList<>();
 		QuadRect bounds = null;
-		for (RoadCrewTripJournal.Row row : trip.rows) {
+		// What the driver confirms is the driven stretch (RCS2), so that is what
+		// is drawn (ROADMAP 315). Only a course with no drawable stretch falls
+		// back to the old whole sections, so the review is never blank.
+		for (double[] section : trip.direct) {
+			if (section.length < 4) { continue; }
+			for (int i = 0; i < section.length; i += 2) {
+				double latitude = section[i];
+				double longitude = section[i + 1];
+				if (bounds == null) {
+					bounds = new QuadRect(longitude, latitude, longitude, latitude);
+				} else {
+					bounds.left = Math.min(bounds.left, longitude);
+					bounds.right = Math.max(bounds.right, longitude);
+					bounds.top = Math.max(bounds.top, latitude);
+					bounds.bottom = Math.min(bounds.bottom, latitude);
+				}
+			}
+			journey.add(section);
+		}
+		for (RoadCrewTripJournal.Row row : journey.isEmpty() ? trip.rows
+				: java.util.Collections.<RoadCrewTripJournal.Row>emptyList()) {
 			try {
 				JSONArray points = new JSONArray(row.geometry);
 				if (points.length() < 2) { continue; }

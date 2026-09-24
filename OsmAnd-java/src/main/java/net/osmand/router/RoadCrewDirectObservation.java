@@ -190,6 +190,37 @@ public final class RoadCrewDirectObservation {
 		return way.measures.length - 1;
 	}
 
+	/**
+	 * The way between two measures, as latitude/longitude pairs: the two
+	 * interpolated ends and every vertex strictly between them. This is what
+	 * an observation covers - not the whole way - so it is what the course
+	 * review draws for the driver to confirm (ROADMAP 315). A ring's closing
+	 * leg ends back at its first point.
+	 */
+	public static double[] stretchLatLon(RoadCrewWayCanonical.CanonicalWay way,
+			double fromMeasure, double toMeasure) {
+		double from = Math.max(0, Math.min(way.lengthMeters, fromMeasure));
+		double to = Math.max(from, Math.min(way.lengthMeters, toMeasure));
+		int count = way.getPointCount();
+		List<Double> points = new ArrayList<>();
+		points.add(latitudeAt(way, from));
+		points.add(longitudeAt(way, from));
+		for (int index = 0; index < way.measures.length; index++) {
+			if (way.measures[index] > from && way.measures[index] < to) {
+				int point = index % count;
+				points.add(RoadCrewWayCanonical.latitudeFrom31(way.pointsY[point]));
+				points.add(RoadCrewWayCanonical.longitudeFrom31(way.pointsX[point]));
+			}
+		}
+		points.add(latitudeAt(way, to));
+		points.add(longitudeAt(way, to));
+		double[] result = new double[points.size()];
+		for (int index = 0; index < result.length; index++) {
+			result[index] = points.get(index);
+		}
+		return result;
+	}
+
 	public static double latitudeAt(RoadCrewWayCanonical.CanonicalWay way, double measure) {
 		return RoadCrewWayCanonical.latitudeFrom31(
 				(int) Math.round(interpolate(way, measure, false)));

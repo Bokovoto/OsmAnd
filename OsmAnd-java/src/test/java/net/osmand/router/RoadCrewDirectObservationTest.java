@@ -197,6 +197,52 @@ public class RoadCrewDirectObservationTest {
 	}
 
 	/** A straight east-west road of eleven points, about 1.6 km long. */
+	// ROADMAP 315: the review draws what the driver confirms - the driven
+	// interval of the way, not the whole way between its junctions.
+	@Test
+	public void aStretchIsTheWayBetweenItsMeasuresAndNothingMore() {
+		RoadCrewWayCanonical.CanonicalWay way = straightWay();
+
+		double[] line = RoadCrewDirectObservation.stretchLatLon(way, 250, 700);
+
+		Assert.assertEquals("the ends and the three vertices strictly between them", 10, line.length);
+		Assert.assertEquals(RoadCrewDirectObservation.latitudeAt(way, 250), line[0], 1e-9);
+		Assert.assertEquals(RoadCrewDirectObservation.longitudeAt(way, 250), line[1], 1e-9);
+		Assert.assertEquals(RoadCrewDirectObservation.latitudeAt(way, 700), line[line.length - 2], 1e-9);
+		Assert.assertEquals(RoadCrewDirectObservation.longitudeAt(way, 700), line[line.length - 1], 1e-9);
+		Assert.assertEquals("drawn length is the confirmed length", 450, drawnMeters(line), 4.5);
+	}
+
+	@Test
+	public void theWholeWayIsDrawnOnlyWhenTheWholeWayWasDriven() {
+		RoadCrewWayCanonical.CanonicalWay way = straightWay();
+
+		double[] line = RoadCrewDirectObservation.stretchLatLon(way, 0, way.lengthMeters);
+
+		Assert.assertEquals(2 * way.getPointCount(), line.length);
+		Assert.assertEquals(way.lengthMeters, drawnMeters(line), way.lengthMeters / 100);
+	}
+
+	@Test
+	public void aStretchOverTheClosingLegOfARingEndsBackAtItsStart() {
+		RoadCrewWayCanonical.CanonicalWay way = ringWay();
+
+		double[] line = RoadCrewDirectObservation.stretchLatLon(way, way.lengthMeters - 100, way.lengthMeters);
+
+		Assert.assertEquals(4, line.length);
+		Assert.assertEquals(RoadCrewWayCanonical.latitudeFrom31(way.pointsY[0]), line[2], 1e-6);
+		Assert.assertEquals(RoadCrewWayCanonical.longitudeFrom31(way.pointsX[0]), line[3], 1e-6);
+		Assert.assertEquals(100, drawnMeters(line), 1);
+	}
+
+	private static double drawnMeters(double[] line) {
+		double total = 0;
+		for (int i = 2; i < line.length; i += 2) {
+			total += net.osmand.util.MapUtils.getDistance(line[i - 2], line[i - 1], line[i], line[i + 1]);
+		}
+		return total;
+	}
+
 	private static RoadCrewWayCanonical.CanonicalWay straightWay() {
 		int[] xs = new int[11];
 		int[] ys = new int[11];

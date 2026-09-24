@@ -6,10 +6,12 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import net.osmand.binary.RouteDataObject
 import net.osmand.plus.OsmandApplication
+import net.osmand.router.RoadCrewDirectObservation
 import net.osmand.router.RoadCrewObservationOutbox
 import net.osmand.router.RoadCrewPassageDetector
 import net.osmand.router.RoadCrewSegmentIdentity
 import net.osmand.router.RoadCrewTripLifecycle
+import net.osmand.router.RoadCrewWayCanonical
 import net.osmand.util.MapUtils
 import org.json.JSONArray
 import org.json.JSONObject
@@ -268,7 +270,7 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
         val id = db.rawQuery(REVIEW_SQL, arrayOf(if (manual) "1" else "0", startOfDay(now).toString()))
             .use { if (it.moveToFirst()) it.getString(0) else null }
             ?: return null
-        return Trip(id, readRows(db, "trip_id = ? AND state = 'STAGED'", arrayOf(id)))
+        return reviewTrip(db, id)
     }
 
     @Synchronized
@@ -289,7 +291,43 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
         val available = db.rawQuery("""SELECT 1 FROM trips WHERE id = ? AND closed = 1 AND reviewed = 0
             AND EXISTS(SELECT 1 FROM sections WHERE trip_id = trips.id AND state = 'STAGED')""",
             arrayOf(tripId)).use { it.moveToFirst() }
-        return if (available) Trip(tripId, readRows(db, "trip_id = ? AND state = 'STAGED'", arrayOf(tripId))) else null
+        return if (available) reviewTrip(db, tripId) else null
+    }
+
+    private fun reviewTrip(db: SQLiteDatabase, trip: String): Trip {
+        val lines = ArrayList<DoubleArray>()
+        var meters = 0.0
+        db.rawQuery("SELECT json FROM direct_sections WHERE trip_id = ? AND state = 'STAGED' ORDER BY seq",
+            arrayOf(trip)).use { cursor ->
+            while (cursor.moveToNext()) {
+                try {
+                    val key = JSONObject(cursor.getString(0)).getJSONObject("segmentKey")
+                    val from = key.getDouble("fromMeasureMeters")
+                    val to = key.getDouble("toMeasureMeters")
+                    if (!(to > from)) continue
+                    meters += to - from
+                    val fingerprint = key.getString("geometryFingerprint")
+                    val algorithm = key.getInt("geometryFingerprintAlgorithm")
+                    if (algorithm != RoadCrewWayCanonical.FINGERPRINT_ALGORITHM) continue
+                    val points = db.rawQuery("SELECT points FROM way_descriptors"
+                        + " WHERE osm_way_id = ? AND algorithm = ? AND fingerprint = ?",
+                        arrayOf(key.getString("osmWayId"), algorithm.toString(), fingerprint))
+                        .use { if (it.moveToFirst()) JSONObject(it.getString(0)) else null } ?: continue
+                    val xs = points.getJSONArray("pointsX")
+                    val ys = points.getJSONArray("pointsY")
+                    val way = RoadCrewWayCanonical.canonicalise(
+                        IntArray(xs.length()) { xs.getInt(it) }, IntArray(ys.length()) { ys.getInt(it) })
+                    // Only on the geometry the measures were taken on; a shape
+                    // that does not match is not drawn, rather than guessed.
+                    if (RoadCrewWayCanonical.canonicalFingerprint(way) != fingerprint) continue
+                    lines.add(RoadCrewDirectObservation.stretchLatLon(way, from, to))
+                } catch (error: Exception) {
+                    // An unreadable row is not drawn; its length still counts,
+                    // because its answer is still sent.
+                }
+            }
+        }
+        return Trip(trip, readRows(db, "trip_id = ? AND state = 'STAGED'", arrayOf(trip)), lines, meters)
     }
 
     @Synchronized
@@ -465,7 +503,13 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
     class Row(@JvmField val seq: Long, @JvmField val tripId: String,
               @JvmField val record: RoadCrewObservationOutbox.Record, @JvmField val geometry: String,
               @JvmField val name: String, @JvmField var included: Boolean, @JvmField var question: Boolean)
-    class Trip(@JvmField val id: String, @JvmField val rows: List<Row>)
+    /**
+     * [direct] holds the driven stretches (RCS2) as latitude/longitude pairs,
+     * [directMeters] their total. They are what the suitability answer is
+     * stamped on, so they are what the review shows (ROADMAP 315).
+     */
+    class Trip(@JvmField val id: String, @JvmField val rows: List<Row>,
+               @JvmField val direct: List<DoubleArray> = emptyList(), @JvmField val directMeters: Double = 0.0)
     class PendingTrip(@JvmField val id: String, @JvmField val endedAt: Long, @JvmField val sectionCount: Int)
 
     companion object {

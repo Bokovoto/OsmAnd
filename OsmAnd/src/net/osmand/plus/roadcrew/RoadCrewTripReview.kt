@@ -49,7 +49,8 @@ internal class RoadCrewTripReview(
             time.format(Date(rows.first().record.observedAtBucketMillis)),
             time.format(Date(rows.last().record.observedAtBucketMillis)),
             java.text.NumberFormat.getNumberInstance().apply { maximumFractionDigits = 1 }
-                .format(rows.sumOf { it.record.segmentKey.lengthMeters } / 1000)))
+                .format((if (trip.direct.isNotEmpty()) trip.directMeters
+                    else rows.sumOf { it.record.segmentKey.lengthMeters }) / 1000)))
         RoadCrewUi.addSectionTitle(activity, content,
             activity.getString(R.string.roadcrew_trip_review_simple_question))
         // The journey is no longer drawn inside this panel on a blank canvas -
