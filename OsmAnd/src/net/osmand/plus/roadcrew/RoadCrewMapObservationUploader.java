@@ -82,6 +82,9 @@ final class RoadCrewMapObservationUploader {
 				}
 			};
 
+	/** When confirmed RCS2 was last attempted; paces retries when only RCS2 waits. */
+	private static volatile long lastDirectAttemptAtMillis;
+
 	private RoadCrewMapObservationUploader() {
 	}
 
@@ -94,11 +97,18 @@ final class RoadCrewMapObservationUploader {
 			return;
 		}
 		RoadCrewObservationOutbox.Snapshot snapshot = outbox.snapshot();
-		if (snapshot.isEmpty()) {
+		// Confirmed RCS2 no longer rides on RCS1's queue: with RCS1 off that
+		// queue stays empty and a confirmed course was never sent (ROADMAP 326).
+		boolean directWaiting = RoadCrewTripJournal.waitingCount(app) > 0;
+		if (snapshot.isEmpty() && !directWaiting) {
 			return;
 		}
 		long now = System.currentTimeMillis();
-		long delay = uploadDelayMillis(app, outbox, snapshot, now);
+		// RCS2 alone: at once the first time, then on the normal cadence after
+		// an attempt, so a failing send never spins.
+		long delay = snapshot.isEmpty()
+				? Math.max(0, lastDirectAttemptAtMillis + NORMAL_FLUSH_DELAY_MILLIS - now)
+				: uploadDelayMillis(app, outbox, snapshot, now);
 		long targetAtMillis = now > Long.MAX_VALUE - delay ? Long.MAX_VALUE : now + delay;
 		if (scheduled != null && !scheduled.isDone()) {
 			if (scheduledAtMillis <= targetAtMillis) {
@@ -156,14 +166,15 @@ final class RoadCrewMapObservationUploader {
 				// The directed observations of confirmed courses go the same way
 				// and in the same run: they are the evidence the map is built
 				// from now (Galin, 21.09).
+				lastDirectAttemptAtMillis = System.currentTimeMillis();
 				uploadConfirmedDirect(app);
 			}
 		} finally {
 			synchronized (RoadCrewMapObservationUploader.class) {
 				running = false;
 			}
-			if (app != null && outbox != null && !outbox.snapshot().isEmpty()
-					&& RoadCrewMapObservationConsent.isEnabled(app)) {
+			if (app != null && outbox != null && RoadCrewMapObservationConsent.isEnabled(app)
+					&& (!outbox.snapshot().isEmpty() || RoadCrewTripJournal.waitingCount(app) > 0)) {
 				schedule(app, outbox);
 			}
 		}

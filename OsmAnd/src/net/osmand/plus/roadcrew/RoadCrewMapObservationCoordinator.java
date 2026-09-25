@@ -264,7 +264,9 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 				ensurePipeline();
 				RoadCrewTripJournal.get(app).transferConfirmed(outbox);
 				RoadCrewMapObservationConsent.recordPendingCount(app, outbox.snapshot().size());
-				RoadCrewMapObservationUploader.schedule(app, outbox);
+				// The driver just said yes: send the course now, not in 15 minutes
+				// and not only if RCS1 had something queued (ROADMAP 326).
+				RoadCrewMapObservationUploader.flushNow(app, outbox);
 			} catch (IOException | RuntimeException e) {
 				LOG.warn("Confirmed trip transfer deferred", e);
 			}

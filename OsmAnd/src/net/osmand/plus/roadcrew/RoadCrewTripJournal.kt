@@ -248,6 +248,9 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
                     + " WHERE seq = ? AND state = 'CONFIRMED'", arrayOf(seq))
             }
         }
+        // The uploader schedules on this count; a stale one would keep
+        // rescheduling for rows already sent (ROADMAP 326).
+        updateSummary(db)
     }
 
     @Synchronized
