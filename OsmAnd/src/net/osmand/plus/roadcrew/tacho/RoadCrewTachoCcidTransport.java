@@ -29,6 +29,7 @@ final class RoadCrewTachoCcidTransport {
 	private static final int PC_TO_RDR_ICC_POWER_OFF = 0x63;
 	private static final int PC_TO_RDR_XFR_BLOCK = 0x6F;
 	private static final int PC_TO_RDR_SET_PARAMETERS = 0x61;
+	private static final int PC_TO_RDR_GET_SLOT_STATUS = 0x65;
 	private static final int RDR_TO_PC_DATA_BLOCK = 0x80;
 	private static final int RDR_TO_PC_SLOT_STATUS = 0x81;
 
@@ -197,6 +198,17 @@ final class RoadCrewTachoCcidTransport {
 	}
 
 	/**
+	 * PC_to_RDR_GetSlotStatus (CCID 6.1.10): bmICCStatus, bits 0-1 of bStatus -
+	 * 0 a card is powered, 1 a card is seated but not powered, 2 no card. Asks
+	 * the reader only; the card is not touched. bmCommandStatus may report a
+	 * failure (no card to talk to) while bmICCStatus is still valid.
+	 */
+	int slotStatus() throws IOException {
+		Response response = exchange(PC_TO_RDR_GET_SLOT_STATUS, new byte[0], (byte) 0x00, (byte) 0x00, (byte) 0x00);
+		return response.status & 0x03;
+	}
+
+	/**
 	 * PC_to_RDR_SetParameters for T=0 (bProtocolNum=0): the five-byte T=0
 	 * parameter block (field layout from pcsc-lite's CCID driver,
 	 * ifdhandler.c IFDHSetProtocolParameters) - Fi/Di, TCCKS, extra guard
@@ -327,7 +339,8 @@ final class RoadCrewTachoCcidTransport {
 			}
 			int responseType = buffer[0] & 0xFF;
 			int expectedType = messageType == PC_TO_RDR_SET_PARAMETERS ? 0x82
-					: messageType == PC_TO_RDR_ICC_POWER_OFF ? RDR_TO_PC_SLOT_STATUS : RDR_TO_PC_DATA_BLOCK;
+					: messageType == PC_TO_RDR_ICC_POWER_OFF || messageType == PC_TO_RDR_GET_SLOT_STATUS
+					? RDR_TO_PC_SLOT_STATUS : RDR_TO_PC_DATA_BLOCK;
 			if (responseType != expectedType || buffer[5] != 0) {
 				throw new IOException("Unexpected CCID reply type or slot");
 			}

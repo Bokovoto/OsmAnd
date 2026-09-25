@@ -1,73 +1,212 @@
 package net.osmand.plus.roadcrew.tacho;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.text.format.Formatter;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
-import net.osmand.PlatformUtil;
 import net.osmand.plus.R;
+import net.osmand.plus.utils.AndroidUtils;
 
-import org.apache.commons.logging.Log;
-
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
- * A first, deliberately narrow proof that RoadCrew can read a tachograph
- * driver card on its own, through a plain USB smart-card reader - without the
- * third-party app. The dev.tacho build additionally exposes an explicitly
- * confirmed date-only experiment; it is NOT a completed DDD download.
+ * The driver card screen (ROADMAP 327), as in the mockup Galin approved on
+ * 25.09.2026: the reader and the card are shown live, the download starts
+ * with a button, the card is marked as downloaded right after the file is
+ * stored and read back, and the file goes out by e-mail or Viber.
  *
- * The reader (ACR39U or anything else matching roadcrew_tacho_usb_filter.xml)
- * can arrive two ways: Android hands it to this activity directly because the
- * manifest's intent-filter matched (the device was just plugged in), or the
- * activity is opened first and has to go looking for an already-attached one.
- * Both paths end up asking for USB permission the same way.
+ * All USB work - polling the slot, reading the card, the download - runs on
+ * one worker thread over one claimed reader interface; the screen state lives
+ * on the UI thread.
  */
 public final class RoadCrewTachoCardActivity extends Activity {
 
-	private static final Log LOG = PlatformUtil.getLog(RoadCrewTachoCardActivity.class);
+	private static final String TAG = "RoadCrewTacho";
 	private static final String ACTION_USB_PERMISSION = "net.osmand.plus.roadcrew.tacho.USB_PERMISSION";
 
+	/** Development triggers over adb: start the download once a driver card is in, and trace it. */
 	static final String EXTRA_DOWNLOAD = "roadcrew_download";
-	static final String EXTRA_MARK_CARD = "roadcrew_mark_card";
 	static final String EXTRA_TRACE = "roadcrew_trace";
-	private boolean traceRequested;
-	@Nullable private String markCardNumber;
-	private static final String TAG = "RoadCrewTacho";
 
-	private TextView statusView;
-	private TextView logView;
+	private static final int READER_VENDOR_ID = 1839;
+	private static final int READER_PRODUCT_ID = 45312;
+	private static final long POLL_MILLIS = 1000;
+	/** Commission Regulation (EU) No 581/2010: driver card data at least every 28 days. */
+	private static final long DOWNLOAD_PERIOD_MILLIS = TimeUnit.DAYS.toMillis(28);
+	private static final String PREFS = "roadcrew_tacho";
+	private static final String PREF_LAST_DOWNLOAD = "last_download_at";
+	private static final String FOLDER = "RoadCrew";
+	private static final String VIBER_PACKAGE = "com.viber.voip";
+	private static final int HISTORY_ROWS = 5;
+
+	private enum Reader { NONE, NO_PERMISSION, CONNECTED }
+
+	private enum CardState { ABSENT, READING, DRIVER, OTHER, UNREADABLE }
+
+	private enum Phase { IDLE, DOWNLOADING, DONE, FAILED }
+
+	private enum Stage { READING, SAVING, MARKING }
+
+	/** A DDD file in Downloads/RoadCrew that the driver can send. */
+	private static final class Stored {
+		final Uri uri;
+		final String name;
+		final long takenAt;
+		final long size;
+		final boolean secondGeneration;
+
+		Stored(Uri uri, String name, long takenAt, long size, boolean secondGeneration) {
+			this.uri = uri;
+			this.name = name;
+			this.takenAt = takenAt;
+			this.size = size;
+			this.secondGeneration = secondGeneration;
+		}
+	}
+
+	// Screen state, UI thread only.
+	private Reader reader = Reader.NONE;
+	private CardState cardState = CardState.ABSENT;
+	@Nullable private RoadCrewTachoCardDownload.CardInfo cardInfo;
+	private Phase phase = Phase.IDLE;
+	private int progressDone;
+	private int progressTotal = 1;
+	private String progressTitle = "";
+	private String progressFile = "";
+	@Nullable private Stored doneFile;
+	private int doneParts;
+	private long doneMarkedAt;
+	@Nullable private String doneHolder;
+	@Nullable private String doneCardNumber;
+	private String errorTitle = "";
+	private String errorBody = "";
+	private final List<Stored> history = new ArrayList<>();
 	private boolean downloadRequested;
+	private boolean traceRequested;
+	@Nullable private UsbDevice device;
+
+	// The reader, worker thread only.
+	private final ScheduledExecutorService worker = Executors.newSingleThreadScheduledExecutor();
+	@Nullable private UsbDeviceConnection connection;
+	@Nullable private RoadCrewTachoCardReader.Session session;
+	@Nullable private ScheduledFuture<?> polling;
+	private boolean cardSeen;
+
+	private volatile boolean busy;
+	private volatile boolean visible;
 	private UsbManager usbManager;
-	private UsbDevice lastDevice;
-	private boolean busy;
-	private final List<byte[]> discoveredFileIds = new ArrayList<>();
-	private final BroadcastReceiver permissionReceiver = new BroadcastReceiver() {
+
+	private TextView readerState;
+	private TextView readerDetail;
+	private ImageView readerIcon;
+	private ImageView readerMark;
+	private TextView cardStateView;
+	private TextView cardDetail;
+	private ImageView cardIcon;
+	private ImageView cardMark;
+	private View errorBlock;
+	private TextView errorTitleView;
+	private TextView errorBodyView;
+	private View doneBlock;
+	private TextView doneMarkedView;
+	private LinearLayout doneDetails;
+	private View progressBlock;
+	private TextView progressTitleView;
+	private TextView progressPercent;
+	private ProgressBar progressBar;
+	private TextView progressFileView;
+	private TextView progressCount;
+	private View lastBlock;
+	private TextView lastText;
+	private TextView nextText;
+	private Button downloadButton;
+	private TextView hint;
+	private Button sendButton;
+	private Button finishButton;
+	private View historyBlock;
+	private LinearLayout historyRows;
+
+	private final BroadcastReceiver usbReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (!ACTION_USB_PERMISSION.equals(intent.getAction())) {
-				return;
-			}
-			UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-			if (device != null && intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
-				readCard(device);
-			} else {
-				statusView.setText(R.string.roadcrew_tacho_no_permission);
+			UsbDevice changed = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+			if (ACTION_USB_PERMISSION.equals(intent.getAction())) {
+				if (changed != null && intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+					attach(changed);
+				} else {
+					reader = Reader.NO_PERMISSION;
+					render();
+				}
+			} else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(intent.getAction())) {
+				if (changed != null && device != null && changed.getDeviceId() == device.getDeviceId()) {
+					device = null;
+					worker.execute(RoadCrewTachoCardActivity.this::closeReader);
+					reader = Reader.NONE;
+					cardState = CardState.ABSENT;
+					cardInfo = null;
+					render();
+				}
 			}
 		}
 	};
@@ -76,343 +215,381 @@ public final class RoadCrewTachoCardActivity extends Activity {
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.roadcrew_tacho_card_activity);
-		statusView = findViewById(R.id.roadcrewTachoStatus);
-		logView = findViewById(R.id.roadcrewTachoLog);
 		usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
-
-		Button retry = findViewById(R.id.roadcrewTachoRetryButton);
-		retry.setOnClickListener(v -> findAndRead());
-		Button scan = findViewById(R.id.roadcrewTachoScanButton);
-		scan.setOnClickListener(v -> scanFileIds());
-		Button writeTest = findViewById(R.id.roadcrewTachoWriteTestButton);
-		writeTest.setOnClickListener(v -> confirmTestDateWrite());
+		bindViews();
 
 		IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
+		filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-			registerReceiver(permissionReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+			registerReceiver(usbReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
 		} else {
-			registerReceiver(permissionReceiver, filter);
+			registerReceiver(usbReceiver, filter);
 		}
-
 		handleIntent(getIntent());
+		render();
 	}
 
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
+		setIntent(intent);
 		handleIntent(intent);
+		if (visible) {
+			findReader(intent.getParcelableExtra(UsbManager.EXTRA_DEVICE));
+		}
 	}
 
 	private void handleIntent(@Nullable Intent intent) {
-		// A development trigger for the DDD download until the driver's own
-		// buttons exist (they come with a mockup first - Galin's rule):
-		// am start ... --ez roadcrew_download true (ROADMAP 327).
 		downloadRequested = intent != null && intent.getBooleanExtra(EXTRA_DOWNLOAD, false);
-		// Marking only for the one card named in the command, after its DDD is
-		// stored in the same session - a working card is never marked by accident.
-		markCardNumber = intent == null ? null : intent.getStringExtra(EXTRA_MARK_CARD);
-		// Every command and reply of the download, for a software twin of the
-		// card in tests and for diagnosis. Kept in the app's own external
-		// folder, never in Downloads, never uploaded (ROADMAP 327).
+		// Every command and answer of the next download, for diagnosis and for
+		// the card's twin in tests. The app's own folder, never uploaded.
 		traceRequested = intent != null && intent.getBooleanExtra(EXTRA_TRACE, false);
-		UsbDevice device = intent == null ? null : intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-		if (device != null) {
-			requestPermissionAndRead(device);
-		} else {
-			findAndRead();
-		}
-	}
-
-	/** No device came in with the intent - look for one already plugged in. */
-	private void findAndRead() {
-		for (UsbDevice device : usbManager.getDeviceList().values()) {
-			if (device.getVendorId() == 1839 && device.getProductId() == 45312) {
-				requestPermissionAndRead(device);
-				return;
-			}
-		}
-		statusView.setText(R.string.roadcrew_tacho_no_device);
-	}
-
-	private void requestPermissionAndRead(UsbDevice device) {
-		if (usbManager.hasPermission(device)) {
-			readCard(device);
-			return;
-		}
-		// Android 14+ (targetSdk 34+) refuses a mutable PendingIntent built from an
-		// implicit intent; UsbManager still needs it mutable so it can add
-		// EXTRA_DEVICE/EXTRA_PERMISSION_GRANTED when it fires the broadcast, so the
-		// fix is to make the intent explicit instead of dropping mutability.
-		Intent permissionRequest = new Intent(ACTION_USB_PERMISSION).setPackage(getPackageName());
-		int flags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_MUTABLE : 0;
-		PendingIntent permissionIntent = PendingIntent.getBroadcast(this, 0, permissionRequest, flags);
-		usbManager.requestPermission(device, permissionIntent);
-	}
-
-	private void readCard(UsbDevice device) {
-		if (busy) return;
-		if (downloadRequested) {
+		if (downloadRequested && cardState == CardState.DRIVER) {
 			downloadRequested = false;
-			downloadCard(device);
+			startDownload();
+		}
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		visible = true;
+		Intent intent = getIntent();
+		findReader(intent == null ? null : intent.getParcelableExtra(UsbManager.EXTRA_DEVICE));
+		loadHistory();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		visible = false;
+		// A download in progress keeps the reader; it lets go when it ends.
+		if (!busy) {
+			worker.execute(this::closeReader);
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(usbReceiver);
+		worker.execute(this::closeReader);
+		worker.shutdown();
+	}
+
+	// ---- The reader ----------------------------------------------------------------------------
+
+	private void findReader(@Nullable UsbDevice candidate) {
+		// The intent that opened the screen may name a reader unplugged since.
+		UsbDevice found = candidate != null && usbManager.getDeviceList().containsKey(candidate.getDeviceName())
+				? candidate : null;
+		if (found == null) {
+			for (UsbDevice attached : usbManager.getDeviceList().values()) {
+				if (attached.getVendorId() == READER_VENDOR_ID && attached.getProductId() == READER_PRODUCT_ID) {
+					found = attached;
+					break;
+				}
+			}
+		}
+		if (found == null) {
+			reader = Reader.NONE;
+			render();
 			return;
 		}
-		setBusy(true);
-		lastDevice = device;
-		statusView.setText(R.string.roadcrew_tacho_reading);
-		logView.setText("");
-		new Thread(() -> {
-			UsbDeviceConnection connection = usbManager.openDevice(device);
-			if (connection == null) {
-				runOnUiThread(() -> {
-					setBusy(false);
-					statusView.setText(getString(R.string.roadcrew_tacho_error, "could not open the USB connection"));
-				});
-				return;
-			}
-			try {
-				RoadCrewTachoCardReader.CardSummary summary = RoadCrewTachoCardReader.readSummary(device, connection);
-				runOnUiThread(() -> showSummary(summary));
-			} catch (IOException e) {
-				LOG.warn("tachograph card read failed", e);
-				String message = e.getMessage();
-				runOnUiThread(() -> statusView.setText(getString(R.string.roadcrew_tacho_error, message)));
-			} finally {
-				connection.close();
-				runOnUiThread(() -> setBusy(false));
-			}
-		}, "RoadCrewTachoCardRead").start();
-	}
-
-	private void showSummary(RoadCrewTachoCardReader.CardSummary summary) {
-		setBusy(false);
-		statusView.setText(R.string.roadcrew_tacho_waiting_for_reader);
-		StringBuilder text = new StringBuilder();
-		text.append("ATR (").append(summary.atr.length).append(" bytes): ")
-				.append(RoadCrewTachoCardReader.toHex(summary.atr)).append('\n');
-		for (RoadCrewTachoCardReader.Step step : summary.steps) {
-			text.append('\n').append(step.ok ? "OK  " : "FAIL").append("  ").append(step.label)
-					.append('\n').append("    ").append(step.detail).append('\n');
-		}
-		logView.setText(text.toString());
-		// Also to logcat: exact bytes, no risk of a screenshot being mistyped by hand.
-		LOG.info("ATR=" + RoadCrewTachoCardReader.toHex(summary.atr));
-		for (RoadCrewTachoCardReader.Step step : summary.steps) {
-			LOG.info((step.ok ? "OK " : "FAIL ") + step.label + " :: " + step.detail);
-		}
-	}
-
-	/**
-	 * SELECT only, across a plausible range of file ids under the Tachograph
-	 * DF - never a write. This is how a real file to test the write path on
-	 * gets found instead of guessed (Galin, 18.09: try on the test card that
-	 * is in the reader now, but find the real file first rather than picking
-	 * one blind).
-	 */
-	private void scanFileIds() {
-		if (busy) return;
-		if (lastDevice == null) {
-			statusView.setText(R.string.roadcrew_tacho_no_device);
+		if (usbManager.hasPermission(found)) {
+			attach(found);
 			return;
 		}
-		statusView.setText(R.string.roadcrew_tacho_scanning);
-		setBusy(true);
-		logView.setText("");
-		UsbDevice device = lastDevice;
-		new Thread(() -> {
-			UsbDeviceConnection connection = usbManager.openDevice(device);
-			if (connection == null) {
-				runOnUiThread(() -> {
-					setBusy(false);
-					statusView.setText(getString(R.string.roadcrew_tacho_error, "could not open the USB connection"));
-				});
-				return;
-			}
-			try (RoadCrewTachoCardReader.OpenCard card = RoadCrewTachoCardReader.open(device, connection)) {
-				List<byte[]> found = RoadCrewTachoCardReader.probeFileIds(
-						card, RoadCrewTachoCardReader.AID_TACHOGRAPH_G1, 0x0501, 0x0520);
-				discoveredFileIds.clear();
-				discoveredFileIds.addAll(found);
-				runOnUiThread(() -> {
-					statusView.setText(R.string.roadcrew_tacho_waiting_for_reader);
-					appendSteps("ATR: " + RoadCrewTachoCardReader.toHex(card.atr), card.steps);
-				});
-			} catch (IOException e) {
-				LOG.warn("tachograph card scan failed", e);
-				String message = e.getMessage();
-				runOnUiThread(() -> statusView.setText(getString(R.string.roadcrew_tacho_error, message)));
-			} finally {
-				connection.close();
-				runOnUiThread(() -> setBusy(false));
-			}
-		}, "RoadCrewTachoCardScan").start();
+		reader = Reader.NO_PERMISSION;
+		render();
+		// UsbManager fills in EXTRA_DEVICE and EXTRA_PERMISSION_GRANTED, so the
+		// PendingIntent stays mutable - and explicit, as Android 14 requires.
+		Intent request = new Intent(ACTION_USB_PERMISSION).setPackage(getPackageName());
+		int flags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0;
+		usbManager.requestPermission(found, PendingIntent.getBroadcast(this, 0, request, flags));
 	}
 
-	/** A separate confirmation for every diagnostic write, only in local tacho builds. */
-	private void confirmTestDateWrite() {
-		if (busy) return;
+	private void attach(@NonNull UsbDevice found) {
+		device = found;
+		worker.execute(() -> openReader(found));
+	}
+
+	/** Worker thread: claim the reader and poll its slot once a second. */
+	private void openReader(@NonNull UsbDevice found) {
+		if (session != null) {
+			return;
+		}
+		UsbDeviceConnection opened = usbManager.openDevice(found);
+		if (opened == null) {
+			runOnUiThread(() -> {
+				reader = Reader.NO_PERMISSION;
+				render();
+			});
+			return;
+		}
 		try {
-			String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-			if (version == null || !version.startsWith("0.1.0-dev.tacho")) return;
-		} catch (android.content.pm.PackageManager.NameNotFoundException e) {
+			session = RoadCrewTachoCardReader.Session.attach(found, opened);
+			connection = opened;
+		} catch (IOException e) {
+			Log.w(TAG, "reader could not be opened: " + e.getMessage(), e);
+			opened.close();
+			runOnUiThread(() -> {
+				reader = Reader.NONE;
+				render();
+			});
 			return;
 		}
-		new AlertDialog.Builder(this)
-				.setTitle(R.string.roadcrew_tacho_test_date_title)
-				.setMessage(R.string.roadcrew_tacho_test_date_warning)
-				.setNegativeButton(android.R.string.cancel, null)
-				.setPositiveButton(R.string.roadcrew_tacho_write_test, (dialog, which) -> writeTestDate())
-				.show();
+		cardSeen = false;
+		runOnUiThread(() -> {
+			reader = Reader.CONNECTED;
+			cardState = CardState.ABSENT;
+			render();
+		});
+		polling = worker.scheduleWithFixedDelay(this::poll, 0, POLL_MILLIS, TimeUnit.MILLISECONDS);
 	}
 
-	private void writeTestDate() {
-		if (busy) return;
-		if (lastDevice == null) {
-			statusView.setText(R.string.roadcrew_tacho_no_device);
+	/** Worker thread. */
+	private void closeReader() {
+		if (polling != null) {
+			polling.cancel(false);
+			polling = null;
+		}
+		if (session != null) {
+			session.close();
+			session = null;
+		}
+		if (connection != null) {
+			connection.close();
+			connection = null;
+		}
+		cardSeen = false;
+	}
+
+	/** Worker thread: notice a card going in or out; read what the screen shows about it. */
+	private void poll() {
+		RoadCrewTachoCardReader.Session current = session;
+		if (current == null) {
 			return;
 		}
-		setBusy(true);
-		statusView.setText(R.string.roadcrew_tacho_writing);
-		UsbDevice device = lastDevice;
-		new Thread(() -> {
-			UsbDeviceConnection connection = usbManager.openDevice(device);
-			if (connection == null) {
-				runOnUiThread(() -> {
-					setBusy(false);
-					statusView.setText(getString(R.string.roadcrew_tacho_error, "could not open the USB connection"));
-				});
-				return;
+		boolean present;
+		try {
+			present = current.cardPresent();
+		} catch (IOException e) {
+			Log.w(TAG, "reader stopped answering: " + e.getMessage());
+			closeReader();
+			runOnUiThread(() -> {
+				reader = Reader.NONE;
+				cardState = CardState.ABSENT;
+				cardInfo = null;
+				render();
+			});
+			return;
+		}
+		if (present == cardSeen) {
+			return;
+		}
+		cardSeen = present;
+		if (!present) {
+			runOnUiThread(() -> {
+				cardState = CardState.ABSENT;
+				cardInfo = null;
+				render();
+			});
+			return;
+		}
+		runOnUiThread(() -> {
+			cardState = CardState.READING;
+			render();
+		});
+		try (RoadCrewTachoCardReader.OpenCard card = current.powerOn()) {
+			RoadCrewTachoCardDownload.CardInfo info =
+					RoadCrewTachoCardDownload.readInfo(RoadCrewTachoCardReader.channel(card));
+			if (info.driverCard) {
+				rememberLastDownload(info.lastDownload);
 			}
-			try (RoadCrewTachoCardReader.OpenCard card = RoadCrewTachoCardReader.open(device, connection)) {
-				long requested = System.currentTimeMillis() / 1000L;
-				long previous = RoadCrewTachoCardReader.writeTestDownloadDate(card, requested, (oldDate, newDate) -> {
-					String audit = "TEST ONLY EF050E before=" + oldDate + " requested=" + newDate;
-					LOG.info(audit);
-					try (java.io.FileOutputStream out = openFileOutput("tacho-test-date-audit.txt", MODE_APPEND)) {
-						out.write((audit + "\n").getBytes(java.nio.charset.StandardCharsets.UTF_8));
+			runOnUiThread(() -> {
+				cardInfo = info;
+				cardState = info.driverCard ? CardState.DRIVER : CardState.OTHER;
+				render();
+				if (downloadRequested && info.driverCard) {
+					downloadRequested = false;
+					startDownload();
+				}
+			});
+		} catch (IOException e) {
+			Log.w(TAG, "card could not be read: " + e.getMessage(), e);
+			runOnUiThread(() -> {
+				cardInfo = null;
+				cardState = CardState.UNREADABLE;
+				render();
+			});
+		}
+	}
+
+	// ---- The download --------------------------------------------------------------------------
+
+	private void startDownload() {
+		if (busy || reader != Reader.CONNECTED || cardState != CardState.DRIVER) {
+			return;
+		}
+		busy = true;
+		phase = Phase.DOWNLOADING;
+		progressDone = 0;
+		progressTotal = RoadCrewTachoCardDownload.FILES_G1 + RoadCrewTachoCardDownload.FILES_G2;
+		progressTitle = getString(R.string.roadcrew_tacho_downloading);
+		progressFile = "";
+		boolean trace = traceRequested;
+		traceRequested = false;
+		RoadCrewTachoCardDownload.CardInfo info = cardInfo;
+		render();
+		worker.execute(() -> download(trace, info));
+	}
+
+	/** Worker thread: download, store and read back, then mark - or say exactly what did not happen. */
+	private void download(boolean trace, @Nullable RoadCrewTachoCardDownload.CardInfo info) {
+		StringBuilder traceLog = trace ? new StringBuilder() : null;
+		Stage stage = Stage.READING;
+		long started = System.currentTimeMillis();
+		RoadCrewTachoCardReader.Session current = session;
+		try {
+			if (current == null) {
+				throw new IOException("the reader is not open");
+			}
+			try (RoadCrewTachoCardReader.OpenCard card = current.powerOn()) {
+				RoadCrewTachoDownloadDate.Channel channel = traced(RoadCrewTachoCardReader.channel(card), traceLog);
+				RoadCrewTachoCardDownload.Result result = RoadCrewTachoCardDownload.download(channel,
+						(done, total, fid, secondGeneration) -> runOnUiThread(() -> {
+							progressDone = done;
+							progressTotal = total;
+							if (fid != 0) {
+								progressFile = fileLabel(fid, secondGeneration);
+							}
+							render();
+						}));
+				stage = Stage.SAVING;
+				runOnUiThread(() -> {
+					progressTitle = getString(R.string.roadcrew_tacho_saving);
+					render();
+				});
+				Stored stored = saveDdd(result);
+				Log.i(TAG, String.format(Locale.ROOT,
+						"DDD saved %s bytes=%d gen2=%s files=%d absent=%s warnings=%s sha256=%s seconds=%d",
+						stored.name, result.ddd.length, result.secondGeneration, result.storedTags.size(),
+						result.absent, result.warnings, sha256(result.ddd),
+						(System.currentTimeMillis() - started) / 1000));
+
+				// DDP_035: after the download, LastCardDownload in DF Tachograph and,
+				// on a Gen2 card, Tachograph_G2. Galin, 25.09: automatically, once
+				// the file is stored and read back - which it is by now.
+				stage = Stage.MARKING;
+				runOnUiThread(() -> {
+					progressTitle = getString(R.string.roadcrew_tacho_marking);
+					render();
+				});
+				long now = System.currentTimeMillis() / 1000L;
+				RoadCrewTachoCardDownload.markDownloaded(channel, now, result.secondGeneration, (before, requested) -> {
+					String audit = "MARK card=" + result.cardNumber + " file=" + stored.name
+							+ " before=" + before + " requested=" + requested;
+					Log.i(TAG, audit);
+					try (FileOutputStream out = openFileOutput("tacho-download-audit.txt", MODE_APPEND)) {
+						out.write((audit + "\n").getBytes(StandardCharsets.UTF_8));
 						out.getFD().sync();
 					}
 				});
-				card.steps.add(new RoadCrewTachoCardReader.Step("EF050E test date - readback verified", true,
-						"before=" + RoadCrewTachoCardReader.describeDate(previous)
-						+ "; after=" + RoadCrewTachoCardReader.describeDate(requested)));
+				Log.i(TAG, "Marked as downloaded: " + RoadCrewTachoCardReader.describeDate(now)
+						+ (result.secondGeneration ? " (Tachograph and Tachograph_G2)" : " (Tachograph)"));
+				rememberLastDownload(now);
 				runOnUiThread(() -> {
-					statusView.setText(R.string.roadcrew_tacho_waiting_for_reader);
-					appendSteps("TEST CARD DATE ONLY - no DDD exported", card.steps);
+					phase = Phase.DONE;
+					doneFile = stored;
+					doneParts = result.storedTags.size();
+					doneMarkedAt = now;
+					doneHolder = info == null ? null : holderName(info);
+					doneCardNumber = result.cardNumber;
+					if (cardInfo != null) {
+						cardInfo = new RoadCrewTachoCardDownload.CardInfo(cardInfo.driverCard,
+								cardInfo.issuingMemberState, cardInfo.cardNumber, cardInfo.surname,
+								cardInfo.firstNames, now);
+					}
+					render();
+					loadHistory();
 				});
-			} catch (IOException e) {
-				LOG.warn("tachograph card write test failed", e);
-				String message = e.getMessage();
-				runOnUiThread(() -> statusView.setText(getString(R.string.roadcrew_tacho_error, message)));
-			} finally {
-				connection.close();
-				runOnUiThread(() -> setBusy(false));
 			}
-		}, "RoadCrewTachoCardWriteTest").start();
+		} catch (IOException e) {
+			Log.w(TAG, "DDD download failed at " + stage + ": " + e.getMessage(), e);
+			boolean removed;
+			try {
+				removed = current == null || !current.cardPresent();
+			} catch (IOException gone) {
+				removed = true;
+			}
+			Stage failedAt = stage;
+			boolean cardOrReaderGone = removed;
+			String reason = e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage();
+			runOnUiThread(() -> failed(failedAt, cardOrReaderGone, reason));
+		} finally {
+			if (traceLog != null) {
+				saveTrace(traceLog);
+			}
+			busy = false;
+			if (!visible) {
+				closeReader();
+			}
+		}
 	}
 
-	/**
-	 * The whole driver card into one DDD file (ROADMAP 327). Reads only; the
-	 * file is stored and read back before anything is reported as done.
-	 */
-	private void downloadCard(UsbDevice device) {
-		setBusy(true);
-		lastDevice = device;
-		statusView.setText(R.string.roadcrew_tacho_reading);
-		logView.setText("");
-		// Every command and answer of this session, for a card whose download
-		// has to be diagnosed or replayed in a test. Kept in the app's own files.
-		StringBuilder trace = traceRequested ? new StringBuilder() : null;
-		traceRequested = false;
-		new Thread(() -> {
-			UsbDeviceConnection connection = usbManager.openDevice(device);
-			if (connection == null) {
-				runOnUiThread(() -> {
-					setBusy(false);
-					statusView.setText(getString(R.string.roadcrew_tacho_error, "could not open the USB connection"));
-				});
-				return;
-			}
-			long started = System.currentTimeMillis();
-			try (RoadCrewTachoCardReader.OpenCard card = RoadCrewTachoCardReader.open(device, connection)) {
-				RoadCrewTachoDownloadDate.Channel direct = RoadCrewTachoCardReader.channel(card);
-				RoadCrewTachoDownloadDate.Channel channel = trace == null ? direct : command -> {
-					trace.append("> ").append(RoadCrewTachoCardReader.toHex(command)).append('\n');
-					try {
-						byte[] answer = direct.exchange(command);
-						trace.append("< ").append(RoadCrewTachoCardReader.toHex(answer)).append('\n');
-						return answer;
-					} catch (IOException e) {
-						trace.append("! ").append(e.getMessage()).append('\n');
-						throw e;
-					}
-				};
-				RoadCrewTachoCardDownload.Result result = RoadCrewTachoCardDownload.download(channel);
-				String name = saveDdd(result);
-				String summary = String.format(java.util.Locale.ROOT,
-						"DDD saved %s bytes=%d gen2=%s files=%d absent=%s warnings=%s sha256=%s seconds=%d",
-						name, result.ddd.length, result.secondGeneration, result.storedTags.size(),
-						result.absent, result.warnings, sha256(result.ddd),
-						(System.currentTimeMillis() - started) / 1000);
-				android.util.Log.i(TAG, summary);
-				String markCard = markCardNumber;
-				markCardNumber = null;
-				if (markCard != null) {
-					if (!markCard.equals(result.cardNumber)) {
-						summary += "\nNOT marked: this card is " + result.cardNumber + ", the command named " + markCard;
-					} else {
-						// DDP_035: after the download, update LastCardDownload - in
-						// DF Tachograph and, on a Gen2 card, Tachograph_G2. The file
-						// is already stored and read back above.
-						long now = System.currentTimeMillis() / 1000L;
-						RoadCrewTachoCardDownload.markDownloaded(channel, now,
-								result.secondGeneration, (before, requested) -> {
-									String audit = "MARK card=" + result.cardNumber + " file=" + name
-											+ " before=" + before + " requested=" + requested;
-									android.util.Log.i(TAG, audit);
-									try (java.io.FileOutputStream out = openFileOutput("tacho-download-audit.txt", MODE_APPEND)) {
-										out.write((audit + "\n").getBytes(java.nio.charset.StandardCharsets.UTF_8));
-										out.getFD().sync();
-									}
-								});
-						summary += "\nMarked as downloaded: " + RoadCrewTachoCardReader.describeDate(now)
-								+ (result.secondGeneration ? " (Tachograph and Tachograph_G2)" : " (Tachograph)");
-					}
-					android.util.Log.i(TAG, summary.substring(summary.lastIndexOf('\n') + 1));
-				}
-				final String shown = summary;
-				runOnUiThread(() -> {
-					statusView.setText(R.string.roadcrew_tacho_waiting_for_reader);
-					logView.setText(shown);
-				});
+	private void failed(Stage stage, boolean removed, String reason) {
+		phase = Phase.FAILED;
+		if (stage == Stage.READING && removed) {
+			errorTitle = getString(R.string.roadcrew_tacho_removed_title);
+			errorBody = getString(R.string.roadcrew_tacho_removed_body);
+		} else if (stage == Stage.READING) {
+			errorTitle = getString(R.string.roadcrew_tacho_failed_title);
+			errorBody = getString(R.string.roadcrew_tacho_failed_body, reason);
+		} else if (stage == Stage.SAVING) {
+			errorTitle = getString(R.string.roadcrew_tacho_save_failed_title);
+			errorBody = getString(R.string.roadcrew_tacho_save_failed_body, reason);
+		} else {
+			errorTitle = getString(R.string.roadcrew_tacho_mark_failed_title);
+			errorBody = getString(R.string.roadcrew_tacho_mark_failed_body, reason);
+		}
+		render();
+		loadHistory();
+	}
+
+	@NonNull
+	private static RoadCrewTachoDownloadDate.Channel traced(RoadCrewTachoDownloadDate.Channel direct,
+			@Nullable StringBuilder trace) {
+		if (trace == null) {
+			return direct;
+		}
+		return command -> {
+			trace.append("> ").append(RoadCrewTachoCardReader.toHex(command)).append('\n');
+			try {
+				byte[] answer = direct.exchange(command);
+				trace.append("< ").append(RoadCrewTachoCardReader.toHex(answer)).append('\n');
+				return answer;
 			} catch (IOException e) {
-				android.util.Log.w(TAG, "DDD download failed: " + e.getMessage(), e);
-				String message = e.getMessage();
-				runOnUiThread(() -> statusView.setText(getString(R.string.roadcrew_tacho_error, message)));
-			} finally {
-				connection.close();
-				if (trace != null) {
-					saveTrace(trace);
-				}
-				runOnUiThread(() -> setBusy(false));
+				trace.append("! ").append(e.getMessage()).append('\n');
+				throw e;
 			}
-		}, "RoadCrewTachoCardDownload").start();
+		};
 	}
 
 	private void saveTrace(StringBuilder trace) {
-		java.io.File folder = new java.io.File(getExternalFilesDir(null), "tacho-trace");
-		String stamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss", java.util.Locale.ROOT)
-				.format(new java.util.Date());
-		java.io.File file = new java.io.File(folder, "trace_" + stamp + ".txt");
+		File folder = new File(getExternalFilesDir(null), "tacho-trace");
+		String stamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ROOT).format(new Date());
+		File file = new File(folder, "trace_" + stamp + ".txt");
 		if (!folder.isDirectory() && !folder.mkdirs()) {
-			android.util.Log.w(TAG, "trace NOT saved: cannot create " + folder);
+			Log.w(TAG, "trace NOT saved: cannot create " + folder);
 			return;
 		}
-		try (java.io.FileOutputStream out = new java.io.FileOutputStream(file)) {
-			out.write(trace.toString().getBytes(java.nio.charset.StandardCharsets.US_ASCII));
+		try (FileOutputStream out = new FileOutputStream(file)) {
+			out.write(trace.toString().getBytes(StandardCharsets.US_ASCII));
 			out.getFD().sync();
-			android.util.Log.i(TAG, "trace saved " + file + " bytes=" + file.length());
+			Log.i(TAG, "trace saved " + file + " bytes=" + file.length());
 		} catch (IOException e) {
-			android.util.Log.w(TAG, "trace NOT saved: " + e.getMessage(), e);
+			Log.w(TAG, "trace NOT saved: " + e.getMessage(), e);
 		}
 	}
 
@@ -420,61 +597,62 @@ public final class RoadCrewTachoCardActivity extends Activity {
 	 * Downloads/RoadCrew/C_yyyyMMdd_HHmm_card.ddd, where the driver can find
 	 * and send it. Read back and compared before it counts as stored.
 	 */
-	private String saveDdd(RoadCrewTachoCardDownload.Result result) throws IOException {
-		String stamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmm", java.util.Locale.ROOT)
-				.format(new java.util.Date());
+	private Stored saveDdd(RoadCrewTachoCardDownload.Result result) throws IOException {
+		long takenAt = System.currentTimeMillis();
+		String stamp = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.ROOT).format(new Date(takenAt));
 		String card = result.cardNumber.replaceAll("[^A-Za-z0-9]", "");
 		String name = "C_" + stamp + "_" + (card.isEmpty() ? "card" : card) + ".ddd";
 		byte[] stored;
+		Uri uri;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 			android.content.ContentResolver resolver = getContentResolver();
 			android.content.ContentValues values = new android.content.ContentValues();
-			values.put(android.provider.MediaStore.Downloads.DISPLAY_NAME, name);
-			values.put(android.provider.MediaStore.Downloads.MIME_TYPE, "application/octet-stream");
-			values.put(android.provider.MediaStore.Downloads.RELATIVE_PATH,
-					android.os.Environment.DIRECTORY_DOWNLOADS + "/RoadCrew");
-			values.put(android.provider.MediaStore.Downloads.IS_PENDING, 1);
-			android.net.Uri uri = resolver.insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+			values.put(MediaStore.Downloads.DISPLAY_NAME, name);
+			values.put(MediaStore.Downloads.MIME_TYPE, "application/octet-stream");
+			values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/" + FOLDER);
+			values.put(MediaStore.Downloads.IS_PENDING, 1);
+			uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
 			if (uri == null) {
 				throw new IOException("Could not create " + name + " in Downloads");
 			}
-			try (java.io.OutputStream out = resolver.openOutputStream(uri)) {
+			try (OutputStream out = resolver.openOutputStream(uri)) {
 				if (out == null) {
 					throw new IOException("Could not open " + name);
 				}
 				out.write(result.ddd);
 			}
 			values.clear();
-			values.put(android.provider.MediaStore.Downloads.IS_PENDING, 0);
+			values.put(MediaStore.Downloads.IS_PENDING, 0);
 			resolver.update(uri, values, null, null);
-			try (java.io.InputStream in = resolver.openInputStream(uri)) {
+			try (InputStream in = resolver.openInputStream(uri)) {
 				stored = readAll(in);
 			}
 		} else {
-			java.io.File dir = new java.io.File(getExternalFilesDir(null), "RoadCrew");
+			File dir = new File(getExternalFilesDir(null), FOLDER);
 			if (!dir.isDirectory() && !dir.mkdirs()) {
 				throw new IOException("Could not create " + dir);
 			}
-			java.io.File file = new java.io.File(dir, name);
-			try (java.io.FileOutputStream out = new java.io.FileOutputStream(file)) {
+			File file = new File(dir, name);
+			try (FileOutputStream out = new FileOutputStream(file)) {
 				out.write(result.ddd);
 				out.getFD().sync();
 			}
-			try (java.io.InputStream in = new java.io.FileInputStream(file)) {
+			try (InputStream in = new FileInputStream(file)) {
 				stored = readAll(in);
 			}
+			uri = AndroidUtils.getUriForFile(this, file);
 		}
-		if (!java.util.Arrays.equals(stored, result.ddd)) {
+		if (!Arrays.equals(stored, result.ddd)) {
 			throw new IOException(name + " did not read back as written");
 		}
-		return name;
+		return new Stored(uri, name, takenAt, stored.length, result.secondGeneration);
 	}
 
-	private static byte[] readAll(@Nullable java.io.InputStream in) throws IOException {
+	private static byte[] readAll(@Nullable InputStream in) throws IOException {
 		if (in == null) {
 			throw new IOException("Stored file cannot be read back");
 		}
-		java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		byte[] buffer = new byte[8192];
 		for (int n; (n = in.read(buffer)) > 0; ) {
 			out.write(buffer, 0, n);
@@ -484,34 +662,528 @@ public final class RoadCrewTachoCardActivity extends Activity {
 
 	private static String sha256(byte[] data) {
 		try {
-			return RoadCrewTachoCardReader.toHex(java.security.MessageDigest.getInstance("SHA-256").digest(data));
-		} catch (java.security.NoSuchAlgorithmException e) {
+			return RoadCrewTachoCardReader.toHex(MessageDigest.getInstance("SHA-256").digest(data));
+		} catch (NoSuchAlgorithmException e) {
 			return "?";
 		}
 	}
 
-	private void setBusy(boolean value) {
-		busy = value;
-		findViewById(R.id.roadcrewTachoRetryButton).setEnabled(!value);
-		findViewById(R.id.roadcrewTachoScanButton).setEnabled(!value);
-		findViewById(R.id.roadcrewTachoWriteTestButton).setEnabled(!value);
-	}
-
-	private void appendSteps(String header, List<RoadCrewTachoCardReader.Step> steps) {
-		StringBuilder text = new StringBuilder(logView.getText());
-		text.append("\n== ").append(header).append(" ==\n");
-		LOG.info("== " + header + " ==");
-		for (RoadCrewTachoCardReader.Step step : steps) {
-			text.append(step.ok ? "OK  " : "FAIL").append("  ").append(step.label)
-					.append('\n').append("    ").append(step.detail).append('\n');
-			LOG.info((step.ok ? "OK " : "FAIL ") + step.label + " :: " + step.detail);
+	private void rememberLastDownload(long epochSeconds) {
+		SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+		if (epochSeconds > prefs.getLong(PREF_LAST_DOWNLOAD, 0)) {
+			prefs.edit().putLong(PREF_LAST_DOWNLOAD, epochSeconds).apply();
 		}
-		logView.setText(text.toString());
 	}
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		unregisterReceiver(permissionReceiver);
+	// ---- Files already downloaded -------------------------------------------------------------
+
+	private void loadHistory() {
+		new Thread(() -> {
+			List<Stored> found = findStoredFiles();
+			runOnUiThread(() -> {
+				history.clear();
+				history.addAll(found);
+				render();
+			});
+		}, "RoadCrewTachoHistory").start();
+	}
+
+	private List<Stored> findStoredFiles() {
+		List<Stored> found = new ArrayList<>();
+		try {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+				String[] projection = {MediaStore.Downloads._ID, MediaStore.Downloads.DISPLAY_NAME,
+						MediaStore.Downloads.SIZE};
+				String selection = MediaStore.Downloads.RELATIVE_PATH + " LIKE ? AND "
+						+ MediaStore.Downloads.DISPLAY_NAME + " LIKE ?";
+				String[] args = {Environment.DIRECTORY_DOWNLOADS + "/" + FOLDER + "%", "C%.ddd"};
+				try (Cursor cursor = getContentResolver().query(MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+						projection, selection, args, MediaStore.Downloads.DISPLAY_NAME + " DESC")) {
+					while (cursor != null && cursor.moveToNext() && found.size() < HISTORY_ROWS) {
+						Uri uri = ContentUris.withAppendedId(MediaStore.Downloads.EXTERNAL_CONTENT_URI, cursor.getLong(0));
+						String name = cursor.getString(1);
+						boolean gen2;
+						try (InputStream in = getContentResolver().openInputStream(uri)) {
+							gen2 = hasSecondGeneration(readAll(in));
+						}
+						found.add(new Stored(uri, name, takenAt(name), cursor.getLong(2), gen2));
+					}
+				}
+			} else {
+				File[] files = new File(getExternalFilesDir(null), FOLDER).listFiles(
+						(dir, name) -> name.startsWith("C_") && name.endsWith(".ddd"));
+				if (files != null) {
+					Arrays.sort(files, (a, b) -> b.getName().compareTo(a.getName()));
+					for (File file : files) {
+						if (found.size() >= HISTORY_ROWS) {
+							break;
+						}
+						boolean gen2;
+						try (InputStream in = new FileInputStream(file)) {
+							gen2 = hasSecondGeneration(readAll(in));
+						}
+						found.add(new Stored(AndroidUtils.getUriForFile(this, file), file.getName(),
+								takenAt(file.getName()), file.length(), gen2));
+					}
+				}
+			}
+		} catch (IOException | RuntimeException e) {
+			Log.w(TAG, "downloaded files could not be listed: " + e.getMessage(), e);
+		}
+		return found;
+	}
+
+	/** Any Tachograph_G2 part in the DDD: a data or signature tag with appendix 02/03 (DDP_046). */
+	private static boolean hasSecondGeneration(byte[] ddd) {
+		int i = 0;
+		while (i + 5 <= ddd.length) {
+			int appendix = ddd[i + 2] & 0xFF;
+			if (appendix == 0x02 || appendix == 0x03) {
+				return true;
+			}
+			i += 5 + (((ddd[i + 3] & 0xFF) << 8) | (ddd[i + 4] & 0xFF));
+		}
+		return false;
+	}
+
+	/** C_yyyyMMdd_HHmm_... as the phone's local time. */
+	private static long takenAt(String name) {
+		try {
+			Date date = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.ROOT).parse(name.substring(2, 15));
+			return date == null ? 0 : date.getTime();
+		} catch (ParseException | IndexOutOfBoundsException e) {
+			return 0;
+		}
+	}
+
+	// ---- Sending ---------------------------------------------------------------------------------
+
+	private void showSendSheet(@NonNull Stored file) {
+		View sheet = LayoutInflater.from(this).inflate(R.layout.roadcrew_tacho_send_sheet, null);
+		sheet.setBackground(shape(R.color.roadcrew_tacho_ground, 0, 20, true));
+		sheet.findViewById(R.id.roadcrewTachoSendHandle).setBackground(shape(R.color.roadcrew_tacho_handle, 0, 3, false));
+		((TextView) sheet.findViewById(R.id.roadcrewTachoSendSubtitle)).setText(getString(
+				R.string.roadcrew_tacho_send_subtitle, formatDateTime(file.takenAt), Formatter.formatShortFileSize(this, file.size)));
+		for (int id : new int[]{R.id.roadcrewTachoSendEmail, R.id.roadcrewTachoSendViber}) {
+			sheet.findViewById(id).setBackground(shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 14, false));
+		}
+		for (int id : new int[]{R.id.roadcrewTachoSendEmailIcon, R.id.roadcrewTachoSendViberIcon}) {
+			ImageView icon = sheet.findViewById(id);
+			icon.setBackground(shape(R.color.roadcrew_tacho_accent_bg, 0, 12, false));
+			icon.setColorFilter(color(R.color.roadcrew_tacho_accent));
+		}
+		Button cancel = sheet.findViewById(R.id.roadcrewTachoSendCancel);
+		cancel.setBackground(shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 14, false));
+
+		Dialog dialog = new Dialog(this);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(sheet);
+		Window window = dialog.getWindow();
+		if (window != null) {
+			window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+			window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			window.setGravity(Gravity.BOTTOM);
+			window.setDimAmount(0.45f);
+			window.getDecorView().setPadding(0, 0, 0, 0);
+		}
+		sheet.findViewById(R.id.roadcrewTachoSendEmail).setOnClickListener(v -> {
+			dialog.dismiss();
+			sendByEmail(file);
+		});
+		sheet.findViewById(R.id.roadcrewTachoSendViber).setOnClickListener(v -> {
+			dialog.dismiss();
+			sendByViber(file);
+		});
+		cancel.setOnClickListener(v -> dialog.dismiss());
+		dialog.show();
+	}
+
+	private Intent fileIntent(@NonNull Stored file) {
+		Intent send = new Intent(Intent.ACTION_SEND);
+		send.setType("application/octet-stream");
+		send.putExtra(Intent.EXTRA_STREAM, file.uri);
+		send.setClipData(ClipData.newRawUri(file.name, file.uri));
+		send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		return send;
+	}
+
+	private void sendByEmail(@NonNull Stored file) {
+		Intent send = fileIntent(file);
+		send.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.roadcrew_tacho_mail_subject, formatDateTime(file.takenAt)));
+		send.putExtra(Intent.EXTRA_TEXT, getString(R.string.roadcrew_tacho_mail_body, file.name));
+		// Only apps that handle mailto: are offered - e-mail, nothing else.
+		send.setSelector(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")));
+		try {
+			startActivity(send);
+		} catch (ActivityNotFoundException e) {
+			Toast.makeText(this, R.string.roadcrew_tacho_no_mail_app, Toast.LENGTH_LONG).show();
+		}
+	}
+
+	private void sendByViber(@NonNull Stored file) {
+		Intent send = fileIntent(file);
+		send.setPackage(VIBER_PACKAGE);
+		try {
+			startActivity(send);
+		} catch (ActivityNotFoundException e) {
+			Toast.makeText(this, R.string.roadcrew_tacho_no_viber, Toast.LENGTH_LONG).show();
+		}
+	}
+
+	// ---- The screen -----------------------------------------------------------------------------
+
+	private void bindViews() {
+		ImageButton back = findViewById(R.id.roadcrewTachoBack);
+		back.setOnClickListener(v -> finish());
+		findViewById(R.id.roadcrewTachoStatusCard).setBackground(
+				shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 16, false));
+		readerState = findViewById(R.id.roadcrewTachoReaderState);
+		readerDetail = findViewById(R.id.roadcrewTachoReaderDetail);
+		readerIcon = findViewById(R.id.roadcrewTachoReaderIcon);
+		readerMark = findViewById(R.id.roadcrewTachoReaderMark);
+		cardStateView = findViewById(R.id.roadcrewTachoCardState);
+		cardDetail = findViewById(R.id.roadcrewTachoCardDetail);
+		cardIcon = findViewById(R.id.roadcrewTachoCardIcon);
+		cardMark = findViewById(R.id.roadcrewTachoCardMark);
+
+		errorBlock = findViewById(R.id.roadcrewTachoError);
+		errorBlock.setBackground(shape(R.color.roadcrew_tacho_err_bg, 0, 16, false));
+		((ImageView) findViewById(R.id.roadcrewTachoErrorIcon)).setColorFilter(color(R.color.roadcrew_tacho_err));
+		errorTitleView = findViewById(R.id.roadcrewTachoErrorTitle);
+		errorBodyView = findViewById(R.id.roadcrewTachoErrorBody);
+
+		doneBlock = findViewById(R.id.roadcrewTachoDone);
+		findViewById(R.id.roadcrewTachoDoneBanner).setBackground(shape(R.color.roadcrew_tacho_ok_bg, 0, 16, false));
+		ImageView check = findViewById(R.id.roadcrewTachoDoneCheck);
+		check.setBackground(shape(R.color.roadcrew_tacho_ok, 0, 22, false));
+		check.setColorFilter(Color.WHITE);
+		doneMarkedView = findViewById(R.id.roadcrewTachoDoneMarked);
+		doneDetails = findViewById(R.id.roadcrewTachoDoneDetails);
+		doneDetails.setBackground(shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 16, false));
+
+		progressBlock = findViewById(R.id.roadcrewTachoProgress);
+		findViewById(R.id.roadcrewTachoProgressCard).setBackground(
+				shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 16, false));
+		findViewById(R.id.roadcrewTachoKeepCard).setBackground(shape(R.color.roadcrew_tacho_warn_bg, 0, 12, false));
+		((ImageView) findViewById(R.id.roadcrewTachoKeepCardIcon)).setColorFilter(color(R.color.roadcrew_tacho_warn));
+		progressTitleView = findViewById(R.id.roadcrewTachoProgressTitle);
+		progressPercent = findViewById(R.id.roadcrewTachoProgressPercent);
+		progressBar = findViewById(R.id.roadcrewTachoProgressBar);
+		progressFileView = findViewById(R.id.roadcrewTachoProgressFile);
+		progressCount = findViewById(R.id.roadcrewTachoProgressCount);
+
+		lastBlock = findViewById(R.id.roadcrewTachoLast);
+		lastBlock.setBackground(shape(R.color.roadcrew_tacho_warn_bg, 0, 12, false));
+		lastText = findViewById(R.id.roadcrewTachoLastText);
+		nextText = findViewById(R.id.roadcrewTachoNextText);
+
+		downloadButton = findViewById(R.id.roadcrewTachoDownloadButton);
+		downloadButton.setOnClickListener(v -> startDownload());
+		hint = findViewById(R.id.roadcrewTachoHint);
+		sendButton = findViewById(R.id.roadcrewTachoSendButton);
+		sendButton.setBackground(shape(R.color.roadcrew_tacho_accent, 0, 14, false));
+		sendButton.setTextColor(Color.WHITE);
+		sendButton.setCompoundDrawablesRelativeWithIntrinsicBounds(tinted(R.drawable.roadcrew_tacho_ic_send, Color.WHITE),
+				null, null, null);
+		sendButton.setOnClickListener(v -> {
+			if (doneFile != null) {
+				showSendSheet(doneFile);
+			}
+		});
+		finishButton = findViewById(R.id.roadcrewTachoFinishButton);
+		finishButton.setBackground(shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 14, false));
+		finishButton.setOnClickListener(v -> {
+			phase = Phase.IDLE;
+			render();
+		});
+		historyBlock = findViewById(R.id.roadcrewTachoHistory);
+		historyRows = findViewById(R.id.roadcrewTachoHistoryRows);
+	}
+
+	private void render() {
+		renderReader();
+		renderCard();
+
+		errorBlock.setVisibility(phase == Phase.FAILED ? View.VISIBLE : View.GONE);
+		errorTitleView.setText(errorTitle);
+		errorBodyView.setText(errorBody);
+
+		doneBlock.setVisibility(phase == Phase.DONE ? View.VISIBLE : View.GONE);
+		sendButton.setVisibility(phase == Phase.DONE ? View.VISIBLE : View.GONE);
+		finishButton.setVisibility(phase == Phase.DONE ? View.VISIBLE : View.GONE);
+		if (phase == Phase.DONE) {
+			renderDone();
+		}
+
+		progressBlock.setVisibility(phase == Phase.DOWNLOADING ? View.VISIBLE : View.GONE);
+		if (phase == Phase.DOWNLOADING) {
+			int total = Math.max(1, progressTotal);
+			progressTitleView.setText(progressTitle);
+			progressPercent.setText(String.format(Locale.getDefault(), "%d%%", progressDone * 100 / total));
+			progressBar.setProgress(progressDone * 1000 / total);
+			progressFileView.setText(progressFile);
+			progressCount.setText(getString(R.string.roadcrew_tacho_progress_count, progressDone, total));
+		}
+
+		boolean idle = phase == Phase.IDLE || phase == Phase.FAILED;
+		renderLastDownload(idle);
+		downloadButton.setVisibility(idle ? View.VISIBLE : View.GONE);
+		hint.setVisibility(idle ? View.VISIBLE : View.GONE);
+		boolean ready = reader == Reader.CONNECTED && cardState == CardState.DRIVER && !busy;
+		downloadButton.setEnabled(ready);
+		downloadButton.setBackground(shape(ready ? R.color.roadcrew_tacho_accent : R.color.roadcrew_tacho_off_bg, 0, 14, false));
+		int buttonText = ready ? Color.WHITE : color(R.color.roadcrew_tacho_disabled_text);
+		downloadButton.setTextColor(buttonText);
+		downloadButton.setCompoundDrawablesRelativeWithIntrinsicBounds(
+				tinted(R.drawable.roadcrew_tacho_ic_download, buttonText), null, null, null);
+		hint.setText(hintText());
+
+		historyBlock.setVisibility(idle && !history.isEmpty() ? View.VISIBLE : View.GONE);
+		renderHistory();
+	}
+
+	private void renderReader() {
+		boolean ok = reader == Reader.CONNECTED;
+		statusIcon(readerIcon, readerMark, readerState, ok);
+		if (reader == Reader.CONNECTED) {
+			readerState.setText(R.string.roadcrew_tacho_reader_connected);
+			readerDetail.setText(device != null && device.getProductName() != null ? device.getProductName() : "ACR39U");
+		} else if (reader == Reader.NO_PERMISSION) {
+			readerState.setText(R.string.roadcrew_tacho_reader_permission);
+			readerDetail.setText(R.string.roadcrew_tacho_reader_permission_detail);
+		} else {
+			readerState.setText(R.string.roadcrew_tacho_reader_none);
+			readerDetail.setText(R.string.roadcrew_tacho_reader_none_detail);
+		}
+	}
+
+	private void renderCard() {
+		if (reader != Reader.CONNECTED) {
+			statusIcon(cardIcon, cardMark, cardStateView, false);
+			cardStateView.setText(R.string.roadcrew_tacho_card_unknown);
+			cardDetail.setText(R.string.roadcrew_tacho_card_unknown_detail);
+			return;
+		}
+		statusIcon(cardIcon, cardMark, cardStateView, cardState == CardState.DRIVER || cardState == CardState.READING);
+		switch (cardState) {
+			case READING:
+				cardStateView.setText(R.string.roadcrew_tacho_card_present);
+				cardDetail.setText(R.string.roadcrew_tacho_card_reading);
+				break;
+			case DRIVER:
+				cardStateView.setText(R.string.roadcrew_tacho_card_present);
+				String name = cardInfo == null ? "" : holderName(cardInfo);
+				cardDetail.setText(name.isEmpty() ? getString(R.string.roadcrew_tacho_card_driver)
+						: getString(R.string.roadcrew_tacho_card_driver_named, name));
+				break;
+			case OTHER:
+				cardStateView.setText(R.string.roadcrew_tacho_card_other);
+				cardDetail.setText(R.string.roadcrew_tacho_card_other_detail);
+				break;
+			case UNREADABLE:
+				cardStateView.setText(R.string.roadcrew_tacho_card_unreadable);
+				cardDetail.setText(R.string.roadcrew_tacho_card_unreadable_detail);
+				break;
+			default:
+				cardStateView.setText(R.string.roadcrew_tacho_card_absent);
+				cardDetail.setText(R.string.roadcrew_tacho_card_absent_detail);
+				break;
+		}
+	}
+
+	private void statusIcon(ImageView icon, ImageView mark, TextView state, boolean ok) {
+		int fg = color(ok ? R.color.roadcrew_tacho_ok : R.color.roadcrew_tacho_off);
+		icon.setBackground(shape(ok ? R.color.roadcrew_tacho_ok_bg : R.color.roadcrew_tacho_off_bg, 0, 12, false));
+		icon.setColorFilter(fg);
+		mark.setImageResource(ok ? R.drawable.roadcrew_tacho_ic_check : R.drawable.roadcrew_tacho_ic_cross);
+		mark.setColorFilter(fg);
+		state.setTextColor(fg);
+	}
+
+	private String hintText() {
+		if (reader == Reader.NONE) {
+			return getString(R.string.roadcrew_tacho_hint_no_reader);
+		}
+		if (reader == Reader.NO_PERMISSION) {
+			return getString(R.string.roadcrew_tacho_hint_permission);
+		}
+		switch (cardState) {
+			case READING:
+				return getString(R.string.roadcrew_tacho_hint_reading);
+			case DRIVER:
+				return getString(R.string.roadcrew_tacho_hint_ready);
+			case OTHER:
+				return getString(R.string.roadcrew_tacho_hint_other);
+			case UNREADABLE:
+				return getString(R.string.roadcrew_tacho_card_unreadable_detail);
+			default:
+				return getString(R.string.roadcrew_tacho_hint_no_card);
+		}
+	}
+
+	/** From the inserted driver card; with none, the latest this phone knows of. */
+	private void renderLastDownload(boolean idle) {
+		long last;
+		if (cardState == CardState.DRIVER && cardInfo != null) {
+			last = cardInfo.lastDownload;
+		} else {
+			last = getSharedPreferences(PREFS, MODE_PRIVATE).getLong(PREF_LAST_DOWNLOAD, -1);
+		}
+		boolean known = last >= 0 && (cardState == CardState.DRIVER || last > 0);
+		lastBlock.setVisibility(idle && known ? View.VISIBLE : View.GONE);
+		if (!known) {
+			return;
+		}
+		if (last == 0) {
+			lastText.setText(R.string.roadcrew_tacho_never);
+			nextText.setVisibility(View.GONE);
+			return;
+		}
+		lastText.setText(getString(R.string.roadcrew_tacho_last, formatDateTime(last * 1000L)));
+		nextText.setVisibility(View.VISIBLE);
+		nextText.setText(getString(R.string.roadcrew_tacho_next, formatDate(last * 1000L + DOWNLOAD_PERIOD_MILLIS)));
+	}
+
+	private void renderDone() {
+		doneMarkedView.setText(getString(R.string.roadcrew_tacho_done_marked, formatDateTime(doneMarkedAt * 1000L)));
+		doneDetails.removeAllViews();
+		if (doneHolder != null && !doneHolder.isEmpty()) {
+			detailRow(R.string.roadcrew_tacho_detail_driver, doneHolder);
+		}
+		if (doneCardNumber != null && !doneCardNumber.isEmpty()) {
+			detailRow(R.string.roadcrew_tacho_detail_card, doneCardNumber);
+		}
+		if (doneFile != null) {
+			detailRow(R.string.roadcrew_tacho_detail_generation,
+					getString(doneFile.secondGeneration ? R.string.roadcrew_tacho_gen12 : R.string.roadcrew_tacho_gen1));
+			detailRow(R.string.roadcrew_tacho_detail_file, getString(R.string.roadcrew_tacho_file_size_parts,
+					Formatter.formatShortFileSize(this, doneFile.size), doneParts));
+		}
+		detailRow(R.string.roadcrew_tacho_detail_folder, getString(R.string.roadcrew_tacho_folder));
+	}
+
+	private void detailRow(@StringRes int label, String value) {
+		LinearLayout row = new LinearLayout(this);
+		row.setOrientation(LinearLayout.HORIZONTAL);
+		int vertical = dp(11);
+		row.setPadding(0, vertical, 0, vertical);
+		TextView key = new TextView(this);
+		key.setText(label);
+		key.setTextSize(15);
+		key.setTextColor(color(R.color.roadcrew_tacho_secondary));
+		TextView text = new TextView(this);
+		text.setText(value);
+		text.setTextSize(15);
+		text.setTextColor(color(R.color.roadcrew_tacho_text));
+		text.setGravity(Gravity.END);
+		LinearLayout.LayoutParams valueParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+		valueParams.setMarginStart(dp(12));
+		row.addView(key);
+		row.addView(text, valueParams);
+		if (doneDetails.getChildCount() > 0) {
+			View line = new View(this);
+			line.setBackgroundColor(color(R.color.roadcrew_tacho_line));
+			doneDetails.addView(line, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(1)));
+		}
+		doneDetails.addView(row);
+	}
+
+	private void renderHistory() {
+		historyRows.removeAllViews();
+		for (Stored file : history) {
+			View line = new View(this);
+			line.setBackgroundColor(color(R.color.roadcrew_tacho_line));
+			historyRows.addView(line, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(1)));
+
+			LinearLayout row = new LinearLayout(this);
+			row.setOrientation(LinearLayout.HORIZONTAL);
+			row.setGravity(Gravity.CENTER_VERTICAL);
+			row.setPadding(0, dp(10), 0, dp(10));
+
+			ImageView icon = new ImageView(this);
+			icon.setImageResource(R.drawable.roadcrew_tacho_ic_file);
+			icon.setColorFilter(color(R.color.roadcrew_tacho_secondary));
+			icon.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+			row.addView(icon, new LinearLayout.LayoutParams(dp(20), dp(20)));
+
+			LinearLayout texts = new LinearLayout(this);
+			texts.setOrientation(LinearLayout.VERTICAL);
+			TextView when = new TextView(this);
+			when.setText(file.takenAt > 0 ? formatDateTime(file.takenAt) : file.name);
+			when.setTextSize(15);
+			when.setTextColor(color(R.color.roadcrew_tacho_text));
+			TextView what = new TextView(this);
+			what.setText(Formatter.formatShortFileSize(this, file.size) + " · "
+					+ getString(file.secondGeneration ? R.string.roadcrew_tacho_gen12 : R.string.roadcrew_tacho_gen1));
+			what.setTextSize(13);
+			what.setTextColor(color(R.color.roadcrew_tacho_secondary));
+			texts.addView(when);
+			texts.addView(what);
+			LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+			textParams.setMarginStart(dp(12));
+			row.addView(texts, textParams);
+
+			ImageButton send = new ImageButton(this);
+			send.setImageResource(R.drawable.roadcrew_tacho_ic_send);
+			send.setColorFilter(color(R.color.roadcrew_tacho_accent));
+			send.setBackground(shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 12, false));
+			send.setContentDescription(getString(R.string.roadcrew_tacho_send));
+			send.setOnClickListener(v -> showSendSheet(file));
+			row.addView(send, new LinearLayout.LayoutParams(dp(44), dp(44)));
+			historyRows.addView(row);
+		}
+	}
+
+	private String fileLabel(int fid, boolean secondGeneration) {
+		String key = "roadcrew_tacho_file_" + String.format(Locale.ROOT, "%04x", fid);
+		int id = getResources().getIdentifier(key, "string", getPackageName());
+		String name = id == 0 ? String.format(Locale.ROOT, "%04X", fid) : getString(id);
+		return getString(R.string.roadcrew_tacho_progress_file, secondGeneration ? 2 : 1, name);
+	}
+
+	private static String holderName(@NonNull RoadCrewTachoCardDownload.CardInfo info) {
+		return (info.firstNames + " " + info.surname).trim();
+	}
+
+	private static String formatDateTime(long millis) {
+		return new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault()).format(new Date(millis));
+	}
+
+	private static String formatDate(long millis) {
+		return new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date(millis));
+	}
+
+	private int color(@ColorRes int id) {
+		return getResources().getColor(id, getTheme());
+	}
+
+	private int dp(int value) {
+		return Math.round(value * getResources().getDisplayMetrics().density);
+	}
+
+	private GradientDrawable shape(@ColorRes int fill, @ColorRes int stroke, int radiusDp, boolean topOnly) {
+		GradientDrawable drawable = new GradientDrawable();
+		drawable.setColor(color(fill));
+		if (stroke != 0) {
+			drawable.setStroke(dp(1), color(stroke));
+		}
+		float r = dp(radiusDp);
+		if (topOnly) {
+			drawable.setCornerRadii(new float[]{r, r, r, r, 0, 0, 0, 0});
+		} else {
+			drawable.setCornerRadius(r);
+		}
+		return drawable;
+	}
+
+	@Nullable
+	private Drawable tinted(@DrawableRes int id, int tint) {
+		Drawable drawable = getDrawable(id);
+		if (drawable == null) {
+			return null;
+		}
+		drawable = drawable.mutate();
+		drawable.setTint(tint);
+		return drawable;
 	}
 }

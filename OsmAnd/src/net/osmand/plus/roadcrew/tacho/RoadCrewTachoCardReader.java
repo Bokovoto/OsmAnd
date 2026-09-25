@@ -71,11 +71,13 @@ public final class RoadCrewTachoCardReader {
 	 */
 	public static final class OpenCard implements AutoCloseable {
 		private final RoadCrewTachoCcidTransport transport;
+		private final boolean ownsTransport;
 		public final byte[] atr;
 		public final List<Step> steps = new ArrayList<>();
 
-		private OpenCard(RoadCrewTachoCcidTransport transport, byte[] atr) {
+		private OpenCard(RoadCrewTachoCcidTransport transport, boolean ownsTransport, byte[] atr) {
 			this.transport = transport;
+			this.ownsTransport = ownsTransport;
 			this.atr = atr;
 		}
 
@@ -86,6 +88,44 @@ public final class RoadCrewTachoCardReader {
 			} catch (IOException ignored) {
 				// Best effort - the connection is being closed either way.
 			}
+			if (ownsTransport) {
+				transport.close();
+			}
+		}
+	}
+
+	/**
+	 * The reader held for as long as the driver screen is open: the slot is
+	 * polled for a card and each card session powers the card on and off
+	 * again, all over one claimed interface. The caller keeps every call on
+	 * one thread and closes the connection after {@link #close}.
+	 */
+	public static final class Session implements AutoCloseable {
+		private final RoadCrewTachoCcidTransport transport;
+
+		private Session(RoadCrewTachoCcidTransport transport) {
+			this.transport = transport;
+		}
+
+		@NonNull
+		public static Session attach(@NonNull UsbDevice device, @NonNull UsbDeviceConnection connection)
+				throws IOException {
+			return new Session(RoadCrewTachoCcidTransport.open(device, connection));
+		}
+
+		/** True while a card is seated in the reader, powered or not. */
+		public boolean cardPresent() throws IOException {
+			return transport.slotStatus() != 2;
+		}
+
+		/** Powers the card on; closing the result powers it off and keeps the reader. */
+		@NonNull
+		public OpenCard powerOn() throws IOException {
+			return RoadCrewTachoCardReader.powerOn(transport, false);
+		}
+
+		@Override
+		public void close() {
 			transport.close();
 		}
 	}
@@ -97,19 +137,31 @@ public final class RoadCrewTachoCardReader {
 	 */
 	@NonNull
 	public static OpenCard open(@NonNull UsbDevice device, @NonNull UsbDeviceConnection connection) throws IOException {
-		RoadCrewTachoCcidTransport transport = RoadCrewTachoCcidTransport.open(device, connection);
+		return powerOn(RoadCrewTachoCcidTransport.open(device, connection), true);
+	}
+
+	private static OpenCard powerOn(RoadCrewTachoCcidTransport transport, boolean ownsTransport) throws IOException {
 		RoadCrewTachoCcidTransport.Response powerOn = transport.powerOn();
 		if (powerOn.cardAbsent()) {
-			transport.close();
+			if (ownsTransport) {
+				transport.close();
+			}
 			throw new IOException("no card is seated in the reader");
 		}
 		if (powerOn.commandFailed()) {
-			transport.close();
+			if (ownsTransport) {
+				transport.close();
+			}
 			throw new IOException("power-on failed: reader error 0x" + Integer.toHexString(powerOn.error & 0xFF));
 		}
-		OpenCard card = new OpenCard(transport, powerOn.data);
+		OpenCard card = new OpenCard(transport, ownsTransport, powerOn.data);
 		card.steps.add(describeFeatures(transport.features()));
-		negotiateParametersIfNeeded(transport, card.steps, card.atr);
+		try {
+			negotiateParametersIfNeeded(transport, card.steps, card.atr);
+		} catch (IOException e) {
+			card.close();
+			throw e;
+		}
 		return card;
 	}
 

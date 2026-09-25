@@ -22,14 +22,14 @@
             tools:replace="android:theme"/>
 
         <!--
-            Experimental reader, not a complete DDD downloader. Deliberately
-            its own activity, not MapActivity, so plugging in the reader never
+            Driver card download (ROADMAP 327). Deliberately its own
+            activity, not MapActivity, so plugging in the reader never
             touches navigation and the whole thing can be pulled out cleanly.
         -->
         <activity
             android:name="net.osmand.plus.roadcrew.tacho.RoadCrewTachoCardActivity"
             android:exported="true"
-            android:label="@string/roadcrew_tacho_waiting_for_reader"
+            android:label="@string/roadcrew_tacho_title"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />

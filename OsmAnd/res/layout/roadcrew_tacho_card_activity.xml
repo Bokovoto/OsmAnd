@@ -1,60 +1,500 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+	RoadCrew driver card screen (ROADMAP 327), as in the mockup Galin approved
+	on 25.09.2026: reader and card indicators, the download button, progress,
+	the result with Send (e-mail or Viber), and the files already downloaded.
+	Backgrounds and colours per state are set in RoadCrewTachoCardActivity.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:padding="16dp">
-
-	<TextView
-		android:id="@+id/roadcrewTachoStatus"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:textSize="16sp"
-		android:textStyle="bold"
-		android:text="@string/roadcrew_tacho_waiting_for_reader" />
+	android:background="@color/roadcrew_tacho_ground"
+	android:orientation="vertical">
 
 	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="12dp"
-		android:orientation="horizontal">
+		android:layout_height="60dp"
+		android:background="@color/roadcrew_tacho_surface"
+		android:gravity="center_vertical"
+		android:orientation="horizontal"
+		android:paddingStart="8dp"
+		android:paddingEnd="8dp">
 
-		<Button
-			android:id="@+id/roadcrewTachoRetryButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/roadcrew_tacho_retry" />
+		<ImageButton
+			android:id="@+id/roadcrewTachoBack"
+			android:layout_width="48dp"
+			android:layout_height="48dp"
+			android:background="?android:attr/selectableItemBackgroundBorderless"
+			android:contentDescription="@string/roadcrew_tacho_back"
+			android:src="@drawable/roadcrew_tacho_ic_back"
+			android:tint="@color/roadcrew_tacho_text" />
 
-		<Button
-			android:id="@+id/roadcrewTachoScanButton"
+		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="8dp"
-			android:text="@string/roadcrew_tacho_scan" />
-
-		<Button
-			android:id="@+id/roadcrewTachoWriteTestButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
-			android:text="@string/roadcrew_tacho_write_test" />
-
+			android:text="@string/roadcrew_tacho_title"
+			android:textColor="@color/roadcrew_tacho_text"
+			android:textSize="19sp"
+			android:textStyle="bold" />
 	</LinearLayout>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:background="@color/roadcrew_tacho_line" />
 
 	<ScrollView
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_weight="1"
-		android:layout_marginTop="12dp">
+		android:fillViewport="true">
 
-		<TextView
-			android:id="@+id/roadcrewTachoLog"
+		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:fontFamily="monospace"
-			android:textIsSelectable="true"
-			android:textSize="13sp" />
+			android:orientation="vertical"
+			android:padding="20dp">
 
+			<!-- Reader and card: always shown, always live. -->
+			<LinearLayout
+				android:id="@+id/roadcrewTachoStatusCard"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:padding="16dp">
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="center_vertical"
+					android:orientation="horizontal">
+
+					<ImageView
+						android:id="@+id/roadcrewTachoReaderIcon"
+						android:layout_width="44dp"
+						android:layout_height="44dp"
+						android:importantForAccessibility="no"
+						android:padding="11dp"
+						android:src="@drawable/roadcrew_tacho_ic_usb" />
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_marginStart="12dp"
+						android:layout_weight="1"
+						android:orientation="vertical">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="@string/roadcrew_tacho_reader"
+							android:textColor="@color/roadcrew_tacho_secondary"
+							android:textSize="13sp" />
+
+						<LinearLayout
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:gravity="center_vertical"
+							android:orientation="horizontal">
+
+							<ImageView
+								android:id="@+id/roadcrewTachoReaderMark"
+								android:layout_width="18dp"
+								android:layout_height="18dp"
+								android:importantForAccessibility="no" />
+
+							<TextView
+								android:id="@+id/roadcrewTachoReaderState"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_marginStart="6dp"
+								android:textSize="16sp"
+								android:textStyle="bold" />
+						</LinearLayout>
+
+						<TextView
+							android:id="@+id/roadcrewTachoReaderDetail"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@color/roadcrew_tacho_secondary"
+							android:textSize="13sp" />
+					</LinearLayout>
+				</LinearLayout>
+
+				<View
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:layout_marginTop="14dp"
+					android:layout_marginBottom="14dp"
+					android:background="@color/roadcrew_tacho_line" />
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="center_vertical"
+					android:orientation="horizontal">
+
+					<ImageView
+						android:id="@+id/roadcrewTachoCardIcon"
+						android:layout_width="44dp"
+						android:layout_height="44dp"
+						android:importantForAccessibility="no"
+						android:padding="11dp"
+						android:src="@drawable/roadcrew_tacho_ic_card" />
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_marginStart="12dp"
+						android:layout_weight="1"
+						android:orientation="vertical">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="@string/roadcrew_tacho_card"
+							android:textColor="@color/roadcrew_tacho_secondary"
+							android:textSize="13sp" />
+
+						<LinearLayout
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:gravity="center_vertical"
+							android:orientation="horizontal">
+
+							<ImageView
+								android:id="@+id/roadcrewTachoCardMark"
+								android:layout_width="18dp"
+								android:layout_height="18dp"
+								android:importantForAccessibility="no" />
+
+							<TextView
+								android:id="@+id/roadcrewTachoCardState"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_marginStart="6dp"
+								android:textSize="16sp"
+								android:textStyle="bold" />
+						</LinearLayout>
+
+						<TextView
+							android:id="@+id/roadcrewTachoCardDetail"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@color/roadcrew_tacho_secondary"
+							android:textSize="13sp" />
+					</LinearLayout>
+				</LinearLayout>
+			</LinearLayout>
+
+			<!-- A download that did not finish. -->
+			<LinearLayout
+				android:id="@+id/roadcrewTachoError"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:orientation="horizontal"
+				android:padding="16dp"
+				android:visibility="gone">
+
+				<ImageView
+					android:id="@+id/roadcrewTachoErrorIcon"
+					android:layout_width="24dp"
+					android:layout_height="24dp"
+					android:importantForAccessibility="no"
+					android:src="@drawable/roadcrew_tacho_ic_alert" />
+
+				<LinearLayout
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="12dp"
+					android:layout_weight="1"
+					android:orientation="vertical">
+
+					<TextView
+						android:id="@+id/roadcrewTachoErrorTitle"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/roadcrew_tacho_err"
+						android:textSize="17sp"
+						android:textStyle="bold" />
+
+					<TextView
+						android:id="@+id/roadcrewTachoErrorBody"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="4dp"
+						android:textColor="@color/roadcrew_tacho_err"
+						android:textSize="14sp" />
+				</LinearLayout>
+			</LinearLayout>
+
+			<!-- Downloaded and marked. -->
+			<LinearLayout
+				android:id="@+id/roadcrewTachoDone"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:orientation="vertical"
+				android:visibility="gone">
+
+				<LinearLayout
+					android:id="@+id/roadcrewTachoDoneBanner"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="center_vertical"
+					android:orientation="horizontal"
+					android:padding="16dp">
+
+					<ImageView
+						android:id="@+id/roadcrewTachoDoneCheck"
+						android:layout_width="44dp"
+						android:layout_height="44dp"
+						android:importantForAccessibility="no"
+						android:padding="10dp"
+						android:src="@drawable/roadcrew_tacho_ic_check" />
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_marginStart="12dp"
+						android:layout_weight="1"
+						android:orientation="vertical">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="@string/roadcrew_tacho_done"
+							android:textColor="@color/roadcrew_tacho_ok"
+							android:textSize="18sp"
+							android:textStyle="bold" />
+
+						<TextView
+							android:id="@+id/roadcrewTachoDoneMarked"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@color/roadcrew_tacho_ok"
+							android:textSize="14sp" />
+					</LinearLayout>
+				</LinearLayout>
+
+				<LinearLayout
+					android:id="@+id/roadcrewTachoDoneDetails"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="16dp"
+					android:orientation="vertical"
+					android:paddingStart="16dp"
+					android:paddingTop="4dp"
+					android:paddingEnd="16dp"
+					android:paddingBottom="4dp" />
+			</LinearLayout>
+
+			<!-- Downloading. -->
+			<LinearLayout
+				android:id="@+id/roadcrewTachoProgress"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:orientation="vertical"
+				android:visibility="gone">
+
+				<LinearLayout
+					android:id="@+id/roadcrewTachoProgressCard"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					android:padding="18dp">
+
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:baselineAligned="true"
+						android:orientation="horizontal">
+
+						<TextView
+							android:id="@+id/roadcrewTachoProgressTitle"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:textColor="@color/roadcrew_tacho_text"
+							android:textSize="18sp"
+							android:textStyle="bold" />
+
+						<TextView
+							android:id="@+id/roadcrewTachoProgressPercent"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@color/roadcrew_tacho_accent"
+							android:textSize="24sp"
+							android:textStyle="bold" />
+					</LinearLayout>
+
+					<ProgressBar
+						android:id="@+id/roadcrewTachoProgressBar"
+						style="?android:attr/progressBarStyleHorizontal"
+						android:layout_width="match_parent"
+						android:layout_height="12dp"
+						android:layout_marginTop="12dp"
+						android:max="1000"
+						android:progressDrawable="@drawable/roadcrew_tacho_progress" />
+
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="12dp"
+						android:orientation="horizontal">
+
+						<TextView
+							android:id="@+id/roadcrewTachoProgressFile"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:textColor="@color/roadcrew_tacho_secondary"
+							android:textSize="14sp" />
+
+						<TextView
+							android:id="@+id/roadcrewTachoProgressCount"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginStart="8dp"
+							android:textColor="@color/roadcrew_tacho_secondary"
+							android:textSize="14sp" />
+					</LinearLayout>
+				</LinearLayout>
+
+				<LinearLayout
+					android:id="@+id/roadcrewTachoKeepCard"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="16dp"
+					android:gravity="center_vertical"
+					android:orientation="horizontal"
+					android:padding="14dp">
+
+					<ImageView
+						android:id="@+id/roadcrewTachoKeepCardIcon"
+						android:layout_width="22dp"
+						android:layout_height="22dp"
+						android:importantForAccessibility="no"
+						android:src="@drawable/roadcrew_tacho_ic_alert" />
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginStart="10dp"
+						android:text="@string/roadcrew_tacho_keep_card"
+						android:textColor="@color/roadcrew_tacho_warn"
+						android:textSize="16sp"
+						android:textStyle="bold" />
+				</LinearLayout>
+			</LinearLayout>
+
+			<!-- Last download, from the card or from this phone. -->
+			<LinearLayout
+				android:id="@+id/roadcrewTachoLast"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:orientation="vertical"
+				android:paddingStart="14dp"
+				android:paddingTop="12dp"
+				android:paddingEnd="14dp"
+				android:paddingBottom="12dp"
+				android:visibility="gone">
+
+				<TextView
+					android:id="@+id/roadcrewTachoLastText"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/roadcrew_tacho_warn"
+					android:textSize="14sp" />
+
+				<TextView
+					android:id="@+id/roadcrewTachoNextText"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/roadcrew_tacho_warn"
+					android:textSize="14sp"
+					android:textStyle="bold" />
+			</LinearLayout>
+
+			<Button
+				android:id="@+id/roadcrewTachoDownloadButton"
+				style="?android:attr/borderlessButtonStyle"
+				android:layout_width="match_parent"
+				android:layout_height="60dp"
+				android:layout_marginTop="16dp"
+				android:drawablePadding="10dp"
+				android:gravity="center"
+				android:stateListAnimator="@null"
+				android:text="@string/roadcrew_tacho_download"
+				android:textAllCaps="false"
+				android:textSize="18sp"
+				android:textStyle="bold" />
+
+			<TextView
+				android:id="@+id/roadcrewTachoHint"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="12dp"
+				android:gravity="center"
+				android:textColor="@color/roadcrew_tacho_secondary"
+				android:textSize="14sp" />
+
+			<Button
+				android:id="@+id/roadcrewTachoSendButton"
+				style="?android:attr/borderlessButtonStyle"
+				android:layout_width="match_parent"
+				android:layout_height="60dp"
+				android:layout_marginTop="16dp"
+				android:drawablePadding="10dp"
+				android:gravity="center"
+				android:stateListAnimator="@null"
+				android:text="@string/roadcrew_tacho_send"
+				android:textAllCaps="false"
+				android:textSize="18sp"
+				android:textStyle="bold"
+				android:visibility="gone" />
+
+			<Button
+				android:id="@+id/roadcrewTachoFinishButton"
+				style="?android:attr/borderlessButtonStyle"
+				android:layout_width="match_parent"
+				android:layout_height="52dp"
+				android:layout_marginTop="12dp"
+				android:stateListAnimator="@null"
+				android:text="@string/roadcrew_tacho_finish"
+				android:textAllCaps="false"
+				android:textColor="@color/roadcrew_tacho_text"
+				android:textSize="16sp"
+				android:visibility="gone" />
+
+			<!-- Files already downloaded on this phone, each can be sent again. -->
+			<LinearLayout
+				android:id="@+id/roadcrewTachoHistory"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="20dp"
+				android:orientation="vertical"
+				android:visibility="gone">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:paddingBottom="6dp"
+					android:text="@string/roadcrew_tacho_history"
+					android:textColor="@color/roadcrew_tacho_secondary"
+					android:textSize="14sp"
+					android:textStyle="bold" />
+
+				<LinearLayout
+					android:id="@+id/roadcrewTachoHistoryRows"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical" />
+			</LinearLayout>
+		</LinearLayout>
 	</ScrollView>
-
 </LinearLayout>

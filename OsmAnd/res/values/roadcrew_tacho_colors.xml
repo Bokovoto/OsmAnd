@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RoadCrew driver card screen (ROADMAP 327): the approved mockup's colours. -->
+<resources>
+	<color name="roadcrew_tacho_ground">#F4F3EF</color>
+	<color name="roadcrew_tacho_surface">#FFFFFF</color>
+	<color name="roadcrew_tacho_line">#E2E0DA</color>
+	<color name="roadcrew_tacho_text">#1B1B1A</color>
+	<color name="roadcrew_tacho_secondary">#5C5B57</color>
+	<color name="roadcrew_tacho_accent">#1D4F91</color>
+	<color name="roadcrew_tacho_accent_bg">#E4ECF6</color>
+	<color name="roadcrew_tacho_ok_bg">#E3F1E6</color>
+	<color name="roadcrew_tacho_ok">#1E6B3A</color>
+	<color name="roadcrew_tacho_off_bg">#EEEDE9</color>
+	<color name="roadcrew_tacho_off">#5C5B57</color>
+	<color name="roadcrew_tacho_disabled_text">#75736D</color>
+	<color name="roadcrew_tacho_warn_bg">#FBEFD5</color>
+	<color name="roadcrew_tacho_warn">#6E4300</color>
+	<color name="roadcrew_tacho_err_bg">#FBE7E7</color>
+	<color name="roadcrew_tacho_err">#8E2525</color>
+	<color name="roadcrew_tacho_handle">#C9C7C0</color>
+</resources>
