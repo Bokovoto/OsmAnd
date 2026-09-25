@@ -64,12 +64,12 @@ public final class RoadCrewDirectPassageAccumulator {
 		public static final Config DEFAULT_V1 =
 				new Config(50, 30, 1.5, 20, 8000, 3, 2, 4, 3);
 		/**
-		 * Galin's experiment (ROADMAP 321): refused fixes no longer end a
-		 * passage by their number; only the same 8 s gap grace and the
-		 * progress checks do. Everything else as DEFAULT_V1.
+		 * Galin's experiment (ROADMAP 321, 322): neither the number of refused
+		 * fixes nor the time without one ends a passage; only the progress
+		 * checks and a change of way or direction do. Otherwise DEFAULT_V1.
 		 */
 		public static final Config EXPERIMENT_321 =
-				new Config(50, 30, 1.5, 20, 8000, Integer.MAX_VALUE, 2, 4, 3);
+				new Config(50, 30, 1.5, 20, Long.MAX_VALUE, Integer.MAX_VALUE, 2, 4, 3);
 	}
 
 	/** One map-matched fix, already converted into canonical terms. */
@@ -358,6 +358,10 @@ public final class RoadCrewDirectPassageAccumulator {
 					closed, wayLength);
 			long delta = fix.timeMillis - lastConfirmedTime;
 			if (continuous(step, delta, movementSince(fix))) {
+				if (delta > 60_000) {
+					// Measured, never refused (ROADMAP 322).
+					count("bridged_gap_over_60s");
+				}
 				candidate.clear();
 				extend(fix, step);
 				note(fix.fixSequence, "EXTENDED", "way=" + fix.wayId

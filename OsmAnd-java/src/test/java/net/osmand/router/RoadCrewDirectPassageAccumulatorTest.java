@@ -95,13 +95,22 @@ public class RoadCrewDirectPassageAccumulatorTest {
 		passages.clear();
 		accumulator = new RoadCrewDirectPassageAccumulator(
 				RoadCrewDirectPassageAccumulator.Config.EXPERIMENT_321, passages::add);
+		// ROADMAP 322: no time limit either - a tunnel or lost GPS is joined,
+		// and a join across more than a minute is counted, not refused.
+		RoadCrewDiagnostics diagnostics = new RoadCrewDiagnostics();
+		accumulator.setDiagnostics(diagnostics);
 		fix(WAY_A, true, 100, 0);
 		fix(WAY_A, true, 150, 50);
 		noMatch(9000);
 		fix(WAY_A, true, 250, 100);
-		fix(WAY_A, true, 300, 50);
+		for (int i = 0; i < 90; i++) {
+			noMatch(1000);
+		}
+		fix(WAY_A, true, 1800, 1550);
+		fix(WAY_A, true, 1850, 50);
 		accumulator.flush();
-		Assert.assertEquals("the 8 s grace still ends it", 2, passages.size());
+		assertSpan(only(), 0, 100, 1850);
+		Assert.assertEquals(1, diagnostics.counter("bridged_gap_over_60s"));
 	}
 
 	@Test
