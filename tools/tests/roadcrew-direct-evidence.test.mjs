@@ -166,6 +166,6 @@ test('the phone reports where the chain breaks, without being asked', () => {
   assert.match(uploader, /evidence_upload_attempted/);
   assert.match(uploader, /evidence_uploaded/);
   assert.match(uploader, /evidence_upload_failed/);
-  assert.match(read(JOURNAL), /fun captureDirect\(id: String, bucket: Long, json: String\): Boolean/,
+  assert.match(read(JOURNAL), /fun captureDirect\(id: String, bucket: Long, json: String, at: Long, mayOpenCourse: Boolean\): Boolean/,
     'the journal has to say whether it stored, or the counter would be a guess');
 });

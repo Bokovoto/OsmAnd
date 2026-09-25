@@ -46,8 +46,9 @@ internal class RoadCrewTripReview(
         rows.forEach { it.included = true; it.question = false }
         val time = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
         RoadCrewUi.addBody(activity, content, activity.getString(R.string.roadcrew_trip_review_summary,
-            time.format(Date(rows.first().record.observedAtBucketMillis)),
-            time.format(Date(rows.last().record.observedAtBucketMillis)),
+            // From the course itself: a course may have no RCS1 rows (ROADMAP 323).
+            time.format(Date(trip.startedAt)),
+            time.format(Date(trip.endedAt)),
             java.text.NumberFormat.getNumberInstance().apply { maximumFractionDigits = 1 }
                 .format((if (trip.direct.isNotEmpty()) trip.directMeters
                     else rows.sumOf { it.record.segmentKey.lengthMeters }) / 1000)))
@@ -71,7 +72,8 @@ internal class RoadCrewTripReview(
                 confirm.accept(true)
             }
         }
-        map.post {
+        // Road context is asked per RCS1 row; a course without them asks for none.
+        if (rows.isNotEmpty()) map.post {
             map.overview()
             map.requestOverviewContexts()
         }

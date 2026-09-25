@@ -69,8 +69,10 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
         if (stored != generation) {
             // A persisted revocation also survives process death before asynchronous cleanup.
             transaction(db) {
-                db.delete("sections", null, null)
-                db.delete("trips", null, null)
+                // RCS2 rows and way shapes go too: they are the same drive (ROADMAP 323).
+                for (table in REVOKED_TABLES.split(';').map { it.trim() }.filter { it.isNotEmpty() }) {
+                    db.delete(table, null, null)
+                }
                 db.delete("consent_generation", null, null)
                 db.execSQL("INSERT INTO consent_generation(value) VALUES (?)", arrayOf(generation))
             }
@@ -97,12 +99,7 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
             updateSummary(db, true)
             return // Never evict an unreviewed trip to make space for more data.
         }
-        if (lifecycle.shouldCloseForGap(lastPassageAt, at)) finish(false)
-        if (activeTrip == null) {
-            val id = UUID.randomUUID().toString()
-            db.execSQL("INSERT INTO trips(id, closed, reviewed, snooze_until) VALUES (?, 0, 0, 0)", arrayOf(id))
-            activeTrip = id
-        }
+        openTrip(db, at)
         val record = RoadCrewObservationOutbox.Record.capture(evidence, at)
         val key = record.segmentKey
         val geometry = JSONArray()
@@ -139,17 +136,36 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
      * phone is not asked to rebuild a wire format it has already produced.
      */
     @Synchronized
-    fun captureDirect(id: String, bucket: Long, json: String): Boolean {
+    fun captureDirect(id: String, bucket: Long, json: String, at: Long, mayOpenCourse: Boolean): Boolean {
         if (!RoadCrewMapObservationConsent.isEnabled(app)) return false
         // Says whether it was stored. The caller counts the refusals, because a
         // silently dropped observation is what cost a whole day of guessing
         // about why the live path was empty (21.09).
-        val trip = activeTrip ?: return false
         val db = database()
+        prune(db)
+        if (count(db, "SELECT COUNT(*) FROM direct_sections") >= MAX_SECTIONS) {
+            updateSummary(db, true)
+            return false // Never evict an unreviewed trip to make space for more data.
+        }
+        // RCS2 opens the course itself now that RCS1 is off (ROADMAP 323); the
+        // caller says whether this is a truck recording that may start one.
+        if (mayOpenCourse) openTrip(db, at)
+        val trip = activeTrip ?: return false
         db.execSQL(
             "INSERT OR IGNORE INTO direct_sections(trip_id, observation_id, bucket, json)"
                 + " VALUES (?, ?, ?, ?)", arrayOf(trip, id, bucket, json))
+        lastPassageAt = at
+        updateSummary(db)
         return true
+    }
+
+    private fun openTrip(db: SQLiteDatabase, at: Long) {
+        if (lifecycle.shouldCloseForGap(lastPassageAt, at)) finish(false)
+        if (activeTrip == null) {
+            val id = UUID.randomUUID().toString()
+            db.execSQL("INSERT INTO trips(id, closed, reviewed, snooze_until) VALUES (?, 0, 0, 0)", arrayOf(id))
+            activeTrip = id
+        }
     }
 
     /** A way's shape as this phone's map draws it, kept until the server asks. */
@@ -288,9 +304,7 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
     @Synchronized
     fun review(tripId: String): Trip? {
         val db = database()
-        val available = db.rawQuery("""SELECT 1 FROM trips WHERE id = ? AND closed = 1 AND reviewed = 0
-            AND EXISTS(SELECT 1 FROM sections WHERE trip_id = trips.id AND state = 'STAGED')""",
-            arrayOf(tripId)).use { it.moveToFirst() }
+        val available = db.rawQuery(REVIEW_TRIP_SQL, arrayOf(tripId)).use { it.moveToFirst() }
         return if (available) reviewTrip(db, tripId) else null
     }
 
@@ -327,9 +341,13 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
     private fun reviewTrip(db: SQLiteDatabase, trip: String): Trip {
         val lines = ArrayList<DoubleArray>()
         var meters = 0.0
-        db.rawQuery("SELECT json FROM direct_sections WHERE trip_id = ? AND state = 'STAGED' ORDER BY seq",
+        var first = Long.MAX_VALUE
+        var last = Long.MIN_VALUE
+        db.rawQuery("SELECT json, bucket FROM direct_sections WHERE trip_id = ? AND state = 'STAGED' ORDER BY seq",
             arrayOf(trip)).use { cursor ->
             while (cursor.moveToNext()) {
+                first = minOf(first, cursor.getLong(1))
+                last = maxOf(last, cursor.getLong(1))
                 val observation = try { JSONObject(cursor.getString(0)) } catch (error: Exception) { continue }
                 val line = drawnStretch(db, observation) ?: continue
                 // The number the driver confirms is what he is shown.
@@ -338,7 +356,14 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
                 lines.add(line)
             }
         }
-        return Trip(trip, readRows(db, "trip_id = ? AND state = 'STAGED'", arrayOf(trip)), lines, meters)
+        val rows = readRows(db, "trip_id = ? AND state = 'STAGED'", arrayOf(trip))
+        // The time range comes from RCS2; an old course may still carry RCS1 rows.
+        for (row in rows) {
+            first = minOf(first, row.record.observedAtBucketMillis)
+            last = maxOf(last, row.record.observedAtBucketMillis)
+        }
+        if (first > last) { first = 0; last = 0 }
+        return Trip(trip, rows, lines, meters, first, last)
     }
 
     @Synchronized
@@ -347,11 +372,16 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
         check(RoadCrewMapObservationConsent.isEnabled(app)) { "Sharing is disabled" }
         val db = database()
         val rows = readRows(db, "trip_id = ? AND state = 'STAGED'", arrayOf(trip))
-        check(rows.isNotEmpty() && activeTrip != trip) { "Trip is not available for review" }
+        val stagedDirect = db.rawQuery(
+            "SELECT COUNT(*) FROM direct_sections WHERE trip_id = ? AND state = 'STAGED'", arrayOf(trip)
+        ).use { it.moveToFirst(); it.getInt(0) }
+        // A course is its RCS2 rows now (ROADMAP 323); RCS1 rows exist only on
+        // courses recorded before this version.
+        check((rows.isNotEmpty() || stagedDirect > 0) && activeTrip != trip) { "Trip is not available for review" }
         val requested = selectedIds.toSet()
         require(rows.map { it.seq }.containsAll(requested)) { "Review contains foreign sections" }
         val selected = if (discardAll) emptyList() else rows.filter { it.seq in requested }
-        require(discardAll || selected.isNotEmpty()) { "No truck sections selected" }
+        require(discardAll || rows.isEmpty() || selected.isNotEmpty()) { "No truck sections selected" }
         require(!suitabilityConfirmed || (!discardAll && selected.size == rows.size)) {
             "Suitability confirmation requires the whole displayed course"
         }
@@ -466,7 +496,11 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
     @Synchronized
     fun clear() {
         val db = database()
-        transaction(db) { db.delete("sections", null, null); db.delete("trips", null, null) }
+        transaction(db) {
+            for (table in REVOKED_TABLES.split(';').map { it.trim() }.filter { it.isNotEmpty() }) {
+                db.delete(table, null, null)
+            }
+        }
         activeTrip = null
         lastPassageAt = 0
         lifecycle.reset()
@@ -475,9 +509,9 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
 
     private fun prune(db: SQLiteDatabase) {
         val cutoff = System.currentTimeMillis() - 14L * 86400_000
-        db.execSQL("DELETE FROM sections WHERE bucket < ?", arrayOf(cutoff))
-        db.execSQL("DELETE FROM sections WHERE state = 'TRANSFERRED' AND question = 0")
-        db.execSQL("DELETE FROM trips WHERE closed = 1 AND NOT EXISTS(SELECT 1 FROM sections WHERE trip_id = trips.id)")
+        for (statement in PRUNE_SQL.split(';').map { it.trim() }.filter { it.isNotEmpty() }) {
+            if ('?' in statement) db.execSQL(statement, arrayOf(cutoff)) else db.execSQL(statement)
+        }
     }
 
     private fun readRows(db: SQLiteDatabase, where: String, args: Array<String>, limit: Int = MAX_SECTIONS): List<Row> {
@@ -492,12 +526,12 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
     }
 
     private fun updateSummary(db: SQLiteDatabase, full: Boolean = false) {
+        // RCS2 rows are the course now (ROADMAP 323).
         app.getSharedPreferences(SUMMARY, Context.MODE_PRIVATE).edit()
-            .putInt("staged", count(db, "SELECT COUNT(*) FROM sections WHERE state = 'STAGED'"))
-            .putInt("confirmed", count(db, "SELECT COUNT(*) FROM sections WHERE state = 'CONFIRMED'"))
-            .putInt("pending_trips", count(db, """SELECT COUNT(*) FROM trips WHERE closed = 1 AND reviewed = 0
-                AND EXISTS(SELECT 1 FROM sections WHERE trip_id = trips.id AND state = 'STAGED')"""))
-            .putBoolean("full", full || count(db, "SELECT COUNT(*) FROM sections") >= MAX_SECTIONS).apply()
+            .putInt("staged", count(db, "SELECT COUNT(*) FROM direct_sections WHERE state = 'STAGED'"))
+            .putInt("confirmed", count(db, "SELECT COUNT(*) FROM direct_sections WHERE state = 'CONFIRMED'"))
+            .putInt("pending_trips", count(db, PENDING_COUNT_SQL))
+            .putBoolean("full", full || count(db, "SELECT COUNT(*) FROM direct_sections") >= MAX_SECTIONS).apply()
     }
 
     private fun count(db: SQLiteDatabase, query: String): Int = db.rawQuery(query, null).use { it.moveToFirst(); it.getInt(0) }
@@ -524,7 +558,8 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
      * stamped on, so they are what the review shows (ROADMAP 315).
      */
     class Trip(@JvmField val id: String, @JvmField val rows: List<Row>,
-               @JvmField val direct: List<DoubleArray> = emptyList(), @JvmField val directMeters: Double = 0.0)
+               @JvmField val direct: List<DoubleArray> = emptyList(), @JvmField val directMeters: Double = 0.0,
+               @JvmField val startedAt: Long = 0, @JvmField val endedAt: Long = 0)
     class PendingTrip(@JvmField val id: String, @JvmField val endedAt: Long, @JvmField val sectionCount: Int)
 
     companion object {
@@ -545,16 +580,37 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
         }
 
         // These exact statements are exercised by the standalone SQLite regression test.
+        // ROADMAP 323: a course is offered, listed and counted by its RCS2 rows;
+        // RCS1 no longer records on this phone.
         private val REVIEW_SQL = """SELECT id FROM trips WHERE closed = 1 AND reviewed = 0
             AND (? = '1' OR (auto_review = 1 AND ended_at >= ?))
-            AND EXISTS(SELECT 1 FROM sections WHERE trip_id = trips.id AND state = 'STAGED')
+            AND EXISTS(SELECT 1 FROM direct_sections WHERE trip_id = trips.id AND state = 'STAGED')
             ORDER BY ended_at DESC, rowid DESC LIMIT 1
         """
-        private val PENDING_TRIPS_SQL = """SELECT trips.id, trips.ended_at, COUNT(sections.seq)
-            FROM trips JOIN sections ON sections.trip_id = trips.id AND sections.state = 'STAGED'
+        private val REVIEW_TRIP_SQL = """SELECT 1 FROM trips WHERE id = ? AND closed = 1 AND reviewed = 0
+            AND EXISTS(SELECT 1 FROM direct_sections WHERE trip_id = trips.id AND state = 'STAGED')
+        """
+        private val PENDING_TRIPS_SQL = """SELECT trips.id, trips.ended_at, COUNT(direct_sections.seq)
+            FROM trips JOIN direct_sections ON direct_sections.trip_id = trips.id AND direct_sections.state = 'STAGED'
             WHERE trips.closed = 1 AND trips.reviewed = 0
             GROUP BY trips.id ORDER BY trips.ended_at DESC, trips.rowid DESC LIMIT ?
         """
+        private val PENDING_COUNT_SQL = """SELECT COUNT(*) FROM trips WHERE closed = 1 AND reviewed = 0
+            AND EXISTS(SELECT 1 FROM direct_sections WHERE trip_id = trips.id AND state = 'STAGED')
+        """
+        /** Statements in order; `?` is the 14-day cutoff. */
+        private val PRUNE_SQL = """
+            DELETE FROM sections WHERE bucket < ?;
+            DELETE FROM sections WHERE state = 'TRANSFERRED' AND question = 0;
+            DELETE FROM direct_sections WHERE state = 'STAGED' AND bucket < ?;
+            DELETE FROM direct_sections WHERE state = 'TRANSFERRED';
+            DELETE FROM trips WHERE closed = 1
+                AND NOT EXISTS(SELECT 1 FROM sections WHERE trip_id = trips.id)
+                AND NOT EXISTS(SELECT 1 FROM direct_sections WHERE trip_id = trips.id);
+            DELETE FROM direct_sections WHERE NOT EXISTS(SELECT 1 FROM trips WHERE trips.id = direct_sections.trip_id)
+        """
+        /** Everything a revocation or clear() removes: both identities of the drive. */
+        private val REVOKED_TABLES = """sections; trips; direct_sections; way_descriptors"""
         private val NEXT_QUESTION_SQL = """SELECT seq FROM sections
             WHERE state = 'TRANSFERRED' AND question = 1 AND bucket BETWEEN ? AND ? AND retry_at <= ?
             ORDER BY retry_at, seq LIMIT 1

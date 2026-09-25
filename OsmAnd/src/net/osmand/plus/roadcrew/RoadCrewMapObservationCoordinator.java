@@ -489,14 +489,9 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			RoadCrewObservationPipeline created =
 					new RoadCrewObservationPipeline((evidence, observedAt, road, binding,
 							firstFix, lastFix) -> {
-						if (!enabled || !isCollectionContextActive() || !isTruckProfileActive()) {
-							return;
-						}
-						// Production first, always. The comparison copy is taken
-						// afterwards and cannot interfere with it.
-						RoadCrewTripJournal.get(app).capture(evidence, observedAt, road, binding);
-						RoadCrewShadowValidation.captureLegacy(app, evidence, observedAt,
-								comparisonGroupId, firstFix, lastFix, road, binding);
+						// RCS1 is off on this phone (Galin, 25.09, ROADMAP 323): its
+						// sections are neither journalled nor copied to the shadow
+						// stream. The directed pipeline inside carries the course.
 					});
 			created.startSession(comparisonGroupId);
 			enableComparison(created);
@@ -557,11 +552,15 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			return;
 		}
 		RoadCrewTripJournal journal = RoadCrewTripJournal.get(app);
+		// The gate that used to open the course through RCS1: only a truck
+		// recording may start one. Rows of a course already open still land.
+		boolean mayOpenCourse = enabled && isCollectionContextActive() && isTruckProfileActive();
 		for (RoadCrewDirectObservation observation : observations) {
 			try {
 				String id = UUID.randomUUID().toString();
 				boolean stored = journal.captureDirect(id, observation.observedAtBucketMillis,
-						RoadCrewShadowValidation.evidenceJson(observation, comparisonGroupId, id));
+						RoadCrewShadowValidation.evidenceJson(observation, comparisonGroupId, id),
+						System.currentTimeMillis(), mayOpenCourse);
 				// Counted, not assumed. These ride to the server with the
 				// diagnostics, so the next silence can be diagnosed without
 				// chasing the phone onto a petrol station's wifi.
