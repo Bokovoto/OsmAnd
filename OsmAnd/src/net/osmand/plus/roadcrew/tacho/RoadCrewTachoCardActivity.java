@@ -44,6 +44,8 @@ public final class RoadCrewTachoCardActivity extends Activity {
 	private static final String ACTION_USB_PERMISSION = "net.osmand.plus.roadcrew.tacho.USB_PERMISSION";
 
 	static final String EXTRA_DOWNLOAD = "roadcrew_download";
+	static final String EXTRA_MARK_CARD = "roadcrew_mark_card";
+	@Nullable private String markCardNumber;
 	private static final String TAG = "RoadCrewTacho";
 
 	private TextView statusView;
@@ -104,6 +106,9 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		// buttons exist (they come with a mockup first - Galin's rule):
 		// am start ... --ez roadcrew_download true (ROADMAP 327).
 		downloadRequested = intent != null && intent.getBooleanExtra(EXTRA_DOWNLOAD, false);
+		// Marking only for the one card named in the command, after its DDD is
+		// stored in the same session - a working card is never marked by accident.
+		markCardNumber = intent == null ? null : intent.getStringExtra(EXTRA_MARK_CARD);
 		UsbDevice device = intent == null ? null : intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
 		if (device != null) {
 			requestPermissionAndRead(device);
@@ -328,9 +333,35 @@ public final class RoadCrewTachoCardActivity extends Activity {
 						result.absent, result.warnings, sha256(result.ddd),
 						(System.currentTimeMillis() - started) / 1000);
 				android.util.Log.i(TAG, summary);
+				String markCard = markCardNumber;
+				markCardNumber = null;
+				if (markCard != null) {
+					if (!markCard.equals(result.cardNumber)) {
+						summary += "\nNOT marked: this card is " + result.cardNumber + ", the command named " + markCard;
+					} else {
+						// DDP_035: after the download, update LastCardDownload - in
+						// DF Tachograph and, on a Gen2 card, Tachograph_G2. The file
+						// is already stored and read back above.
+						long now = System.currentTimeMillis() / 1000L;
+						RoadCrewTachoCardDownload.markDownloaded(RoadCrewTachoCardReader.channel(card), now,
+								result.secondGeneration, (before, requested) -> {
+									String audit = "MARK card=" + result.cardNumber + " file=" + name
+											+ " before=" + before + " requested=" + requested;
+									android.util.Log.i(TAG, audit);
+									try (java.io.FileOutputStream out = openFileOutput("tacho-download-audit.txt", MODE_APPEND)) {
+										out.write((audit + "\n").getBytes(java.nio.charset.StandardCharsets.UTF_8));
+										out.getFD().sync();
+									}
+								});
+						summary += "\nMarked as downloaded: " + RoadCrewTachoCardReader.describeDate(now)
+								+ (result.secondGeneration ? " (Tachograph and Tachograph_G2)" : " (Tachograph)");
+					}
+					android.util.Log.i(TAG, summary.substring(summary.lastIndexOf('\n') + 1));
+				}
+				final String shown = summary;
 				runOnUiThread(() -> {
 					statusView.setText(R.string.roadcrew_tacho_waiting_for_reader);
-					logView.setText(summary);
+					logView.setText(shown);
 				});
 			} catch (IOException e) {
 				android.util.Log.w(TAG, "DDD download failed: " + e.getMessage(), e);
