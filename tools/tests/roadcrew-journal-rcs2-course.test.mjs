@@ -103,9 +103,18 @@ test('RCS2 opens the course itself; RCS1 no longer does on this phone', () => {
   assert.match(capture, /if \(mayOpenCourse\) openTrip\(db, at\)/,
     'the first RCS2 stretch opens the course instead of being dropped');
   const coordinator = read(COORDINATOR);
+  // ROADMAP 325: the guard against a car course is on the fix, not on the
+  // emission - a one-stretch course is emitted by the flush after navigation.
+  const process = coordinator.slice(coordinator.indexOf('private void process('));
+  assert.match(process.slice(0, 400), /!enabled\s*\|\| !isCollectionContextActive\(\) \|\| !isTruckProfileActive\(\)\) \{ return; \}/,
+    'only truck-recording fixes ever reach the pipeline');
   const direct = coordinator.slice(coordinator.indexOf('private void captureDirectEvidence('));
-  assert.match(direct, /boolean mayOpenCourse = enabled && isCollectionContextActive\(\) && isTruckProfileActive\(\);/,
-    'the gate that used to open the course through RCS1 now guards RCS2: never a truck course from a car');
+  assert.match(direct, /boolean mayOpenCourse = enabled;/);
+  assert.doesNotMatch(direct.slice(0, 800), /isCollectionContextActive/,
+    'the context at emission is not the context the fixes were recorded in');
+  const end = coordinator.slice(coordinator.indexOf('private synchronized void endNavigationSession('));
+  assert.ok(end.indexOf('flushDirectPipeline();') < end.indexOf('navigationFinished();'),
+    'the last stretch lands before the course closes and is offered');
   assert.doesNotMatch(coordinator, /RoadCrewTripJournal\.get\(app\)\.capture\(/, 'no RCS1 journal capture');
   assert.doesNotMatch(coordinator, /captureLegacy\(/, 'no RCS1 shadow copy');
 });

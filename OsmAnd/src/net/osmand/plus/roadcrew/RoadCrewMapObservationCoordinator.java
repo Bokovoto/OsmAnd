@@ -552,9 +552,11 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			return;
 		}
 		RoadCrewTripJournal journal = RoadCrewTripJournal.get(app);
-		// The gate that used to open the course through RCS1: only a truck
-		// recording may start one. Rows of a course already open still land.
-		boolean mayOpenCourse = enabled && isCollectionContextActive() && isTruckProfileActive();
+		// Every directed observation is built from fixes process() let through
+		// only while recording as a truck, so any of them may open the course.
+		// Asking the context again here refused the flush after navigation
+		// ended - a one-stretch course was never offered (ROADMAP 325).
+		boolean mayOpenCourse = enabled;
 		for (RoadCrewDirectObservation observation : observations) {
 			try {
 				String id = UUID.randomUUID().toString();
