@@ -518,7 +518,9 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			// wait for the driver's confirmation exactly like the old ones - a
 			// course nobody confirmed is still never uploaded.
 			created.enableDirectPipeline(
-					RoadCrewDirectPassageAccumulator.Config.DEFAULT_V1, passage -> { });
+					// Galin's experiment, ROADMAP 321: missing fixes no longer
+					// end a passage by their number, only the 8 s grace does.
+					RoadCrewDirectPassageAccumulator.Config.EXPERIMENT_321, passage -> { });
 			created.setDirectObservationSink(observations -> {
 				captureDirectEvidence(created, observations);
 				if (RoadCrewShadowValidation.isEnabled(app)) {

@@ -63,6 +63,13 @@ public final class RoadCrewDirectPassageAccumulator {
 
 		public static final Config DEFAULT_V1 =
 				new Config(50, 30, 1.5, 20, 8000, 3, 2, 4, 3);
+		/**
+		 * Galin's experiment (ROADMAP 321): refused fixes no longer end a
+		 * passage by their number; only the same 8 s gap grace and the
+		 * progress checks do. Everything else as DEFAULT_V1.
+		 */
+		public static final Config EXPERIMENT_321 =
+				new Config(50, 30, 1.5, 20, 8000, Integer.MAX_VALUE, 2, 4, 3);
 	}
 
 	/** One map-matched fix, already converted into canonical terms. */

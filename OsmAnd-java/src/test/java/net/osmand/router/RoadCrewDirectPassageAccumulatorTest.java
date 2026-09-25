@@ -69,6 +69,41 @@ public class RoadCrewDirectPassageAccumulatorTest {
 		Assert.assertEquals("span " + index + " to", to, span.toMeasureMeters, 0.5);
 	}
 
+	// ROADMAP 321 (Galin's experiment): five refused fixes in a village bend no
+	// longer cut the road in two; only the 8 s gap grace does.
+	@Test
+	public void experimentKeepsThePassageAcrossMissingFixesWithinTheGrace() {
+		for (RoadCrewDirectPassageAccumulator.Config config : new RoadCrewDirectPassageAccumulator.Config[] {
+				RoadCrewDirectPassageAccumulator.Config.DEFAULT_V1,
+				RoadCrewDirectPassageAccumulator.Config.EXPERIMENT_321}) {
+			passages.clear();
+			accumulator = new RoadCrewDirectPassageAccumulator(config, passages::add);
+			fix(WAY_A, true, 100, 0);
+			fix(WAY_A, true, 140, 40);
+			for (int i = 0; i < 5; i++) {
+				noMatch(1000);
+			}
+			fix(WAY_A, true, 240, 100);
+			fix(WAY_A, true, 290, 50);
+			accumulator.flush();
+			if (config == RoadCrewDirectPassageAccumulator.Config.DEFAULT_V1) {
+				Assert.assertEquals("the strict rule still splits", 2, passages.size());
+			} else {
+				assertSpan(only(), 0, 100, 290);
+			}
+		}
+		passages.clear();
+		accumulator = new RoadCrewDirectPassageAccumulator(
+				RoadCrewDirectPassageAccumulator.Config.EXPERIMENT_321, passages::add);
+		fix(WAY_A, true, 100, 0);
+		fix(WAY_A, true, 150, 50);
+		noMatch(9000);
+		fix(WAY_A, true, 250, 100);
+		fix(WAY_A, true, 300, 50);
+		accumulator.flush();
+		Assert.assertEquals("the 8 s grace still ends it", 2, passages.size());
+	}
+
 	@Test
 	public void oneRoadDrivenStraightThroughIsOnePassage() {
 		fix(WAY_A, true, 100, 0);
