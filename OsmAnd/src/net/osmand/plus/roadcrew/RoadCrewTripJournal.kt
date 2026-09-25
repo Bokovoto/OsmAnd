@@ -299,27 +299,29 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
      * drawn. The review and confirm() both ask this, so the answer is stamped
      * on exactly what the driver was shown (ROADMAP 317).
      */
-    private fun drawnStretch(db: SQLiteDatabase, observation: JSONObject): DoubleArray? = try {
-        val key = observation.getJSONObject("segmentKey")
-        val from = key.getDouble("fromMeasureMeters")
-        val to = key.getDouble("toMeasureMeters")
-        val fingerprint = key.getString("geometryFingerprint")
-        val algorithm = key.getInt("geometryFingerprintAlgorithm")
-        if (!(to > from) || algorithm != RoadCrewWayCanonical.FINGERPRINT_ALGORITHM) return null
-        val points = db.rawQuery("SELECT points FROM way_descriptors"
-            + " WHERE osm_way_id = ? AND algorithm = ? AND fingerprint = ?",
-            arrayOf(key.getString("osmWayId"), algorithm.toString(), fingerprint))
-            .use { if (it.moveToFirst()) JSONObject(it.getString(0)) else null } ?: return null
-        val xs = points.getJSONArray("pointsX")
-        val ys = points.getJSONArray("pointsY")
-        val way = RoadCrewWayCanonical.canonicalise(
-            IntArray(xs.length()) { xs.getInt(it) }, IntArray(ys.length()) { ys.getInt(it) })
-        // Only on the geometry the measures were taken on; a shape that does
-        // not match is not drawn, rather than guessed.
-        if (RoadCrewWayCanonical.canonicalFingerprint(way) != fingerprint) return null
-        RoadCrewDirectObservation.stretchLatLon(way, from, to)
-    } catch (error: Exception) {
-        null
+    private fun drawnStretch(db: SQLiteDatabase, observation: JSONObject): DoubleArray? {
+        try {
+            val key = observation.getJSONObject("segmentKey")
+            val from = key.getDouble("fromMeasureMeters")
+            val to = key.getDouble("toMeasureMeters")
+            val fingerprint = key.getString("geometryFingerprint")
+            val algorithm = key.getInt("geometryFingerprintAlgorithm")
+            if (!(to > from) || algorithm != RoadCrewWayCanonical.FINGERPRINT_ALGORITHM) return null
+            val points = db.rawQuery("SELECT points FROM way_descriptors"
+                + " WHERE osm_way_id = ? AND algorithm = ? AND fingerprint = ?",
+                arrayOf(key.getString("osmWayId"), algorithm.toString(), fingerprint))
+                .use { if (it.moveToFirst()) JSONObject(it.getString(0)) else null } ?: return null
+            val xs = points.getJSONArray("pointsX")
+            val ys = points.getJSONArray("pointsY")
+            val way = RoadCrewWayCanonical.canonicalise(
+                IntArray(xs.length()) { xs.getInt(it) }, IntArray(ys.length()) { ys.getInt(it) })
+            // Only on the geometry the measures were taken on; a shape that does
+            // not match is not drawn, rather than guessed.
+            if (RoadCrewWayCanonical.canonicalFingerprint(way) != fingerprint) return null
+            return RoadCrewDirectObservation.stretchLatLon(way, from, to)
+        } catch (error: Exception) {
+            return null
+        }
     }
 
     private fun reviewTrip(db: SQLiteDatabase, trip: String): Trip {
