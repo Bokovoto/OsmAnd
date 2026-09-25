@@ -85,6 +85,13 @@ public class CardDownloadTest {
 				if (currentEf == null) {
 					return sw(0x6986);
 				}
+				// TCS_124 as amended by 2018/502: P2 is always '00h', the card
+				// knows the algorithm (SHA-1 in DF Tachograph, the Card_Sign
+				// suite's SHA-2 in Tachograph_G2). The real Gen2 card answers
+				// 6A86 to the 2016 values 01..03.
+				if ((c[3] & 0xFF) != 0x00) {
+					return sw(0x6A86);
+				}
 				hashAlgorithm = c[3] & 0xFF;
 				hashUsed.put(currentDf + ":" + hex(currentEf), hashAlgorithm);
 				log.add("HASH " + currentDf + ":" + hex(currentEf));
@@ -293,7 +300,7 @@ public class CardDownloadTest {
 		check(result.secondGeneration == card.hasG2, "generation");
 	}
 
-	static void checkOrderAndHash(Card card, int g2Hash) {
+	static void checkOrderAndHash(Card card) {
 		// DDP_038: SELECT, HASH, READ..., SIGN for every signed file; no READ of it before its HASH.
 		String hashed = null;
 		for (String entry : card.log) {
@@ -309,7 +316,7 @@ public class CardDownloadTest {
 			}
 		}
 		for (Map.Entry<String, Integer> used : card.hashUsed.entrySet()) {
-			int want = used.getKey().startsWith("G1") ? 0x00 : g2Hash;
+			int want = 0x00; // TCS_124 (2018/502): implicit in both DFs
 			check(used.getValue() == want, "hash algorithm for " + used.getKey());
 		}
 	}
@@ -320,7 +327,7 @@ public class CardDownloadTest {
 			card.endOfFile = end;
 			RoadCrewTachoCardDownload.Result result = RoadCrewTachoCardDownload.download(card);
 			checkDdd(card, result);
-			checkOrderAndHash(card, -1);
+			checkOrderAndHash(card);
 			check(result.absent.isEmpty(), "gen1: nothing absent " + result.absent);
 		}
 
@@ -331,13 +338,13 @@ public class CardDownloadTest {
 		Card g2 = gen2Card(BRAINPOOL_256, 64);
 		RoadCrewTachoCardDownload.Result g2Result = RoadCrewTachoCardDownload.download(g2);
 		checkDdd(g2, g2Result);
-		checkOrderAndHash(g2, 0x01);
+		checkOrderAndHash(g2);
 		check(g2Result.absent.contains("C109 (Tachograph_G2)"), "absent Link_Certificate is omitted and reported");
 
 		Card g2p384 = gen2Card(NIST_384, 96);
 		g2p384.endOfFile = EndOfFile.SIX_SEVEN;
 		checkDdd(g2p384, RoadCrewTachoCardDownload.download(g2p384));
-		checkOrderAndHash(g2p384, 0x02);
+		checkOrderAndHash(g2p384);
 
 		Card company = gen1Card();
 		company.g1.put(0x0501, applicationIdentification(4, 10));

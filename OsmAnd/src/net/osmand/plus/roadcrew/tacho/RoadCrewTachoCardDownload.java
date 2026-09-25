@@ -64,10 +64,12 @@ public final class RoadCrewTachoCardDownload {
 
 	/** Generation 1 signatures are 1024-bit RSA, PKCS#1 (TCS_128, TCS_133). */
 	static final int SIGNATURE_LENGTH_G1 = 128;
-	static final int HASH_SHA1 = 0x00;
-	static final int HASH_SHA256 = 0x01;
-	static final int HASH_SHA384 = 0x02;
-	static final int HASH_SHA512 = 0x03;
+	/**
+	 * TCS_124 as amended by 2018/502: P2 is always '00h', "algorithm implicitly
+	 * known" - SHA-1 in DF Tachograph, the SHA-2 of the Card_Sign cipher suite
+	 * in Tachograph_G2. The original 2016 values 01..03 are refused (6A86).
+	 */
+	static final int HASH_IMPLICIT = 0x00;
 
 	/** Largest Le of a short READ BINARY. */
 	static final int CHUNK = 0xFF;
@@ -139,7 +141,7 @@ public final class RoadCrewTachoCardDownload {
 		}
 		byte[] identification = null;
 		for (int fid : SIGNED_G1) {
-			byte[][] signed = readSigned(channel, fid, HASH_SHA1, SIGNATURE_LENGTH_G1, warnings);
+			byte[][] signed = readSigned(channel, fid, SIGNATURE_LENGTH_G1, warnings);
 			if (signed == null) {
 				if (fid == EF_APPLICATION_IDENTIFICATION || fid == EF_IDENTIFICATION) {
 					throw new IOException("Mandatory " + hex(fid) + " missing in DF Tachograph");
@@ -185,7 +187,7 @@ public final class RoadCrewTachoCardDownload {
 			}
 			Curve curve = curveOf(signCertificate);
 			for (int fid : SIGNED_G2) {
-				byte[][] signed = readSigned(channel, fid, curve.hash, curve.signatureLength, warnings);
+				byte[][] signed = readSigned(channel, fid, curve.signatureLength, warnings);
 				if (signed == null) {
 					if (fid == EF_APPLICATION_IDENTIFICATION || fid == EF_IDENTIFICATION) {
 						throw new IOException("Mandatory " + hex(fid) + " missing in DF Tachograph_G2");
@@ -268,7 +270,7 @@ public final class RoadCrewTachoCardDownload {
 	 * FILE, READ BINARY to the end, PSO: COMPUTE DIGITAL SIGNATURE. Returns
 	 * {data, signature}, or {@code null} if the card has no such file.
 	 */
-	static byte[][] readSigned(RoadCrewTachoDownloadDate.Channel channel, int fid, int hash, int signatureLength,
+	static byte[][] readSigned(RoadCrewTachoDownloadDate.Channel channel, int fid, int signatureLength,
 			List<String> warnings) throws IOException {
 		byte[] reply = transceive(channel, selectEf(fid));
 		if (sw(reply) == SW_FILE_NOT_FOUND) {
@@ -276,7 +278,7 @@ public final class RoadCrewTachoCardDownload {
 		}
 		expect(reply, "SELECT " + hex(fid));
 		// Case 1 command: no data, no Le. The transport adds T=0's P3 itself.
-		expect(transceive(channel, new byte[]{(byte) 0x80, 0x2A, (byte) 0x90, (byte) hash}),
+		expect(transceive(channel, new byte[]{(byte) 0x80, 0x2A, (byte) 0x90, HASH_IMPLICIT}),
 				"PERFORM HASH OF FILE " + hex(fid));
 		byte[] data = readWholeFile(channel, fid, warnings);
 		byte[] signature = expectData(transceive(channel,
@@ -378,24 +380,22 @@ public final class RoadCrewTachoCardDownload {
 	/** The curve of a generation 2 card's signing key, from the domain parameter OID in its certificate. */
 	static final class Curve {
 		final String name;
-		final int hash;
 		final int signatureLength;
 
-		Curve(String name, int hash, int signatureLength) {
+		Curve(String name, int signatureLength) {
 			this.name = name;
-			this.hash = hash;
 			this.signatureLength = signatureLength;
 		}
 	}
 
-	/** Table 1 (CSM_48) with the hash CSM_50 pairs with each key size; ECDSA signature = r || s. */
+	/** Table 1 (CSM_48) with the signature length of each key size; ECDSA signature = r || s. */
 	private static final Object[][] CURVES = {
-			{"NIST P-256", new byte[]{0x2A, (byte) 0x86, 0x48, (byte) 0xCE, 0x3D, 0x03, 0x01, 0x07}, HASH_SHA256, 64},
-			{"brainpoolP256r1", new byte[]{0x2B, 0x24, 0x03, 0x03, 0x02, 0x08, 0x01, 0x01, 0x07}, HASH_SHA256, 64},
-			{"NIST P-384", new byte[]{0x2B, (byte) 0x81, 0x04, 0x00, 0x22}, HASH_SHA384, 96},
-			{"brainpoolP384r1", new byte[]{0x2B, 0x24, 0x03, 0x03, 0x02, 0x08, 0x01, 0x01, 0x0B}, HASH_SHA384, 96},
-			{"brainpoolP512r1", new byte[]{0x2B, 0x24, 0x03, 0x03, 0x02, 0x08, 0x01, 0x01, 0x0D}, HASH_SHA512, 128},
-			{"NIST P-521", new byte[]{0x2B, (byte) 0x81, 0x04, 0x00, 0x23}, HASH_SHA512, 132},
+			{"NIST P-256", new byte[]{0x2A, (byte) 0x86, 0x48, (byte) 0xCE, 0x3D, 0x03, 0x01, 0x07}, 64},
+			{"brainpoolP256r1", new byte[]{0x2B, 0x24, 0x03, 0x03, 0x02, 0x08, 0x01, 0x01, 0x07}, 64},
+			{"NIST P-384", new byte[]{0x2B, (byte) 0x81, 0x04, 0x00, 0x22}, 96},
+			{"brainpoolP384r1", new byte[]{0x2B, 0x24, 0x03, 0x03, 0x02, 0x08, 0x01, 0x01, 0x0B}, 96},
+			{"brainpoolP512r1", new byte[]{0x2B, 0x24, 0x03, 0x03, 0x02, 0x08, 0x01, 0x01, 0x0D}, 128},
+			{"NIST P-521", new byte[]{0x2B, (byte) 0x81, 0x04, 0x00, 0x23}, 132},
 	};
 
 	static Curve curveOf(byte[] certificate) throws IOException {
@@ -408,11 +408,11 @@ public final class RoadCrewTachoCardDownload {
 				encoded[1] = (byte) oid.length;
 				System.arraycopy(oid, 0, encoded, 2, oid.length);
 				if (indexOf(certificate, encoded) >= 0) {
-					return new Curve((String) curve[0], (Integer) curve[2], (Integer) curve[3]);
+					return new Curve((String) curve[0], (Integer) curve[2]);
 				}
 			}
 		}
-		throw new IOException("CardSignCertificate names no curve of CSM_48; cannot choose the hash");
+		throw new IOException("CardSignCertificate names no curve of CSM_48; cannot choose the signature length");
 	}
 
 	private static int indexOf(byte[] haystack, byte[] needle) {
