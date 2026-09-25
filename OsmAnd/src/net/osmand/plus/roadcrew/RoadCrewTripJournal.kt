@@ -607,8 +607,12 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
             DELETE FROM trips WHERE closed = 1
                 AND NOT EXISTS(SELECT 1 FROM sections WHERE trip_id = trips.id)
                 AND NOT EXISTS(SELECT 1 FROM direct_sections WHERE trip_id = trips.id);
-            DELETE FROM direct_sections WHERE NOT EXISTS(SELECT 1 FROM trips WHERE trips.id = direct_sections.trip_id)
+            DELETE FROM direct_sections WHERE state = 'STAGED'
+                AND NOT EXISTS(SELECT 1 FROM trips WHERE trips.id = direct_sections.trip_id)
         """
+        // A CONFIRMED row leaves only once sent, with or without its trip: the
+        // previous journal deleted trips while their RCS2 rows still waited
+        // for upload (ROADMAP 324).
         /** Everything a revocation or clear() removes: both identities of the drive. */
         private val REVOKED_TABLES = """sections; trips; direct_sections; way_descriptors"""
         private val NEXT_QUESTION_SQL = """SELECT seq FROM sections

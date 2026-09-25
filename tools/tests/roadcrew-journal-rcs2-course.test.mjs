@@ -68,6 +68,9 @@ test('prune keeps an RCS2 course, and removes empty trips and orphaned or stale 
   trip(db, 'stale');
   direct(db, 'stale', 'old', { bucket: cutoff - 1 });
   direct(db, 'kept', 'sent', { state: 'TRANSFERRED', bucket: cutoff + 1 });
+  // ROADMAP 324: the previous journal deleted a trip once its RCS1 rows were
+  // sent; its confirmed RCS2 rows still wait for upload and must survive.
+  direct(db, 'deleted-by-old-version', 'waiting', { state: 'CONFIRMED', bucket: cutoff - 1 });
 
   for (const statement of statements('PRUNE_SQL')) {
     const run = db.prepare(statement);
@@ -77,7 +80,7 @@ test('prune keeps an RCS2 course, and removes empty trips and orphaned or stale 
   const rows = db.prepare('SELECT observation_id FROM direct_sections ORDER BY observation_id').all()
     .map((row) => row.observation_id);
   assert.deepEqual(trips, ['kept']);
-  assert.deepEqual(rows, ['fresh']);
+  assert.deepEqual(rows, ['fresh', 'waiting'], 'a confirmed row leaves only once it is sent');
 });
 
 test('revoking consent deletes the RCS2 data too, not only RCS1', () => {
