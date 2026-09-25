@@ -233,6 +233,9 @@ public final class RoadCrewCellPreferences {
 			boolean forward = from.reversed ? fromEnd < fromStart : fromEnd > fromStart;
 			boolean toForward = to.reversed ? toEnd < toStart : toEnd > toStart;
 			long toWayId = ObfConstants.getOsmObjectId(toRoad);
+			// Two OBF objects of one OSM way: going on along it is not a turn,
+			// and no turn to the same way is ever kept (ROADMAP 318).
+			if (toWayId == ObfConstants.getOsmObjectId(fromRoad)) { return 1; }
 			boolean hasExit = false;
 			for (Turn turn : turns) {
 				if (turn.forward != forward || turn.expiresAt <= now) { continue; }

@@ -69,6 +69,27 @@ public class RoadCrewCellPreferencesTest {
         Assert.assertEquals(1, matcher.costFactor(other, 0, 1), 0);
     }
 
+    // ROADMAP 318: one OSM way stored as two OBF objects. Going straight on it is
+    // not a turn, so a proven exit elsewhere on the way must not make it dearer.
+    @Test public void continuingAlongTheSameOsmWayIsNeverATurn() throws Exception {
+        RouteDataObject entry = road(101, 0, -1, 0, 0);
+        RouteDataObject proven = road(103, 0, 0, 0, 1);
+        RouteDataObject continuation = road(101, 0, 0, -1, 1);
+        continuation.id = (101L << 6) + 1;
+        RoadCrewCellPreferences preferences = parse(document(entry, proven), NOW);
+        RoadCrewCellPreferences.Matcher matcher = preferences.newMatcher(NOW);
+        Assert.assertEquals(1, matcher.turnCostFactor(entry, 0, 1, continuation, 0, 1), 0);
+        Assert.assertEquals(1, matcher.turnCostFactor(entry, 0, 1, continuation, 1, 0), 0);
+
+        RoutingConfiguration cf = RoutingConfiguration.getDefault().build("truck",
+                new RoutingConfiguration.RoutingMemoryLimits(64, 256), new HashMap<>());
+        cf.roadCrewCellPreferences = preferences;
+        RoutingContext ctx = new RoutingContext(cf, null, new BinaryMapIndexReader[0],
+                RoutePlannerFrontEnd.RouteCalculationMode.NORMAL);
+        Assert.assertEquals(0, new BinaryRoutePlanner().roadCrewTurnPenalty(ctx, false,
+                new RouteSegment(entry, 0, 1), new RouteSegment(continuation, 0, 1)), 0);
+    }
+
     @Test public void malformedAndInsufficientTurnsAreIgnored() {
         RouteDataObject entry = road(101, 0, -1, 0, 0);
         RouteDataObject proven = road(103, 0, 0, 0, 1);
