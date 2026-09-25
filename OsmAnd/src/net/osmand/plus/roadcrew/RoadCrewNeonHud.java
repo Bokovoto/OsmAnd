@@ -403,6 +403,12 @@ public final class RoadCrewNeonHud {
 		addNavigationItem(footer, activity, landscape, 4, R.drawable.ic_action_search_dark,
 				R.string.shared_string_search,
 				v -> activity.getFragmentsHelper().showQuickSearch(ShowQuickSearchMode.NEW_IF_EXPIRED, false));
+		// The driver card screen, also without the reader plugged in - to see
+		// when the card was last downloaded (Galin, 25.09: variant B).
+		addNavigationItem(footer, activity, landscape, 5, R.drawable.roadcrew_tacho_ic_card,
+				R.string.roadcrew_neon_nav_tacho,
+				v -> activity.startActivity(new android.content.Intent(activity,
+						net.osmand.plus.roadcrew.tacho.RoadCrewTachoCardActivity.class)));
 		updateNavigationSelection(footer, activity);
 		return footer;
 	}
@@ -446,7 +452,7 @@ public final class RoadCrewNeonHud {
 	}
 
 	private static void setNavigationSelection(@NonNull View root, int activeIndex) {
-		for (int index = 0; index < 5; index++) {
+		for (int index = 0; index < 6; index++) {
 			ImageView icon = root.findViewWithTag(NAV_ICON_TAG_PREFIX + index);
 			TextView text = root.findViewWithTag(NAV_TEXT_TAG_PREFIX + index);
 			boolean active = index == activeIndex;
