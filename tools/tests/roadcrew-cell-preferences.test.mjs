@@ -102,3 +102,14 @@ test('a source with no evidence does not vote', () => {
       /public boolean hasEvidence\(\)/, `${path} must be able to say it has nothing`);
   }
 });
+
+test('turn-only evidence reaches the refinement pass without enabling global cell costs', () => {
+  const source = read(CELLS);
+  assert.match(source, /isEmpty\(\) \{ return byWay\.isEmpty\(\) && turnsByWay\.isEmpty\(\);/);
+  assert.match(source, /hasEvidence\(\) \{ return !byWay\.isEmpty\(\);/);
+  const provider = read('../../OsmAnd/src/net/osmand/plus/routing/RouteProvider.java');
+  assert.match(provider, /preferences\.isEmpty\(\) && cellPreferences\.isEmpty\(\)/);
+  const downloader = read('../../OsmAnd/src/net/osmand/plus/roadcrew/RoadCrewCellTileDownloader.java');
+  assert.match(downloader, /roads\.put\(tileRoads\.get\(index\)\)/,
+    'download/merge preserves the whole road record, including turns');
+});

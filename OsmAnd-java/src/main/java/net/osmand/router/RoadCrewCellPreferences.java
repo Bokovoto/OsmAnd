@@ -39,16 +39,21 @@ public final class RoadCrewCellPreferences {
 	public static final long MAX_TILE_AGE_MILLIS = RoadCrewRoutePreferences.MAX_AGE_MILLIS;
 	private static final int MAX_ROADS = 20_000;
 	private static final int MAX_RUNS_PER_ROAD = 512;
+	private static final int MAX_TURNS_PER_ROAD = 512;
+	private static final int MIN_TURN_WITNESSES = 5;
 	/** GPS and geometry both wobble; a metre of slack costs nothing and avoids a false miss. */
 	private static final double MEASURE_TOLERANCE_METERS = 1.0;
 
 	public static final RoadCrewCellPreferences EMPTY =
-			new RoadCrewCellPreferences(Collections.<Long, List<Run>>emptyMap());
+			new RoadCrewCellPreferences(Collections.<Long, List<Run>>emptyMap(),
+					Collections.<Long, List<Turn>>emptyMap());
 
 	private final Map<Long, List<Run>> byWay;
+	private final Map<Long, List<Turn>> turnsByWay;
 
-	private RoadCrewCellPreferences(Map<Long, List<Run>> byWay) {
+	private RoadCrewCellPreferences(Map<Long, List<Run>> byWay, Map<Long, List<Turn>> turnsByWay) {
 		this.byWay = Collections.unmodifiableMap(byWay);
+		this.turnsByWay = Collections.unmodifiableMap(turnsByWay);
 	}
 
 	/** A proven stretch of one road in one direction. */
@@ -71,11 +76,26 @@ public final class RoadCrewCellPreferences {
 		public long getExpiresAt() { return expiresAt; }
 	}
 
-	public boolean isEmpty() { return byWay.isEmpty(); }
+	private static final class Turn {
+		final boolean forward;
+		final long toWayId;
+		final boolean toForward;
+		final long expiresAt;
+
+		Turn(boolean forward, long toWayId, boolean toForward, long expiresAt) {
+			this.forward = forward;
+			this.toWayId = toWayId;
+			this.toForward = toForward;
+			this.expiresAt = expiresAt;
+		}
+	}
+
+	public boolean isEmpty() { return byWay.isEmpty() && turnsByWay.isEmpty(); }
 
 	public int size() {
 		int total = 0;
 		for (List<Run> runs : byWay.values()) { total += runs.size(); }
+		for (List<Turn> turns : turnsByWay.values()) { total += turns.size(); }
 		return total;
 	}
 
@@ -96,9 +116,9 @@ public final class RoadCrewCellPreferences {
 			return EMPTY;
 		}
 		Map<Long, List<Run>> byWay = new HashMap<>();
+		Map<Long, List<Turn>> turnsByWay = new HashMap<>();
 		for (Road road : doc.roads) {
-			if (road == null || road.runs == null || road.runs.isEmpty()
-					|| road.runs.size() > MAX_RUNS_PER_ROAD) {
+			if (road == null) {
 				continue;
 			}
 			boolean forward = "F".equals(road.direction);
@@ -115,7 +135,8 @@ public final class RoadCrewCellPreferences {
 				continue;
 			}
 			List<Run> runs = new ArrayList<>();
-			for (RunDto run : road.runs) {
+			for (RunDto run : road.runs == null || road.runs.size() > MAX_RUNS_PER_ROAD
+					? Collections.<RunDto>emptyList() : road.runs) {
 				if (run == null || !(run.toMeters > run.fromMeters) || run.fromMeters < 0
 						|| !isFinite(run.fromMeters) || !isFinite(run.toMeters)) {
 					continue;
@@ -138,8 +159,26 @@ public final class RoadCrewCellPreferences {
 					existing.addAll(runs);
 				}
 			}
+			if (road.turns != null && road.turns.size() <= MAX_TURNS_PER_ROAD) {
+				for (TurnDto turn : road.turns) {
+					if (turn == null || turn.witnessCount < MIN_TURN_WITNESSES
+							|| (!"F".equals(turn.toDirection) && !"R".equals(turn.toDirection))
+							|| turn.expiresAt <= now
+							|| turn.expiresAt > doc.generatedAt + MAX_TILE_AGE_MILLIS) { continue; }
+					long toWayId;
+					try { toWayId = Long.parseLong(turn.toWayId); }
+					catch (NumberFormatException ignored) { continue; }
+					if (toWayId <= 0 || toWayId == wayId) { continue; }
+					List<Turn> turns = turnsByWay.get(wayId);
+					if (turns == null) {
+						turns = new ArrayList<>();
+						turnsByWay.put(wayId, turns);
+					}
+					turns.add(new Turn(forward, toWayId, "F".equals(turn.toDirection), turn.expiresAt));
+				}
+			}
 		}
-		return byWay.isEmpty() ? EMPTY : new RoadCrewCellPreferences(byWay);
+		return byWay.isEmpty() && turnsByWay.isEmpty() ? EMPTY : new RoadCrewCellPreferences(byWay, turnsByWay);
 	}
 
 	/** Drops what has expired since the tile arrived; the phone needs no permission for that. */
@@ -152,7 +191,15 @@ public final class RoadCrewCellPreferences {
 			}
 			if (!runs.isEmpty()) { kept.put(entry.getKey(), runs); }
 		}
-		return kept.isEmpty() ? EMPTY : new RoadCrewCellPreferences(kept);
+		Map<Long, List<Turn>> keptTurns = new HashMap<>();
+		for (Map.Entry<Long, List<Turn>> entry : turnsByWay.entrySet()) {
+			List<Turn> turns = new ArrayList<>();
+			for (Turn turn : entry.getValue()) {
+				if (turn.expiresAt > now) { turns.add(turn); }
+			}
+			if (!turns.isEmpty()) { keptTurns.put(entry.getKey(), turns); }
+		}
+		return kept.isEmpty() && keptTurns.isEmpty() ? EMPTY : new RoadCrewCellPreferences(kept, keptTurns);
 	}
 
 	public Matcher newMatcher(long now) { return new Matcher(now); }
@@ -173,6 +220,32 @@ public final class RoadCrewCellPreferences {
 		 * the A* test on 21.09.
 		 */
 		public boolean hasEvidence() { return !byWay.isEmpty(); }
+
+		/** Turns are local preferences, not evidence for the whole outgoing road. */
+		public double turnCostFactor(RouteDataObject fromRoad, int fromStart, int fromEnd,
+				RouteDataObject toRoad, int toStart, int toEnd) {
+			if (fromRoad == null || toRoad == null || turnsByWay.isEmpty()) { return 1; }
+			List<Turn> turns = turnsByWay.get(ObfConstants.getOsmObjectId(fromRoad));
+			if (turns == null) { return 1; }
+			Measures from = measuresFor(fromRoad);
+			Measures to = measuresFor(toRoad);
+			if (!validEdge(from, fromStart, fromEnd) || !validEdge(to, toStart, toEnd)) { return 1; }
+			boolean forward = from.reversed ? fromEnd < fromStart : fromEnd > fromStart;
+			boolean toForward = to.reversed ? toEnd < toStart : toEnd > toStart;
+			long toWayId = ObfConstants.getOsmObjectId(toRoad);
+			boolean hasExit = false;
+			for (Turn turn : turns) {
+				if (turn.forward != forward || turn.expiresAt <= now) { continue; }
+				hasExit = true;
+				if (turn.toWayId == toWayId && turn.toForward == toForward) { return 1; }
+			}
+			return hasExit ? RoadCrewRoutePreferences.ORDINARY_COST_FACTOR : 1;
+		}
+
+		private boolean validEdge(Measures measures, int start, int end) {
+			return measures != null && start >= 0 && end >= 0 && start != end
+					&& start < measures.canonical.length && end < measures.canonical.length;
+		}
 
 		/**
 		 * 1 for a stretch other lorries have driven, the ordinary cost for
@@ -269,6 +342,14 @@ public final class RoadCrewCellPreferences {
 		String osmWayId;
 		String direction;
 		List<RunDto> runs;
+		List<TurnDto> turns;
+	}
+
+	private static final class TurnDto {
+		String toWayId;
+		String toDirection;
+		int witnessCount;
+		long expiresAt;
 	}
 
 	private static final class RunDto {

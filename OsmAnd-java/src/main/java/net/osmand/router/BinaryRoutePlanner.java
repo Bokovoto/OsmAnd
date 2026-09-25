@@ -481,12 +481,16 @@ public class BinaryRoutePlanner {
 
 	
 	public float calcRoutingSegmentTimeOnlyDist(VehicleRouter router, RouteSegment segment) {
+		return calcRoutingSegmentTimeOnlyDist(router, segment, segment.isPositive());
+	}
+
+	private float calcRoutingSegmentTimeOnlyDist(VehicleRouter router, RouteSegment segment, boolean positive) {
 		int prevX = segment.road.getPoint31XTile(segment.getSegmentStart());
 		int prevY = segment.road.getPoint31YTile(segment.getSegmentStart());
 		int x = segment.road.getPoint31XTile(segment.getSegmentEnd());
 		int y = segment.road.getPoint31YTile(segment.getSegmentEnd());
-		float priority = router.defineSpeedPriority(segment.road, segment.isPositive());
-		float speed = (router.defineRoutingSpeed(segment.road, segment.isPositive()) * priority);
+		float priority = router.defineSpeedPriority(segment.road, positive);
+		float speed = (router.defineRoutingSpeed(segment.road, positive) * priority);
 		if (speed == 0) {
 			speed = router.getDefaultSpeed() * priority;
 		}
@@ -934,7 +938,8 @@ public class BinaryRoutePlanner {
 			if (obstaclesTime < 0) {
 				return false;
 			}
-			float distFromStart = obstaclesTime + segment.distanceFromStart;
+			float distFromStart = obstaclesTime + segment.distanceFromStart
+					+ roadCrewTurnPenalty(ctx, reverseWaySearch, segment, next);
 			if (TEST_SPECIFIC && next.road.getId() >> 6 == TEST_ID) {
 				printRoad(" !? distFromStart=" + distFromStart + " from " + segment.getRoad().getId() +
 						" distToEnd=" + segment.distanceFromStart +
@@ -992,6 +997,22 @@ public class BinaryRoutePlanner {
 			}
 		}
 		return false;
+	}
+
+	float roadCrewTurnPenalty(RoutingContext ctx, boolean reverseWaySearch, RouteSegment segment, RouteSegment next) {
+		if (next.road.getId() == segment.road.getId()) { return 0; }
+		// Reverse A* walks the same physical transition backwards, not its opposite turn.
+		RouteSegment from = reverseWaySearch ? next : segment;
+		RouteSegment to = reverseWaySearch ? segment : next;
+		double factor = ctx.roadCrewCellMatcher.turnCostFactor(from.road,
+				reverseWaySearch ? from.getSegmentEnd() : from.getSegmentStart(),
+				reverseWaySearch ? from.getSegmentStart() : from.getSegmentEnd(), to.road,
+				reverseWaySearch ? to.getSegmentEnd() : to.getSegmentStart(),
+				reverseWaySearch ? to.getSegmentStart() : to.getSegmentEnd());
+		if (factor == 1) { return 0; }
+		float travelTime = calcRoutingSegmentTimeOnlyDist(ctx.getRouter(), to,
+				reverseWaySearch ? !to.isPositive() : to.isPositive());
+		return travelTime >= 0 && !Float.isInfinite(travelTime) ? (float) (travelTime * (factor - 1)) : 0;
 	}
 	
 
