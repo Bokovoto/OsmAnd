@@ -215,6 +215,10 @@ public final class RoadCrewDirectPipeline {
 			long fixSequence) {
 		if (match == null || !match.isMatched() || match.getSegment() == null) {
 			count("no_match");
+			// The same total, split by the reason the matcher gave, so a course's
+			// diagnostics can tell a crawl from a sharp bend (ROADMAP 320).
+			count("no_match_" + (match == null ? "no_result"
+					: match.getStatus().name().toLowerCase(java.util.Locale.ROOT)));
 			// The matcher decides between seven distinct reasons and this counter
 			// collapses every one of them. Recorded for the offline replay, and
 			// only there: the status is read from a decision already taken, and

@@ -292,6 +292,39 @@ public class RoadCrewDirectPipelineTest {
 				reported > 1200);
 	}
 
+	// ROADMAP 320: the course diagnostics reached the server with one no_match
+	// total (229 of 2728 in the Doyrentsi village); why each fix was refused -
+	// too slow, a sharp bend, off the road - could not be told apart.
+	@Test
+	public void everyRefusedFixIsCountedByItsReason() {
+		RouteDataObject road = road(WAY, 26.2000, 26.2200);
+		RoadCrewDiagnostics diagnostics = new RoadCrewDiagnostics();
+		RoadCrewDirectPipeline pipeline = pipeline();
+		pipeline.setDiagnostics(diagnostics);
+		RoadCrewSegmentMatcher.GpsFix[] refused = {
+			new RoadCrewSegmentMatcher.GpsFix(LATITUDE, 26.2050, 3, 1, 90),        // crawling
+			new RoadCrewSegmentMatcher.GpsFix(LATITUDE, 26.2060, 3, 15, 0),        // sharp bend
+			new RoadCrewSegmentMatcher.GpsFix(LATITUDE + 0.01, 26.2070, 3, 15, 90), // off the road
+			new RoadCrewSegmentMatcher.GpsFix(LATITUDE, 26.2080, 60, 15, 90),      // poor fix
+		};
+		long time = 1_757_000_000_000L;
+		long sequence = 0;
+		for (RoadCrewSegmentMatcher.GpsFix fix : refused) {
+			RoadCrewSegmentMatcher.MatchResult result =
+					RoadCrewSegmentMatcher.match(fix, Collections.singletonList(road));
+			Assert.assertFalse(result.isMatched());
+			pipeline.accept(fix, result, null, time += 1000, ++sequence);
+		}
+		pipeline.accept(fix(26.2090), null, null, time + 1000, ++sequence);
+
+		Assert.assertEquals(5, diagnostics.counter("no_match"));
+		Assert.assertEquals(1, diagnostics.counter("no_match_low_speed"));
+		Assert.assertEquals(1, diagnostics.counter("no_match_direction_mismatch"));
+		Assert.assertEquals(1, diagnostics.counter("no_match_no_nearby_segment"));
+		Assert.assertEquals(1, diagnostics.counter("no_match_poor_accuracy"));
+		Assert.assertEquals(1, diagnostics.counter("no_match_no_result"));
+	}
+
 	@Test
 	public void everyEmittedPassageBecomesAnObservation() throws Exception {
 		// Four roads driven one after another. The accumulator's own count of
