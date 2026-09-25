@@ -373,6 +373,11 @@ public final class RoadCrewTachoCardReader {
 				command -> checkedExchange(card.transport, command), epochSeconds, observer);
 	}
 
+	/** The card as a plain command channel, for the DDD download (ROADMAP 327). */
+	static RoadCrewTachoDownloadDate.Channel channel(OpenCard card) {
+		return command -> checkedExchange(card.transport, command);
+	}
+
 	static long readDownloadDate(OpenCard card) throws IOException {
 		return RoadCrewTachoDownloadDate.read(command -> checkedExchange(card.transport, command));
 	}

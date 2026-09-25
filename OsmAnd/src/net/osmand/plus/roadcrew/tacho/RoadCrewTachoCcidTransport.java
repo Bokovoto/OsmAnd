@@ -34,6 +34,8 @@ final class RoadCrewTachoCcidTransport {
 
 	private static final int TRANSFER_TIMEOUT_MILLIS = 5_000;
 	private static final int MAX_RESPONSE_LENGTH = 4_096;
+	/** Time extensions accepted for one command before it is treated as lost (each up to the transfer timeout). */
+	private static final int MAX_TIME_EXTENSIONS = 60;
 
 	private final UsbDeviceConnection connection;
 	private final UsbInterface ccidInterface;
@@ -239,6 +241,12 @@ final class RoadCrewTachoCcidTransport {
 	Response transmit(@NonNull byte[] apdu) throws IOException {
 		boolean wrap = exchangeLevel == EXCHANGE_TPDU && activeProtocol == 1;
 		byte[] wire = wrap ? wrapT1(apdu) : apdu;
+		if (exchangeLevel == EXCHANGE_TPDU && activeProtocol == 0 && apdu.length == 4) {
+			// A case-1 command (no data, no Le - PERFORM HASH OF FILE) is sent
+			// over T=0 with P3 = 00 (ISO 7816-3 12.2.2); the reader passes
+			// TPDUs through as they are.
+			wire = java.util.Arrays.copyOf(apdu, 5);
+		}
 		// byte7 = bBWI (0 = use the reader's default wait time), bytes 8-9 = wLevelParameter
 		// (0x0000 = the block is sent whole, not chained across multiple XfrBlocks).
 		Response response = exchange(PC_TO_RDR_XFR_BLOCK, wire, (byte) 0x00, (byte) 0x00, (byte) 0x00);
@@ -311,32 +319,43 @@ final class RoadCrewTachoCcidTransport {
 			throw new IOException("USB write to the reader was incomplete (" + sent + "/" + message.length + " bytes)");
 		}
 
-		byte[] buffer = new byte[MAX_RESPONSE_LENGTH];
-		int received = connection.bulkTransfer(bulkIn, buffer, buffer.length, TRANSFER_TIMEOUT_MILLIS);
-		if (received < MESSAGE_HEADER_LENGTH) {
-			throw new IOException("the reader's reply was shorter than a CCID header (" + received + " bytes)");
+		for (int extensions = 0; ; extensions++) {
+			byte[] buffer = new byte[MAX_RESPONSE_LENGTH];
+			int received = connection.bulkTransfer(bulkIn, buffer, buffer.length, TRANSFER_TIMEOUT_MILLIS);
+			if (received < MESSAGE_HEADER_LENGTH) {
+				throw new IOException("the reader's reply was shorter than a CCID header (" + received + " bytes)");
+			}
+			int responseType = buffer[0] & 0xFF;
+			int expectedType = messageType == PC_TO_RDR_SET_PARAMETERS ? 0x82
+					: messageType == PC_TO_RDR_ICC_POWER_OFF ? RDR_TO_PC_SLOT_STATUS : RDR_TO_PC_DATA_BLOCK;
+			if (responseType != expectedType || buffer[5] != 0) {
+				throw new IOException("Unexpected CCID reply type or slot");
+			}
+			int declaredLength = readLengthLittleEndian(buffer, 1);
+			byte responseSeq = buffer[6];
+			if (responseSeq != seq) {
+				throw new IOException("the reader replied out of order (expected seq " + seq + ", got " + responseSeq + ")");
+			}
+			byte status = buffer[7];
+			byte error = buffer[8];
+			if (responseType == RDR_TO_PC_DATA_BLOCK && (status & 0xC0) == 0x80) {
+				// bmCommandStatus 2, "time extension requested" (CCID 6.2.6): the
+				// card needs longer - a signature takes it seconds - and the real
+				// reply follows on the same sequence number. Waiting is the
+				// protocol; giving up here would lose the signature (ROADMAP 327).
+				if (extensions >= MAX_TIME_EXTENSIONS) {
+					throw new IOException("the card kept asking for more time; no result can be trusted");
+				}
+				continue;
+			}
+			int available = received - MESSAGE_HEADER_LENGTH;
+			if (declaredLength != available || declaredLength < 0) {
+				throw new IOException("Incomplete CCID reply; no card result can be trusted");
+			}
+			byte[] data = new byte[declaredLength];
+			System.arraycopy(buffer, MESSAGE_HEADER_LENGTH, data, 0, declaredLength);
+			return new Response(responseType, status, error, data);
 		}
-		int responseType = buffer[0] & 0xFF;
-		int expectedType = messageType == PC_TO_RDR_SET_PARAMETERS ? 0x82
-				: messageType == PC_TO_RDR_ICC_POWER_OFF ? RDR_TO_PC_SLOT_STATUS : RDR_TO_PC_DATA_BLOCK;
-		if (responseType != expectedType || buffer[5] != 0) {
-			throw new IOException("Unexpected CCID reply type or slot");
-		}
-		int declaredLength = readLengthLittleEndian(buffer, 1);
-		byte responseSeq = buffer[6];
-		if (responseSeq != seq) {
-			throw new IOException("the reader replied out of order (expected seq " + seq + ", got " + responseSeq + ")");
-		}
-		int available = received - MESSAGE_HEADER_LENGTH;
-		if (declaredLength != available || declaredLength < 0) {
-			throw new IOException("Incomplete CCID reply; no card result can be trusted");
-		}
-		int dataLength = declaredLength;
-		byte[] data = new byte[dataLength];
-		System.arraycopy(buffer, MESSAGE_HEADER_LENGTH, data, 0, dataLength);
-		byte status = buffer[7];
-		byte error = buffer[8];
-		return new Response(responseType, status, error, data);
 	}
 
 	private static void writeLengthLittleEndian(byte[] out, int offset, int value) {

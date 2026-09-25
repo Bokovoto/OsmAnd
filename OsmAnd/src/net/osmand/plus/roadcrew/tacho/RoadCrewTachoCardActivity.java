@@ -43,8 +43,12 @@ public final class RoadCrewTachoCardActivity extends Activity {
 	private static final Log LOG = PlatformUtil.getLog(RoadCrewTachoCardActivity.class);
 	private static final String ACTION_USB_PERMISSION = "net.osmand.plus.roadcrew.tacho.USB_PERMISSION";
 
+	static final String EXTRA_DOWNLOAD = "roadcrew_download";
+	private static final String TAG = "RoadCrewTacho";
+
 	private TextView statusView;
 	private TextView logView;
+	private boolean downloadRequested;
 	private UsbManager usbManager;
 	private UsbDevice lastDevice;
 	private boolean busy;
@@ -96,6 +100,10 @@ public final class RoadCrewTachoCardActivity extends Activity {
 	}
 
 	private void handleIntent(@Nullable Intent intent) {
+		// A development trigger for the DDD download until the driver's own
+		// buttons exist (they come with a mockup first - Galin's rule):
+		// am start ... --ez roadcrew_download true (ROADMAP 327).
+		downloadRequested = intent != null && intent.getBooleanExtra(EXTRA_DOWNLOAD, false);
 		UsbDevice device = intent == null ? null : intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
 		if (device != null) {
 			requestPermissionAndRead(device);
@@ -132,6 +140,11 @@ public final class RoadCrewTachoCardActivity extends Activity {
 
 	private void readCard(UsbDevice device) {
 		if (busy) return;
+		if (downloadRequested) {
+			downloadRequested = false;
+			downloadCard(device);
+			return;
+		}
 		setBusy(true);
 		lastDevice = device;
 		statusView.setText(R.string.roadcrew_tacho_reading);
@@ -284,6 +297,124 @@ public final class RoadCrewTachoCardActivity extends Activity {
 				runOnUiThread(() -> setBusy(false));
 			}
 		}, "RoadCrewTachoCardWriteTest").start();
+	}
+
+	/**
+	 * The whole driver card into one DDD file (ROADMAP 327). Reads only; the
+	 * file is stored and read back before anything is reported as done.
+	 */
+	private void downloadCard(UsbDevice device) {
+		setBusy(true);
+		lastDevice = device;
+		statusView.setText(R.string.roadcrew_tacho_reading);
+		logView.setText("");
+		new Thread(() -> {
+			UsbDeviceConnection connection = usbManager.openDevice(device);
+			if (connection == null) {
+				runOnUiThread(() -> {
+					setBusy(false);
+					statusView.setText(getString(R.string.roadcrew_tacho_error, "could not open the USB connection"));
+				});
+				return;
+			}
+			long started = System.currentTimeMillis();
+			try (RoadCrewTachoCardReader.OpenCard card = RoadCrewTachoCardReader.open(device, connection)) {
+				RoadCrewTachoCardDownload.Result result =
+						RoadCrewTachoCardDownload.download(RoadCrewTachoCardReader.channel(card));
+				String name = saveDdd(result);
+				String summary = String.format(java.util.Locale.ROOT,
+						"DDD saved %s bytes=%d gen2=%s files=%d absent=%s warnings=%s sha256=%s seconds=%d",
+						name, result.ddd.length, result.secondGeneration, result.storedTags.size(),
+						result.absent, result.warnings, sha256(result.ddd),
+						(System.currentTimeMillis() - started) / 1000);
+				android.util.Log.i(TAG, summary);
+				runOnUiThread(() -> {
+					statusView.setText(R.string.roadcrew_tacho_waiting_for_reader);
+					logView.setText(summary);
+				});
+			} catch (IOException e) {
+				android.util.Log.w(TAG, "DDD download failed: " + e.getMessage(), e);
+				String message = e.getMessage();
+				runOnUiThread(() -> statusView.setText(getString(R.string.roadcrew_tacho_error, message)));
+			} finally {
+				connection.close();
+				runOnUiThread(() -> setBusy(false));
+			}
+		}, "RoadCrewTachoCardDownload").start();
+	}
+
+	/**
+	 * Downloads/RoadCrew/C_yyyyMMdd_HHmm_card.ddd, where the driver can find
+	 * and send it. Read back and compared before it counts as stored.
+	 */
+	private String saveDdd(RoadCrewTachoCardDownload.Result result) throws IOException {
+		String stamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmm", java.util.Locale.ROOT)
+				.format(new java.util.Date());
+		String card = result.cardNumber.replaceAll("[^A-Za-z0-9]", "");
+		String name = "C_" + stamp + "_" + (card.isEmpty() ? "card" : card) + ".ddd";
+		byte[] stored;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+			android.content.ContentResolver resolver = getContentResolver();
+			android.content.ContentValues values = new android.content.ContentValues();
+			values.put(android.provider.MediaStore.Downloads.DISPLAY_NAME, name);
+			values.put(android.provider.MediaStore.Downloads.MIME_TYPE, "application/octet-stream");
+			values.put(android.provider.MediaStore.Downloads.RELATIVE_PATH,
+					android.os.Environment.DIRECTORY_DOWNLOADS + "/RoadCrew");
+			values.put(android.provider.MediaStore.Downloads.IS_PENDING, 1);
+			android.net.Uri uri = resolver.insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+			if (uri == null) {
+				throw new IOException("Could not create " + name + " in Downloads");
+			}
+			try (java.io.OutputStream out = resolver.openOutputStream(uri)) {
+				if (out == null) {
+					throw new IOException("Could not open " + name);
+				}
+				out.write(result.ddd);
+			}
+			values.clear();
+			values.put(android.provider.MediaStore.Downloads.IS_PENDING, 0);
+			resolver.update(uri, values, null, null);
+			try (java.io.InputStream in = resolver.openInputStream(uri)) {
+				stored = readAll(in);
+			}
+		} else {
+			java.io.File dir = new java.io.File(getExternalFilesDir(null), "RoadCrew");
+			if (!dir.isDirectory() && !dir.mkdirs()) {
+				throw new IOException("Could not create " + dir);
+			}
+			java.io.File file = new java.io.File(dir, name);
+			try (java.io.FileOutputStream out = new java.io.FileOutputStream(file)) {
+				out.write(result.ddd);
+				out.getFD().sync();
+			}
+			try (java.io.InputStream in = new java.io.FileInputStream(file)) {
+				stored = readAll(in);
+			}
+		}
+		if (!java.util.Arrays.equals(stored, result.ddd)) {
+			throw new IOException(name + " did not read back as written");
+		}
+		return name;
+	}
+
+	private static byte[] readAll(@Nullable java.io.InputStream in) throws IOException {
+		if (in == null) {
+			throw new IOException("Stored file cannot be read back");
+		}
+		java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+		byte[] buffer = new byte[8192];
+		for (int n; (n = in.read(buffer)) > 0; ) {
+			out.write(buffer, 0, n);
+		}
+		return out.toByteArray();
+	}
+
+	private static String sha256(byte[] data) {
+		try {
+			return RoadCrewTachoCardReader.toHex(java.security.MessageDigest.getInstance("SHA-256").digest(data));
+		} catch (java.security.NoSuchAlgorithmException e) {
+			return "?";
+		}
 	}
 
 	private void setBusy(boolean value) {
