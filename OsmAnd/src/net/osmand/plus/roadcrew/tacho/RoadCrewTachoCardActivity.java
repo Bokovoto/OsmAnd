@@ -45,6 +45,8 @@ public final class RoadCrewTachoCardActivity extends Activity {
 
 	static final String EXTRA_DOWNLOAD = "roadcrew_download";
 	static final String EXTRA_MARK_CARD = "roadcrew_mark_card";
+	static final String EXTRA_TRACE = "roadcrew_trace";
+	private boolean traceRequested;
 	@Nullable private String markCardNumber;
 	private static final String TAG = "RoadCrewTacho";
 
@@ -109,6 +111,10 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		// Marking only for the one card named in the command, after its DDD is
 		// stored in the same session - a working card is never marked by accident.
 		markCardNumber = intent == null ? null : intent.getStringExtra(EXTRA_MARK_CARD);
+		// Every command and reply of the download, for a software twin of the
+		// card in tests and for diagnosis. Kept in the app's own external
+		// folder, never in Downloads, never uploaded (ROADMAP 327).
+		traceRequested = intent != null && intent.getBooleanExtra(EXTRA_TRACE, false);
 		UsbDevice device = intent == null ? null : intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
 		if (device != null) {
 			requestPermissionAndRead(device);
@@ -313,6 +319,10 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		lastDevice = device;
 		statusView.setText(R.string.roadcrew_tacho_reading);
 		logView.setText("");
+		// Every command and answer of this session, for a card whose download
+		// has to be diagnosed or replayed in a test. Kept in the app's own files.
+		StringBuilder trace = traceRequested ? new StringBuilder() : null;
+		traceRequested = false;
 		new Thread(() -> {
 			UsbDeviceConnection connection = usbManager.openDevice(device);
 			if (connection == null) {
@@ -324,8 +334,19 @@ public final class RoadCrewTachoCardActivity extends Activity {
 			}
 			long started = System.currentTimeMillis();
 			try (RoadCrewTachoCardReader.OpenCard card = RoadCrewTachoCardReader.open(device, connection)) {
-				RoadCrewTachoCardDownload.Result result =
-						RoadCrewTachoCardDownload.download(RoadCrewTachoCardReader.channel(card));
+				RoadCrewTachoDownloadDate.Channel direct = RoadCrewTachoCardReader.channel(card);
+				RoadCrewTachoDownloadDate.Channel channel = trace == null ? direct : command -> {
+					trace.append("> ").append(RoadCrewTachoCardReader.toHex(command)).append('\n');
+					try {
+						byte[] answer = direct.exchange(command);
+						trace.append("< ").append(RoadCrewTachoCardReader.toHex(answer)).append('\n');
+						return answer;
+					} catch (IOException e) {
+						trace.append("! ").append(e.getMessage()).append('\n');
+						throw e;
+					}
+				};
+				RoadCrewTachoCardDownload.Result result = RoadCrewTachoCardDownload.download(channel);
 				String name = saveDdd(result);
 				String summary = String.format(java.util.Locale.ROOT,
 						"DDD saved %s bytes=%d gen2=%s files=%d absent=%s warnings=%s sha256=%s seconds=%d",
@@ -343,7 +364,7 @@ public final class RoadCrewTachoCardActivity extends Activity {
 						// DF Tachograph and, on a Gen2 card, Tachograph_G2. The file
 						// is already stored and read back above.
 						long now = System.currentTimeMillis() / 1000L;
-						RoadCrewTachoCardDownload.markDownloaded(RoadCrewTachoCardReader.channel(card), now,
+						RoadCrewTachoCardDownload.markDownloaded(channel, now,
 								result.secondGeneration, (before, requested) -> {
 									String audit = "MARK card=" + result.cardNumber + " file=" + name
 											+ " before=" + before + " requested=" + requested;
@@ -369,9 +390,30 @@ public final class RoadCrewTachoCardActivity extends Activity {
 				runOnUiThread(() -> statusView.setText(getString(R.string.roadcrew_tacho_error, message)));
 			} finally {
 				connection.close();
+				if (trace != null) {
+					saveTrace(trace);
+				}
 				runOnUiThread(() -> setBusy(false));
 			}
 		}, "RoadCrewTachoCardDownload").start();
+	}
+
+	private void saveTrace(StringBuilder trace) {
+		java.io.File folder = new java.io.File(getExternalFilesDir(null), "tacho-trace");
+		String stamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss", java.util.Locale.ROOT)
+				.format(new java.util.Date());
+		java.io.File file = new java.io.File(folder, "trace_" + stamp + ".txt");
+		if (!folder.isDirectory() && !folder.mkdirs()) {
+			android.util.Log.w(TAG, "trace NOT saved: cannot create " + folder);
+			return;
+		}
+		try (java.io.FileOutputStream out = new java.io.FileOutputStream(file)) {
+			out.write(trace.toString().getBytes(java.nio.charset.StandardCharsets.US_ASCII));
+			out.getFD().sync();
+			android.util.Log.i(TAG, "trace saved " + file + " bytes=" + file.length());
+		} catch (IOException e) {
+			android.util.Log.w(TAG, "trace NOT saved: " + e.getMessage(), e);
+		}
 	}
 
 	/**
