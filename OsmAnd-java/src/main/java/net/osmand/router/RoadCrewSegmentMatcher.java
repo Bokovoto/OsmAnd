@@ -116,13 +116,26 @@ public final class RoadCrewSegmentMatcher {
 		}
 
 		public MatchResult match(GpsFix fix) {
+			return match(fix, false);
+		}
+
+		/**
+		 * Galin's experiment (ROADMAP 321), for the directed RCS2 path only: a
+		 * crawling fix is not refused, and an ambiguous pair takes its best
+		 * candidate. Heading, distance and accuracy still refuse.
+		 */
+		public MatchResult matchRelaxed(GpsFix fix) {
+			return match(fix, true);
+		}
+
+		private MatchResult match(GpsFix fix, boolean relaxed) {
 			if (!isValidFix(fix)) {
 				return MatchResult.unmatched(Status.INVALID_FIX, 0, 0);
 			}
 			if (fix.accuracyMeters > MAX_ACCEPTED_ACCURACY_METERS) {
 				return MatchResult.unmatched(Status.POOR_ACCURACY, 0, 0);
 			}
-			if (fix.speedMetersPerSecond < MIN_SPEED_METERS_PER_SECOND) {
+			if (!relaxed && fix.speedMetersPerSecond < MIN_SPEED_METERS_PER_SECOND) {
 				return MatchResult.unmatched(Status.LOW_SPEED, 0, 0);
 			}
 			if (candidates.isEmpty()) {
@@ -161,7 +174,7 @@ public final class RoadCrewSegmentMatcher {
 			}
 			eligible.sort(Comparator.comparingDouble(candidate -> candidate.score));
 			ScoredCandidate best = eligible.get(0);
-			if (eligible.size() > 1
+			if (!relaxed && eligible.size() > 1
 					&& eligible.get(1).score - best.score < AMBIGUITY_SCORE_MARGIN) {
 				// The runner-up travels with the result. Without it an ambiguous
 				// refusal cannot be told apart afterwards: two candidates that

@@ -175,6 +175,27 @@ public class RoadCrewObservationPipelineTest {
 				});
 	}
 
+	// ROADMAP 321: the directed path gets the relaxed match, the legacy path keeps
+	// the strict one, and every fix the relaxation rescues is counted by reason.
+	@Test
+	public void onlyTheDirectedPathIsRelaxedAndTheRescueIsCounted() throws Exception {
+		RoadCrewObservationPipeline pipeline = new RoadCrewObservationPipeline(outbox("relaxed.json"));
+		pipeline.enableDirectPipeline(RoadCrewDirectPassageAccumulator.Config.EXPERIMENT_321, passage -> { });
+		RoadCrewDiagnostics diagnostics = new RoadCrewDiagnostics();
+		pipeline.setDirectDiagnostics(diagnostics);
+		pipeline.replaceRoads(Collections.singletonList(road(4200, 43.0)));
+
+		for (int i = 0; i < 3; i++) {
+			RoadCrewObservationPipeline.ProcessingResult result = pipeline.accept(
+					new RoadCrewSegmentMatcher.GpsFix(43.0, 27.0020 + i * 0.0001, 3, 1, 90),
+					1_000 + i * 1_000L, 9_000_000 + i * 1_000L);
+			Assert.assertEquals("legacy stays strict",
+					RoadCrewSegmentMatcher.Status.LOW_SPEED, result.getMatch().getStatus());
+		}
+		Assert.assertEquals(3, diagnostics.counter("rescued_low_speed"));
+		Assert.assertEquals(0, diagnostics.counter("no_match"));
+	}
+
 	private static RoadCrewSegmentMatcher.GpsFix fix(double latitude, double longitude) {
 		return new RoadCrewSegmentMatcher.GpsFix(latitude, longitude, 3, 15, 90);
 	}

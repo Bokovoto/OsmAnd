@@ -169,9 +169,15 @@ public final class RoadCrewObservationPipeline {
 			// never allowed to disturb it: a fault in the new path must not
 			// cost a passage on the old one.
 			try {
-				directPipeline.accept(fix, match,
-						match.getSegment() == null
-								? null : roadsById.get(match.getSegment().getRoadId()),
+				// The directed path alone runs Galin's relaxed rules (ROADMAP 321);
+				// the legacy path keeps the strict match above.
+				RoadCrewSegmentMatcher.MatchResult directMatch = preparedSegments.matchRelaxed(fix);
+				if (!match.isMatched() && directMatch.isMatched()) {
+					directPipeline.countRescued(match.getStatus());
+				}
+				directPipeline.accept(fix, directMatch,
+						directMatch.getSegment() == null
+								? null : roadsById.get(directMatch.getSegment().getRoadId()),
 						observedAtMillis, fixSequence);
 			} catch (RuntimeException ignored) {
 			}

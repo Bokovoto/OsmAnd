@@ -105,6 +105,11 @@ public final class RoadCrewDirectPipeline {
 		}
 	}
 
+	/** A fix the strict matcher refused and the relaxed one accepted (ROADMAP 321). */
+	public void countRescued(RoadCrewSegmentMatcher.Status strictStatus) {
+		count("rescued_" + strictStatus.name().toLowerCase(java.util.Locale.ROOT));
+	}
+
 	private void count(String name) {
 		if (diagnostics != null) {
 			diagnostics.count(name);

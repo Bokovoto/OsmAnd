@@ -74,6 +74,40 @@ public class RoadCrewSegmentMatcherTest {
 		Assert.assertEquals(2, result.getDirectionCandidateCount());
 	}
 
+	// ROADMAP 321 (Galin's experiment): the RCS2 path no longer refuses a crawl
+	// or an ambiguous pair; RCS1 keeps the strict rules. Heading, distance and
+	// accuracy still refuse in both.
+	@Test
+	public void relaxedMatchAcceptsACrawlTheStrictOneRefuses() {
+		RouteDataObject road = road(1001,
+				point(43.0000, 27.0000), point(43.0000, 27.0100));
+		RoadCrewSegmentMatcher.PreparedSegments prepared =
+				RoadCrewSegmentMatcher.prepare(Collections.singletonList(road));
+		RoadCrewSegmentMatcher.GpsFix crawl = fix(43.0000, 27.0020, 5, 1, 90);
+
+		Assert.assertEquals(RoadCrewSegmentMatcher.Status.LOW_SPEED, prepared.match(crawl).getStatus());
+		Assert.assertTrue(prepared.matchRelaxed(crawl).isMatched());
+		Assert.assertEquals(RoadCrewSegmentMatcher.Status.DIRECTION_MISMATCH,
+				prepared.matchRelaxed(fix(43.0000, 27.0020, 5, 1, 0)).getStatus());
+	}
+
+	@Test
+	public void relaxedMatchTakesTheBestOfAnAmbiguousPair() {
+		RouteDataObject north = road(1003,
+				point(43.00005, 27.0000), point(43.00005, 27.0100));
+		RouteDataObject south = road(1004,
+				point(42.99995, 27.0000), point(42.99995, 27.0100));
+		RoadCrewSegmentMatcher.PreparedSegments prepared =
+				RoadCrewSegmentMatcher.prepare(Arrays.asList(north, south));
+		RoadCrewSegmentMatcher.GpsFix nearerNorth = fix(43.00001, 27.0050, 5, 15, 90);
+
+		Assert.assertEquals(RoadCrewSegmentMatcher.Status.AMBIGUOUS,
+				prepared.match(nearerNorth).getStatus());
+		RoadCrewSegmentMatcher.MatchResult relaxed = prepared.matchRelaxed(nearerNorth);
+		Assert.assertTrue(relaxed.isMatched());
+		Assert.assertEquals(north.getId(), relaxed.getSegment().getRoadId());
+	}
+
 	@Test
 	public void preparesNoSegmentsFromMissingRoads() {
 		RoadCrewSegmentMatcher.PreparedSegments prepared = RoadCrewSegmentMatcher.prepare(null);
