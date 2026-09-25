@@ -294,6 +294,7 @@ public class MapActivity extends OsmandActionBarActivity implements DownloadEven
 		getMapViewTrackingUtilities().setMapView(mapView);
 		getMapLayers().createAdditionalLayers(this);
 		RoadCrewNeonHud.apply(this);
+		net.osmand.plus.roadcrew.tacho.RoadCrewTachoReminder.schedule(this);
 
 		createProgressBarForRouting();
 		updateStatusBarColor();

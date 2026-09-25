@@ -3,6 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- The driver card reminder is armed again after a reboot (ROADMAP 327). -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <!--
         RoadCrew only, not stock OsmAnd (this file is the nightlyFree overlay):
@@ -54,5 +56,14 @@
         <receiver
             android:name="net.osmand.plus.roadcrew.RoadCrewHelpActionReceiver"
             android:exported="false" />
+        <!-- Driver card reminder: 08:00 on days 25-30 after the last download (ROADMAP 327). -->
+        <receiver
+            android:name="net.osmand.plus.roadcrew.tacho.RoadCrewTachoReminder"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest> 

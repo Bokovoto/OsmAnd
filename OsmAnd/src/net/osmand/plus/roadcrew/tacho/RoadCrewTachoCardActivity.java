@@ -1,7 +1,6 @@
 package net.osmand.plus.roadcrew.tacho;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -13,7 +12,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.usb.UsbDevice;
@@ -27,10 +25,8 @@ import android.provider.MediaStore;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -74,7 +70,7 @@ import java.util.concurrent.TimeUnit;
  * The driver card screen (ROADMAP 327), as in the mockup Galin approved on
  * 25.09.2026: the reader and the card are shown live, the download starts
  * with a button, the card is marked as downloaded right after the file is
- * stored and read back, and the file goes out by e-mail or Viber.
+ * stored and read back, and the file goes out through Android's share sheet.
  *
  * All USB work - polling the slot, reading the card, the download - runs on
  * one worker thread over one claimed reader interface; the screen state lives
@@ -92,12 +88,7 @@ public final class RoadCrewTachoCardActivity extends Activity {
 	private static final int READER_VENDOR_ID = 1839;
 	private static final int READER_PRODUCT_ID = 45312;
 	private static final long POLL_MILLIS = 1000;
-	/** Commission Regulation (EU) No 581/2010: driver card data at least every 28 days. */
-	private static final long DOWNLOAD_PERIOD_MILLIS = TimeUnit.DAYS.toMillis(28);
-	private static final String PREFS = "roadcrew_tacho";
-	private static final String PREF_LAST_DOWNLOAD = "last_download_at";
 	private static final String FOLDER = "RoadCrew";
-	private static final String VIBER_PACKAGE = "com.viber.voip";
 	private static final int HISTORY_ROWS = 5;
 
 	private enum Reader { NONE, NO_PERMISSION, CONNECTED }
@@ -668,11 +659,9 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		}
 	}
 
+	/** A download date from the card or from this download; a newer one moves the reminders. */
 	private void rememberLastDownload(long epochSeconds) {
-		SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-		if (epochSeconds > prefs.getLong(PREF_LAST_DOWNLOAD, 0)) {
-			prefs.edit().putLong(PREF_LAST_DOWNLOAD, epochSeconds).apply();
-		}
+		RoadCrewTachoReminder.remember(this, epochSeconds);
 	}
 
 	// ---- Files already downloaded -------------------------------------------------------------
@@ -758,75 +747,60 @@ public final class RoadCrewTachoCardActivity extends Activity {
 
 	// ---- Sending ---------------------------------------------------------------------------------
 
-	private void showSendSheet(@NonNull Stored file) {
-		View sheet = LayoutInflater.from(this).inflate(R.layout.roadcrew_tacho_send_sheet, null);
-		sheet.setBackground(shape(R.color.roadcrew_tacho_ground, 0, 20, true));
-		sheet.findViewById(R.id.roadcrewTachoSendHandle).setBackground(shape(R.color.roadcrew_tacho_handle, 0, 3, false));
-		((TextView) sheet.findViewById(R.id.roadcrewTachoSendSubtitle)).setText(getString(
-				R.string.roadcrew_tacho_send_subtitle, formatDateTime(file.takenAt), Formatter.formatShortFileSize(this, file.size)));
-		for (int id : new int[]{R.id.roadcrewTachoSendEmail, R.id.roadcrewTachoSendViber}) {
-			sheet.findViewById(id).setBackground(shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 14, false));
+	/**
+	 * Android's own share sheet with a ZIP holding the original DDD: the driver
+	 * picks any app - Viber, WhatsApp, Gmail, Telegram (Galin, 25.09, option 1).
+	 * ZIP because Viber refuses a .ddd file, even from the phone's own file
+	 * manager, and accepts the same file zipped (tested on his phone).
+	 */
+	private void share(@NonNull Stored file) {
+		Uri zip = prepareZip(file);
+		if (zip == null) {
+			Toast.makeText(this, R.string.roadcrew_tacho_send_failed, Toast.LENGTH_LONG).show();
+			return;
 		}
-		for (int id : new int[]{R.id.roadcrewTachoSendEmailIcon, R.id.roadcrewTachoSendViberIcon}) {
-			ImageView icon = sheet.findViewById(id);
-			icon.setBackground(shape(R.color.roadcrew_tacho_accent_bg, 0, 12, false));
-			icon.setColorFilter(color(R.color.roadcrew_tacho_accent));
-		}
-		Button cancel = sheet.findViewById(R.id.roadcrewTachoSendCancel);
-		cancel.setBackground(shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 14, false));
-
-		Dialog dialog = new Dialog(this);
-		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		dialog.setContentView(sheet);
-		Window window = dialog.getWindow();
-		if (window != null) {
-			window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-			window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			window.setGravity(Gravity.BOTTOM);
-			window.setDimAmount(0.45f);
-			window.getDecorView().setPadding(0, 0, 0, 0);
-		}
-		sheet.findViewById(R.id.roadcrewTachoSendEmail).setOnClickListener(v -> {
-			dialog.dismiss();
-			sendByEmail(file);
-		});
-		sheet.findViewById(R.id.roadcrewTachoSendViber).setOnClickListener(v -> {
-			dialog.dismiss();
-			sendByViber(file);
-		});
-		cancel.setOnClickListener(v -> dialog.dismiss());
-		dialog.show();
-	}
-
-	private Intent fileIntent(@NonNull Stored file) {
 		Intent send = new Intent(Intent.ACTION_SEND);
-		send.setType("application/octet-stream");
-		send.putExtra(Intent.EXTRA_STREAM, file.uri);
-		send.setClipData(ClipData.newRawUri(file.name, file.uri));
-		send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-		return send;
-	}
-
-	private void sendByEmail(@NonNull Stored file) {
-		Intent send = fileIntent(file);
+		send.setType("application/zip");
+		send.putExtra(Intent.EXTRA_STREAM, zip);
+		// Only e-mail uses a subject; messengers ignore it.
 		send.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.roadcrew_tacho_mail_subject, formatDateTime(file.takenAt)));
-		send.putExtra(Intent.EXTRA_TEXT, getString(R.string.roadcrew_tacho_mail_body, file.name));
-		// Only apps that handle mailto: are offered - e-mail, nothing else.
-		send.setSelector(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")));
-		try {
-			startActivity(send);
-		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this, R.string.roadcrew_tacho_no_mail_app, Toast.LENGTH_LONG).show();
-		}
+		send.setClipData(ClipData.newRawUri(RoadCrewTachoShareZip.zipName(file.name), zip));
+		send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		startActivity(Intent.createChooser(send, getString(R.string.roadcrew_tacho_send_title)));
 	}
 
-	private void sendByViber(@NonNull Stored file) {
-		Intent send = fileIntent(file);
-		send.setPackage(VIBER_PACKAGE);
+	/**
+	 * The ZIP written to the app's share cache, read back, and handed out
+	 * through the FileProvider - Android's way of giving a file to another app.
+	 */
+	@Nullable
+	private Uri prepareZip(@NonNull Stored file) {
+		File folder = new File(getCacheDir(), "share");
+		if (!folder.isDirectory() && !folder.mkdirs()) {
+			Log.w(TAG, "share folder cannot be created: " + folder);
+			return null;
+		}
 		try {
-			startActivity(send);
-		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this, R.string.roadcrew_tacho_no_viber, Toast.LENGTH_LONG).show();
+			byte[] ddd;
+			try (InputStream in = getContentResolver().openInputStream(file.uri)) {
+				ddd = readAll(in);
+			}
+			byte[] zip = RoadCrewTachoShareZip.zip(file.name, ddd, file.takenAt);
+			RoadCrewTachoShareZip.verify(zip, file.name, ddd);
+			File out = new File(folder, RoadCrewTachoShareZip.zipName(file.name));
+			try (FileOutputStream stream = new FileOutputStream(out)) {
+				stream.write(zip);
+				stream.getFD().sync();
+			}
+			try (InputStream in = new FileInputStream(out)) {
+				if (!Arrays.equals(readAll(in), zip)) {
+					throw new IOException(out.getName() + " did not read back as written");
+				}
+			}
+			return AndroidUtils.getUriForFile(this, out);
+		} catch (IOException | RuntimeException e) {
+			Log.w(TAG, "file cannot be prepared for sending: " + e.getMessage(), e);
+			return null;
 		}
 	}
 
@@ -879,6 +853,7 @@ public final class RoadCrewTachoCardActivity extends Activity {
 
 		downloadButton = findViewById(R.id.roadcrewTachoDownloadButton);
 		downloadButton.setOnClickListener(v -> startDownload());
+		keepIconBesideText(downloadButton);
 		hint = findViewById(R.id.roadcrewTachoHint);
 		sendButton = findViewById(R.id.roadcrewTachoSendButton);
 		sendButton.setBackground(shape(R.color.roadcrew_tacho_accent, 0, 14, false));
@@ -887,9 +862,10 @@ public final class RoadCrewTachoCardActivity extends Activity {
 				null, null, null);
 		sendButton.setOnClickListener(v -> {
 			if (doneFile != null) {
-				showSendSheet(doneFile);
+				share(doneFile);
 			}
 		});
+		keepIconBesideText(sendButton);
 		finishButton = findViewById(R.id.roadcrewTachoFinishButton);
 		finishButton.setBackground(shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 14, false));
 		finishButton.setOnClickListener(v -> {
@@ -1027,7 +1003,7 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		if (cardState == CardState.DRIVER && cardInfo != null) {
 			last = cardInfo.lastDownload;
 		} else {
-			last = getSharedPreferences(PREFS, MODE_PRIVATE).getLong(PREF_LAST_DOWNLOAD, -1);
+			last = RoadCrewTachoReminder.lastDownload(this);
 		}
 		boolean known = last >= 0 && (cardState == CardState.DRIVER || last > 0);
 		lastBlock.setVisibility(idle && known ? View.VISIBLE : View.GONE);
@@ -1041,7 +1017,8 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		}
 		lastText.setText(getString(R.string.roadcrew_tacho_last, formatDateTime(last * 1000L)));
 		nextText.setVisibility(View.VISIBLE);
-		nextText.setText(getString(R.string.roadcrew_tacho_next, formatDate(last * 1000L + DOWNLOAD_PERIOD_MILLIS)));
+		nextText.setText(getString(R.string.roadcrew_tacho_next,
+				formatDate(RoadCrewTachoReminderPlan.deadline(last, java.util.TimeZone.getDefault()))));
 	}
 
 	private void renderDone() {
@@ -1128,7 +1105,7 @@ public final class RoadCrewTachoCardActivity extends Activity {
 			send.setColorFilter(color(R.color.roadcrew_tacho_accent));
 			send.setBackground(shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 12, false));
 			send.setContentDescription(getString(R.string.roadcrew_tacho_send));
-			send.setOnClickListener(v -> showSendSheet(file));
+			send.setOnClickListener(v -> share(file));
 			row.addView(send, new LinearLayout.LayoutParams(dp(44), dp(44)));
 			historyRows.addView(row);
 		}
@@ -1174,6 +1151,22 @@ public final class RoadCrewTachoCardActivity extends Activity {
 			drawable.setCornerRadius(r);
 		}
 		return drawable;
+	}
+
+	/** A Button draws its start icon at the edge; pad both sides so icon and text sit together in the middle. */
+	private static void keepIconBesideText(@NonNull Button button) {
+		button.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+			Drawable icon = button.getCompoundDrawablesRelative()[0];
+			if (icon == null) {
+				return;
+			}
+			float text = button.getPaint().measureText(button.getText().toString());
+			int content = Math.round(icon.getIntrinsicWidth() + button.getCompoundDrawablePadding() + text);
+			int side = Math.max(0, (button.getWidth() - content) / 2);
+			if (button.getPaddingStart() != side || button.getPaddingEnd() != side) {
+				button.setPaddingRelative(side, button.getPaddingTop(), side, button.getPaddingBottom());
+			}
+		});
 	}
 
 	@Nullable

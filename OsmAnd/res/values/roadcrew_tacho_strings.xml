@@ -53,16 +53,7 @@
     <string name="roadcrew_tacho_finish">Done</string>
     <string name="roadcrew_tacho_history">Downloaded files</string>
     <string name="roadcrew_tacho_send_title">Send the file</string>
-    <string name="roadcrew_tacho_send_subtitle">Download of %1$s · %2$s. The file is attached automatically.</string>
-    <string name="roadcrew_tacho_send_email">E-mail</string>
-    <string name="roadcrew_tacho_send_email_detail">Opens your mail with the file attached</string>
-    <string name="roadcrew_tacho_send_viber">Viber</string>
-    <string name="roadcrew_tacho_send_viber_detail">You choose who to send it to</string>
-    <string name="roadcrew_tacho_send_cancel">Cancel</string>
-    <string name="roadcrew_tacho_no_mail_app">There is no e-mail app on this phone</string>
-    <string name="roadcrew_tacho_no_viber">Viber is not installed on this phone or does not take the file</string>
     <string name="roadcrew_tacho_mail_subject">Driver card download %1$s</string>
-    <string name="roadcrew_tacho_mail_body">Driver card file (DDD): %1$s</string>
     <string name="roadcrew_tacho_removed_title">The card or the reader was taken out during the download</string>
     <string name="roadcrew_tacho_removed_body">Nothing was written to the card and no file was created. Insert the card again and start over.</string>
     <string name="roadcrew_tacho_failed_title">The download did not finish</string>
@@ -96,4 +87,14 @@
     <string name="roadcrew_tacho_file_0528">Border crossings</string>
     <string name="roadcrew_tacho_file_0529">Loading and unloading</string>
     <string name="roadcrew_tacho_file_0530">Load types</string>
+    <string name="roadcrew_tacho_reminder_title">Download the driver card</string>
+    <string name="roadcrew_tacho_reminder_today">The deadline is today, %1$s.</string>
+    <string name="roadcrew_tacho_reminder_overdue">The deadline passed on %1$s. Download the card as soon as you can.</string>
+    <string name="roadcrew_tacho_reminder_channel">Driver card</string>
+    <string name="roadcrew_tacho_reminder_channel_description">Reminder to download the driver card</string>
+    <string name="roadcrew_tacho_send_failed">The file could not be prepared for sending</string>
+    <plurals name="roadcrew_tacho_reminder_left">
+        <item quantity="one">The deadline is %1$s, %2$d day left.</item>
+        <item quantity="other">The deadline is %1$s, %2$d days left.</item>
+    </plurals>
 </resources>

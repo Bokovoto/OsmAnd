@@ -53,16 +53,7 @@
     <string name="roadcrew_tacho_finish">Готово</string>
     <string name="roadcrew_tacho_history">Свалени файлове</string>
     <string name="roadcrew_tacho_send_title">Изпрати файла</string>
-    <string name="roadcrew_tacho_send_subtitle">Сваляне от %1$s · %2$s. Файлът се прикачва сам.</string>
-    <string name="roadcrew_tacho_send_email">Имейл</string>
-    <string name="roadcrew_tacho_send_email_detail">Отваря пощата с прикачен файл</string>
-    <string name="roadcrew_tacho_send_viber">Viber</string>
-    <string name="roadcrew_tacho_send_viber_detail">Избираш на кого да го пратиш</string>
-    <string name="roadcrew_tacho_send_cancel">Откажи</string>
-    <string name="roadcrew_tacho_no_mail_app">На телефона няма приложение за имейл</string>
-    <string name="roadcrew_tacho_no_viber">Viber не е инсталиран на телефона или не приема файла</string>
     <string name="roadcrew_tacho_mail_subject">Сваляне на шофьорска карта %1$s</string>
-    <string name="roadcrew_tacho_mail_body">Файл от шофьорската карта (DDD): %1$s</string>
     <string name="roadcrew_tacho_removed_title">Картата или четецът бяха извадени по време на свалянето</string>
     <string name="roadcrew_tacho_removed_body">Нищо не е записано на картата и няма създаден файл. Сложи картата отново и започни пак.</string>
     <string name="roadcrew_tacho_failed_title">Свалянето не завърши</string>
@@ -96,4 +87,14 @@
     <string name="roadcrew_tacho_file_0528">Преминаване на граници</string>
     <string name="roadcrew_tacho_file_0529">Товарене и разтоварване</string>
     <string name="roadcrew_tacho_file_0530">Видове товари</string>
+    <string name="roadcrew_tacho_reminder_title">Свали шофьорската карта</string>
+    <string name="roadcrew_tacho_reminder_today">Срокът е днес, %1$s.</string>
+    <string name="roadcrew_tacho_reminder_overdue">Срокът изтече на %1$s. Свали картата при първа възможност.</string>
+    <string name="roadcrew_tacho_reminder_channel">Шофьорска карта</string>
+    <string name="roadcrew_tacho_reminder_channel_description">Напомняне за сваляне на шофьорската карта</string>
+    <string name="roadcrew_tacho_send_failed">Файлът не можа да се подготви за изпращане</string>
+    <plurals name="roadcrew_tacho_reminder_left">
+        <item quantity="one">Срокът е до %1$s, остава %2$d ден.</item>
+        <item quantity="other">Срокът е до %1$s, остават %2$d дни.</item>
+    </plurals>
 </resources>
