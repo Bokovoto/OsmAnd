@@ -294,37 +294,46 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
         return if (available) reviewTrip(db, tripId) else null
     }
 
+    /**
+     * The stretch the review draws for one RCS2 row, or null when it cannot be
+     * drawn. The review and confirm() both ask this, so the answer is stamped
+     * on exactly what the driver was shown (ROADMAP 317).
+     */
+    private fun drawnStretch(db: SQLiteDatabase, observation: JSONObject): DoubleArray? = try {
+        val key = observation.getJSONObject("segmentKey")
+        val from = key.getDouble("fromMeasureMeters")
+        val to = key.getDouble("toMeasureMeters")
+        val fingerprint = key.getString("geometryFingerprint")
+        val algorithm = key.getInt("geometryFingerprintAlgorithm")
+        if (!(to > from) || algorithm != RoadCrewWayCanonical.FINGERPRINT_ALGORITHM) return null
+        val points = db.rawQuery("SELECT points FROM way_descriptors"
+            + " WHERE osm_way_id = ? AND algorithm = ? AND fingerprint = ?",
+            arrayOf(key.getString("osmWayId"), algorithm.toString(), fingerprint))
+            .use { if (it.moveToFirst()) JSONObject(it.getString(0)) else null } ?: return null
+        val xs = points.getJSONArray("pointsX")
+        val ys = points.getJSONArray("pointsY")
+        val way = RoadCrewWayCanonical.canonicalise(
+            IntArray(xs.length()) { xs.getInt(it) }, IntArray(ys.length()) { ys.getInt(it) })
+        // Only on the geometry the measures were taken on; a shape that does
+        // not match is not drawn, rather than guessed.
+        if (RoadCrewWayCanonical.canonicalFingerprint(way) != fingerprint) return null
+        RoadCrewDirectObservation.stretchLatLon(way, from, to)
+    } catch (error: Exception) {
+        null
+    }
+
     private fun reviewTrip(db: SQLiteDatabase, trip: String): Trip {
         val lines = ArrayList<DoubleArray>()
         var meters = 0.0
         db.rawQuery("SELECT json FROM direct_sections WHERE trip_id = ? AND state = 'STAGED' ORDER BY seq",
             arrayOf(trip)).use { cursor ->
             while (cursor.moveToNext()) {
-                try {
-                    val key = JSONObject(cursor.getString(0)).getJSONObject("segmentKey")
-                    val from = key.getDouble("fromMeasureMeters")
-                    val to = key.getDouble("toMeasureMeters")
-                    if (!(to > from)) continue
-                    meters += to - from
-                    val fingerprint = key.getString("geometryFingerprint")
-                    val algorithm = key.getInt("geometryFingerprintAlgorithm")
-                    if (algorithm != RoadCrewWayCanonical.FINGERPRINT_ALGORITHM) continue
-                    val points = db.rawQuery("SELECT points FROM way_descriptors"
-                        + " WHERE osm_way_id = ? AND algorithm = ? AND fingerprint = ?",
-                        arrayOf(key.getString("osmWayId"), algorithm.toString(), fingerprint))
-                        .use { if (it.moveToFirst()) JSONObject(it.getString(0)) else null } ?: continue
-                    val xs = points.getJSONArray("pointsX")
-                    val ys = points.getJSONArray("pointsY")
-                    val way = RoadCrewWayCanonical.canonicalise(
-                        IntArray(xs.length()) { xs.getInt(it) }, IntArray(ys.length()) { ys.getInt(it) })
-                    // Only on the geometry the measures were taken on; a shape
-                    // that does not match is not drawn, rather than guessed.
-                    if (RoadCrewWayCanonical.canonicalFingerprint(way) != fingerprint) continue
-                    lines.add(RoadCrewDirectObservation.stretchLatLon(way, from, to))
-                } catch (error: Exception) {
-                    // An unreadable row is not drawn; its length still counts,
-                    // because its answer is still sent.
-                }
+                val observation = try { JSONObject(cursor.getString(0)) } catch (error: Exception) { continue }
+                val line = drawnStretch(db, observation) ?: continue
+                // The number the driver confirms is what he is shown.
+                val key = observation.getJSONObject("segmentKey")
+                meters += key.getDouble("toMeasureMeters") - key.getDouble("fromMeasureMeters")
+                lines.add(line)
             }
         }
         return Trip(trip, readRows(db, "trip_id = ? AND state = 'STAGED'", arrayOf(trip)), lines, meters)
@@ -381,6 +390,10 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
                             // since the server refuses it without a course, and no
                             // course is invented for them. Missing means unknown.
                             if (observation.optString("comparisonGroupId").isBlank()) continue
+                            // Only what the review drew: the driver answered for
+                            // the road he was shown, not for a stretch he never
+                            // saw. With the RCS1 fallback nothing is drawn (317).
+                            if (drawnStretch(db, observation) == null) continue
                             val json = observation.put("suitabilityConfirmed", true).toString()
                             approved.add(cursor.getLong(0) to json)
                         }
