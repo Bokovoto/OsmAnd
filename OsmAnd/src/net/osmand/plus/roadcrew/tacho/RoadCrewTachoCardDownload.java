@@ -110,8 +110,46 @@ public final class RoadCrewTachoCardDownload {
 		}
 	}
 
+	/**
+	 * Called after every file the download asked the card for, found or not,
+	 * and once more with {@code fid} 0 when the total changes.
+	 */
+	public interface Progress {
+		Progress NONE = (done, total, fid, secondGeneration) -> { };
+
+		/**
+		 * {@code total} starts as if the card had Tachograph_G2 and drops once it
+		 * turns out not to, so the bar only ever moves forward.
+		 */
+		void file(int done, int total, int fid, boolean secondGeneration);
+	}
+
+	/** Files the download asks for: MF, DF Tachograph, DF Tachograph_G2. */
+	static final int FILES_G1 = 2 + 2 + SIGNED_G1.length;
+	static final int FILES_G2 = 3 + SIGNED_G2.length;
+
+	private static final class Counter {
+		final Progress progress;
+		int done;
+		int total = FILES_G1 + FILES_G2;
+
+		Counter(Progress progress) {
+			this.progress = progress;
+		}
+
+		void step(int fid, boolean secondGeneration) {
+			progress.file(++done, total, fid, secondGeneration);
+		}
+	}
+
 	/** Reads the whole driver card. Writes nothing. */
 	public static Result download(RoadCrewTachoDownloadDate.Channel channel) throws IOException {
+		return download(channel, Progress.NONE);
+	}
+
+	/** Reads the whole driver card, reporting each file. Writes nothing. */
+	public static Result download(RoadCrewTachoDownloadDate.Channel channel, Progress progress) throws IOException {
+		Counter counter = new Counter(progress);
 		ByteArrayOutputStream ddd = new ByteArrayOutputStream();
 		List<Integer> stored = new ArrayList<>();
 		List<String> absent = new ArrayList<>();
@@ -121,6 +159,7 @@ public final class RoadCrewTachoCardDownload {
 		// optional and unsigned (DDP_035).
 		for (int fid : new int[]{EF_ICC, EF_IC}) {
 			byte[] data = readUnsigned(channel, fid, warnings);
+			counter.step(fid, false);
 			if (data == null) {
 				absent.add(hex(fid) + " (MF)");
 			} else {
@@ -133,6 +172,7 @@ public final class RoadCrewTachoCardDownload {
 		expect(transceive(channel, selectByAid(AID_G1)), "SELECT DF Tachograph");
 		for (int fid : new int[]{EF_CARD_CERTIFICATE, EF_CA_CERTIFICATE}) {
 			byte[] data = readUnsigned(channel, fid, warnings);
+			counter.step(fid, false);
 			if (data == null) {
 				throw new IOException("Mandatory " + hex(fid) + " missing in DF Tachograph");
 			}
@@ -142,6 +182,7 @@ public final class RoadCrewTachoCardDownload {
 		byte[] identification = null;
 		for (int fid : SIGNED_G1) {
 			byte[][] signed = readSigned(channel, fid, SIGNATURE_LENGTH_G1, warnings);
+			counter.step(fid, false);
 			if (signed == null) {
 				if (fid == EF_APPLICATION_IDENTIFICATION || fid == EF_IDENTIFICATION) {
 					throw new IOException("Mandatory " + hex(fid) + " missing in DF Tachograph");
@@ -168,10 +209,15 @@ public final class RoadCrewTachoCardDownload {
 		if (!secondGeneration && sw(reply) != SW_FILE_NOT_FOUND) {
 			throw new IOException(String.format("SELECT DF Tachograph_G2 SW=%04X", sw(reply)));
 		}
+		if (!secondGeneration) {
+			counter.total = FILES_G1;
+			progress.file(counter.done, counter.total, 0, false);
+		}
 		if (secondGeneration) {
 			byte[] signCertificate = null;
 			for (int fid : new int[]{EF_CARD_SIGN_CERTIFICATE, EF_CA_CERTIFICATE, EF_LINK_CERTIFICATE}) {
 				byte[] data = readUnsigned(channel, fid, warnings);
+				counter.step(fid, true);
 				if (data == null) {
 					if (fid != EF_LINK_CERTIFICATE) {
 						throw new IOException("Mandatory " + hex(fid) + " missing in DF Tachograph_G2");
@@ -188,6 +234,7 @@ public final class RoadCrewTachoCardDownload {
 			Curve curve = curveOf(signCertificate);
 			for (int fid : SIGNED_G2) {
 				byte[][] signed = readSigned(channel, fid, curve.signatureLength, warnings);
+				counter.step(fid, true);
 				if (signed == null) {
 					if (fid == EF_APPLICATION_IDENTIFICATION || fid == EF_IDENTIFICATION) {
 						throw new IOException("Mandatory " + hex(fid) + " missing in DF Tachograph_G2");
@@ -205,6 +252,66 @@ public final class RoadCrewTachoCardDownload {
 		String number = identification != null && identification.length >= 17
 				? new String(identification, 1, 16, StandardCharsets.ISO_8859_1).trim() : "";
 		return new Result(ddd.toByteArray(), secondGeneration, state, number, stored, absent, warnings);
+	}
+
+	/** What the screen shows about the inserted card before any download. */
+	public static final class CardInfo {
+		public final boolean driverCard;
+		public final int issuingMemberState;
+		public final String cardNumber;
+		public final String surname;
+		public final String firstNames;
+		/** LastCardDownload of DF Tachograph, seconds since 1970 (0: never). */
+		public final long lastDownload;
+
+		CardInfo(boolean driverCard, int issuingMemberState, String cardNumber, String surname, String firstNames,
+				long lastDownload) {
+			this.driverCard = driverCard;
+			this.issuingMemberState = issuingMemberState;
+			this.cardNumber = cardNumber;
+			this.surname = surname;
+			this.firstNames = firstNames;
+			this.lastDownload = lastDownload;
+		}
+	}
+
+	/**
+	 * Card type, card number, holder name and LastCardDownload from DF
+	 * Tachograph - files every card generation has and anyone may read. Writes
+	 * nothing. A card that is not a driver card is reported, not read further.
+	 */
+	public static CardInfo readInfo(RoadCrewTachoDownloadDate.Channel channel) throws IOException {
+		expect(transceive(channel, selectByAid(AID_G1)), "SELECT DF Tachograph");
+		expect(transceive(channel, selectEf(EF_APPLICATION_IDENTIFICATION)), "SELECT Application_Identification");
+		byte[] type = expectData(transceive(channel, readBinary(0, 1)), 1, "READ card type");
+		if (type[0] != 1) {
+			return new CardInfo(false, -1, "", "", "", 0);
+		}
+		// EF Identification: CardIdentification (member state, card number,
+		// authority, three dates - 65 bytes), then DriverCardHolderIdentification:
+		// surname and first names, each a code page byte and 35 characters.
+		byte[] id = readUnsigned(channel, EF_IDENTIFICATION, new ArrayList<>());
+		if (id == null || id.length < 137) {
+			throw new IOException("EF Identification missing or too short");
+		}
+		expect(transceive(channel, selectEf(EF_CARD_DOWNLOAD)), "SELECT Card_Download");
+		byte[] last = expectData(transceive(channel, readBinary(0, 4)), 4, "READ Card_Download");
+		return new CardInfo(true, id[0] & 0xFF, new String(id, 1, 16, StandardCharsets.ISO_8859_1).trim(),
+				name(id, 65), name(id, 101), timeReal(last));
+	}
+
+	/** A Name: code page byte (1-16 ISO/IEC 8859-n, 80 KOI8-R, 85 KOI8-U), then 35 characters. */
+	static String name(byte[] data, int offset) {
+		int codePage = data[offset] & 0xFF;
+		String charset = codePage >= 1 && codePage <= 16 ? "ISO-8859-" + codePage
+				: codePage == 80 ? "KOI8-R" : codePage == 85 ? "KOI8-U" : "ISO-8859-1";
+		java.nio.charset.Charset decoder;
+		try {
+			decoder = java.nio.charset.Charset.forName(charset);
+		} catch (IllegalArgumentException e) {
+			decoder = StandardCharsets.ISO_8859_1;
+		}
+		return new String(data, offset + 1, 35, decoder).replace((char) 0, ' ').trim();
 	}
 
 	/**

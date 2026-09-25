@@ -31,6 +31,10 @@ public class CardDownloadTest {
 	static final byte[] AID_G2 = {(byte) 0xFF, 0x53, 0x4D, 0x52, 0x44, 0x54};
 	static final byte[] BRAINPOOL_256 = {0x06, 0x09, 0x2B, 0x24, 0x03, 0x03, 0x02, 0x08, 0x01, 0x01, 0x07};
 	static final byte[] NIST_384 = {0x06, 0x05, 0x2B, (byte) 0x81, 0x04, 0x00, 0x22};
+	static final byte[] NIST_256 = {0x06, 0x08, 0x2A, (byte) 0x86, 0x48, (byte) 0xCE, 0x3D, 0x03, 0x01, 0x07};
+	/** The engine's order of the signed Tachograph_G2 files (TCS_152, DDP_035). */
+	static final int[] SIGNED_G2 = {0x0501, 0xC100, 0x0520, 0x0521, 0x0502, 0x0503, 0x0504, 0x0505, 0x0506,
+			0x0507, 0x0508, 0x0522, 0x0523, 0x0524, 0x0525, 0x0526, 0x0527, 0x0528, 0x0529, 0x0530};
 
 	/** How a card answers a READ BINARY that runs past the end (TCS_43 allows both). */
 	enum EndOfFile { SIX_C, SIX_SEVEN }
@@ -194,6 +198,19 @@ public class CardDownloadTest {
 		return id;
 	}
 
+	/** EF Identification with a holder name: CardIdentification (65 bytes), then surname and first names (codePage + 35 bytes each). */
+	static byte[] identification(String number, int codePage, String surname, String firstNames) throws Exception {
+		byte[] id = identification(number);
+		String charset = codePage == 5 ? "ISO-8859-5" : "ISO-8859-1";
+		id[65] = (byte) codePage;
+		byte[] s = String.format("%-35s", surname).getBytes(charset);
+		System.arraycopy(s, 0, id, 66, 35);
+		id[101] = (byte) codePage;
+		byte[] f = String.format("%-35s", firstNames).getBytes(charset);
+		System.arraycopy(f, 0, id, 102, 35);
+		return id;
+	}
+
 	static byte[] applicationIdentification(int type, int length) {
 		byte[] a = bytes(length, 1);
 		a[0] = (byte) type;
@@ -247,6 +264,33 @@ public class CardDownloadTest {
 		return card;
 	}
 
+	/**
+	 * The shape of Galin's Gen2 working card as it answered on 25.09 (ROADMAP
+	 * 327): every file size, a NIST P-256 signing key, Link_Certificate
+	 * present but 205 zero bytes, version 2 files 0525-0530, 6700 past the end
+	 * of a file, P2 00 only. No personal data: the contents are synthetic.
+	 */
+	static Card workingCardTwin() {
+		Card card = gen2Card(NIST_256, 64);
+		card.endOfFile = EndOfFile.SIX_SEVEN;
+		card.g1.put(0x0522, bytes(280, 22));
+		byte[] sign = bytes(204, 101);
+		System.arraycopy(NIST_256, 0, sign, 60, NIST_256.length);
+		card.g2.put(0xC101, sign);
+		card.g2.put(0xC100, bytes(204, 100));
+		card.g2.put(0xC108, bytes(205, 108));
+		card.g2.put(0xC109, new byte[205]);
+		card.g2.put(0x0523, bytes(2002, 123));
+		card.g2.put(0x0524, bytes(6050, 124));
+		card.g2.put(0x0525, bytes(10, 125));
+		card.g2.put(0x0526, bytes(562, 126));
+		card.g2.put(0x0527, bytes(1682, 127));
+		card.g2.put(0x0528, bytes(19042, 128));
+		card.g2.put(0x0529, bytes(32482, 129));
+		card.g2.put(0x0530, bytes(1682, 130));
+		return card;
+	}
+
 	/** The DDD as TLVs, in order: [tag, value]. */
 	static List<Object[]> parse(byte[] ddd) {
 		List<Object[]> out = new ArrayList<>();
@@ -273,11 +317,17 @@ public class CardDownloadTest {
 				"050200", "050201", "050300", "050301", "050400", "050401", "050500", "050501",
 				"050600", "050601", "050700", "050701", "050800", "050801", "052200", "052201"));
 		if (card.hasG2) {
-			expected.addAll(Arrays.asList("C10102", "C10802",
-					"050102", "050103", "C10002", "C10003", "052002", "052003", "052102", "052103",
-					"050202", "050203", "050302", "050303", "050402", "050403", "050502", "050503",
-					"050602", "050603", "050702", "050703", "050802", "050803", "052202", "052203",
-					"052302", "052303", "052402", "052403"));
+			for (int fid : new int[]{0xC101, 0xC108, 0xC109}) {
+				if (card.g2.containsKey(fid)) {
+					expected.add(String.format("%04X02", fid));
+				}
+			}
+			for (int fid : SIGNED_G2) {
+				if (card.g2.containsKey(fid)) {
+					expected.add(String.format("%04X02", fid));
+					expected.add(String.format("%04X03", fid));
+				}
+			}
 		}
 		check(tags.equals(expected), "DDD tags in order\n expected " + expected + "\n got      " + tags);
 		for (Object[] t : tlvs) {
@@ -345,6 +395,51 @@ public class CardDownloadTest {
 		g2p384.endOfFile = EndOfFile.SIX_SEVEN;
 		checkDdd(g2p384, RoadCrewTachoCardDownload.download(g2p384));
 		checkOrderAndHash(g2p384);
+
+		// The working card's twin: 38 files, and progress after every one of them.
+		Card twin = workingCardTwin();
+		List<int[]> steps = new ArrayList<>();
+		RoadCrewTachoCardDownload.Result twinResult = RoadCrewTachoCardDownload.download(twin,
+				(done, total, fid, secondGeneration) -> steps.add(new int[]{done, total, fid, secondGeneration ? 1 : 0}));
+		checkDdd(twin, twinResult);
+		checkOrderAndHash(twin);
+		check(twinResult.storedTags.size() == 38 && twinResult.absent.isEmpty() && twinResult.warnings.isEmpty(),
+				"twin: 38 files like the real card, nothing absent, no warnings");
+		check(steps.size() == 38, "twin: one progress step per file, got " + steps.size());
+		for (int i = 0; i < steps.size(); i++) {
+			check(steps.get(i)[0] == i + 1 && steps.get(i)[1] == 38, "twin: step " + (i + 1) + " of 38");
+		}
+		check(steps.get(0)[2] == 0x0002 && steps.get(37)[2] == 0x0530 && steps.get(37)[3] == 1,
+				"twin: from ICC to the last Tachograph_G2 file");
+
+		List<int[]> steps1 = new ArrayList<>();
+		RoadCrewTachoCardDownload.download(gen1Card(),
+				(done, total, fid, secondGeneration) -> steps1.add(new int[]{done, total}));
+		int[] last = steps1.get(steps1.size() - 1);
+		check(last[0] == 15 && last[1] == 15,
+				"gen1: the total drops to 15 once there is no Tachograph_G2, and ends at 15 of 15");
+		for (int i = 0; i < steps1.size(); i++) {
+			check(steps1.get(i)[0] <= steps1.get(i)[1], "done never exceeds total");
+			check(i == 0 || steps1.get(i)[0] >= steps1.get(i - 1)[0], "done never goes back");
+		}
+
+		// What the screen shows before the download: read only, nothing written.
+		Card named = gen2Card(BRAINPOOL_256, 64);
+		named.g1.put(0x0520, identification("0000000123456700", 5, "ИВАНОВ", "ПЕТЪР"));
+		RoadCrewTachoCardDownload.CardInfo info = RoadCrewTachoCardDownload.readInfo(named);
+		check(info.driverCard, "info: a driver card");
+		check(info.cardNumber.equals("0000000123456700") && info.issuingMemberState == 0x0B, "info: card number");
+		check(info.surname.equals("ИВАНОВ") && info.firstNames.equals("ПЕТЪР"),
+				"info: Cyrillic name through code page 5, got " + info.surname + " / " + info.firstNames);
+		check(info.lastDownload == 0x60000000L, "info: LastCardDownload");
+		check(named.writes == 0, "info: nothing written");
+		Card latin = gen1Card();
+		latin.g1.put(0x0520, identification("0000000123456700", 1, "MÜLLER", "ANNA"));
+		RoadCrewTachoCardDownload.CardInfo latinInfo = RoadCrewTachoCardDownload.readInfo(latin);
+		check(latinInfo.surname.equals("MÜLLER") && latinInfo.firstNames.equals("ANNA"), "info: code page 1");
+		Card companyInfo = gen1Card();
+		companyInfo.g1.put(0x0501, applicationIdentification(4, 10));
+		check(!RoadCrewTachoCardDownload.readInfo(companyInfo).driverCard, "info: a company card is not a driver card");
 
 		Card company = gen1Card();
 		company.g1.put(0x0501, applicationIdentification(4, 10));
