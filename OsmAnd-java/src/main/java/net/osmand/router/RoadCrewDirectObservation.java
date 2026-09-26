@@ -43,6 +43,16 @@ public final class RoadCrewDirectObservation {
 	public final long lastFixSequence;
 	public final double maximumDistanceMeters;
 	public final double maximumHeadingDifferenceDegrees;
+	/**
+	 * ROADMAP 330: where this observation stands in its course, in travel order;
+	 * -1 when the caller keeps no count. The server joins an observation to the
+	 * one before only when it follows directly and says joinsPrevious.
+	 */
+	public final int passageIndex;
+	/** Proven, by R1 or R2, to continue the observation with passageIndex - 1. */
+	public final boolean joinsPrevious;
+	/** A way crossed without a fix, recorded because nothing branched off it. */
+	public final boolean bridged;
 
 	private RoadCrewDirectObservation(long osmWayId, boolean forward,
 			double fromMeasureMeters, double toMeasureMeters,
@@ -52,7 +62,11 @@ public final class RoadCrewDirectObservation {
 			String region, String mapVersion, long observedAtBucketMillis, int fixCount,
 			long durationMillis, double forwardMovementMeters,
 			long firstFixSequence, long lastFixSequence,
-			double maximumDistanceMeters, double maximumHeadingDifferenceDegrees) {
+			double maximumDistanceMeters, double maximumHeadingDifferenceDegrees,
+			int passageIndex, boolean joinsPrevious, boolean bridged) {
+		this.passageIndex = passageIndex;
+		this.joinsPrevious = joinsPrevious;
+		this.bridged = bridged;
 		this.osmWayId = osmWayId;
 		this.forward = forward;
 		this.fromMeasureMeters = fromMeasureMeters;
@@ -101,6 +115,18 @@ public final class RoadCrewDirectObservation {
 	public static List<RoadCrewDirectObservation> fromPassage(
 			RoadCrewDirectPassageAccumulator.Passage passage,
 			RoadCrewWayCanonical.CanonicalWay way, String region, String mapVersion) {
+		return fromPassage(passage, way, region, mapVersion, -1, false);
+	}
+
+	/**
+	 * As above, numbered from {@code firstIndex} in travel order. The first
+	 * observation carries {@code joinsPrevious}; a ring's later parts are the
+	 * same passage and always continue the part before.
+	 */
+	public static List<RoadCrewDirectObservation> fromPassage(
+			RoadCrewDirectPassageAccumulator.Passage passage,
+			RoadCrewWayCanonical.CanonicalWay way, String region, String mapVersion,
+			int firstIndex, boolean joinsPrevious) {
 		if (passage == null || way == null || way.getPointCount() < 2
 				|| passage.spans == null || passage.spans.isEmpty()) {
 			return Collections.emptyList();
@@ -155,7 +181,10 @@ public final class RoadCrewDirectObservation {
 					region == null ? "" : region.trim(), mapVersion == null ? "" : mapVersion.trim(),
 					bucket, spanFixCount, spanDuration, spanMovement,
 					passage.firstFixSequence, passage.lastFixSequence,
-					passage.maximumDistanceMeters, passage.maximumHeadingDifferenceDegrees));
+					passage.maximumDistanceMeters, passage.maximumHeadingDifferenceDegrees,
+					firstIndex < 0 ? -1 : firstIndex + observations.size(),
+					firstIndex >= 0 && (observations.isEmpty() ? joinsPrevious : true),
+					passage.bridged));
 		}
 		return observations;
 	}

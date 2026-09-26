@@ -242,7 +242,8 @@ public final class RoadCrewObfSegmentLoader {
 		}
 	}
 
-	private static final class Bounds31 {
+	/** Also what RoadCrewRoadTopology records as covered: every road with a node inside was loaded. */
+	static final class Bounds31 {
 		private final int left;
 		private final int right;
 		private final int top;
@@ -255,7 +256,7 @@ public final class RoadCrewObfSegmentLoader {
 			this.bottom = bottom;
 		}
 
-		private static Bounds31 around(double latitude, double longitude, double radiusMeters) {
+		static Bounds31 around(double latitude, double longitude, double radiusMeters) {
 			double latitudeDelta = radiusMeters / 111_320.0;
 			double longitudeScale = Math.max(0.01, Math.cos(Math.toRadians(latitude)));
 			double longitudeDelta = radiusMeters / (111_320.0 * longitudeScale);
@@ -264,6 +265,10 @@ public final class RoadCrewObfSegmentLoader {
 					MapUtils.get31TileNumberX(longitude + longitudeDelta),
 					MapUtils.get31TileNumberY(latitude + latitudeDelta),
 					MapUtils.get31TileNumberY(latitude - latitudeDelta));
+		}
+
+		boolean contains(int x, int y) {
+			return x >= left && x <= right && y >= top && y <= bottom;
 		}
 
 		private boolean intersects(RouteDataObject object) {

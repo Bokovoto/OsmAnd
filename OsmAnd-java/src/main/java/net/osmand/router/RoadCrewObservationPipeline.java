@@ -74,7 +74,16 @@ public final class RoadCrewObservationPipeline {
 	 */
 	public synchronized void enableDirectPipeline(RoadCrewDirectPassageAccumulator.Config config,
 			RoadCrewDirectPassageAccumulator.PassageSink sink) {
-		directPipeline = sink == null ? null : new RoadCrewDirectPipeline(config, sink);
+		enableDirectPipeline(config, sink, null);
+	}
+
+	/**
+	 * @param roads loads roads beyond those in memory when the map has to prove
+	 *              a path across a disappearance of GPS (ROADMAP 330)
+	 */
+	public synchronized void enableDirectPipeline(RoadCrewDirectPassageAccumulator.Config config,
+			RoadCrewDirectPassageAccumulator.PassageSink sink, RoadCrewRoadTopology.RoadSource roads) {
+		directPipeline = sink == null ? null : new RoadCrewDirectPipeline(config, sink, roads);
 	}
 
 	/** Where finished directed passages go once shaped for the wire. */
@@ -142,7 +151,33 @@ public final class RoadCrewObservationPipeline {
 				return road;
 			}
 		}
-		return null;
+		// A way crossed without a fix (ROADMAP 330) may lie beyond the roads the
+		// matcher holds; the directed pipeline loaded it to prove the path.
+		return directPipeline == null ? null : directPipeline.roadForOsmWay(osmWayId);
+	}
+
+	/**
+	 * As replaceRoads(roads), with the area they were loaded for: the map
+	 * questions of ROADMAP 330 then need no load of their own inside it.
+	 */
+	public synchronized int replaceRoads(Iterable<RouteDataObject> roads, double latitude,
+			double longitude, double radiusMeters) {
+		int prepared = replaceRoads(roads);
+		if (directPipeline != null) {
+			directPipeline.replaceRoads(roadsById.values(), latitude, longitude, radiusMeters);
+		}
+		return prepared;
+	}
+
+	/** A position without speed or bearing: it only keeps the record of GPS present. */
+	public synchronized void acceptPosition(double latitude, double longitude, double accuracyMeters,
+			long observedAtMillis) {
+		if (directPipeline != null) {
+			try {
+				directPipeline.acceptPosition(latitude, longitude, accuracyMeters, observedAtMillis);
+			} catch (RuntimeException ignored) {
+			}
+		}
 	}
 
 	public synchronized int replaceRoads(Iterable<RouteDataObject> roads) {

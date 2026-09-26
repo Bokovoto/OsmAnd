@@ -3,7 +3,10 @@ package net.osmand.router;
 import net.osmand.binary.RouteDataObject;
 import net.osmand.util.MapUtils;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,9 +32,12 @@ public final class RoadCrewDirectPipeline {
 		/** Cumulative distance along the map file's own point order. */
 		final double[] rawMeasures;
 		final String region;
+		/** The map's own object, for the questions of ROADMAP 330. */
+		final RouteDataObject road;
 
 		WayInfo(long osmWayId, RoadCrewWayCanonical.CanonicalWay canonical, double[] rawMeasures,
-				String region) {
+				String region, RouteDataObject road) {
+			this.road = road;
 			this.osmWayId = osmWayId;
 			this.canonical = canonical;
 			this.rawMeasures = rawMeasures;
@@ -67,14 +73,100 @@ public final class RoadCrewDirectPipeline {
 	/** Set by toDirectFix, consumed once the accumulator has accepted the fix. */
 	private WayInfo lastInfo;
 
+	/** ROADMAP 330: the map questions, over the roads the matcher holds. */
+	private final RoadCrewRoadTopology topology;
+	/** The next observation's place in the course; never reset while the course lasts. */
+	private int nextPassageIndex;
+	/** A passage was dropped here, so whatever comes next has nothing to join. */
+	private boolean chainBroken;
+
 	public RoadCrewDirectPipeline(RoadCrewDirectPassageAccumulator.Config config,
 			RoadCrewDirectPassageAccumulator.PassageSink sink) {
+		this(config, sink, null);
+	}
+
+	/**
+	 * @param roads loads the roads around a point the path needs and memory
+	 *              lacks; without it only the roads in memory can prove anything
+	 */
+	public RoadCrewDirectPipeline(RoadCrewDirectPassageAccumulator.Config config,
+			RoadCrewDirectPassageAccumulator.PassageSink sink, RoadCrewRoadTopology.RoadSource roads) {
 		this.accumulator = new RoadCrewDirectPassageAccumulator(config, passage -> {
 			if (sink != null) {
 				sink.accept(passage);
 			}
 			emit(passage);
 		});
+		this.topology = new RoadCrewRoadTopology(roads);
+		accumulator.setTopology(new MapProof());
+	}
+
+	/**
+	 * Answers the accumulator's questions in its own terms - canonical measures,
+	 * WayInfo attachments - by asking the map in the map file's terms.
+	 */
+	private final class MapProof implements RoadCrewDirectPassageAccumulator.Topology {
+		@Override
+		public boolean meetAt(Object fromWay, Object toWay, List<double[]> positions,
+				double radiusMeters) {
+			if (!(fromWay instanceof WayInfo) || !(toWay instanceof WayInfo)) {
+				return false;
+			}
+			return RoadCrewRoadTopology.meetAt(((WayInfo) fromWay).road, ((WayInfo) toWay).road,
+					positions, radiusMeters);
+		}
+
+		@Override
+		public List<RoadCrewDirectPassageAccumulator.Leg> withoutBranch(Object fromWay,
+				boolean fromForward, double fromMeasure, Object toWay, boolean toForward,
+				double toMeasure) {
+			if (!(fromWay instanceof WayInfo) || !(toWay instanceof WayInfo)) {
+				return null;
+			}
+			WayInfo from = (WayInfo) fromWay;
+			WayInfo to = (WayInfo) toWay;
+			if (from.road == null || to.road == null || from.canonical.closed || to.canonical.closed) {
+				return null;
+			}
+			List<RoadCrewRoadTopology.Step> steps;
+			try {
+				steps = topology.withoutBranch(from.road, rawForward(from, fromForward),
+						rawMeasure(from, fromMeasure), to.road, rawForward(to, toForward),
+						rawMeasure(to, toMeasure));
+			} catch (IOException | RuntimeException e) {
+				// Nothing checked, nothing proven - and never a reason to disturb the drive.
+				count("topology_failed");
+				return null;
+			}
+			if (steps == null) {
+				return null;
+			}
+			List<RoadCrewDirectPassageAccumulator.Leg> legs = new ArrayList<>(steps.size());
+			for (RoadCrewRoadTopology.Step step : steps) {
+				WayInfo info;
+				try {
+					info = infoFor(step.road);
+				} catch (RuntimeException e) {
+					info = null;
+				}
+				if (info == null || info.canonical.closed) {
+					return null;
+				}
+				legs.add(new RoadCrewDirectPassageAccumulator.Leg(info.osmWayId,
+						info.canonical.reversed ? !step.forward : step.forward,
+						info.canonical.lengthMeters, info));
+			}
+			return legs;
+		}
+	}
+
+	/** Canonical to raw: an open way is only ever mirrored. */
+	private static boolean rawForward(WayInfo info, boolean canonicalForward) {
+		return info.canonical.reversed ? !canonicalForward : canonicalForward;
+	}
+
+	private static double rawMeasure(WayInfo info, double canonicalMeasure) {
+		return info.canonical.reversed ? info.canonical.lengthMeters - canonicalMeasure : canonicalMeasure;
 	}
 
 	/** Diagnostic build only; without one nothing is counted. */
@@ -145,27 +237,77 @@ public final class RoadCrewDirectPipeline {
 				? (WayInfo) passage.attachment : null;
 		if (info == null) {
 			count("observations_dropped_no_geometry");
+			chainBroken = true;
 			return;
 		}
 		if (info.osmWayId != passage.wayId) {
 			// Now impossible: both come from the fix that started the passage.
 			// Counted rather than thrown - nothing here may disturb the drive.
 			count("observations_dropped_geometry_mismatch");
+			chainBroken = true;
 			return;
 		}
+		// A passage dropped just before this one leaves nothing to join to: the
+		// server would otherwise join across it to the one before (ROADMAP 330).
 		java.util.List<RoadCrewDirectObservation> observations =
-				RoadCrewDirectObservation.fromPassage(passage, info.canonical, info.region, mapVersion);
+				RoadCrewDirectObservation.fromPassage(passage, info.canonical, info.region, mapVersion,
+						nextPassageIndex, passage.joinsPrevious && !chainBroken);
 		if (observations.isEmpty()) {
 			count("observations_dropped_no_span");
+			chainBroken = true;
 			return;
 		}
+		nextPassageIndex += observations.size();
+		chainBroken = false;
 		count("observations_created");
+		if (passage.bridged) {
+			count("observations_bridged");
+		}
 		sink.accept(observations);
 	}
 
 	/** Called when the loader swaps the roads held in memory. */
 	public void replaceRoads() {
 		cache.clear();
+		topology.clear();
+	}
+
+	/**
+	 * As above, with the roads now in memory and the area they were loaded
+	 * for, so the map questions of ROADMAP 330 need no load of their own there.
+	 */
+	public void replaceRoads(Iterable<RouteDataObject> roads, double latitude, double longitude,
+			double radiusMeters) {
+		cache.clear();
+		topology.replace(roads, latitude, longitude, radiusMeters);
+	}
+
+	/**
+	 * A GPS position that is not matched at all - no speed or bearing, a truck
+	 * standing. It only tells a disappearance of GPS from a stop (ROADMAP 330).
+	 */
+	public void acceptPosition(double latitude, double longitude, double accuracyMeters,
+			long observedAtMillis) {
+		if (isPosition(latitude, longitude, accuracyMeters)) {
+			accumulator.position(observedAtMillis, latitude, longitude);
+		}
+	}
+
+	/** The matcher's own bar: a fix it would refuse for accuracy is no GPS here either. */
+	private static boolean isPosition(double latitude, double longitude, double accuracyMeters) {
+		return Double.isFinite(latitude) && Double.isFinite(longitude)
+				&& Double.isFinite(accuracyMeters) && accuracyMeters > 0
+				&& accuracyMeters <= RoadCrewSegmentMatcher.MAX_ACCEPTED_ACCURACY_METERS;
+	}
+
+	/** A road this pipeline described recently, for the way-shape upload. */
+	public RouteDataObject roadForOsmWay(long osmWayId) {
+		for (WayInfo info : cache.values()) {
+			if (info.osmWayId == osmWayId && info.road != null) {
+				return info.road;
+			}
+		}
+		return null;
 	}
 
 	public void reset() {
@@ -192,6 +334,9 @@ public final class RoadCrewDirectPipeline {
 	public void accept(RoadCrewSegmentMatcher.GpsFix fix, RoadCrewSegmentMatcher.MatchResult match,
 			RouteDataObject road, long observedAtMillis, long fixSequence) {
 		if (fix != null) {
+			if (isPosition(fix.getLatitude(), fix.getLongitude(), fix.getAccuracyMeters())) {
+				accumulator.position(observedAtMillis, fix.getLatitude(), fix.getLongitude());
+			}
 			if (hasPreviousFix) {
 				pendingMovementMeters += MapUtils.getDistance(previousLatitude, previousLongitude,
 						fix.getLatitude(), fix.getLongitude());
@@ -373,7 +518,7 @@ public final class RoadCrewDirectPipeline {
 		String region = road.region == null || road.region.getName() == null
 				? "" : road.region.getName().trim();
 		WayInfo info = new WayInfo(osmWayId, RoadCrewWayCanonical.canonicalise(xs, ys), rawMeasures,
-				region);
+				region, road);
 		cache.put(road, info);
 		return info;
 	}
