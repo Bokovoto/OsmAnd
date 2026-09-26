@@ -331,7 +331,9 @@ public class RouteProvider {
 		if (suppliedPrecalculated == null) {
 			preferences = preferences.within(minLat - 0.2, maxLat + 0.2, minLon - 0.3, maxLon + 0.3);
 		}
-		boolean communityRanking = !preferences.isEmpty();
+		// Native and HH routing know nothing of RoadCrew: any community evidence -
+		// segment preferences or RCS2 cells with their turns - keeps this pass on Java.
+		boolean communityRanking = !preferences.isEmpty() || !cellPreferences.isEmpty();
 
 		RoutePlannerFrontEnd.CALCULATE_MISSING_MAPS = !OsmandSettings.IGNORE_MISSING_MAPS;
 		RoutePlannerFrontEnd.CONTINUE_ON_MISSING_MAPS = !OsmandSettings.STOP_ON_MISSING_MAPS;
@@ -363,7 +365,8 @@ public class RouteProvider {
 		cf.roadCrewPreferences = preferences;
 		cf.roadCrewCellPreferences = cellPreferences;
 		if (communityRanking) {
-			log.info("RoadCrew directed soft ranking: " + preferences.size() + " validated sections, Java A*");
+			log.info("RoadCrew directed soft ranking: " + preferences.size() + " validated sections, "
+					+ cellPreferences.size() + " cell records, Java A*");
 		}
 		PrecalculatedRouteDirection precalculated = suppliedPrecalculated;
 		if (calcGPXRoute && precalculated == null) {

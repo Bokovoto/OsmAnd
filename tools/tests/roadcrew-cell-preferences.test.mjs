@@ -113,3 +113,16 @@ test('turn-only evidence reaches the refinement pass without enabling global cel
   assert.match(downloader, /roads\.put\(tileRoads\.get\(index\)\)/,
     'download/merge preserves the whole road record, including turns');
 });
+
+// ROADMAP 328: the APK is about to carry OsmAnd's native router, which knows
+// nothing of RoadCrew. Cell evidence alone (RCS2 - turns included) must keep the
+// refinement pass on Java: no native library, no HH. Until now every route ran
+// in Java because the library was missing, which hid this.
+test('cell evidence alone keeps the refinement pass on Java (no native, no HH)', () => {
+  const provider = read('../../OsmAnd/src/net/osmand/plus/routing/RouteProvider.java');
+  assert.match(provider, /boolean communityRanking = !preferences\.isEmpty\(\) \|\| !cellPreferences\.isEmpty\(\);/,
+    'community ranking must count cell evidence, not only segment preferences');
+  assert.match(provider, /if \(communityRanking\) \{\s*lib = null;/, 'community ranking drops the native library');
+  assert.match(provider, /isFastRoutingPossible\(params\.mode\) && roadCrewOverlay\.isEmpty\(\) && !communityRanking/,
+    'community ranking keeps HH off');
+});
