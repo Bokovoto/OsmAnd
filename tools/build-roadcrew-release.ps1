@@ -1,7 +1,10 @@
 param(
 	[int] $VersionCode = 5400,
 	[string] $VersionName = "0.1.0-test.79",
-	[string] $OutputDirectory = "output/roadcrew-secure-release"
+	[string] $OutputDirectory = "output/roadcrew-secure-release",
+	# ABIs that must carry OsmAnd's native core. A release carries all four;
+	# a test build for one phone may name only arm64-v8a.
+	[string[]] $NativeAbis = @("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
 )
 
 $ErrorActionPreference = "Stop"
@@ -95,6 +98,25 @@ try {
 	$badging = & $aapt dump badging $apk.FullName
 	if ($LASTEXITCODE -ne 0 -or ($badging -match "application-debuggable")) {
 		throw "Release verification failed: APK is invalid or debuggable."
+	}
+
+	# ROADMAP 328: without OsmAnd's native core the app falls into safe mode -
+	# Java routing and rendering, minutes instead of seconds - and nothing else
+	# says so. Build it with tools/build-native-core-wsl.sh.
+	Add-Type -AssemblyName System.IO.Compression.FileSystem
+	$apkZip = [System.IO.Compression.ZipFile]::OpenRead($apk.FullName)
+	try {
+		$apkEntries = @($apkZip.Entries | ForEach-Object { $_.FullName })
+	} finally {
+		$apkZip.Dispose()
+	}
+	$missingNative = @(foreach ($abi in $NativeAbis) {
+		foreach ($library in @("libosmand.so", "libc++_shared.so")) {
+			if ($apkEntries -notcontains "lib/$abi/$library") { "lib/$abi/$library" }
+		}
+	})
+	if ($missingNative.Count -gt 0) {
+		throw "Release verification failed: OsmAnd native core missing from the APK ($($missingNative -join ', ')). Run android/tools/build-native-core-wsl.sh in WSL first."
 	}
 
 	$certificateOutput = & $apksigner verify --print-certs $apk.FullName
