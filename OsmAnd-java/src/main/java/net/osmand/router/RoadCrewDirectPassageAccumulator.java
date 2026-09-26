@@ -45,11 +45,27 @@ public final class RoadCrewDirectPassageAccumulator {
 		public final int newWayConsecutiveMatches;
 		public final int newWayWindow;
 		public final int newWayMatchesInWindow;
+		/**
+		 * ROADMAP 330: the same way is joined across a disappearance of GPS only
+		 * when the map shows no branch in between. The historic configurations
+		 * leave it off, so the offline replays keep reproducing what they recorded.
+		 */
+		public final boolean proofAcrossSilence;
 
 		public Config(double hardMaxSpeedMetersPerSecond, double baseProgressToleranceMeters,
 				double movementProgressFactor, double backtrackToleranceMeters,
 				long gapGraceMillis, int maxMissingFixes, int newWayConsecutiveMatches,
 				int newWayWindow, int newWayMatchesInWindow) {
+			this(hardMaxSpeedMetersPerSecond, baseProgressToleranceMeters, movementProgressFactor,
+					backtrackToleranceMeters, gapGraceMillis, maxMissingFixes,
+					newWayConsecutiveMatches, newWayWindow, newWayMatchesInWindow, false);
+		}
+
+		public Config(double hardMaxSpeedMetersPerSecond, double baseProgressToleranceMeters,
+				double movementProgressFactor, double backtrackToleranceMeters,
+				long gapGraceMillis, int maxMissingFixes, int newWayConsecutiveMatches,
+				int newWayWindow, int newWayMatchesInWindow, boolean proofAcrossSilence) {
+			this.proofAcrossSilence = proofAcrossSilence;
 			this.hardMaxSpeedMetersPerSecond = hardMaxSpeedMetersPerSecond;
 			this.baseProgressToleranceMeters = baseProgressToleranceMeters;
 			this.movementProgressFactor = movementProgressFactor;
@@ -70,6 +86,60 @@ public final class RoadCrewDirectPassageAccumulator {
 		 */
 		public static final Config EXPERIMENT_321 =
 				new Config(50, 30, 1.5, 20, Long.MAX_VALUE, Integer.MAX_VALUE, 2, 4, 3);
+		/**
+		 * Galin's rule, ROADMAP 330: EXPERIMENT_321, except that a disappearance of
+		 * GPS on one way is joined only where the map proves there was nowhere
+		 * else to go.
+		 */
+		public static final Config PROVEN_330 =
+				new Config(50, 30, 1.5, 20, Long.MAX_VALUE, Integer.MAX_VALUE, 2, 4, 3, true);
+	}
+
+	/**
+	 * ROADMAP 330, Galin, 26.09: "if a truck cannot prove it drove a road, better
+	 * leave it as never driven". GPS has disappeared when two consecutive
+	 * positions are further apart than this; unmatched fixes are GPS present.
+	 */
+	public static final long SILENCE_MILLIS = 10_000;
+	/** R1: every position of a turn seen by GPS lies this close to the shared node. */
+	public static final double JUNCTION_RADIUS_METERS = 60;
+	/** Twenty minutes at one fix a second; older positions are forgotten first. */
+	static final int MAX_GAP_POSITIONS = 1_200;
+
+	/**
+	 * What the map proves between two points of one drive. Ways are the callers'
+	 * attachments, measures are canonical, exactly as on the fixes.
+	 */
+	public interface Topology {
+		/**
+		 * R1: the two ways share a node that every position lies within
+		 * {@code radiusMeters} of. Each position is {latitude, longitude}.
+		 */
+		boolean meetAt(Object fromWay, Object toWay, List<double[]> positions, double radiusMeters);
+
+		/**
+		 * R2: the only path from one point to the other, when no road branches
+		 * off it: the ways strictly between the two, in travel order - empty when
+		 * the two points are on the same way or on ways that meet. Null when the
+		 * path has a branch, is not found, or cannot be checked.
+		 */
+		List<Leg> withoutBranch(Object fromWay, boolean fromForward, double fromMeasure,
+				Object toWay, boolean toForward, double toMeasure);
+	}
+
+	/** A way crossed from end to end without a single fix on it. */
+	public static final class Leg {
+		public final long wayId;
+		public final boolean forward;
+		public final double lengthMeters;
+		public final Object attachment;
+
+		public Leg(long wayId, boolean forward, double lengthMeters, Object attachment) {
+			this.wayId = wayId;
+			this.forward = forward;
+			this.lengthMeters = lengthMeters;
+			this.attachment = attachment;
+		}
 	}
 
 	/** One map-matched fix, already converted into canonical terms. */
@@ -182,6 +252,14 @@ public final class RoadCrewDirectPassageAccumulator {
 		 * it makes the passage answer for itself.
 		 */
 		public final Object attachment;
+		/**
+		 * ROADMAP 330: this passage continues the one handed over just before it,
+		 * proven by R1 or R2. False for the first of a drive and for anything not
+		 * proven - the server then records no turn and no finished exit cell.
+		 */
+		public final boolean joinsPrevious;
+		/** A way crossed without a fix (R2): 0 fixes, recorded because nothing branched. */
+		public final boolean bridged;
 
 		Passage(long wayId, boolean forward, List<Span> spans, long startTimeMillis,
 				long endTimeMillis, int fixCount, double progressMeters,
@@ -204,6 +282,18 @@ public final class RoadCrewDirectPassageAccumulator {
 				long firstFixSequence, long lastFixSequence,
 				double maximumDistanceMeters, double maximumHeadingDifferenceDegrees,
 				Object attachment) {
+			this(wayId, forward, spans, startTimeMillis, endTimeMillis, fixCount, progressMeters,
+					firstFixSequence, lastFixSequence, maximumDistanceMeters,
+					maximumHeadingDifferenceDegrees, attachment, false, false);
+		}
+
+		Passage(long wayId, boolean forward, List<Span> spans, long startTimeMillis,
+				long endTimeMillis, int fixCount, double progressMeters,
+				long firstFixSequence, long lastFixSequence,
+				double maximumDistanceMeters, double maximumHeadingDifferenceDegrees,
+				Object attachment, boolean joinsPrevious, boolean bridged) {
+			this.joinsPrevious = joinsPrevious;
+			this.bridged = bridged;
 			this.maximumDistanceMeters = maximumDistanceMeters;
 			this.maximumHeadingDifferenceDegrees = maximumHeadingDifferenceDegrees;
 			this.attachment = attachment;
@@ -277,6 +367,16 @@ public final class RoadCrewDirectPassageAccumulator {
 	private int missingFixes;
 	private long lastSeenTime;
 
+	private Topology topology;
+	/** Whether the active passage was proven to continue the one before it. */
+	private boolean joinsPrevious;
+	/**
+	 * GPS positions since the active passage's last confirmed fix, each
+	 * {time, latitude, longitude}. Only position() adds to it: a fix too
+	 * inaccurate to be a position is, for this purpose, no GPS at all.
+	 */
+	private final List<double[]> gap = new ArrayList<>();
+
 	public RoadCrewDirectPassageAccumulator(Config config, PassageSink sink) {
 		if (config == null || sink == null) {
 			throw new IllegalArgumentException("A passage accumulator needs a config and a sink.");
@@ -317,6 +417,26 @@ public final class RoadCrewDirectPassageAccumulator {
 		return progress <= movementLimit;
 	}
 
+	/** Without one nothing is ever joined, and with PROVEN_330 a silence always splits. */
+	public void setTopology(Topology topology) {
+		this.topology = topology;
+	}
+
+	/**
+	 * A GPS position good enough to be one - matched, unmatched, or without
+	 * speed and bearing. Called before accept() or acceptNoMatch() for the same
+	 * moment. It is how a disappearance is told from a truck merely unmatched.
+	 */
+	public void position(long timeMillis, double latitude, double longitude) {
+		if (!gap.isEmpty() && gap.get(gap.size() - 1)[0] == timeMillis) {
+			return;
+		}
+		if (gap.size() >= MAX_GAP_POSITIONS) {
+			gap.remove(0);
+		}
+		gap.add(new double[] {timeMillis, latitude, longitude});
+	}
+
 	/** Diagnostic build only. */
 	public void setFixTrace(FixTrace trace) {
 		this.trace = trace;
@@ -348,7 +468,7 @@ public final class RoadCrewDirectPassageAccumulator {
 		rememberWay(fix.wayId);
 
 		if (!active) {
-			start(fix);
+			start(fix, false);
 			note(fix.fixSequence, "STARTED_IDLE", "way=" + fix.wayId
 					+ " " + (fix.forward ? "F" : "R"));
 			return;
@@ -358,6 +478,17 @@ public final class RoadCrewDirectPassageAccumulator {
 					closed, wayLength);
 			long delta = fix.timeMillis - lastConfirmedTime;
 			if (continuous(step, delta, movementSince(fix))) {
+				if (config.proofAcrossSilence && silent(lastConfirmedTime, fix.timeMillis)
+						&& !provenAlongTheSameWay(fix)) {
+					// ROADMAP 330: GPS disappeared and the map cannot rule out that the
+					// truck left and came back. Each side keeps what its fixes proved.
+					count("passages_split_unproven_silence");
+					finish(lastConfirmedTime);
+					start(fix, false);
+					note(fix.fixSequence, "SILENCE_NOT_PROVEN", "way=" + fix.wayId
+							+ " " + (fix.forward ? "F" : "R") + " deltaMs=" + delta);
+					return;
+				}
 				if (delta > 60_000) {
 					// Measured, never refused (ROADMAP 322).
 					count("bridged_gap_over_60s");
@@ -369,7 +500,7 @@ public final class RoadCrewDirectPassageAccumulator {
 			} else {
 				count("passages_closed_continuity");
 				finish(lastConfirmedTime);
-				start(fix);
+				start(fix, false);
 				note(fix.fixSequence, "CONTINUITY_REFUSED", "way=" + fix.wayId
 						+ " " + (fix.forward ? "F" : "R") + " step=" + Math.round(step)
 						+ " deltaMs=" + delta + " moved=" + Math.round(movementSince(fix)));
@@ -381,7 +512,7 @@ public final class RoadCrewDirectPassageAccumulator {
 			// what the behaviour analysis will want to see.
 			count("passages_closed_direction_change");
 			finish(lastConfirmedTime);
-			start(fix);
+			start(fix, false);
 			note(fix.fixSequence, "DIRECTION_CHANGE", "way=" + fix.wayId
 					+ " now " + (fix.forward ? "F" : "R"));
 			return;
@@ -461,8 +592,19 @@ public final class RoadCrewDirectPassageAccumulator {
 				+ " " + (fix.forward ? "F" : "R") + " startsAtFix=" + first.fixSequence
 				+ (consecutive ? " consecutive" : " dominant"));
 		count("passages_closed_way_change");
-		finish(lastConfirmedTime);
-		start(first);
+		Proof proof = prove(first);
+		if (proof.legs != null) {
+			// R2: nothing branched, so the truck drove the rest of this way.
+			reachTheEnd();
+		}
+		boolean chained = finish(lastConfirmedTime);
+		if (proof.legs != null) {
+			chained = bridge(proof.legs, chained);
+		}
+		start(first, proof.proven && chained);
+		if (proof.legs != null) {
+			fromTheStart(first);
+		}
 		for (int index = candidate.indexOf(first) + 1; index < candidate.size(); index++) {
 			Fix later = candidate.get(index);
 			if (later.wayId == wayId && later.forward == forward) {
@@ -495,7 +637,151 @@ public final class RoadCrewDirectPassageAccumulator {
 		return candidate.get(candidate.size() - 1);
 	}
 
-	private void start(Fix fix) {
+	private static final class Proof {
+		final boolean proven;
+		/** R2 only: the ways crossed in between, possibly none. */
+		final List<Leg> legs;
+
+		Proof(boolean proven, List<Leg> legs) {
+			this.proven = proven;
+			this.legs = legs;
+		}
+	}
+
+	private static final Proof NOT_PROVEN = new Proof(false, null);
+
+	/** Whether the passage about to start on {@code next} continues the active one. */
+	private Proof prove(Fix next) {
+		if (topology == null || next.wayId == wayId) {
+			return NOT_PROVEN;
+		}
+		List<double[]> seen = positionsBetween(lastConfirmedTime, next.timeMillis);
+		boolean gpsLost = seen == null || hasSilence(seen);
+		if (!gpsLost && topology.meetAt(attachment, next.attachment, latLon(seen),
+				JUNCTION_RADIUS_METERS)) {
+			count("joined_r1_junction");
+			return new Proof(true, null);
+		}
+		List<Leg> legs = topology.withoutBranch(attachment, forward, lastMeasure,
+				next.attachment, next.forward, next.measureMeters);
+		if (legs != null) {
+			count("joined_r2_no_branch");
+			return new Proof(true, legs);
+		}
+		count(gpsLost ? "join_refused_after_silence" : "join_refused_unproven");
+		return NOT_PROVEN;
+	}
+
+	private boolean provenAlongTheSameWay(Fix fix) {
+		if (topology == null) {
+			return false;
+		}
+		List<Leg> legs = topology.withoutBranch(attachment, forward, lastMeasure,
+				fix.attachment, fix.forward, fix.measureMeters);
+		if (legs != null && legs.isEmpty()) {
+			count("joined_r2_same_way");
+			return true;
+		}
+		return false;
+	}
+
+	/** Did GPS disappear between these two moments? Unknown counts as yes. */
+	private boolean silent(long fromTime, long toTime) {
+		List<double[]> seen = positionsBetween(fromTime, toTime);
+		return seen == null || hasSilence(seen);
+	}
+
+	private static boolean hasSilence(List<double[]> seen) {
+		for (int index = 1; index < seen.size(); index++) {
+			if (seen.get(index)[0] - seen.get(index - 1)[0] > SILENCE_MILLIS) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Every position from one moment to the other, both ends included - or null
+	 * when either end is missing, which means part of the record is gone.
+	 */
+	private List<double[]> positionsBetween(long fromTime, long toTime) {
+		List<double[]> seen = new ArrayList<>();
+		for (double[] entry : gap) {
+			if (entry[0] >= fromTime && entry[0] <= toTime) {
+				seen.add(entry);
+			}
+		}
+		if (seen.isEmpty() || seen.get(0)[0] != fromTime
+				|| seen.get(seen.size() - 1)[0] != toTime) {
+			return null;
+		}
+		return seen;
+	}
+
+	private static List<double[]> latLon(List<double[]> seen) {
+		List<double[]> positions = new ArrayList<>(seen.size());
+		for (double[] entry : seen) {
+			positions.add(new double[] {entry[1], entry[2]});
+		}
+		return positions;
+	}
+
+	private void forgetPositionsBefore(long timeMillis) {
+		while (!gap.isEmpty() && gap.get(0)[0] < timeMillis) {
+			gap.remove(0);
+		}
+	}
+
+	/** R2 across a change of way: the active way was driven to its end. */
+	private void reachTheEnd() {
+		double rest = forward ? wayLength - lastMeasure : lastMeasure;
+		if (rest > 0) {
+			progress += rest;
+			lastMeasure = forward ? wayLength : 0;
+		}
+	}
+
+	/** R2 across a change of way: the new way was driven from its start. */
+	private void fromTheStart(Fix first) {
+		double head = first.forward ? first.measureMeters : first.wayLengthMeters - first.measureMeters;
+		if (head > 0) {
+			startMeasure = first.forward ? 0 : first.wayLengthMeters;
+			progress = head;
+		}
+	}
+
+	/**
+	 * Hands over the ways crossed without a fix. Their time is the moment GPS
+	 * disappeared; nothing about how long each took was measured.
+	 *
+	 * @return whether the last thing handed over can be joined to
+	 */
+	private boolean bridge(List<Leg> legs, boolean chained) {
+		for (Leg leg : legs) {
+			if (leg == null || !(leg.lengthMeters > EPSILON)) {
+				chained = false;
+				continue;
+			}
+			List<Span> spans = new ArrayList<>(1);
+			spans.add(new Span(0, leg.lengthMeters));
+			count("passages_bridged");
+			if (diagnostics != null) {
+				diagnostics.event(lastFixSequence, "RCS2_PASSAGE_BRIDGED", "way=" + leg.wayId
+						+ (leg.forward ? " F" : " R") + " metres=" + Math.round(leg.lengthMeters));
+			}
+			note(lastFixSequence, "BRIDGED", "way=" + leg.wayId + " " + (leg.forward ? "F" : "R")
+					+ " metres=" + Math.round(leg.lengthMeters));
+			sink.accept(new Passage(leg.wayId, leg.forward, spans, lastConfirmedTime,
+					lastConfirmedTime, 0, leg.lengthMeters, lastFixSequence, lastFixSequence,
+					0, 0, leg.attachment, chained, true));
+			chained = true;
+		}
+		return chained;
+	}
+
+	private void start(Fix fix, boolean joins) {
+		joinsPrevious = joins;
+		forgetPositionsBefore(fix.timeMillis);
 		count("passages_started");
 		if (diagnostics != null) {
 			diagnostics.event(fix.fixSequence, "RCS2_PASSAGE_START", "way=" + fix.wayId
@@ -522,6 +808,7 @@ public final class RoadCrewDirectPassageAccumulator {
 	}
 
 	private void extend(Fix fix, double step) {
+		forgetPositionsBefore(fix.timeMillis);
 		if (step > 0) {
 			progress += step;
 			lastMeasure = fix.measureMeters;
@@ -537,9 +824,10 @@ public final class RoadCrewDirectPassageAccumulator {
 		}
 	}
 
-	private void finish(long endTime) {
+	/** @return whether a passage was handed over - only then can the next one join it */
+	private boolean finish(long endTime) {
 		if (!active) {
-			return;
+			return false;
 		}
 		active = false;
 		if (progress <= EPSILON) {
@@ -559,10 +847,13 @@ public final class RoadCrewDirectPassageAccumulator {
 			}
 			sink.accept(new Passage(wayId, forward, buildSpans(), startTime, endTime,
 					fixCount, progress, firstFixSequence, lastFixSequence,
-					maximumDistanceMeters, maximumHeadingDifferenceDegrees, attachment));
+					maximumDistanceMeters, maximumHeadingDifferenceDegrees, attachment,
+					joinsPrevious, false));
 		}
+		boolean emitted = progress > EPSILON;
 		progress = 0;
 		fixCount = 0;
+		return emitted;
 	}
 
 	/**
