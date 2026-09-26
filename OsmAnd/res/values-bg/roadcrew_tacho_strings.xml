@@ -93,6 +93,8 @@
     <string name="roadcrew_tacho_reminder_channel">Шофьорска карта</string>
     <string name="roadcrew_tacho_reminder_channel_description">Напомняне за сваляне на шофьорската карта</string>
     <string name="roadcrew_tacho_send_failed">Файлът не можа да се подготви за изпращане</string>
+    <string name="roadcrew_tacho_integrity_title">Файлът е записан, картата не е маркирана</string>
+    <string name="roadcrew_tacho_integrity_body">Картата съобщи за повредени данни при %1$d прочитания. Файлът е запазен за проверка, но картата не е маркирана като свалена. Опитай отново; ако се повтаря, свали картата с друг уред.</string>
     <plurals name="roadcrew_tacho_reminder_left">
         <item quantity="one">Срокът е до %1$s, остава %2$d ден.</item>
         <item quantity="other">Срокът е до %1$s, остават %2$d дни.</item>

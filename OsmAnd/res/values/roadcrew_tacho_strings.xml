@@ -93,6 +93,8 @@
     <string name="roadcrew_tacho_reminder_channel">Driver card</string>
     <string name="roadcrew_tacho_reminder_channel_description">Reminder to download the driver card</string>
     <string name="roadcrew_tacho_send_failed">The file could not be prepared for sending</string>
+    <string name="roadcrew_tacho_integrity_title">File saved, the card was not marked</string>
+    <string name="roadcrew_tacho_integrity_body">The card reported damaged data in %1$d reads. The file is kept for checking, but the card was not marked as downloaded. Try again; if it repeats, download the card with another device.</string>
     <plurals name="roadcrew_tacho_reminder_left">
         <item quantity="one">The deadline is %1$s, %2$d day left.</item>
         <item quantity="other">The deadline is %1$s, %2$d days left.</item>

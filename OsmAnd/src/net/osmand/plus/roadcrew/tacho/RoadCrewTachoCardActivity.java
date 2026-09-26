@@ -97,7 +97,6 @@ public final class RoadCrewTachoCardActivity extends Activity {
 
 	private enum Phase { IDLE, DOWNLOADING, DONE, FAILED }
 
-	private enum Stage { READING, SAVING, MARKING }
 
 	/** A DDD file in Downloads/RoadCrew that the driver can send. */
 	private static final class Stored {
@@ -231,10 +230,14 @@ public final class RoadCrewTachoCardActivity extends Activity {
 	}
 
 	private void handleIntent(@Nullable Intent intent) {
-		downloadRequested = intent != null && intent.getBooleanExtra(EXTRA_DOWNLOAD, false);
+		// adb triggers exist in development builds only: the activity is exported
+		// for the USB reader, and in a release another app must not start a
+		// download that marks the card (Codex, Test 118 review P1).
+		boolean automation = intent != null && RoadCrewTachoDownloadFlow.acceptsAutomation(versionName());
+		downloadRequested = automation && intent.getBooleanExtra(EXTRA_DOWNLOAD, false);
 		// Every command and answer of the next download, for diagnosis and for
 		// the card's twin in tests. The app's own folder, never uploaded.
-		traceRequested = intent != null && intent.getBooleanExtra(EXTRA_TRACE, false);
+		traceRequested = automation && intent.getBooleanExtra(EXTRA_TRACE, false);
 		if (downloadRequested && cardState == CardState.DRIVER) {
 			downloadRequested = false;
 			startDownload();
@@ -436,10 +439,12 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		worker.execute(() -> download(trace, info));
 	}
 
-	/** Worker thread: download, store and read back, then mark - or say exactly what did not happen. */
+	/**
+	 * Worker thread: read, store and read back, then mark - through the tested
+	 * RoadCrewTachoDownloadFlow - or say exactly what did not happen.
+	 */
 	private void download(boolean trace, @Nullable RoadCrewTachoCardDownload.CardInfo info) {
 		StringBuilder traceLog = trace ? new StringBuilder() : null;
-		Stage stage = Stage.READING;
 		long started = System.currentTimeMillis();
 		RoadCrewTachoCardReader.Session current = session;
 		try {
@@ -448,7 +453,9 @@ public final class RoadCrewTachoCardActivity extends Activity {
 			}
 			try (RoadCrewTachoCardReader.OpenCard card = current.powerOn()) {
 				RoadCrewTachoDownloadDate.Channel channel = traced(RoadCrewTachoCardReader.channel(card), traceLog);
-				RoadCrewTachoCardDownload.Result result = RoadCrewTachoCardDownload.download(channel,
+				String[] storedName = {""};
+				String[] cardNumber = {""};
+				RoadCrewTachoDownloadFlow.Outcome<Stored> outcome = RoadCrewTachoDownloadFlow.run(channel,
 						(done, total, fid, secondGeneration) -> runOnUiThread(() -> {
 							progressDone = done;
 							progressTotal = total;
@@ -456,37 +463,53 @@ public final class RoadCrewTachoCardActivity extends Activity {
 								progressFile = fileLabel(fid, secondGeneration);
 							}
 							render();
-						}));
-				stage = Stage.SAVING;
-				runOnUiThread(() -> {
-					progressTitle = getString(R.string.roadcrew_tacho_saving);
-					render();
-				});
-				Stored stored = saveDdd(result);
-				Log.i(TAG, String.format(Locale.ROOT,
-						"DDD saved %s bytes=%d gen2=%s files=%d absent=%s warnings=%s sha256=%s seconds=%d",
-						stored.name, result.ddd.length, result.secondGeneration, result.storedTags.size(),
-						result.absent, result.warnings, sha256(result.ddd),
-						(System.currentTimeMillis() - started) / 1000));
-
-				// DDP_035: after the download, LastCardDownload in DF Tachograph and,
-				// on a Gen2 card, Tachograph_G2. Galin, 25.09: automatically, once
-				// the file is stored and read back - which it is by now.
-				stage = Stage.MARKING;
-				runOnUiThread(() -> {
-					progressTitle = getString(R.string.roadcrew_tacho_marking);
-					render();
-				});
-				long now = System.currentTimeMillis() / 1000L;
-				RoadCrewTachoCardDownload.markDownloaded(channel, now, result.secondGeneration, (before, requested) -> {
-					String audit = "MARK card=" + result.cardNumber + " file=" + stored.name
-							+ " before=" + before + " requested=" + requested;
-					Log.i(TAG, audit);
-					try (FileOutputStream out = openFileOutput("tacho-download-audit.txt", MODE_APPEND)) {
-						out.write((audit + "\n").getBytes(StandardCharsets.UTF_8));
-						out.getFD().sync();
-					}
-				});
+						}),
+						result -> {
+							runOnUiThread(() -> {
+								progressTitle = getString(R.string.roadcrew_tacho_saving);
+								render();
+							});
+							Stored stored = saveDdd(result);
+							storedName[0] = stored.name;
+							cardNumber[0] = result.cardNumber;
+							Log.i(TAG, String.format(Locale.ROOT,
+									"DDD saved %s bytes=%d gen2=%s files=%d absent=%s warnings=%s sha256=%s seconds=%d",
+									stored.name, result.ddd.length, result.secondGeneration, result.storedTags.size(),
+									result.absent, result.warnings, sha256(result.ddd),
+									(System.currentTimeMillis() - started) / 1000));
+							return stored;
+						},
+						() -> System.currentTimeMillis() / 1000L,
+						// DDP_035: after the download, LastCardDownload in DF Tachograph and,
+						// on a Gen2 card, Tachograph_G2. Galin, 25.09: automatically, once
+						// the file is stored and read back - which it is by now.
+						(before, requested) -> {
+							runOnUiThread(() -> {
+								progressTitle = getString(R.string.roadcrew_tacho_marking);
+								render();
+							});
+							String audit = "MARK card=" + cardNumber[0] + " file=" + storedName[0]
+									+ " before=" + before + " requested=" + requested;
+							Log.i(TAG, audit);
+							try (FileOutputStream out = openFileOutput("tacho-download-audit.txt", MODE_APPEND)) {
+								out.write((audit + "\n").getBytes(StandardCharsets.UTF_8));
+								out.getFD().sync();
+							}
+						});
+				RoadCrewTachoCardDownload.Result result = outcome.result;
+				Stored stored = outcome.stored;
+				if (!outcome.marked) {
+					// The chip reported damaged data: the file is kept for diagnosis, the card
+					// is left as it was, and the driver is told (Codex, Test 118 review P1).
+					Log.w(TAG, "DDD stored but the card was NOT marked: " + outcome.integrityWarnings);
+					int places = outcome.integrityWarnings.size();
+					runOnUiThread(() -> {
+						integrityWarning(places);
+						loadHistory();
+					});
+					return;
+				}
+				long now = outcome.markedAt;
 				Log.i(TAG, "Marked as downloaded: " + RoadCrewTachoCardReader.describeDate(now)
 						+ (result.secondGeneration ? " (Tachograph and Tachograph_G2)" : " (Tachograph)"));
 				rememberLastDownload(now);
@@ -507,6 +530,8 @@ public final class RoadCrewTachoCardActivity extends Activity {
 				});
 			}
 		} catch (IOException e) {
+			RoadCrewTachoDownloadFlow.Stage stage = e instanceof RoadCrewTachoDownloadFlow.Failure
+					? ((RoadCrewTachoDownloadFlow.Failure) e).stage : RoadCrewTachoDownloadFlow.Stage.READING;
 			Log.w(TAG, "DDD download failed at " + stage + ": " + e.getMessage(), e);
 			boolean removed;
 			try {
@@ -514,7 +539,7 @@ public final class RoadCrewTachoCardActivity extends Activity {
 			} catch (IOException gone) {
 				removed = true;
 			}
-			Stage failedAt = stage;
+			RoadCrewTachoDownloadFlow.Stage failedAt = stage;
 			boolean cardOrReaderGone = removed;
 			String reason = e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage();
 			runOnUiThread(() -> failed(failedAt, cardOrReaderGone, reason));
@@ -529,15 +554,23 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		}
 	}
 
-	private void failed(Stage stage, boolean removed, String reason) {
+	/** Stored, not marked: the card reported damaged data in {@code places} reads. */
+	private void integrityWarning(int places) {
 		phase = Phase.FAILED;
-		if (stage == Stage.READING && removed) {
+		errorTitle = getString(R.string.roadcrew_tacho_integrity_title);
+		errorBody = getString(R.string.roadcrew_tacho_integrity_body, places);
+		render();
+	}
+
+	private void failed(RoadCrewTachoDownloadFlow.Stage stage, boolean removed, String reason) {
+		phase = Phase.FAILED;
+		if (stage == RoadCrewTachoDownloadFlow.Stage.READING && removed) {
 			errorTitle = getString(R.string.roadcrew_tacho_removed_title);
 			errorBody = getString(R.string.roadcrew_tacho_removed_body);
-		} else if (stage == Stage.READING) {
+		} else if (stage == RoadCrewTachoDownloadFlow.Stage.READING) {
 			errorTitle = getString(R.string.roadcrew_tacho_failed_title);
 			errorBody = getString(R.string.roadcrew_tacho_failed_body, reason);
-		} else if (stage == Stage.SAVING) {
+		} else if (stage == RoadCrewTachoDownloadFlow.Stage.SAVING) {
 			errorTitle = getString(R.string.roadcrew_tacho_save_failed_title);
 			errorBody = getString(R.string.roadcrew_tacho_save_failed_body, reason);
 		} else {
@@ -1116,6 +1149,15 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		int id = getResources().getIdentifier(key, "string", getPackageName());
 		String name = id == 0 ? String.format(Locale.ROOT, "%04X", fid) : getString(id);
 		return getString(R.string.roadcrew_tacho_progress_file, secondGeneration ? 2 : 1, name);
+	}
+
+	@Nullable
+	private String versionName() {
+		try {
+			return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+		} catch (android.content.pm.PackageManager.NameNotFoundException e) {
+			return null;
+		}
 	}
 
 	private static String holderName(@NonNull RoadCrewTachoCardDownload.CardInfo info) {

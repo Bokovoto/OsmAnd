@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { mkdtempSync, readFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import test from 'node:test';
+
+const tacho = (name) => fileURLToPath(new URL(`../../OsmAnd/src/net/osmand/plus/roadcrew/tacho/${name}`, import.meta.url));
+
+// ROADMAP 329 (Codex's Test 118 review, P1): read, store, mark - with the
+// simulated card from roadcrew-tacho-download.
+test('driver card session: 6281 is stored but never marked; automation is dev-only', () => {
+  const output = mkdtempSync(join(tmpdir(), 'roadcrew-tacho-flow-'));
+  execFileSync('javac', ['--release', '17', '-encoding', 'UTF-8', '-d', output,
+    tacho('RoadCrewTachoDownloadDate.java'), tacho('RoadCrewTachoCardDownload.java'), tacho('RoadCrewTachoDownloadFlow.java'),
+    fileURLToPath(new URL('./roadcrew-tacho-download/CardDownloadTest.java', import.meta.url)),
+    fileURLToPath(new URL('./roadcrew-tacho-flow/DownloadFlowTest.java', import.meta.url))], {stdio: 'pipe'});
+  const result = execFileSync('java', ['-cp', output, 'DownloadFlowTest'], {encoding: 'utf8'});
+  assert.match(result, /\d+ download flow checks passed/);
+  console.log(result.trim());
+});
+
+test('the screen goes through the flow and reads adb extras only when automation is accepted', () => {
+  const activity = readFileSync(tacho('RoadCrewTachoCardActivity.java'), 'utf8');
+  assert.match(activity, /RoadCrewTachoDownloadFlow\.run\(/, 'the Activity runs the tested flow');
+  assert.doesNotMatch(activity, /RoadCrewTachoCardDownload\.markDownloaded\(/, 'no marking outside the flow');
+  const handle = activity.slice(activity.indexOf('private void handleIntent'), activity.indexOf('protected void onStart'));
+  assert.match(handle, /acceptsAutomation\(/, 'handleIntent asks whether this build accepts automation');
+  assert.match(handle, /automation && intent\.getBooleanExtra\(EXTRA_DOWNLOAD/, 'download extra gated');
+  assert.match(handle, /automation && intent\.getBooleanExtra\(EXTRA_TRACE/, 'trace extra gated');
+});
