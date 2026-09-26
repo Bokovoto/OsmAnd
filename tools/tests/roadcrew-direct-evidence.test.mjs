@@ -169,3 +169,40 @@ test('the phone reports where the chain breaks, without being asked', () => {
   assert.match(read(JOURNAL), /fun captureDirect\(id: String, bucket: Long, json: String, at: Long, mayOpenCourse: Boolean\): Boolean/,
     'the journal has to say whether it stored, or the counter would be a guess');
 });
+
+// ROADMAP 330, Galin, 26.09: what a truck cannot prove is not recorded.
+test('the phone records only a proven passage and says so on the wire', () => {
+  const coordinator = read(COORDINATOR);
+  const enable = coordinator.slice(coordinator.indexOf('private void enableComparison('),
+    coordinator.indexOf('private void flushDirectPipeline('));
+  assert.match(enable, /Config\.PROVEN_330/, 'the production pipeline runs the proof rule');
+  assert.doesNotMatch(enable, /Config\.EXPERIMENT_321/);
+  assert.match(enable, /enableDirectPipeline\([\s\S]*?this::loadRoadsAround\)/,
+    'and may load the roads a tunnel runs through');
+  assert.match(coordinator, /currentPipeline\.replaceRoads\(loaded\.getRouteObjects\(\),\s*sample\.latitude, sample\.longitude, LOAD_RADIUS_METERS\)/,
+    'the map questions know which area is already in memory');
+  const loader = coordinator.slice(coordinator.indexOf('private List<RouteDataObject> loadRoadsAround('));
+  assert.match(loader.slice(0, 900), /isTruncated\(\) \|\| loaded\.isCancelled\(\)[\s\S]*?return null/,
+    'a partial load proves nothing');
+
+  const shadow = read(SHADOW);
+  const json = shadow.slice(shadow.indexOf('private static JSONObject directJson(@NonNull RoadCrewDirectObservation observation,\n\t\t\t@Nullable String comparisonGroupId, @NonNull String id)'));
+  assert.match(json, /json\.put\("passageIndex", observation\.passageIndex\)/);
+  assert.match(json, /json\.put\("joinsPrevious", observation\.joinsPrevious\)/);
+  assert.match(json, /json\.put\("bridged", true\)/);
+});
+
+test('a truck standing without a bearing still has GPS', () => {
+  const coordinator = read(COORDINATOR);
+  const update = coordinator.slice(coordinator.indexOf('public void updateLocation('),
+    coordinator.indexOf('private void scheduleDrain('));
+  assert.doesNotMatch(update, /\|\| !location\.hasSpeed\(\) \|\| !location\.hasBearing\(\)/,
+    'a fix without speed or bearing is no longer thrown away before the pipeline');
+  assert.match(update, /boolean positionOnly = !location\.hasSpeed\(\) \|\| !location\.hasBearing\(\)/);
+  assert.match(update, /prev != null && !prev\.positionOnly && next\.positionOnly \? prev : next/,
+    'and it never displaces a full fix still waiting to be matched');
+  const process = coordinator.slice(coordinator.indexOf('private void process('),
+    coordinator.indexOf('private RoadCrewObservationPipeline ensurePipeline('));
+  assert.match(process, /if \(sample\.positionOnly\) \{[^}]*\.acceptPosition\([\s\S]*?return;\s*\}/,
+    'it only keeps the record of GPS present: never matched, never recorded');
+});

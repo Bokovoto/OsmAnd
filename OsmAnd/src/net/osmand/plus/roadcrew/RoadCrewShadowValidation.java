@@ -567,6 +567,14 @@ public final class RoadCrewShadowValidation {
 		json.put("maximumHeadingDifferenceDegrees", observation.maximumHeadingDifferenceDegrees);
 		putComparison(json, comparisonGroupId,
 				observation.firstFixSequence, observation.lastFixSequence);
+		// ROADMAP 330: the server joins two observations only on this proof.
+		if (observation.passageIndex >= 0) {
+			json.put("passageIndex", observation.passageIndex);
+			json.put("joinsPrevious", observation.joinsPrevious);
+			if (observation.bridged) {
+				json.put("bridged", true);
+			}
+		}
 		return json;
 	}
 

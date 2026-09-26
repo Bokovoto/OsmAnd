@@ -403,18 +403,25 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	public void updateLocation(Location location) {
 		observeTripContext();
 		if (!enabled || location == null || !location.hasAccuracy()
-				|| !location.hasSpeed() || !location.hasBearing()
 				|| app.getLocationProvider().getLocationSimulation().isRouteAnimating()
 				|| !isCollectionContextActive() || !isTruckProfileActive()
 				|| System.currentTimeMillis() - location.getTime() < 0
 				|| System.currentTimeMillis() - location.getTime() > 10_000) {
 			return;
 		}
-		lastEligibleFixAtMillis = System.currentTimeMillis();
+		// ROADMAP 330: a truck standing at a stop line has GPS but no heading. Such
+		// a fix is never matched; it only shows that GPS did not disappear.
+		boolean positionOnly = !location.hasSpeed() || !location.hasBearing();
+		if (!positionOnly) {
+			lastEligibleFixAtMillis = System.currentTimeMillis();
+		}
 		LocationSample sample = new LocationSample(location.getLatitude(), location.getLongitude(),
 				location.getAccuracy(), location.getSpeed(), location.getBearing(),
-				SystemClock.elapsedRealtime(), location.getTime(), collectionGeneration.get());
-		latestSample.set(sample);
+				SystemClock.elapsedRealtime(), location.getTime(), collectionGeneration.get(),
+				positionOnly);
+		// A full fix still waiting to be matched is never displaced by a bare position.
+		latestSample.accumulateAndGet(sample,
+				(prev, next) -> prev != null && !prev.positionOnly && next.positionOnly ? prev : next);
 		scheduleDrain();
 	}
 
@@ -445,6 +452,14 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 		try {
 			if (sample.generation != collectionGeneration.get() || sample.generation != appliedCollectionGeneration || !enabled
 					|| !isCollectionContextActive() || !isTruckProfileActive()) { return; }
+			if (sample.positionOnly) {
+				RoadCrewObservationPipeline current = pipeline;
+				if (current != null) {
+					current.acceptPosition(sample.latitude, sample.longitude, sample.accuracyMeters,
+							sample.wallTimeMillis);
+				}
+				return;
+			}
 			RoadCrewShadowSnapshotDownloader.schedule(app, sample.latitude, sample.longitude);
 			RoadCrewObservationPipeline currentPipeline = ensurePipeline();
 			if (needsRoadReload(sample)) {
@@ -515,9 +530,11 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			// wait for the driver's confirmation exactly like the old ones - a
 			// course nobody confirmed is still never uploaded.
 			created.enableDirectPipeline(
-					// Galin's experiment, ROADMAP 321: missing fixes no longer
-					// end a passage by their number, only the 8 s grace does.
-					RoadCrewDirectPassageAccumulator.Config.EXPERIMENT_321, passage -> { });
+					// Galin's rule, ROADMAP 330: 321 without the unproven joins - a
+					// disappearance of GPS is bridged only where nothing branches, and
+					// the roads a tunnel runs through may be loaded to prove it.
+					RoadCrewDirectPassageAccumulator.Config.PROVEN_330, passage -> { },
+					this::loadRoadsAround);
 			created.setDirectObservationSink(observations -> {
 				captureDirectEvidence(created, observations);
 				if (RoadCrewShadowValidation.isEnabled(app)) {
@@ -684,11 +701,31 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			return false;
 		}
 		RoadCrewShadowValidation.diagnostics().count("roads_loaded");
-		currentPipeline.replaceRoads(loaded.getRouteObjects());
+		currentPipeline.replaceRoads(loaded.getRouteObjects(),
+				sample.latitude, sample.longitude, LOAD_RADIUS_METERS);
 		loadedLatitude = sample.latitude;
 		loadedLongitude = sample.longitude;
 		loadedAtElapsedMillis = sample.elapsedRealtimeMillis;
 		return true;
+	}
+
+	/**
+	 * The roads around a point beyond those in memory, for the map questions of
+	 * ROADMAP 330. Runs on the observation thread, like reloadRoads().
+	 */
+	@Nullable
+	private List<RouteDataObject> loadRoadsAround(double latitude, double longitude,
+			double radiusMeters) throws IOException {
+		RoadCrewObfSegmentLoader.LoadResult loaded = RoadCrewObfSegmentLoader.load(
+				getRoutingReaders(), latitude, longitude, radiusMeters, MAX_ROUTE_OBJECTS,
+				() -> cancelled.get() || !enabled || Thread.currentThread().isInterrupted());
+		if (loaded.isTruncated() || loaded.isCancelled()) {
+			// Some roads are missing, so a branch could be too: this proves nothing.
+			RoadCrewShadowValidation.diagnostics().count("topology_load_incomplete");
+			return null;
+		}
+		RoadCrewShadowValidation.diagnostics().count("topology_load");
+		return loaded.getRouteObjects();
 	}
 
 	@NonNull
@@ -738,10 +775,14 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 		private final long elapsedRealtimeMillis;
 		private final long wallTimeMillis;
 		private final int generation;
+		/** No speed or bearing: never matched, only proof that GPS was there. */
+		private final boolean positionOnly;
 
 		private LocationSample(double latitude, double longitude, double accuracyMeters,
 				double speedMetersPerSecond, double bearingDegrees,
-				long elapsedRealtimeMillis, long wallTimeMillis, int generation) {
+				long elapsedRealtimeMillis, long wallTimeMillis, int generation,
+				boolean positionOnly) {
+			this.positionOnly = positionOnly;
 			this.latitude = latitude;
 			this.longitude = longitude;
 			this.accuracyMeters = accuracyMeters;
