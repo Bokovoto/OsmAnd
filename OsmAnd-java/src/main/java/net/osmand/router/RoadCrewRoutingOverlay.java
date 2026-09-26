@@ -23,6 +23,19 @@ public final class RoadCrewRoutingOverlay {
 	}
 
 	public static Snapshot parse(Reader reader, long now) throws JsonParseException {
+		return parse(reader, now, true);
+	}
+
+	/**
+	 * Every well-formed override, whatever its validity window. For a caller that
+	 * keeps the result: judge validity when it is used, with {@link Snapshot#activeAt}
+	 * (ROADMAP 329, Codex's Test 118 review P2).
+	 */
+	public static Snapshot parseAll(Reader reader) throws JsonParseException {
+		return parse(reader, 0, false);
+	}
+
+	private static Snapshot parse(Reader reader, long now, boolean checkTime) throws JsonParseException {
 		OverlayJson json = new Gson().fromJson(reader, OverlayJson.class);
 		if (json == null || json.schemaVersion != SCHEMA_VERSION) {
 			throw new JsonParseException("Unsupported RoadCrew routing overlay schema");
@@ -31,7 +44,7 @@ public final class RoadCrewRoutingOverlay {
 		int rejected = 0;
 		if (json.overrides != null) {
 			for (OverrideJson item : json.overrides) {
-				Override override = toValidatedOverride(item, now);
+				Override override = toValidatedOverride(item, now, checkTime);
 				if (override != null) {
 					accepted.add(override);
 				} else {
@@ -44,11 +57,11 @@ public final class RoadCrewRoutingOverlay {
 		return new Snapshot(revision, json.generatedAt, accepted, rejected);
 	}
 
-	private static Override toValidatedOverride(OverrideJson item, long now) {
+	private static Override toValidatedOverride(OverrideJson item, long now, boolean checkTime) {
 		if (item == null || !item.validated || item.id == null || item.id.trim().isEmpty() || item.operation == null) {
 			return null;
 		}
-		if (item.validFrom > 0 && now < item.validFrom || item.validUntil > 0 && now >= item.validUntil) {
+		if (checkTime && !isActive(item.validFrom, item.validUntil, now)) {
 			return null;
 		}
 		Operation operation;
@@ -99,6 +112,11 @@ public final class RoadCrewRoutingOverlay {
 				item.latitude, item.longitude, item.value, angle, item.validFrom, item.validUntil);
 	}
 
+	/** validFrom inclusive, validUntil exclusive; 0 means open. */
+	static boolean isActive(long validFrom, long validUntil, long now) {
+		return !(validFrom > 0 && now < validFrom || validUntil > 0 && now >= validUntil);
+	}
+
 	private static boolean isValidCoordinate(double latitude, double longitude) {
 		return Double.isFinite(latitude) && Double.isFinite(longitude)
 				&& latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180;
@@ -126,6 +144,18 @@ public final class RoadCrewRoutingOverlay {
 			this.generatedAt = generatedAt;
 			this.overrides = Collections.unmodifiableList(new ArrayList<>(overrides));
 			this.rejectedCount = rejectedCount;
+		}
+
+		/** The overrides in force at {@code now}; revision and counts kept. */
+		public Snapshot activeAt(long now) {
+			List<Override> active = new ArrayList<>();
+			for (Override override : overrides) {
+				if (isActive(override.validFrom, override.validUntil, now)) {
+					active.add(override);
+				}
+			}
+			return active.size() == overrides.size() ? this
+					: new Snapshot(revision, generatedAt, active, rejectedCount);
 		}
 
 		public Snapshot forProfile(String profile) {

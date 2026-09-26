@@ -46,6 +46,36 @@ public class RoadCrewRoutingOverlayTest {
 		Assert.assertTrue(all.forProfile("bicycle").isEmpty());
 	}
 
+	// ROADMAP 329, Codex's Test 118 review P2: the store keeps one parsed file while
+	// it is unchanged, so validity must be judged when the overlay is used, not
+	// once at parse - an expired restriction must go, a future one must arrive.
+	@Test
+	public void validityIsJudgedAtUseWithoutReparsing() {
+		String json = "{\"schemaVersion\":1,\"revision\":\"r\",\"generatedAt\":1,\"overrides\":["
+				+ "{\"id\":\"always\",\"operation\":\"BLOCK_ROAD\",\"profile\":\"truck\",\"validated\":true,\"roadId\":\"11\"},"
+				+ "{\"id\":\"ends\",\"operation\":\"BLOCK_ROAD\",\"profile\":\"truck\",\"validated\":true,\"roadId\":\"12\",\"validUntil\":1500},"
+				+ "{\"id\":\"starts\",\"operation\":\"BLOCK_ROAD\",\"profile\":\"truck\",\"validated\":true,\"roadId\":\"13\",\"validFrom\":2000},"
+				+ "{\"id\":\"broken\",\"operation\":\"BLOCK_ROAD\",\"profile\":\"truck\",\"validated\":true,\"roadId\":\"x\"}"
+				+ "]}";
+		RoadCrewRoutingOverlay.Snapshot parsed = RoadCrewRoutingOverlay.parseAll(new StringReader(json)).forProfile("truck");
+		Assert.assertEquals(1, parsed.getRejectedCount());
+		Assert.assertEquals("[always, ends]", ids(parsed.activeAt(1000)));
+		Assert.assertEquals("[always, ends]", ids(parsed.activeAt(1499)));
+		Assert.assertEquals("expires at validUntil", "[always]", ids(parsed.activeAt(1500)));
+		Assert.assertEquals("[always]", ids(parsed.activeAt(1999)));
+		Assert.assertEquals("a future entry arrives at validFrom", "[always, starts]", ids(parsed.activeAt(2000)));
+		Assert.assertEquals("r", parsed.activeAt(2000).getRevision());
+		Assert.assertTrue(parsed.activeAt(1500).forProfile("truck").getOverrides().size() == 1);
+	}
+
+	private static String ids(RoadCrewRoutingOverlay.Snapshot snapshot) {
+		java.util.List<String> ids = new java.util.ArrayList<>();
+		for (RoadCrewRoutingOverlay.Override override : snapshot.getOverrides()) {
+			ids.add(override.getId());
+		}
+		return ids.toString();
+	}
+
 	@Test
 	public void appliesRoadBlockAndDirectionalHeightPoint() {
 		RoadCrewRoutingOverlay.Snapshot truck = RoadCrewRoutingOverlay
