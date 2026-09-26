@@ -128,3 +128,47 @@ test('confirm and the review panel work for a course without RCS1 rows', () => {
   assert.match(review, /trip\.startedAt/);
   assert.match(review, /if \(rows\.isNotEmpty\(\)\) map\.post/);
 });
+
+// ROADMAP 329 (Codex's Test 118 review, P2): a course recorded before 323 carries
+// only RCS1 rows. Until those courses age out (14 days) they must still be
+// offered, listed and counted - reviewTrip() and confirm() already handle them.
+const legacy = (db, tripId, key, { state = 'STAGED', bucket = 900_000 } = {}) =>
+  db.prepare('INSERT INTO sections(trip_id, observation_key, bucket, record, geometry, road_name, state) VALUES (?, ?, ?, ?, ?, ?, ?)')
+    .run(tripId, key, bucket, '{}', '[]', 'road', state);
+
+test('an old course with only RCS1 rows is still offered, listed and counted', () => {
+  const db = database();
+  trip(db, 'rcs1-only');
+  legacy(db, 'rcs1-only', 'k1');
+  legacy(db, 'rcs1-only', 'k2');
+  legacy(db, 'rcs1-only', 'k3');
+
+  assert.equal(db.prepare(sql('REVIEW_SQL')).get('1', '0')?.id, 'rcs1-only', 'offered');
+  assert.ok(db.prepare(sql('REVIEW_TRIP_SQL')).get('rcs1-only'), 'reviewable by id');
+  const listed = db.prepare(sql('PENDING_TRIPS_SQL')).all(20);
+  assert.equal(listed.length, 1, 'listed');
+  assert.equal(Object.values(listed[0])[2], 3, 'counted by its RCS1 rows when it has no RCS2 rows');
+  assert.equal(Object.values(db.prepare(sql('PENDING_COUNT_SQL')).get())[0], 1, 'counted');
+});
+
+test('a mixed course is listed once, counted by its RCS2 rows', () => {
+  const db = database();
+  trip(db, 'mixed');
+  legacy(db, 'mixed', 'k1');
+  direct(db, 'mixed', 'a');
+  direct(db, 'mixed', 'b');
+  const listed = db.prepare(sql('PENDING_TRIPS_SQL')).all(20);
+  assert.equal(listed.length, 1);
+  assert.equal(Object.values(listed[0])[2], 2, 'RCS2 rows are the course when it has them');
+  assert.equal(Object.values(db.prepare(sql('PENDING_COUNT_SQL')).get())[0], 1);
+});
+
+test('an old course whose RCS1 rows are already confirmed is not offered again', () => {
+  const db = database();
+  trip(db, 'old-done');
+  legacy(db, 'old-done', 'k1', { state: 'CONFIRMED' });
+  assert.equal(db.prepare(sql('REVIEW_SQL')).get('1', '0'), undefined);
+  assert.equal(db.prepare(sql('PENDING_TRIPS_SQL')).all(20).length, 0);
+  assert.equal(db.prepare(sql('REVIEW_TRIP_SQL')).get('old-done'), undefined);
+  assert.equal(Object.values(db.prepare(sql('PENDING_COUNT_SQL')).get())[0], 0);
+});

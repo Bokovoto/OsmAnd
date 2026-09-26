@@ -583,23 +583,32 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
         }
 
         // These exact statements are exercised by the standalone SQLite regression test.
-        // ROADMAP 323: a course is offered, listed and counted by its RCS2 rows;
-        // RCS1 no longer records on this phone.
+        // ROADMAP 323: a course is its RCS2 rows; RCS1 no longer records on this
+        // phone. ROADMAP 329 (Codex's Test 118 review): a course recorded before
+        // 323 has only RCS1 rows - it stays offered, listed and counted until it
+        // ages out, since reviewTrip() and confirm() handle either identity.
         private val REVIEW_SQL = """SELECT id FROM trips WHERE closed = 1 AND reviewed = 0
             AND (? = '1' OR (auto_review = 1 AND ended_at >= ?))
-            AND EXISTS(SELECT 1 FROM direct_sections WHERE trip_id = trips.id AND state = 'STAGED')
+            AND (EXISTS(SELECT 1 FROM direct_sections WHERE trip_id = trips.id AND state = 'STAGED')
+                OR EXISTS(SELECT 1 FROM sections WHERE trip_id = trips.id AND state = 'STAGED'))
             ORDER BY ended_at DESC, rowid DESC LIMIT 1
         """
         private val REVIEW_TRIP_SQL = """SELECT 1 FROM trips WHERE id = ? AND closed = 1 AND reviewed = 0
-            AND EXISTS(SELECT 1 FROM direct_sections WHERE trip_id = trips.id AND state = 'STAGED')
+            AND (EXISTS(SELECT 1 FROM direct_sections WHERE trip_id = trips.id AND state = 'STAGED')
+                OR EXISTS(SELECT 1 FROM sections WHERE trip_id = trips.id AND state = 'STAGED'))
         """
-        private val PENDING_TRIPS_SQL = """SELECT trips.id, trips.ended_at, COUNT(direct_sections.seq)
-            FROM trips JOIN direct_sections ON direct_sections.trip_id = trips.id AND direct_sections.state = 'STAGED'
-            WHERE trips.closed = 1 AND trips.reviewed = 0
-            GROUP BY trips.id ORDER BY trips.ended_at DESC, trips.rowid DESC LIMIT ?
+        /** The count is the RCS2 rows; an old course without any shows its RCS1 rows. */
+        private val PENDING_TRIPS_SQL = """SELECT id, ended_at, CASE WHEN direct_count > 0 THEN direct_count ELSE legacy_count END
+            FROM (SELECT trips.id AS id, trips.ended_at AS ended_at, trips.rowid AS trip_row,
+                (SELECT COUNT(*) FROM direct_sections WHERE trip_id = trips.id AND state = 'STAGED') AS direct_count,
+                (SELECT COUNT(*) FROM sections WHERE trip_id = trips.id AND state = 'STAGED') AS legacy_count
+                FROM trips WHERE trips.closed = 1 AND trips.reviewed = 0)
+            WHERE direct_count > 0 OR legacy_count > 0
+            ORDER BY ended_at DESC, trip_row DESC LIMIT ?
         """
         private val PENDING_COUNT_SQL = """SELECT COUNT(*) FROM trips WHERE closed = 1 AND reviewed = 0
-            AND EXISTS(SELECT 1 FROM direct_sections WHERE trip_id = trips.id AND state = 'STAGED')
+            AND (EXISTS(SELECT 1 FROM direct_sections WHERE trip_id = trips.id AND state = 'STAGED')
+                OR EXISTS(SELECT 1 FROM sections WHERE trip_id = trips.id AND state = 'STAGED'))
         """
         /** Statements in order; `?` is the 14-day cutoff. */
         private val PRUNE_SQL = """
