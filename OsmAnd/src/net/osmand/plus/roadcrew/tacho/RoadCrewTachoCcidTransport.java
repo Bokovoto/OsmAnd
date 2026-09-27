@@ -97,21 +97,32 @@ final class RoadCrewTachoCcidTransport {
 	}
 
 	/**
+	 * Whether this USB device is a smart-card reader: any maker, any model, as
+	 * long as it speaks CCID - the same test Android's device filter applies.
+	 */
+	static boolean isCardReader(@NonNull UsbDevice device) {
+		return cardReaderInterface(device) != null;
+	}
+
+	private static UsbInterface cardReaderInterface(@NonNull UsbDevice device) {
+		for (int i = 0; i < device.getInterfaceCount(); i++) {
+			UsbInterface candidate = device.getInterface(i);
+			// Class 11 (0x0B) is the USB-IF assigned class for smart-card readers (CCID).
+			if (candidate.getInterfaceClass() == UsbConstants.USB_CLASS_CSCID) {
+				return candidate;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Claims the reader's CCID interface and finds its two bulk endpoints. The
 	 * caller owns the UsbDeviceConnection (already permission-checked and
 	 * opened) and must close it when done; this class only borrows it.
 	 */
 	static RoadCrewTachoCcidTransport open(@NonNull UsbDevice device, @NonNull UsbDeviceConnection connection)
 			throws IOException {
-		UsbInterface ccidInterface = null;
-		for (int i = 0; i < device.getInterfaceCount(); i++) {
-			UsbInterface candidate = device.getInterface(i);
-			// Class 11 (0x0B) is the USB-IF assigned class for smart-card readers (CCID).
-			if (candidate.getInterfaceClass() == UsbConstants.USB_CLASS_CSCID) {
-				ccidInterface = candidate;
-				break;
-			}
-		}
+		UsbInterface ccidInterface = cardReaderInterface(device);
 		if (ccidInterface == null) {
 			throw new IOException("no CCID interface on this USB device");
 		}

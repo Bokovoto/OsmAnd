@@ -30,3 +30,19 @@ test('the screen goes through the flow and reads adb extras only when automation
   assert.match(handle, /automation && intent\.getBooleanExtra\(EXTRA_DOWNLOAD/, 'download extra gated');
   assert.match(handle, /automation && intent\.getBooleanExtra\(EXTRA_TRACE/, 'trace extra gated');
 });
+
+// Galin, 27.09: "I never asked for a lock to this reader. Once Android
+// recognises it, it must work with our app." Any USB smart-card reader
+// (CCID, interface class 11) opens RoadCrew and is used - not one model.
+test('any smart-card reader Android recognises is used, not one model', () => {
+  const filter = readFileSync(fileURLToPath(new URL('../../OsmAnd/res/xml/roadcrew_tacho_usb_filter.xml', import.meta.url)), 'utf8');
+  const entries = filter.replace(/<!--[\s\S]*?-->/g, '').match(/<usb-device[^>]*>/g) ?? [];
+  assert.deepEqual(entries, ['<usb-device class="11" />'], 'Android offers RoadCrew for every CCID reader');
+  const activity = readFileSync(tacho('RoadCrewTachoCardActivity.java'), 'utf8');
+  assert.doesNotMatch(activity, /getVendorId\(\)|getProductId\(\)|READER_VENDOR_ID|READER_PRODUCT_ID/,
+    'the screen does not pick a reader by its maker or model');
+  const find = activity.slice(activity.indexOf('private void findReader('), activity.indexOf('if (found == null) {\n\t\t\treader = Reader.NONE;'));
+  assert.match(find, /RoadCrewTachoCcidTransport\.isCardReader\(/, 'it looks for the CCID interface');
+  const transport = readFileSync(tacho('RoadCrewTachoCcidTransport.java'), 'utf8');
+  assert.match(transport, /static boolean isCardReader\(@NonNull UsbDevice device\)/);
+});

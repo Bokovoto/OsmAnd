@@ -85,8 +85,6 @@ public final class RoadCrewTachoCardActivity extends Activity {
 	static final String EXTRA_DOWNLOAD = "roadcrew_download";
 	static final String EXTRA_TRACE = "roadcrew_trace";
 
-	private static final int READER_VENDOR_ID = 1839;
-	private static final int READER_PRODUCT_ID = 45312;
 	private static final long POLL_MILLIS = 1000;
 	private static final String FOLDER = "RoadCrew";
 	private static final int HISTORY_ROWS = 5;
@@ -279,7 +277,8 @@ public final class RoadCrewTachoCardActivity extends Activity {
 				? candidate : null;
 		if (found == null) {
 			for (UsbDevice attached : usbManager.getDeviceList().values()) {
-				if (attached.getVendorId() == READER_VENDOR_ID && attached.getProductId() == READER_PRODUCT_ID) {
+				// Any smart-card reader, not one model (Galin, 27.09).
+				if (RoadCrewTachoCcidTransport.isCardReader(attached)) {
 					found = attached;
 					break;
 				}

@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-	Which USB devices should offer to open RoadCrew's tachograph-card reader.
-	ACR39U ICC Reader (ACS): the reader Galin already has and tested against -
-	vendor 0x072F / product 0xB100 (decimal 1839 / 45312), confirmed a standard
-	USB CCID-class interface (bInterfaceClass=11) by dumpsys on 18.09, so it needs
-	no vendor driver - only the public CCID protocol.
+	Which USB devices should offer to open RoadCrew's tachograph-card reader:
+	every smart-card reader, by the USB-IF class of its interface (11, CCID),
+	whatever its maker or model. Android's DeviceFilter matches the device
+	class first and then each interface's class, so a reader that declares
+	itself only at the interface - the usual case - is covered.
+
+	Galin, 27.09: "I never asked for a lock to this reader. Once Android
+	recognises it, it must work with our app." Until then only the ACR39U
+	(vendor 0x072F / product 0xB100) the development was done on was listed.
+	The transport speaks the public CCID protocol and adapts to the reader's
+	own exchange level (dwFeatures), so no model needs its own code.
 -->
 <resources>
-	<usb-device vendor-id="1839" product-id="45312" />
+	<usb-device class="11" />
 </resources>
