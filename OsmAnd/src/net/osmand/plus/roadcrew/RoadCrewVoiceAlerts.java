@@ -3,6 +3,7 @@ package net.osmand.plus.roadcrew;
 import android.speech.tts.TextToSpeech;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import net.osmand.Location;
 import net.osmand.data.LatLon;
@@ -33,6 +34,7 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	private final OsmandApplication app;
 	private final TextToSpeech textToSpeech;
 	private final Set<String> announcedAlertKeys = new HashSet<>();
+	private final RoadCrewWeighStations.Voice weighStationVoice = new RoadCrewWeighStations.Voice();
 
 	private long lastCheckMillis;
 	private long lastSpokenMillis;
@@ -109,6 +111,23 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 			lastSpokenMillis = now;
 			speak(buildMessage(bestCandidate));
 		}
+	}
+
+	/**
+	 * "Стационарен кантар след 500 метра" - once per pass, only for a station on
+	 * the route (RoadCrewWeighStations). It waits for the same pause as the
+	 * reports so the two never talk over each other.
+	 */
+	void checkWeighStation(@Nullable RoadCrewWeighStations.Ahead ahead) {
+		long now = System.currentTimeMillis();
+		if (!ready || now - lastSpokenMillis < GLOBAL_COOLDOWN_MILLIS || !weighStationVoice.shouldSpeak(ahead, now)) {
+			return;
+		}
+		weighStationVoice.spoken(ahead.station, now);
+		lastSpokenMillis = now;
+		speak(bulgarianVoice
+				? "Стационарен кантар след " + formatBulgarianDistance(ahead.meters) + "."
+				: "Fixed weigh station in " + formatDistance(ahead.meters) + ".");
 	}
 
 	void shutdown() {

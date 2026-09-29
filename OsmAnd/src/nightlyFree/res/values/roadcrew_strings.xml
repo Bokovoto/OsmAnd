@@ -290,6 +290,11 @@
     <string name="roadcrew_button_ok">OK</string>
 
     <string name="roadcrew_time_now">now</string>
+    <string name="roadcrew_weigh_station_fixed_title">Fixed weigh station</string>
+    <string name="roadcrew_weigh_station_fixed_ahead">Fixed weigh station · %1$s</string>
+    <string name="roadcrew_weigh_station_fixed_place">%1$s · both directions</string>
+    <string name="roadcrew_weigh_station_fixed_about">Built into the road under the toll gantry. No stopping: the weight is measured on the move, and an overload fine is issued automatically.</string>
+    <string name="roadcrew_weigh_station_fixed_source">Source: National Toll Administration of Bulgaria (BG TOLL)</string>
     <string name="roadcrew_time_minutes">%1$d min</string>
     <string name="roadcrew_time_just_now">just now</string>
     <string name="roadcrew_time_minutes_ago">%1$d min ago</string>

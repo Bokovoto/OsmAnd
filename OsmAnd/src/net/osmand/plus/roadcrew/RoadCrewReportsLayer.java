@@ -12,8 +12,10 @@ import android.graphics.Path;
 import android.graphics.PathDashPathEffect;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Button;
@@ -33,6 +35,8 @@ import net.osmand.data.RotatedTileBox;
 import net.osmand.plus.R;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.activities.MapActivity;
+import net.osmand.plus.routing.RoutingHelper;
+import net.osmand.plus.utils.OsmAndFormatter;
 import net.osmand.plus.roadcrew.RoadCrewReportsSync.RoadCrewChatMessage;
 import net.osmand.plus.roadcrew.RoadCrewReportsSync.RoadCrewNotification;
 import net.osmand.plus.views.OsmandMapTileView;
@@ -63,6 +67,11 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private static final float MARKER_CENTER_OFFSET_DP = 8;
 	private static final float MARKER_IMAGE_SIZE_DP = 54;
 	private static final float MARKER_LABEL_OFFSET_DP = 31;
+	/** The stationary weigh station's sign, drawn on the road point itself. */
+	private static final float WIM_SIGN_SIZE_DP = 36;
+	/** "Стационарен кантар · 500 м" below the truck, where the report labels sit. */
+	private static final float WIM_WARNING_OFFSET_DP = 56;
+	private static final int WIM_ORANGE = Color.rgb(245, 166, 35);
 	private static final int HELP_CHAT_MESSAGE_MAX_LENGTH = 1000;
 	static final String PUSH_KIND_EXTRA = "roadcrew_push_kind";
 	static final String PUSH_REFERENCE_ID_EXTRA = "roadcrew_push_reference_id";
@@ -137,6 +146,15 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	 */
 	private static volatile List<double[]> tripReviewJourney;
 	private final Paint tripReviewPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint wimFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint wimBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint wimTruckPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint wimAccentPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint wimTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint wimWarningTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint wimWarningStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final RectF wimRect = new RectF();
+	private final RectF wimWarningRect = new RectF();
 
 	static void setTripReviewJourney(@Nullable List<double[]> journey) {
 		tripReviewJourney = journey;
@@ -378,6 +396,26 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		labelStrokePaint.setStrokeWidth(dp(1));
 		labelStrokePaint.setColor(Color.argb(210, 255, 255, 255));
 
+		wimFillPaint.setStyle(Paint.Style.FILL);
+		wimFillPaint.setColor(Color.rgb(26, 31, 36));
+		wimBorderPaint.setStyle(Paint.Style.STROKE);
+		wimBorderPaint.setColor(WIM_ORANGE);
+		wimTruckPaint.setStyle(Paint.Style.FILL);
+		wimTruckPaint.setColor(Color.WHITE);
+		wimAccentPaint.setStyle(Paint.Style.FILL);
+		wimAccentPaint.setColor(WIM_ORANGE);
+		wimTextPaint.setColor(WIM_ORANGE);
+		wimTextPaint.setTextAlign(Paint.Align.CENTER);
+		wimTextPaint.setFakeBoldText(true);
+
+		wimWarningTextPaint.setColor(Color.WHITE);
+		wimWarningTextPaint.setTextAlign(Paint.Align.CENTER);
+		wimWarningTextPaint.setFakeBoldText(true);
+		wimWarningTextPaint.setTextSize(sp(14));
+		wimWarningStrokePaint.setStyle(Paint.Style.STROKE);
+		wimWarningStrokePaint.setStrokeWidth(dp(2));
+		wimWarningStrokePaint.setColor(Color.WHITE);
+
 		directionBadgePaint.setStyle(Paint.Style.FILL);
 		directionBadgePaint.setColor(Color.rgb(6, 17, 13));
 
@@ -467,17 +505,22 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			checkHelpNotifications();
 			checkNearbyReports(reports);
 		}
-		checkVoiceAlerts(reports);
+		RoadCrewWeighStationsStore.refreshPeriodically(getApplication());
+		RoadCrewWeighStations.Ahead stationAhead = findWeighStationAhead();
+		checkVoiceAlerts(reports, stationAhead);
 		// Before the zoom gate: a whole trip is usually looked at zoomed further
 		// out than the reports are worth drawing at.
 		drawTripReviewJourney(canvas, tileBox);
 		if (tileBox.getZoom() < MIN_ZOOM) {
+			drawWeighStationWarning(canvas, tileBox, stationAhead);
 			return;
 		}
 		drawTruckRestrictions(canvas, tileBox);
 		if (placesController != null) {
 			placesController.draw(canvas, tileBox);
 		}
+		// Under the reports: a report at a station is the newer news.
+		drawWeighStations(canvas, tileBox);
 		for (RoadCrewReport report : reports) {
 			LatLon latLon = report.getLocation();
 			if (!tileBox.containsLatLon(latLon)) {
@@ -487,6 +530,150 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			float y = tileBox.getPixYFromLatLon(latLon.getLatitude(), latLon.getLongitude());
 			drawReport(canvas, tileBox, report, x, y);
 		}
+		drawWeighStationWarning(canvas, tileBox, stationAhead);
+	}
+
+	/**
+	 * The stationary weigh station the route reaches within 2 km (Galin,
+	 * 29.09.2026: the warning only when it is on the route). Null without an
+	 * active navigation.
+	 */
+	@Nullable
+	private RoadCrewWeighStations.Ahead findWeighStationAhead() {
+		RoutingHelper routingHelper = getApplication().getRoutingHelper();
+		if (!routingHelper.isRouteCalculated() || !routingHelper.isFollowingMode()) {
+			return null;
+		}
+		List<RoadCrewWeighStations.Station> stations = RoadCrewWeighStationsStore.get(getApplication());
+		Location location = getApplication().getLocationProvider().getLastKnownLocation();
+		if (stations.isEmpty() || location == null) {
+			return null;
+		}
+		List<Location> route = routingHelper.getRoute().getRouteLocations();
+		return RoadCrewWeighStations.nextOnRoute(stations, location.getLatitude(), location.getLongitude(),
+				new RoadCrewWeighStations.Route() {
+					@Override
+					public int size() {
+						return route.size();
+					}
+
+					@Override
+					public double lat(int index) {
+						return route.get(index).getLatitude();
+					}
+
+					@Override
+					public double lon(int index) {
+						return route.get(index).getLongitude();
+					}
+				});
+	}
+
+	/** Always, with no switch to hide them (Galin, 29.09.2026). */
+	private void drawWeighStations(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox) {
+		for (RoadCrewWeighStations.Station station : RoadCrewWeighStationsStore.get(getApplication())) {
+			if (!tileBox.containsLatLon(station.lat, station.lon)) {
+				continue;
+			}
+			drawWimSign(canvas, tileBox.getPixXFromLatLon(station.lat, station.lon),
+					tileBox.getPixYFromLatLon(station.lat, station.lon), dp(WIM_SIGN_SIZE_DP));
+		}
+	}
+
+	/**
+	 * The approved mockup's sign: an orange square with a truck on the scale
+	 * and WIM, unlike the round blue pin of a driver's mobile weigh report.
+	 * Drawn on a 44-unit grid.
+	 */
+	private void drawWimSign(@NonNull Canvas canvas, float cx, float cy, float size) {
+		float u = size / 44f;
+		float border = 4 * u;
+		wimRect.set(cx - 22 * u + border / 2, cy - 22 * u + border / 2, cx + 22 * u - border / 2, cy + 22 * u - border / 2);
+		canvas.drawRoundRect(wimRect, 9 * u, 9 * u, wimFillPaint);
+		wimBorderPaint.setStrokeWidth(border);
+		canvas.drawRoundRect(wimRect, 9 * u, 9 * u, wimBorderPaint);
+		wimTextPaint.setTextSize(9 * u);
+		canvas.drawText("WIM", cx, cy - 11 * u, wimTextPaint);
+		wimRect.set(cx - 14 * u, cy - 8 * u, cx + 6 * u, cy + 3 * u);
+		canvas.drawRoundRect(wimRect, 2 * u, 2 * u, wimTruckPaint);
+		wimRect.set(cx + 6.5f * u, cy - 4 * u, cx + 14 * u, cy + 3 * u);
+		canvas.drawRoundRect(wimRect, 1.5f * u, 1.5f * u, wimTruckPaint);
+		canvas.drawCircle(cx - 9 * u, cy + 5 * u, 3 * u, wimTruckPaint);
+		canvas.drawCircle(cx + 9 * u, cy + 5 * u, 3 * u, wimTruckPaint);
+		wimRect.set(cx - 16 * u, cy + 10 * u, cx + 16 * u, cy + 14 * u);
+		canvas.drawRoundRect(wimRect, u, u, wimAccentPaint);
+	}
+
+	/** "Стационарен кантар · 500 м" under the truck while one is on the route ahead. */
+	private void drawWeighStationWarning(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
+			@Nullable RoadCrewWeighStations.Ahead ahead) {
+		Location location = getApplication().getLocationProvider().getLastKnownLocation();
+		if (ahead == null || location == null
+				|| !tileBox.containsLatLon(location.getLatitude(), location.getLongitude())) {
+			return;
+		}
+		String text = getContext().getString(R.string.roadcrew_weigh_station_fixed_ahead,
+				OsmAndFormatter.getFormattedDistance((float) ahead.meters, getApplication()));
+		float x = tileBox.getPixXFromLatLon(location.getLatitude(), location.getLongitude());
+		float y = tileBox.getPixYFromLatLon(location.getLatitude(), location.getLongitude());
+		Paint.FontMetrics metrics = wimWarningTextPaint.getFontMetrics();
+		float halfWidth = wimWarningTextPaint.measureText(text) / 2f + dp(12);
+		float halfHeight = (metrics.descent - metrics.ascent) / 2f + dp(6);
+		float centerY = y + dp(WIM_WARNING_OFFSET_DP);
+		if (centerY + halfHeight > tileBox.getPixHeight()) {
+			centerY = y - dp(WIM_WARNING_OFFSET_DP);
+		}
+		float edge = dp(4);
+		float centerX = Math.max(halfWidth + edge, Math.min(x, tileBox.getPixWidth() - halfWidth - edge));
+		wimWarningRect.set(centerX - halfWidth, centerY - halfHeight, centerX + halfWidth, centerY + halfHeight);
+		canvas.drawRoundRect(wimWarningRect, dp(12), dp(12), labelBackgroundPaint);
+		canvas.drawRoundRect(wimWarningRect, dp(12), dp(12), wimWarningStrokePaint);
+		canvas.drawText(text, centerX, centerY - (metrics.ascent + metrics.descent) / 2f, wimWarningTextPaint);
+	}
+
+	@Nullable
+	private RoadCrewWeighStations.Station findTappedWeighStation(@NonNull PointF point, @NonNull RotatedTileBox tileBox) {
+		float touchRadius = dp(WIM_SIGN_SIZE_DP) / 2f + dp(8);
+		RoadCrewWeighStations.Station nearest = null;
+		double nearestDistance = touchRadius;
+		for (RoadCrewWeighStations.Station station : RoadCrewWeighStationsStore.get(getApplication())) {
+			if (!tileBox.containsLatLon(station.lat, station.lon)) {
+				continue;
+			}
+			double distance = Math.hypot(point.x - tileBox.getPixXFromLatLon(station.lat, station.lon),
+					point.y - tileBox.getPixYFromLatLon(station.lat, station.lon));
+			if (distance <= nearestDistance) {
+				nearestDistance = distance;
+				nearest = station;
+			}
+		}
+		return nearest;
+	}
+
+	/** What it is and where it comes from; nothing to vote on, it does not expire. */
+	private void showWeighStationDialog(@NonNull MapActivity mapActivity, @NonNull RoadCrewWeighStations.Station station) {
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity,
+				mapActivity.getString(R.string.roadcrew_weigh_station_fixed_title));
+		int iconSize = RoadCrewUi.dp(mapActivity, 40);
+		Bitmap icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
+		drawWimSign(new Canvas(icon), iconSize / 2f, iconSize / 2f, iconSize);
+		TextView title = (TextView) content.getChildAt(0);
+		title.setCompoundDrawablesRelativeWithIntrinsicBounds(
+				new BitmapDrawable(mapActivity.getResources(), icon), null, null, null);
+		title.setCompoundDrawablePadding(RoadCrewUi.dp(mapActivity, 12));
+		title.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+		RoadCrewUi.addBody(mapActivity, content,
+				mapActivity.getString(R.string.roadcrew_weigh_station_fixed_place, station.name));
+		RoadCrewUi.addBody(mapActivity, content, mapActivity.getString(R.string.roadcrew_weigh_station_fixed_about));
+		TextView source = RoadCrewUi.addBody(mapActivity, content,
+				mapActivity.getString(R.string.roadcrew_weigh_station_fixed_source));
+		source.setTextSize(12);
+		source.setAlpha(0.7f);
+		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_close), true,
+				v -> dialog.dismiss());
+		dialog.show();
 	}
 
 	/**
@@ -526,8 +713,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 	}
 
-	private void checkVoiceAlerts(@NonNull List<RoadCrewReport> reports) {
+	private void checkVoiceAlerts(@NonNull List<RoadCrewReport> reports,
+			@Nullable RoadCrewWeighStations.Ahead stationAhead) {
 		if (voiceAlerts != null) {
+			voiceAlerts.checkWeighStation(stationAhead);
 			voiceAlerts.check(reports);
 		}
 	}
@@ -709,14 +898,16 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			return true;
 		}
 		RoadCrewReport report = findTappedReport(point, tileBox);
-		if (report == null) {
-			return false;
-		}
+		RoadCrewWeighStations.Station station = report == null ? findTappedWeighStation(point, tileBox) : null;
 		MapActivity mapActivity = getMapActivity();
-		if (mapActivity == null) {
+		if (mapActivity == null || (report == null && station == null)) {
 			return false;
 		}
-		showReportDetailsDialog(mapActivity, report);
+		if (report != null) {
+			showReportDetailsDialog(mapActivity, report);
+		} else {
+			showWeighStationDialog(mapActivity, station);
+		}
 		return true;
 	}
 
@@ -735,6 +926,12 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		if (report != null) {
 			result.collect(report, this);
 			result.setObjectLatLon(report.getLocation());
+			return;
+		}
+		RoadCrewWeighStations.Station station = findTappedWeighStation(result.getPoint(), result.getTileBox());
+		if (station != null) {
+			result.collect(station, this);
+			result.setObjectLatLon(new LatLon(station.lat, station.lon));
 		}
 	}
 
@@ -744,11 +941,12 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			placesController.showPlace(place);
 			return true;
 		}
-		if (!(object instanceof RoadCrewReport report)) {
-			return false;
-		}
 		MapActivity mapActivity = getMapActivity();
-		if (mapActivity == null) {
+		if (mapActivity != null && object instanceof RoadCrewWeighStations.Station station) {
+			showWeighStationDialog(mapActivity, station);
+			return true;
+		}
+		if (!(object instanceof RoadCrewReport report) || mapActivity == null) {
 			return false;
 		}
 		showReportDetailsDialog(mapActivity, report);
@@ -763,6 +961,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		if (object instanceof RoadCrewReport report) {
 			return report.getLocation();
 		}
+		if (object instanceof RoadCrewWeighStations.Station station) {
+			return new LatLon(station.lat, station.lon);
+		}
 		return null;
 	}
 
@@ -773,6 +974,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 		if (object instanceof RoadCrewReport report) {
 			return new PointDescription(PointDescription.POINT_TYPE_MARKER, report.getType().getTitle(getApplication()));
+		}
+		if (object instanceof RoadCrewWeighStations.Station) {
+			return new PointDescription(PointDescription.POINT_TYPE_MARKER,
+					getApplication().getString(R.string.roadcrew_weigh_station_fixed_title));
 		}
 		return null;
 	}

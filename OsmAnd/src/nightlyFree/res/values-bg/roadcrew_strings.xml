@@ -290,6 +290,11 @@
     <string name="roadcrew_button_ok">Добре</string>
 
     <string name="roadcrew_time_now">сега</string>
+    <string name="roadcrew_weigh_station_fixed_title">Стационарен кантар</string>
+    <string name="roadcrew_weigh_station_fixed_ahead">Стационарен кантар · %1$s</string>
+    <string name="roadcrew_weigh_station_fixed_place">%1$s · в двете посоки</string>
+    <string name="roadcrew_weigh_station_fixed_about">Вграден в пътя под тол рамката. Не се спира – теглото се мери в движение, а при претоварване глобата идва автоматично.</string>
+    <string name="roadcrew_weigh_station_fixed_source">Източник: Национално тол управление (BG TOLL)</string>
     <string name="roadcrew_time_minutes">%1$d мин</string>
     <string name="roadcrew_time_just_now">току-що</string>
     <string name="roadcrew_time_minutes_ago">преди %1$d мин</string>
