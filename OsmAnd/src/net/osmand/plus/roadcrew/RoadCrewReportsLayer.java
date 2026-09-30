@@ -166,7 +166,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	 * map and no buttons anywhere. Whoever owns the panel checks this and clears
 	 * the drawing rather than leaving a course on screen that cannot be answered.
 	 */
-	static boolean hasTripReviewJourney() {
+	public static boolean hasTripReviewJourney() {
 		return tripReviewJourney != null;
 	}
 

@@ -35,6 +35,8 @@ import net.osmand.plus.plugins.PluginsHelper;
 import net.osmand.plus.plugins.development.OsmandDevelopmentPlugin;
 import net.osmand.plus.resources.DetectRegionTask;
 import net.osmand.plus.routepreparationmenu.MapRouteInfoMenu;
+import net.osmand.plus.roadcrew.RoadCrewAutoCenter;
+import net.osmand.plus.roadcrew.RoadCrewReportsLayer;
 import net.osmand.plus.routing.NextDirectionInfo;
 import net.osmand.plus.routing.RoutingHelper;
 import net.osmand.plus.routing.RoutingHelperUtils;
@@ -553,7 +555,17 @@ public class MapViewTrackingUtilities implements OsmAndLocationListener, IMapLoc
 		app.runInUIThreadAndCancelPrevious(AUTO_FOLLOW_MSG_ID, () -> {
 			if (mapView != null && !isMapLinkedToLocation() && contextMenu == null
 					&& !routingHelper.isRoutePlanningMode()) {
-				app.showToastMessage(R.string.auto_follow_location_enabled);
+				// RoadCrew (Galin, 01.10.2026): also without navigation, but only
+				// while the truck moves; a parked driver reading the map keeps it,
+				// and the timer looks again after the same delay.
+				Location location = myLocation;
+				if (!RoadCrewAutoCenter.returnNow(routingHelper.isFollowingMode(),
+						location != null && location.hasSpeed(), location != null ? location.getSpeed() : 0f,
+						RoadCrewReportsLayer.hasTripReviewJourney())) {
+					backToLocationWithDelay(delay);
+					return;
+				}
+				app.showToastMessage(R.string.roadcrew_map_back_to_truck);
 				backToLocationImpl(15, false);
 			}
 		}, delay * 1000L);
@@ -562,7 +574,7 @@ public class MapViewTrackingUtilities implements OsmAndLocationListener, IMapLoc
 	public void resetBackToLocation() {
 		if (app.hasMessagesInUiThread(AUTO_FOLLOW_MSG_ID)) {
 			int autoFollow = settings.AUTO_FOLLOW_ROUTE.get();
-			if (autoFollow > 0 && routingHelper.isFollowingMode() && !routePlanningMode) {
+			if (RoadCrewAutoCenter.armed(autoFollow, routePlanningMode)) {
 				backToLocationWithDelay(autoFollow);
 			}
 		}
@@ -588,7 +600,8 @@ public class MapViewTrackingUtilities implements OsmAndLocationListener, IMapLoc
 		settings.MAP_LINKED_TO_LOCATION.set(isMapLinkedToLocation);
 		if (!isMapLinkedToLocation) {
 			int autoFollow = settings.AUTO_FOLLOW_ROUTE.get();
-			if (autoFollow > 0 && routingHelper.isFollowingMode() && !routePlanningMode) {
+			// RoadCrew: armed with or without navigation (RoadCrewAutoCenter).
+			if (RoadCrewAutoCenter.armed(autoFollow, routePlanningMode)) {
 				backToLocationWithDelay(autoFollow);
 			}
 		} else {
