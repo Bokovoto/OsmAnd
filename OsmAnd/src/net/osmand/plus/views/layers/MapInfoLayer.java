@@ -24,6 +24,7 @@ import net.osmand.plus.charts.TrackChartPoints;
 import net.osmand.plus.helpers.MapDisplayPositionManager;
 import net.osmand.plus.helpers.MapDisplayPositionManager.BoundsChangeListener;
 import net.osmand.plus.helpers.MapDisplayPositionManager.ICoveredScreenRectProvider;
+import net.osmand.plus.roadcrew.RoadCrewNeonHud;
 import net.osmand.plus.settings.backend.ApplicationMode;
 import net.osmand.plus.settings.backend.OsmandSettings;
 import net.osmand.plus.settings.enums.ScreenLayoutMode;
@@ -711,6 +712,11 @@ public class MapInfoLayer extends OsmandMapLayer implements ICoveredScreenRectPr
 		List<Rect> rects = new ArrayList<>();
 		rects.add(AndroidUtils.getViewBoundOnScreen(topWidgetsPanel));
 		rects.add(AndroidUtils.getViewBoundOnScreen(bottomWidgetsPanel));
+		MapActivity mapActivity = getMapActivity();
+		if (mapActivity != null) {
+			// RoadCrew's own header and footer cover the map just the same.
+			rects.addAll(RoadCrewNeonHud.getCoveredScreenRects(mapActivity));
+		}
 		return rects;
 	}
 }

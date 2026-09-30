@@ -317,7 +317,12 @@ public class MapViewTrackingUtilities implements OsmAndLocationListener, IMapLoc
 					registerUnregisterSensor(location, false);
 			}
 			this.showViewAngle = showViewAngle;
+			boolean wasFollowingMode = followingMode;
 			followingMode = routingHelper.isFollowingMode();
+			if (wasFollowingMode != followingMode) {
+				// RoadCrew: where the truck stands depends on navigation.
+				mapDisplayPositionManager.updateMapDisplayPosition(true);
+			}
 			if (routePlanningMode != routingHelper.isRoutePlanningMode()) {
 				switchRoutePlanningMode();
 			}

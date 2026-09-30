@@ -2,6 +2,7 @@ package net.osmand.plus.roadcrew;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.text.SpannableString;
@@ -30,13 +31,16 @@ import net.osmand.plus.routing.NextDirectionInfo;
 import net.osmand.plus.routing.RoutingHelper;
 import net.osmand.plus.search.ShowQuickSearchMode;
 import net.osmand.plus.settings.enums.CompassMode;
+import net.osmand.plus.utils.AndroidUtils;
 import net.osmand.plus.utils.FormattedValue;
 import net.osmand.plus.utils.OsmAndFormatter;
 import net.osmand.plus.utils.OsmAndFormatterParams;
 import net.osmand.plus.views.controls.MapHudLayout;
 import net.osmand.plus.views.mapwidgets.TurnDrawable;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class RoadCrewNeonHud {
@@ -108,6 +112,9 @@ public final class RoadCrewNeonHud {
 					ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 		}
 		View root = mapHud.findViewWithTag(HUD_TAG);
+		// Once the bars are measured, the map can work out where the truck fits.
+		mapHud.post(() -> activity.getApp().getMapViewTrackingUtilities()
+				.getMapDisplayPositionManager().updateMapDisplayPosition(true));
 		updateNavigationSelection(root, activity);
 		updateResponsiveLayout(root, activity);
 		updateLiveMapStatus(root, activity);
@@ -713,6 +720,24 @@ public final class RoadCrewNeonHud {
 		setTranslationY(mapHud.findViewById(R.id.roadcrew_report_button), zoomOffset);
 		setTranslationY(mapHud.findViewById(R.id.roadcrew_map_colours_button), zoomOffset);
 		setTranslationY(mapHud.findViewById(R.id.roadcrew_panels_button), zoomOffset);
+	}
+
+	/**
+	 * The parts of the screen our own header, footer and cockpit rails take from
+	 * the map. OsmAnd reports its widget panels the same way and then keeps the
+	 * truck inside what is left (MapDisplayPositionManager). Ours said nothing,
+	 * so the truck could stand under the road name and the RoadCrew buttons -
+	 * Galin saw it on the A2 on 01.10.2026.
+	 */
+	@NonNull
+	public static List<Rect> getCoveredScreenRects(@NonNull MapActivity activity) {
+		List<Rect> rects = new ArrayList<>();
+		for (View panel : getRoutePreviewPanels(activity).values()) {
+			if (panel != null && panel.getVisibility() == View.VISIBLE) {
+				rects.add(AndroidUtils.getViewBoundOnScreen(panel));
+			}
+		}
+		return rects;
 	}
 
 	@NonNull

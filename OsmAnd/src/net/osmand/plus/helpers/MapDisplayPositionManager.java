@@ -7,6 +7,7 @@ import android.view.View;
 import net.osmand.data.RotatedTileBox;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.activities.MapActivity;
+import net.osmand.plus.roadcrew.RoadCrewMapPlacement;
 import net.osmand.plus.settings.backend.OsmandSettings;
 import net.osmand.plus.settings.enums.MapPosition;
 import net.osmand.plus.utils.AndroidUtils;
@@ -271,6 +272,16 @@ public class MapDisplayPositionManager implements ViewportListener {
 
 	@NonNull
 	private MapPosition getPositionFromPreferences() {
+		// RoadCrew (Galin, 01.10.2026): with the map turning by the driving
+		// direction OsmAnd puts the truck low, so the road ahead is seen. That
+		// is navigation's place. Without navigation the driver is watching the
+		// map itself, so the truck stands in the middle of it. Only where the
+		// app is left to choose - a driver who picked the place keeps it.
+		if (RoadCrewMapPlacement.centreOnTheTruck(useAutomaticByDefault(),
+				app.getRoutingHelper().isFollowingMode(),
+				app.getRoutingHelper().isRoutePlanningMode())) {
+			return MapPosition.CENTER;
+		}
 		if (useCenterByDefault() || (useAutomaticByDefault() && useCenterForAutomatic())) {
 			return MapPosition.CENTER;
 		} else {
