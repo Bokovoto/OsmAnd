@@ -22,9 +22,20 @@ public final class RoadCrewMapPlacement {
 	 * @param appChoosesThePlace the driver left the placement setting on automatic
 	 * @param followingMode navigation is running
 	 * @param routePlanningMode a route is being planned, when OsmAnd lifts the map itself
+	 * @param tripReviewShown a drive is drawn on the map to be approved
 	 */
 	public static boolean centreOnTheTruck(boolean appChoosesThePlace, boolean followingMode,
-			boolean routePlanningMode) {
-		return appChoosesThePlace && !followingMode && !routePlanningMode;
+			boolean routePlanningMode, boolean tripReviewShown) {
+		if (routePlanningMode) {
+			return false;
+		}
+		// A drive put up for approval is read, not driven by. The place must not
+		// change under it either: the drive is fitted to the screen from where
+		// the truck stands, so moving that afterwards takes the drive with it
+		// (Galin, 01.10.2026).
+		if (tripReviewShown) {
+			return true;
+		}
+		return appChoosesThePlace && !followingMode;
 	}
 }

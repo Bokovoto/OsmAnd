@@ -8,6 +8,7 @@ import net.osmand.data.RotatedTileBox;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.activities.MapActivity;
 import net.osmand.plus.roadcrew.RoadCrewMapPlacement;
+import net.osmand.plus.roadcrew.RoadCrewReportsLayer;
 import net.osmand.plus.settings.backend.OsmandSettings;
 import net.osmand.plus.settings.enums.MapPosition;
 import net.osmand.plus.utils.AndroidUtils;
@@ -279,7 +280,8 @@ public class MapDisplayPositionManager implements ViewportListener {
 		// app is left to choose - a driver who picked the place keeps it.
 		if (RoadCrewMapPlacement.centreOnTheTruck(useAutomaticByDefault(),
 				app.getRoutingHelper().isFollowingMode(),
-				app.getRoutingHelper().isRoutePlanningMode())) {
+				app.getRoutingHelper().isRoutePlanningMode(),
+				RoadCrewReportsLayer.hasTripReviewJourney())) {
 			return MapPosition.CENTER;
 		}
 		if (useCenterByDefault() || (useAutomaticByDefault() && useCenterForAutomatic())) {

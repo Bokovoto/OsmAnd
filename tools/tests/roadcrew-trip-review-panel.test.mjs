@@ -58,12 +58,12 @@ test('north first, then the whole course in the window', () => {
   assert.match(fit, /fitRectToMap\(/);
   // Order and timing: the rotation is animated, so the fit waits for it.
   const schedule = source.slice(source.indexOf('if (tripBounds != null) {'),
-    source.indexOf('if (tripBounds != null) {') + 900);
+    source.indexOf('if (tripBounds != null) {') + 1500);
   const northAt = schedule.indexOf('faceNorth');
   const fitAt = schedule.indexOf('fitMapToTrip');
   assert.ok(northAt !== -1 && fitAt !== -1 && northAt < fitAt,
     'north is asked for before any fit');
   const delays = [...schedule.matchAll(/postDelayed\(.*?, (\d+)\);/g)].map(m => Number(m[1]));
-  assert.ok(delays.length >= 2 && Math.min(...delays) >= 500,
-    `the first fit must come after the turn, found delays ${delays.join(', ')}`);
+  assert.ok(delays.length >= 1 && Math.min(...delays) >= 500,
+    `the fit must come after the turn, found delays ${delays.join(', ')}`);
 });

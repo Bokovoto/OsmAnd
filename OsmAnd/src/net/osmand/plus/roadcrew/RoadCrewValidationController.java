@@ -61,6 +61,8 @@ final class RoadCrewValidationController {
 	private long manualUntil;
 	private long nextReviewElapsed;
 	private AlertDialog dialog;
+	private QuadRect tripBounds;
+	private long tripShownElapsed;
 	private long questionSequence;
 	private final AtomicInteger tripMapRequest = new AtomicInteger();
 
@@ -156,6 +158,7 @@ final class RoadCrewValidationController {
 			RoadCrewReportsLayer.setTripReviewJourney(null);
 			if (activity != null) { activity.refreshMap(); }
 		}
+		keepTripInWindow(activity);
 		if (!consent) {
 			if (prefs.contains("answer")) { clearLocalAnswers(app); }
 			return;
@@ -386,6 +389,7 @@ final class RoadCrewValidationController {
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.setOnDismissListener(d -> {
 			RoadCrewReportsLayer.setTripReviewJourney(null);
+			this.tripBounds = null;
 			MapActivity current = activitySupplier.get();
 			if (current != null) { current.refreshMap(); }
 			tripMapRequest.incrementAndGet();
@@ -402,6 +406,8 @@ final class RoadCrewValidationController {
 		// app's own centring - on the driver, while navigating - put the drive
 		// back off screen, so it had to be hunted for (Galin, 19.09). Twice,
 		// because that centring can still land once after the panel appears.
+		this.tripBounds = tripBounds;
+		this.tripShownElapsed = SystemClock.elapsedRealtime();
 		if (tripBounds != null) {
 			// North first, then the whole course in the window - Galin's own
 			// order, 21.09: "трябва първо да се даде картата на N и след това да
@@ -412,9 +418,13 @@ final class RoadCrewValidationController {
 			// appeared and was then lost. Worse, the second pass used to ask for
 			// the rotation again with force, starting it over and throwing away
 			// the fit that had just been made.
+			//
+			// The second pass used to be another blind timer, 1600 ms, and a map
+			// moved after it still lost the drive - Galin saw exactly that on
+			// 01.10.2026: centred, and a second later somewhere else. The tick
+			// watches the drive instead, and puts it back while the panel is new.
 			handler.post(() -> faceNorth(activity));
 			handler.postDelayed(() -> fitMapToTrip(activity, tripBounds), 700);
-			handler.postDelayed(() -> fitMapToTrip(activity, tripBounds), 1600);
 		}
 	}
 
@@ -491,6 +501,23 @@ final class RoadCrewValidationController {
 		// Not forced: when the map is already north there is nothing to turn,
 		// and asking anyway would start an animation that spoils the fit.
 		activity.getMapView().setRotate(0, false);
+	}
+
+	/**
+	 * The drive is put in the window once and then watched: while the panel is
+	 * new and the driver has not taken the map himself, a drive that has left
+	 * the window goes back in it.
+	 */
+	private void keepTripInWindow(@Nullable MapActivity activity) {
+		QuadRect bounds = tripBounds;
+		if (activity == null || bounds == null || !isShowing()) { return; }
+		OsmandMapTileView mapView = activity.getMapView();
+		if (RoadCrewReviewWindow.needsRefit(SystemClock.elapsedRealtime() - tripShownElapsed,
+				mapView.isUserMapInteractionActive(), bounds,
+				mapView.getRotatedTileBox().getLatLonBounds())) {
+			Log.i("RoadCrewValidation", "The drive left the window; putting it back");
+			fitMapToTrip(activity, bounds);
+		}
 	}
 
 	private void fitMapToTrip(MapActivity activity, QuadRect bounds) {

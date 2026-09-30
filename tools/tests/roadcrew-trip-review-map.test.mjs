@@ -55,17 +55,21 @@ test('opening a review hands the trip to the map and closing it takes the trip b
   assert.match(body, /catch \(JSONException/);
 });
 
-test('the map is moved to the trip only after the panel is up, and again after that', () => {
+test('the map is moved to the trip only after the panel is up, and the drive is kept there', () => {
   const source = read(CONTROLLER);
   const show = source.indexOf('dialog.show();');
   assert.notEqual(show, -1);
   // Wide enough to survive the comment that explains the order (21.09); what
-  // matters is that the fits come after dialog.show(), not how far after.
+  // matters is that the fit comes after dialog.show(), not how far after.
   const after = source.slice(show, show + 1600);
   // Fitting before the panel existed let the app re-centre on the driver and
   // leave the drive off screen (Galin, 19.09).
   const fits = after.match(/fitMapToTrip\(activity, tripBounds\)/g) || [];
-  assert.ok(fits.length >= 2, `the fit must be repeated, found ${fits.length}`);
+  assert.equal(fits.length, 1, `one fit after the panel is up, found ${fits.length}`);
+  // A second blind timer was the old answer and it still lost the drive
+  // (Galin, 01.10.2026). The drive is watched instead, by the one-second tick.
+  assert.match(source, /RoadCrewReviewWindow\.needsRefit\(/,
+    'the drive must be put back if anything moves the map under it');
   const body = source.slice(source.indexOf('private void fitMapToTrip('));
   assert.match(body, /fitRectToMap\(/, 'the map must move so the whole trip is in view');
   assert.match(body, /setMapLinkedToLocation\(false\)/, 'and not snapping back to the driver');
