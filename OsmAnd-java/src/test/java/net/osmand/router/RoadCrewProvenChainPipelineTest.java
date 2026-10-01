@@ -84,6 +84,27 @@ public class RoadCrewProvenChainPipelineTest {
 		}
 	}
 
+	/** Fixes every {@code step} degrees north along {@code longitude}, one a second. */
+	private void driveNorth(RoadCrewDirectPipeline pipeline, List<RouteDataObject> loaded,
+			double longitude, double from, double to, double step) {
+		RoadCrewSegmentMatcher.PreparedSegments segments = RoadCrewSegmentMatcher.prepare(loaded);
+		for (double latitude = from; latitude <= to + 1e-9; latitude += step) {
+			time += 1_000;
+			sequence++;
+			RoadCrewSegmentMatcher.GpsFix fix = new RoadCrewSegmentMatcher.GpsFix(latitude, longitude, 5, 16, 0);
+			RoadCrewSegmentMatcher.MatchResult match = segments.match(fix);
+			RouteDataObject road = null;
+			if (match.isMatched() && match.getSegment() != null) {
+				for (RouteDataObject candidate : loaded) {
+					if (candidate.getId() == match.getSegment().getRoadId()) {
+						road = candidate;
+					}
+				}
+			}
+			pipeline.accept(fix, match, road, time, sequence);
+		}
+	}
+
 	private RoadCrewDirectObservation on(long osmWayId) {
 		RoadCrewDirectObservation found = null;
 		for (RoadCrewDirectObservation observation : produced) {
@@ -165,8 +186,11 @@ public class RoadCrewProvenChainPipelineTest {
 	}
 
 	@Test
-	public void aPassageTooShortToSendBreaksTheChain() {
-		// a is 40 m; the truck is matched on it for half a metre, then turns onto b.
+	public void aShortPassageThatTurnsIsRecordedUpToTheJunctionAndJoined() {
+		// a is 40 m; the truck is matched on it for half a metre, then GPS sees it
+		// turn onto b where the two meet. R1 proves the metres up to that node, so
+		// the half metre on a is the drive to the junction and the chain holds.
+		// Until 01.10.2026 the half metre was dropped and b stood alone.
 		RouteDataObject a = east(1, "primary", 27.0000, 27.0005);
 		RouteDataObject b = east(2, "primary", 27.0005, 27.0100);
 		List<RouteDataObject> loaded = Arrays.asList(a, b);
@@ -175,8 +199,41 @@ public class RoadCrewProvenChainPipelineTest {
 		drive(pipeline, loaded, 27.0006, 27.0030, 0.0002);
 		pipeline.flush();
 
+		Assert.assertEquals(2, produced.size());
+		assertNumberedInOrder();
+		Assert.assertEquals("a up to the node it turned at",
+				RoadCrewRoadTopology.measures(a)[4], on(1).toMeasureMeters, 0.5);
+		Assert.assertTrue(on(2).joinsPrevious);
+		Assert.assertEquals("b from that node", 0, on(2).fromMeasureMeters, 0.5);
+	}
+
+	@Test
+	public void aPassageTooShortToSendBreaksTheChain() {
+		// Under a metre is not sent, and what follows may not join across it
+		// (ROADMAP 330). With R1 recording up to the junction node, a passage
+		// that turns stays that short only when the truck is matched on a in
+		// its last metre - so that is the drive here.
+		// b turns north off the end of a, so no fix on a can be taken for b.
+		RouteDataObject a = east(1, "primary", 27.0000, 27.0005);
+		RouteDataObject b = north(2, 27.0005);
+		List<RouteDataObject> loaded = Arrays.asList(a, b);
+		List<RoadCrewDirectPassageAccumulator.Passage> handed = new ArrayList<>();
+		RoadCrewDirectPipeline pipeline = new RoadCrewDirectPipeline(
+				RoadCrewDirectPassageAccumulator.Config.PROVEN_330, handed::add, null);
+		pipeline.setObservationSink(produced::addAll);
+		pipeline.setMapVersion("test.obf");
+		pipeline.replaceRoads(loaded, LAT, 27.015, 5_000);
+		drive(pipeline, loaded, 27.000494, 27.000499, 0.000005);
+		driveNorth(pipeline, loaded, 27.0005, 43.0001, 43.0025, 0.0002);
+		pipeline.flush();
+
+		boolean drivenOnA = false;
+		for (RoadCrewDirectPassageAccumulator.Passage passage : handed) {
+			drivenOnA |= passage.wayId == 1 && passage.progressMeters < 1;
+		}
+		Assert.assertTrue("a was driven, under a metre - not merely never matched", drivenOnA);
 		Assert.assertEquals(1, produced.size());
 		Assert.assertEquals(2, produced.get(0).osmWayId);
-		Assert.assertFalse("the half metre on a was never sent", produced.get(0).joinsPrevious);
+		Assert.assertFalse("the part on a was never sent", produced.get(0).joinsPrevious);
 	}
 }

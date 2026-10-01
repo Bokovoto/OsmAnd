@@ -83,6 +83,24 @@ public class RoadCrewRoadTopologyTest {
 	}
 
 	@Test
+	public void theSharedNodeIsFoundOnBothWaysAtTheEndOrInTheMiddle() {
+		RouteDataObject a = east(1, 27.000, 27.010);
+		RouteDataObject b = road(2, "residential", new double[] {LAT, 27.010}, new double[] {43.010, 27.010});
+		RouteDataObject across = road(3, "residential", new double[] {42.999, 27.005},
+				new double[] {LAT, 27.005}, new double[] {43.001, 27.005});
+		List<double[]> atTheEnd = Arrays.asList(new double[] {LAT, 27.0096}, new double[] {43.0004, 27.0100});
+		List<double[]> inTheMiddle = Arrays.asList(new double[] {LAT, 27.0047}, new double[] {43.0003, 27.0050});
+
+		Assert.assertArrayEquals(new int[] {4, 0}, RoadCrewRoadTopology.sharedNode(a, b, atTheEnd, 60));
+		Assert.assertArrayEquals("a crossing in the middle of A is A's third point, not its end",
+				new int[] {2, 1}, RoadCrewRoadTopology.sharedNode(a, across, inTheMiddle, 60));
+		Assert.assertNull("positions far from any shared node",
+				RoadCrewRoadTopology.sharedNode(a, across, atTheEnd, 60));
+		Assert.assertEquals("measured on A's own points", length(a) / 2,
+				RoadCrewRoadTopology.measures(a)[2], 1);
+	}
+
+	@Test
 	public void theSameWayWithNothingJoiningItIsProven() throws IOException {
 		RouteDataObject a = east(1, 27.000, 27.010);
 		RoadCrewRoadTopology topology = map(a);

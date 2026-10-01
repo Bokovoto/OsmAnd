@@ -117,6 +117,24 @@ public final class RoadCrewDirectPipeline {
 		}
 
 		@Override
+		public RoadCrewDirectPassageAccumulator.Junction junction(Object fromWay, Object toWay,
+				List<double[]> positions, double radiusMeters) {
+			if (!(fromWay instanceof WayInfo) || !(toWay instanceof WayInfo)) {
+				return null;
+			}
+			WayInfo from = (WayInfo) fromWay;
+			WayInfo to = (WayInfo) toWay;
+			int[] node = RoadCrewRoadTopology.sharedNode(from.road, to.road, positions, radiusMeters);
+			if (node == null) {
+				return null;
+			}
+			// The node's place on each way, in the same canonical measures as the
+			// fixes - the matcher's own conversion, not a second one.
+			return new RoadCrewDirectPassageAccumulator.Junction(
+					canonicalMeasureOf(from, node[0]), canonicalMeasureOf(to, node[1]));
+		}
+
+		@Override
 		public List<RoadCrewDirectPassageAccumulator.Leg> withoutBranch(Object fromWay,
 				boolean fromForward, double fromMeasure, Object toWay, boolean toForward,
 				double toMeasure) {
@@ -161,6 +179,13 @@ public final class RoadCrewDirectPipeline {
 	}
 
 	/** Canonical to raw: an open way is only ever mirrored. */
+	private static double canonicalMeasureOf(WayInfo info, int rawIndex) {
+		if (info.rawMeasures == null || rawIndex < 0 || rawIndex >= info.rawMeasures.length) {
+			return Double.NaN;
+		}
+		return RoadCrewWayCanonical.canonicalMeasure(info.rawMeasures[rawIndex], info.canonical);
+	}
+
 	private static boolean rawForward(WayInfo info, boolean canonicalForward) {
 		return info.canonical.reversed ? !canonicalForward : canonicalForward;
 	}

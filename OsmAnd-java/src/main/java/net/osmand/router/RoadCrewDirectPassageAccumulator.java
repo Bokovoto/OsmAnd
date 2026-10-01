@@ -103,6 +103,14 @@ public final class RoadCrewDirectPassageAccumulator {
 	public static final long SILENCE_MILLIS = 10_000;
 	/** R1: every position of a turn seen by GPS lies this close to the shared node. */
 	public static final double JUNCTION_RADIUS_METERS = 60;
+	/**
+	 * How far along a way the shared node may lie from the fix next to it and
+	 * still be taken as this turn's node. Every position of the turn is within
+	 * JUNCTION_RADIUS_METERS of the node in a straight line; along a bending
+	 * road it can be somewhat more, never this much. Two ways can meet twice,
+	 * and the node found first may be the other meeting, far along.
+	 */
+	static final double MAX_JUNCTION_GAP_METERS = 2 * JUNCTION_RADIUS_METERS;
 	/** Twenty minutes at one fix a second; older positions are forgotten first. */
 	static final int MAX_GAP_POSITIONS = 1_200;
 
@@ -118,6 +126,15 @@ public final class RoadCrewDirectPassageAccumulator {
 		boolean meetAt(Object fromWay, Object toWay, List<double[]> positions, double radiusMeters);
 
 		/**
+		 * R1, and where: null when the ways do not meet as meetAt asks. A map
+		 * that can only say yes or no answers {@link Junction#UNPLACED}.
+		 */
+		default Junction junction(Object fromWay, Object toWay, List<double[]> positions,
+				double radiusMeters) {
+			return meetAt(fromWay, toWay, positions, radiusMeters) ? Junction.UNPLACED : null;
+		}
+
+		/**
 		 * R2: the only path from one point to the other, when no road branches
 		 * off it: the ways strictly between the two, in travel order - empty when
 		 * the two points are on the same way or on ways that meet. Null when the
@@ -125,6 +142,22 @@ public final class RoadCrewDirectPassageAccumulator {
 		 */
 		List<Leg> withoutBranch(Object fromWay, boolean fromForward, double fromMeasure,
 				Object toWay, boolean toForward, double toMeasure);
+	}
+
+	/**
+	 * Where two ways meet, in canonical measures: the shared node on the way
+	 * being left, and on the way being entered. NaN where the map cannot say.
+	 */
+	public static final class Junction {
+		public static final Junction UNPLACED = new Junction(Double.NaN, Double.NaN);
+
+		public final double fromWayMeasureMeters;
+		public final double toWayMeasureMeters;
+
+		public Junction(double fromWayMeasureMeters, double toWayMeasureMeters) {
+			this.fromWayMeasureMeters = fromWayMeasureMeters;
+			this.toWayMeasureMeters = toWayMeasureMeters;
+		}
 	}
 
 	/** A way crossed from end to end without a single fix on it. */
@@ -597,6 +630,10 @@ public final class RoadCrewDirectPassageAccumulator {
 			// R2: nothing branched, so the truck drove the rest of this way.
 			reachTheEnd();
 		}
+		if (proof.junction != null) {
+			// R1: GPS saw the turn, so the truck drove up to the node it turned at.
+			reachTheJunction(proof.junction.fromWayMeasureMeters);
+		}
 		boolean chained = finish(lastConfirmedTime);
 		if (proof.legs != null) {
 			chained = bridge(proof.legs, chained);
@@ -604,6 +641,9 @@ public final class RoadCrewDirectPassageAccumulator {
 		start(first, proof.proven && chained);
 		if (proof.legs != null) {
 			fromTheStart(first);
+		}
+		if (proof.junction != null) {
+			fromTheJunction(first, proof.junction.toWayMeasureMeters);
 		}
 		for (int index = candidate.indexOf(first) + 1; index < candidate.size(); index++) {
 			Fix later = candidate.get(index);
@@ -641,14 +681,17 @@ public final class RoadCrewDirectPassageAccumulator {
 		final boolean proven;
 		/** R2 only: the ways crossed in between, possibly none. */
 		final List<Leg> legs;
+		/** R1 only: where the two ways meet. */
+		final Junction junction;
 
-		Proof(boolean proven, List<Leg> legs) {
+		Proof(boolean proven, List<Leg> legs, Junction junction) {
 			this.proven = proven;
 			this.legs = legs;
+			this.junction = junction;
 		}
 	}
 
-	private static final Proof NOT_PROVEN = new Proof(false, null);
+	private static final Proof NOT_PROVEN = new Proof(false, null, null);
 
 	/** Whether the passage about to start on {@code next} continues the active one. */
 	private Proof prove(Fix next) {
@@ -657,16 +700,17 @@ public final class RoadCrewDirectPassageAccumulator {
 		}
 		List<double[]> seen = positionsBetween(lastConfirmedTime, next.timeMillis);
 		boolean gpsLost = seen == null || hasSilence(seen);
-		if (!gpsLost && topology.meetAt(attachment, next.attachment, latLon(seen),
-				JUNCTION_RADIUS_METERS)) {
+		Junction junction = gpsLost ? null : topology.junction(attachment, next.attachment,
+				latLon(seen), JUNCTION_RADIUS_METERS);
+		if (junction != null) {
 			count("joined_r1_junction");
-			return new Proof(true, null);
+			return new Proof(true, null, junction);
 		}
 		List<Leg> legs = topology.withoutBranch(attachment, forward, lastMeasure,
 				next.attachment, next.forward, next.measureMeters);
 		if (legs != null) {
 			count("joined_r2_no_branch");
-			return new Proof(true, legs);
+			return new Proof(true, legs, null);
 		}
 		count(gpsLost ? "join_refused_after_silence" : "join_refused_unproven");
 		return NOT_PROVEN;
@@ -738,6 +782,38 @@ public final class RoadCrewDirectPassageAccumulator {
 		if (rest > 0) {
 			progress += rest;
 			lastMeasure = forward ? wayLength : 0;
+		}
+	}
+
+	/**
+	 * R1 across a change of way: the active way was driven up to the node the
+	 * truck turned at - which can be anywhere along it, not only its end (Codex's
+	 * review, 30.09: the server used to close the stretch to the way's end on a
+	 * junction it could not place). Never back from the last fix, never on a
+	 * ring, never to a node too far along to be this turn's.
+	 */
+	private void reachTheJunction(double node) {
+		if (!Double.isFinite(node) || closed) {
+			return;
+		}
+		double gap = forward ? node - lastMeasure : lastMeasure - node;
+		if (gap > EPSILON && gap <= MAX_JUNCTION_GAP_METERS) {
+			progress += gap;
+			lastMeasure = node;
+			count("junction_reached");
+		}
+	}
+
+	/** R1 across a change of way: the new way was driven from the node it was entered at. */
+	private void fromTheJunction(Fix first, double node) {
+		if (!Double.isFinite(node) || first.closed) {
+			return;
+		}
+		double gap = first.forward ? first.measureMeters - node : node - first.measureMeters;
+		if (gap > EPSILON && gap <= MAX_JUNCTION_GAP_METERS) {
+			startMeasure = node;
+			progress += gap;
+			count("junction_entered");
 		}
 	}
 

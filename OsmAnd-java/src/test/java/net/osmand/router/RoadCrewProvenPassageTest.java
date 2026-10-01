@@ -29,6 +29,8 @@ public class RoadCrewProvenPassageTest {
 	/** A map whose answers the test decides. */
 	private static final class Map implements RoadCrewDirectPassageAccumulator.Topology {
 		boolean meet;
+		/** Where the ways meet; null leaves it to meetAt, as an older map would. */
+		RoadCrewDirectPassageAccumulator.Junction junction;
 		List<RoadCrewDirectPassageAccumulator.Leg> path;
 		int meetQuestions;
 		int pathQuestions;
@@ -41,6 +43,18 @@ public class RoadCrewProvenPassageTest {
 			positionsAsked = positions;
 			Assert.assertEquals(60, radiusMeters, 0);
 			return meet;
+		}
+
+		@Override
+		public RoadCrewDirectPassageAccumulator.Junction junction(Object fromWay, Object toWay,
+				List<double[]> positions, double radiusMeters) {
+			if (junction == null) {
+				return RoadCrewDirectPassageAccumulator.Topology.super.junction(fromWay, toWay,
+						positions, radiusMeters);
+			}
+			meetQuestions++;
+			positionsAsked = positions;
+			return junction;
 		}
 
 		@Override
@@ -74,6 +88,15 @@ public class RoadCrewProvenPassageTest {
 		sequence++;
 		accumulator.position(clock, 43.0, 27.0 + measure / 80_000.0);
 		accumulator.accept(new RoadCrewDirectPassageAccumulator.Fix(way, true, measure, false,
+				LENGTH, clock, movement, sequence, 3, 5, "way" + way));
+	}
+
+	/** The same, travelling against the measures. */
+	private void fixAgainst(long afterMillis, long way, double measure, double movement) {
+		clock += afterMillis;
+		sequence++;
+		accumulator.position(clock, 43.0, 27.0 + measure / 80_000.0);
+		accumulator.accept(new RoadCrewDirectPassageAccumulator.Fix(way, false, measure, false,
 				LENGTH, clock, movement, sequence, 3, 5, "way" + way));
 	}
 
@@ -330,5 +353,105 @@ public class RoadCrewProvenPassageTest {
 
 		Assert.assertEquals(1, passages.size());
 		assertSpan(passages.get(0), 100, 2130);
+	}
+
+	// Galin, 01.10.2026, and Codex's review of 30.09: the server must not close
+	// a stretch up to the way's end on a junction boolean - the junction can be
+	// a node in the middle of the way. The phone knows the node: it is the one
+	// every position of the turn lies near. So the phone records each way up to
+	// that node, measured on its own map, and the server has nothing to guess.
+
+	@Test
+	public void aTurnSeenByGpsIsRecordedUpToTheSharedNodeOnBothWays() {
+		map.junction = new RoadCrewDirectPassageAccumulator.Junction(140, 0);
+		fix(0, WAY_A, 100, 0);
+		fix(1000, WAY_A, 120, 20);
+		unmatched(1000);
+		fix(1000, WAY_B, 10, 20);
+		fix(1000, WAY_B, 30, 20);
+		fix(1000, WAY_B, 50, 20);
+		accumulator.flush();
+
+		Assert.assertEquals(2, passages.size());
+		Assert.assertTrue(passages.get(1).joinsPrevious);
+		assertSpan(passages.get(0), 100, 140);
+		assertSpan(passages.get(1), 0, 50);
+	}
+
+	@Test
+	public void theNodeInTheMiddleOfTheWayIsWhereTheRecordStops() {
+		// The junction is 1 km into a 4 km way: recorded to it, not to the end.
+		map.junction = new RoadCrewDirectPassageAccumulator.Junction(1030, 600);
+		fix(0, WAY_A, 950, 0);
+		fix(1000, WAY_A, 1010, 60);
+		unmatched(1000);
+		fix(1000, WAY_B, 615, 20);
+		fix(1000, WAY_B, 640, 25);
+		accumulator.flush();
+
+		Assert.assertEquals(2, passages.size());
+		assertSpan(passages.get(0), 950, 1030);
+		assertSpan(passages.get(1), 600, 640);
+	}
+
+	@Test
+	public void theNodeNeverTakesBackWhatWasDriven() {
+		// GPS noise put the last fix on A past the node, and the first on B before it.
+		map.junction = new RoadCrewDirectPassageAccumulator.Junction(110, 20);
+		fix(0, WAY_A, 100, 0);
+		fix(1000, WAY_A, 120, 20);
+		unmatched(1000);
+		fix(1000, WAY_B, 10, 20);
+		fix(1000, WAY_B, 50, 40);
+		accumulator.flush();
+
+		assertSpan(passages.get(0), 100, 120);
+		assertSpan(passages.get(1), 10, 50);
+	}
+
+	@Test
+	public void aNodeFarFromTheFixesIsNotTrustedOnThatWay() {
+		// Ways that meet twice: the node found on A lies 780 m on. Not that one.
+		map.junction = new RoadCrewDirectPassageAccumulator.Junction(900, 0);
+		fix(0, WAY_A, 100, 0);
+		fix(1000, WAY_A, 120, 20);
+		unmatched(1000);
+		fix(1000, WAY_B, 10, 20);
+		fix(1000, WAY_B, 50, 40);
+		accumulator.flush();
+
+		assertSpan(passages.get(0), 100, 120);
+		assertSpan(passages.get(1), 0, 50);
+	}
+
+	@Test
+	public void againstTheMeasuresTheNodeIsAtTheHighEnd() {
+		map.junction = new RoadCrewDirectPassageAccumulator.Junction(140, LENGTH);
+		fix(0, WAY_A, 100, 0);
+		fix(1000, WAY_A, 120, 20);
+		unmatched(1000);
+		fixAgainst(1000, WAY_B, 3990, 20);
+		fixAgainst(1000, WAY_B, 3970, 20);
+		fixAgainst(1000, WAY_B, 3950, 20);
+		accumulator.flush();
+
+		Assert.assertEquals(2, passages.size());
+		assertSpan(passages.get(0), 100, 140);
+		assertSpan(passages.get(1), 3950, LENGTH);
+	}
+
+	@Test
+	public void aMapThatCannotPlaceTheNodeLeavesTheFixesAsTheyAre() {
+		map.junction = RoadCrewDirectPassageAccumulator.Junction.UNPLACED;
+		fix(0, WAY_A, 100, 0);
+		fix(1000, WAY_A, 120, 20);
+		unmatched(1000);
+		fix(1000, WAY_B, 10, 20);
+		fix(1000, WAY_B, 50, 40);
+		accumulator.flush();
+
+		Assert.assertTrue(passages.get(1).joinsPrevious);
+		assertSpan(passages.get(0), 100, 120);
+		assertSpan(passages.get(1), 10, 50);
 	}
 }
