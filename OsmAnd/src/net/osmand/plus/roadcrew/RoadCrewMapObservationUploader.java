@@ -51,6 +51,8 @@ final class RoadCrewMapObservationUploader {
 			RoadCrewEndpoints.API_BASE_URL + "/v2/truck-map/chunks";
 	private static final String WAY_GEOMETRY_URL =
 			RoadCrewEndpoints.API_BASE_URL + "/v2/truck-map/way-geometry";
+	private static final String WAY_GEOMETRY_NEEDED_URL =
+			RoadCrewEndpoints.API_BASE_URL + "/v2/truck-map/way-geometry/needed";
 	/**
 	 * How many road shapes go in one request. Every shape asked for is sent -
 	 * this only splits the sending, so a weak signal on the road costs one
@@ -370,6 +372,7 @@ final class RoadCrewMapObservationUploader {
 			}
 			RoadCrewShadowValidation.diagnostics().count("evidence_upload_attempted", rows.size());
 			try {
+				sendShapesFirst(app, rows);
 				Set<String> accepted = postDirectBatch(app, rows);
 				List<Long> done = new ArrayList<>();
 				for (RoadCrewTripJournal.DirectRow row : rows) {
@@ -454,6 +457,50 @@ final class RoadCrewMapObservationUploader {
 			return acceptedIds;
 		}
 		throw new IOException("RoadCrew truck map API refused the installation token twice");
+	}
+
+	/**
+	 * Before the course, the shapes of its roads the server has none for -
+	 * Galin's choice, 01.10.2026: the shapes first. Asked as a short list, then
+	 * sent in portions; the course follows and is read with every road measured
+	 * on this phone's own map, so nothing waits and OpenStreetMap is not asked.
+	 * Never a reason to hold the course back: whatever fails here, the course
+	 * still goes, and the server asks again in its reply.
+	 */
+	private static void sendShapesFirst(@NonNull OsmandApplication app,
+			@NonNull List<RoadCrewTripJournal.DirectRow> rows) {
+		try {
+			JSONArray geometries = new JSONArray();
+			Set<String> named = new HashSet<>();
+			for (RoadCrewTripJournal.DirectRow row : rows) {
+				JSONObject key = new JSONObject(row.json).optJSONObject("segmentKey");
+				if (key == null || key.optInt("version", 0) != 2) {
+					continue;
+				}
+				String wayId = key.optString("osmWayId", "");
+				int algorithm = key.optInt("geometryFingerprintAlgorithm", 0);
+				String fingerprint = key.optString("geometryFingerprint", "");
+				if (wayId.isEmpty() || fingerprint.isEmpty()
+						|| !named.add(wayId + '|' + algorithm + '|' + fingerprint)) {
+					continue;
+				}
+				JSONObject geometry = new JSONObject();
+				geometry.put("osmWayId", wayId);
+				geometry.put("fingerprintAlgorithm", algorithm);
+				geometry.put("canonicalFingerprint", fingerprint);
+				geometry.put("mapVersion", key.optString("mapVersion", ""));
+				geometries.put(geometry);
+			}
+			if (geometries.length() == 0) {
+				return;
+			}
+			JSONObject question = new JSONObject();
+			question.put("geometries", geometries);
+			JSONObject answer = new JSONObject(postJson(app, WAY_GEOMETRY_NEEDED_URL, question));
+			uploadRequestedDescriptors(app, answer.optJSONArray("needGeometryDescriptors"));
+		} catch (Exception e) {
+			Log.w(TAG, "Cannot send the road shapes before the course", e);
+		}
 	}
 
 	/**

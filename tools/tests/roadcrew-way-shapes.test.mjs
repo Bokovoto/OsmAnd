@@ -33,6 +33,29 @@ test('the shape reply carries every field the server reads from it', { skip: !ex
   }
 });
 
+test('the question before a course names what the server reads from it', { skip: !existsSync(SERVER_INDEX) }, () => {
+  const server = readFileSync(SERVER_INDEX, 'utf8');
+  const wanted = fields(body(server, 'async function handleTruckMapWayGeometryNeeded(', '\nasync function '),
+    /geometry\?\.(\w+)/g);
+  const sent = fields(body(source(UPLOADER), 'private static void sendShapesFirst(', '\n\t}\n'), /\.put\("(\w+)"/g);
+  for (const field of wanted) {
+    assert.ok(sent.has(field), `the server reads geometry.${field}; the phone never sends it`);
+  }
+});
+
+test('the shapes go first: asked, sent, and only then the course', () => {
+  const uploader = source(UPLOADER);
+  const upload = body(uploader, 'static void uploadConfirmedDirect(', '\n\t}\n');
+  const first = upload.indexOf('sendShapesFirst(app, rows)');
+  const course = upload.indexOf('postDirectBatch(app, rows)');
+  assert.ok(first !== -1 && course !== -1 && first < course, 'the shapes before the course');
+  const question = body(uploader, 'private static void sendShapesFirst(', '\n\t}\n');
+  assert.match(question, /WAY_GEOMETRY_NEEDED_URL/);
+  assert.match(question, /uploadRequestedDescriptors\(/, 'what the server lacks is sent');
+  assert.match(question, /catch \(Exception/, 'never a reason to hold the course back');
+  assert.match(uploader, /"\/v2\/truck-map\/way-geometry\/needed"/);
+});
+
 test('every shape asked for is sent, in portions the server takes', () => {
   const uploader = source(UPLOADER);
   const reply = body(uploader, 'private static void uploadRequestedDescriptors(', '\n\t}\n');
