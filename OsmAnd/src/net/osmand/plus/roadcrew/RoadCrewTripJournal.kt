@@ -208,7 +208,8 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
         if (requested.isEmpty()) return emptyList()
         val db = database()
         val found = ArrayList<WayDescriptor>()
-        for (request in requested.take(MAX_DESCRIPTORS_PER_REPLY)) {
+        // All of them: the uploader sends them in portions (01.10.2026).
+        for (request in requested) {
             db.rawQuery(
                 "SELECT map_version, points FROM way_descriptors"
                     + " WHERE osm_way_id = ? AND algorithm = ? AND fingerprint = ?",
@@ -638,7 +639,6 @@ internal class RoadCrewTripJournal private constructor(private val app: OsmandAp
             prompted INTEGER NOT NULL DEFAULT 0 CHECK(prompted IN (0,1)), ended_at INTEGER NOT NULL DEFAULT 0)
         """
         /** The server takes at most this many in one reply. */
-        const val MAX_DESCRIPTORS_PER_REPLY = 20
 
         private val WAY_DESCRIPTORS_SQL = """CREATE TABLE way_descriptors (
             osm_way_id TEXT NOT NULL, algorithm INTEGER NOT NULL, fingerprint TEXT NOT NULL,

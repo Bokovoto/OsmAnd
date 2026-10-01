@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.router.RoadCrewObservationOutbox;
 import net.osmand.router.RoadCrewSegmentIdentity;
+import net.osmand.router.RoadCrewWayCanonical;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,6 +51,12 @@ final class RoadCrewMapObservationUploader {
 			RoadCrewEndpoints.API_BASE_URL + "/v2/truck-map/chunks";
 	private static final String WAY_GEOMETRY_URL =
 			RoadCrewEndpoints.API_BASE_URL + "/v2/truck-map/way-geometry";
+	/**
+	 * How many road shapes go in one request. Every shape asked for is sent -
+	 * this only splits the sending, so a weak signal on the road costs one
+	 * portion and not all of them. The server takes 32 a request.
+	 */
+	private static final int SHAPES_PER_PORTION = 20;
 	private static final String PREFERENCES = "roadcrew_truck_map_ingest_v2";
 	private static final String INSTALLATION_TOKEN = "installation_token";
 
@@ -450,7 +457,7 @@ final class RoadCrewMapObservationUploader {
 	}
 
 	/**
-	 * Sends the way shapes the server has just asked for.
+	 * Sends the way shapes the server has asked for - all of them, in portions.
 	 *
 	 * Once per geometry, never with an observation: a thousand drives down one
 	 * road answer this once. A shape this phone no longer has is simply not
@@ -476,31 +483,44 @@ final class RoadCrewMapObservationUploader {
 			}
 			List<RoadCrewTripJournal.WayDescriptor> known =
 					RoadCrewTripJournal.get(app).wayShapes(asked);
-			if (known.isEmpty()) {
-				return;
+			// Galin, 01.10.2026: "махни ограниченията", "на порции".
+			for (int start = 0; start < known.size(); start += SHAPES_PER_PORTION) {
+				JSONArray descriptors = new JSONArray();
+				for (RoadCrewTripJournal.WayDescriptor descriptor
+						: known.subList(start, Math.min(known.size(), start + SHAPES_PER_PORTION))) {
+					descriptors.put(shapeJson(descriptor));
+				}
+				JSONObject body = new JSONObject();
+				body.put("descriptors", descriptors);
+				postJson(app, WAY_GEOMETRY_URL, body);
 			}
-			JSONArray descriptors = new JSONArray();
-			for (RoadCrewTripJournal.WayDescriptor descriptor : known) {
-				JSONObject points = new JSONObject(descriptor.points);
-				JSONObject json = new JSONObject();
-				json.put("osmWayId", descriptor.osmWayId);
-				json.put("mapVersion", descriptor.mapVersion);
-				json.put("fingerprintAlgorithm", descriptor.algorithm);
-				json.put("canonicalFingerprint", descriptor.fingerprint);
-				json.put("pointsX", points.optJSONArray("pointsX"));
-				json.put("pointsY", points.optJSONArray("pointsY"));
-				descriptors.put(json);
-			}
-			JSONObject body = new JSONObject();
-			body.put("descriptors", descriptors);
-			postJson(app, WAY_GEOMETRY_URL, body);
 		} catch (Exception e) {
 			// The server will ask again with the next chunk; nothing is lost.
 			Log.w(TAG, "Cannot answer the way geometry request", e);
 		}
 	}
 
-	private static void postJson(@NonNull OsmandApplication app, @NonNull String url,
+	/** One shape as the server reads it: every field it reads is said here. */
+	@NonNull
+	private static JSONObject shapeJson(@NonNull RoadCrewTripJournal.WayDescriptor descriptor)
+			throws JSONException {
+		JSONObject points = new JSONObject(descriptor.points);
+		JSONObject json = new JSONObject();
+		json.put("osmWayId", descriptor.osmWayId);
+		json.put("mapVersion", descriptor.mapVersion);
+		json.put("fingerprintAlgorithm", descriptor.algorithm);
+		// Never sent before 01.10.2026, and the server refused every shape for
+		// it - 2090 asked for, none verified, nothing even logged.
+		json.put("measureAlgorithm", RoadCrewWayCanonical.MEASURE_ALGORITHM);
+		json.put("canonicalFingerprint", descriptor.fingerprint);
+		json.put("pointsX", points.optJSONArray("pointsX"));
+		json.put("pointsY", points.optJSONArray("pointsY"));
+		return json;
+	}
+
+	/** @return the server's answer, for the calls that read one */
+	@NonNull
+	private static String postJson(@NonNull OsmandApplication app, @NonNull String url,
 			@NonNull JSONObject body) throws IOException, JSONException {
 		byte[] payload = body.toString().getBytes(StandardCharsets.UTF_8);
 		for (int attempt = 0; attempt < 2; attempt++) {
@@ -527,7 +547,7 @@ final class RoadCrewMapObservationUploader {
 			if (responseCode < 200 || responseCode >= 300) {
 				throw new HttpStatusException(responseCode, responseBody);
 			}
-			return;
+			return responseBody == null ? "" : responseBody;
 		}
 		throw new IOException("RoadCrew API refused the installation token twice");
 	}
