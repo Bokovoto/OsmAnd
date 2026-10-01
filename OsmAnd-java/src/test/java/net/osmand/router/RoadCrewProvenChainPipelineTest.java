@@ -55,8 +55,13 @@ public class RoadCrewProvenChainPipelineTest {
 	private long sequence;
 
 	private RoadCrewDirectPipeline pipeline(List<RouteDataObject> loaded) {
+		return pipeline(loaded, RoadCrewDirectPassageAccumulator.Config.PROVEN_330);
+	}
+
+	private RoadCrewDirectPipeline pipeline(List<RouteDataObject> loaded,
+			RoadCrewDirectPassageAccumulator.Config config) {
 		RoadCrewDirectPipeline pipeline = new RoadCrewDirectPipeline(
-				RoadCrewDirectPassageAccumulator.Config.PROVEN_330, passage -> { }, null);
+				config, passage -> { }, null);
 		pipeline.setObservationSink(produced::addAll);
 		pipeline.setMapVersion("test.obf");
 		pipeline.replaceRoads(loaded, LAT, 27.015, 5_000);
@@ -120,6 +125,61 @@ public class RoadCrewProvenChainPipelineTest {
 	private void assertNumberedInOrder() {
 		for (int index = 0; index < produced.size(); index++) {
 			Assert.assertEquals(index, produced.get(index).passageIndex);
+		}
+	}
+
+	@Test
+	public void observedPolicyLeavesTunnelMissingUntilAnotherDriveActuallySeesIt() {
+		List<RouteDataObject> loaded = Arrays.asList(
+				east(1, "primary", 27.000, 27.010), east(2, "primary", 27.010, 27.020),
+				east(3, "primary", 27.020, 27.030));
+		RoadCrewDirectPipeline first = pipeline(loaded,
+				RoadCrewDirectPassageAccumulator.Config.GPS_OBSERVED_348);
+		drive(first, loaded, 27.0002, 27.0090, 0.0002);
+		time += 60_000;
+		drive(first, loaded, 27.0210, 27.0280, 0.0002);
+		first.flush();
+		Assert.assertEquals(2, produced.size());
+		assertNumberedInOrder();
+		Assert.assertFalse(on(3).joinsPrevious);
+		Assert.assertTrue(on(1).toMeasureMeters < 750);
+		Assert.assertTrue(on(3).fromMeasureMeters > 70);
+		List<RoadCrewDirectObservation> firstDrive = new ArrayList<>(produced);
+		produced.clear();
+
+		RoadCrewDirectPipeline second = pipeline(loaded,
+				RoadCrewDirectPassageAccumulator.Config.GPS_OBSERVED_348);
+		drive(second, loaded, 27.0002, 27.0280, 0.0002);
+		second.flush();
+		Assert.assertEquals(3, produced.size());
+		assertNumberedInOrder();
+		Assert.assertTrue(on(2).joinsPrevious);
+		Assert.assertTrue(on(3).joinsPrevious);
+		Assert.assertTrue(on(2).toMeasureMeters - on(2).fromMeasureMeters > 700);
+		for (RoadCrewDirectObservation observation : produced) {
+			Assert.assertFalse(observation.bridged);
+			Assert.assertTrue(observation.fixCount > 0);
+		}
+		Assert.assertEquals(2, firstDrive.size());
+		Assert.assertFalse(firstDrive.get(1).joinsPrevious);
+	}
+
+	@Test
+	public void observedSameWayHoleSurvivesConversionToWireObservations() {
+		List<RouteDataObject> loaded = Arrays.asList(east(1, "primary", 27.000, 27.030));
+		RoadCrewDirectPipeline pipeline = pipeline(loaded,
+				RoadCrewDirectPassageAccumulator.Config.GPS_OBSERVED_348);
+		drive(pipeline, loaded, 27.0002, 27.0090, 0.0002);
+		time += 60_000;
+		drive(pipeline, loaded, 27.0210, 27.0280, 0.0002);
+		pipeline.flush();
+		Assert.assertEquals(2, produced.size());
+		assertNumberedInOrder();
+		Assert.assertTrue(produced.get(1).fromMeasureMeters - produced.get(0).toMeasureMeters > 900);
+		for (RoadCrewDirectObservation observation : produced) {
+			Assert.assertEquals(1, observation.osmWayId);
+			Assert.assertFalse(observation.joinsPrevious);
+			Assert.assertFalse(observation.bridged);
 		}
 	}
 

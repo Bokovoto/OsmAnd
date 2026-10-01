@@ -530,10 +530,9 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 			// wait for the driver's confirmation exactly like the old ones - a
 			// course nobody confirmed is still never uploaded.
 			created.enableDirectPipeline(
-					// Galin's rule, ROADMAP 330: 321 without the unproven joins - a
-					// disappearance of GPS is bridged only where nothing branches, and
-					// the roads a tunnel runs through may be loaded to prove it.
-					RoadCrewDirectPassageAccumulator.Config.PROVEN_330, passage -> { },
+					// ROADMAP 348: preserve measured stretches, never infer missing GPS.
+					// A later driver may fill the shared map with their own observations.
+					RoadCrewDirectPassageAccumulator.Config.GPS_OBSERVED_348, passage -> { },
 					this::loadRoadsAround);
 			created.setDirectObservationSink(observations -> {
 				captureDirectEvidence(created, observations);

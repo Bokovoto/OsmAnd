@@ -175,7 +175,7 @@ test('the phone records only a proven passage and says so on the wire', () => {
   const coordinator = read(COORDINATOR);
   const enable = coordinator.slice(coordinator.indexOf('private void enableComparison('),
     coordinator.indexOf('private void flushDirectPipeline('));
-  assert.match(enable, /Config\.PROVEN_330/, 'the production pipeline runs the proof rule');
+  assert.match(enable, /Config\.GPS_OBSERVED_348/, 'the production pipeline never infers missing GPS from the map');
   assert.doesNotMatch(enable, /Config\.EXPERIMENT_321/);
   assert.match(enable, /enableDirectPipeline\([\s\S]*?this::loadRoadsAround\)/,
     'and may load the roads a tunnel runs through');

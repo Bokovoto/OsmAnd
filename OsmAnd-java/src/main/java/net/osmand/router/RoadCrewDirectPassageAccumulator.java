@@ -51,6 +51,8 @@ public final class RoadCrewDirectPassageAccumulator {
 		 * leave it off, so the offline replays keep reproducing what they recorded.
 		 */
 		public final boolean proofAcrossSilence;
+		/** ROADMAP 348: no map-only inference across missing GPS or unseen roads. */
+		public final boolean requireObservedGps;
 
 		public Config(double hardMaxSpeedMetersPerSecond, double baseProgressToleranceMeters,
 				double movementProgressFactor, double backtrackToleranceMeters,
@@ -65,7 +67,18 @@ public final class RoadCrewDirectPassageAccumulator {
 				double movementProgressFactor, double backtrackToleranceMeters,
 				long gapGraceMillis, int maxMissingFixes, int newWayConsecutiveMatches,
 				int newWayWindow, int newWayMatchesInWindow, boolean proofAcrossSilence) {
+			this(hardMaxSpeedMetersPerSecond, baseProgressToleranceMeters, movementProgressFactor,
+					backtrackToleranceMeters, gapGraceMillis, maxMissingFixes,
+					newWayConsecutiveMatches, newWayWindow, newWayMatchesInWindow, proofAcrossSilence, false);
+		}
+
+		private Config(double hardMaxSpeedMetersPerSecond, double baseProgressToleranceMeters,
+				double movementProgressFactor, double backtrackToleranceMeters,
+				long gapGraceMillis, int maxMissingFixes, int newWayConsecutiveMatches,
+				int newWayWindow, int newWayMatchesInWindow, boolean proofAcrossSilence,
+				boolean requireObservedGps) {
 			this.proofAcrossSilence = proofAcrossSilence;
+			this.requireObservedGps = requireObservedGps;
 			this.hardMaxSpeedMetersPerSecond = hardMaxSpeedMetersPerSecond;
 			this.baseProgressToleranceMeters = baseProgressToleranceMeters;
 			this.movementProgressFactor = movementProgressFactor;
@@ -93,6 +106,9 @@ public final class RoadCrewDirectPassageAccumulator {
 		 */
 		public static final Config PROVEN_330 =
 				new Config(50, 30, 1.5, 20, Long.MAX_VALUE, Integer.MAX_VALUE, 2, 4, 3, true);
+		/** Keep measured stretches; another driver's GPS may fill the shared map later. */
+		public static final Config GPS_OBSERVED_348 =
+				new Config(50, 30, 1.5, 20, Long.MAX_VALUE, Integer.MAX_VALUE, 2, 4, 3, false, true);
 	}
 
 	/**
@@ -506,6 +522,17 @@ public final class RoadCrewDirectPassageAccumulator {
 					+ " " + (fix.forward ? "F" : "R"));
 			return;
 		}
+		if (config.requireObservedGps && silent(lastConfirmedTime, fix.timeMillis)) {
+			// Check before candidate confirmation too: its first fix may precede the hole.
+			count("passages_split_unobserved_gps");
+			finish(lastConfirmedTime);
+			candidate.clear();
+			recentWays.clear();
+			rememberWay(fix.wayId);
+			start(fix, false);
+			note(fix.fixSequence, "GPS_GAP_SPLIT", "way=" + fix.wayId);
+			return;
+		}
 		if (fix.wayId == wayId && fix.forward == forward) {
 			double step = directionalProgress(lastMeasure, fix.measureMeters, forward,
 					closed, wayLength);
@@ -705,6 +732,10 @@ public final class RoadCrewDirectPassageAccumulator {
 		if (junction != null) {
 			count("joined_r1_junction");
 			return new Proof(true, null, junction);
+		}
+		if (config.requireObservedGps) {
+			count(gpsLost ? "join_refused_after_silence" : "join_refused_unproven");
+			return NOT_PROVEN;
 		}
 		List<Leg> legs = topology.withoutBranch(attachment, forward, lastMeasure,
 				next.attachment, next.forward, next.measureMeters);
