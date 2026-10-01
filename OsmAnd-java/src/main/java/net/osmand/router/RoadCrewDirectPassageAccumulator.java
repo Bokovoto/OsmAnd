@@ -161,18 +161,28 @@ public final class RoadCrewDirectPassageAccumulator {
 	}
 
 	/**
-	 * Where two ways meet, in canonical measures: the shared node on the way
-	 * being left, and on the way being entered. NaN where the map cannot say.
+	 * Where two ways meet, in canonical measures: each node they share near the
+	 * turn, on the way being left and on the way being entered, in pairs. None
+	 * when the map cannot say; more than one when the ways meet more than once
+	 * there (ROADMAP 347).
 	 */
 	public static final class Junction {
-		public static final Junction UNPLACED = new Junction(Double.NaN, Double.NaN);
+		public static final Junction UNPLACED = new Junction(new double[0], new double[0]);
 
-		public final double fromWayMeasureMeters;
-		public final double toWayMeasureMeters;
+		final double[] fromWayMeasures;
+		final double[] toWayMeasures;
 
 		public Junction(double fromWayMeasureMeters, double toWayMeasureMeters) {
-			this.fromWayMeasureMeters = fromWayMeasureMeters;
-			this.toWayMeasureMeters = toWayMeasureMeters;
+			this(new double[] {fromWayMeasureMeters}, new double[] {toWayMeasureMeters});
+		}
+
+		public Junction(double[] fromWayMeasures, double[] toWayMeasures) {
+			if (fromWayMeasures == null || toWayMeasures == null
+					|| fromWayMeasures.length != toWayMeasures.length) {
+				throw new IllegalArgumentException("A node is a pair: one measure on each way.");
+			}
+			this.fromWayMeasures = fromWayMeasures.clone();
+			this.toWayMeasures = toWayMeasures.clone();
 		}
 	}
 
@@ -657,9 +667,11 @@ public final class RoadCrewDirectPassageAccumulator {
 			// R2: nothing branched, so the truck drove the rest of this way.
 			reachTheEnd();
 		}
-		if (proof.junction != null) {
-			// R1: GPS saw the turn, so the truck drove up to the node it turned at.
-			reachTheJunction(proof.junction.fromWayMeasureMeters);
+		// R1: GPS saw the turn, so the truck drove up to the node it turned at -
+		// on both ways, the one node both agree on, or nothing is added.
+		double[] turn = proof.junction != null ? turnNode(proof.junction, first) : null;
+		if (turn != null) {
+			reachTheJunction(turn[0]);
 		}
 		boolean chained = finish(lastConfirmedTime);
 		if (proof.legs != null) {
@@ -669,8 +681,8 @@ public final class RoadCrewDirectPassageAccumulator {
 		if (proof.legs != null) {
 			fromTheStart(first);
 		}
-		if (proof.junction != null) {
-			fromTheJunction(first, proof.junction.toWayMeasureMeters);
+		if (turn != null) {
+			fromTheJunction(first, turn[1]);
 		}
 		for (int index = candidate.indexOf(first) + 1; index < candidate.size(); index++) {
 			Fix later = candidate.get(index);
@@ -817,18 +829,56 @@ public final class RoadCrewDirectPassageAccumulator {
 	}
 
 	/**
+	 * Which shared node the truck turned at, as {on the way being left, on the
+	 * way being entered} - or null when that is not known.
+	 *
+	 * The turn's node lies at or ahead of the last fix on the way left and at
+	 * or behind the first fix on the way entered, and within
+	 * MAX_JUNCTION_GAP_METERS of each. A node the truck had already passed, or
+	 * had not yet reached, is not where it turned. The two ways decide together:
+	 * each side choosing alone once filled b from a node a showed was behind the
+	 * truck - 50 m that were never driven (ROADMAP 347, Codex's review of
+	 * 01.10.2026). And if more than one node fits, nothing here tells which one
+	 * the truck took, so neither is used. Never on a ring.
+	 */
+	private double[] turnNode(Junction junction, Fix first) {
+		if (closed || first.closed) {
+			return null;
+		}
+		double[] found = null;
+		for (int index = 0; index < junction.fromWayMeasures.length; index++) {
+			double left = junction.fromWayMeasures[index];
+			double entered = junction.toWayMeasures[index];
+			if (!Double.isFinite(left) || !Double.isFinite(entered)) {
+				continue;
+			}
+			double ahead = forward ? left - lastMeasure : lastMeasure - left;
+			double behind = first.forward ? first.measureMeters - entered : entered - first.measureMeters;
+			if (ahead < 0 || behind < 0
+					|| ahead > MAX_JUNCTION_GAP_METERS || behind > MAX_JUNCTION_GAP_METERS) {
+				continue;
+			}
+			if (found != null) {
+				count("junction_ambiguous");
+				return null;
+			}
+			found = new double[] {left, entered};
+		}
+		if (found == null && junction.fromWayMeasures.length > 0) {
+			count("junction_not_placed");
+		}
+		return found;
+	}
+
+	/**
 	 * R1 across a change of way: the active way was driven up to the node the
 	 * truck turned at - which can be anywhere along it, not only its end (Codex's
 	 * review, 30.09: the server used to close the stretch to the way's end on a
-	 * junction it could not place). Never back from the last fix, never on a
-	 * ring, never to a node too far along to be this turn's.
+	 * junction it could not place). The node comes from turnNode.
 	 */
 	private void reachTheJunction(double node) {
-		if (!Double.isFinite(node) || closed) {
-			return;
-		}
 		double gap = forward ? node - lastMeasure : lastMeasure - node;
-		if (gap > EPSILON && gap <= MAX_JUNCTION_GAP_METERS) {
+		if (gap > EPSILON) {
 			progress += gap;
 			lastMeasure = node;
 			count("junction_reached");
@@ -837,11 +887,8 @@ public final class RoadCrewDirectPassageAccumulator {
 
 	/** R1 across a change of way: the new way was driven from the node it was entered at. */
 	private void fromTheJunction(Fix first, double node) {
-		if (!Double.isFinite(node) || first.closed) {
-			return;
-		}
 		double gap = first.forward ? first.measureMeters - node : node - first.measureMeters;
-		if (gap > EPSILON && gap <= MAX_JUNCTION_GAP_METERS) {
+		if (gap > EPSILON) {
 			startMeasure = node;
 			progress += gap;
 			count("junction_entered");

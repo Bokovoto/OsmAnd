@@ -110,6 +110,90 @@ public class RoadCrewProvenChainPipelineTest {
 		}
 	}
 
+	/** Metres east and north of (43, 27) - Codex's fixture of 347. */
+	private static double[] metres(double x, double y) {
+		return new double[] {LAT + y / 111_000.0, 27.0 + x / 81_000.0};
+	}
+
+	private static RouteDataObject residential(long osmWayId, double[]... metres) {
+		RouteRegion region = new RouteRegion();
+		region.setName("Bulgaria");
+		region.initRouteEncodingRule(1, "highway", "residential");
+		RouteDataObject road = new RouteDataObject(region);
+		road.id = osmWayId << 6;
+		road.types = new int[] {1};
+		road.pointsX = new int[metres.length];
+		road.pointsY = new int[metres.length];
+		for (int index = 0; index < metres.length; index++) {
+			double[] point = metres(metres[index][0], metres[index][1]);
+			road.pointsX[index] = MapUtils.get31TileNumberX(point[1]);
+			road.pointsY[index] = MapUtils.get31TileNumberY(point[0]);
+		}
+		return road;
+	}
+
+	/**
+	 * East along a to x = 35 m, then north up b from y = 5 m - the truck turns
+	 * at (40, 0). With {@code touchesFirst} b also starts on a at (0, 0), 40 m
+	 * before the turn, and dips south before coming back to it.
+	 */
+	private RoadCrewDirectObservation turnNorthOntoB(boolean touchesFirst, RouteDataObject[] roads) {
+		RouteDataObject a = residential(101, new double[] {-80, 0}, new double[] {0, 0},
+				new double[] {40, 0}, new double[] {100, 0});
+		RouteDataObject b = residential(202, new double[] {touchesFirst ? 0 : 1, 0},
+				new double[] {20, -15}, new double[] {40, 0}, new double[] {40, 100});
+		roads[0] = a;
+		roads[1] = b;
+		List<RouteDataObject> loaded = Arrays.asList(a, b);
+		RoadCrewDirectPipeline pipeline = pipeline(loaded,
+				RoadCrewDirectPassageAccumulator.Config.GPS_OBSERVED_348);
+		RoadCrewSegmentMatcher.PreparedSegments segments = RoadCrewSegmentMatcher.prepare(loaded);
+		List<double[]> trace = new ArrayList<>();
+		for (int x = -40; x <= 35; x += 5) {
+			trace.add(new double[] {x, 0, 90, 101});
+		}
+		for (int y = 5; y <= 80; y += 5) {
+			trace.add(new double[] {40, y, 0, 202});
+		}
+		for (double[] sample : trace) {
+			double[] position = metres(sample[0], sample[1]);
+			time += 1_000;
+			sequence++;
+			RoadCrewSegmentMatcher.GpsFix fix = new RoadCrewSegmentMatcher.GpsFix(
+					position[0], position[1], 3, 5, sample[2]);
+			// The direct branch of the observation pipeline matches this way.
+			RoadCrewSegmentMatcher.MatchResult match = segments.matchRelaxed(fix);
+			Assert.assertTrue("fixture fix matched", match.isMatched() && match.getSegment() != null);
+			Assert.assertEquals("fixture fix on its own road", ((long) sample[3]) << 6,
+					match.getSegment().getRoadId());
+			pipeline.accept(fix, match, sample[3] == 101 ? a : b, time, sequence);
+		}
+		pipeline.flush();
+		Assert.assertEquals(2, produced.size());
+		return on(202);
+	}
+
+	@Test
+	public void aTurnOntoAWayThatMeetsOnlyThereIsFilledFromThatNode() {
+		RouteDataObject[] roads = new RouteDataObject[2];
+		RoadCrewDirectObservation side = turnNorthOntoB(false, roads);
+		Assert.assertTrue(side.joinsPrevious);
+		Assert.assertEquals(RoadCrewRoadTopology.measures(roads[1])[2], side.fromMeasureMeters, 0.1);
+	}
+
+	@Test
+	public void aWayThatMeetsTwiceIsFilledOnlyFromTheNodeTheTruckTurnedAt() {
+		// ROADMAP 347: the first node found was where b first touches a, 40 m
+		// back - and b was sent as driven from there, 50 m the truck never drove.
+		RouteDataObject[] roads = new RouteDataObject[2];
+		RoadCrewDirectObservation side = turnNorthOntoB(true, roads);
+		Assert.assertTrue(side.joinsPrevious);
+		Assert.assertEquals("b from the node it turned at, not from where b first touches a",
+				RoadCrewRoadTopology.measures(roads[1])[2], side.fromMeasureMeters, 0.1);
+		Assert.assertEquals("a up to that same node",
+				RoadCrewRoadTopology.measures(roads[0])[2], on(101).toMeasureMeters, 0.1);
+	}
+
 	private RoadCrewDirectObservation on(long osmWayId) {
 		RoadCrewDirectObservation found = null;
 		for (RoadCrewDirectObservation observation : produced) {

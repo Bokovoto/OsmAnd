@@ -101,6 +101,22 @@ public class RoadCrewRoadTopologyTest {
 	}
 
 	@Test
+	public void waysThatMeetTwiceNearTheTurnShowBothNodes() {
+		// A side road that touches the main road, dips away and comes back to it.
+		// The two nodes are 40 m apart, both within 60 m of every position of the turn.
+		RouteDataObject a = road(1, "primary", new double[] {LAT, 27.000}, new double[] {LAT, 27.0045},
+				new double[] {LAT, 27.0050}, new double[] {LAT, 27.010});
+		RouteDataObject side = road(2, "residential", new double[] {LAT, 27.0045},
+				new double[] {42.9998, 27.00475}, new double[] {LAT, 27.0050}, new double[] {43.002, 27.0050});
+		List<double[]> turn = Arrays.asList(new double[] {LAT, 27.0048}, new double[] {43.0003, 27.0050});
+
+		List<int[]> nodes = RoadCrewRoadTopology.sharedNodes(a, side, turn, 60);
+		Assert.assertEquals(2, nodes.size());
+		Assert.assertArrayEquals(new int[] {1, 0}, nodes.get(0));
+		Assert.assertArrayEquals(new int[] {2, 2}, nodes.get(1));
+	}
+
+	@Test
 	public void theSameWayWithNothingJoiningItIsProven() throws IOException {
 		RouteDataObject a = east(1, 27.000, 27.010);
 		RoadCrewRoadTopology topology = map(a);

@@ -124,14 +124,20 @@ public final class RoadCrewDirectPipeline {
 			}
 			WayInfo from = (WayInfo) fromWay;
 			WayInfo to = (WayInfo) toWay;
-			int[] node = RoadCrewRoadTopology.sharedNode(from.road, to.road, positions, radiusMeters);
-			if (node == null) {
+			List<int[]> nodes = RoadCrewRoadTopology.sharedNodes(from.road, to.road, positions,
+					radiusMeters);
+			if (nodes.isEmpty()) {
 				return null;
 			}
-			// The node's place on each way, in the same canonical measures as the
+			// Each node's place on each way, in the same canonical measures as the
 			// fixes - the matcher's own conversion, not a second one.
-			return new RoadCrewDirectPassageAccumulator.Junction(
-					canonicalMeasureOf(from, node[0]), canonicalMeasureOf(to, node[1]));
+			double[] onFrom = new double[nodes.size()];
+			double[] onTo = new double[nodes.size()];
+			for (int index = 0; index < nodes.size(); index++) {
+				onFrom[index] = canonicalMeasureOf(from, nodes.get(index)[0]);
+				onTo[index] = canonicalMeasureOf(to, nodes.get(index)[1]);
+			}
+			return new RoadCrewDirectPassageAccumulator.Junction(onFrom, onTo);
 		}
 
 		@Override

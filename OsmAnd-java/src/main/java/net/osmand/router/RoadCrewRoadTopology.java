@@ -146,16 +146,29 @@ public final class RoadCrewRoadTopology {
 	}
 
 	/**
-	 * R1, and where: the node the two ways share that every position lies within
-	 * {@code radiusMeters} of, as {its point index on a, its point index on b} -
-	 * or null when there is none. The junction can be any node of either way,
-	 * not only an end: a side road joins a main road in the middle of it.
+	 * R1, and where: the first node the two ways share that every position lies
+	 * within {@code radiusMeters} of, as {its point index on a, its point index
+	 * on b} - or null when there is none.
 	 */
 	public static int[] sharedNode(RouteDataObject a, RouteDataObject b, List<double[]> positions,
 			double radiusMeters) {
+		List<int[]> nodes = sharedNodes(a, b, positions, radiusMeters);
+		return nodes.isEmpty() ? null : nodes.get(0);
+	}
+
+	/**
+	 * Every node the two ways share that every position lies within
+	 * {@code radiusMeters} of, in a's point order. The junction can be any node
+	 * of either way, not only an end - and two ways can share more than one
+	 * near a turn (ROADMAP 347), so which of them the truck turned at is for
+	 * the caller to decide from where it was before and after.
+	 */
+	public static List<int[]> sharedNodes(RouteDataObject a, RouteDataObject b,
+			List<double[]> positions, double radiusMeters) {
+		List<int[]> nodes = new ArrayList<>();
 		if (a == null || b == null || positions == null || positions.isEmpty()
 				|| a.pointsX == null || b.pointsX == null) {
-			return null;
+			return nodes;
 		}
 		for (int i = 0; i < a.getPointsLength(); i++) {
 			for (int j = 0; j < b.getPointsLength(); j++) {
@@ -175,11 +188,11 @@ public final class RoadCrewRoadTopology {
 					}
 				}
 				if (all) {
-					return new int[] {i, j};
+					nodes.add(new int[] {i, j});
 				}
 			}
 		}
-		return null;
+		return nodes;
 	}
 
 	/**

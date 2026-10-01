@@ -410,8 +410,10 @@ public class RoadCrewProvenPassageTest {
 	}
 
 	@Test
-	public void aNodeFarFromTheFixesIsNotTrustedOnThatWay() {
-		// Ways that meet twice: the node found on A lies 780 m on. Not that one.
+	public void aNodeFarAlongOneWayIsNotTheTurnOnEitherWay() {
+		// The node lies 780 m on along A: not where this truck turned. Codex's
+		// review of 01.10.2026 (347): B used to be filled from it all the same,
+		// each side deciding alone. One node is the turn on both ways, or neither.
 		map.junction = new RoadCrewDirectPassageAccumulator.Junction(900, 0);
 		fix(0, WAY_A, 100, 0);
 		fix(1000, WAY_A, 120, 20);
@@ -420,8 +422,9 @@ public class RoadCrewProvenPassageTest {
 		fix(1000, WAY_B, 50, 40);
 		accumulator.flush();
 
+		Assert.assertTrue(passages.get(1).joinsPrevious);
 		assertSpan(passages.get(0), 100, 120);
-		assertSpan(passages.get(1), 0, 50);
+		assertSpan(passages.get(1), 10, 50);
 	}
 
 	@Test
@@ -453,5 +456,42 @@ public class RoadCrewProvenPassageTest {
 		Assert.assertTrue(passages.get(1).joinsPrevious);
 		assertSpan(passages.get(0), 100, 120);
 		assertSpan(passages.get(1), 10, 50);
+	}
+
+	// ROADMAP 347, Codex's review of 01.10.2026: two ways can share more than
+	// one node near a turn. The turn is the node both sides agree on - ahead of
+	// the last fix on the way left, behind the first fix on the way entered.
+
+	@Test
+	public void ofTwoSharedNodesTheOneTheTruckHadPassedIsNotTheTurn() {
+		map.junction = new RoadCrewDirectPassageAccumulator.Junction(
+				new double[] {90, 125}, new double[] {0, 45});
+		fix(0, WAY_A, 100, 0);
+		fix(1000, WAY_A, 120, 20);
+		unmatched(1000);
+		fix(1000, WAY_B, 50, 20);
+		fix(1000, WAY_B, 70, 20);
+		fix(1000, WAY_B, 90, 20);
+		accumulator.flush();
+
+		assertSpan(passages.get(0), 100, 125);
+		assertSpan(passages.get(1), 45, 90);
+	}
+
+	@Test
+	public void twoSharedNodesThatBothFitLeaveTheFixesAsTheyAre() {
+		// Either could be the turn; which one, nothing here can tell.
+		map.junction = new RoadCrewDirectPassageAccumulator.Junction(
+				new double[] {125, 130}, new double[] {45, 40});
+		fix(0, WAY_A, 100, 0);
+		fix(1000, WAY_A, 120, 20);
+		unmatched(1000);
+		fix(1000, WAY_B, 50, 20);
+		fix(1000, WAY_B, 90, 40);
+		accumulator.flush();
+
+		Assert.assertTrue("still a proven turn", passages.get(1).joinsPrevious);
+		assertSpan(passages.get(0), 100, 120);
+		assertSpan(passages.get(1), 50, 90);
 	}
 }
