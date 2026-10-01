@@ -494,4 +494,25 @@ public class RoadCrewProvenPassageTest {
 		assertSpan(passages.get(0), 100, 120);
 		assertSpan(passages.get(1), 50, 90);
 	}
+
+	@Test
+	public void aWayWithOnlyOneFixGetsNoMetresFromTheTurn() {
+		// One fix is not a measured drive on that way - the matcher's own bar for
+		// a new way is two. A passage can still begin on one (the first of a
+		// course, or the first after GPS came back, ROADMAP 348); without the
+		// turn it would carry nothing. The turn must not make it carry metres -
+		// nor place B from a node that only that one fix vouches for.
+		map.junction = new RoadCrewDirectPassageAccumulator.Junction(140, 0);
+		fix(0, WAY_A, 120, 0);
+		unmatched(1000);
+		fix(1000, WAY_B, 10, 20);
+		fix(1000, WAY_B, 30, 20);
+		fix(1000, WAY_B, 50, 20);
+		accumulator.flush();
+
+		Assert.assertEquals("nothing on A", 1, passages.size());
+		Assert.assertEquals(WAY_B, passages.get(0).wayId);
+		assertSpan(passages.get(0), 10, 50);
+		Assert.assertFalse(passages.get(0).joinsPrevious);
+	}
 }

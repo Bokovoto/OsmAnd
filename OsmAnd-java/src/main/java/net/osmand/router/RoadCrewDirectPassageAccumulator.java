@@ -839,10 +839,16 @@ public final class RoadCrewDirectPassageAccumulator {
 	 * each side choosing alone once filled b from a node a showed was behind the
 	 * truck - 50 m that were never driven (ROADMAP 347, Codex's review of
 	 * 01.10.2026). And if more than one node fits, nothing here tells which one
-	 * the truck took, so neither is used. Never on a ring.
+	 * the truck took, so neither is used. Never on a ring, and never for a way
+	 * left with no measured progress of its own: one fix is not a drive along a
+	 * way, and the turn must not be what makes it one.
 	 */
 	private double[] turnNode(Junction junction, Fix first) {
 		if (closed || first.closed) {
+			return null;
+		}
+		if (progress <= EPSILON) {
+			count("junction_on_unmeasured_way");
 			return null;
 		}
 		double[] found = null;
