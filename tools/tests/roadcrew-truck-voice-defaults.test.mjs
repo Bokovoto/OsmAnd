@@ -11,10 +11,13 @@ test('RoadCrew truck overrides only the three differing voice defaults', () => {
   assert.ok(block, 'RoadCrew-only truck voice default block must exist');
   const calls = [...block[1].matchAll(/(\w+)\.setModeDefaultValue\(ApplicationMode\.(\w+), (true|false)\);/g)]
     .map((m) => [m[1], m[2], m[3]]);
+  // Cameras: off since 02.10.2026 - RoadCrew speaks them itself, by each
+  // country's law (roadcrew-cameras.test.mjs); OsmAnd's voice would also
+  // speak them in Germany, where the warning is forbidden.
   assert.deepEqual(calls, [
     ['SPEAK_STREET_NAMES', 'TRUCK', 'false'],
     ['SPEAK_PEDESTRIAN', 'TRUCK', 'false'],
-    ['SPEAK_SPEED_CAMERA', 'TRUCK', 'true'],
+    ['SPEAK_SPEED_CAMERA', 'TRUCK', 'false'],
   ]);
   assert.doesNotMatch(block[1], /\.set\(|\.setModeValue\(|\.reset\w*\(|\.edit\(/,
     'Defaults must not overwrite explicit saved preferences');

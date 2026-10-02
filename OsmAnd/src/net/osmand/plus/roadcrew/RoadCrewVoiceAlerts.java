@@ -35,6 +35,8 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	private final TextToSpeech textToSpeech;
 	private final Set<String> announcedAlertKeys = new HashSet<>();
 	private final RoadCrewWeighStations.Voice weighStationVoice = new RoadCrewWeighStations.Voice();
+	private final RoadCrewCameras.Voice cameraVoice = new RoadCrewCameras.Voice();
+	private final RoadCrewCameras.Voice cameraZoneVoice = new RoadCrewCameras.Voice();
 
 	private long lastCheckMillis;
 	private long lastSpokenMillis;
@@ -128,6 +130,35 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 		speak(bulgarianVoice
 				? "Стационарен кантар след " + formatBulgarianDistance(ahead.meters) + "."
 				: "Fixed weigh station in " + formatDistance(ahead.meters) + ".");
+	}
+
+	/**
+	 * "Стационарна камера след 500 метра" - once per pass (RoadCrewCameras),
+	 * after the same pause as the reports so the two never talk over each other.
+	 */
+	void checkCamera(@Nullable RoadCrewCameras.Ahead ahead) {
+		long now = System.currentTimeMillis();
+		if (!ready || ahead == null || now - lastSpokenMillis < GLOBAL_COOLDOWN_MILLIS
+				|| !cameraVoice.shouldSpeak(ahead.camera.id, ahead.meters, now)) {
+			return;
+		}
+		cameraVoice.spoken(ahead.camera.id, now);
+		lastSpokenMillis = now;
+		speak(bulgarianVoice
+				? "Стационарна камера след " + formatBulgarianDistance(ahead.meters) + "."
+				: "Speed camera in " + formatDistance(ahead.meters) + ".");
+	}
+
+	/** France: "Опасна зона." once when the zone begins - no distance, it would place the camera. */
+	void checkCameraZone(@Nullable RoadCrewCameras.Zone zone) {
+		long now = System.currentTimeMillis();
+		if (!ready || zone == null || now - lastSpokenMillis < GLOBAL_COOLDOWN_MILLIS
+				|| !cameraZoneVoice.shouldSpeak(zone.camera.id, 0, now)) {
+			return;
+		}
+		cameraZoneVoice.spoken(zone.camera.id, now);
+		lastSpokenMillis = now;
+		speak(bulgarianVoice ? "Опасна зона." : "Danger zone.");
 	}
 
 	void shutdown() {

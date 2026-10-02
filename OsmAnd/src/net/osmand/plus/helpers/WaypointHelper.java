@@ -30,6 +30,7 @@ import net.osmand.plus.poi.PoiUIFilter;
 import net.osmand.plus.routing.AlarmInfo;
 import net.osmand.plus.routing.AlarmInfoType;
 import net.osmand.plus.routing.RouteCalculationResult;
+import net.osmand.plus.roadcrew.RoadCrewCameras;
 import net.osmand.plus.routing.RouteDirectionInfo;
 import net.osmand.plus.routing.RoutingHelper;
 import net.osmand.plus.routing.VoiceRouter;
@@ -718,6 +719,10 @@ public class WaypointHelper {
 		AlarmInfo prevRailway = null;
 		for (AlarmInfo alarmInfo : route.getAlarmInfo()) {
 			AlarmInfoType type = alarmInfo.getType();
+			if (type == SPEED_CAMERA && RoadCrewCameras.replacesBuiltInAlarms(app.getPackageName())) {
+				// RoadCrew warns for these itself, and not where the law forbids it.
+				continue;
+			}
 			if (type == SPEED_CAMERA || type == RED_LIGHT_CAMERA) {
 				if (settings.SHOW_CAMERAS.getModeValue(mode) || settings.SPEAK_SPEED_CAMERA.getModeValue(mode)) {
 					// ignore double speed cams

@@ -34,6 +34,9 @@ tasks.register('collectRenderingStylesResources', Sync) {
 	from "../../resources/rendering_styles"
 	into "src/main/resources/net/osmand/render"
 	include "*.xml"
+	// RoadCrew draws the speed cameras itself (RoadCrewCameras), and none where
+	// the law forbids the warning; OsmAnd's own small icon would show them all.
+	filter { String line -> line.contains('value="speed_camera" icon=') ? null : line }
 }
 
 tasks.register('collectRegionsInfoResources', Download) {

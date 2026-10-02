@@ -1755,7 +1755,8 @@ public class OsmandSettings {
 			// Truck voice defaults leave explicitly saved preferences untouched.
 			SPEAK_STREET_NAMES.setModeDefaultValue(ApplicationMode.TRUCK, false);
 			SPEAK_PEDESTRIAN.setModeDefaultValue(ApplicationMode.TRUCK, false);
-			SPEAK_SPEED_CAMERA.setModeDefaultValue(ApplicationMode.TRUCK, true);
+			// RoadCrew speaks the cameras itself, by each country's law (RoadCrewCameras).
+			SPEAK_SPEED_CAMERA.setModeDefaultValue(ApplicationMode.TRUCK, false);
 		}
 	}
 

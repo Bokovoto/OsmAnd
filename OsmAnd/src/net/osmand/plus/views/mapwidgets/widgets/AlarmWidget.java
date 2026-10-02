@@ -31,6 +31,7 @@ import net.osmand.plus.routing.AlarmInfo;
 import net.osmand.plus.routing.RoutingHelper;
 import net.osmand.plus.settings.backend.ApplicationMode;
 import net.osmand.plus.settings.backend.OsmandSettings;
+import net.osmand.plus.roadcrew.RoadCrewCameras;
 import net.osmand.plus.settings.enums.DrivingRegion;
 import net.osmand.plus.utils.FontCache;
 import net.osmand.plus.utils.OsmAndFormatter;
@@ -107,7 +108,8 @@ public class AlarmWidget {
 	public boolean updateInfo(DrawSettings drawSettings, boolean drawBitmap) {
 		boolean showRoutingAlarms = settings.SHOW_ROUTING_ALARMS.get();
 		boolean trafficWarnings = settings.SHOW_TRAFFIC_WARNINGS.get();
-		boolean showCameras = settings.SHOW_CAMERAS.get();
+		// RoadCrew shows the cameras itself, and not where the law forbids it.
+		boolean showCameras = settings.SHOW_CAMERAS.get() && !RoadCrewCameras.replacesBuiltInAlarms(app.getPackageName());
 		boolean browseMap = settings.APPLICATION_MODE.get() == ApplicationMode.DEFAULT;
 		boolean shouldProcess = routingHelper.isFollowingMode()
 				|| trackingUtilities.isMapLinkedToLocation() && !browseMap;

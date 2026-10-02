@@ -15,6 +15,8 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -29,6 +31,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import net.osmand.Location;
+import net.osmand.binary.RouteDataObject;
 import net.osmand.data.LatLon;
 import net.osmand.data.PointDescription;
 import net.osmand.data.RotatedTileBox;
@@ -72,6 +75,16 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	/** "Стационарен кантар · 500 м" below the truck, where the report labels sit. */
 	private static final float WIM_WARNING_OFFSET_DP = 56;
 	private static final int WIM_ORANGE = Color.rgb(245, 166, 35);
+	/** The stationary camera's sign: the approved mockup's blue square with a white camera. */
+	private static final float CAMERA_SIGN_SIZE_DP = 34;
+	/** Camera signs from this zoom in: Europe's maps hold tens of thousands of them. */
+	private static final int CAMERA_MIN_ZOOM = 11;
+	/** Slower than this the GPS bearing says nothing about where the truck is heading. */
+	private static final float CAMERA_MIN_HEADING_SPEED_MPS = 2.0f;
+	/** Why the cameras are off (or only zones), after crossing into the country. */
+	private static final long CAMERA_NOTICE_MILLIS = 15 * 1000L;
+	private static final float CAMERA_NOTICE_TOP_DP = 96;
+	private static final int CAMERA_BLUE = Color.rgb(29, 78, 216);
 	private static final int HELP_CHAT_MESSAGE_MAX_LENGTH = 1000;
 	static final String PUSH_KIND_EXTRA = "roadcrew_push_kind";
 	static final String PUSH_REFERENCE_ID_EXTRA = "roadcrew_push_reference_id";
@@ -155,6 +168,35 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private final Paint wimWarningStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final RectF wimRect = new RectF();
 	private final RectF wimWarningRect = new RectF();
+	private final Paint cameraFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint cameraBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint cameraGlyphPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint cameraLimitFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint cameraLimitRingPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint cameraLimitTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final TextPaint cameraNoticeTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+	private final RectF cameraRect = new RectF();
+	private final Path cameraHood = new Path();
+	/** France: the danger zone the truck is in, if any. */
+	private final RoadCrewCameras.ZoneTracker cameraZones = new RoadCrewCameras.ZoneTracker();
+	@Nullable
+	private RoadCrewCameras.Country cameraCountry;
+	private long cameraNoticeUntilMillis;
+	@StringRes
+	private int cameraNoticeText;
+	/** The points of the road the truck is on, read once per road. */
+	@Nullable
+	private RouteDataObject cameraRoad;
+	private double[] cameraRoadLats = new double[0];
+	private double[] cameraRoadLons = new double[0];
+
+	/** What the cameras say this frame: the camera ahead, or France's zone. */
+	private static final class CameraState {
+		@Nullable
+		RoadCrewCameras.Ahead ahead;
+		@Nullable
+		RoadCrewCameras.Zone zone;
+	}
 
 	static void setTripReviewJourney(@Nullable List<double[]> journey) {
 		tripReviewJourney = journey;
@@ -416,6 +458,22 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		wimWarningStrokePaint.setStrokeWidth(dp(2));
 		wimWarningStrokePaint.setColor(Color.WHITE);
 
+		cameraFillPaint.setStyle(Paint.Style.FILL);
+		cameraFillPaint.setColor(CAMERA_BLUE);
+		cameraBorderPaint.setStyle(Paint.Style.STROKE);
+		cameraBorderPaint.setColor(Color.WHITE);
+		cameraGlyphPaint.setStyle(Paint.Style.FILL);
+		cameraGlyphPaint.setColor(Color.WHITE);
+		cameraLimitFillPaint.setStyle(Paint.Style.FILL);
+		cameraLimitFillPaint.setColor(Color.WHITE);
+		cameraLimitRingPaint.setStyle(Paint.Style.STROKE);
+		cameraLimitRingPaint.setColor(Color.rgb(220, 38, 38));
+		cameraLimitTextPaint.setColor(Color.rgb(17, 17, 17));
+		cameraLimitTextPaint.setTextAlign(Paint.Align.CENTER);
+		cameraLimitTextPaint.setFakeBoldText(true);
+		cameraNoticeTextPaint.setColor(Color.WHITE);
+		cameraNoticeTextPaint.setTextSize(sp(14));
+
 		directionBadgePaint.setStyle(Paint.Style.FILL);
 		directionBadgePaint.setColor(Color.rgb(6, 17, 13));
 
@@ -507,12 +565,15 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 		RoadCrewWeighStationsStore.refreshPeriodically(getApplication());
 		RoadCrewWeighStations.Ahead stationAhead = findWeighStationAhead();
-		checkVoiceAlerts(reports, stationAhead);
+		CameraState cameraState = findCameraAhead();
+		checkVoiceAlerts(reports, stationAhead, cameraState);
 		// Before the zoom gate: a whole trip is usually looked at zoomed further
 		// out than the reports are worth drawing at.
 		drawTripReviewJourney(canvas, tileBox);
 		if (tileBox.getZoom() < MIN_ZOOM) {
-			drawWeighStationWarning(canvas, tileBox, stationAhead);
+			boolean stationShown = drawWeighStationWarning(canvas, tileBox, stationAhead);
+			drawCameraWarning(canvas, tileBox, cameraState, stationShown);
+			drawCameraNotice(canvas, tileBox);
 			return;
 		}
 		drawTruckRestrictions(canvas, tileBox);
@@ -521,6 +582,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 		// Under the reports: a report at a station is the newer news.
 		drawWeighStations(canvas, tileBox);
+		drawCameras(canvas, tileBox);
 		for (RoadCrewReport report : reports) {
 			LatLon latLon = report.getLocation();
 			if (!tileBox.containsLatLon(latLon)) {
@@ -530,7 +592,269 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			float y = tileBox.getPixYFromLatLon(latLon.getLatitude(), latLon.getLongitude());
 			drawReport(canvas, tileBox, report, x, y);
 		}
-		drawWeighStationWarning(canvas, tileBox, stationAhead);
+		boolean stationShown = drawWeighStationWarning(canvas, tileBox, stationAhead);
+		drawCameraWarning(canvas, tileBox, cameraState, stationShown);
+		drawCameraNotice(canvas, tileBox);
+	}
+
+	/**
+	 * The camera ahead (Galin, 02.10.2026: with or without a route). Along the
+	 * route in navigation; without one along the road the truck is on, and
+	 * straight ahead as the last guess where that road ends or is not known.
+	 * France: only the zone (RoadCrewCameras.ZoneTracker), never the camera.
+	 */
+	@NonNull
+	private CameraState findCameraAhead() {
+		CameraState state = new CameraState();
+		OsmandApplication app = getApplication();
+		Location location = app.getLocationProvider().getLastKnownLocation();
+		if (location == null) {
+			return state;
+		}
+		double lat = location.getLatitude();
+		double lon = location.getLongitude();
+		updateCameraNotice(RoadCrewCamerasSource.truckCountry(app, lat, lon));
+		List<RoadCrewCameras.Camera> cameras = RoadCrewCamerasSource.aroundTruck(app, lat, lon);
+		RouteDataObject road = app.getLocationProvider().getLastKnownRouteSegment();
+		double zoneLength = cameraZoneLength(road, location);
+		RoadCrewCameras.Ahead zoneAhead = null;
+		if (!cameras.isEmpty()) {
+			boolean heading = location.hasBearing() && location.hasSpeed()
+					&& location.getSpeed() >= CAMERA_MIN_HEADING_SPEED_MPS;
+			RoutingHelper routingHelper = app.getRoutingHelper();
+			boolean onRoute = routingHelper.isRouteCalculated() && routingHelper.isFollowingMode();
+			RoadCrewCameras.Line line = null;
+			if (onRoute) {
+				line = routeLine(routingHelper.getRoute().getRouteLocations());
+			} else if (heading && road != null) {
+				line = roadLine(road, lat, lon, location.getBearing());
+			}
+			if (line != null) {
+				state.ahead = RoadCrewCameras.nextAlong(cameras, RoadCrewCameras.Rule.WARN, lat, lon, line,
+						RoadCrewCameras.SHOW_WITHIN_METERS);
+				zoneAhead = RoadCrewCameras.nextAlong(cameras, RoadCrewCameras.Rule.ZONE, lat, lon, line, zoneLength);
+			}
+			// On a route the route decides; a camera straight ahead may be on a road it leaves.
+			if (!onRoute && heading) {
+				if (state.ahead == null) {
+					state.ahead = RoadCrewCameras.nextStraightAhead(cameras, RoadCrewCameras.Rule.WARN, lat, lon,
+							location.getBearing());
+				}
+				if (zoneAhead == null) {
+					zoneAhead = RoadCrewCameras.nextStraightAhead(cameras, RoadCrewCameras.Rule.ZONE, lat, lon,
+							location.getBearing());
+				}
+			}
+		}
+		state.zone = cameraZones.update(zoneAhead, zoneLength, lat, lon);
+		return state;
+	}
+
+	@NonNull
+	private static RoadCrewCameras.Line routeLine(@NonNull List<Location> route) {
+		return new RoadCrewCameras.Line() {
+			@Override
+			public int size() {
+				return route.size();
+			}
+
+			@Override
+			public double lat(int index) {
+				return route.get(index).getLatitude();
+			}
+
+			@Override
+			public double lon(int index) {
+				return route.get(index).getLongitude();
+			}
+		};
+	}
+
+	@Nullable
+	private RoadCrewCameras.Line roadLine(@NonNull RouteDataObject road, double lat, double lon, double bearing) {
+		if (road != cameraRoad) {
+			int count = road.getPointsLength();
+			double[] lats = new double[count];
+			double[] lons = new double[count];
+			for (int i = 0; i < count; i++) {
+				lats[i] = MapUtils.get31LatitudeY(road.getPoint31YTile(i));
+				lons[i] = MapUtils.get31LongitudeX(road.getPoint31XTile(i));
+			}
+			cameraRoadLats = lats;
+			cameraRoadLons = lons;
+			cameraRoad = road;
+		}
+		return RoadCrewCameras.roadAhead(cameraRoadLats, cameraRoadLons, lat, lon, bearing);
+	}
+
+	/** France: the zone's length by the road the truck is on. */
+	private static double cameraZoneLength(@Nullable RouteDataObject road, @NonNull Location location) {
+		if (road == null) {
+			return RoadCrewCameras.zoneLength(false, 0);
+		}
+		String highway = road.getHighway();
+		boolean motorway = highway != null && highway.startsWith("motorway");
+		float speed = road.getMaximumSpeed(road.bearingVsRouteDirection(location));
+		int limitKmh = speed > 0 && speed < RouteDataObject.NONE_MAX_SPEED ? Math.round(speed * 3.6f) : 0;
+		return RoadCrewCameras.zoneLength(motorway, limitKmh);
+	}
+
+	/** Crossing into Germany, Switzerland or France: why the cameras are off, or only zones. */
+	private void updateCameraNotice(@Nullable RoadCrewCameras.Country country) {
+		if (country == null || country == cameraCountry) {
+			return;
+		}
+		cameraCountry = country;
+		int text = 0;
+		if (country == RoadCrewCameras.Country.GERMANY) {
+			text = R.string.roadcrew_camera_off_germany;
+		} else if (country == RoadCrewCameras.Country.SWITZERLAND) {
+			text = R.string.roadcrew_camera_off_switzerland;
+		} else if (country == RoadCrewCameras.Country.FRANCE) {
+			text = R.string.roadcrew_camera_zone_france;
+		}
+		cameraNoticeText = text;
+		cameraNoticeUntilMillis = text == 0 ? 0 : System.currentTimeMillis() + CAMERA_NOTICE_MILLIS;
+	}
+
+	/** The cameras where the law allows the warning; a French one would give its place away. */
+	private void drawCameras(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox) {
+		if (tileBox.getZoom() < CAMERA_MIN_ZOOM) {
+			return;
+		}
+		LatLon center = tileBox.getCenterLatLon();
+		for (RoadCrewCameras.Camera camera : RoadCrewCamerasSource.aroundView(getApplication(),
+				center.getLatitude(), center.getLongitude())) {
+			if (camera.rule != RoadCrewCameras.Rule.WARN || !tileBox.containsLatLon(camera.lat, camera.lon)) {
+				continue;
+			}
+			drawCameraSign(canvas, tileBox.getPixXFromLatLon(camera.lat, camera.lon),
+					tileBox.getPixYFromLatLon(camera.lat, camera.lon), dp(CAMERA_SIGN_SIZE_DP), camera.limitKmh);
+		}
+	}
+
+	/**
+	 * The approved mockup's sign: a blue square with a white camera, and the
+	 * limit in a red ring at its corner when the map has it. A 44-unit grid.
+	 */
+	private void drawCameraSign(@NonNull Canvas canvas, float cx, float cy, float size, int limitKmh) {
+		float u = size / 44f;
+		cameraRect.set(cx - 21 * u, cy - 21 * u, cx + 21 * u, cy + 21 * u);
+		canvas.drawRoundRect(cameraRect, 8 * u, 8 * u, cameraFillPaint);
+		cameraBorderPaint.setStrokeWidth(3 * u);
+		canvas.drawRoundRect(cameraRect, 8 * u, 8 * u, cameraBorderPaint);
+		cameraRect.set(cx - 12 * u, cy - 7 * u, cx + 5 * u, cy + 5 * u);
+		canvas.drawRoundRect(cameraRect, 2 * u, 2 * u, cameraGlyphPaint);
+		canvas.drawCircle(cx - 4 * u, cy - u, 3.5f * u, cameraFillPaint);
+		cameraHood.rewind();
+		cameraHood.moveTo(cx + 6 * u, cy - 4 * u);
+		cameraHood.lineTo(cx + 12 * u, cy - 7 * u);
+		cameraHood.lineTo(cx + 12 * u, cy + 5 * u);
+		cameraHood.lineTo(cx + 6 * u, cy + 2 * u);
+		cameraHood.close();
+		canvas.drawPath(cameraHood, cameraGlyphPaint);
+		if (limitKmh > 0) {
+			float bx = cx + 20 * u;
+			float by = cy - 20 * u;
+			float radius = 12 * u;
+			canvas.drawCircle(bx, by, radius, cameraLimitFillPaint);
+			cameraLimitRingPaint.setStrokeWidth(3 * u);
+			canvas.drawCircle(bx, by, radius, cameraLimitRingPaint);
+			cameraLimitTextPaint.setTextSize((limitKmh >= 100 ? 10 : 12) * u);
+			Paint.FontMetrics metrics = cameraLimitTextPaint.getFontMetrics();
+			canvas.drawText(String.valueOf(limitKmh), bx, by - (metrics.ascent + metrics.descent) / 2f,
+					cameraLimitTextPaint);
+		}
+	}
+
+	/** "Стационарна камера · 500 м", in France "Опасна зона · 2 км", under the truck. */
+	private void drawCameraWarning(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
+			@NonNull CameraState state, boolean belowStation) {
+		String text;
+		if (state.ahead != null) {
+			String distance = OsmAndFormatter.getFormattedDistance((float) state.ahead.meters, getApplication());
+			text = state.ahead.camera.limitKmh > 0
+					? getContext().getString(R.string.roadcrew_camera_fixed_ahead_limit, state.ahead.camera.limitKmh, distance)
+					: getContext().getString(R.string.roadcrew_camera_fixed_ahead, distance);
+		} else if (state.zone != null) {
+			text = getContext().getString(R.string.roadcrew_camera_zone_ahead,
+					OsmAndFormatter.getFormattedDistance((float) state.zone.length, getApplication()));
+		} else {
+			return;
+		}
+		drawUnderTruckPill(canvas, tileBox, text, belowStation ? 1 : 0);
+	}
+
+	/** After crossing into Germany, Switzerland or France, for 15 seconds. */
+	private void drawCameraNotice(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox) {
+		if (cameraNoticeText == 0 || System.currentTimeMillis() > cameraNoticeUntilMillis) {
+			return;
+		}
+		String text = getContext().getString(cameraNoticeText);
+		float width = Math.min(tileBox.getPixWidth() - dp(32), dp(360));
+		float padding = dp(14);
+		StaticLayout layout = StaticLayout.Builder.obtain(text, 0, text.length(), cameraNoticeTextPaint,
+				(int) (width - 2 * padding)).build();
+		float left = (tileBox.getPixWidth() - width) / 2f;
+		float top = dp(CAMERA_NOTICE_TOP_DP);
+		cameraRect.set(left, top, left + width, top + layout.getHeight() + 2 * padding);
+		canvas.drawRoundRect(cameraRect, dp(16), dp(16), labelBackgroundPaint);
+		canvas.drawRoundRect(cameraRect, dp(16), dp(16), wimWarningStrokePaint);
+		canvas.save();
+		canvas.translate(left + padding, top + padding);
+		layout.draw(canvas);
+		canvas.restore();
+	}
+
+	@Nullable
+	private RoadCrewCameras.Camera findTappedCamera(@NonNull PointF point, @NonNull RotatedTileBox tileBox) {
+		if (tileBox.getZoom() < CAMERA_MIN_ZOOM) {
+			return null;
+		}
+		float touchRadius = dp(CAMERA_SIGN_SIZE_DP) / 2f + dp(8);
+		LatLon center = tileBox.getCenterLatLon();
+		RoadCrewCameras.Camera nearest = null;
+		double nearestDistance = touchRadius;
+		for (RoadCrewCameras.Camera camera : RoadCrewCamerasSource.aroundView(getApplication(),
+				center.getLatitude(), center.getLongitude())) {
+			if (camera.rule != RoadCrewCameras.Rule.WARN || !tileBox.containsLatLon(camera.lat, camera.lon)) {
+				continue;
+			}
+			double distance = Math.hypot(point.x - tileBox.getPixXFromLatLon(camera.lat, camera.lon),
+					point.y - tileBox.getPixYFromLatLon(camera.lat, camera.lon));
+			if (distance <= nearestDistance) {
+				nearestDistance = distance;
+				nearest = camera;
+			}
+		}
+		return nearest;
+	}
+
+	/** What it is and where it comes from; the drivers' checks come with test 130. */
+	private void showCameraDialog(@NonNull MapActivity mapActivity, @NonNull RoadCrewCameras.Camera camera) {
+		LinearLayout content = RoadCrewUi.createPanel(mapActivity,
+				mapActivity.getString(R.string.roadcrew_camera_fixed_title));
+		int iconSize = RoadCrewUi.dp(mapActivity, 40);
+		Bitmap icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
+		drawCameraSign(new Canvas(icon), iconSize / 2f, iconSize / 2f, iconSize, 0);
+		TextView title = (TextView) content.getChildAt(0);
+		title.setCompoundDrawablesRelativeWithIntrinsicBounds(
+				new BitmapDrawable(mapActivity.getResources(), icon), null, null, null);
+		title.setCompoundDrawablePadding(RoadCrewUi.dp(mapActivity, 12));
+		title.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+		if (camera.limitKmh > 0) {
+			RoadCrewUi.addBody(mapActivity, content,
+					mapActivity.getString(R.string.roadcrew_camera_fixed_limit, camera.limitKmh));
+		}
+		TextView source = RoadCrewUi.addBody(mapActivity, content,
+				mapActivity.getString(R.string.roadcrew_camera_fixed_source));
+		source.setTextSize(12);
+		source.setAlpha(0.7f);
+		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
+		LinearLayout buttons = RoadCrewUi.addButtonRow(mapActivity, content);
+		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_close), true,
+				v -> dialog.dismiss());
+		dialog.show();
 	}
 
 	/**
@@ -605,23 +929,36 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	}
 
 	/** "Стационарен кантар · 500 м" under the truck while one is on the route ahead. */
-	private void drawWeighStationWarning(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
+	private boolean drawWeighStationWarning(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
 			@Nullable RoadCrewWeighStations.Ahead ahead) {
-		Location location = getApplication().getLocationProvider().getLastKnownLocation();
-		if (ahead == null || location == null
-				|| !tileBox.containsLatLon(location.getLatitude(), location.getLongitude())) {
-			return;
+		if (ahead == null) {
+			return false;
 		}
 		String text = getContext().getString(R.string.roadcrew_weigh_station_fixed_ahead,
 				OsmAndFormatter.getFormattedDistance((float) ahead.meters, getApplication()));
+		return drawUnderTruckPill(canvas, tileBox, text, 0);
+	}
+
+	/**
+	 * A pill under the truck, where the report labels sit - above it when the
+	 * truck is too low on the screen. Row 1 sits under row 0: a weigh station
+	 * and a camera ahead at once.
+	 */
+	private boolean drawUnderTruckPill(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
+			@NonNull String text, int row) {
+		Location location = getApplication().getLocationProvider().getLastKnownLocation();
+		if (location == null || !tileBox.containsLatLon(location.getLatitude(), location.getLongitude())) {
+			return false;
+		}
 		float x = tileBox.getPixXFromLatLon(location.getLatitude(), location.getLongitude());
 		float y = tileBox.getPixYFromLatLon(location.getLatitude(), location.getLongitude());
 		Paint.FontMetrics metrics = wimWarningTextPaint.getFontMetrics();
 		float halfWidth = wimWarningTextPaint.measureText(text) / 2f + dp(12);
 		float halfHeight = (metrics.descent - metrics.ascent) / 2f + dp(6);
-		float centerY = y + dp(WIM_WARNING_OFFSET_DP);
+		float rowStep = 2 * halfHeight + dp(6);
+		float centerY = y + dp(WIM_WARNING_OFFSET_DP) + row * rowStep;
 		if (centerY + halfHeight > tileBox.getPixHeight()) {
-			centerY = y - dp(WIM_WARNING_OFFSET_DP);
+			centerY = y - dp(WIM_WARNING_OFFSET_DP) - row * rowStep;
 		}
 		float edge = dp(4);
 		float centerX = Math.max(halfWidth + edge, Math.min(x, tileBox.getPixWidth() - halfWidth - edge));
@@ -629,6 +966,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		canvas.drawRoundRect(wimWarningRect, dp(12), dp(12), labelBackgroundPaint);
 		canvas.drawRoundRect(wimWarningRect, dp(12), dp(12), wimWarningStrokePaint);
 		canvas.drawText(text, centerX, centerY - (metrics.ascent + metrics.descent) / 2f, wimWarningTextPaint);
+		return true;
 	}
 
 	@Nullable
@@ -714,9 +1052,11 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	}
 
 	private void checkVoiceAlerts(@NonNull List<RoadCrewReport> reports,
-			@Nullable RoadCrewWeighStations.Ahead stationAhead) {
+			@Nullable RoadCrewWeighStations.Ahead stationAhead, @NonNull CameraState cameraState) {
 		if (voiceAlerts != null) {
 			voiceAlerts.checkWeighStation(stationAhead);
+			voiceAlerts.checkCamera(cameraState.ahead);
+			voiceAlerts.checkCameraZone(cameraState.zone);
 			voiceAlerts.check(reports);
 		}
 	}
@@ -899,14 +1239,17 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 		RoadCrewReport report = findTappedReport(point, tileBox);
 		RoadCrewWeighStations.Station station = report == null ? findTappedWeighStation(point, tileBox) : null;
+		RoadCrewCameras.Camera camera = report == null && station == null ? findTappedCamera(point, tileBox) : null;
 		MapActivity mapActivity = getMapActivity();
-		if (mapActivity == null || (report == null && station == null)) {
+		if (mapActivity == null || (report == null && station == null && camera == null)) {
 			return false;
 		}
 		if (report != null) {
 			showReportDetailsDialog(mapActivity, report);
-		} else {
+		} else if (station != null) {
 			showWeighStationDialog(mapActivity, station);
+		} else {
+			showCameraDialog(mapActivity, camera);
 		}
 		return true;
 	}
@@ -932,6 +1275,12 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		if (station != null) {
 			result.collect(station, this);
 			result.setObjectLatLon(new LatLon(station.lat, station.lon));
+			return;
+		}
+		RoadCrewCameras.Camera camera = findTappedCamera(result.getPoint(), result.getTileBox());
+		if (camera != null) {
+			result.collect(camera, this);
+			result.setObjectLatLon(new LatLon(camera.lat, camera.lon));
 		}
 	}
 
@@ -944,6 +1293,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		MapActivity mapActivity = getMapActivity();
 		if (mapActivity != null && object instanceof RoadCrewWeighStations.Station station) {
 			showWeighStationDialog(mapActivity, station);
+			return true;
+		}
+		if (mapActivity != null && object instanceof RoadCrewCameras.Camera camera) {
+			showCameraDialog(mapActivity, camera);
 			return true;
 		}
 		if (!(object instanceof RoadCrewReport report) || mapActivity == null) {
@@ -964,6 +1317,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		if (object instanceof RoadCrewWeighStations.Station station) {
 			return new LatLon(station.lat, station.lon);
 		}
+		if (object instanceof RoadCrewCameras.Camera camera) {
+			return new LatLon(camera.lat, camera.lon);
+		}
 		return null;
 	}
 
@@ -978,6 +1334,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		if (object instanceof RoadCrewWeighStations.Station) {
 			return new PointDescription(PointDescription.POINT_TYPE_MARKER,
 					getApplication().getString(R.string.roadcrew_weigh_station_fixed_title));
+		}
+		if (object instanceof RoadCrewCameras.Camera) {
+			return new PointDescription(PointDescription.POINT_TYPE_MARKER,
+					getApplication().getString(R.string.roadcrew_camera_fixed_title));
 		}
 		return null;
 	}
