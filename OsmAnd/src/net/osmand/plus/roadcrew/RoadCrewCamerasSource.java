@@ -101,7 +101,10 @@ final class RoadCrewCamerasSource {
 					truckReading = true;
 					EXECUTOR.execute(() -> {
 						try {
-							aroundTruck = new Area(lat, lon, read(app, lat, lon));
+							List<RoadCrewCameras.Camera> cameras = read(app, lat, lon);
+							if (cameras != null) {
+								aroundTruck = new Area(lat, lon, cameras);
+							}
 						} finally {
 							synchronized (RoadCrewCamerasSource.class) {
 								truckReading = false;
@@ -128,7 +131,10 @@ final class RoadCrewCamerasSource {
 					viewReading = true;
 					EXECUTOR.execute(() -> {
 						try {
-							aroundView = new Area(lat, lon, read(app, lat, lon));
+							List<RoadCrewCameras.Camera> cameras = read(app, lat, lon);
+							if (cameras != null) {
+								aroundView = new Area(lat, lon, cameras);
+							}
 						} finally {
 							synchronized (RoadCrewCamerasSource.class) {
 								viewReading = false;
@@ -167,15 +173,19 @@ final class RoadCrewCamerasSource {
 		return truckCountry;
 	}
 
-	@NonNull
+	/** Null until the countries' borders are loaded: a French camera would get no rule. */
+	@Nullable
 	private static List<RoadCrewCameras.Camera> read(@NonNull OsmandApplication app, double lat, double lon) {
+		OsmandRegions regions = app.getRegions();
+		if (regions == null || !regions.isInitialized()) {
+			return null;
+		}
 		double latSpan = READ_RADIUS_METERS / 111_320.0;
 		double lonSpan = READ_RADIUS_METERS / (111_320.0 * Math.max(0.1, Math.cos(Math.toRadians(lat))));
 		int top = MapUtils.get31TileNumberY(lat + latSpan);
 		int bottom = MapUtils.get31TileNumberY(lat - latSpan);
 		int left = MapUtils.get31TileNumberX(lon - lonSpan);
 		int right = MapUtils.get31TileNumberX(lon + lonSpan);
-		OsmandRegions regions = app.getRegions();
 		// The same camera is in two maps where they meet at a border.
 		Map<Long, RoadCrewCameras.Camera> byOsmId = new LinkedHashMap<>();
 		try {

@@ -117,9 +117,9 @@ public class CamerasTest {
 		check(along(Collections.emptyList(), 0, -500, new Path(0, -450, 0, 500)) == null, "no cameras: nothing");
 		check(RoadCrewCameras.nextAlong(one, RoadCrewCameras.Rule.WARN, latOf(-500), lonOf(0), new Path(),
 				RoadCrewCameras.SHOW_WITHIN_METERS) == null, "no line: nothing");
-		// Only the cameras of the asked rule: a German camera is never a warning.
-		List<RoadCrewCameras.Camera> german = Collections.singletonList(camera("de", 0, 0, RoadCrewCameras.Rule.OFF));
-		check(along(german, 0, -500, new Path(0, -450, 0, 500)) == null, "Germany: never warned");
+		// Only the cameras of the asked rule: one in no known country is never a warning.
+		List<RoadCrewCameras.Camera> unknown = Collections.singletonList(camera("x", 0, 0, RoadCrewCameras.Rule.OFF));
+		check(along(unknown, 0, -500, new Path(0, -450, 0, 500)) == null, "country unknown: never warned");
 		List<RoadCrewCameras.Camera> french = Collections.singletonList(camera("fr", 0, 0, RoadCrewCameras.Rule.ZONE));
 		check(along(french, 0, -500, new Path(0, -450, 0, 500)) == null, "France: no warning for the camera itself");
 		check(RoadCrewCameras.nextAlong(french, RoadCrewCameras.Rule.ZONE, latOf(-3000), lonOf(0),
@@ -158,21 +158,27 @@ public class CamerasTest {
 		check(straight(one, -400, -400, 0) == null, "45 degrees aside: not ahead");
 		check(straight(one, 25, -300, 0) != null, "25 m off the line of travel");
 		check(straight(one, 0, 100, 0) == null, "behind");
-		check(straight(german, 0, -300, 0) == null, "Germany: never, straight ahead either");
+		check(straight(unknown, 0, -300, 0) == null, "country unknown: never, straight ahead either");
 
 		// Which countries: from the map's region names around the camera.
-		check(RoadCrewCameras.ruleForRegions(Arrays.asList("europe_germany_bayern", "europe_germany"))
-				== RoadCrewCameras.Rule.OFF, "Germany: off");
-		check(RoadCrewCameras.ruleForRegions(Arrays.asList("europe_switzerland", "europe_switzerland_zurich"))
-				== RoadCrewCameras.Rule.OFF, "Switzerland: off");
-		check(RoadCrewCameras.ruleForRegions(Arrays.asList("europe_france", "europe_france_ile-de-france"))
-				== RoadCrewCameras.Rule.ZONE, "France: zone");
+		// Germany and Switzerland warn like anywhere (Galin, 02.10.2026: the
+		// driver turns them off himself); the country is known for the notice.
+		List<String> bavaria = Arrays.asList("europe_germany_bayern", "europe_germany");
+		check(RoadCrewCameras.ruleForRegions(bavaria) == RoadCrewCameras.Rule.WARN, "Germany: warn, the driver decides");
+		check(RoadCrewCameras.countryForRegions(bavaria) == RoadCrewCameras.Country.GERMANY, "Germany is known");
+		List<String> zurich = Arrays.asList("europe_switzerland", "europe_switzerland_zurich");
+		check(RoadCrewCameras.ruleForRegions(zurich) == RoadCrewCameras.Rule.WARN, "Switzerland: warn, the driver decides");
+		check(RoadCrewCameras.countryForRegions(zurich) == RoadCrewCameras.Country.SWITZERLAND, "Switzerland is known");
+		List<String> paris = Arrays.asList("europe_france", "europe_france_ile-de-france");
+		check(RoadCrewCameras.ruleForRegions(paris) == RoadCrewCameras.Rule.ZONE, "France: zone");
+		check(RoadCrewCameras.countryForRegions(paris) == RoadCrewCameras.Country.FRANCE, "France is known");
 		check(RoadCrewCameras.ruleForRegions(Collections.singletonList("europe_bulgaria"))
 				== RoadCrewCameras.Rule.WARN, "Bulgaria: warn");
-		check(RoadCrewCameras.ruleForRegions(Collections.singletonList("europe_germanyx"))
-				== RoadCrewCameras.Rule.WARN, "a name that only starts like Germany is not Germany");
+		check(RoadCrewCameras.countryForRegions(Collections.singletonList("europe_germanyx"))
+				== RoadCrewCameras.Country.OTHER, "a name that only starts like Germany is not Germany");
 		check(RoadCrewCameras.ruleForRegions(Collections.emptyList()) == RoadCrewCameras.Rule.OFF,
-				"country unknown: off, never a forbidden warning");
+				"country unknown: off - it could be France");
+		check(RoadCrewCameras.countryForRegions(Collections.emptyList()) == null, "country unknown: none");
 
 		// The limit, when the map has one.
 		check(RoadCrewCameras.parseLimit("90") == 90, "90");

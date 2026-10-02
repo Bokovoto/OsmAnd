@@ -13,10 +13,12 @@ import java.util.Map;
  *
  * Galin, 02.10.2026: the cameras are in the phone's maps already (OpenStreetMap)
  * but nobody saw them. The approved mockup: a sign on the map, "Стационарна
- * камера · 500 м" and one voice warning, with or without a route. The law
- * decides by country: Germany and Switzerland forbid the warning, so nothing is
- * shown there; France allows only a danger zone that does not give the camera's
- * place away (his choice). The cameras come from RoadCrewCamerasSource.
+ * камера · 500 м" and one voice warning, with or without a route. France: only
+ * a danger zone that does not give the camera's place away (his choice).
+ * Germany and Switzerland forbid the driver the warning; there the cameras work
+ * as anywhere and the driver turns them off himself (his decision the same
+ * day) - the screen tells him the law on entering. The cameras come from
+ * RoadCrewCamerasSource.
  */
 public final class RoadCrewCameras {
 
@@ -48,11 +50,11 @@ public final class RoadCrewCameras {
 	private RoadCrewCameras() {
 	}
 
-	/** What the law of the camera's country allows. */
+	/** How a camera is shown, by its country. */
 	enum Rule {
 		/** The sign, the distance and the voice. */
 		WARN,
-		/** Germany, Switzerland - or a country not known. */
+		/** A country not known - it could be France. */
 		OFF,
 		/** France: a danger zone only. */
 		ZONE
@@ -96,14 +98,15 @@ public final class RoadCrewCameras {
 	}
 
 	/**
-	 * RoadCrew warns for the cameras itself, by the country's law, so OsmAnd's
-	 * own camera warnings stay off in it: one warning, and none in Germany.
+	 * RoadCrew warns for the cameras itself - more of them, and France only as
+	 * a zone - so OsmAnd's own camera warnings stay off in it: one warning, never
+	 * two. OsmAnd's two switches for cameras drive RoadCrew's warning instead.
 	 */
 	public static boolean replacesBuiltInAlarms(String packageName) {
 		return ROADCREW_PACKAGE.equals(packageName);
 	}
 
-	/** The countries whose law changes what is shown. */
+	/** The countries whose law the screen tells on entering. */
 	enum Country {
 		GERMANY,
 		SWITZERLAND,
@@ -135,9 +138,13 @@ public final class RoadCrewCameras {
 		return Country.OTHER;
 	}
 
-	/** Not known: OFF - a forbidden warning is worse than a missing one. */
+	/**
+	 * France: the zone. Not known: OFF - it could be a French camera, whose
+	 * place must not be shown. Everywhere else, Germany and Switzerland too:
+	 * the warning, and the driver's switches decide.
+	 */
 	static Rule ruleOf(Country country) {
-		if (country == null || country == Country.GERMANY || country == Country.SWITZERLAND) {
+		if (country == null) {
 			return Rule.OFF;
 		}
 		return country == Country.FRANCE ? Rule.ZONE : Rule.WARN;

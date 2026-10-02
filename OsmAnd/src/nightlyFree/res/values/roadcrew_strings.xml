@@ -301,8 +301,8 @@
     <string name="roadcrew_camera_fixed_limit">Limit: %1$d km/h</string>
     <string name="roadcrew_camera_fixed_source">Source: OpenStreetMap</string>
     <string name="roadcrew_camera_zone_ahead">Danger zone · %1$s</string>
-    <string name="roadcrew_camera_off_germany">Germany: speed camera warnings are forbidden by law. Cameras are off while you are here.</string>
-    <string name="roadcrew_camera_off_switzerland">Switzerland: speed camera warnings are forbidden by law. Cameras are off while you are here.</string>
+    <string name="roadcrew_camera_law_germany">Germany: the law forbids drivers speed camera warnings. Turn them off under Voice prompts and Screen alerts → Speed cameras.</string>
+    <string name="roadcrew_camera_law_switzerland">Switzerland: the law forbids drivers speed camera warnings. Turn them off under Voice prompts and Screen alerts → Speed cameras.</string>
     <string name="roadcrew_camera_zone_france">France: the law allows danger zones only. The zone is shown, never the camera\'s exact place.</string>
     <string name="roadcrew_map_back_to_truck">The map is back on your truck</string>
     <string name="roadcrew_time_minutes">%1$d min</string>

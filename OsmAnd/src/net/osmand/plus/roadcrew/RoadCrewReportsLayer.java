@@ -39,6 +39,7 @@ import net.osmand.plus.R;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.activities.MapActivity;
 import net.osmand.plus.routing.RoutingHelper;
+import net.osmand.plus.settings.backend.OsmandSettings;
 import net.osmand.plus.utils.OsmAndFormatter;
 import net.osmand.plus.roadcrew.RoadCrewReportsSync.RoadCrewChatMessage;
 import net.osmand.plus.roadcrew.RoadCrewReportsSync.RoadCrewNotification;
@@ -81,7 +82,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private static final int CAMERA_MIN_ZOOM = 11;
 	/** Slower than this the GPS bearing says nothing about where the truck is heading. */
 	private static final float CAMERA_MIN_HEADING_SPEED_MPS = 2.0f;
-	/** Why the cameras are off (or only zones), after crossing into the country. */
+	/** The country's camera law, after crossing into Germany, Switzerland or France. */
 	private static final long CAMERA_NOTICE_MILLIS = 15 * 1000L;
 	private static final float CAMERA_NOTICE_TOP_DP = 96;
 	private static final int CAMERA_BLUE = Color.rgb(29, 78, 216);
@@ -699,7 +700,11 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		return RoadCrewCameras.zoneLength(motorway, limitKmh);
 	}
 
-	/** Crossing into Germany, Switzerland or France: why the cameras are off, or only zones. */
+	/**
+	 * Crossing into Germany or Switzerland: the law forbids the driver the
+	 * warning, and where his two switches are - he decides (Galin, 02.10.2026).
+	 * France: only the zone is shown.
+	 */
 	private void updateCameraNotice(@Nullable RoadCrewCameras.Country country) {
 		if (country == null || country == cameraCountry) {
 			return;
@@ -707,9 +712,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		cameraCountry = country;
 		int text = 0;
 		if (country == RoadCrewCameras.Country.GERMANY) {
-			text = R.string.roadcrew_camera_off_germany;
+			text = R.string.roadcrew_camera_law_germany;
 		} else if (country == RoadCrewCameras.Country.SWITZERLAND) {
-			text = R.string.roadcrew_camera_off_switzerland;
+			text = R.string.roadcrew_camera_law_switzerland;
 		} else if (country == RoadCrewCameras.Country.FRANCE) {
 			text = R.string.roadcrew_camera_zone_france;
 		}
@@ -717,9 +722,18 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		cameraNoticeUntilMillis = text == 0 ? 0 : System.currentTimeMillis() + CAMERA_NOTICE_MILLIS;
 	}
 
-	/** The cameras where the law allows the warning; a French one would give its place away. */
+	/**
+	 * The driver's switch for cameras on the screen - OsmAnd's own, under the
+	 * screen alerts, on by default in RoadCrew - hides the signs and the warning.
+	 */
+	private boolean camerasOnScreen() {
+		OsmandSettings settings = getApplication().getSettings();
+		return settings.SHOW_ROUTING_ALARMS.get() && settings.SHOW_CAMERAS.get();
+	}
+
+	/** The cameras with a warning; a French one would give its place away. */
 	private void drawCameras(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox) {
-		if (tileBox.getZoom() < CAMERA_MIN_ZOOM) {
+		if (tileBox.getZoom() < CAMERA_MIN_ZOOM || !camerasOnScreen()) {
 			return;
 		}
 		LatLon center = tileBox.getCenterLatLon();
@@ -770,6 +784,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	/** "Стационарна камера · 500 м", in France "Опасна зона · 2 км", under the truck. */
 	private void drawCameraWarning(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
 			@NonNull CameraState state, boolean belowStation) {
+		if (!camerasOnScreen()) {
+			return;
+		}
 		String text;
 		if (state.ahead != null) {
 			String distance = OsmAndFormatter.getFormattedDistance((float) state.ahead.meters, getApplication());
@@ -808,7 +825,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	@Nullable
 	private RoadCrewCameras.Camera findTappedCamera(@NonNull PointF point, @NonNull RotatedTileBox tileBox) {
-		if (tileBox.getZoom() < CAMERA_MIN_ZOOM) {
+		if (tileBox.getZoom() < CAMERA_MIN_ZOOM || !camerasOnScreen()) {
 			return null;
 		}
 		float touchRadius = dp(CAMERA_SIGN_SIZE_DP) / 2f + dp(8);

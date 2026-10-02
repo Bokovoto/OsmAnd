@@ -301,8 +301,8 @@
     <string name="roadcrew_camera_fixed_limit">Ограничение: %1$d км/ч</string>
     <string name="roadcrew_camera_fixed_source">Източник: OpenStreetMap</string>
     <string name="roadcrew_camera_zone_ahead">Опасна зона · %1$s</string>
-    <string name="roadcrew_camera_off_germany">Германия: предупреждението за камери е забранено по закон. Камерите са изключени, докато сте тук.</string>
-    <string name="roadcrew_camera_off_switzerland">Швейцария: предупреждението за камери е забранено по закон. Камерите са изключени, докато сте тук.</string>
+    <string name="roadcrew_camera_law_germany">Германия: законът забранява на шофьора предупреждение за камери. Изключват се от Гласови напътствия и Предупреждения на екрана → Камери за контрол на скоростта.</string>
+    <string name="roadcrew_camera_law_switzerland">Швейцария: законът забранява на шофьора предупреждение за камери. Изключват се от Гласови напътствия и Предупреждения на екрана → Камери за контрол на скоростта.</string>
     <string name="roadcrew_camera_zone_france">Франция: законът позволява само опасни зони. Показваме зоната, без точното място на камерата.</string>
     <string name="roadcrew_map_back_to_truck">Картата се върна към камиона</string>
     <string name="roadcrew_time_minutes">%1$d мин</string>

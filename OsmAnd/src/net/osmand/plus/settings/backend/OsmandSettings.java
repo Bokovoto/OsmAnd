@@ -1730,7 +1730,7 @@ public class OsmandSettings {
 		SHOW_TUNNELS.setModeDefaultValue(ApplicationMode.CAR, true);
 	}
 
-	public final OsmandPreference<Boolean> SHOW_CAMERAS = new BooleanPreference(this, "show_cameras", false).makeProfile().cache();
+	public final CommonPreference<Boolean> SHOW_CAMERAS = new BooleanPreference(this, "show_cameras", false).makeProfile().cache();
 
 	public final OsmandPreference<Boolean> SHOW_WPT = new BooleanPreference(this, "show_gpx_wpt", true).makeGlobal().makeShared().cache();
 	public final OsmandPreference<Boolean> SHOW_NEARBY_FAVORITES = new BooleanPreference(this, "show_nearby_favorites", false).makeProfile().cache();
@@ -1755,8 +1755,18 @@ public class OsmandSettings {
 			// Truck voice defaults leave explicitly saved preferences untouched.
 			SPEAK_STREET_NAMES.setModeDefaultValue(ApplicationMode.TRUCK, false);
 			SPEAK_PEDESTRIAN.setModeDefaultValue(ApplicationMode.TRUCK, false);
-			// RoadCrew speaks the cameras itself, by each country's law (RoadCrewCameras).
-			SPEAK_SPEED_CAMERA.setModeDefaultValue(ApplicationMode.TRUCK, false);
+			SPEAK_SPEED_CAMERA.setModeDefaultValue(ApplicationMode.TRUCK, true);
+		}
+	}
+
+	{
+		if (ROADCREW_BUILD) {
+			// Galin, 02.10.2026: the cameras on by default in every profile, on the
+			// screen and in the voice; the driver turns them off himself where the
+			// law asks it. RoadCrew shows and speaks them (RoadCrewCameras).
+			SHOW_CAMERAS.setModeDefaultValue(ApplicationMode.TRUCK, true);
+			SHOW_CAMERAS.setModeDefaultValue(ApplicationMode.CAR, true);
+			SPEAK_SPEED_CAMERA.setModeDefaultValue(ApplicationMode.CAR, true);
 		}
 	}
 

@@ -135,10 +135,13 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	/**
 	 * "Стационарна камера след 500 метра" - once per pass (RoadCrewCameras),
 	 * after the same pause as the reports so the two never talk over each other.
+	 * The driver's switch is OsmAnd's own for camera voice, on by default
+	 * (Galin, 02.10.2026: he turns it off himself where the law asks it).
 	 */
 	void checkCamera(@Nullable RoadCrewCameras.Ahead ahead) {
 		long now = System.currentTimeMillis();
-		if (!ready || ahead == null || now - lastSpokenMillis < GLOBAL_COOLDOWN_MILLIS
+		if (!ready || ahead == null || !app.getSettings().SPEAK_SPEED_CAMERA.get()
+				|| now - lastSpokenMillis < GLOBAL_COOLDOWN_MILLIS
 				|| !cameraVoice.shouldSpeak(ahead.camera.id, ahead.meters, now)) {
 			return;
 		}
@@ -152,7 +155,8 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	/** France: "Опасна зона." once when the zone begins - no distance, it would place the camera. */
 	void checkCameraZone(@Nullable RoadCrewCameras.Zone zone) {
 		long now = System.currentTimeMillis();
-		if (!ready || zone == null || now - lastSpokenMillis < GLOBAL_COOLDOWN_MILLIS
+		if (!ready || zone == null || !app.getSettings().SPEAK_SPEED_CAMERA.get()
+				|| now - lastSpokenMillis < GLOBAL_COOLDOWN_MILLIS
 				|| !cameraZoneVoice.shouldSpeak(zone.camera.id, 0, now)) {
 			return;
 		}
