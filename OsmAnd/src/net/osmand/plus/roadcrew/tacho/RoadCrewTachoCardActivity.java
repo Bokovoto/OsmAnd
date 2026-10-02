@@ -655,7 +655,10 @@ public final class RoadCrewTachoCardActivity extends Activity {
 			if (!dir.isDirectory() && !dir.mkdirs()) {
 				throw new IOException("Could not create " + dir);
 			}
-			File file = new File(dir, name);
+			// Never over an earlier download: a taken name gets " (1)", as
+			// Android 10 and later do by themselves (Galin, 02.10.2026).
+			File file = RoadCrewTachoFileNames.unused(dir, name);
+			name = file.getName();
 			try (FileOutputStream out = new FileOutputStream(file)) {
 				out.write(result.ddd);
 				out.getFD().sync();
