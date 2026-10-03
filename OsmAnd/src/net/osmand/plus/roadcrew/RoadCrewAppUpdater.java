@@ -111,8 +111,10 @@ public final class RoadCrewAppUpdater {
 		EXECUTOR.execute(() -> {
 			try {
 				UpdateInfo update = fetchLatestRelease();
+				// Newer, not just different: a test build ahead of the published
+				// release was offered the older one, which the phone refuses.
 				if (update != null
-						&& !CURRENT_RELEASE_TAG.equals(update.tag)
+						&& RoadCrewReleaseVersions.isNewer(update.tag, CURRENT_RELEASE_TAG)
 						&& (forced || !update.tag.equals(preferences.getString(KEY_DISMISSED_TAG, "")))) {
 					activity.getApp().runInUIThread(() -> showUpdateDialog(activity, preferences, update));
 				} else if (forced) {
@@ -221,9 +223,16 @@ public final class RoadCrewAppUpdater {
 					.getString(KEY_PENDING_UPDATE, "");
 			if (!pending.isEmpty()) {
 				try {
-					activeTask = new DownloadTask(UpdateInfo.fromJson(new JSONObject(pending)));
-					activeTask.phase = Phase.FAILED;
-					activeTask.error = R.string.roadcrew_update_interrupted;
+					UpdateInfo update = UpdateInfo.fromJson(new JSONObject(pending));
+					// One left from before the fix, of a release not newer than this
+					// build, would come back on every start.
+					if (RoadCrewReleaseVersions.isNewer(update.tag, CURRENT_RELEASE_TAG)) {
+						activeTask = new DownloadTask(update);
+						activeTask.phase = Phase.FAILED;
+						activeTask.error = R.string.roadcrew_update_interrupted;
+					} else {
+						clearPending(activity);
+					}
 				} catch (Exception e) {
 					clearPending(activity);
 				}
