@@ -1,10 +1,13 @@
 package net.osmand.plus.roadcrew;
 
+import android.os.SystemClock;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import net.osmand.PlatformUtil;
 import net.osmand.binary.BinaryMapDataObject;
+import net.osmand.binary.BinaryMapIndexReader;
 import net.osmand.binary.BinaryMapIndexReader.SearchPoiTypeFilter;
 import net.osmand.binary.ObfConstants;
 import net.osmand.data.Amenity;
@@ -12,6 +15,7 @@ import net.osmand.data.LatLon;
 import net.osmand.map.OsmandRegions;
 import net.osmand.osm.PoiCategory;
 import net.osmand.plus.OsmandApplication;
+import net.osmand.plus.resources.ResourceManager.ResourceListener;
 import net.osmand.search.core.AmenityIndexRepository;
 import net.osmand.util.MapUtils;
 
@@ -75,12 +79,9 @@ final class RoadCrewCamerasSource {
 		}
 	}
 
-	@Nullable
-	private static volatile Area aroundTruck;
-	@Nullable
-	private static volatile Area aroundView;
-	private static boolean truckReading;
-	private static boolean viewReading;
+	private static final RoadCrewCameraCache<Area> truckCache = new RoadCrewCameraCache<>();
+	private static final RoadCrewCameraCache<Area> viewCache = new RoadCrewCameraCache<>();
+	private static boolean listeningForMaps;
 	@Nullable
 	private static volatile RoadCrewCameras.Country truckCountry;
 	private static long truckCountryAt;
@@ -94,57 +95,59 @@ final class RoadCrewCamerasSource {
 	/** The cameras around the truck; read again in the background as it drives on. */
 	@NonNull
 	static List<RoadCrewCameras.Camera> aroundTruck(@NonNull OsmandApplication app, double lat, double lon) {
-		Area area = aroundTruck;
-		if (area == null || !area.covers(lat, lon)) {
-			synchronized (RoadCrewCamerasSource.class) {
-				if (!truckReading) {
-					truckReading = true;
-					EXECUTOR.execute(() -> {
-						try {
-							List<RoadCrewCameras.Camera> cameras = read(app, lat, lon);
-							if (cameras != null) {
-								aroundTruck = new Area(lat, lon, cameras);
-							}
-						} finally {
-							synchronized (RoadCrewCamerasSource.class) {
-								truckReading = false;
-							}
-						}
-					});
-				}
-			}
-		}
-		return area == null ? Collections.emptyList() : area.cameras;
+		return around(app, truckCache, lat, lon);
 	}
 
 	/** The cameras to draw around the map's centre - the truck's, while the map is there. */
 	@NonNull
 	static List<RoadCrewCameras.Camera> aroundView(@NonNull OsmandApplication app, double lat, double lon) {
-		Area truck = aroundTruck;
+		listenForMaps(app);
+		Area truck = truckCache.get();
 		if (truck != null && truck.covers(lat, lon)) {
 			return truck.cameras;
 		}
-		Area area = aroundView;
+		return around(app, viewCache, lat, lon);
+	}
+
+	private static List<RoadCrewCameras.Camera> around(OsmandApplication app,
+			RoadCrewCameraCache<Area> cache, double lat, double lon) {
+		listenForMaps(app);
+		Area area = cache.get();
 		if (area == null || !area.covers(lat, lon)) {
-			synchronized (RoadCrewCamerasSource.class) {
-				if (!viewReading) {
-					viewReading = true;
-					EXECUTOR.execute(() -> {
-						try {
-							List<RoadCrewCameras.Camera> cameras = read(app, lat, lon);
-							if (cameras != null) {
-								aroundView = new Area(lat, lon, cameras);
-							}
-						} finally {
-							synchronized (RoadCrewCamerasSource.class) {
-								viewReading = false;
-							}
+			long ticket = cache.begin(SystemClock.elapsedRealtime());
+			if (ticket >= 0) {
+				EXECUTOR.execute(() -> {
+					Area result = null;
+					try {
+						List<RoadCrewCameras.Camera> cameras = read(app, lat, lon);
+						if (cameras != null) {
+							result = new Area(lat, lon, cameras);
 						}
-					});
-				}
+					} finally {
+						cache.complete(ticket, result, SystemClock.elapsedRealtime());
+					}
+				});
 			}
 		}
 		return area == null ? Collections.emptyList() : area.cameras;
+	}
+
+	private static synchronized void listenForMaps(OsmandApplication app) {
+		if (listeningForMaps) {
+			return;
+		}
+		listeningForMaps = true;
+		app.getResourceManager().addResourceListener(new ResourceListener() {
+			@Override public void onMapsIndexed() { invalidateMaps(); }
+			@Override public void onReaderIndexed(BinaryMapIndexReader reader) { invalidateMaps(); }
+			@Override public void onReaderClosed(BinaryMapIndexReader reader) { invalidateMaps(); }
+			@Override public void onMapClosed(String name) { invalidateMaps(); }
+		});
+	}
+
+	private static void invalidateMaps() {
+		truckCache.invalidate();
+		viewCache.invalidate();
 	}
 
 	/** The country the truck is in; null until it is known. */
@@ -162,6 +165,9 @@ final class RoadCrewCamerasSource {
 				EXECUTOR.execute(() -> {
 					try {
 						truckCountry = RoadCrewCameras.countryForRegions(regionNames(app.getRegions(), lat, lon));
+					} catch (IOException | RuntimeException e) {
+						truckCountry = null;
+						LOG.warn("RoadCrew cameras: country lookup failed", e);
 					} finally {
 						synchronized (RoadCrewCamerasSource.class) {
 							truckCountryReading = false;
@@ -214,32 +220,29 @@ final class RoadCrewCamerasSource {
 							location.getLongitude(), RoadCrewCameras.parseLimit(limit), rule));
 				}
 			}
-		} catch (RuntimeException e) {
+		} catch (IOException | RuntimeException e) {
 			// A map being replaced by a download: the next read finds it again.
 			LOG.warn("RoadCrew cameras: " + e.getMessage());
+			return null;
 		}
 		return Collections.unmodifiableList(new ArrayList<>(byOsmId.values()));
 	}
 
 	/** The names of the map regions the point lies in, "europe_germany" and the like. */
 	@NonNull
-	private static List<String> regionNames(@Nullable OsmandRegions regions, double lat, double lon) {
+	private static List<String> regionNames(@Nullable OsmandRegions regions, double lat, double lon) throws IOException {
 		if (regions == null || !regions.isInitialized()) {
 			return Collections.emptyList();
 		}
 		int x = MapUtils.get31TileNumberX(lon);
 		int y = MapUtils.get31TileNumberY(lat);
 		List<String> names = new ArrayList<>();
-		try {
-			List<BinaryMapDataObject> found = regions.filterQueryResultsByPoint(regions.query(x, x, y, y), x, y);
-			for (BinaryMapDataObject region : found) {
-				String name = regions.getFullName(region);
-				if (name != null) {
-					names.add(name);
-				}
+		List<BinaryMapDataObject> found = regions.filterQueryResultsByPoint(regions.query(x, x, y, y), x, y);
+		for (BinaryMapDataObject region : found) {
+			String name = regions.getFullName(region);
+			if (name != null) {
+				names.add(name);
 			}
-		} catch (IOException e) {
-			LOG.warn("RoadCrew cameras: no country for a camera, " + e.getMessage());
 		}
 		return names;
 	}

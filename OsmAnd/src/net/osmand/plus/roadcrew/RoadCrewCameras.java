@@ -41,8 +41,6 @@ public final class RoadCrewCameras {
 	static final double ZONE_MOTORWAY_METERS = 4000;
 	static final double ZONE_ROAD_METERS = 2000;
 	static final double ZONE_TOWN_METERS = 300;
-	/** Last seen this close, a camera that is gone from ahead was passed. */
-	static final double PASSED_WITHIN_METERS = 80;
 
 	private static final double METERS_PER_DEGREE = 111_320.0;
 	private static final String ROADCREW_PACKAGE = "org.roadcrew.app";
@@ -156,6 +154,15 @@ public final class RoadCrewCameras {
 
 	private static boolean inCountry(String regionName, String country) {
 		return regionName != null && (regionName.equals(country) || regionName.startsWith(country + "_"));
+	}
+
+	/** A known line, including an empty remaining route, must never be contradicted by a straight guess. */
+	static Ahead nextAhead(List<Camera> cameras, Rule rule, double lat, double lon, Line knownLine,
+			double bearing, double withinMeters) {
+		if (knownLine != null) {
+			return nextAlong(cameras, rule, lat, lon, knownLine, withinMeters);
+		}
+		return Double.isNaN(bearing) ? null : nextStraightAhead(cameras, rule, lat, lon, bearing);
 	}
 
 	/** The map's maxspeed ("90", "50 mph", "100;80") in km/h; 0 when it is no number. */
@@ -371,14 +378,17 @@ public final class RoadCrewCameras {
 
 	/**
 	 * The zone the truck is in: from zoneOffset before the camera, on past it
-	 * for the rest of the zone's length. A camera that disappears from ahead
-	 * while still far was not passed - the truck turned off - and its zone ends.
+	 * for the rest of the zone's length. Crossing between two fixes still counts;
+	 * the tail advances by travelled distance, not a circle around the camera.
 	 */
 	static final class ZoneTracker {
 		private Camera camera;
 		private double length;
 		private double offset;
-		private double lastSeenMeters;
+		private double lastLat;
+		private double lastLon;
+		private double remaining;
+		private boolean passed;
 
 		Zone update(Ahead ahead, double zoneLength, double lat, double lon) {
 			if (ahead != null) {
@@ -387,7 +397,9 @@ public final class RoadCrewCameras {
 					camera = ahead.camera;
 					length = zoneLength;
 					offset = aheadOffset;
-					lastSeenMeters = ahead.meters;
+					lastLat = lat;
+					lastLon = lon;
+					passed = false;
 					return new Zone(camera, length);
 				}
 				if (camera != null && camera.id.equals(ahead.camera.id)) {
@@ -402,8 +414,32 @@ public final class RoadCrewCameras {
 			if (camera == null) {
 				return null;
 			}
-			if (lastSeenMeters > PASSED_WITHIN_METERS
-					|| straightMeters(lat, lon, camera.lat, camera.lon) > length - offset) {
+			double travelled = straightMeters(lastLat, lastLon, lat, lon);
+			if (travelled == 0) {
+				return new Zone(camera, length);
+			}
+			if (!passed) {
+				// The camera must project onto the observed movement, not a line
+				// extending behind or ahead. A turn away cannot mark it passed.
+				double kx = METERS_PER_DEGREE * Math.cos(Math.toRadians(lastLat));
+				double dx = (lon - lastLon) * kx;
+				double dy = (lat - lastLat) * METERS_PER_DEGREE;
+				double cx = (camera.lon - lastLon) * kx;
+				double cy = (camera.lat - lastLat) * METERS_PER_DEGREE;
+				double squared = dx * dx + dy * dy;
+				double t = squared == 0 ? -1 : (cx * dx + cy * dy) / squared;
+				if (t < 0 || t > 1 || Math.hypot(cx - t * dx, cy - t * dy) > CORRIDOR_METERS) {
+					camera = null;
+					return null;
+				}
+				passed = true;
+				remaining = length - offset;
+				travelled *= 1 - t;
+			}
+			remaining -= travelled;
+			lastLat = lat;
+			lastLon = lon;
+			if (remaining <= 0) {
 				camera = null;
 				return null;
 			}

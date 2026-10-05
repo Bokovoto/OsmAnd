@@ -31,14 +31,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import net.osmand.Location;
-import net.osmand.binary.RouteDataObject;
 import net.osmand.data.LatLon;
 import net.osmand.data.PointDescription;
 import net.osmand.data.RotatedTileBox;
 import net.osmand.plus.R;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.activities.MapActivity;
-import net.osmand.plus.routing.RoutingHelper;
 import net.osmand.plus.settings.backend.OsmandSettings;
 import net.osmand.plus.utils.OsmAndFormatter;
 import net.osmand.plus.roadcrew.RoadCrewReportsSync.RoadCrewChatMessage;
@@ -80,8 +78,6 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private static final float CAMERA_SIGN_SIZE_DP = 34;
 	/** Camera signs from this zoom in: Europe's maps hold tens of thousands of them. */
 	private static final int CAMERA_MIN_ZOOM = 11;
-	/** Slower than this the GPS bearing says nothing about where the truck is heading. */
-	private static final float CAMERA_MIN_HEADING_SPEED_MPS = 2.0f;
 	/** The country's camera law, after crossing into Germany, Switzerland or France. */
 	private static final long CAMERA_NOTICE_MILLIS = 15 * 1000L;
 	private static final float CAMERA_NOTICE_TOP_DP = 96;
@@ -140,8 +136,6 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	@Nullable
 	private AlertDialog activeHelpOpenDialog;
 	@Nullable
-	private RoadCrewVoiceAlerts voiceAlerts;
-	@Nullable
 	private RoadCrewTruckRestrictionsProvider truckRestrictionsProvider;
 	@Nullable
 	private RoadCrewMapObservationCoordinator mapObservationCoordinator;
@@ -178,26 +172,11 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private final TextPaint cameraNoticeTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
 	private final RectF cameraRect = new RectF();
 	private final Path cameraHood = new Path();
-	/** France: the danger zone the truck is in, if any. */
-	private final RoadCrewCameras.ZoneTracker cameraZones = new RoadCrewCameras.ZoneTracker();
 	@Nullable
 	private RoadCrewCameras.Country cameraCountry;
 	private long cameraNoticeUntilMillis;
 	@StringRes
 	private int cameraNoticeText;
-	/** The points of the road the truck is on, read once per road. */
-	@Nullable
-	private RouteDataObject cameraRoad;
-	private double[] cameraRoadLats = new double[0];
-	private double[] cameraRoadLons = new double[0];
-
-	/** What the cameras say this frame: the camera ahead, or France's zone. */
-	private static final class CameraState {
-		@Nullable
-		RoadCrewCameras.Ahead ahead;
-		@Nullable
-		RoadCrewCameras.Zone zone;
-	}
 
 	static void setTripReviewJourney(@Nullable List<double[]> journey) {
 		tripReviewJourney = journey;
@@ -225,10 +204,6 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	public void initLayer(@NonNull OsmandMapTileView view) {
 		super.initLayer(view);
 		activeLayer = this;
-		if (voiceAlerts != null) {
-			voiceAlerts.shutdown();
-		}
-		voiceAlerts = new RoadCrewVoiceAlerts(getApplication());
 		if (truckRestrictionsProvider != null) {
 			truckRestrictionsProvider.shutdown();
 		}
@@ -255,10 +230,6 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		super.destroyLayer();
 		if (activeLayer == this) {
 			activeLayer = null;
-		}
-		if (voiceAlerts != null) {
-			voiceAlerts.shutdown();
-			voiceAlerts = null;
 		}
 		if (truckRestrictionsProvider != null) {
 			truckRestrictionsProvider.shutdown();
@@ -565,9 +536,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			checkNearbyReports(reports);
 		}
 		RoadCrewWeighStationsStore.refreshPeriodically(getApplication());
-		RoadCrewWeighStations.Ahead stationAhead = findWeighStationAhead();
-		CameraState cameraState = findCameraAhead();
-		checkVoiceAlerts(reports, stationAhead, cameraState);
+		RoadCrewRoadAlerts.State alerts = RoadCrewRoadAlerts.snapshot();
+		RoadCrewWeighStations.Ahead stationAhead = alerts.station;
+		RoadCrewRoadAlerts.CameraState cameraState = alerts.camera;
+		updateCameraNotice(alerts.country);
 		// Before the zoom gate: a whole trip is usually looked at zoomed further
 		// out than the reports are worth drawing at.
 		drawTripReviewJourney(canvas, tileBox);
@@ -596,108 +568,6 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		boolean stationShown = drawWeighStationWarning(canvas, tileBox, stationAhead);
 		drawCameraWarning(canvas, tileBox, cameraState, stationShown);
 		drawCameraNotice(canvas, tileBox);
-	}
-
-	/**
-	 * The camera ahead (Galin, 02.10.2026: with or without a route). Along the
-	 * route in navigation; without one along the road the truck is on, and
-	 * straight ahead as the last guess where that road ends or is not known.
-	 * France: only the zone (RoadCrewCameras.ZoneTracker), never the camera.
-	 */
-	@NonNull
-	private CameraState findCameraAhead() {
-		CameraState state = new CameraState();
-		OsmandApplication app = getApplication();
-		Location location = app.getLocationProvider().getLastKnownLocation();
-		if (location == null) {
-			return state;
-		}
-		double lat = location.getLatitude();
-		double lon = location.getLongitude();
-		updateCameraNotice(RoadCrewCamerasSource.truckCountry(app, lat, lon));
-		List<RoadCrewCameras.Camera> cameras = RoadCrewCamerasSource.aroundTruck(app, lat, lon);
-		RouteDataObject road = app.getLocationProvider().getLastKnownRouteSegment();
-		double zoneLength = cameraZoneLength(road, location);
-		RoadCrewCameras.Ahead zoneAhead = null;
-		if (!cameras.isEmpty()) {
-			boolean heading = location.hasBearing() && location.hasSpeed()
-					&& location.getSpeed() >= CAMERA_MIN_HEADING_SPEED_MPS;
-			RoutingHelper routingHelper = app.getRoutingHelper();
-			boolean onRoute = routingHelper.isRouteCalculated() && routingHelper.isFollowingMode();
-			RoadCrewCameras.Line line = null;
-			if (onRoute) {
-				line = routeLine(routingHelper.getRoute().getRouteLocations());
-			} else if (heading && road != null) {
-				line = roadLine(road, lat, lon, location.getBearing());
-			}
-			if (line != null) {
-				state.ahead = RoadCrewCameras.nextAlong(cameras, RoadCrewCameras.Rule.WARN, lat, lon, line,
-						RoadCrewCameras.SHOW_WITHIN_METERS);
-				zoneAhead = RoadCrewCameras.nextAlong(cameras, RoadCrewCameras.Rule.ZONE, lat, lon, line, zoneLength);
-			}
-			// On a route the route decides; a camera straight ahead may be on a road it leaves.
-			if (!onRoute && heading) {
-				if (state.ahead == null) {
-					state.ahead = RoadCrewCameras.nextStraightAhead(cameras, RoadCrewCameras.Rule.WARN, lat, lon,
-							location.getBearing());
-				}
-				if (zoneAhead == null) {
-					zoneAhead = RoadCrewCameras.nextStraightAhead(cameras, RoadCrewCameras.Rule.ZONE, lat, lon,
-							location.getBearing());
-				}
-			}
-		}
-		state.zone = cameraZones.update(zoneAhead, zoneLength, lat, lon);
-		return state;
-	}
-
-	@NonNull
-	private static RoadCrewCameras.Line routeLine(@NonNull List<Location> route) {
-		return new RoadCrewCameras.Line() {
-			@Override
-			public int size() {
-				return route.size();
-			}
-
-			@Override
-			public double lat(int index) {
-				return route.get(index).getLatitude();
-			}
-
-			@Override
-			public double lon(int index) {
-				return route.get(index).getLongitude();
-			}
-		};
-	}
-
-	@Nullable
-	private RoadCrewCameras.Line roadLine(@NonNull RouteDataObject road, double lat, double lon, double bearing) {
-		if (road != cameraRoad) {
-			int count = road.getPointsLength();
-			double[] lats = new double[count];
-			double[] lons = new double[count];
-			for (int i = 0; i < count; i++) {
-				lats[i] = MapUtils.get31LatitudeY(road.getPoint31YTile(i));
-				lons[i] = MapUtils.get31LongitudeX(road.getPoint31XTile(i));
-			}
-			cameraRoadLats = lats;
-			cameraRoadLons = lons;
-			cameraRoad = road;
-		}
-		return RoadCrewCameras.roadAhead(cameraRoadLats, cameraRoadLons, lat, lon, bearing);
-	}
-
-	/** France: the zone's length by the road the truck is on. */
-	private static double cameraZoneLength(@Nullable RouteDataObject road, @NonNull Location location) {
-		if (road == null) {
-			return RoadCrewCameras.zoneLength(false, 0);
-		}
-		String highway = road.getHighway();
-		boolean motorway = highway != null && highway.startsWith("motorway");
-		float speed = road.getMaximumSpeed(road.bearingVsRouteDirection(location));
-		int limitKmh = speed > 0 && speed < RouteDataObject.NONE_MAX_SPEED ? Math.round(speed * 3.6f) : 0;
-		return RoadCrewCameras.zoneLength(motorway, limitKmh);
 	}
 
 	/**
@@ -781,9 +651,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 	}
 
-	/** "Стационарна камера · 500 м", in France "Опасна зона · 2 км", under the truck. */
+	/** Nearby camera, or France's danger zone, under the truck. */
 	private void drawCameraWarning(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
-			@NonNull CameraState state, boolean belowStation) {
+			@NonNull RoadCrewRoadAlerts.CameraState state, boolean belowStation) {
 		if (!camerasOnScreen()) {
 			return;
 		}
@@ -872,42 +742,6 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		RoadCrewUi.addButton(mapActivity, buttons, mapActivity.getString(R.string.roadcrew_button_close), true,
 				v -> dialog.dismiss());
 		dialog.show();
-	}
-
-	/**
-	 * The stationary weigh station the route reaches within 2 km (Galin,
-	 * 29.09.2026: the warning only when it is on the route). Null without an
-	 * active navigation.
-	 */
-	@Nullable
-	private RoadCrewWeighStations.Ahead findWeighStationAhead() {
-		RoutingHelper routingHelper = getApplication().getRoutingHelper();
-		if (!routingHelper.isRouteCalculated() || !routingHelper.isFollowingMode()) {
-			return null;
-		}
-		List<RoadCrewWeighStations.Station> stations = RoadCrewWeighStationsStore.get(getApplication());
-		Location location = getApplication().getLocationProvider().getLastKnownLocation();
-		if (stations.isEmpty() || location == null) {
-			return null;
-		}
-		List<Location> route = routingHelper.getRoute().getRouteLocations();
-		return RoadCrewWeighStations.nextOnRoute(stations, location.getLatitude(), location.getLongitude(),
-				new RoadCrewWeighStations.Route() {
-					@Override
-					public int size() {
-						return route.size();
-					}
-
-					@Override
-					public double lat(int index) {
-						return route.get(index).getLatitude();
-					}
-
-					@Override
-					public double lon(int index) {
-						return route.get(index).getLongitude();
-					}
-				});
 	}
 
 	/** Always, with no switch to hide them (Galin, 29.09.2026). */
@@ -1065,16 +899,6 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			tripReviewPaint.setColor(0xFF1E88E5);
 			tripReviewPaint.setStrokeWidth(dp(5f));
 			canvas.drawPath(path, tripReviewPaint);
-		}
-	}
-
-	private void checkVoiceAlerts(@NonNull List<RoadCrewReport> reports,
-			@Nullable RoadCrewWeighStations.Ahead stationAhead, @NonNull CameraState cameraState) {
-		if (voiceAlerts != null) {
-			voiceAlerts.checkWeighStation(stationAhead);
-			voiceAlerts.checkCamera(cameraState.ahead);
-			voiceAlerts.checkCameraZone(cameraState.zone);
-			voiceAlerts.check(reports);
 		}
 	}
 

@@ -46,13 +46,14 @@ test('the cameras come from the maps on the phone, with the country of each', ()
 
 test('the layer: with a route, on the road without one, and straight ahead as the last guess', () => {
   const layer = source('RoadCrewReportsLayer.java');
+  const controller = source('RoadCrewRoadAlerts.java');
   assert.match(layer, /drawCameras\(canvas, tileBox\)/);
   assert.match(layer, /drawCameraWarning\(canvas, tileBox, /);
-  assert.match(layer, /RoadCrewCameras\.nextAlong\(/);
-  assert.match(layer, /getLastKnownRouteSegment\(\)/, 'without a route: the road the truck is on');
-  assert.match(layer, /RoadCrewCameras\.roadAhead\(/);
-  assert.match(layer, /RoadCrewCameras\.nextStraightAhead\(/);
-  assert.match(layer, /cameraZones\.update\(/, 'France: the zone');
+  assert.match(controller, /RoadCrewCameras\.nextAhead\(/);
+  assert.match(controller, /getLastKnownRouteSegment\(location\)/, 'uses the current service fix, not the hidden map location');
+  assert.match(controller, /RoadCrewCameras\.roadAhead\(/);
+  assert.match(source('RoadCrewCameras.java'), /knownLine != null[^]*?return nextAlong/);
+  assert.match(controller, /cameraZones\.update\(/, 'France: the zone');
   assert.match(layer, /roadcrew_camera_law_germany/);
   assert.match(layer, /roadcrew_camera_law_switzerland/);
   assert.match(layer, /roadcrew_camera_zone_france/);
@@ -88,7 +89,8 @@ test('both switches on by default, in the truck and the car profile', () => {
 
 test('the texts, in Bulgarian and English', () => {
   const voice = source('RoadCrewVoiceAlerts.java');
-  assert.match(voice, /"Стационарна камера след "/);
+  assert.match(voice, /"Камера наблизо\."/);
+  assert.doesNotMatch(voice, /"Стационарна камера след "/, 'POI coordinates do not establish controlled carriageway');
   assert.match(voice, /"Опасна зона\."/);
   const bg = readFileSync(new URL('../../OsmAnd/src/nightlyFree/res/values-bg/roadcrew_strings.xml', import.meta.url), 'utf8');
   const en = readFileSync(new URL('../../OsmAnd/src/nightlyFree/res/values/roadcrew_strings.xml', import.meta.url), 'utf8');
@@ -99,7 +101,7 @@ test('the texts, in Bulgarian and English', () => {
     assert.ok(en.includes(`name="${name}"`), `en ${name}`);
   }
   assert.ok(!bg.includes('roadcrew_camera_off_'), 'nothing says they are switched off for him any more');
-  assert.ok(bg.includes('>Стационарна камера · %1$s<'));
+  assert.ok(bg.includes('>Камера наблизо · %1$s<'));
   // Where the two switches are, by the names the settings show.
   const strings = readFileSync(new URL('../../OsmAnd/res/values-bg/strings.xml', import.meta.url), 'utf8');
   const name = key => strings.match(new RegExp(`name="${key}">([^<]+)<`))[1];

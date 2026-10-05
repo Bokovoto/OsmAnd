@@ -296,8 +296,8 @@
     <string name="roadcrew_weigh_station_fixed_about">Вграден в пътя под тол рамката. Не се спира – теглото се мери в движение, а при претоварване глобата идва автоматично.</string>
     <string name="roadcrew_weigh_station_fixed_source">Източник: Национално тол управление (BG TOLL)</string>
     <string name="roadcrew_camera_fixed_title">Стационарна камера</string>
-    <string name="roadcrew_camera_fixed_ahead">Стационарна камера · %1$s</string>
-    <string name="roadcrew_camera_fixed_ahead_limit">Стационарна камера · %1$d · %2$s</string>
+    <string name="roadcrew_camera_fixed_ahead">Камера наблизо · %1$s</string>
+    <string name="roadcrew_camera_fixed_ahead_limit">Камера наблизо · %1$d · %2$s</string>
     <string name="roadcrew_camera_fixed_limit">Ограничение: %1$d км/ч</string>
     <string name="roadcrew_camera_fixed_source">Източник: OpenStreetMap</string>
     <string name="roadcrew_camera_zone_ahead">Опасна зона · %1$s</string>

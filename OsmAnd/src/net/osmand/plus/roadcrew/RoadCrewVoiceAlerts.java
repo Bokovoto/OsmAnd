@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import net.osmand.Location;
+import net.osmand.StateChangedListener;
 import net.osmand.data.LatLon;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.routing.RoutingHelper;
@@ -33,6 +34,7 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 
 	private final OsmandApplication app;
 	private final TextToSpeech textToSpeech;
+	private final StateChangedListener<Boolean> muteListener;
 	private final Set<String> announcedAlertKeys = new HashSet<>();
 	private final RoadCrewWeighStations.Voice weighStationVoice = new RoadCrewWeighStations.Voice();
 	private final RoadCrewCameras.Voice cameraVoice = new RoadCrewCameras.Voice();
@@ -46,6 +48,12 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	RoadCrewVoiceAlerts(@NonNull OsmandApplication app) {
 		this.app = app;
 		textToSpeech = new TextToSpeech(app, this);
+		muteListener = muted -> {
+			if (Boolean.TRUE.equals(muted)) {
+				textToSpeech.stop();
+			}
+		};
+		app.getSettings().VOICE_MUTE.addListener(muteListener);
 	}
 
 	@Override
@@ -64,16 +72,15 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 		ready = result != TextToSpeech.LANG_MISSING_DATA && result != TextToSpeech.LANG_NOT_SUPPORTED;
 	}
 
-	void check(@NonNull List<RoadCrewReport> reports) {
+	void check(@NonNull List<RoadCrewReport> reports, @Nullable Location location) {
 		long now = System.currentTimeMillis();
-		if (!ready
+		if (!ready || app.getSettings().VOICE_MUTE.get()
 				|| now - lastCheckMillis < CHECK_INTERVAL_MILLIS
 				|| now - lastSpokenMillis < GLOBAL_COOLDOWN_MILLIS) {
 			return;
 		}
 		lastCheckMillis = now;
 
-		Location location = app.getLocationProvider().getLastKnownLocation();
 		if (location == null) {
 			return;
 		}
@@ -122,7 +129,8 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	 */
 	void checkWeighStation(@Nullable RoadCrewWeighStations.Ahead ahead) {
 		long now = System.currentTimeMillis();
-		if (!ready || now - lastSpokenMillis < GLOBAL_COOLDOWN_MILLIS || !weighStationVoice.shouldSpeak(ahead, now)) {
+		if (!ready || app.getSettings().VOICE_MUTE.get()
+				|| now - lastSpokenMillis < GLOBAL_COOLDOWN_MILLIS || !weighStationVoice.shouldSpeak(ahead, now)) {
 			return;
 		}
 		weighStationVoice.spoken(ahead.station, now);
@@ -133,14 +141,15 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	}
 
 	/**
-	 * "Стационарна камера след 500 метра" - once per pass (RoadCrewCameras),
+	 * Camera nearby - the POI does not identify the controlled carriageway.
+	 * Once per pass (RoadCrewCameras),
 	 * after the same pause as the reports so the two never talk over each other.
 	 * The driver's switch is OsmAnd's own for camera voice, on by default
 	 * (Galin, 02.10.2026: he turns it off himself where the law asks it).
 	 */
 	void checkCamera(@Nullable RoadCrewCameras.Ahead ahead) {
 		long now = System.currentTimeMillis();
-		if (!ready || ahead == null || !app.getSettings().SPEAK_SPEED_CAMERA.get()
+		if (!ready || ahead == null || app.getSettings().VOICE_MUTE.get() || !app.getSettings().SPEAK_SPEED_CAMERA.get()
 				|| now - lastSpokenMillis < GLOBAL_COOLDOWN_MILLIS
 				|| !cameraVoice.shouldSpeak(ahead.camera.id, ahead.meters, now)) {
 			return;
@@ -148,14 +157,14 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 		cameraVoice.spoken(ahead.camera.id, now);
 		lastSpokenMillis = now;
 		speak(bulgarianVoice
-				? "Стационарна камера след " + formatBulgarianDistance(ahead.meters) + "."
-				: "Speed camera in " + formatDistance(ahead.meters) + ".");
+				? "Камера наблизо."
+				: "Speed camera nearby.");
 	}
 
 	/** France: "Опасна зона." once when the zone begins - no distance, it would place the camera. */
 	void checkCameraZone(@Nullable RoadCrewCameras.Zone zone) {
 		long now = System.currentTimeMillis();
-		if (!ready || zone == null || !app.getSettings().SPEAK_SPEED_CAMERA.get()
+		if (!ready || zone == null || app.getSettings().VOICE_MUTE.get() || !app.getSettings().SPEAK_SPEED_CAMERA.get()
 				|| now - lastSpokenMillis < GLOBAL_COOLDOWN_MILLIS
 				|| !cameraZoneVoice.shouldSpeak(zone.camera.id, 0, now)) {
 			return;
@@ -166,6 +175,7 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	}
 
 	void shutdown() {
+		app.getSettings().VOICE_MUTE.removeListener(muteListener);
 		textToSpeech.shutdown();
 		ready = false;
 	}

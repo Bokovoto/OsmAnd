@@ -43,6 +43,7 @@ import net.osmand.binary.RouteDataObject;
 import net.osmand.data.LatLon;
 import net.osmand.plus.auto.NavigationSession;
 import net.osmand.plus.helpers.CurrentPositionHelper;
+import net.osmand.plus.roadcrew.RoadCrewRoadAlerts;
 import net.osmand.plus.helpers.LocationCallback;
 import net.osmand.plus.helpers.LocationServiceHelper;
 import net.osmand.plus.helpers.TargetPoint;
@@ -707,6 +708,7 @@ public class OsmAndLocationProvider implements SensorEventListener {
 
 		net.osmand.Location updatedLocation = setLocationForRouting(location, routingHelper);
 		app.getWaypointHelper().locationChanged(location);
+		RoadCrewRoadAlerts.onLocation(app, updatedLocation);
 		NavigationSession carNavigationSession = app.getCarNavigationSession();
 		if (carNavigationSession != null && carNavigationSession.hasStarted()) {
 			carNavigationSession.updateLocation(location);
@@ -751,6 +753,7 @@ public class OsmAndLocationProvider implements SensorEventListener {
 		// 2. routing
 		net.osmand.Location updatedLocation = setLocationForRouting(location, routingHelper);
 		app.getWaypointHelper().locationChanged(location);
+		RoadCrewRoadAlerts.onLocation(app, updatedLocation);
 		this.location = updatedLocation;
 
 		// Update information
@@ -815,6 +818,10 @@ public class OsmAndLocationProvider implements SensorEventListener {
 
 	public RouteDataObject getLastKnownRouteSegment() {
 		return currentPositionHelper.getLastKnownRouteSegment(getLastKnownLocation());
+	}
+
+	public RouteDataObject getLastKnownRouteSegment(@Nullable net.osmand.Location location) {
+		return currentPositionHelper.getLastKnownRouteSegment(location);
 	}
 
 	public boolean getRouteSegment(net.osmand.Location loc,

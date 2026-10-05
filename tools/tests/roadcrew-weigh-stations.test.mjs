@@ -35,7 +35,7 @@ test('the layer draws them always, with no switch, and warns only on the route',
   const layer = source('RoadCrewReportsLayer.java');
   assert.match(layer, /drawWeighStations\(canvas, tileBox\)/);
   assert.match(layer, /drawWeighStationWarning\(canvas, tileBox, stationAhead\)/);
-  assert.match(layer, /isFollowingMode\(\)/);
+  assert.match(source('RoadCrewRoadAlerts.java'), /isFollowingMode\(\)/);
   assert.equal(/weigh_station.*(enabled|visible|toggle)/i.test(source('RoadCrewSettings.java')), false,
     'no setting to hide them (Galin: always shown)');
   // Not a report: no votes, no proximity prompt, no push.

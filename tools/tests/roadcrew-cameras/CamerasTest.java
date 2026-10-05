@@ -160,6 +160,17 @@ public class CamerasTest {
 		check(straight(one, 0, 100, 0) == null, "behind");
 		check(straight(unknown, 0, -300, 0) == null, "country unknown: never, straight ahead either");
 
+		List<RoadCrewCameras.Camera> besideBend = Collections.singletonList(camera("other-road", 400, 0));
+		Path knownBend = new Path(50, 0, 100, 0, 100, 1000);
+		check(RoadCrewCameras.nextAhead(besideBend, RoadCrewCameras.Rule.WARN, latOf(0), lonOf(0),
+				knownBend, 90, 1000) == null, "known bend is not contradicted by straight fallback");
+		check(RoadCrewCameras.nextAhead(besideBend, RoadCrewCameras.Rule.WARN, latOf(0), lonOf(0),
+				null, 90, 1000) != null, "unknown road retains the nearby-camera fallback");
+		check(RoadCrewCameras.nextAhead(besideBend, RoadCrewCameras.Rule.WARN, latOf(0), lonOf(0),
+				new Path(), 90, 1000) == null, "finished route does not become a straight guess");
+		check(RoadCrewCameras.nextAhead(besideBend, RoadCrewCameras.Rule.WARN, latOf(0), lonOf(0),
+				null, Double.NaN, 1000) == null, "no heading and no line means no directional guess");
+
 		// Which countries: from the map's region names around the camera.
 		// Germany and Switzerland warn like anywhere (Galin, 02.10.2026: the
 		// driver turns them off himself); the country is known for the notice.
@@ -224,6 +235,16 @@ public class CamerasTest {
 		check(voice.shouldSpeak("osm-2", 450, now + 20_000), "another camera is said");
 		check(voice.shouldSpeak("osm-1", 450, now + 31 * 60_000L), "the same camera on a later trip");
 
+		RoadCrewCameras.ZoneTracker skippedFixes = new RoadCrewCameras.ZoneTracker();
+		skippedFixes.update(new RoadCrewCameras.Ahead(fr, 100), 2000, latOf(-100), lonOf(0));
+		check(skippedFixes.update(null, 2000, latOf(-100), lonOf(0)) != null,
+				"stopped with no useful heading: keep the current zone");
+		check(skippedFixes.update(null, 2000, latOf(20), lonOf(0)) != null,
+				"a fix gap from 100 m before to 20 m after does not end the zone");
+		check(skippedFixes.update(null, 2000, latOf(20), lonOf(tail * 0.6)) != null,
+				"partway through curved tail");
+		check(skippedFixes.update(null, 2000, latOf(20 + tail * 0.6), lonOf(tail * 0.6)) == null,
+				"curved tail ends by distance travelled, not radius around the camera");
 		System.out.println(passed + " camera checks passed");
 	}
 
