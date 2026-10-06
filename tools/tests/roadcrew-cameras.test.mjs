@@ -91,9 +91,14 @@ test('the texts, in Bulgarian and English', () => {
   const voice = source('RoadCrewVoiceAlerts.java');
   // No accent mark: the voice drops a word that carries one - Galin heard
   // only "наблизо" (06.10.2026); measured in roadcrew-voice-marks.test.mjs.
-  assert.match(voice, /"Камера наблизо\."/);
+  // The apostrophe instead: plain "камера" is the voice's dictionary word,
+  // stressed on the second syllable to Galin's ear; "ка'мера" makes it read
+  // the word by its rules - the same audio as IPA "ˈkamɛra", the first
+  // syllable (tools/tts-probe, ROADMAP 374). Galin, 06.10.2026: "сложи го на
+  // телефона за проба".
+  assert.match(voice, /"Ка'мера наблизо\."/);
   assert.match(voice, /cameraVoice\.toSpeak\(/, 'two warnings: at 1 km and at 500 m');
-  assert.match(voice, /return "камера";/, 'the same word as the report');
+  assert.match(voice, /return "ка'мера";/, 'the same word as the report');
   assert.doesNotMatch(voice, /"Стационарна камера след "/, 'POI coordinates do not establish controlled carriageway');
   assert.match(voice, /"Опасна зона\."/);
   const bg = readFileSync(new URL('../../OsmAnd/src/nightlyFree/res/values-bg/roadcrew_strings.xml', import.meta.url), 'utf8');

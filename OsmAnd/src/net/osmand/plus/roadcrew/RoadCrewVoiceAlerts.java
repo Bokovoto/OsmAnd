@@ -217,10 +217,12 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 		}
 		cameraVoice.spoken(ahead.camera.id, stage, now);
 		lastSpokenMillis = now;
-		// No accent mark: the voice drops a word that carries one (ROADMAP 374).
+		// No accent mark: the voice drops a word that carries one. The apostrophe
+		// makes it read "ка'мера" by its rules - stressed on the first syllable
+		// (ROADMAP 374).
 		String cameraId = ahead.camera.id;
 		speak(bulgarianVoice
-				? "Камера наблизо."
+				? "Ка'мера наблизо."
 				: "Speed camera nearby.", () -> stillAhead(cameraId));
 	}
 
@@ -450,7 +452,7 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 			case POLICE:
 				return "полиция";
 			case CAMERA:
-				return "камера";
+				return "ка'мера";
 			case WEIGH_STATION:
 				return "кантар";
 			case DANGER:
