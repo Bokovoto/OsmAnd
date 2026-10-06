@@ -29,7 +29,7 @@ public final class RoadCrewCameras {
 	static final double CORRIDOR_METERS = 30;
 	/** "Стационарна камера · 800 м" from this far along the road. */
 	static final double SHOW_WITHIN_METERS = 1000;
-	/** "Стационарна камера след 500 метра" - once per pass. */
+	/** The second voice warning, closer; the first comes with the text. */
 	static final double SPEAK_WITHIN_METERS = 500;
 	/** With no route and no known road: only this far, straight ahead. */
 	static final double STRAIGHT_AHEAD_METERS = 600;
@@ -448,19 +448,38 @@ public final class RoadCrewCameras {
 	}
 
 	/** One voice warning per camera and pass. */
+	/**
+	 * The two voice warnings for a camera (Galin, 06.10.2026: "Два пъти: 1 км и
+	 * 500 м"): FAR with the text, from SHOW_WITHIN_METERS; NEAR from
+	 * SPEAK_WITHIN_METERS.
+	 */
+	enum Stage {
+		FAR,
+		NEAR
+	}
+
+	/** Each warning once per camera and pass; again on a trip past it later. */
 	static final class Voice {
 		private final Map<String, Long> spokenAt = new HashMap<>();
 
-		boolean shouldSpeak(String cameraId, double meters, long now) {
-			if (meters > SPEAK_WITHIN_METERS) {
-				return false;
+		/** The warning to say now, or null. A camera first seen within 500 m gets only NEAR. */
+		Stage toSpeak(String cameraId, double meters, long now) {
+			if (meters <= SPEAK_WITHIN_METERS) {
+				return fresh(cameraId, Stage.NEAR, now) ? Stage.NEAR : null;
 			}
-			Long last = spokenAt.get(cameraId);
-			return last == null || now - last >= SPEAK_AGAIN_AFTER_MILLIS;
+			if (meters <= SHOW_WITHIN_METERS) {
+				return fresh(cameraId, Stage.FAR, now) ? Stage.FAR : null;
+			}
+			return null;
 		}
 
-		void spoken(String cameraId, long now) {
-			spokenAt.put(cameraId, now);
+		void spoken(String cameraId, Stage stage, long now) {
+			spokenAt.put(cameraId + ":" + stage, now);
+		}
+
+		private boolean fresh(String cameraId, Stage stage, long now) {
+			Long last = spokenAt.get(cameraId + ":" + stage);
+			return last == null || now - last >= SPEAK_AGAIN_AFTER_MILLIS;
 		}
 	}
 

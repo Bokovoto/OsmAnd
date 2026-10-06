@@ -142,8 +142,9 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 
 	/**
 	 * Camera nearby - the POI does not identify the controlled carriageway.
-	 * Once per pass (RoadCrewCameras),
-	 * after the same pause as the reports so the two never talk over each other.
+	 * Twice per pass (RoadCrewCameras.Voice: with the text at 1 km, again at
+	 * 500 m - Galin, 06.10.2026), after the same pause as the reports so the
+	 * two never talk over each other.
 	 * The driver's switch is OsmAnd's own for camera voice, on by default
 	 * (Galin, 02.10.2026: he turns it off himself where the law asks it).
 	 */
@@ -151,13 +152,18 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 		long now = System.currentTimeMillis();
 		if (!ready || ahead == null || app.getSettings().VOICE_MUTE.get() || !app.getSettings().SPEAK_SPEED_CAMERA.get()
 				|| now - lastSpokenMillis < GLOBAL_COOLDOWN_MILLIS
-				|| !cameraVoice.shouldSpeak(ahead.camera.id, ahead.meters, now)) {
+				|| ahead.camera == null) {
 			return;
 		}
-		cameraVoice.spoken(ahead.camera.id, now);
+		RoadCrewCameras.Stage stage = cameraVoice.toSpeak(ahead.camera.id, ahead.meters, now);
+		if (stage == null) {
+			return;
+		}
+		cameraVoice.spoken(ahead.camera.id, stage, now);
 		lastSpokenMillis = now;
+		// Lower case, as the report's phrase: the voice stresses it right.
 		speak(bulgarianVoice
-				? "Ка̀мера наблизо."
+				? "ка̀мера наблизо."
 				: "Speed camera nearby.");
 	}
 
@@ -166,10 +172,10 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 		long now = System.currentTimeMillis();
 		if (!ready || zone == null || app.getSettings().VOICE_MUTE.get() || !app.getSettings().SPEAK_SPEED_CAMERA.get()
 				|| now - lastSpokenMillis < GLOBAL_COOLDOWN_MILLIS
-				|| !cameraZoneVoice.shouldSpeak(zone.camera.id, 0, now)) {
+				|| cameraZoneVoice.toSpeak(zone.camera.id, 0, now) == null) {
 			return;
 		}
-		cameraZoneVoice.spoken(zone.camera.id, now);
+		cameraZoneVoice.spoken(zone.camera.id, RoadCrewCameras.Stage.NEAR, now);
 		lastSpokenMillis = now;
 		speak(bulgarianVoice ? "Опасна зона." : "Danger zone.");
 	}

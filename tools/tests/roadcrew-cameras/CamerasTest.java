@@ -225,15 +225,21 @@ public class CamerasTest {
 		check(turned.update(null, 2000, latOf(-offsetA + 300), lonOf(200)) == null,
 				"turned off before the camera: the zone ends");
 
-		// One voice warning per camera and pass, from 500 m.
+		// Two voice warnings per camera and pass (Galin, 06.10.2026: "Два пъти:
+		// 1 км и 500 м") - with the text at 1 km, and again at 500 m.
 		RoadCrewCameras.Voice voice = new RoadCrewCameras.Voice();
 		long now = 1_000_000L;
-		check(!voice.shouldSpeak("osm-1", 900, now), "900 m: not yet");
-		check(voice.shouldSpeak("osm-1", 480, now), "480 m: say it");
-		voice.spoken("osm-1", now);
-		check(!voice.shouldSpeak("osm-1", 200, now + 10_000), "said once for this pass");
-		check(voice.shouldSpeak("osm-2", 450, now + 20_000), "another camera is said");
-		check(voice.shouldSpeak("osm-1", 450, now + 31 * 60_000L), "the same camera on a later trip");
+		check(voice.toSpeak("osm-1", 1200, now) == null, "1.2 km: not yet");
+		check(voice.toSpeak("osm-1", 950, now) == RoadCrewCameras.Stage.FAR, "950 m: the first, with the text");
+		voice.spoken("osm-1", RoadCrewCameras.Stage.FAR, now);
+		check(voice.toSpeak("osm-1", 800, now + 5_000) == null, "the first said once");
+		check(voice.toSpeak("osm-1", 480, now + 20_000) == RoadCrewCameras.Stage.NEAR, "480 m: the second");
+		voice.spoken("osm-1", RoadCrewCameras.Stage.NEAR, now + 20_000);
+		check(voice.toSpeak("osm-1", 200, now + 30_000) == null, "the second said once");
+		check(voice.toSpeak("osm-2", 450, now + 40_000) == RoadCrewCameras.Stage.NEAR,
+				"a camera first seen within 500 m: only the second");
+		check(voice.toSpeak("osm-1", 900, now + 31 * 60_000L) == RoadCrewCameras.Stage.FAR,
+				"the same camera on a later trip");
 
 		RoadCrewCameras.ZoneTracker skippedFixes = new RoadCrewCameras.ZoneTracker();
 		skippedFixes.update(new RoadCrewCameras.Ahead(fr, 100), 2000, latOf(-100), lonOf(0));
