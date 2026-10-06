@@ -47,18 +47,41 @@ class RoadCrewRecordingService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        // Every START comes from startForegroundService(), and Android closes the
+        // whole app when such a service stops before startForeground(). Galin's
+        // phone, 06.10.2026, twice: the route simulation began between the request
+        // and this call, eligible() said no, and the service stopped without it.
+        // Into the foreground first; out of it again when the answer is no.
+        if (intent?.action == START && running !== this && !enterForeground()) {
+            stopSelf()
+            return START_NOT_STICKY
+        }
         // No boot, process-redelivery, or external start can silently resume collection.
         if (intent?.action != START || !startRequested) {
-            if (running !== this) stopSelf()
+            if (running !== this) leaveForeground()
             return START_NOT_STICKY
         }
         startRequested = false
         if (!eligible(app) || !hasLocationPermission(app)) {
-            stopSelf()
+            leaveForeground()
             return START_NOT_STICKY
         }
         try {
             stopping = false
+            running = this
+            app.settings.LOCATION_SOURCE.addListener(sourceListener)
+            RoadCrewMapObservationCoordinator.ensureStarted(app)
+            handler.post(tick)
+        } catch (e: RuntimeException) {
+            LOG.warn("Live Truck Map start failed", e)
+            finishRecording()
+        }
+        return START_NOT_STICKY
+    }
+
+    /** startForeground() with the recording notice; false when Android refuses it. */
+    private fun enterForeground(): Boolean {
+        try {
             lastStatus = null
             val notification = notification()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -66,15 +89,17 @@ class RoadCrewRecordingService : Service() {
             } else {
                 startForeground(NOTIFICATION_ID, notification)
             }
-            running = this
-            app.settings.LOCATION_SOURCE.addListener(sourceListener)
-            RoadCrewMapObservationCoordinator.ensureStarted(app)
-            handler.post(tick)
+            return true
         } catch (e: RuntimeException) {
             LOG.warn("Live Truck Map foreground start refused", e)
-            finishRecording()
+            return false
         }
-        return START_NOT_STICKY
+    }
+
+    /** The answer is no after all: the notice goes, then the service. */
+    private fun leaveForeground() {
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopSelf()
     }
 
     private fun refresh() {
