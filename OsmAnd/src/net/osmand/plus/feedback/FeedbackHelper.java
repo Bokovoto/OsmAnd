@@ -13,6 +13,7 @@ import net.osmand.PlatformUtil;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.R;
 import net.osmand.plus.Version;
+import net.osmand.plus.roadcrew.RoadCrewReportsLayer;
 import net.osmand.plus.utils.AndroidUtils;
 import net.osmand.util.Algorithms;
 
@@ -29,6 +30,11 @@ public class FeedbackHelper {
 	private static final Log log = PlatformUtil.getLog(FeedbackHelper.class);
 
 	public static final String EXCEPTION_PATH = "exception.log";
+	/**
+	 * Galin, 06.10.2026: RoadCrew's crash reports and support mail go to him.
+	 * OsmAnd does not make RoadCrew; a RoadCrew report reached nobody there.
+	 */
+	private static final String ROADCREW_EMAIL = "galin.b.vasilev1@gmail.com";
 
 	private final OsmandApplication app;
 	private final ExceptionHandler exceptionHandler;
@@ -73,8 +79,9 @@ public class FeedbackHelper {
 			return;
 		}
 		String deviceInfo = getDeviceInfo();
+		boolean roadCrew = RoadCrewReportsLayer.isEnabled(app);
 		Intent intent = new Intent(files.size() > 1 ? Intent.ACTION_SEND_MULTIPLE : Intent.ACTION_SEND);
-		intent.putExtra(Intent.EXTRA_EMAIL, new String[] {"crash@osmand.net"});
+		intent.putExtra(Intent.EXTRA_EMAIL, new String[] {roadCrew ? ROADCREW_EMAIL : "crash@osmand.net"});
 
 		if (files.size() == 1) {
 			intent.putExtra(Intent.EXTRA_STREAM, AndroidUtils.getUriForFile(app, files.get(0)));
@@ -87,7 +94,7 @@ public class FeedbackHelper {
 		}
 		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		intent.setType("vnd.android.cursor.dir/email");
-		intent.putExtra(Intent.EXTRA_SUBJECT, "OsmAnd bug");
+		intent.putExtra(Intent.EXTRA_SUBJECT, roadCrew ? "RoadCrew bug" : "OsmAnd bug");
 		intent.putExtra(Intent.EXTRA_TEXT, deviceInfo);
 		Intent chooserIntent = Intent.createChooser(intent, app.getString(R.string.send_report));
 		chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -103,10 +110,11 @@ public class FeedbackHelper {
 		if (!Algorithms.isEmpty(additional)) {
 			info = info + "\n" + additional;
 		}
+		boolean roadCrew = RoadCrewReportsLayer.isEnabled(app);
 		Intent emailIntent = new Intent(Intent.ACTION_SEND)
 				.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-				.putExtra(Intent.EXTRA_EMAIL, new String[] {"support@osmand.net"})
-				.putExtra(Intent.EXTRA_SUBJECT, screenName)
+				.putExtra(Intent.EXTRA_EMAIL, new String[] {roadCrew ? ROADCREW_EMAIL : "support@osmand.net"})
+				.putExtra(Intent.EXTRA_SUBJECT, roadCrew ? "RoadCrew: " + screenName : screenName)
 				.putExtra(Intent.EXTRA_TEXT, info);
 		emailIntent.setSelector(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")));
 		AndroidUtils.startActivityIfSafe(app, emailIntent);

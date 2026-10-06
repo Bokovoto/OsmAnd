@@ -295,6 +295,7 @@
     <string name="roadcrew_weigh_station_fixed_place">%1$s · both directions</string>
     <string name="roadcrew_weigh_station_fixed_about">Built into the road under the toll gantry. No stopping: the weight is measured on the move, and an overload fine is issued automatically.</string>
     <string name="roadcrew_weigh_station_fixed_source">Source: National Toll Administration of Bulgaria (BG TOLL)</string>
+    <string name="last_launch_crashed">RoadCrew closed because of an error last time. Send the report so it can be fixed.</string>
     <string name="roadcrew_camera_fixed_title">Speed camera</string>
     <string name="roadcrew_camera_fixed_ahead">Camera nearby · %1$s</string>
     <string name="roadcrew_camera_fixed_ahead_limit">Camera nearby · %1$d · %2$s</string>
