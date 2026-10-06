@@ -23,10 +23,10 @@ public class SpeechQueueTest {
 		check(queue.next(false, now) == null, "nothing to say");
 
 		// The navigation is speaking: the warning waits, then follows it.
-		queue.add("ка̀мера наблизо.", now, () -> true);
+		queue.add("Камера наблизо.", now, () -> true);
 		check(queue.next(true, now + 500) == null, "the navigation speaks: wait");
 		check(!queue.isEmpty(), "still waiting");
-		check("ка̀мера наблизо.".equals(queue.next(false, now + 2_000)), "the navigation done: said right after");
+		check("Камера наблизо.".equals(queue.next(false, now + 2_000)), "the navigation done: said right after");
 		check(queue.isEmpty(), "said once");
 
 		// In the order they came.

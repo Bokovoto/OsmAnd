@@ -217,10 +217,10 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 		}
 		cameraVoice.spoken(ahead.camera.id, stage, now);
 		lastSpokenMillis = now;
-		// Lower case, as the report's phrase: the voice stresses it right.
+		// No accent mark: the voice drops a word that carries one (ROADMAP 374).
 		String cameraId = ahead.camera.id;
 		speak(bulgarianVoice
-				? "ка̀мера наблизо."
+				? "Камера наблизо."
 				: "Speed camera nearby.", () -> stillAhead(cameraId));
 	}
 
@@ -450,7 +450,7 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 			case POLICE:
 				return "полиция";
 			case CAMERA:
-				return "ка̀мера";
+				return "камера";
 			case WEIGH_STATION:
 				return "кантар";
 			case DANGER:

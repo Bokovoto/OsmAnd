@@ -89,13 +89,11 @@ test('both switches on by default, in the truck and the car profile', () => {
 
 test('the texts, in Bulgarian and English', () => {
   const voice = source('RoadCrewVoiceAlerts.java');
-  // Stressed on the first syllable, as the mobile camera report says it
-  // (Galin, 06.10.2026): the combining grave accent after the first "а".
-  // Lower case, as the report's phrase that the voice says right (Galin heard
-  // only "наблизо" from the capitalised one, 06.10.2026).
-  assert.match(voice, /"ка̀мера наблизо\."/);
+  // No accent mark: the voice drops a word that carries one - Galin heard
+  // only "наблизо" (06.10.2026); measured in roadcrew-voice-marks.test.mjs.
+  assert.match(voice, /"Камера наблизо\."/);
   assert.match(voice, /cameraVoice\.toSpeak\(/, 'two warnings: at 1 km and at 500 m');
-  assert.match(voice, /return "ка̀мера";/, 'the same spelling as the report');
+  assert.match(voice, /return "камера";/, 'the same word as the report');
   assert.doesNotMatch(voice, /"Стационарна камера след "/, 'POI coordinates do not establish controlled carriageway');
   assert.match(voice, /"Опасна зона\."/);
   const bg = readFileSync(new URL('../../OsmAnd/src/nightlyFree/res/values-bg/roadcrew_strings.xml', import.meta.url), 'utf8');
