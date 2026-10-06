@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.roadcrew.ttsprobe">
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+    <application android:label="RoadCrew TTS probe" android:debuggable="true" android:hasCode="true" />
+    <instrumentation android:name=".Probe" android:targetPackage="com.roadcrew.ttsprobe" />
+</manifest>

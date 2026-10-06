@@ -1,0 +1,17 @@
+<speak><phoneme alphabet="ipa" ph="kaˈmɛrɐ">камера</phoneme>.</speak>
+<speak><phoneme alphabet="ipa" ph="ˈkamɛrɐ">камера</phoneme>.</speak>
+<speak><phoneme alphabet="ipa" ph="kamɛˈrɐ">камера</phoneme>.</speak>
+<speak><phoneme alphabet="ipa" ph="kamɛrɐ">камера</phoneme>.</speak>
+<speak><phoneme alphabet="ipa" ph="ˈkamɛra">камера</phoneme>.</speak>
+<speak><phoneme alphabet="ipa" ph="kaˈmɛra">камера</phoneme>.</speak>
+<speak><phoneme alphabet="ipa" ph="ˈpapa">камера</phoneme>.</speak>
+камера.
+кàмера.
+ка'мера.
+каме'ра.
+камèра.
+камера'.
+к'амера.
+ка'мера наблизо.
+ка'мера по маршрута след 500 метра.
+След 500 метра: ка'мера.
