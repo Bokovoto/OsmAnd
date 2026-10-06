@@ -16,6 +16,7 @@ import net.osmand.PlatformUtil;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.R;
 import net.osmand.plus.api.AudioFocusHelperImpl;
+import net.osmand.plus.roadcrew.RoadCrewRoadAlerts;
 import net.osmand.plus.routing.VoiceRouter;
 import net.osmand.plus.settings.backend.ApplicationMode;
 import net.osmand.plus.settings.backend.preferences.OsmandPreference;
@@ -188,6 +189,29 @@ public class JsTtsCommandPlayer extends CommandPlayer {
 		}
 		sendAlertToPebble(bld.toString());
 		if (mTts != null && !voiceRouter.isMute() && speechAllowed) {
+			String text = bld.toString();
+			// RoadCrew is saying a warning: this follows it, never over it
+			// (Galin, 06.10.2026: "Изчаква, после се казва").
+			if (app != null && RoadCrewRoadAlerts.isSpeaking()) {
+				RoadCrewRoadAlerts.afterRoadCrew(app, () -> speak(text));
+			} else {
+				speak(text);
+			}
+		}
+		// #5966: TTS Utterance for debugging
+		if (app != null && settings.DISPLAY_TTS_UTTERANCE.get()) {
+			app.showToastMessage(bld.toString());
+		}
+		return execute;
+	}
+
+	@Override
+	public boolean isSpeaking() {
+		return ttsRequests > 0;
+	}
+
+	private synchronized void speak(@NonNull String text) {
+		if (mTts != null && !voiceRouter.isMute() && speechAllowed) {
 			if (ttsRequests++ == 0) {
 				requestAudioFocus();
 				mTts.setAudioAttributes(new AudioAttributes.Builder()
@@ -208,17 +232,12 @@ public class JsTtsCommandPlayer extends CommandPlayer {
 			log.debug("ttsRequests=" + ttsRequests);
 			params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "" + System.currentTimeMillis());
 			if (AudioFocusHelperImpl.playbackAuthorized) {
-				mTts.speak(bld.toString(), TextToSpeech.QUEUE_ADD, params);
+				mTts.speak(text, TextToSpeech.QUEUE_ADD, params);
 			} else {
 				stop();
 			}
 			// Audio focus will be released when onUtteranceCompleted() completed is called by the TTS engine.
 		}
-		// #5966: TTS Utterance for debugging
-		if (app != null && settings.DISPLAY_TTS_UTTERANCE.get()) {
-			app.showToastMessage(bld.toString());
-		}
-		return execute;
 	}
 
 	private void sendAlertToPebble(@NonNull String bld) {

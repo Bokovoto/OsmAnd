@@ -1,6 +1,9 @@
 package net.osmand.plus.roadcrew;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,12 +13,15 @@ import net.osmand.StateChangedListener;
 import net.osmand.data.LatLon;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.routing.RoutingHelper;
+import net.osmand.plus.routing.VoiceRouter;
+import net.osmand.plus.voice.CommandPlayer;
 import net.osmand.util.MapUtils;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 
 final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 
@@ -31,6 +37,10 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	private static final long OLD_REPORT_MIN_AGE_MILLIS = 20 * 60 * 1000;
 	private static final long EXPIRING_SOON_MILLIS = 10 * 60 * 1000;
 	private static final double OLD_REPORT_LIFETIME_RATIO = 0.7;
+	/** How often a waiting warning looks whether the navigation has gone quiet. */
+	private static final long DRAIN_MILLIS = 200;
+	/** No warning lasts longer: a lost "done" from the voice engine must not silence RoadCrew. */
+	private static final long LONGEST_SENTENCE_MILLIS = 10_000;
 
 	private final OsmandApplication app;
 	private final TextToSpeech textToSpeech;
@@ -39,6 +49,12 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	private final RoadCrewWeighStations.Voice weighStationVoice = new RoadCrewWeighStations.Voice();
 	private final RoadCrewCameras.Voice cameraVoice = new RoadCrewCameras.Voice();
 	private final RoadCrewCameras.Voice cameraZoneVoice = new RoadCrewCameras.Voice();
+	/** Galin, 06.10.2026: never over the navigation - the second waits and follows. */
+	private final RoadCrewSpeechQueue queue = new RoadCrewSpeechQueue();
+	private final Handler handler = new Handler(Looper.getMainLooper());
+	private final Runnable drainLater = this::drain;
+	private volatile boolean speaking;
+	private volatile long speakingSince;
 
 	private long lastCheckMillis;
 	private long lastSpokenMillis;
@@ -50,7 +66,9 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 		textToSpeech = new TextToSpeech(app, this);
 		muteListener = muted -> {
 			if (Boolean.TRUE.equals(muted)) {
+				queue.clear();
 				textToSpeech.stop();
+				speaking = false;
 			}
 		};
 		app.getSettings().VOICE_MUTE.addListener(muteListener);
@@ -70,6 +88,44 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 			result = textToSpeech.setLanguage(Locale.ENGLISH);
 		}
 		ready = result != TextToSpeech.LANG_MISSING_DATA && result != TextToSpeech.LANG_NOT_SUPPORTED;
+		textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+			@Override
+			public void onStart(String utteranceId) {
+				speaking = true;
+			}
+
+			@Override
+			public void onDone(String utteranceId) {
+				handler.post(() -> {
+					speaking = false;
+					drain();
+				});
+			}
+
+			@Override
+			public void onError(String utteranceId) {
+				handler.post(() -> {
+					speaking = false;
+					drain();
+				});
+			}
+
+			@Override
+			public void onStop(String utteranceId, boolean interrupted) {
+				handler.post(() -> {
+					speaking = false;
+					drain();
+				});
+			}
+		});
+	}
+
+	/** RoadCrew's own sentence is being said - the navigation waits for it. */
+	boolean isSpeaking() {
+		if (speaking && System.currentTimeMillis() - speakingSince > LONGEST_SENTENCE_MILLIS) {
+			speaking = false;
+		}
+		return speaking;
 	}
 
 	void check(@NonNull List<RoadCrewReport> reports, @Nullable Location location) {
@@ -162,9 +218,10 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 		cameraVoice.spoken(ahead.camera.id, stage, now);
 		lastSpokenMillis = now;
 		// Lower case, as the report's phrase: the voice stresses it right.
+		String cameraId = ahead.camera.id;
 		speak(bulgarianVoice
 				? "ка̀мера наблизо."
-				: "Speed camera nearby.");
+				: "Speed camera nearby.", () -> stillAhead(cameraId));
 	}
 
 	/** France: "Опасна зона." once when the zone begins - no distance, it would place the camera. */
@@ -177,10 +234,13 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 		}
 		cameraZoneVoice.spoken(zone.camera.id, RoadCrewCameras.Stage.NEAR, now);
 		lastSpokenMillis = now;
-		speak(bulgarianVoice ? "Опасна зона." : "Danger zone.");
+		speak(bulgarianVoice ? "Опасна зона." : "Danger zone.",
+				() -> RoadCrewRoadAlerts.snapshot().camera.zone != null);
 	}
 
 	void shutdown() {
+		handler.removeCallbacks(drainLater);
+		queue.clear();
 		app.getSettings().VOICE_MUTE.removeListener(muteListener);
 		textToSpeech.shutdown();
 		ready = false;
@@ -421,7 +481,48 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	}
 
 	private void speak(@NonNull String message) {
-		textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, "roadcrew-" + System.currentTimeMillis());
+		speak(message, () -> true);
+	}
+
+	/**
+	 * Through the queue: said now when the navigation is silent, else right
+	 * after it - and only while stillTrue holds (Galin, 06.10.2026).
+	 */
+	private void speak(@NonNull String message, @NonNull BooleanSupplier stillTrue) {
+		queue.add(message, System.currentTimeMillis(), stillTrue);
+		drain();
+	}
+
+	/** Says the next waiting warning once both voices are silent; looks again shortly if not. */
+	private void drain() {
+		handler.removeCallbacks(drainLater);
+		if (!ready || isSpeaking()) {
+			if (!queue.isEmpty()) {
+				handler.postDelayed(drainLater, DRAIN_MILLIS);
+			}
+			return;
+		}
+		String text = queue.next(navigationSpeaking(), System.currentTimeMillis());
+		if (text != null) {
+			speaking = true;
+			speakingSince = System.currentTimeMillis();
+			textToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null, "roadcrew-" + System.currentTimeMillis());
+		} else if (!queue.isEmpty()) {
+			handler.postDelayed(drainLater, DRAIN_MILLIS);
+		}
+	}
+
+	/** The navigation's own voice - spoken prompts or recorded ones - is talking. */
+	private boolean navigationSpeaking() {
+		VoiceRouter router = app.getRoutingHelper().getVoiceRouter();
+		CommandPlayer player = router == null ? null : router.getPlayer();
+		return player != null && player.isSpeaking();
+	}
+
+	/** The camera this warning is about is still the one ahead - not passed while waiting. */
+	private static boolean stillAhead(@NonNull String cameraId) {
+		RoadCrewCameras.Ahead ahead = RoadCrewRoadAlerts.snapshot().camera.ahead;
+		return ahead != null && ahead.camera != null && cameraId.equals(ahead.camera.id);
 	}
 
 	private static final class Candidate {

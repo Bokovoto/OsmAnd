@@ -128,6 +128,11 @@ public abstract class CommandPlayer {
 
 	public abstract void stop();
 
+	/** A sentence is being said or waits in this player - RoadCrew's voice waits for it. */
+	public boolean isSpeaking() {
+		return false;
+	}
+
 	@NonNull
 	public abstract File getTtsFileFromDir(@NonNull File voiceProviderDir);
 

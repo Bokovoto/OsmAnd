@@ -8,10 +8,14 @@ import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.routing.RoutingHelper;
 import net.osmand.util.MapUtils;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /** Application-owned warnings; map drawing consumes snapshots, never drives speech. */
 public final class RoadCrewRoadAlerts {
 	private static volatile RoadCrewRoadAlerts instance;
+	/** The navigation's waiting sentences, said off the main thread as before. */
+	private static final ExecutorService AFTER_ROADCREW = Executors.newSingleThreadExecutor();
 	private static final float CAMERA_MIN_HEADING_SPEED_MPS = 2.0f;
 	private final OsmandApplication app;
 	private final RoadCrewVoiceAlerts voiceAlerts;
@@ -41,6 +45,33 @@ public final class RoadCrewRoadAlerts {
 	static State snapshot() {
 		RoadCrewRoadAlerts current = instance;
 		return current == null ? new State() : current.state;
+	}
+
+	/** RoadCrew's own voice is saying a sentence - the navigation waits for it. */
+	public static boolean isSpeaking() {
+		RoadCrewRoadAlerts current = instance;
+		return current != null && current.voiceAlerts.isSpeaking();
+	}
+
+	/**
+	 * Runs action once RoadCrew's voice is silent: the navigation's sentence
+	 * follows RoadCrew's instead of talking over it (Galin, 06.10.2026:
+	 * "Изчаква, после се казва"). At the latest after the queue's wait - a
+	 * turn instruction is never dropped.
+	 */
+	public static void afterRoadCrew(@NonNull OsmandApplication app, @NonNull Runnable action) {
+		long since = System.currentTimeMillis();
+		Runnable check = new Runnable() {
+			@Override
+			public void run() {
+				if (!isSpeaking() || System.currentTimeMillis() - since >= RoadCrewSpeechQueue.WAIT_MILLIS) {
+					AFTER_ROADCREW.execute(action);
+				} else {
+					app.runInUIThread(this, 200);
+				}
+			}
+		};
+		app.runInUIThread(check, 200);
 	}
 
 	/** Both location-provider paths call this after routing has consumed the fix. */

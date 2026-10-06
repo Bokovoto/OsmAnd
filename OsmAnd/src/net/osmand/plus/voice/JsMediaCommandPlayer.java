@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import net.osmand.PlatformUtil;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.api.AudioFocusHelperImpl;
+import net.osmand.plus.roadcrew.RoadCrewRoadAlerts;
 import net.osmand.plus.routing.VoiceRouter;
 import net.osmand.plus.settings.backend.ApplicationMode;
 
@@ -87,6 +88,24 @@ public class JsMediaCommandPlayer extends CommandPlayer implements OnCompletionL
 			return Collections.emptyList();
 		}
 		List<String> lst = splitAnnouncements(builder.execute());
+		// RoadCrew is saying a warning: this follows it, never over it
+		// (Galin, 06.10.2026: "Изчаква, после се казва").
+		if (app != null && RoadCrewRoadAlerts.isSpeaking()) {
+			RoadCrewRoadAlerts.afterRoadCrew(app, () -> enqueue(lst));
+			return lst;
+		}
+		return enqueue(lst);
+	}
+
+	@Override
+	public boolean isSpeaking() {
+		return mediaPlayer != null || !filesToPlay.isEmpty();
+	}
+
+	private synchronized List<String> enqueue(@NonNull List<String> lst) {
+		if (voiceRouter.isMute()) {
+			return Collections.emptyList();
+		}
 		filesToPlay.addAll(lst);
 
 		// If we have not already started to play audio, start.
