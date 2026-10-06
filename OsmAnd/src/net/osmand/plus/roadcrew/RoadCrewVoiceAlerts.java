@@ -157,7 +157,7 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 		cameraVoice.spoken(ahead.camera.id, now);
 		lastSpokenMillis = now;
 		speak(bulgarianVoice
-				? "Камера наблизо."
+				? "Ка̀мера наблизо."
 				: "Speed camera nearby.");
 	}
 

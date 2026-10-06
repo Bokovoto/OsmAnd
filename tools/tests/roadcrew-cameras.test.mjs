@@ -89,7 +89,10 @@ test('both switches on by default, in the truck and the car profile', () => {
 
 test('the texts, in Bulgarian and English', () => {
   const voice = source('RoadCrewVoiceAlerts.java');
-  assert.match(voice, /"Камера наблизо\."/);
+  // Stressed on the first syllable, as the mobile camera report says it
+  // (Galin, 06.10.2026): the combining grave accent after the first "а".
+  assert.match(voice, /"Ка̀мера наблизо\."/);
+  assert.match(voice, /return "ка̀мера";/, 'the same spelling as the report');
   assert.doesNotMatch(voice, /"Стационарна камера след "/, 'POI coordinates do not establish controlled carriageway');
   assert.match(voice, /"Опасна зона\."/);
   const bg = readFileSync(new URL('../../OsmAnd/src/nightlyFree/res/values-bg/roadcrew_strings.xml', import.meta.url), 'utf8');
