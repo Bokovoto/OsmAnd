@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- RoadCrew driver card screen (ROADMAP 327). -->
 <resources>
+    <string name="roadcrew_tacho_reader_diagnostic">Reader error: %1$s\nUnplug the reader and reconnect it. If it happens again, send us a screenshot.</string>
     <string name="roadcrew_tacho_title">Driver card</string>
     <string name="roadcrew_tacho_back">Back</string>
     <string name="roadcrew_tacho_reader">Card reader</string>

@@ -24,39 +24,44 @@ import java.io.IOException;
  */
 final class RoadCrewTachoCcidTransport {
 
-	private static final int MESSAGE_HEADER_LENGTH = 10;
-	private static final int PC_TO_RDR_ICC_POWER_ON = 0x62;
 	private static final int PC_TO_RDR_ICC_POWER_OFF = 0x63;
 	private static final int PC_TO_RDR_XFR_BLOCK = 0x6F;
 	private static final int PC_TO_RDR_SET_PARAMETERS = 0x61;
 	private static final int PC_TO_RDR_GET_SLOT_STATUS = 0x65;
-	private static final int RDR_TO_PC_DATA_BLOCK = 0x80;
-	private static final int RDR_TO_PC_SLOT_STATUS = 0x81;
-
-	private static final int TRANSFER_TIMEOUT_MILLIS = 5_000;
-	private static final int MAX_RESPONSE_LENGTH = 4_096;
-	/** Time extensions accepted for one command before it is treated as lost (each up to the transfer timeout). */
-	private static final int MAX_TIME_EXTENSIONS = 60;
 
 	private final UsbDeviceConnection connection;
 	private final UsbInterface ccidInterface;
-	private final UsbEndpoint bulkIn;
-	private final UsbEndpoint bulkOut;
 	private final int features;
 	private final int exchangeLevel;
 	private int activeProtocol = 0;
-	private byte sequence;
+	private final RoadCrewTachoCcidProtocol protocol;
 
 	private static final int EXCHANGE_TPDU = 1;
 
 	private RoadCrewTachoCcidTransport(UsbDeviceConnection connection, UsbInterface ccidInterface,
-			UsbEndpoint bulkIn, UsbEndpoint bulkOut, int features) {
+			UsbEndpoint bulkIn, UsbEndpoint bulkOut, RoadCrewTachoCcidProtocol.Capabilities caps) {
 		this.connection = connection;
 		this.ccidInterface = ccidInterface;
-		this.bulkIn = bulkIn;
-		this.bulkOut = bulkOut;
-		this.features = features;
-		this.exchangeLevel = (features >> 16) & 0x7;
+		this.features = caps.features;
+		this.exchangeLevel = (caps.features >> 16) & 0x7;
+		this.protocol = new RoadCrewTachoCcidProtocol(new RoadCrewTachoCcidProtocol.Io() {
+			@Override public int write(byte[] bytes, int timeout) {
+				return connection.bulkTransfer(bulkOut, bytes, bytes.length, timeout);
+			}
+			@Override public int read(byte[] bytes, int timeout) {
+				return connection.bulkTransfer(bulkIn, bytes, bytes.length, timeout);
+			}
+			@Override public long now() { return android.os.SystemClock.elapsedRealtime(); }
+			@Override public void diagnostic(String detail) { android.util.Log.i("RoadCrewTacho", detail); }
+			@Override public void pause(int millis) throws IOException {
+				try {
+					Thread.sleep(millis);
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+					throw new IOException("CCID_INTERRUPTED", e);
+				}
+			}
+		}, caps);
 	}
 
 	/**
@@ -146,41 +151,20 @@ final class RoadCrewTachoCcidTransport {
 			connection.releaseInterface(ccidInterface);
 			throw new IOException("the CCID interface is missing a bulk IN or OUT endpoint");
 		}
-		int features = readFeatures(connection.getRawDescriptors(), ccidInterface.getId());
-		return new RoadCrewTachoCcidTransport(connection, ccidInterface, bulkIn, bulkOut, features);
-	}
-
-	/**
-	 * Walks the raw USB configuration descriptor - interface descriptor
-	 * (type 0x04) after interface descriptor - to find the CCID class-specific
-	 * functional descriptor (type 0x21) that belongs to our interface, and
-	 * reads dwFeatures from it (offset 40, per the USB-IF CCID spec section
-	 * 5.1). Read-only introspection of the reader itself, no card involved.
-	 * Returns 0 (nothing automatic) if the descriptor cannot be found, so the
-	 * caller falls back to doing parameter negotiation itself.
-	 */
-	private static int readFeatures(byte[] raw, int wantInterfaceId) {
-		if (raw == null) {
-			return 0;
-		}
-		int i = 0;
-		boolean inWantedInterface = false;
-		while (i + 1 < raw.length) {
-			int length = raw[i] & 0xFF;
-			int type = raw[i + 1] & 0xFF;
-			if (length < 2) {
-				break;
+		try {
+			RoadCrewTachoCcidProtocol.Capabilities caps = RoadCrewTachoCcidProtocol.Capabilities.parse(
+					connection.getRawDescriptors(), ccidInterface.getId());
+			android.util.Log.i("RoadCrewTacho", "Reader " + device.getVendorId() + ":"
+					+ device.getProductId() + " " + caps);
+			int level = (caps.features >> 16) & 7;
+			if (level != 1 && level != 2 && level != 4) {
+				throw new IOException("CCID_UNSUPPORTED_EXCHANGE_LEVEL " + level);
 			}
-			if (type == 0x04 && i + 3 < raw.length) { // interface descriptor
-				int interfaceId = raw[i + 2] & 0xFF;
-				inWantedInterface = interfaceId == wantInterfaceId;
-			} else if (type == 0x21 && inWantedInterface && length >= 44 && i + 43 < raw.length) {
-				return (raw[i + 40] & 0xFF) | ((raw[i + 41] & 0xFF) << 8)
-						| ((raw[i + 42] & 0xFF) << 16) | ((raw[i + 43] & 0xFF) << 24);
-			}
-			i += length;
+			return new RoadCrewTachoCcidTransport(connection, ccidInterface, bulkIn, bulkOut, caps);
+		} catch (IOException e) {
+			connection.releaseInterface(ccidInterface);
+			throw e;
 		}
-		return 0;
 	}
 
 	void close() {
@@ -191,8 +175,7 @@ final class RoadCrewTachoCcidTransport {
 	 * Which protocol (0 or 1) SetParameters was last sent for - set by
 	 * RoadCrewTachoCardReader after it decides which one to use, so
 	 * {@link #transmit} knows whether to T=1-wrap an APDU. The current T=0
-	 * diagnostic passes commands through unchanged. Case-1 APDU adaptation
-	 * for TPDU readers must be added before implementing file hashing.
+	 * path adapts case-1 APDUs for TPDU readers below.
 	 */
 	void setActiveProtocol(int protocol) {
 		this.activeProtocol = protocol;
@@ -200,8 +183,8 @@ final class RoadCrewTachoCcidTransport {
 
 	/** Powers the card up and returns its ATR (Answer To Reset) - the card's own self-description. */
 	Response powerOn() throws IOException {
-		// byte7 = bPowerSelect: 0x00 lets the reader pick the voltage automatically.
-		return exchange(PC_TO_RDR_ICC_POWER_ON, new byte[0], (byte) 0x00, (byte) 0x00, (byte) 0x00);
+		RoadCrewTachoCcidProtocol.Frame frame = protocol.powerOn();
+		return new Response(frame.type, frame.status, frame.error, frame.data);
 	}
 
 	void powerOff() throws IOException {
@@ -326,71 +309,7 @@ final class RoadCrewTachoCcidTransport {
 	}
 
 	private Response exchange(int messageType, byte[] payload, byte b7, byte b8, byte b9) throws IOException {
-		byte seq = sequence++;
-		byte[] message = new byte[MESSAGE_HEADER_LENGTH + payload.length];
-		message[0] = (byte) messageType;
-		writeLengthLittleEndian(message, 1, payload.length);
-		message[5] = 0x00; // bSlot: this reader only ever has one.
-		message[6] = seq;
-		message[7] = b7;
-		message[8] = b8;
-		message[9] = b9;
-		System.arraycopy(payload, 0, message, MESSAGE_HEADER_LENGTH, payload.length);
-
-		int sent = connection.bulkTransfer(bulkOut, message, message.length, TRANSFER_TIMEOUT_MILLIS);
-		if (sent != message.length) {
-			throw new IOException("USB write to the reader was incomplete (" + sent + "/" + message.length + " bytes)");
-		}
-
-		for (int extensions = 0; ; extensions++) {
-			byte[] buffer = new byte[MAX_RESPONSE_LENGTH];
-			int received = connection.bulkTransfer(bulkIn, buffer, buffer.length, TRANSFER_TIMEOUT_MILLIS);
-			if (received < MESSAGE_HEADER_LENGTH) {
-				throw new IOException("the reader's reply was shorter than a CCID header (" + received + " bytes)");
-			}
-			int responseType = buffer[0] & 0xFF;
-			int expectedType = messageType == PC_TO_RDR_SET_PARAMETERS ? 0x82
-					: messageType == PC_TO_RDR_ICC_POWER_OFF || messageType == PC_TO_RDR_GET_SLOT_STATUS
-					? RDR_TO_PC_SLOT_STATUS : RDR_TO_PC_DATA_BLOCK;
-			if (responseType != expectedType || buffer[5] != 0) {
-				throw new IOException("Unexpected CCID reply type or slot");
-			}
-			int declaredLength = readLengthLittleEndian(buffer, 1);
-			byte responseSeq = buffer[6];
-			if (responseSeq != seq) {
-				throw new IOException("the reader replied out of order (expected seq " + seq + ", got " + responseSeq + ")");
-			}
-			byte status = buffer[7];
-			byte error = buffer[8];
-			if (responseType == RDR_TO_PC_DATA_BLOCK && (status & 0xC0) == 0x80) {
-				// bmCommandStatus 2, "time extension requested" (CCID 6.2.6): the
-				// card needs longer - a signature takes it seconds - and the real
-				// reply follows on the same sequence number. Waiting is the
-				// protocol; giving up here would lose the signature (ROADMAP 327).
-				if (extensions >= MAX_TIME_EXTENSIONS) {
-					throw new IOException("the card kept asking for more time; no result can be trusted");
-				}
-				continue;
-			}
-			int available = received - MESSAGE_HEADER_LENGTH;
-			if (declaredLength != available || declaredLength < 0) {
-				throw new IOException("Incomplete CCID reply; no card result can be trusted");
-			}
-			byte[] data = new byte[declaredLength];
-			System.arraycopy(buffer, MESSAGE_HEADER_LENGTH, data, 0, declaredLength);
-			return new Response(responseType, status, error, data);
-		}
-	}
-
-	private static void writeLengthLittleEndian(byte[] out, int offset, int value) {
-		out[offset] = (byte) (value & 0xFF);
-		out[offset + 1] = (byte) ((value >> 8) & 0xFF);
-		out[offset + 2] = (byte) ((value >> 16) & 0xFF);
-		out[offset + 3] = (byte) ((value >> 24) & 0xFF);
-	}
-
-	private static int readLengthLittleEndian(byte[] in, int offset) {
-		return (in[offset] & 0xFF) | ((in[offset + 1] & 0xFF) << 8)
-				| ((in[offset + 2] & 0xFF) << 16) | ((in[offset + 3] & 0xFF) << 24);
+		RoadCrewTachoCcidProtocol.Frame frame = protocol.exchange(messageType, payload, b7, b8, b9);
+		return new Response(frame.type, frame.status, frame.error, frame.data);
 	}
 }

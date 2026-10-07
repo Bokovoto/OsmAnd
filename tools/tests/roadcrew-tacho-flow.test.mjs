@@ -34,7 +34,7 @@ test('the screen goes through the flow and reads adb extras only when automation
 // Galin, 27.09: "I never asked for a lock to this reader. Once Android
 // recognises it, it must work with our app." Any USB smart-card reader
 // (CCID, interface class 11) opens RoadCrew and is used - not one model.
-test('any smart-card reader Android recognises is used, not one model', () => {
+test('CCID discovery has no vendor allowlist (discovery does not prove successful reading)', () => {
   const filter = readFileSync(fileURLToPath(new URL('../../OsmAnd/res/xml/roadcrew_tacho_usb_filter.xml', import.meta.url)), 'utf8');
   const entries = filter.replace(/<!--[\s\S]*?-->/g, '').match(/<usb-device[^>]*>/g) ?? [];
   assert.deepEqual(entries, ['<usb-device class="11" />'], 'Android offers RoadCrew for every CCID reader');

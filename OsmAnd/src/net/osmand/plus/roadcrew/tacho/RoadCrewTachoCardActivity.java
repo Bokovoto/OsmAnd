@@ -116,6 +116,7 @@ public final class RoadCrewTachoCardActivity extends Activity {
 	// Screen state, UI thread only.
 	private Reader reader = Reader.NONE;
 	private CardState cardState = CardState.ABSENT;
+	private String readerDiagnostic = "";
 	@Nullable private RoadCrewTachoCardDownload.CardInfo cardInfo;
 	private Phase phase = Phase.IDLE;
 	private int progressDone;
@@ -327,6 +328,7 @@ public final class RoadCrewTachoCardActivity extends Activity {
 			Log.w(TAG, "reader could not be opened: " + e.getMessage(), e);
 			opened.close();
 			runOnUiThread(() -> {
+				readerDiagnostic = diagnostic(e);
 				reader = Reader.NONE;
 				render();
 			});
@@ -334,6 +336,7 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		}
 		cardSeen = false;
 		runOnUiThread(() -> {
+			readerDiagnostic = "";
 			reader = Reader.CONNECTED;
 			cardState = CardState.ABSENT;
 			render();
@@ -371,6 +374,7 @@ public final class RoadCrewTachoCardActivity extends Activity {
 			Log.w(TAG, "reader stopped answering: " + e.getMessage());
 			closeReader();
 			runOnUiThread(() -> {
+				if (readerDiagnostic.isEmpty()) readerDiagnostic = diagnostic(e);
 				reader = Reader.NONE;
 				cardState = CardState.ABSENT;
 				cardInfo = null;
@@ -385,12 +389,14 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		if (!present) {
 			runOnUiThread(() -> {
 				cardState = CardState.ABSENT;
+				readerDiagnostic = "";
 				cardInfo = null;
 				render();
 			});
 			return;
 		}
 		runOnUiThread(() -> {
+			readerDiagnostic = "";
 			cardState = CardState.READING;
 			render();
 		});
@@ -412,11 +418,19 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		} catch (IOException e) {
 			Log.w(TAG, "card could not be read: " + e.getMessage(), e);
 			runOnUiThread(() -> {
+				readerDiagnostic = diagnostic(e);
 				cardInfo = null;
 				cardState = CardState.UNREADABLE;
 				render();
 			});
 		}
+	}
+
+	private String diagnostic(IOException error) {
+		// Protocol errors contain stages, lengths and status codes, never card contents.
+		String detail = error.getMessage() == null ? "IO_ERROR" : error.getMessage();
+		return getString(R.string.roadcrew_tacho_reader_diagnostic,
+				detail.substring(0, Math.min(detail.length(), 180)));
 	}
 
 	// ---- The download --------------------------------------------------------------------------
@@ -964,7 +978,8 @@ public final class RoadCrewTachoCardActivity extends Activity {
 			readerDetail.setText(R.string.roadcrew_tacho_reader_permission_detail);
 		} else {
 			readerState.setText(R.string.roadcrew_tacho_reader_none);
-			readerDetail.setText(R.string.roadcrew_tacho_reader_none_detail);
+			readerDetail.setText(readerDiagnostic.isEmpty()
+					? getString(R.string.roadcrew_tacho_reader_none_detail) : readerDiagnostic);
 		}
 	}
 
@@ -993,7 +1008,8 @@ public final class RoadCrewTachoCardActivity extends Activity {
 				break;
 			case UNREADABLE:
 				cardStateView.setText(R.string.roadcrew_tacho_card_unreadable);
-				cardDetail.setText(R.string.roadcrew_tacho_card_unreadable_detail);
+				cardDetail.setText(readerDiagnostic.isEmpty()
+						? getString(R.string.roadcrew_tacho_card_unreadable_detail) : readerDiagnostic);
 				break;
 			default:
 				cardStateView.setText(R.string.roadcrew_tacho_card_absent);

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- RoadCrew driver card screen (ROADMAP 327). -->
 <resources>
+    <string name="roadcrew_tacho_reader_diagnostic">Грешка при четене: %1$s\nИзключи четеца и го включи отново. Ако се повтори, изпрати ни снимка на екрана.</string>
     <string name="roadcrew_tacho_title">Шофьорска карта</string>
     <string name="roadcrew_tacho_back">Назад</string>
     <string name="roadcrew_tacho_reader">Четец</string>
