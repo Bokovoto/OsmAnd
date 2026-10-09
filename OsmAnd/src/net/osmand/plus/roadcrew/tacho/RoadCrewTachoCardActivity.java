@@ -1151,6 +1151,17 @@ public final class RoadCrewTachoCardActivity extends Activity {
 			textParams.setMarginStart(dp(12));
 			row.addView(texts, textParams);
 
+			// Galin, 09.10.2026: "Анализ" beside "Изпрати" - this file's violations and days (ROADMAP 381).
+			ImageButton analysis = new ImageButton(this);
+			analysis.setImageResource(R.drawable.roadcrew_tacho_ic_chart);
+			analysis.setColorFilter(color(R.color.roadcrew_tacho_accent));
+			analysis.setBackground(shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 12, false));
+			analysis.setContentDescription(getString(R.string.roadcrew_tacho_analysis));
+			analysis.setOnClickListener(v -> RoadCrewTachoAnalysisActivity.open(this, file.uri, file.takenAt));
+			LinearLayout.LayoutParams analysisParams = new LinearLayout.LayoutParams(dp(44), dp(44));
+			analysisParams.setMarginEnd(dp(8));
+			row.addView(analysis, analysisParams);
+
 			ImageButton send = new ImageButton(this);
 			send.setImageResource(R.drawable.roadcrew_tacho_ic_send);
 			send.setColorFilter(color(R.color.roadcrew_tacho_accent));

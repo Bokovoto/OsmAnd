@@ -41,6 +41,16 @@
                 android:resource="@xml/roadcrew_tacho_usb_filter" />
         </activity>
 
+        <!-- "Анализ" of a downloaded card file and one of its days (ROADMAP 381). -->
+        <activity
+            android:name="net.osmand.plus.roadcrew.tacho.RoadCrewTachoAnalysisActivity"
+            android:exported="false"
+            android:label="@string/roadcrew_tacho_analysis_title" />
+        <activity
+            android:name="net.osmand.plus.roadcrew.tacho.RoadCrewTachoDayActivity"
+            android:exported="false"
+            android:label="@string/roadcrew_tacho_analysis_title" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="org.roadcrew.app.fileprovider"
