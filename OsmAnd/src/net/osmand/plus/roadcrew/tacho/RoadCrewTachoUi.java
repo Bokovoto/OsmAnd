@@ -111,17 +111,14 @@ final class RoadCrewTachoUi {
 		return local(epochMinute).format(DateTimeFormatter.ofPattern("HH:mm"));
 	}
 
-	/** "Пн, 13.07 06:44". */
+	/** "Пн, 13.07 06:44"; another year's with its year (RoadCrewTachoDates). */
 	static String dayTime(long epochMinute) {
-		ZonedDateTime t = local(epochMinute);
-		return capital(t.format(DateTimeFormatter.ofPattern("EE", Locale.getDefault()))) + ", "
-				+ t.format(DateTimeFormatter.ofPattern("dd.MM HH:mm"));
+		return RoadCrewTachoDates.dayTime(local(epochMinute), LocalDate.now(), Locale.getDefault());
 	}
 
-	/** "Чт, 13.08". */
+	/** "Чт, 13.08"; another year's with its year (RoadCrewTachoDates). */
 	static String shortDay(@NonNull LocalDate date) {
-		return capital(date.format(DateTimeFormatter.ofPattern("EE", Locale.getDefault()))) + ", "
-				+ date.format(DateTimeFormatter.ofPattern("dd.MM"));
+		return RoadCrewTachoDates.shortDay(date, LocalDate.now(), Locale.getDefault());
 	}
 
 	/** "Чт, 13 август 2026". */

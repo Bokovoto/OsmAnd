@@ -89,6 +89,20 @@ public class AnalysisTest {
 		check(RoadCrewTachoNations.alpha(0xFF).equals("WLD") && RoadCrewTachoNations.alpha(0xFD).equals("EC"), "FD, FF");
 		check(RoadCrewTachoNations.alpha(0x50).equals("?"), "reserved: unknown, not invented");
 
+		// Galin, 09.10.2026: "добави годината при старите дни" - a day of another year shows its year.
+		java.util.Locale bg = new java.util.Locale("bg");
+		LocalDate today = LocalDate.of(2026, 10, 9);
+		check(RoadCrewTachoDates.shortDay(LocalDate.of(2023, 4, 28), today, bg).equals("Пт, 28.04.2023"),
+				"an old day with its year: " + RoadCrewTachoDates.shortDay(LocalDate.of(2023, 4, 28), today, bg));
+		check(RoadCrewTachoDates.shortDay(LocalDate.of(2026, 9, 25), today, bg).equals("Пт, 25.09"),
+				"this year's day stays short: " + RoadCrewTachoDates.shortDay(LocalDate.of(2026, 9, 25), today, bg));
+		java.time.ZonedDateTime old = LocalDateTime.parse("2021-06-07T03:00").atZone(SOFIA);
+		check(RoadCrewTachoDates.dayTime(old, today, bg).equals("Пн, 07.06.2021 03:00"),
+				"an old violation with its year: " + RoadCrewTachoDates.dayTime(old, today, bg));
+		java.time.ZonedDateTime recent = LocalDateTime.parse("2026-07-13T06:44").atZone(SOFIA);
+		check(RoadCrewTachoDates.dayTime(recent, today, bg).equals("Пн, 13.07 06:44"),
+				"this year's stays short: " + RoadCrewTachoDates.dayTime(recent, today, bg));
+
 		System.out.println(cases + " analysis checks passed");
 	}
 }

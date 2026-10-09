@@ -17,7 +17,7 @@ const between = (text, start, end) => text.slice(text.indexOf(start), text.index
 
 test('the 28 days, the violations in them, the next download, the countries - plain Java', () => {
   const output = mkdtempSync(join(tmpdir(), 'roadcrew-tacho-analysis-'));
-  const sources = ['RoadCrewTachoActivities.java', 'RoadCrewTachoViolations.java', 'RoadCrewTachoAnalysis.java', 'RoadCrewTachoNations.java']
+  const sources = ['RoadCrewTachoActivities.java', 'RoadCrewTachoViolations.java', 'RoadCrewTachoAnalysis.java', 'RoadCrewTachoNations.java', 'RoadCrewTachoDates.java']
     .map(name => fileURLToPath(new URL(tacho + name, root)));
   const harness = fileURLToPath(new URL('./roadcrew-tacho-analysis/AnalysisTest.java', import.meta.url));
   execFileSync('javac', ['--release', '17', '-encoding', 'UTF-8', '-d', output, ...sources, harness], {stdio: 'pipe'});
