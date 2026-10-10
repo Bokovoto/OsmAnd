@@ -284,6 +284,26 @@ public class ActivitiesTest {
 				Long.MAX_VALUE);
 		check(unused.segments.isEmpty() && unused.complete, "a card never used: no days, not damaged");
 
+		// 12. Codex's review (10.10, tools/probes/tacho-copy-review): a copy too short to
+		//     hold its pointers and one record is malformed, zeros or not; the other copy's
+		//     days stay. Two separate events in one minute stay two, within a copy and across.
+		for (int length : new int[]{0, 1, 4, 15}) {
+			check(!RoadCrewTachoActivities.read(ddd(0x0504, 0, new byte[length]), Long.MAX_VALUE).complete,
+					"a " + length + "-byte copy is malformed, not unused");
+		}
+		Card shortGen2 = RoadCrewTachoActivities.read(ddd(0x0504, 0, activity(200, 0, augustDays()),
+				0x0504, 2, new byte[4]), Long.MAX_VALUE);
+		check(!shortGen2.complete, "a 4-byte Gen2 copy is flagged");
+		check(find(RoadCrewTachoActivities.days(shortGen2, SOFIA), LocalDate.of(2026, 8, 13)).driving == 403,
+				"and Gen1's days are kept");
+		long ten = day(2026, 8, 13) + 600 * 60;
+		List<Pl> separate = List.of(new Pl(ten + 1, 0, 7, 1000), new Pl(ten + 50, 0, 7, 1001));
+		check(RoadCrewTachoActivities.read(ddd(0x0504, 2, g2, 0x0506, 2, places(true, separate, 6)),
+				Long.MAX_VALUE).places.size() == 2, "two events in one minute in Gen2 stay two");
+		check(RoadCrewTachoActivities.read(ddd(0x0504, 0, g2, 0x0506, 0, places(false, separate.subList(0, 1), 6),
+				0x0506, 2, places(true, separate.subList(1, 2), 6)), Long.MAX_VALUE).places.size() == 2,
+				"different seconds and odometers across copies are two places");
+
 		System.out.println(cases + " card activity checks passed");
 	}
 }

@@ -7,6 +7,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -189,31 +190,52 @@ public final class RoadCrewTachoActivities {
 		Map<LocalDate, Integer> distance = new TreeMap<>();
 		List<Segment> segments = new ArrayList<>();
 		readActivity(records, untilMinute, segments, distance);
-		List<Place> places = new ArrayList<>();
-		if (found[2] != null) {
-			readPlaces(found[2], 1, 10, places);
+		// The Gen1 places, then each Gen2 place that is not the same record of the Gen1
+		// copy - the same second, entry type, country, region and odometer. A Gen2 place
+		// is matched only against the Gen1 copy, one for one, never against the Gen2
+		// places before it: two separate events in one minute stay two (Codex, 10.10).
+		List<PlaceRecord> placeRecords = readPlaces(found[2], 1, 10);
+		Map<String, Integer> unmatched = new HashMap<>();
+		for (PlaceRecord record : placeRecords) {
+			unmatched.merge(record.key(), 1, Integer::sum);
 		}
-		if (found[3] != null) {
-			List<Place> second = new ArrayList<>();
-			readPlaces(found[3], 2, 21, second);
-			for (Place place : second) {
-				if (!hasPlace(places, place)) {
-					places.add(place);
-				}
+		for (PlaceRecord record : readPlaces(found[3], 2, 21)) {
+			Integer left = unmatched.get(record.key());
+			if (left != null && left > 0) {
+				unmatched.put(record.key(), left - 1);
+			} else {
+				placeRecords.add(record);
 			}
 		}
-		places.sort((a, b) -> Long.compare(a.minute, b.minute));
+		placeRecords.sort((a, b) -> Long.compare(a.seconds, b.seconds));
+		List<Place> places = new ArrayList<>();
+		for (PlaceRecord record : placeRecords) {
+			// '00' begin, '01' end; '02'/'03' entered by hand; '04'/'05' assumed by the tachograph.
+			places.add(new Place(record.seconds / 60, record.type % 2 == 0, record.country, record.odometer));
+		}
 		return new Card(Collections.unmodifiableList(segments), Collections.unmodifiableList(places),
 				secondGeneration, gen1.complete && gen2.complete, Collections.unmodifiableMap(distance));
 	}
 
-	private static boolean hasPlace(List<Place> places, Place place) {
-		for (Place p : places) {
-			if (p.minute == place.minute && p.begin == place.begin && p.country == place.country) {
-				return true;
-			}
+	/** One place record as the card holds it, seconds and all. */
+	private static final class PlaceRecord {
+		final long seconds;
+		final int type;
+		final int country;
+		final int region;
+		final int odometer;
+
+		PlaceRecord(long seconds, int type, int country, int region, int odometer) {
+			this.seconds = seconds;
+			this.type = type;
+			this.country = country;
+			this.region = region;
+			this.odometer = odometer;
 		}
-		return false;
+
+		String key() {
+			return seconds + "/" + type + "/" + country + "/" + region + "/" + odometer;
+		}
 	}
 
 	private static final class Record {
@@ -241,11 +263,16 @@ public final class RoadCrewTachoActivities {
 
 	private static Walk walk(byte[] ef) {
 		List<Record> records = new ArrayList<>();
-		if (ef == null || allZero(ef)) {
+		if (ef == null) {
 			return new Walk(records, true);
 		}
+		// Too short to hold the two pointers and one record header: a malformed copy,
+		// even when its few bytes are zeros - checked before "all zeros" (Codex, 10.10).
 		if (ef.length < 4 + 12) {
 			return new Walk(records, false);
+		}
+		if (allZero(ef)) {
+			return new Walk(records, true);
 		}
 		int oldest = u16(ef, 0);
 		int newest = u16(ef, 2);
@@ -340,18 +367,20 @@ public final class RoadCrewTachoActivities {
 		out.add(piece);
 	}
 
-	private static void readPlaces(byte[] ef, int head, int recordLength, List<Place> out) {
+	private static List<PlaceRecord> readPlaces(byte[] ef, int head, int recordLength) {
+		List<PlaceRecord> out = new ArrayList<>();
+		if (ef == null) {
+			return out;
+		}
 		for (int at = head; at + recordLength <= ef.length; at += recordLength) {
 			long time = u32(ef, at);
 			if (time == 0) {
 				continue;
 			}
-			int type = ef[at + 4] & 255;
 			int odometer = ((ef[at + 7] & 255) << 16) | ((ef[at + 8] & 255) << 8) | (ef[at + 9] & 255);
-			// '00' begin, '01' end; '02'/'03' entered by hand; '04'/'05' assumed by the tachograph.
-			out.add(new Place(time / 60, type % 2 == 0, ef[at + 5] & 255, odometer));
+			out.add(new PlaceRecord(time, ef[at + 4] & 255, ef[at + 5] & 255, ef[at + 6] & 255, odometer));
 		}
-		out.sort((a, b) -> Long.compare(a.minute, b.minute));
+		return out;
 	}
 
 	/** The card's days by the phone's clock, from the first to the last day with data. */
