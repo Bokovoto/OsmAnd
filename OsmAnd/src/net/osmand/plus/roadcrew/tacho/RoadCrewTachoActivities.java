@@ -7,8 +7,10 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -164,45 +166,94 @@ public final class RoadCrewTachoActivities {
 			i += 5 + length;
 		}
 		boolean secondGeneration = found[1] != null;
-		byte[] activity = secondGeneration ? found[1] : found[0];
-		if (activity == null) {
+		if (found[0] == null && found[1] == null) {
 			throw new IOException("no driver activity data (EF 0504) in the card file");
+		}
+		// A Gen2 card keeps two copies of its activities and places. Every tachograph writes the Gen1
+		// copy, only a smart tachograph the Gen2 one: a card used in first-generation tachographs alone
+		// has its Gen2 copies all zeros (a driver's card, 10.10), and a day in one is in the Gen1 copy only
+		// (Galin's card, 18-20.09). So the days of both copies are read, a day in both from Gen1, and an
+		// all-zero copy is an unused one, not damage (ROADMAP 393).
+		Walk gen1 = walk(found[0]);
+		Walk gen2 = walk(found[1]);
+		List<Record> records = new ArrayList<>(gen1.records);
+		Set<Long> gen1Days = new HashSet<>();
+		for (Record record : gen1.records) {
+			gen1Days.add(record.dayMinute);
+		}
+		for (Record record : gen2.records) {
+			if (!gen1Days.contains(record.dayMinute)) {
+				records.add(record);
+			}
 		}
 		Map<LocalDate, Integer> distance = new TreeMap<>();
 		List<Segment> segments = new ArrayList<>();
-		boolean complete = readActivity(activity, untilMinute, segments, distance);
+		readActivity(records, untilMinute, segments, distance);
 		List<Place> places = new ArrayList<>();
-		if (found[3] != null) {
-			readPlaces(found[3], 2, 21, places);
-		} else if (found[2] != null) {
+		if (found[2] != null) {
 			readPlaces(found[2], 1, 10, places);
 		}
+		if (found[3] != null) {
+			List<Place> second = new ArrayList<>();
+			readPlaces(found[3], 2, 21, second);
+			for (Place place : second) {
+				if (!hasPlace(places, place)) {
+					places.add(place);
+				}
+			}
+		}
+		places.sort((a, b) -> Long.compare(a.minute, b.minute));
 		return new Card(Collections.unmodifiableList(segments), Collections.unmodifiableList(places),
-				secondGeneration, complete, Collections.unmodifiableMap(distance));
+				secondGeneration, gen1.complete && gen2.complete, Collections.unmodifiableMap(distance));
+	}
+
+	private static boolean hasPlace(List<Place> places, Place place) {
+		for (Place p : places) {
+			if (p.minute == place.minute && p.begin == place.begin && p.country == place.country) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static final class Record {
 		final long dayMinute;
 		final int[] changes;
+		final int distance;
 
-		Record(long dayMinute, int[] changes) {
+		Record(long dayMinute, int[] changes, int distance) {
 			this.dayMinute = dayMinute;
 			this.changes = changes;
+			this.distance = distance;
 		}
 	}
 
-	private static boolean readActivity(byte[] ef, long untilMinute, List<Segment> out, Map<LocalDate, Integer> distance) {
+	/** One copy's daily records, newest first; an absent or all-zero copy has none and is complete. */
+	private static final class Walk {
+		final List<Record> records;
+		final boolean complete;
+
+		Walk(List<Record> records, boolean complete) {
+			this.records = records;
+			this.complete = complete;
+		}
+	}
+
+	private static Walk walk(byte[] ef) {
+		List<Record> records = new ArrayList<>();
+		if (ef == null || allZero(ef)) {
+			return new Walk(records, true);
+		}
 		if (ef.length < 4 + 12) {
-			return false;
+			return new Walk(records, false);
 		}
 		int oldest = u16(ef, 0);
 		int newest = u16(ef, 2);
 		int size = ef.length - 4;
 		if (oldest >= size || newest >= size) {
-			return false;
+			return new Walk(records, false);
 		}
 		boolean complete = true;
-		List<Record> records = new ArrayList<>();
 		int pos = newest;
 		for (int guard = size / 12 + 1; ; guard--) {
 			if (guard <= 0) {
@@ -227,8 +278,7 @@ public final class RoadCrewTachoActivities {
 				break;
 			}
 			long dayStart = date - Math.floorMod(date, 86400L);
-			records.add(new Record(dayStart / 60, changes));
-			distance.put(LocalDate.ofEpochDay(dayStart / 86400), cyclic16(ef, size, pos + 10));
+			records.add(new Record(dayStart / 60, changes, cyclic16(ef, size, pos + 10)));
 			if (pos == oldest) {
 				break;
 			}
@@ -238,9 +288,23 @@ public final class RoadCrewTachoActivities {
 			}
 			pos = Math.floorMod(pos - previous, size);
 		}
+		return new Walk(records, complete);
+	}
+
+	private static boolean allZero(byte[] bytes) {
+		for (byte b : bytes) {
+			if (b != 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static void readActivity(List<Record> records, long untilMinute, List<Segment> out, Map<LocalDate, Integer> distance) {
 		records.sort((a, b) -> Long.compare(a.dayMinute, b.dayMinute));
 		long previousEnd = -1;
 		for (Record record : records) {
+			distance.put(LocalDate.ofEpochDay(record.dayMinute / DAY_MINUTES), record.distance);
 			long dayEnd = record.dayMinute + DAY_MINUTES;
 			if (previousEnd >= 0 && record.dayMinute > previousEnd) {
 				// Whole days without a record: the card was out and nothing was entered.
@@ -257,7 +321,6 @@ public final class RoadCrewTachoActivities {
 			}
 			previousEnd = Math.max(previousEnd, dayEnd);
 		}
-		return complete;
 	}
 
 	private static void append(List<Segment> out, Segment s, long untilMinute) {

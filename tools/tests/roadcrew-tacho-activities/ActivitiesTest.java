@@ -177,10 +177,20 @@ public class ActivitiesTest {
 		check(RoadCrewTachoActivities.restAfter(card, d13.end) == 757, "rest after 12:37, as Tacho Manager");
 		check(card.distanceKm.get(LocalDate.of(2026, 8, 13)) == 455, "the day's distance");
 
-		// 2. Gen2 wins over Gen1; a file with Gen1 only is read too.
-		List<Rec> other = List.of(new Rec(day(2026, 8, 13), 0, new int[]{change(REST, 0)}));
-		Card both = RoadCrewTachoActivities.read(ddd(0x0504, 0, activity(60, 0, other), 0x0504, 2, g2), Long.MAX_VALUE);
-		check(find(RoadCrewTachoActivities.days(both, SOFIA), LocalDate.of(2026, 8, 13)).driving == 403, "Gen2 data, not Gen1");
+		// 2. A Gen2 card keeps two copies. Every tachograph writes the Gen1 one, only a smart one the
+		//    Gen2 one: on Galin's card (26.09) 18-19.09, in a first-generation tachograph, are in Gen1
+		//    alone, and on 20.09 Gen1 has the card inserted where Gen2 has it out. So the days of both
+		//    are read, a day in both from Gen1 (ROADMAP 393 - this replaces "Gen2 wins over Gen1").
+		List<Rec> gen1Days = List.of(augustDays().get(0), augustDays().get(1));
+		List<Rec> gen2Days = List.of(new Rec(day(2026, 8, 13), 0, new int[]{change(0, 0, 1, REST, 0)}), augustDays().get(2));
+		Card both = RoadCrewTachoActivities.read(ddd(0x0504, 0, activity(200, 0, gen1Days), 0x0504, 2,
+				activity(100, 0, gen2Days)), Long.MAX_VALUE);
+		List<Day> bothDays = RoadCrewTachoActivities.days(both, SOFIA);
+		check(both.complete, "both copies walked");
+		check(find(bothDays, LocalDate.of(2026, 8, 13)).driving == 403, "a day in both copies is read from Gen1");
+		check(both.distanceKm.get(LocalDate.of(2026, 8, 13)) == 455, "and its distance");
+		check(find(bothDays, LocalDate.of(2026, 8, 12)).driving == 709, "a day only in Gen1");
+		check(find(bothDays, LocalDate.of(2026, 8, 14)).driving == 254, "a day only in Gen2");
 		Card g1 = RoadCrewTachoActivities.read(ddd(0x0504, 0, activity(200, 0, augustDays())), Long.MAX_VALUE);
 		check(!g1.secondGeneration, "Gen1 only");
 		check(find(RoadCrewTachoActivities.days(g1, SOFIA), LocalDate.of(2026, 8, 13)).driving == 403, "Gen1 read the same");
@@ -252,6 +262,27 @@ public class ActivitiesTest {
 			threw = true;
 		}
 		check(threw, "a file without EF 0504 is an error");
+
+		// 10. A Gen2 card used only in first-generation tachographs (a driver's, 10.10: Gen1 400 days,
+		//     every Gen2 copy all zeros). An unused copy is not damage: the days and places are Gen1's.
+		byte[] unusedActivity = new byte[4 + 100];
+		byte[] unusedPlaces = new byte[2 + 21 * 6];
+		Card firstGen = RoadCrewTachoActivities.read(ddd(0x0504, 0, activity(200, 0, augustDays()),
+				0x0506, 0, places(false, pl, 6), 0x0504, 2, unusedActivity, 0x0506, 2, unusedPlaces), Long.MAX_VALUE);
+		check(firstGen.secondGeneration, "still a Gen2 card");
+		check(firstGen.complete, "an all-zero Gen2 copy is not damage");
+		check(find(RoadCrewTachoActivities.days(firstGen, SOFIA), LocalDate.of(2026, 8, 13)).driving == 403,
+				"the days are read from Gen1");
+		check(firstGen.places.size() == 2 && firstGen.places.get(0).odometerKm == 833348, "the places from Gen1");
+
+		// 11. The same places in both copies are one place each; a card never used has no days and
+		//     is not damaged either.
+		Card twice = RoadCrewTachoActivities.read(ddd(0x0504, 2, g2, 0x0506, 0, places(false, pl, 6),
+				0x0506, 2, places(true, pl, 6)), Long.MAX_VALUE);
+		check(twice.places.size() == 2, "a place written to both copies counted once: " + twice.places.size());
+		Card unused = RoadCrewTachoActivities.read(ddd(0x0504, 0, new byte[4 + 60], 0x0504, 2, unusedActivity),
+				Long.MAX_VALUE);
+		check(unused.segments.isEmpty() && unused.complete, "a card never used: no days, not damaged");
 
 		System.out.println(cases + " card activity checks passed");
 	}
