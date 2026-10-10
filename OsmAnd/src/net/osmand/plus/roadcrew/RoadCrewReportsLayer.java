@@ -377,6 +377,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	public void setMapActivity(@Nullable MapActivity mapActivity) {
 		if (mapActivity != getMapActivity()) {
 			dismissActiveHelpOpenDialog();
+			if (validationController != null) { validationController.mapActivityChanged(); }
 		}
 		super.setMapActivity(mapActivity);
 		if (mapActivity != null) {

@@ -93,6 +93,24 @@ final class RoadCrewValidationController {
 		}
 	}
 
+	/**
+	 * The map screen the panel stands on is going away - turning the phone
+	 * rebuilds it. Galin, 10.10.2026, at the destination: "Завърши" opened the
+	 * panel, 26 s later the phone turned sideways, and Android removed the panel
+	 * with the old screen without closing it. It still counted as open, so the
+	 * drive stayed drawn with no buttons and nothing offered it again - not even
+	 * the button for unconfirmed courses.
+	 *
+	 * Closed here, while the old screen still exists, the panel's own listener
+	 * clears the drawing and keeps the course unreviewed, and the tick offers it
+	 * again on the new screen.
+	 */
+	void mapActivityChanged() {
+		if (dialog == null) { return; }
+		dialog.dismiss();
+		nextReviewElapsed = 0;
+	}
+
 	boolean isShowing() {
 		return dialog != null && dialog.isShowing();
 	}

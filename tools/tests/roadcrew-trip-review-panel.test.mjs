@@ -14,6 +14,17 @@ const read = (path) => readFileSync(new URL(path, import.meta.url), 'utf8');
 const CONTROLLER = '../../OsmAnd/src/net/osmand/plus/roadcrew/RoadCrewValidationController.java';
 const LAYER = '../../OsmAnd/src/net/osmand/plus/roadcrew/RoadCrewReportsLayer.java';
 
+function body(source, signature) {
+  const start = source.indexOf(signature);
+  assert.notEqual(start, -1, `${signature} must exist`);
+  let depth = 0;
+  for (let i = source.indexOf('{', start); i < source.length; i++) {
+    if (source[i] === '{') depth++;
+    if (source[i] === '}' && --depth === 0) return source.slice(start, i + 1);
+  }
+  assert.fail(`${signature} has no closing brace`);
+}
+
 test('a panel the driver is reading is not taken away by a route calculation', () => {
   const source = read(CONTROLLER);
   const start = source.indexOf('private boolean mustCloseOpenPanel()');
@@ -42,6 +53,24 @@ test('a drive is never left drawn with no way to answer it', () => {
     'a drawing without a panel must be noticed');
   assert.match(tick, /RoadCrewReportsLayer\.setTripReviewJourney\(null\)/,
     'and cleared, so the map is not left with a course that has no buttons');
+});
+
+// Galin, 10.10.2026, at the destination - the phone's own log: "Завърши" opened
+// the panel at 19:00:48; at 19:01:14 the phone turned sideways, Android rebuilt
+// the map screen and removed the panel with the old one ("has leaked window",
+// added in showTrip). Nothing had closed it, so it still counted as open: the
+// drive stayed drawn with no buttons, nothing offered it again, and the button
+// for unconfirmed courses did nothing.
+test('a panel goes with its map screen and is offered again on the new one', () => {
+  const hook = body(read(LAYER), 'public void setMapActivity(');
+  const changed = hook.indexOf('validationController.mapActivityChanged()');
+  assert.notEqual(changed, -1, 'the layer must tell the controller that its map screen is changing');
+  assert.ok(changed < hook.indexOf('super.setMapActivity('),
+    'while the old screen still exists, so the panel is closed, not thrown away by Android');
+  const close = body(read(CONTROLLER), 'void mapActivityChanged()');
+  assert.match(close, /dialog\.dismiss\(\)/,
+    'closed, so its own listener clears the drawing and the course stays unreviewed');
+  assert.match(close, /nextReviewElapsed = 0/, 'and offered again as soon as the new screen can show it');
 });
 
 test('north first, then the whole course in the window', () => {
