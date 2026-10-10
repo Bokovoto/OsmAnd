@@ -103,6 +103,13 @@ public class AnalysisTest {
 		check(RoadCrewTachoDates.dayTime(recent, today, bg).equals("Пн, 13.07 06:44"),
 				"this year's stays short: " + RoadCrewTachoDates.dayTime(recent, today, bg));
 
+		// Galin, 10.10.2026 ("Да"): a card from which no day was read says so - not a green "no
+		// violations" over nothing (ROADMAP 394).
+		Card nothing = new Card(List.of(), List.of(), true, true, new TreeMap<>());
+		RoadCrewTachoAnalysis.Summary none = RoadCrewTachoAnalysis.summarize(nothing, List.of(), SOFIA, download);
+		check(none.noDays, "no day read from the card");
+		check(!s.noDays, "days read from the card");
+
 		System.out.println(cases + " analysis checks passed");
 	}
 }

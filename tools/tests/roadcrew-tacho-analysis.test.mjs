@@ -56,3 +56,20 @@ test('every rule and category has its words, Bulgarian and English; the screen s
   const screen = read(tacho + 'RoadCrewTachoAnalysisActivity.java');
   assert.match(screen, /R\.string\.roadcrew_tacho_analysis_note/);
 });
+
+test('no day read: the two texts Galin approved, never the green "no violations"', () => {
+  // Galin, 10.10.2026: "Да" - ROADMAP 394.
+  const bg = read('res/values-bg/roadcrew_tacho_strings.xml');
+  const en = read('res/values/roadcrew_tacho_strings.xml');
+  assert.match(bg, /name="roadcrew_tacho_analysis_empty">Картата няма записи за дейности\.</);
+  assert.match(bg, /name="roadcrew_tacho_violations_unknown">Не са прочетени дни от картата - нарушенията не могат да се проверят\.</);
+  for (const key of ['roadcrew_tacho_analysis_empty', 'roadcrew_tacho_violations_unknown']) {
+    assert.ok(en.includes(`name="${key}"`), `en ${key}`);
+  }
+  const screen = read(tacho + 'RoadCrewTachoAnalysisActivity.java');
+  const violations = between(screen, 'private View violations(', '\n\t}\n');
+  assert.match(violations, /if \(s\.noDays\)[\s\S]*R\.string\.roadcrew_tacho_violations_unknown[\s\S]*else if \(list\.isEmpty\(\)/,
+    'the unknown text comes first; the green check only in the else');
+  const render = between(screen, 'private void render()', '\n\t}\n');
+  assert.match(render, /s\.noDays && card\.complete[\s\S]*R\.string\.roadcrew_tacho_analysis_empty/, 'an empty card is not "damaged"');
+});

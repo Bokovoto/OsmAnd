@@ -107,6 +107,8 @@
     <string name="roadcrew_tacho_analysis_subtitle">Card downloaded %1$s · local time</string>
     <string name="roadcrew_tacho_analysis_loading">Reading the file…</string>
     <string name="roadcrew_tacho_analysis_failed">The file cannot be read: %1$s</string>
+    <string name="roadcrew_tacho_analysis_empty">The card holds no activity records.</string>
+    <string name="roadcrew_tacho_violations_unknown">No day could be read from the card - violations cannot be checked.</string>
     <string name="roadcrew_tacho_analysis_incomplete">Some records on the card are damaged - older days are missing.</string>
     <string name="roadcrew_tacho_analysis_note">A guide: the rules of Regulation 561/2006, the categories of Regulation 2016/403. Not an official analysis.</string>
     <string name="roadcrew_tacho_violations">Violations</string>

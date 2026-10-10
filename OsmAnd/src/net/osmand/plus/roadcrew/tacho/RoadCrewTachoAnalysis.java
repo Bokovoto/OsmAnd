@@ -34,6 +34,8 @@ public final class RoadCrewTachoAnalysis {
 		public final List<Violation> violationsInWindow;
 		/** Every day of the file, newest first. */
 		public final List<Day> days;
+		/** Not one day could be read from the card: nothing to say about violations (ROADMAP 394). */
+		public final boolean noDays;
 
 		Summary(LocalDate downloadDate, LocalDate windowFrom, int workingDays, int driving, int work, int km,
 				List<Violation> allViolations, List<Violation> violationsInWindow, List<Day> days) {
@@ -47,6 +49,7 @@ public final class RoadCrewTachoAnalysis {
 			this.allViolations = allViolations;
 			this.violationsInWindow = violationsInWindow;
 			this.days = days;
+			this.noDays = days.isEmpty();
 		}
 
 		/** The days with any driving, work or availability, newest first. */

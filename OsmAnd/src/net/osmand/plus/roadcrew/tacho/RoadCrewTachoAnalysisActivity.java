@@ -125,14 +125,16 @@ public final class RoadCrewTachoAnalysisActivity extends Activity {
 			return;
 		}
 		content.removeAllViews();
-		if (!card.complete) {
-			TextView warn = text(this, getString(R.string.roadcrew_tacho_analysis_incomplete), 14, false,
-					color(this, R.color.roadcrew_tacho_warn));
+		// An empty card is not a damaged one: its copies are all zeros (ROADMAP 393-394).
+		boolean empty = s.noDays && card.complete;
+		if (empty || !card.complete) {
+			TextView warn = text(this, getString(empty ? R.string.roadcrew_tacho_analysis_empty
+					: R.string.roadcrew_tacho_analysis_incomplete), 14, false, color(this, R.color.roadcrew_tacho_warn));
 			warn.setBackground(RoadCrewTachoUi.shape(this, color(this, R.color.roadcrew_tacho_warn_bg), 0, 12));
 			warn.setPadding(dp(this, 12), dp(this, 10), dp(this, 12), dp(this, 10));
 			content.addView(warn, below(this, 0));
 		}
-		content.addView(violations(s), below(this, card.complete ? 0 : 12));
+		content.addView(violations(s), below(this, empty || !card.complete ? 12 : 0));
 		content.addView(window(s), below(this, 12));
 		content.addView(days(s), below(this, 12));
 	}
@@ -161,7 +163,11 @@ public final class RoadCrewTachoAnalysisActivity extends Activity {
 		for (Violation v : list) {
 			box.addView(violation(v), below(this, 12));
 		}
-		if (list.isEmpty() || (wholeCard && s.violationsInWindow.isEmpty())) {
+		if (s.noDays) {
+			// Galin, 10.10.2026: no green "no violations" over a card from which nothing was read.
+			box.addView(text(this, getString(R.string.roadcrew_tacho_violations_unknown), 16, true,
+					color(this, R.color.roadcrew_tacho_warn)), below(this, 12));
+		} else if (list.isEmpty() || (wholeCard && s.violationsInWindow.isEmpty())) {
 			TextView ok = text(this, "✓  " + getString(wholeCard && !list.isEmpty() ? R.string.roadcrew_tacho_violations_none_28
 					: wholeCard ? R.string.roadcrew_tacho_violations_none : R.string.roadcrew_tacho_violations_none_28), 16, true,
 					color(this, R.color.roadcrew_tacho_ok));

@@ -107,6 +107,8 @@
     <string name="roadcrew_tacho_analysis_subtitle">Картата е свалена %1$s · местно време</string>
     <string name="roadcrew_tacho_analysis_loading">Файлът се чете…</string>
     <string name="roadcrew_tacho_analysis_failed">Файлът не може да се прочете: %1$s</string>
+    <string name="roadcrew_tacho_analysis_empty">Картата няма записи за дейности.</string>
+    <string name="roadcrew_tacho_violations_unknown">Не са прочетени дни от картата - нарушенията не могат да се проверят.</string>
     <string name="roadcrew_tacho_analysis_incomplete">Част от записите на картата са повредени - по-старите дни липсват.</string>
     <string name="roadcrew_tacho_analysis_note">За ориентир: правилата на Регламент 561/2006, тежестта по Регламент 2016/403. Не е официален анализ.</string>
     <string name="roadcrew_tacho_violations">Нарушения</string>
