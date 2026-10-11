@@ -18,16 +18,36 @@ import test from 'node:test';
 const ROADCREW = new URL('../../OsmAnd/src/net/osmand/plus/roadcrew/', import.meta.url);
 const read = name => readFileSync(new URL(name, ROADCREW), 'utf8').replace(/\r\n/g, '\n');
 
-test('a report not yet sent lives three hours, whatever its type', () => {
+// Galin, 11.10.2026, on a report that goes out an hour or two late: "ако един
+// телефон няма интернет два часа това реално е доста време за толкова динамична
+// лайф карта ... ако няма интернет до 5-10 минути не трябва да праща нищо
+// защото най-много да го бърка работите". So an unsent report waits ten
+// minutes, not three hours. A call for help keeps its three hours: the driver
+// still needs the help when the signal comes back (asked of Galin).
+test('a report not yet sent waits ten minutes to go out, a call for help three hours', () => {
   assert.doesNotMatch(read('RoadCrewReportType.java'), /[Ll]ifetime/,
     'no lifetime per type left to fall back on');
-  assert.match(read('RoadCrewReport.java'), /createdAtMillis \+ RoadCrewReportLifetime\.MILLIS,/,
-    'a report posted on the phone');
+  assert.match(read('RoadCrewReport.java'),
+    /RoadCrewReportLifetime\.unsentExpiry\(createdAtMillis, type == RoadCrewReportType\.HELP\),/,
+    'a report posted on the phone disappears when it can no longer go out');
   assert.match(read('RoadCrewReportsRepository.java'),
     /optLong\("expiresAtMillis", createdAtMillis \+ RoadCrewReportLifetime\.MILLIS\)/,
-    'one stored without an expiry');
-  assert.match(read('RoadCrewReportLifetime.java'), /public static final long MILLIS = 3 \* 60 \* 60 \* 1000L;/,
-    "the server's REPORT_LIFETIME_MS");
+    'one stored without an expiry - the sync decides whether it may still go out');
+  const lifetime = read('RoadCrewReportLifetime.java');
+  assert.match(lifetime, /public static final long MILLIS = 3 \* 60 \* 60 \* 1000L;/, "the server's REPORT_LIFETIME_MS");
+  assert.match(lifetime, /public static final long SEND_WINDOW_MILLIS = 10 \* 60 \* 1000L;/);
+});
+
+test('the sync drops a report that could not go out in time, before sending it', () => {
+  const sync = read('RoadCrewReportsSync.java');
+  const start = sync.indexOf('private static void syncPendingReports(');
+  assert.notEqual(start, -1);
+  const pending = sync.slice(start, sync.indexOf('\n\t}\n', start));
+  const gate = pending.indexOf('RoadCrewReportLifetime.maySend(report.getCreatedAtMillis(), now,');
+  assert.notEqual(gate, -1, 'every unsent report is asked, including one stored by an older version');
+  assert.ok(gate < pending.indexOf('createRemoteReport('), 'before it is sent');
+  assert.match(pending.slice(gate, pending.indexOf('createRemoteReport(')),
+    /RoadCrewReportsRepository\.removeReport\(app, report\.getId\(\)\);\s*continue;/, 'dropped, not sent late');
 });
 
 test('nothing in RoadCrew still asks a type how long it lives', () => {

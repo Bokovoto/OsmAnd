@@ -400,8 +400,17 @@ public final class RoadCrewReportsSync {
 	private static void syncPendingReports(@NonNull OsmandApplication app, @NonNull String deviceId)
 			throws IOException, JSONException {
 		List<RoadCrewReport> reports = RoadCrewReportsRepository.getReports(app);
+		long now = System.currentTimeMillis();
 		for (RoadCrewReport report : reports) {
 			if (report.getSyncState() == RoadCrewReportSyncState.PENDING_CREATE) {
+				// Late is worse than never on a live map (Galin, 11.10.2026) - also for
+				// one stored by an older version with its type's longer time.
+				if (!RoadCrewReportLifetime.maySend(report.getCreatedAtMillis(), now,
+						report.getType() == RoadCrewReportType.HELP)) {
+					Log.i(TAG, "RoadCrew report dropped, not sent in time: " + report.getId());
+					RoadCrewReportsRepository.removeReport(app, report.getId());
+					continue;
+				}
 				createRemoteReport(app, deviceId, report);
 			} else if (report.getSyncState() == RoadCrewReportSyncState.PENDING_UPDATE
 					&& report.hasLocalVote()

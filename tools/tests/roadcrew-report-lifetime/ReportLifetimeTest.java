@@ -53,6 +53,17 @@ public class ReportLifetimeTest {
 		check(RoadCrewReportLifetime.lastSeenAt(NOW - 5 * MINUTE, NOW + 55 * MINUTE) == NOW - 5 * MINUTE,
 				"a shorter time than three hours: never seen before it was posted");
 
+		// Galin, 11.10.2026: a report that could not go out within 5-10 minutes would only mislead.
+		check(RoadCrewReportLifetime.SEND_WINDOW_MILLIS == 10 * MINUTE, "ten minutes to go out");
+		check(RoadCrewReportLifetime.maySend(NOW - 9 * MINUTE, NOW, false), "posted nine minutes ago: send it");
+		check(!RoadCrewReportLifetime.maySend(NOW - 10 * MINUTE, NOW, false), "ten minutes: too late");
+		check(!RoadCrewReportLifetime.maySend(NOW - 2 * HOUR, NOW, false), "two hours without signal: never");
+		check(RoadCrewReportLifetime.maySend(NOW - 2 * HOUR, NOW, true), "a call for help, two hours late: still send it");
+		check(!RoadCrewReportLifetime.maySend(NOW - 3 * HOUR, NOW, true), "a call for help after its three hours: no");
+		check(RoadCrewReportLifetime.unsentExpiry(NOW, false) == NOW + 10 * MINUTE,
+				"an unsent report leaves the map when it can no longer go out");
+		check(RoadCrewReportLifetime.unsentExpiry(NOW, true) == NOW + 3 * HOUR, "an unsent call for help: three hours");
+
 		// An unsent report stored by an older app, timed by its type - police, one hour.
 		check(!RoadCrewReportLifetime.isOld(NOW - 5 * MINUTE, NOW + 55 * MINUTE, 0, 0, NOW),
 				"posted five minutes ago with an hour: not seen before it was posted - fresh");
