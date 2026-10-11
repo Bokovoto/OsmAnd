@@ -77,13 +77,14 @@ public final class RoadCrewTachoViolations {
 		}
 	}
 
-	private static final int DRIVE = 0;
-	private static final int WORK = 1;
-	private static final int REST = 2;
-	private static final long FIRST_MONDAY = 4 * 1440;  // 05.01.1970 00:00 UTC, in epoch minutes
-	private static final int WEEK = 7 * 1440;
+	// Package-private: RoadCrewTachoRemaining counts forward by the same reading.
+	static final int DRIVE = 0;
+	static final int WORK = 1;
+	static final int REST = 2;
+	static final long FIRST_MONDAY = 4 * 1440;  // 05.01.1970 00:00 UTC, in epoch minutes
+	static final int WEEK = 7 * 1440;
 
-	private static final class Piece {
+	static final class Piece {
 		final long from;
 		final long to;
 		final int type;
@@ -119,7 +120,7 @@ public final class RoadCrewTachoViolations {
 	}
 
 	/** Driving, other work (work, availability) and rest (rest, card out unknown), merged. */
-	private static List<Piece> pieces(List<Segment> segments) {
+	static List<Piece> pieces(List<Segment> segments) {
 		List<Piece> out = new ArrayList<>();
 		for (Segment s : segments) {
 			int type = !s.known || s.kind == Kind.REST ? REST : s.kind == Kind.DRIVING ? DRIVE : WORK;
