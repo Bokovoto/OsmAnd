@@ -25,7 +25,6 @@ class RoadCrewTachoBleTransport : RoadCrewTachoVuDownload.Channel, Closeable {
         val DATA: UUID = UUID.fromString("29d3a479-1592-47df-80a4-afa742d369bb")
         val CREDIT: UUID = UUID.fromString("db9c4128-bff3-41fe-a306-fb6f9a8aeb2d")
         private val CCCD = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
-        private const val WINDOW = 51
     }
 
     private data class Event(val kind: String, val status: Int = 0, val id: UUID? = null,
@@ -39,8 +38,7 @@ class RoadCrewTachoBleTransport : RoadCrewTachoVuDownload.Channel, Closeable {
     private lateinit var data: BluetoothGattCharacteristic
     private lateinit var credit: BluetoothGattCharacteristic
     private var mtu = 23
-    private var sendCredits = 0
-    private var consumed = 0
+    private val credits = RoadCrewTachoVuDownload.Credits()
     private var lastFrameAt = 0L
 
     private fun offer(event: Event) {
@@ -99,7 +97,7 @@ class RoadCrewTachoBleTransport : RoadCrewTachoVuDownload.Channel, Closeable {
                 if (!connected.writeDescriptor(descriptor)) throw IOException("Could not subscribe to download")
                 await("descriptor", c.uuid, 10_000)
             }
-            write(credit, byteArrayOf(WINDOW.toByte()))
+            grant()
         } catch (e: Exception) {
             close()
             if (e is IOException) throw e
@@ -117,11 +115,11 @@ class RoadCrewTachoBleTransport : RoadCrewTachoVuDownload.Channel, Closeable {
         for (segment in RoadCrewTachoVuDownload.segment(frame, mtu)) {
             replenish()
             val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10)
-            while (sendCredits == 0) {
+            while (!credits.maySend()) {
                 dispatch(next(deadline))
                 replenish()
             }
-            sendCredits--
+            credits.sent()
             write(data, segment)
         }
     }
@@ -138,10 +136,14 @@ class RoadCrewTachoBleTransport : RoadCrewTachoVuDownload.Channel, Closeable {
     }
 
     private fun replenish() {
-        if (consumed == WINDOW) {
-            consumed = 0
-            write(credit, byteArrayOf(WINDOW.toByte()))
-        }
+        if (credits.grantDue()) grant()
+    }
+
+    // The next data write waits until the unit answers this grant (Credits, ROADMAP 410).
+    // Marked before the write, so an answer that beats the write's own callback still counts.
+    private fun grant() {
+        credits.granted()
+        write(credit, byteArrayOf(RoadCrewTachoVuDownload.Credits.WINDOW.toByte()))
     }
 
     private fun write(c: BluetoothGattCharacteristic, bytes: ByteArray) {
@@ -170,11 +172,10 @@ class RoadCrewTachoBleTransport : RoadCrewTachoVuDownload.Channel, Closeable {
         when (event.id) {
             CREDIT -> {
                 if (event.bytes.size != 1) throw IOException("Invalid Bluetooth credit")
-                sendCredits += event.bytes[0].toInt() and 255
-                if (sendCredits > 1024) throw IOException("Bluetooth credit overflow")
+                credits.unitIndicated(event.bytes[0].toInt() and 255)
             }
             DATA -> {
-                if (++consumed > WINDOW) throw IOException("Bluetooth receive window exceeded")
+                credits.received()
                 val frame = assembler.accept(event.bytes)
                 if (frame != null) {
                     if (frames.size >= 32) throw IOException("Bluetooth frame queue full")

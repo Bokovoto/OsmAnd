@@ -108,6 +108,32 @@ public class VuDownloadTest {
     SlowWire gone = new SlowWire(); gone.add(0, reply(0x7f, 0x36, 0x78));
     gone.add(600_000, reply(0x76, 6, 0, 1, 7)); gone.end(); fails(() -> run(gone));
 
+    // VDO's credit pipe as Tacho Manager drives it (all 19 grants on 11.10.2026, 20:38-20:41):
+    // after the phone grants a window, its next data write waits for the unit's answer.
+    // RoadCrew wrote the ack 12 ms after its grant at 22:01:15; the unit answered the grant (00)
+    // and never the ack, and the download stopped.
+    var credits = new RoadCrewTachoVuDownload.Credits();
+    credits.granted();
+    check(!credits.maySend());
+    credits.unitIndicated(2);
+    check(credits.maySend());
+    credits.sent(); credits.unitIndicated(1);
+    for (int i = 0; i < 50; i++) { credits.received(); check(!credits.grantDue()); }
+    credits.received();
+    check(credits.grantDue());
+    credits.granted();
+    check(!credits.grantDue() && !credits.maySend());
+    credits.unitIndicated(0);
+    check(credits.maySend());
+    credits.sent(); credits.sent();
+    check(!credits.maySend());
+    credits.unitIndicated(1);
+    check(credits.maySend());
+    var greedy = new RoadCrewTachoVuDownload.Credits(); greedy.granted(); greedy.unitIndicated(2);
+    for (int i = 0; i < 51; i++) greedy.received();
+    fails(() -> greedy.received());
+    fails(() -> greedy.unitIndicated(2000));
+
     byte[] good = reply(0x76, 6, 0, 1, 88);
     check(Arrays.equals(RoadCrewTachoVuDownload.response(good), hex("7606000158")));
     for (int i = 0; i < good.length; i++) {

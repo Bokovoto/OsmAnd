@@ -139,5 +139,37 @@ public final class RoadCrewTachoVuDownload {
 		}
 	}
 
+	/**
+	 * VDO's credit pipe as Tacho Manager drives it. The phone grants the unit a window of segments
+	 * by writing it to the credit characteristic; the unit answers every grant (02 for the first,
+	 * 00 later) and gives the phone one send credit back after each data write (01). Tacho Manager
+	 * never writes data while a grant is unanswered (19 of 19 grants, 11.10.2026). RoadCrew wrote
+	 * an ack 12 ms after a grant at 22:01:15: the unit answered the grant and never the ack.
+	 */
+	public static final class Credits {
+		public static final int WINDOW = 51;
+		private int sendCredits, consumed;
+		private boolean grantUnanswered;
+
+		public void unitIndicated(int value) throws IOException {
+			if (value < 0 || value > 255) throw new IOException("Invalid Bluetooth credit");
+			grantUnanswered = false;
+			sendCredits += value;
+			if (sendCredits > 1024) throw new IOException("Bluetooth credit overflow");
+		}
+
+		public void received() throws IOException {
+			if (++consumed > WINDOW) throw new IOException("Bluetooth receive window exceeded");
+		}
+
+		public boolean grantDue() { return consumed == WINDOW && !grantUnanswered; }
+
+		public void granted() { consumed = 0; grantUnanswered = true; }
+
+		public boolean maySend() { return sendCredits > 0 && !grantUnanswered; }
+
+		public void sent() { sendCredits--; }
+	}
+
 	private static int u(byte b) { return b & 255; }
 }

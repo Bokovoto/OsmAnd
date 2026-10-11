@@ -39,8 +39,13 @@ test('GATT discovers UUIDs, uses indications and bounded flow control', () => {
   assert.match(transport, /discoverServices\(\)/);
   assert.match(transport, /ENABLE_INDICATION_VALUE/);
   assert.match(transport, /ArrayBlockingQueue<Event>\(128\)/);
-  assert.match(transport, /sendCredits--/);
-  assert.match(transport, /consumed == WINDOW/);
+  // The window and the grant/answer order live in RoadCrewTachoVuDownload.Credits, tested by
+  // behaviour in VuDownloadTest (ROADMAP 410); the transport must route every segment through it.
+  assert.match(transport, /while \(!credits\.maySend\(\)\)/);
+  assert.match(transport, /credits\.sent\(\)/);
+  assert.match(transport, /credits\.received\(\)/);
+  assert.match(transport, /credits\.grantDue\(\)/);
+  assert.match(transport, /credits\.granted\(\)\s*\n\s*write\(credit/);
 });
 
 test('structure and read-back checked before visibility, no card mark in BLE flow', () => {
