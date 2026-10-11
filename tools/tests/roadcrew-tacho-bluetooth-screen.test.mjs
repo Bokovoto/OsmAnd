@@ -3,25 +3,40 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 
 // Source contracts only; GATT callbacks, permissions and storage still need a phone test.
+// ROADMAP 411: Bluetooth moved onto the card screen as a source beside the USB reader, one
+// "Свали картата" button, the tachograph found and paired by itself (Galin, 11.10.2026).
 const read = path => readFileSync(new URL(`../../OsmAnd/${path}`, import.meta.url), 'utf8');
 const source = name => read(`src/net/osmand/plus/roadcrew/tacho/${name}`);
-const ui = source('RoadCrewTachoBluetoothActivity.kt');
+const screen = source('RoadCrewTachoCardActivity.java');
 const model = source('RoadCrewTachoBluetoothModel.kt');
+const finder = source('RoadCrewTachoBleFinder.kt');
 const transport = source('RoadCrewTachoBleTransport.kt');
 const store = source('RoadCrewTachoBluetoothStore.kt');
 
-test('Bluetooth is separate from USB and not an externally callable activity', () => {
-  assert.match(source('RoadCrewTachoCardActivity.java'), /downloadButton.setOnClickListener\(v -> startDownload\(\)\)/);
-  assert.match(read('res/layout/roadcrew_tacho_card_activity.xml'), /roadcrewTachoBluetoothButton/);
-  assert.match(read('AndroidManifest-nightlyFree.xml'), /RoadCrewTachoBluetoothActivity"\s+android:exported="false"/);
+test('Bluetooth is a source on the card screen, not a separate activity', () => {
+  assert.match(screen, /private enum Source \{ USB, BLUETOOTH \}/);
+  assert.match(screen, /if \(source == Source\.BLUETOOTH\) \{\s*startBluetooth\(\);\s*\} else \{\s*startDownload\(\);/);
+  const layout = read('res/layout/roadcrew_tacho_card_activity.xml');
+  assert.match(layout, /roadcrewTachoSourceUsb/);
+  assert.match(layout, /roadcrewTachoSourceBluetooth/);
+  assert.doesNotMatch(layout, /roadcrewTachoBluetoothButton/);
+  assert.doesNotMatch(read('AndroidManifest-nightlyFree.xml'), /RoadCrewTachoBluetoothActivity/);
 });
 
-test('only user-selected bonded devices, with Android runtime permission and confirmation', () => {
-  assert.match(ui, /Build.VERSION.SDK_INT >= 31.*BLUETOOTH_CONNECT/);
-  assert.match(ui, /adapter.bondedDevices/);
-  assert.match(ui, /setPositiveButton\(R.string.roadcrew_tacho_ble_parked\).*model.start\(device\)/);
+test('only tachographs, Android runtime permission, Android pairing dialog never bypassed', () => {
+  assert.match(screen, /Manifest\.permission\.BLUETOOTH_SCAN, Manifest\.permission\.BLUETOOTH_CONNECT/);
+  assert.match(screen, /requestPermissions\(missing\.toArray/);
+  assert.match(finder, /RoadCrewTachoBleChoice\.isTachograph\(name\)/);
+  assert.match(finder, /device\.createBond\(\)/);
+  assert.match(finder, /ACTION_BOND_STATE_CHANGED/);
+  assert.doesNotMatch(finder + model + transport + screen, /setPin|setPairingConfirmation|setPasskey/);
   assert.match(transport, /device.bondState != BluetoothDevice.BOND_BONDED/);
-  assert.doesNotMatch(ui + transport, /createBond|setPin|setPairingConfirmation|startScan/);
+  assert.match(model, /RoadCrewTachoBleChoice\.decide\(bonded, heard\)/);
+});
+
+test('a dropped start is tried again, only while no card data has come', () => {
+  assert.match(model, /RoadCrewTachoBleChoice\.again\(attempt, tracker\.fileId\(\) >= 0, e\.message\)/);
+  assert.match(model, /Thread\.sleep\(RoadCrewTachoBleChoice\.PAUSE_MILLIS\)/);
 });
 
 test('rotation keeps one worker; cancel and clearing release the connection', () => {
@@ -30,6 +45,8 @@ test('rotation keeps one worker; cancel and clearing release the connection', ()
   assert.match(model, /finally\s*\{\s*connection.close\(\)/);
   assert.match(model, /override fun onCleared\(\) \{ cancel\(\) \}/);
   assert.match(model, /worker\?\.interrupt\(\)/);
+  assert.match(screen, /cancelButton\.setOnClickListener\(v -> ble\.cancel\(\)\)/);
+  assert.match(screen, /FLAG_KEEP_SCREEN_ON/);
 });
 
 test('GATT discovers UUIDs, uses indications and bounded flow control', () => {
@@ -48,26 +65,29 @@ test('GATT discovers UUIDs, uses indications and bounded flow control', () => {
   assert.match(transport, /credits\.granted\(\)\s*\n\s*write\(credit/);
 });
 
-test('structure and read-back checked before visibility, no card mark in BLE flow', () => {
+test('progress names the part from the stream; structure and read-back before visibility', () => {
+  assert.match(model, /tracker\.data\(bytes, offset, length\)/);
+  assert.match(screen, /fileLabel\(s\.getFileId\(\), s\.getSecondGeneration\(\)\)/);
   const validated = store.indexOf('validateAndGetCardNumber');
   const insert = store.indexOf('resolver.insert');
   const readback = store.indexOf('Card file read-back mismatch');
   const published = store.indexOf('put(MediaStore.Downloads.IS_PENDING, 0)');
   assert.ok(validated >= 0 && validated < insert && readback < published);
   assert.match(store, /resolver.delete\(uri/);
-  assert.match(source('RoadCrewTachoCardActivity.java'), /MediaStore.Downloads.IS_PENDING \+ " = 0"/);
+  assert.match(screen, /MediaStore.Downloads.IS_PENDING \+ " = 0"/);
   assert.match(store, /File.createTempFile\("bluetooth-", "\.part"/);
   assert.match(store, /RoadCrewTachoFileNames.unused/);
-  assert.doesNotMatch(model + transport + store, /markDownloaded|UPDATE BINARY|WRITE BINARY/);
-  assert.match(ui, /RoadCrewTachoRemainingActivity.open\(this, it.uri, it.takenAt\)/);
+  assert.doesNotMatch(model + transport + store + finder, /markDownloaded|UPDATE BINARY|WRITE BINARY/);
   assert.ok(model.indexOf('RoadCrewTachoReminder.remember') > model.indexOf('RoadCrewTachoBluetoothStore.save'));
 });
 
 test('Bluetooth strings are localized, not hard-coded status labels', () => {
-  const keys = [...new Set([...(ui + model).matchAll(/R\.string\.(roadcrew_tacho_ble_[a-z0-9_]+)/g)].map(m => m[1]))];
-  assert.ok(keys.length >= 15);
-  for (const path of ['res/values/strings.xml', 'src/nightlyFree/res/values-bg/roadcrew_strings.xml']) {
-    const strings = read(path);
+  const keys = [...new Set([...screen.matchAll(/R\.string\.(roadcrew_tacho_(?:ble|source|tachograph)[a-z0-9_]*)/g)].map(m => m[1]))];
+  assert.ok(keys.length >= 25);
+  const english = read('res/values/strings.xml') + read('res/values/roadcrew_tacho_strings.xml');
+  const bulgarian = read('src/nightlyFree/res/values-bg/roadcrew_strings.xml') + read('res/values-bg/roadcrew_tacho_strings.xml');
+  for (const strings of [english, bulgarian]) {
     assert.deepEqual(keys.filter(key => !strings.includes(`name="${key}"`)), []);
   }
+  assert.ok(english.includes('name="roadcrew_tacho_file_050e"') && bulgarian.includes('name="roadcrew_tacho_file_050e"'));
 });

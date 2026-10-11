@@ -56,6 +56,38 @@
 			android:orientation="vertical"
 			android:padding="20dp">
 
+			<!-- USB reader or the tachograph over Bluetooth, the same screen (ROADMAP 411). -->
+			<LinearLayout
+				android:id="@+id/roadcrewTachoSource"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="16dp"
+				android:orientation="horizontal"
+				android:padding="4dp">
+
+				<Button
+					android:id="@+id/roadcrewTachoSourceUsb"
+					style="?android:attr/borderlessButtonStyle"
+					android:layout_width="0dp"
+					android:layout_height="48dp"
+					android:layout_weight="1"
+					android:stateListAnimator="@null"
+					android:text="@string/roadcrew_tacho_source_usb"
+					android:textAllCaps="false"
+					android:textSize="15sp" />
+
+				<Button
+					android:id="@+id/roadcrewTachoSourceBluetooth"
+					style="?android:attr/borderlessButtonStyle"
+					android:layout_width="0dp"
+					android:layout_height="48dp"
+					android:layout_weight="1"
+					android:stateListAnimator="@null"
+					android:text="@string/roadcrew_tacho_source_bluetooth"
+					android:textAllCaps="false"
+					android:textSize="15sp" />
+			</LinearLayout>
+
 			<!-- Reader and card: always shown, always live. -->
 			<LinearLayout
 				android:id="@+id/roadcrewTachoStatusCard"
@@ -86,6 +118,7 @@
 						android:orientation="vertical">
 
 						<TextView
+							android:id="@+id/roadcrewTachoReaderLabel"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:text="@string/roadcrew_tacho_reader"
@@ -362,6 +395,17 @@
 							android:textColor="@color/roadcrew_tacho_secondary"
 							android:textSize="14sp" />
 					</LinearLayout>
+
+					<!-- Bluetooth: how much of the part now coming is in. -->
+					<ProgressBar
+						android:id="@+id/roadcrewTachoPartBar"
+						style="?android:attr/progressBarStyleHorizontal"
+						android:layout_width="match_parent"
+						android:layout_height="6dp"
+						android:layout_marginTop="8dp"
+						android:max="100"
+						android:progressDrawable="@drawable/roadcrew_tacho_progress"
+						android:visibility="gone" />
 				</LinearLayout>
 
 				<LinearLayout
@@ -381,6 +425,7 @@
 						android:src="@drawable/roadcrew_tacho_ic_alert" />
 
 					<TextView
+						android:id="@+id/roadcrewTachoKeepCardText"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginStart="10dp"
@@ -450,19 +495,6 @@
 				android:textSize="18sp"
 				android:textStyle="bold" />
 
-			<Button
-				android:id="@+id/roadcrewTachoBluetoothButton"
-				style="?android:attr/borderlessButtonStyle"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:minHeight="60dp"
-				android:layout_marginTop="12dp"
-				android:paddingTop="10dp"
-				android:paddingBottom="10dp"
-				android:text="@string/roadcrew_tacho_ble_title"
-				android:textAllCaps="false"
-				android:textSize="17sp" />
-
 			<TextView
 				android:id="@+id/roadcrewTachoHint"
 				android:layout_width="match_parent"
@@ -495,6 +527,19 @@
 				android:layout_marginTop="12dp"
 				android:stateListAnimator="@null"
 				android:text="@string/roadcrew_tacho_finish"
+				android:textAllCaps="false"
+				android:textColor="@color/roadcrew_tacho_text"
+				android:textSize="16sp"
+				android:visibility="gone" />
+
+			<Button
+				android:id="@+id/roadcrewTachoCancelButton"
+				style="?android:attr/borderlessButtonStyle"
+				android:layout_width="match_parent"
+				android:layout_height="52dp"
+				android:layout_marginTop="16dp"
+				android:stateListAnimator="@null"
+				android:text="@string/roadcrew_tacho_ble_cancel"
 				android:textAllCaps="false"
 				android:textColor="@color/roadcrew_tacho_text"
 				android:textSize="16sp"

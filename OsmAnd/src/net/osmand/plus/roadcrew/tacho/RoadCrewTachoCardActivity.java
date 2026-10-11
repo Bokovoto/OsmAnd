@@ -1,6 +1,10 @@
 package net.osmand.plus.roadcrew.tacho;
 
-import android.app.Activity;
+import android.Manifest;
+import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -10,8 +14,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.usb.UsbDevice;
@@ -28,6 +34,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -41,6 +48,8 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.activity.ComponentActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import net.osmand.plus.R;
 import net.osmand.plus.utils.AndroidUtils;
@@ -77,7 +86,7 @@ import java.util.concurrent.TimeUnit;
  * one worker thread over one claimed reader interface; the screen state lives
  * on the UI thread.
  */
-public final class RoadCrewTachoCardActivity extends Activity {
+public final class RoadCrewTachoCardActivity extends ComponentActivity {
 
 	private static final String TAG = "RoadCrewTacho";
 	private static final String ACTION_USB_PERMISSION = "net.osmand.plus.roadcrew.tacho.USB_PERMISSION";
@@ -96,6 +105,13 @@ public final class RoadCrewTachoCardActivity extends Activity {
 	private enum CardState { ABSENT, READING, DRIVER, OTHER, UNREADABLE }
 
 	private enum Phase { IDLE, DOWNLOADING, DONE, FAILED }
+
+	/** The USB reader or the tachograph itself over Bluetooth, on the same screen (ROADMAP 411). */
+	private enum Source { USB, BLUETOOTH }
+
+	private static final String PREFS = "roadcrew_tacho_card";
+	private static final String KEY_SOURCE = "source";
+	private static final int REQUEST_BLUETOOTH = 4082;
 
 
 	/** A DDD file in Downloads/RoadCrew that the driver can send. */
@@ -180,6 +196,19 @@ public final class RoadCrewTachoCardActivity extends Activity {
 	private View historyBlock;
 	private LinearLayout historyRows;
 
+	// Bluetooth, UI thread only.
+	private Source source = Source.USB;
+	private RoadCrewTachoBluetoothModel ble;
+	@Nullable private RoadCrewTachoBluetoothModel.State bleState;
+	@Nullable private String bleLocalError;
+	private View sourceBox;
+	private Button sourceUsb;
+	private Button sourceBluetooth;
+	private TextView readerLabel;
+	private TextView keepCardText;
+	private ProgressBar partBar;
+	private Button cancelButton;
+
 	private final BroadcastReceiver usbReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -210,6 +239,10 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		setContentView(R.layout.roadcrew_tacho_card_activity);
 		usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
 		bindViews();
+		source = "bluetooth".equals(getSharedPreferences(PREFS, MODE_PRIVATE).getString(KEY_SOURCE, "usb"))
+				? Source.BLUETOOTH : Source.USB;
+		ble = new ViewModelProvider(this).get(RoadCrewTachoBluetoothModel.class);
+		ble.getState().observe(this, this::bleChanged);
 
 		IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
 		filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
@@ -914,12 +947,14 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		openFileButton.setOnClickListener(v -> pickFile());
 
 		downloadButton = findViewById(R.id.roadcrewTachoDownloadButton);
-		downloadButton.setOnClickListener(v -> startDownload());
+		downloadButton.setOnClickListener(v -> {
+			if (source == Source.BLUETOOTH) {
+				startBluetooth();
+			} else {
+				startDownload();
+			}
+		});
 		keepIconBesideText(downloadButton);
-		Button bluetoothButton = findViewById(R.id.roadcrewTachoBluetoothButton);
-		bluetoothButton.setBackground(shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 8, false));
-		bluetoothButton.setTextColor(color(R.color.roadcrew_tacho_text));
-		bluetoothButton.setOnClickListener(v -> startActivity(new Intent(this, RoadCrewTachoBluetoothActivity.class)));
 		hint = findViewById(R.id.roadcrewTachoHint);
 		sendButton = findViewById(R.id.roadcrewTachoSendButton);
 		sendButton.setBackground(shape(R.color.roadcrew_tacho_accent, 0, 14, false));
@@ -935,14 +970,40 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		finishButton = findViewById(R.id.roadcrewTachoFinishButton);
 		finishButton.setBackground(shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 14, false));
 		finishButton.setOnClickListener(v -> {
+			if (source == Source.BLUETOOTH) {
+				bleLocalError = null;
+				ble.reset();
+			}
 			phase = Phase.IDLE;
 			render();
 		});
 		historyBlock = findViewById(R.id.roadcrewTachoHistory);
 		historyRows = findViewById(R.id.roadcrewTachoHistoryRows);
+
+		sourceBox = findViewById(R.id.roadcrewTachoSource);
+		sourceUsb = findViewById(R.id.roadcrewTachoSourceUsb);
+		sourceBluetooth = findViewById(R.id.roadcrewTachoSourceBluetooth);
+		sourceUsb.setOnClickListener(v -> setSource(Source.USB));
+		sourceBluetooth.setOnClickListener(v -> setSource(Source.BLUETOOTH));
+		readerLabel = findViewById(R.id.roadcrewTachoReaderLabel);
+		keepCardText = findViewById(R.id.roadcrewTachoKeepCardText);
+		partBar = findViewById(R.id.roadcrewTachoPartBar);
+		cancelButton = findViewById(R.id.roadcrewTachoCancelButton);
+		cancelButton.setBackground(shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 14, false));
+		cancelButton.setOnClickListener(v -> ble.cancel());
 	}
 
 	private void render() {
+		renderSource();
+		if (source == Source.BLUETOOTH) {
+			renderBluetooth();
+			return;
+		}
+		readerLabel.setText(R.string.roadcrew_tacho_reader);
+		readerIcon.setImageResource(R.drawable.roadcrew_tacho_ic_usb);
+		keepCardText.setText(R.string.roadcrew_tacho_keep_card);
+		partBar.setVisibility(View.GONE);
+		cancelButton.setVisibility(View.GONE);
 		renderReader();
 		renderCard();
 
@@ -968,7 +1029,6 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		}
 
 		boolean idle = phase == Phase.IDLE || phase == Phase.FAILED;
-		findViewById(R.id.roadcrewTachoBluetoothButton).setVisibility(idle && !busy ? View.VISIBLE : View.GONE);
 		renderLastDownload(idle);
 		downloadButton.setVisibility(idle ? View.VISIBLE : View.GONE);
 		hint.setVisibility(idle ? View.VISIBLE : View.GONE);
@@ -993,6 +1053,350 @@ public final class RoadCrewTachoCardActivity extends Activity {
 					: getString(R.string.roadcrew_tacho_remaining_title));
 		}
 		openFileButton.setVisibility(idle ? View.VISIBLE : View.GONE);
+	}
+
+	// ---- Bluetooth: the tachograph itself (ROADMAP 410-411) --------------------------------------
+
+	private void setSource(Source chosen) {
+		if (busy || (bleState != null && bleState.getBusy())) {
+			return;
+		}
+		source = chosen;
+		bleLocalError = null;
+		getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+				.putString(KEY_SOURCE, chosen == Source.BLUETOOTH ? "bluetooth" : "usb").apply();
+		render();
+	}
+
+	private void renderSource() {
+		boolean bluetooth = source == Source.BLUETOOTH;
+		sourceBox.setBackground(shape(R.color.roadcrew_tacho_off_bg, 0, 12, false));
+		styleSource(sourceUsb, !bluetooth);
+		styleSource(sourceBluetooth, bluetooth);
+	}
+
+	private void styleSource(Button button, boolean selected) {
+		button.setBackground(selected ? shape(R.color.roadcrew_tacho_surface, 0, 10, false) : null);
+		button.setTextColor(color(selected ? R.color.roadcrew_tacho_text : R.color.roadcrew_tacho_secondary));
+		button.setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
+	}
+
+	/** One button: the model finds the tachograph, pairs it through Android if new, and downloads. */
+	private void startBluetooth() {
+		List<String> missing = new ArrayList<>();
+		for (String permission : bluetoothPermissions()) {
+			if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+				missing.add(permission);
+			}
+		}
+		if (!missing.isEmpty()) {
+			requestPermissions(missing.toArray(new String[0]), REQUEST_BLUETOOTH);
+			return;
+		}
+		bleLocalError = null;
+		ble.start();
+	}
+
+	private static String[] bluetoothPermissions() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+			return new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT};
+		}
+		return new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (requestCode != REQUEST_BLUETOOTH) {
+			return;
+		}
+		boolean granted = grantResults.length > 0;
+		for (int result : grantResults) {
+			granted &= result == PackageManager.PERMISSION_GRANTED;
+		}
+		if (granted) {
+			bleLocalError = null;
+			ble.start();
+		} else {
+			bleLocalError = getString(R.string.roadcrew_tacho_ble_permission);
+			render();
+		}
+	}
+
+	private void bleChanged(RoadCrewTachoBluetoothModel.State state) {
+		RoadCrewTachoBluetoothModel.Step before = bleState == null ? null : bleState.getStep();
+		bleState = state;
+		RoadCrewTachoBluetoothModel.Step step = state.getStep();
+		if (state.getBusy()) {
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		} else {
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		}
+		if (step == RoadCrewTachoBluetoothModel.Step.DONE && before != step) {
+			loadHistory();
+		}
+		if (step == RoadCrewTachoBluetoothModel.Step.CHOOSING && before != step) {
+			chooseTachograph(state.getChoices());
+		}
+		render();
+	}
+
+	/** Several unpaired tachographs heard (a parking lot): nearest first, only tachographs. */
+	private void chooseTachograph(List<RoadCrewTachoBleChoice.Candidate> choices) {
+		String[] labels = new String[choices.size()];
+		for (int i = 0; i < labels.length; i++) {
+			labels[i] = choices.get(i).name;
+		}
+		new AlertDialog.Builder(this)
+				.setTitle(R.string.roadcrew_tacho_ble_which)
+				.setItems(labels, (dialog, which) -> ble.startWith(choices.get(which).address))
+				.setNegativeButton(R.string.roadcrew_tacho_ble_cancel, (dialog, which) -> ble.reset())
+				.setOnCancelListener(dialog -> ble.reset())
+				.show();
+	}
+
+	@Nullable
+	private BluetoothAdapter bluetoothAdapter() {
+		BluetoothManager manager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+		return manager == null ? null : manager.getAdapter();
+	}
+
+	private void renderBluetooth() {
+		RoadCrewTachoBluetoothModel.State s = bleState == null ? new RoadCrewTachoBluetoothModel.State() : bleState;
+		RoadCrewTachoBluetoothModel.Step step = s.getStep();
+		boolean bleBusy = s.getBusy();
+		readerLabel.setText(R.string.roadcrew_tacho_tachograph);
+		readerIcon.setImageResource(R.drawable.ic_action_bluetooth);
+		renderTachograph(s);
+		renderBleCard(s);
+
+		boolean failed = step == RoadCrewTachoBluetoothModel.Step.FAILED || bleLocalError != null;
+		errorBlock.setVisibility(failed ? View.VISIBLE : View.GONE);
+		if (failed) {
+			errorTitleView.setText(bleLocalError != null ? bleLocalError : bleErrorTitle(s.getError()));
+			errorBodyView.setText(bleLocalError != null ? "" : bleErrorBody(s.getError()));
+		}
+		boolean done = step == RoadCrewTachoBluetoothModel.Step.DONE && s.getFile() != null;
+		doneBlock.setVisibility(done ? View.VISIBLE : View.GONE);
+		sendButton.setVisibility(done ? View.VISIBLE : View.GONE);
+		finishButton.setVisibility(done ? View.VISIBLE : View.GONE);
+		if (done) {
+			renderBleDone(s);
+		}
+
+		progressBlock.setVisibility(bleBusy ? View.VISIBLE : View.GONE);
+		partBar.setVisibility(step == RoadCrewTachoBluetoothModel.Step.RECEIVING ? View.VISIBLE : View.GONE);
+		keepCardText.setText(R.string.roadcrew_tacho_ble_keep);
+		if (bleBusy) {
+			renderBleProgress(s);
+		}
+		cancelButton.setVisibility(bleBusy ? View.VISIBLE : View.GONE);
+
+		boolean idle = !bleBusy && !done;
+		renderLastDownload(idle);
+		downloadButton.setVisibility(idle ? View.VISIBLE : View.GONE);
+		hint.setVisibility(idle ? View.VISIBLE : View.GONE);
+		hint.setText(R.string.roadcrew_tacho_ble_hint);
+		BluetoothAdapter adapter = bluetoothAdapter();
+		boolean ready = adapter != null && adapter.isEnabled() && !bleBusy && !busy;
+		downloadButton.setEnabled(ready);
+		downloadButton.setBackground(shape(ready ? R.color.roadcrew_tacho_accent : R.color.roadcrew_tacho_off_bg, 0, 14, false));
+		int buttonText = ready ? Color.WHITE : color(R.color.roadcrew_tacho_disabled_text);
+		downloadButton.setTextColor(buttonText);
+		downloadButton.setCompoundDrawablesRelativeWithIntrinsicBounds(
+				tinted(R.drawable.roadcrew_tacho_ic_download, buttonText), null, null, null);
+
+		historyBlock.setVisibility(idle && !history.isEmpty() ? View.VISIBLE : View.GONE);
+		renderHistory();
+		boolean haveFile = idle && !history.isEmpty();
+		remainingButton.setVisibility(haveFile ? View.VISIBLE : View.GONE);
+		if (haveFile) {
+			long at = history.get(0).takenAt;
+			remainingButton.setText(at > 0
+					? getString(R.string.roadcrew_tacho_remaining_button, RoadCrewTachoUi.dayTime(at / 60000))
+					: getString(R.string.roadcrew_tacho_remaining_title));
+		}
+		openFileButton.setVisibility(idle ? View.VISIBLE : View.GONE);
+	}
+
+	private void renderTachograph(RoadCrewTachoBluetoothModel.State s) {
+		String device = s.getDevice() == null ? "" : s.getDevice();
+		switch (s.getStep()) {
+			case SEARCHING:
+				statusIcon(readerIcon, readerMark, readerState, false);
+				readerState.setText(R.string.roadcrew_tacho_ble_searching_state);
+				readerDetail.setText("");
+				return;
+			case PAIRING:
+				statusIcon(readerIcon, readerMark, readerState, false);
+				readerState.setText(R.string.roadcrew_tacho_ble_pairing_state);
+				readerDetail.setText(device);
+				return;
+			case CONNECTING:
+				statusIcon(readerIcon, readerMark, readerState, true);
+				readerState.setText(R.string.roadcrew_tacho_ble_connecting_state);
+				readerDetail.setText(device);
+				return;
+			case READING_CARD:
+			case RECEIVING:
+			case SAVING:
+				statusIcon(readerIcon, readerMark, readerState, true);
+				readerState.setText(R.string.roadcrew_tacho_ble_connected);
+				readerDetail.setText(device);
+				return;
+			default:
+				break;
+		}
+		BluetoothAdapter adapter = bluetoothAdapter();
+		if (adapter == null || !adapter.isEnabled()) {
+			statusIcon(readerIcon, readerMark, readerState, false);
+			readerState.setText(R.string.roadcrew_tacho_ble_off);
+			readerDetail.setText(R.string.roadcrew_tacho_ble_off_detail);
+			return;
+		}
+		List<String> paired = pairedTachographs(adapter);
+		if (paired == null) {
+			// Android does not let us read the paired list yet: the button asks for that.
+			statusIcon(readerIcon, readerMark, readerState, false);
+			readerState.setText(R.string.roadcrew_tacho_source_bluetooth);
+			readerDetail.setText(R.string.roadcrew_tacho_ble_not_paired_detail);
+		} else if (paired.size() == 1) {
+			statusIcon(readerIcon, readerMark, readerState, true);
+			readerState.setText(R.string.roadcrew_tacho_ble_paired);
+			readerDetail.setText(paired.get(0));
+		} else if (paired.size() > 1) {
+			statusIcon(readerIcon, readerMark, readerState, true);
+			readerState.setText(getString(R.string.roadcrew_tacho_ble_paired_several, paired.size()));
+			readerDetail.setText(R.string.roadcrew_tacho_ble_paired_several_detail);
+		} else {
+			statusIcon(readerIcon, readerMark, readerState, false);
+			readerState.setText(R.string.roadcrew_tacho_ble_not_paired);
+			readerDetail.setText(R.string.roadcrew_tacho_ble_not_paired_detail);
+		}
+	}
+
+	/** Paired tachographs by name; null while Android does not let us read the list. */
+	@Nullable
+	private List<String> pairedTachographs(BluetoothAdapter adapter) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+				&& checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+			return null;
+		}
+		List<String> names = new ArrayList<>();
+		try {
+			for (BluetoothDevice device : adapter.getBondedDevices()) {
+				if (RoadCrewTachoBleChoice.isTachograph(device.getName())) {
+					names.add(device.getName());
+				}
+			}
+		} catch (SecurityException e) {
+			return null;
+		}
+		return names;
+	}
+
+	private void renderBleCard(RoadCrewTachoBluetoothModel.State s) {
+		RoadCrewTachoBluetoothModel.Step step = s.getStep();
+		if (step == RoadCrewTachoBluetoothModel.Step.READING_CARD || step == RoadCrewTachoBluetoothModel.Step.RECEIVING
+				|| step == RoadCrewTachoBluetoothModel.Step.SAVING) {
+			statusIcon(cardIcon, cardMark, cardStateView, true);
+			cardStateView.setText(R.string.roadcrew_tacho_card_reading);
+			cardDetail.setText(R.string.roadcrew_tacho_card_driver);
+		} else if (step == RoadCrewTachoBluetoothModel.Step.DONE) {
+			statusIcon(cardIcon, cardMark, cardStateView, true);
+			cardStateView.setText(R.string.roadcrew_tacho_ble_card_done);
+			cardDetail.setText(R.string.roadcrew_tacho_card_driver);
+		} else {
+			statusIcon(cardIcon, cardMark, cardStateView, false);
+			cardStateView.setText(R.string.roadcrew_tacho_ble_card_in);
+			cardDetail.setText(R.string.roadcrew_tacho_ble_card_in_detail);
+		}
+	}
+
+	private void renderBleProgress(RoadCrewTachoBluetoothModel.State s) {
+		String title;
+		String line = "";
+		String count = "";
+		String percent = "";
+		int bar = 0;
+		switch (s.getStep()) {
+			case SEARCHING:
+				title = getString(R.string.roadcrew_tacho_ble_searching);
+				break;
+			case PAIRING:
+				title = getString(R.string.roadcrew_tacho_ble_pairing, s.getDevice());
+				line = getString(R.string.roadcrew_tacho_ble_pairing_body);
+				break;
+			case CONNECTING:
+				title = getString(R.string.roadcrew_tacho_ble_connecting);
+				if (s.getRetrying()) {
+					line = getString(R.string.roadcrew_tacho_ble_retry, s.getAttempt(), RoadCrewTachoBleChoice.ATTEMPTS);
+				}
+				break;
+			case READING_CARD:
+				title = getString(R.string.roadcrew_tacho_ble_reading_card);
+				line = getString(R.string.roadcrew_tacho_ble_reading_detail);
+				break;
+			case RECEIVING:
+				title = getString(R.string.roadcrew_tacho_ble_receiving);
+				bar = s.getPermille();
+				percent = String.format(Locale.getDefault(), "%d%%", bar / 10);
+				line = getString(R.string.roadcrew_tacho_ble_part, fileLabel(s.getFileId(), s.getSecondGeneration()),
+						s.getFilePercent());
+				count = getString(R.string.roadcrew_tacho_progress_count,
+						Math.min(s.getFilesDone() + 1, s.getFilesTotal()), s.getFilesTotal());
+				partBar.setProgress(s.getFilePercent());
+				break;
+			default:
+				title = getString(R.string.roadcrew_tacho_ble_saving);
+				bar = 1000;
+				percent = "100%";
+				break;
+		}
+		progressTitleView.setText(title);
+		progressPercent.setText(percent);
+		progressBar.setProgress(bar);
+		progressFileView.setText(line);
+		progressCount.setText(count);
+	}
+
+	private void renderBleDone(RoadCrewTachoBluetoothModel.State s) {
+		RoadCrewTachoBluetoothStore.Stored file = s.getFile();
+		doneMarkedView.setText(getString(R.string.roadcrew_tacho_ble_done_via,
+				s.getDevice() == null ? "" : s.getDevice(), formatDateTime(file.getTakenAt())));
+		doneDetails.removeAllViews();
+		detailRow(R.string.roadcrew_tacho_detail_generation,
+				getString(s.getSecondGeneration() ? R.string.roadcrew_tacho_gen12 : R.string.roadcrew_tacho_gen1));
+		detailRow(R.string.roadcrew_tacho_detail_file, getString(R.string.roadcrew_tacho_file_size_parts,
+				Formatter.formatShortFileSize(this, file.getSize()), s.getFilesTotal()));
+		detailRow(R.string.roadcrew_tacho_detail_folder, getString(R.string.roadcrew_tacho_folder));
+		// "Изпрати" sends the file just downloaded.
+		doneFile = new Stored(file.getUri(), file.getName(), file.getTakenAt(), file.getSize(), s.getSecondGeneration());
+	}
+
+	private String bleErrorTitle(@Nullable String error) {
+		String e = error == null ? "" : error;
+		if (e.contains("Bluetooth is off")) {
+			return getString(R.string.roadcrew_tacho_ble_off);
+		}
+		if (e.contains("No tachograph nearby")) {
+			return getString(R.string.roadcrew_tacho_ble_none_found);
+		}
+		return getString(R.string.roadcrew_tacho_ble_failed);
+	}
+
+	private String bleErrorBody(@Nullable String error) {
+		String e = error == null ? "" : error;
+		if (e.contains("Bluetooth is off")) {
+			return getString(R.string.roadcrew_tacho_ble_off_body);
+		}
+		if (e.contains("No tachograph nearby")) {
+			return getString(R.string.roadcrew_tacho_ble_none_found_body);
+		}
+		if (e.startsWith("Pairing")) {
+			return getString(R.string.roadcrew_tacho_ble_pairing_failed_body);
+		}
+		return getString(R.string.roadcrew_tacho_ble_failed_body, e.substring(0, Math.min(e.length(), 180)));
 	}
 
 	// ---- How much is left (ROADMAP 408) ----------------------------------------------------------
