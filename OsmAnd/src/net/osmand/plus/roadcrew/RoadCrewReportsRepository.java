@@ -418,7 +418,7 @@ public final class RoadCrewReportsRepository {
 					type,
 					location,
 					createdAtMillis,
-					object.optLong("expiresAtMillis", createdAtMillis + type.getDefaultLifetimeMillis()),
+					object.optLong("expiresAtMillis", createdAtMillis + RoadCrewReportLifetime.MILLIS),
 					createdBy,
 					object.optString("details", ""),
 					RoadCrewReportDirection.parse(object.optString("direction", RoadCrewReportDirection.UNKNOWN.name())),

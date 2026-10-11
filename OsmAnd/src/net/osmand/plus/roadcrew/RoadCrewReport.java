@@ -79,7 +79,7 @@ public class RoadCrewReport {
 				type,
 				location,
 				createdAtMillis,
-				createdAtMillis + type.getDefaultLifetimeMillis(),
+				createdAtMillis + RoadCrewReportLifetime.MILLIS,
 				localDeviceId,
 				details,
 				direction,
