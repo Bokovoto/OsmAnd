@@ -18,6 +18,7 @@ class RoadCrewTachoBluetoothModel(app: Application) : AndroidViewModel(app) {
     data class State(
         val step: Step = Step.IDLE,
         val device: String? = null,
+        val address: String? = null,
         val attempt: Int = 1,
         val retrying: Boolean = false,
         val permille: Int = 0,
@@ -38,6 +39,8 @@ class RoadCrewTachoBluetoothModel(app: Application) : AndroidViewModel(app) {
     private var worker: Thread? = null
     @Volatile private var transport: RoadCrewTachoBleTransport? = null
     @Volatile private var cancelled = false
+    /** Address and name of the tachograph this run reached, for "Опитай пак". */
+    @Volatile private var chosen: Pair<String, String>? = null
 
     /** Find the tachograph near the phone, pair it if it is new, and download. */
     @Synchronized fun start() = launch { search() }
@@ -46,6 +49,12 @@ class RoadCrewTachoBluetoothModel(app: Application) : AndroidViewModel(app) {
     @Synchronized fun startWith(address: String) = launch {
         val adapter = adapter() ?: throw java.io.IOException("Bluetooth is off")
         prepareAndDownload(adapter.getRemoteDevice(address))
+    }
+
+    /** "Опитай пак": the tachograph chosen before, straight away and without a new search. */
+    @Synchronized fun retry() {
+        val address = state.value?.address
+        if (address != null) startWith(address) else start()
     }
 
     @Synchronized fun reset() {
@@ -63,13 +72,15 @@ class RoadCrewTachoBluetoothModel(app: Application) : AndroidViewModel(app) {
     private fun launch(job: () -> Unit) {
         if (worker?.isAlive == true) return
         cancelled = false
+        chosen = null
         state.value = State(Step.SEARCHING)
         worker = Thread({
             try {
                 job()
             } catch (e: Exception) {
                 state.postValue(if (cancelled) State(Step.CANCELLED)
-                    else State(Step.FAILED, device = state.value?.device, error = e.message ?: e.javaClass.simpleName))
+                    else State(Step.FAILED, device = chosen?.second, address = chosen?.first,
+                        error = e.message ?: e.javaClass.simpleName))
             }
         }, "RoadCrewTachoBluetooth").apply { start() }
     }
@@ -83,8 +94,7 @@ class RoadCrewTachoBluetoothModel(app: Application) : AndroidViewModel(app) {
         val heard = RoadCrewTachoBleFinder.scan(adapter, bonded)
         val decision = RoadCrewTachoBleChoice.decide(bonded, heard)
         when (decision.kind) {
-            RoadCrewTachoBleChoice.Kind.USE, RoadCrewTachoBleChoice.Kind.PAIR ->
-                prepareAndDownload(adapter.getRemoteDevice(decision.candidates[0].address))
+            RoadCrewTachoBleChoice.Kind.USE -> prepareAndDownload(adapter.getRemoteDevice(decision.candidates[0].address))
             RoadCrewTachoBleChoice.Kind.ASK -> state.postValue(State(Step.CHOOSING, choices = decision.candidates))
             RoadCrewTachoBleChoice.Kind.NONE -> throw java.io.IOException("No tachograph nearby")
         }
@@ -92,6 +102,7 @@ class RoadCrewTachoBluetoothModel(app: Application) : AndroidViewModel(app) {
 
     private fun prepareAndDownload(device: BluetoothDevice) {
         val name = device.name ?: device.address
+        chosen = device.address to name
         if (device.bondState != BluetoothDevice.BOND_BONDED) {
             state.postValue(State(Step.PAIRING, device = name))
             RoadCrewTachoBleFinder.pair(getApplication(), device)

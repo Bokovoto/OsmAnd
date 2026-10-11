@@ -91,3 +91,24 @@ test('Bluetooth strings are localized, not hard-coded status labels', () => {
   }
   assert.ok(english.includes('name="roadcrew_tacho_file_050e"') && bulgarian.includes('name="roadcrew_tacho_file_050e"'));
 });
+
+test('after a failure "Опитай пак" goes to the same tachograph, without a new search', () => {
+  assert.match(model, /fun retry\(\) \{[\s\S]*?if \(address != null\) startWith\(address\) else start\(\)/);
+  assert.match(model, /State\(Step\.FAILED, device = chosen\?\.second, address = chosen\?\.first/);
+  assert.match(screen, /ble\.retry\(\)/);
+  assert.match(screen, /failed \? R\.string\.roadcrew_tacho_ble_retry_button : R\.string\.roadcrew_tacho_download/);
+  assert.match(screen, /getString\(R\.string\.roadcrew_tacho_ble_nearest, /);
+});
+
+test('pairing texts give the tachograph menu with Водач 1, and no other app by name', () => {
+  const value = (xml, key) => (xml.match(new RegExp(`name="${key}">([^<]*)<`)) || [])[1] || '';
+  const bg = read('res/values-bg/roadcrew_tacho_strings.xml');
+  const en = read('res/values/roadcrew_tacho_strings.xml');
+  for (const key of ['ble_hint', 'ble_not_paired_detail', 'ble_pairing_body', 'ble_pairing_failed_body']) {
+    assert.ok(value(bg, `roadcrew_tacho_${key}`).includes('Меню → Водач 1 → Bluetooth → Свързване'), key);
+    assert.ok(value(en, `roadcrew_tacho_${key}`).includes('Menu → Driver 1 → Bluetooth → Connect'), key);
+  }
+  for (const xml of [bg, en]) {
+    assert.doesNotMatch(xml, /Tacho Manager/);
+  }
+});

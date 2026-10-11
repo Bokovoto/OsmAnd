@@ -166,7 +166,7 @@
     <string name="roadcrew_tacho_ble_paired_several">%1$d сдвоени тахографа</string>
     <string name="roadcrew_tacho_ble_paired_several_detail">Ползва се най-близкият до телефона</string>
     <string name="roadcrew_tacho_ble_not_paired">Още не е сдвоен</string>
-    <string name="roadcrew_tacho_ble_not_paired_detail">Ще бъде намерен и сдвоен при сваляне</string>
+    <string name="roadcrew_tacho_ble_not_paired_detail">Първо: Меню → Водач 1 → Bluetooth → Свързване</string>
     <string name="roadcrew_tacho_ble_off">Bluetooth е изключен</string>
     <string name="roadcrew_tacho_ble_off_detail">Включи Bluetooth, за да свалиш през него</string>
     <string name="roadcrew_tacho_ble_connected">Свързан</string>
@@ -175,11 +175,11 @@
     <string name="roadcrew_tacho_ble_searching_state">Търсене…</string>
     <string name="roadcrew_tacho_ble_pairing">Сдвояване с %1$s</string>
     <string name="roadcrew_tacho_ble_pairing_state">Сдвояване…</string>
-    <string name="roadcrew_tacho_ble_pairing_body">Само първия път. На тахографа: Меню → Bluetooth → Свързване. После потвърди един и същ код на тахографа и на телефона.</string>
+    <string name="roadcrew_tacho_ble_pairing_body">Само първия път. На тахографа: Меню → Водач 1 → Bluetooth → Свързване. После потвърди един и същ код на тахографа и на телефона.</string>
     <string name="roadcrew_tacho_ble_card_in">В тахографа</string>
     <string name="roadcrew_tacho_ble_card_in_detail">Свалят се само шофьорски карти</string>
     <string name="roadcrew_tacho_ble_card_done">Свалена</string>
-    <string name="roadcrew_tacho_ble_hint">Камионът трябва да е спрял. Ако тахографът още не е сдвоен, приложението ще го намери и ще поиска сдвояване само.</string>
+    <string name="roadcrew_tacho_ble_hint">Камионът трябва да е спрял. Първия път: на тахографа Меню → Водач 1 → Bluetooth → Свързване, после „Свали картата“ и избери тахографа от списъка.</string>
     <string name="roadcrew_tacho_ble_reading_card">Тахографът чете картата…</string>
     <string name="roadcrew_tacho_ble_reading_detail">Лентата стои, докато я чете - обикновено до минута</string>
     <string name="roadcrew_tacho_ble_keep">Не тръгвай и не вади картата, докато свалянето не свърши</string>
@@ -188,10 +188,14 @@
     <string name="roadcrew_tacho_ble_done_via">През Bluetooth от %1$s · %2$s</string>
     <string name="roadcrew_tacho_ble_none_found">Наблизо не се вижда тахограф</string>
     <string name="roadcrew_tacho_ble_none_found_body">Стой до кабината и провери, че Bluetooth на тахографа е включен.</string>
-    <string name="roadcrew_tacho_ble_pairing_failed_body">Тахографът не се сдвои. На тахографа: Меню → Bluetooth → Свързване, после натисни пак „Свали картата“ и потвърди кода и на двете места.</string>
-    <string name="roadcrew_tacho_ble_failed_body">%1$s\nНищо не е записано - старите файлове са непокътнати. Ако Tacho Manager е свързан с тахографа, затвори го и опитай пак.</string>
+    <string name="roadcrew_tacho_ble_pairing_failed_body">На тахографа: Меню → Водач 1 → Bluetooth → Свързване. После натисни „Опитай пак“ и потвърди кода и на тахографа, и на телефона.</string>
+    <string name="roadcrew_tacho_ble_failed_body">%1$s\nНищо не е записано - старите файлове са непокътнати.\n• Затвори ако има отворено друго приложение, свързано с тахографа.\n• Стой до кабината - телефонът да е близо до тахографа.\n• Ако тахографът пита за свързване, потвърди кода.</string>
     <string name="roadcrew_tacho_ble_off_body">Включи Bluetooth и натисни пак „Свали картата“.</string>
     <string name="roadcrew_tacho_ble_which">Кой тахограф?</string>
     <string name="roadcrew_tacho_ble_cancel">Откажи</string>
+    <string name="roadcrew_tacho_ble_pairing_failed">Тахографът не се сдвои</string>
+    <string name="roadcrew_tacho_ble_retry_button">Опитай пак</string>
+    <string name="roadcrew_tacho_ble_nearest">%1$s · най-близо</string>
+    <string name="roadcrew_tacho_ble_chosen">Избран: %1$s</string>
     <string name="roadcrew_tacho_file_050e">Последно сваляне на картата</string>
 </resources>

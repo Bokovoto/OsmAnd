@@ -1004,6 +1004,7 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		keepCardText.setText(R.string.roadcrew_tacho_keep_card);
 		partBar.setVisibility(View.GONE);
 		cancelButton.setVisibility(View.GONE);
+		downloadButton.setText(R.string.roadcrew_tacho_download);
 		renderReader();
 		renderCard();
 
@@ -1094,7 +1095,16 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 			return;
 		}
 		bleLocalError = null;
-		ble.start();
+		launchBluetooth();
+	}
+
+	/** "Свали картата", or "Опитай пак" after a failure: the same tachograph again when one was chosen. */
+	private void launchBluetooth() {
+		if (bleState != null && bleState.getStep() == RoadCrewTachoBluetoothModel.Step.FAILED) {
+			ble.retry();
+		} else {
+			ble.start();
+		}
 	}
 
 	private static String[] bluetoothPermissions() {
@@ -1116,7 +1126,7 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		}
 		if (granted) {
 			bleLocalError = null;
-			ble.start();
+			launchBluetooth();
 		} else {
 			bleLocalError = getString(R.string.roadcrew_tacho_ble_permission);
 			render();
@@ -1145,7 +1155,8 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 	private void chooseTachograph(List<RoadCrewTachoBleChoice.Candidate> choices) {
 		String[] labels = new String[choices.size()];
 		for (int i = 0; i < labels.length; i++) {
-			labels[i] = choices.get(i).name;
+			// Nearest first: the cab the phone is in is usually the strongest signal.
+			labels[i] = i == 0 ? getString(R.string.roadcrew_tacho_ble_nearest, choices.get(i).name) : choices.get(i).name;
 		}
 		new AlertDialog.Builder(this)
 				.setTitle(R.string.roadcrew_tacho_ble_which)
@@ -1179,7 +1190,7 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		boolean done = step == RoadCrewTachoBluetoothModel.Step.DONE && s.getFile() != null;
 		doneBlock.setVisibility(done ? View.VISIBLE : View.GONE);
 		sendButton.setVisibility(done ? View.VISIBLE : View.GONE);
-		finishButton.setVisibility(done ? View.VISIBLE : View.GONE);
+		finishButton.setVisibility(done || failed ? View.VISIBLE : View.GONE);
 		if (done) {
 			renderBleDone(s);
 		}
@@ -1192,9 +1203,11 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		}
 		cancelButton.setVisibility(bleBusy ? View.VISIBLE : View.GONE);
 
-		boolean idle = !bleBusy && !done;
+		// A failure shows only what the mockup shows: the error, "Опитай пак" and "Готово".
+		boolean idle = !bleBusy && !done && !failed;
 		renderLastDownload(idle);
-		downloadButton.setVisibility(idle ? View.VISIBLE : View.GONE);
+		downloadButton.setVisibility(idle || failed ? View.VISIBLE : View.GONE);
+		downloadButton.setText(failed ? R.string.roadcrew_tacho_ble_retry_button : R.string.roadcrew_tacho_download);
 		hint.setVisibility(idle ? View.VISIBLE : View.GONE);
 		hint.setText(R.string.roadcrew_tacho_ble_hint);
 		BluetoothAdapter adapter = bluetoothAdapter();
@@ -1230,7 +1243,7 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 			case PAIRING:
 				statusIcon(readerIcon, readerMark, readerState, false);
 				readerState.setText(R.string.roadcrew_tacho_ble_pairing_state);
-				readerDetail.setText(device);
+				readerDetail.setText(getString(R.string.roadcrew_tacho_ble_chosen, device));
 				return;
 			case CONNECTING:
 				statusIcon(readerIcon, readerMark, readerState, true);
@@ -1381,6 +1394,9 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		}
 		if (e.contains("No tachograph nearby")) {
 			return getString(R.string.roadcrew_tacho_ble_none_found);
+		}
+		if (e.startsWith("Pairing")) {
+			return getString(R.string.roadcrew_tacho_ble_pairing_failed);
 		}
 		return getString(R.string.roadcrew_tacho_ble_failed);
 	}

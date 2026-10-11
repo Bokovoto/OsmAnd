@@ -22,9 +22,13 @@ public class ChoiceTest {
     // The paired tachograph in range: straight to it, a car's Bluetooth is never offered.
     Decision d = RoadCrewTachoBleChoice.decide(List.of(truck, oldTruck, bmw), List.of(truck, next, bmw));
     check(d.kind == Kind.USE && d.candidates.get(0) == truck);
-    // Another truck: the old one is paired but away, one unpaired DTCO in range - pair that one.
+    // Another truck: the old one is paired but away, one unpaired DTCO in range - the driver
+    // picks it from the list, even when it is the only one (Galin, 11.10.2026).
     d = RoadCrewTachoBleChoice.decide(List.of(oldTruck, bmw), List.of(next, bmw));
-    check(d.kind == Kind.PAIR && d.candidates.get(0) == next);
+    check(d.kind == Kind.ASK && d.candidates.size() == 1 && d.candidates.get(0) == next);
+    // The very first time, one tachograph in range: still the list, never a pairing by itself.
+    d = RoadCrewTachoBleChoice.decide(List.of(bmw), List.of(next));
+    check(d.kind == Kind.ASK && d.candidates.size() == 1 && d.candidates.get(0) == next);
     // Several unpaired in a parking lot: ask, nearest first.
     Candidate far = c("00:60:37:77:88:99", "DTCO-33333333", false, -95);
     Candidate near = c("00:60:37:aa:bb:cc", "DTCO-44444444", false, -55);

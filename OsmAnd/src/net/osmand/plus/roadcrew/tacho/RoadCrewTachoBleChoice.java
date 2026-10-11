@@ -7,8 +7,9 @@ import java.util.List;
 
 /**
  * Which tachograph the one "Свали картата" button reaches, and when a dropped start is tried
- * again (ROADMAP 411). Galin, 11.10.2026: no "paired tachograph" / "first pairing" buttons -
- * found and paired by itself, as Tacho Manager does, and only tachographs listed.
+ * again (ROADMAP 411). Galin, 11.10.2026: no "paired tachograph" / "first pairing" buttons - a
+ * paired tachograph is found by itself; a new one is always picked from the list, even when it is
+ * the only one in range, so a truck parked nearby is never paired without the driver choosing it.
  */
 public final class RoadCrewTachoBleChoice {
 
@@ -16,7 +17,7 @@ public final class RoadCrewTachoBleChoice {
 	public static final int ATTEMPTS = 3;
 	public static final long PAUSE_MILLIS = 3000;
 
-	public enum Kind { USE, PAIR, ASK, NONE }
+	public enum Kind { USE, ASK, NONE }
 
 	public static final class Candidate {
 		public final String address;
@@ -35,7 +36,7 @@ public final class RoadCrewTachoBleChoice {
 
 	public static final class Decision {
 		public final Kind kind;
-		/** USE and PAIR: the one; ASK: nearest first; NONE: empty. */
+		/** USE: the one; ASK: nearest first; NONE: empty. */
 		public final List<Candidate> candidates;
 
 		Decision(Kind kind, List<Candidate> candidates) {
@@ -80,10 +81,7 @@ public final class RoadCrewTachoBleChoice {
 			heardPaired.sort(nearestFirst);
 			return new Decision(Kind.USE, Collections.singletonList(heardPaired.get(0)));
 		}
-		if (heardNew.size() == 1) {
-			return new Decision(Kind.PAIR, heardNew);
-		}
-		if (heardNew.size() > 1) {
+		if (!heardNew.isEmpty()) {
 			heardNew.sort(nearestFirst);
 			return new Decision(Kind.ASK, heardNew);
 		}
