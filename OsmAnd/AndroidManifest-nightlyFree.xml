@@ -46,6 +46,11 @@
             android:name="net.osmand.plus.roadcrew.tacho.RoadCrewTachoAnalysisActivity"
             android:exported="false"
             android:label="@string/roadcrew_tacho_analysis_title" />
+        <!-- "Колко ми остава" from a card file (ROADMAP 408). -->
+        <activity
+            android:name="net.osmand.plus.roadcrew.tacho.RoadCrewTachoRemainingActivity"
+            android:exported="false"
+            android:label="@string/roadcrew_tacho_remaining_title" />
         <activity
             android:name="net.osmand.plus.roadcrew.tacho.RoadCrewTachoDayActivity"
             android:exported="false"

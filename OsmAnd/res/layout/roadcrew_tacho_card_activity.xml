@@ -420,6 +420,22 @@
 					android:textStyle="bold" />
 			</LinearLayout>
 
+			<!-- "Колко ми остава" from the newest file (ROADMAP 408). -->
+			<Button
+				android:id="@+id/roadcrewTachoRemainingButton"
+				style="?android:attr/borderlessButtonStyle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:gravity="center"
+				android:minHeight="64dp"
+				android:paddingTop="10dp"
+				android:paddingBottom="10dp"
+				android:stateListAnimator="@null"
+				android:textAllCaps="false"
+				android:textSize="16sp"
+				android:visibility="gone" />
+
 			<Button
 				android:id="@+id/roadcrewTachoDownloadButton"
 				style="?android:attr/borderlessButtonStyle"
@@ -495,6 +511,20 @@
 					android:layout_height="wrap_content"
 					android:orientation="vertical" />
 			</LinearLayout>
+
+			<!-- A card file another app downloaded, into the same screen (ROADMAP 408). -->
+			<Button
+				android:id="@+id/roadcrewTachoOpenFileButton"
+				style="?android:attr/borderlessButtonStyle"
+				android:layout_width="match_parent"
+				android:layout_height="52dp"
+				android:layout_marginTop="16dp"
+				android:stateListAnimator="@null"
+				android:text="@string/roadcrew_tacho_remaining_open_file"
+				android:textAllCaps="false"
+				android:textColor="@color/roadcrew_tacho_text"
+				android:textSize="16sp"
+				android:visibility="gone" />
 		</LinearLayout>
 	</ScrollView>
 </LinearLayout>

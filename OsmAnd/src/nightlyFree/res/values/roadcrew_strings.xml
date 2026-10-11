@@ -317,4 +317,34 @@
     <string name="roadcrew_export_recording">Export the drive recording (%1$d available)</string>
     <string name="roadcrew_export_recording_title">Send the recording</string>
     <string name="roadcrew_export_recording_failed">The recording could not be shared.</string>
+    <!-- How much is left, from a card file (ROADMAP 408). -->
+    <string name="roadcrew_tacho_remaining_title">How much is left</string>
+    <string name="roadcrew_tacho_remaining_button">How much is left\nfrom the card downloaded %1$s</string>
+    <string name="roadcrew_tacho_remaining_subtitle">From the card downloaded %1$s</string>
+    <string name="roadcrew_tacho_remaining_open_file">Open a card file…</string>
+    <string name="roadcrew_tacho_remaining_loading">Counting…</string>
+    <string name="roadcrew_tacho_remaining_failed">The card file could not be read: %1$s</string>
+    <string name="roadcrew_tacho_remaining_refresh">Refresh</string>
+    <string name="roadcrew_tacho_remaining_resting">Resting since %1$s</string>
+    <string name="roadcrew_tacho_remaining_break">Until the 45-minute break</string>
+    <string name="roadcrew_tacho_remaining_break_driven">Driven without a break: %1$s of 4:30</string>
+    <string name="roadcrew_tacho_remaining_break_part">15 minutes taken - 30 more complete the break</string>
+    <string name="roadcrew_tacho_remaining_today">Today</string>
+    <string name="roadcrew_tacho_remaining_left_of">left of %1$s</string>
+    <string name="roadcrew_tacho_remaining_today_extended">on a 10-hour day: %1$s</string>
+    <string name="roadcrew_tacho_remaining_extensions">10-hour days</string>
+    <string name="roadcrew_tacho_remaining_of_two">%1$d of 2</string>
+    <string name="roadcrew_tacho_remaining_extensions_sub">left this week</string>
+    <string name="roadcrew_tacho_remaining_week">This week</string>
+    <string name="roadcrew_tacho_remaining_two_weeks">Two weeks</string>
+    <string name="roadcrew_tacho_remaining_reduced">Reduced rests</string>
+    <string name="roadcrew_tacho_remaining_of_three">%1$d of 3</string>
+    <string name="roadcrew_tacho_remaining_reduced_sub">of 9 hours, left</string>
+    <string name="roadcrew_tacho_remaining_daily_rest">Daily rest</string>
+    <string name="roadcrew_tacho_remaining_daily_rest_sub">start by (11 h); %1$s for 9 h</string>
+    <string name="roadcrew_tacho_remaining_daily_rest_sub_regular">start by (11 h)</string>
+    <string name="roadcrew_tacho_remaining_weekly_rest">Weekly rest</string>
+    <string name="roadcrew_tacho_remaining_weekly_rest_sub">start by: 6 × 24 h after the last</string>
+    <string name="roadcrew_tacho_remaining_unknown">not on the card</string>
+    <string name="roadcrew_tacho_remaining_note">Counted as of the download. For fresh numbers, download the card again.</string>
 </resources>

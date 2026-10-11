@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.Gravity;
@@ -88,6 +89,7 @@ public final class RoadCrewTachoCardActivity extends Activity {
 	private static final long POLL_MILLIS = 1000;
 	private static final String FOLDER = "RoadCrew";
 	private static final int HISTORY_ROWS = 5;
+	private static final int REQUEST_OPEN_FILE = 4081;
 
 	private enum Reader { NONE, NO_PERMISSION, CONNECTED }
 
@@ -169,6 +171,8 @@ public final class RoadCrewTachoCardActivity extends Activity {
 	private View lastBlock;
 	private TextView lastText;
 	private TextView nextText;
+	private Button remainingButton;
+	private Button openFileButton;
 	private Button downloadButton;
 	private TextView hint;
 	private Button sendButton;
@@ -900,6 +904,14 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		lastText = findViewById(R.id.roadcrewTachoLastText);
 		nextText = findViewById(R.id.roadcrewTachoNextText);
 
+		remainingButton = findViewById(R.id.roadcrewTachoRemainingButton);
+		remainingButton.setBackground(shape(R.color.roadcrew_tacho_accent, 0, 14, false));
+		remainingButton.setTextColor(Color.WHITE);
+		remainingButton.setOnClickListener(v -> openRemaining());
+		openFileButton = findViewById(R.id.roadcrewTachoOpenFileButton);
+		openFileButton.setBackground(shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 14, false));
+		openFileButton.setOnClickListener(v -> pickFile());
+
 		downloadButton = findViewById(R.id.roadcrewTachoDownloadButton);
 		downloadButton.setOnClickListener(v -> startDownload());
 		keepIconBesideText(downloadButton);
@@ -965,6 +977,63 @@ public final class RoadCrewTachoCardActivity extends Activity {
 
 		historyBlock.setVisibility(idle && !history.isEmpty() ? View.VISIBLE : View.GONE);
 		renderHistory();
+
+		boolean haveFile = idle && !history.isEmpty();
+		remainingButton.setVisibility(haveFile ? View.VISIBLE : View.GONE);
+		if (haveFile) {
+			long at = history.get(0).takenAt;
+			remainingButton.setText(at > 0
+					? getString(R.string.roadcrew_tacho_remaining_button, RoadCrewTachoUi.dayTime(at / 60000))
+					: getString(R.string.roadcrew_tacho_remaining_title));
+		}
+		openFileButton.setVisibility(idle ? View.VISIBLE : View.GONE);
+	}
+
+	// ---- How much is left (ROADMAP 408) ----------------------------------------------------------
+
+	/** The newest file only: an older one would count from an older moment. */
+	private void openRemaining() {
+		if (history.isEmpty()) {
+			return;
+		}
+		Stored newest = history.get(0);
+		RoadCrewTachoRemainingActivity.open(this, newest.uri, newest.takenAt);
+	}
+
+	/** A .DDD another app downloaded - Tacho Manager keeps them in Downloads/TachoManager. */
+	private void pickFile() {
+		Intent pick = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+		pick.addCategory(Intent.CATEGORY_OPENABLE);
+		pick.setType("*/*");
+		try {
+			startActivityForResult(pick, REQUEST_OPEN_FILE);
+		} catch (ActivityNotFoundException e) {
+			Log.w(TAG, "no document picker: " + e.getMessage());
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode != REQUEST_OPEN_FILE || resultCode != RESULT_OK || data == null || data.getData() == null) {
+			return;
+		}
+		Uri picked = data.getData();
+		String name = displayName(picked);
+		RoadCrewTachoRemainingActivity.open(this, picked, takenAt(name));
+	}
+
+	@NonNull
+	private String displayName(@NonNull Uri uri) {
+		try (Cursor cursor = getContentResolver().query(uri, new String[]{OpenableColumns.DISPLAY_NAME}, null, null, null)) {
+			if (cursor != null && cursor.moveToFirst()) {
+				String name = cursor.getString(0);
+				return name == null ? "" : name;
+			}
+		} catch (RuntimeException e) {
+			Log.w(TAG, "picked file has no name: " + e.getMessage());
+		}
+		return "";
 	}
 
 	private void renderReader() {

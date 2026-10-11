@@ -316,4 +316,34 @@
     <string name="roadcrew_export_recording">Изнеси записа на карането (%1$d налични)</string>
     <string name="roadcrew_export_recording_title">Изпрати записа</string>
     <string name="roadcrew_export_recording_failed">Записът не можа да бъде споделен.</string>
+    <!-- Колко ми остава, от файл на карта (ROADMAP 408). -->
+    <string name="roadcrew_tacho_remaining_title">Колко ми остава</string>
+    <string name="roadcrew_tacho_remaining_button">Колко ми остава\nот картата, свалена %1$s</string>
+    <string name="roadcrew_tacho_remaining_subtitle">От картата, свалена %1$s</string>
+    <string name="roadcrew_tacho_remaining_open_file">Отвори файл от карта…</string>
+    <string name="roadcrew_tacho_remaining_loading">Смята се…</string>
+    <string name="roadcrew_tacho_remaining_failed">Файлът на картата не може да се прочете: %1$s</string>
+    <string name="roadcrew_tacho_remaining_refresh">Обнови</string>
+    <string name="roadcrew_tacho_remaining_resting">В почивка от %1$s</string>
+    <string name="roadcrew_tacho_remaining_break">До почивката от 45 минути</string>
+    <string name="roadcrew_tacho_remaining_break_driven">Карано без почивка: %1$s от 4:30</string>
+    <string name="roadcrew_tacho_remaining_break_part">15 минути са взети - още 30 завършват почивката</string>
+    <string name="roadcrew_tacho_remaining_today">Днес</string>
+    <string name="roadcrew_tacho_remaining_left_of">остават от %1$s</string>
+    <string name="roadcrew_tacho_remaining_today_extended">при 10-часов ден: %1$s</string>
+    <string name="roadcrew_tacho_remaining_extensions">Дни по 10 часа</string>
+    <string name="roadcrew_tacho_remaining_of_two">%1$d от 2</string>
+    <string name="roadcrew_tacho_remaining_extensions_sub">остават тази седмица</string>
+    <string name="roadcrew_tacho_remaining_week">Тази седмица</string>
+    <string name="roadcrew_tacho_remaining_two_weeks">Две седмици</string>
+    <string name="roadcrew_tacho_remaining_reduced">Съкратени почивки</string>
+    <string name="roadcrew_tacho_remaining_of_three">%1$d от 3</string>
+    <string name="roadcrew_tacho_remaining_reduced_sub">по 9 часа, остават</string>
+    <string name="roadcrew_tacho_remaining_daily_rest">Дневна почивка</string>
+    <string name="roadcrew_tacho_remaining_daily_rest_sub">да започне до (11 ч); %1$s за 9 ч</string>
+    <string name="roadcrew_tacho_remaining_daily_rest_sub_regular">да започне до (11 ч)</string>
+    <string name="roadcrew_tacho_remaining_weekly_rest">Седмична почивка</string>
+    <string name="roadcrew_tacho_remaining_weekly_rest_sub">да започне до: 6 × 24 ч след последната</string>
+    <string name="roadcrew_tacho_remaining_unknown">няма на картата</string>
+    <string name="roadcrew_tacho_remaining_note">Сметнато към момента на свалянето. За свежи числа свали картата пак.</string>
 </resources>
