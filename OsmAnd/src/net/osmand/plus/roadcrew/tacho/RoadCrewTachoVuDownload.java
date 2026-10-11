@@ -14,7 +14,12 @@ public final class RoadCrewTachoVuDownload {
 		byte[] receive(long timeoutMillis) throws IOException;
 	}
 
-	public interface Progress { void received(int bytes, int parts); }
+	public interface Progress {
+		void received(int bytes, int parts);
+
+		/** The card's own bytes of the part just received, without the 76 06 framing (ROADMAP 411). */
+		default void data(byte[] bytes, int offset, int length) { }
+	}
 
 	private static final int MAX_BYTES = 16 * 1024 * 1024;
 	private static final long CARD_TIMEOUT = 20 * 60 * 1000L;
@@ -46,6 +51,7 @@ public final class RoadCrewTachoVuDownload {
 			if (number != counter || counter >= 65535) throw new IOException("Card part sequence mismatch");
 			if (output.size() + data.length - 4 > MAX_BYTES) throw new IOException("Card download too large");
 			output.write(data, 4, data.length - 4);
+			progress.data(data, 4, data.length - 4);
 			progress.received(output.size(), counter);
 			if (data.length < 255) break;
 			counter++;

@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.*;
 import net.osmand.plus.roadcrew.tacho.RoadCrewTachoVuDownload;
 import net.osmand.plus.roadcrew.tacho.RoadCrewTachoDdd;
+import net.osmand.plus.roadcrew.tacho.RoadCrewTachoVuProgress;
 import java.io.ByteArrayOutputStream;
 
 public class VuDownloadTest {
@@ -133,6 +134,57 @@ public class VuDownloadTest {
     for (int i = 0; i < 51; i++) greedy.received();
     fails(() -> greedy.received());
     fails(() -> greedy.unitIndicated(2000));
+
+    // Which part of the card is coming (ROADMAP 411): the 73 blocks of the card RoadCrew read on
+    // 11.10.2026 22:26 - tags and lengths only, contents zero - in the unit's order, fed as the
+    // 76 06 parts bring them.
+    int[][] blocks = {
+      {0x0002,0,25},{0x0005,0,8},{0x0501,0,10},{0x0501,1,128},{0xc100,0,194},{0xc108,0,194},
+      {0x0520,0,143},{0x0520,1,128},{0x050e,0,4},{0x050e,1,128},{0x0521,0,53},{0x0521,1,128},
+      {0x0502,0,1728},{0x0502,1,128},{0x0503,0,1152},{0x0503,1,128},{0x0504,0,13780},{0x0504,1,128},
+      {0x0505,0,6202},{0x0505,1,128},{0x0506,0,1121},{0x0506,1,128},{0x0507,0,19},{0x0507,1,128},
+      {0x0508,0,46},{0x0508,1,128},{0x0522,0,280},{0x0522,1,128},
+      {0x0002,2,25},{0x0005,2,8},{0x0501,2,17},{0x0501,3,64},{0xc101,2,204},{0xc108,2,205},{0xc109,2,205},
+      {0x0520,2,143},{0x0520,3,64},{0x050e,2,4},{0x050e,3,64},{0x0521,2,53},{0x0521,3,64},
+      {0x0502,2,3168},{0x0502,3,64},{0x0503,2,1152},{0x0503,3,64},{0x0504,2,13780},{0x0504,3,64},
+      {0x0505,2,9602},{0x0505,3,64},{0x0506,2,2354},{0x0506,3,64},{0x0507,2,19},{0x0507,3,64},
+      {0x0508,2,46},{0x0508,3,64},{0x0522,2,562},{0x0522,3,64},{0x0523,2,2002},{0x0523,3,64},
+      {0x0524,2,6050},{0x0524,3,64},{0x0525,2,10},{0x0525,3,64},{0x0526,2,562},{0x0526,3,64},
+      {0x0527,2,1682},{0x0527,3,64},{0x0528,2,19042},{0x0528,3,64},{0x0529,2,32482},{0x0529,3,64},
+      {0x0530,2,1682},{0x0530,3,64}};
+    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    for (int[] b : blocks) block(stream, b[0] << 8 | b[1], new byte[b[2]]);
+    byte[] whole = stream.toByteArray();
+    check(whole.length == 123199);
+    var seen = new RoadCrewTachoVuProgress();
+    check(seen.fileId() == -1 && seen.permille() == 0);
+    int last = 0; boolean sawActivity = false, sawLoads = false;
+    for (int at = 0; at < whole.length; at += 250) {
+      int n = Math.min(250, whole.length - at);
+      seen.data(whole, at, n);
+      check(seen.permille() >= last && seen.permille() < 1000);
+      last = seen.permille();
+      if (seen.fileId() == 0x0504 && !seen.secondGeneration() && seen.filePercent() >= 50 && !sawActivity) {
+        sawActivity = true; check(seen.filesDone() == 10 && seen.filesTotal() == 41);
+      }
+      if (seen.fileId() == 0x0529 && seen.secondGeneration() && !sawLoads) {
+        sawLoads = true; check(seen.filesDone() == 39);
+      }
+    }
+    check(sawActivity && sawLoads);
+    seen.finish();
+    check(seen.filesDone() == 41 && seen.filesTotal() == 41 && seen.permille() == 1000);
+    var gen1 = new RoadCrewTachoVuProgress();
+    gen1.data(whole, 0, 26635); gen1.finish();
+    check(gen1.filesDone() == 16 && gen1.filesTotal() == 16 && gen1.permille() == 1000);
+    // The download hands the tracker each part's card bytes, nothing of the 76 06 framing.
+    Wire framed = new Wire(); var tracked = new RoadCrewTachoVuProgress();
+    byte[] head = Arrays.copyOf(whole, 35); // block 0002 (5 + 25) and the head of 0005
+    int[] part = new int[4 + head.length]; part[0] = 0x76; part[1] = 6; part[3] = 1;
+    for (int i = 0; i < head.length; i++) part[4 + i] = head[i] & 255;
+    framed.replies.add(reply(part)); framed.end();
+    check(RoadCrewTachoVuDownload.download(framed, tracked).length == 35);
+    check(tracked.fileId() == 0x0005 && tracked.filesDone() == 1);
 
     byte[] good = reply(0x76, 6, 0, 1, 88);
     check(Arrays.equals(RoadCrewTachoVuDownload.response(good), hex("7606000158")));

@@ -11,7 +11,8 @@ test('paired VDO card download rejects incomplete/corrupt protocol exchanges', (
   const source = fileURLToPath(new URL('../../OsmAnd/src/net/osmand/plus/roadcrew/tacho/RoadCrewTachoVuDownload.java', import.meta.url));
   const harness = fileURLToPath(new URL('./roadcrew-tacho-bluetooth/VuDownloadTest.java', import.meta.url));
   const validator = fileURLToPath(new URL('../../OsmAnd/src/net/osmand/plus/roadcrew/tacho/RoadCrewTachoDdd.java', import.meta.url));
-  execFileSync('javac', ['--release', '17', '-encoding', 'UTF-8', '-d', out, source, validator, harness]);
+  const progress = fileURLToPath(new URL('../../OsmAnd/src/net/osmand/plus/roadcrew/tacho/RoadCrewTachoVuProgress.java', import.meta.url));
+  execFileSync('javac', ['--release', '17', '-encoding', 'UTF-8', '-d', out, source, validator, progress, harness]);
   const result = execFileSync('java', ['-cp', out, 'VuDownloadTest'], { encoding: 'utf8' });
   assert.match(result, /\d+ Bluetooth download checks passed/);
   console.log(result.trim());
