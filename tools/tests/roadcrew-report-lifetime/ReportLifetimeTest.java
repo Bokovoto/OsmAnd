@@ -45,6 +45,14 @@ public class ReportLifetimeTest {
 		check(old(30 * MINUTE, 30 * MINUTE, 1, 2), "more 'няма го' than 'още е там': old");
 		check(!old(30 * MINUTE, 30 * MINUTE, 2, 1), "more 'още е там' than 'няма го': not old");
 
+		long posted = NOW - 5 * HOUR;
+		check(RoadCrewReportLifetime.lastSeenAt(posted, posted + RoadCrewReportLifetime.MILLIS) == posted,
+				"nobody since: last seen at the posting");
+		check(RoadCrewReportLifetime.lastSeenAt(posted, NOW - 40 * MINUTE + RoadCrewReportLifetime.MILLIS)
+				== NOW - 40 * MINUTE, "another driver's 'още е там' 40 minutes ago: last seen then");
+		check(RoadCrewReportLifetime.lastSeenAt(NOW - 5 * MINUTE, NOW + 55 * MINUTE) == NOW - 5 * MINUTE,
+				"a shorter time than three hours: never seen before it was posted");
+
 		// An unsent report stored by an older app, timed by its type - police, one hour.
 		check(!RoadCrewReportLifetime.isOld(NOW - 5 * MINUTE, NOW + 55 * MINUTE, 0, 0, NOW),
 				"posted five minutes ago with an hour: not seen before it was posted - fresh");

@@ -39,8 +39,17 @@ public final class RoadCrewReportLifetime {
 			return true;
 		}
 		long remaining = expiresAtMillis - now;
-		long sinceSeen = Math.min(now - createdAtMillis, MILLIS - remaining);
+		long sinceSeen = now - lastSeenAt(createdAtMillis, expiresAtMillis);
 		return sinceSeen >= OLD_REPORT_MIN_AGE_MILLIS
 				&& (sinceSeen >= MILLIS * OLD_REPORT_LIFETIME_RATIO || remaining <= EXPIRING_SOON_MILLIS);
+	}
+
+	/**
+	 * When a report was last seen: its posting, or the last "още е там" that gave
+	 * it its three hours. The map label counts its minutes from here (Galin,
+	 * 11.10.2026: "да").
+	 */
+	public static long lastSeenAt(long createdAtMillis, long expiresAtMillis) {
+		return Math.max(createdAtMillis, expiresAtMillis - MILLIS);
 	}
 }

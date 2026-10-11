@@ -50,6 +50,20 @@ test('an old marked post is one nobody has seen for a while - plain Java', () =>
   console.log(result.trim());
 });
 
+// Galin, 11.10.2026, asked whether the minutes on a report's map label
+// ("Полиция - 132 мин") should count from the last "още е там": "да". The
+// details ("Подаден: преди 132 мин") keep the posting - that is what they say.
+test('the map label counts its minutes from the last sighting', () => {
+  const layer = read('RoadCrewReportsLayer.java');
+  const start = layer.indexOf('private LabelLayout calculateLabelLayout(');
+  assert.notEqual(start, -1);
+  const label = layer.slice(start, layer.indexOf('\n\t}\n', start));
+  assert.match(label, /RoadCrewReportLifetime\.lastSeenAt\(report\.getCreatedAtMillis\(\), report\.getExpiresAtMillis\(\)\)/);
+  const details = layer.slice(layer.indexOf('private String createReportDetailsMessage('));
+  assert.match(details.slice(0, details.indexOf('\n\t}\n')), /roadcrew_report_details_reported, formatReportedAge\(report\)/,
+    'the details still say when it was posted');
+});
+
 test('the voice asks that rule, and nothing else', () => {
   const voice = read('RoadCrewVoiceAlerts.java');
   const start = voice.indexOf('private boolean isUncertain(');

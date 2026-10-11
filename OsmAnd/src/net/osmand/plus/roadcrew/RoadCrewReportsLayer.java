@@ -1328,7 +1328,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	@NonNull
 	private LabelLayout calculateLabelLayout(@NonNull RoadCrewReport report, float x, float y, float canvasWidth,
 			@NonNull RectF outRect) {
-		String label = report.getType().getTitle(getApplication()) + " - " + formatAge(report);
+		String label = report.getType().getTitle(getApplication()) + " - " + formatAgeSince(
+				RoadCrewReportLifetime.lastSeenAt(report.getCreatedAtMillis(), report.getExpiresAtMillis()));
 		float paddingX = dp(8);
 		float paddingY = dp(4);
 		float textWidth = textPaint.measureText(label);
@@ -2284,7 +2285,11 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	}
 
 	private String formatAge(@NonNull RoadCrewReport report) {
-		long ageMillis = Math.max(0, System.currentTimeMillis() - report.getCreatedAtMillis());
+		return formatAgeSince(report.getCreatedAtMillis());
+	}
+
+	private String formatAgeSince(long millis) {
+		long ageMillis = Math.max(0, System.currentTimeMillis() - millis);
 		long ageMinutes = ageMillis / (60 * 1000);
 		if (ageMinutes == 0) {
 			return getContext().getString(R.string.roadcrew_time_now);
