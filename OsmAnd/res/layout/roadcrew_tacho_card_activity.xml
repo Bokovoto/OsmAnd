@@ -450,6 +450,19 @@
 				android:textSize="18sp"
 				android:textStyle="bold" />
 
+			<Button
+				android:id="@+id/roadcrewTachoBluetoothButton"
+				style="?android:attr/borderlessButtonStyle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:minHeight="60dp"
+				android:layout_marginTop="12dp"
+				android:paddingTop="10dp"
+				android:paddingBottom="10dp"
+				android:text="@string/roadcrew_tacho_ble_title"
+				android:textAllCaps="false"
+				android:textSize="17sp" />
+
 			<TextView
 				android:id="@+id/roadcrewTachoHint"
 				android:layout_width="match_parent"

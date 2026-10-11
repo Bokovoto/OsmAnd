@@ -737,7 +737,8 @@ public final class RoadCrewTachoCardActivity extends Activity {
 				String[] projection = {MediaStore.Downloads._ID, MediaStore.Downloads.DISPLAY_NAME,
 						MediaStore.Downloads.SIZE};
 				String selection = MediaStore.Downloads.RELATIVE_PATH + " LIKE ? AND "
-						+ MediaStore.Downloads.DISPLAY_NAME + " LIKE ?";
+						+ MediaStore.Downloads.DISPLAY_NAME + " LIKE ? AND "
+						+ MediaStore.Downloads.IS_PENDING + " = 0";
 				String[] args = {Environment.DIRECTORY_DOWNLOADS + "/" + FOLDER + "%", "C%.ddd"};
 				try (Cursor cursor = getContentResolver().query(MediaStore.Downloads.EXTERNAL_CONTENT_URI,
 						projection, selection, args, MediaStore.Downloads.DISPLAY_NAME + " DESC")) {
@@ -915,6 +916,10 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		downloadButton = findViewById(R.id.roadcrewTachoDownloadButton);
 		downloadButton.setOnClickListener(v -> startDownload());
 		keepIconBesideText(downloadButton);
+		Button bluetoothButton = findViewById(R.id.roadcrewTachoBluetoothButton);
+		bluetoothButton.setBackground(shape(R.color.roadcrew_tacho_surface, R.color.roadcrew_tacho_line, 8, false));
+		bluetoothButton.setTextColor(color(R.color.roadcrew_tacho_text));
+		bluetoothButton.setOnClickListener(v -> startActivity(new Intent(this, RoadCrewTachoBluetoothActivity.class)));
 		hint = findViewById(R.id.roadcrewTachoHint);
 		sendButton = findViewById(R.id.roadcrewTachoSendButton);
 		sendButton.setBackground(shape(R.color.roadcrew_tacho_accent, 0, 14, false));
@@ -963,6 +968,7 @@ public final class RoadCrewTachoCardActivity extends Activity {
 		}
 
 		boolean idle = phase == Phase.IDLE || phase == Phase.FAILED;
+		findViewById(R.id.roadcrewTachoBluetoothButton).setVisibility(idle && !busy ? View.VISIBLE : View.GONE);
 		renderLastDownload(idle);
 		downloadButton.setVisibility(idle ? View.VISIBLE : View.GONE);
 		hint.setVisibility(idle ? View.VISIBLE : View.GONE);

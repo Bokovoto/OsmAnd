@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="roadcrew_tacho_ble_title">Свали картата през Bluetooth</string>
+    <string name="roadcrew_tacho_ble_ready">Няма свързан тахограф</string>
+    <string name="roadcrew_tacho_ble_choose">Избери сдвоен тахограф</string>
+    <string name="roadcrew_tacho_ble_settings">Сдвояване през Bluetooth</string>
+    <string name="roadcrew_tacho_ble_connecting">Свързване с тахографа…</string>
+    <string name="roadcrew_tacho_ble_receiving">Сваляне на шофьорската карта…</string>
+    <string name="roadcrew_tacho_ble_saving">Проверка и запис на файла…</string>
+    <string name="roadcrew_tacho_ble_done">Файлът от картата е записан</string>
+    <string name="roadcrew_tacho_ble_failed">Свалянето не е успешно</string>
+    <string name="roadcrew_tacho_ble_cancelled">Свалянето е отменено</string>
+    <string name="roadcrew_tacho_ble_progress">Получени %1$d байта · %2$d части</string>
+    <string name="roadcrew_tacho_ble_saved">%1$s\n%2$d байта</string>
+    <string name="roadcrew_tacho_ble_error">%1$s\nНе е записан завършен файл.</string>
+    <string name="roadcrew_tacho_ble_unavailable">Bluetooth е изключен или недостъпен</string>
+    <string name="roadcrew_tacho_ble_permission">Нужно е разрешение за устройства в близост</string>
+    <string name="roadcrew_tacho_ble_no_paired">Няма сдвоени устройства</string>
+    <string name="roadcrew_tacho_ble_unnamed">Bluetooth устройство</string>
+    <string name="roadcrew_tacho_ble_confirm">Камионът спрял ли е и картата поставена ли е в тахографа? Тахографът може да обнови датата на последното сваляне. Записите за шофиране и почивка не се променят.</string>
+    <string name="roadcrew_tacho_ble_parked">Спрял съм — свали</string>
     <string name="app_name_osmand">RoadCrew</string>
     <string name="hello">Навигационно приложение RoadCrew</string>
     <string name="first_usage_wizard_desc">Нека RoadCrew определи местоположението ви и предложи карти за изтегляне.</string>

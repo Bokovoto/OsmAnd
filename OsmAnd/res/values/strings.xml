@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
+    <string name="roadcrew_tacho_ble_title">Download card via Bluetooth</string>
+    <string name="roadcrew_tacho_ble_ready">No tachograph connected</string>
+    <string name="roadcrew_tacho_ble_choose">Select paired tachograph</string>
+    <string name="roadcrew_tacho_ble_settings">Bluetooth pairing</string>
+    <string name="roadcrew_tacho_ble_connecting">Connecting to tachograph…</string>
+    <string name="roadcrew_tacho_ble_receiving">Downloading driver card…</string>
+    <string name="roadcrew_tacho_ble_saving">Checking and saving card file…</string>
+    <string name="roadcrew_tacho_ble_done">Card file saved</string>
+    <string name="roadcrew_tacho_ble_failed">Download unsuccessful</string>
+    <string name="roadcrew_tacho_ble_cancelled">Download cancelled</string>
+    <string name="roadcrew_tacho_ble_progress">%1$d bytes received · %2$d parts</string>
+    <string name="roadcrew_tacho_ble_saved">%1$s\n%2$d bytes</string>
+    <string name="roadcrew_tacho_ble_error">%1$s\nNo complete file was saved.</string>
+    <string name="roadcrew_tacho_ble_unavailable">Bluetooth is off or unavailable</string>
+    <string name="roadcrew_tacho_ble_permission">Nearby devices permission is required</string>
+    <string name="roadcrew_tacho_ble_no_paired">No paired devices</string>
+    <string name="roadcrew_tacho_ble_unnamed">Bluetooth device</string>
+    <string name="roadcrew_tacho_ble_confirm">Vehicle stationary, driver card inserted in the tachograph? The tachograph may update the card’s last-download date. Driving and rest records are not changed.</string>
+    <string name="roadcrew_tacho_ble_parked">Stationary — download</string>
     <string name="roadcrew_report_direction_title">Which direction?</string>
     <string name="roadcrew_report_direction_body">Choose where this %1$s report applies.</string>
     <string name="roadcrew_report_direction_mine">My direction</string>

@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import test from 'node:test';
+
+test('paired VDO card download rejects incomplete/corrupt protocol exchanges', () => {
+  const out = mkdtempSync(join(tmpdir(), 'roadcrew-tacho-ble-'));
+  const source = fileURLToPath(new URL('../../OsmAnd/src/net/osmand/plus/roadcrew/tacho/RoadCrewTachoVuDownload.java', import.meta.url));
+  const harness = fileURLToPath(new URL('./roadcrew-tacho-bluetooth/VuDownloadTest.java', import.meta.url));
+  const validator = fileURLToPath(new URL('../../OsmAnd/src/net/osmand/plus/roadcrew/tacho/RoadCrewTachoDdd.java', import.meta.url));
+  execFileSync('javac', ['--release', '17', '-encoding', 'UTF-8', '-d', out, source, validator, harness]);
+  const result = execFileSync('java', ['-cp', out, 'VuDownloadTest'], { encoding: 'utf8' });
+  assert.match(result, /\d+ Bluetooth download checks passed/);
+  console.log(result.trim());
+});
