@@ -18,6 +18,13 @@ public final class RoadCrewTachoVuDownload {
 
 	private static final int MAX_BYTES = 16 * 1024 * 1024;
 	private static final long CARD_TIMEOUT = 20 * 60 * 1000L;
+	private static final long REPLY_MILLIS = 5000;
+	/**
+	 * After "still working" (7F xx 78) the unit reads the card in silence. Galin's DTCO 4.1 was
+	 * silent 11.8 s on 11.10.2026 and about a minute in the ROADMAP 407 capture, so five seconds
+	 * gave up on every download.
+	 */
+	private static final long PENDING_MILLIS = 3 * 60 * 1000L;
 	private RoadCrewTachoVuDownload() { }
 
 	public static byte[] download(Channel channel, Progress progress) throws IOException {
@@ -61,13 +68,17 @@ public final class RoadCrewTachoVuDownload {
 
 	private static byte[] receive(Channel channel, int service, long timeout, boolean card) throws IOException {
 		long deadline = System.nanoTime() + timeout * 1_000_000L;
+		long wait = REPLY_MILLIS;
 		for (;;) {
 			long remaining = (deadline - System.nanoTime()) / 1_000_000L;
 			if (remaining <= 0) throw new IOException("Response timed out");
 			// A pending response extends the wait, not a silent connection indefinitely.
-			byte[] data = response(channel.receive(Math.min(remaining, 5000)));
+			byte[] data = response(channel.receive(Math.min(remaining, wait)));
 			if (u(data[0]) != 0x7f) return data;
-			if (data.length == 3 && u(data[1]) == service && u(data[2]) == 0x78 && card) continue;
+			if (data.length == 3 && u(data[1]) == service && u(data[2]) == 0x78 && card) {
+				wait = PENDING_MILLIS;
+				continue;
+			}
 			throw new IOException("Tachograph declined service " + service + " (status "
 					+ (data.length == 3 ? u(data[2]) : -1) + ")");
 		}

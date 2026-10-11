@@ -34,6 +34,18 @@ public class VuDownloadTest {
     }
     void end() { replies.add(reply(0x77)); replies.add(reply(0xc2)); }
   }
+  /** Replies that can come after a silence; a read shorter than the silence times out, as on the phone. */
+  static class SlowWire extends Wire {
+    final Deque<Long> silence = new ArrayDeque<>(List.of(0L, 0L, 0L));
+    void add(long millis, byte[] reply) { silence.add(millis); replies.add(reply); }
+    @Override void end() { add(0, reply(0x77)); add(0, reply(0xc2)); }
+    @Override public byte[] receive(long timeout) throws IOException {
+      if (replies.isEmpty()) throw new IOException("disconnected");
+      if (timeout < silence.peek()) throw new IOException("timed out after " + timeout + " ms");
+      silence.remove();
+      return replies.remove();
+    }
+  }
   static byte[] run(Wire w) throws IOException { return RoadCrewTachoVuDownload.download(w, (bytes, parts) -> {}); }
   static void block(ByteArrayOutputStream out, int tag, byte[] data) {
     out.write(tag >> 16); out.write(tag >> 8); out.write(tag);
@@ -81,6 +93,20 @@ public class VuDownloadTest {
     Wire empty = new Wire(); empty.replies.add(reply(0x76, 6, 0, 1)); fails(() -> run(empty));
     Wire badEnd = new Wire(); badEnd.replies.add(reply(0x76, 6, 0, 1, 1)); badEnd.replies.add(reply(0x7f, 0x37, 0x22)); fails(() -> run(badEnd));
     Wire badStop = new Wire(); badStop.replies.add(reply(0x76, 6, 0, 1, 1)); badStop.replies.add(reply(0x77)); fails(() -> run(badStop));
+
+    // Galin's DTCO 4.1, 11.10.2026: after 7F 36 78 it stayed silent 11.8 s while reading the card
+    // (Tacho Manager, 20:38:13 -> 20:38:24.9); RoadCrew gave up after 5.0 s (20:36:17.3 -> 22.3).
+    // The 407 capture waited about a minute.
+    for (long quiet : new long[] {11_800, 60_000}) {
+      SlowWire slow = new SlowWire(); slow.add(0, reply(0x7f, 0x36, 0x78));
+      slow.add(quiet, reply(0x76, 6, 0, 1, 7)); slow.end();
+      check(run(slow).length == 1);
+    }
+    // Without "still working" a silent unit is still given up on, and so is one silent for ten minutes.
+    SlowWire mute = new SlowWire(); mute.silence.clear(); mute.silence.addAll(List.of(11_800L, 0L, 0L));
+    fails(() -> run(mute));
+    SlowWire gone = new SlowWire(); gone.add(0, reply(0x7f, 0x36, 0x78));
+    gone.add(600_000, reply(0x76, 6, 0, 1, 7)); gone.end(); fails(() -> run(gone));
 
     byte[] good = reply(0x76, 6, 0, 1, 88);
     check(Arrays.equals(RoadCrewTachoVuDownload.response(good), hex("7606000158")));
