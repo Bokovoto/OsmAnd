@@ -1,5 +1,9 @@
 import assert from 'node:assert/strict';
-import { readdirSync, readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { mkdtempSync, readdirSync, readFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
 // Galin, 09.10.2026 (ROADMAP 385): "Всички да стоят три часа от поставянето като
@@ -30,4 +34,27 @@ test('nothing in RoadCrew still asks a type how long it lives', () => {
   const asking = readdirSync(ROADCREW).filter(name => /\.(java|kt)$/.test(name))
     .filter(name => /getDefaultLifetimeMillis/.test(read(name)));
   assert.deepEqual(asking, []);
+});
+
+// The second half of ROADMAP 385's note: the voice measured "old" from the
+// posting, so a post another driver had just seen could be announced as
+// "стар маркиран пост". Old means not seen for a while.
+test('an old marked post is one nobody has seen for a while - plain Java', () => {
+  const output = mkdtempSync(join(tmpdir(), 'roadcrew-report-lifetime-'));
+  const file = path => fileURLToPath(new URL(path, import.meta.url));
+  execFileSync('javac', ['--release', '17', '-encoding', 'UTF-8', '-d', output,
+    fileURLToPath(new URL('RoadCrewReportLifetime.java', ROADCREW)),
+    file('./roadcrew-report-lifetime/ReportLifetimeTest.java')], {stdio: 'pipe'});
+  const result = execFileSync('java', ['-cp', output, 'ReportLifetimeTest'], {encoding: 'utf8'});
+  assert.match(result, /\d+ report lifetime checks passed/);
+  console.log(result.trim());
+});
+
+test('the voice asks that rule, and nothing else', () => {
+  const voice = read('RoadCrewVoiceAlerts.java');
+  const start = voice.indexOf('private boolean isUncertain(');
+  assert.notEqual(start, -1);
+  const rule = voice.slice(start, voice.indexOf('\n\t}\n', start));
+  assert.match(rule, /RoadCrewReportLifetime\.isOld\(/);
+  assert.doesNotMatch(voice, /OLD_REPORT_LIFETIME_RATIO|OLD_REPORT_MIN_AGE_MILLIS/, 'one rule, in one place');
 });

@@ -34,9 +34,6 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	private static final double ROUTE_FINAL_ALERT_METERS = 900;
 	private static final double AHEAD_BEARING_DEGREES = 70;
 	private static final float MIN_HEADING_SPEED_MPS = 2.0f;
-	private static final long OLD_REPORT_MIN_AGE_MILLIS = 20 * 60 * 1000;
-	private static final long EXPIRING_SOON_MILLIS = 10 * 60 * 1000;
-	private static final double OLD_REPORT_LIFETIME_RATIO = 0.7;
 	/** How often a waiting warning looks whether the navigation has gone quiet. */
 	private static final long DRAIN_MILLIS = 200;
 	/** No warning lasts longer: a lost "done" from the voice engine must not silence RoadCrew. */
@@ -328,17 +325,8 @@ final class RoadCrewVoiceAlerts implements TextToSpeech.OnInitListener {
 	}
 
 	private boolean isUncertain(@NonNull RoadCrewReport report, long now) {
-		if (report.getDeniedCount() > 0 && report.getDeniedCount() >= report.getConfirmedCount()) {
-			return true;
-		}
-		long lifetime = report.getExpiresAtMillis() - report.getCreatedAtMillis();
-		if (lifetime <= 0) {
-			return true;
-		}
-		long age = now - report.getCreatedAtMillis();
-		long remaining = report.getExpiresAtMillis() - now;
-		return age >= OLD_REPORT_MIN_AGE_MILLIS
-				&& (age >= lifetime * OLD_REPORT_LIFETIME_RATIO || remaining <= EXPIRING_SOON_MILLIS);
+		return RoadCrewReportLifetime.isOld(report.getCreatedAtMillis(), report.getExpiresAtMillis(),
+				report.getConfirmedCount(), report.getDeniedCount(), now);
 	}
 
 	private double bearingDegrees(double startLat, double startLon, double endLat, double endLon) {
