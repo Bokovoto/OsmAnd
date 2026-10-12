@@ -415,9 +415,9 @@ public class RouteProvider {
 		ctx.targetTransportStop = params.targetTransportStop;
 		if (params.previousToRecalculate != null && params.onlyStartPointChanged && !communityRanking) {
 			int currentRoute = params.previousToRecalculate.getCurrentRoute();
-			List<RouteSegmentResult> originalRoute = params.previousToRecalculate.getOriginalRoute();
-			if (originalRoute != null && currentRoute < originalRoute.size()) {
-				ctx.previouslyCalculatedRoute = originalRoute.subList(currentRoute, originalRoute.size());
+			// currentRoute indexes locations; getOriginalRoute() without an index has already deduplicated segments.
+			if (currentRoute >= 0 && currentRoute < params.previousToRecalculate.getImmutableAllLocations().size()) {
+				ctx.previouslyCalculatedRoute = params.previousToRecalculate.getOriginalRoute(currentRoute);
 			}
 		}
 		boolean complex = !skipComplex && !communityRanking && params.mode.isDerivedRoutingFrom(ApplicationMode.CAR)
