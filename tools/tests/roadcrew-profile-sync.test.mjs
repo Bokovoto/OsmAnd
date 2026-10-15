@@ -23,7 +23,9 @@ test('profile POST is gated by its sent snapshot and only a positive ACK suppres
   assert.ok(gate >= 0 && post > gate && ok > post && ack > ok);
   assert.match(profile.slice(ok, ack), /throw new IOException/);
   assert.match(sync, /private static final RoadCrewProfileSyncState profileSyncState/);
-  assert.match(sync, /sendHeartbeat\(app, deviceId\);\s*syncDriverProfile\(app, deviceId\);\s*syncPendingReports\(app, deviceId\);\s*fetchRemoteReports\(app, deviceId\);/);
+  assert.match(sync, /try \{ fetchRemoteReports\(app, deviceId\); \}\s*catch/);
+  assert.match(sync, /try \{ syncDriverProfile\(app, deviceId\); \}\s*catch/);
+  assert.ok(sync.indexOf('fetchRemoteReports(app, deviceId);') < sync.indexOf('sendHeartbeat(app, deviceId);'));
   assert.match(sync, /AUTO_SYNC_INTERVAL_MILLIS = 60 \* 1000/);
 });
 

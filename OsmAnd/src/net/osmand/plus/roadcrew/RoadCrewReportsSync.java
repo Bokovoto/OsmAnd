@@ -57,13 +57,15 @@ public final class RoadCrewReportsSync {
 		EXECUTOR.execute(() -> {
 			try {
 				String deviceId = RoadCrewReportsRepository.getLocalDeviceId(app);
-				RoadCrewPushNotifications.ensureRegistered(app);
-				sendHeartbeat(app, deviceId);
-				syncDriverProfile(app, deviceId);
-				syncPendingReports(app, deviceId);
-				fetchRemoteReports(app, deviceId);
-			} catch (IOException | JSONException e) {
-				Log.w(TAG, "RoadCrew sync failed", e);
+				// Incoming data must not wait for, or depend on, an outgoing queue.
+				try { fetchRemoteReports(app, deviceId); }
+				catch (IOException | JSONException e) { Log.w(TAG, "RoadCrew report fetch failed", e); }
+				try { RoadCrewPushNotifications.ensureRegistered(app); sendHeartbeat(app, deviceId); }
+				catch (IOException | JSONException e) { Log.w(TAG, "RoadCrew heartbeat failed", e); }
+				try { syncDriverProfile(app, deviceId); }
+				catch (IOException | JSONException e) { Log.w(TAG, "RoadCrew profile sync failed", e); }
+				try { syncPendingReports(app, deviceId); }
+				catch (IOException | JSONException e) { Log.w(TAG, "RoadCrew pending sync failed", e); }
 			} finally {
 				synchronized (RoadCrewReportsSync.class) {
 					syncRunning = false;
@@ -432,6 +434,8 @@ public final class RoadCrewReportsSync {
 
 	private static void fetchRemoteReports(@NonNull OsmandApplication app, @NonNull String deviceId)
 			throws IOException, JSONException {
+		try { reconcileRemoteReports(app, deviceId); }
+		catch (IOException | JSONException e) { Log.w(TAG, "RoadCrew report states failed", e); }
 		Location location = app.getLocationProvider().getLastKnownLocation();
 		if (location == null) {
 			return;
@@ -456,8 +460,36 @@ public final class RoadCrewReportsSync {
 		}
 	}
 
+	private static void reconcileRemoteReports(@NonNull OsmandApplication app, @NonNull String deviceId)
+			throws IOException, JSONException {
+		List<String> ids = new ArrayList<>();
+		for (RoadCrewReport report : RoadCrewReportsRepository.getReports(app)) {
+			if (isRemoteReport(report)) ids.add(report.getId());
+		}
+		for (int start = 0; start < ids.size(); start += 100) {
+			List<String> batch = ids.subList(start, Math.min(ids.size(), start + 100));
+			JSONObject response = getJson("/v1/reports/states?ids=" + android.text.TextUtils.join(",", batch), deviceId);
+			JSONArray ended = response.getJSONArray("endedIds");
+			JSONArray active = response.getJSONArray("reports");
+			List<RoadCrewReport> updates = new ArrayList<>();
+			for (int i = 0; i < active.length(); i++) {
+				RoadCrewReport report = readRemoteReport(active.getJSONObject(i));
+				if (report != null && batch.contains(report.getId())) updates.add(report);
+			}
+			boolean changed = RoadCrewReportsRepository.mergeRemoteReports(app, updates);
+			// Only an explicit authoritative answer removes a cached report. A failed
+			// nearby fetch, movement out of range or a partial list never does.
+			for (int i = 0; i < ended.length(); i++) {
+				String id = ended.getString(i);
+				if (batch.contains(id)) changed |= RoadCrewReportsRepository.removeReport(app, id);
+			}
+			if (changed) app.runInUIThread(() -> app.getOsmandMap().refreshMap());
+		}
+	}
+
 	private static RoadCrewReport readRemoteReport(@NonNull JSONObject object) {
 		try {
+			if (!"ACTIVE".equals(object.optString("status", "ACTIVE"))) return null;
 			RoadCrewReportType type = RoadCrewReportType.valueOf(object.getString("type"));
 			return new RoadCrewReport(
 					object.getString("id"),
@@ -486,6 +518,7 @@ public final class RoadCrewReportsSync {
 		JSONObject body = new JSONObject();
 		LatLon location = report.getLocation();
 		body.put("type", report.getType().name());
+		body.put("requestId", report.getId());
 		body.put("lat", location.getLatitude());
 		body.put("lon", location.getLongitude());
 		body.put("details", report.getDetails());
@@ -685,6 +718,11 @@ public final class RoadCrewReportsSync {
 		try {
 			JSONObject response = getJson("/v1/reports/" + reportId, deviceId);
 			JSONObject json = response.optJSONObject("report");
+			if (json != null && !"ACTIVE".equals(json.optString("status", "ACTIVE"))) {
+				RoadCrewReportsRepository.removeReport(app, reportId);
+				app.runInUIThread(() -> app.getOsmandMap().refreshMap());
+				return;
+			}
 			RoadCrewReport report = json == null ? null : readRemoteReport(json);
 			if (report != null) {
 				RoadCrewReportsRepository.applyServerState(app, report);
