@@ -3,17 +3,21 @@ package net.osmand.plus.roadcrew.tacho
 import android.app.Application
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import net.osmand.PlatformUtil
 
 /**
- * The Bluetooth card download behind the one "Свали картата" button (ROADMAP 410-411): find the
- * tachograph (RoadCrewTachoBleChoice), pair it through Android if it is new, try a dropped start
- * again, and say which part of the card is coming. Survives rotation without holding the screen.
+ * The Bluetooth card download behind "Свали картата" (ROADMAP 410-411, 439): from the tachograph
+ * shown on the card screen, paired already - pairing is only in the "Тахограф" section
+ * (RoadCrewTachoPairModel; Galin, 03.11.2026). Opening the Bluetooth side looks for the paired
+ * tachographs near the phone and picks the nearest by itself. A dropped start is tried again, and
+ * the part of the card that is coming is named. Survives rotation without holding the screen.
  */
 class RoadCrewTachoBluetoothModel(app: Application) : AndroidViewModel(app) {
-    enum class Step { IDLE, SEARCHING, CHOOSING, PAIRING, CONNECTING, READING_CARD, RECEIVING, SAVING, DONE, FAILED, CANCELLED }
+    enum class Step { IDLE, CONNECTING, READING_CARD, RECEIVING, SAVING, DONE, FAILED, CANCELLED }
 
     data class State(
         val step: Step = Step.IDLE,
@@ -27,34 +31,86 @@ class RoadCrewTachoBluetoothModel(app: Application) : AndroidViewModel(app) {
         val filePercent: Int = 0,
         val filesDone: Int = 0,
         val filesTotal: Int = RoadCrewTachoVuProgress.FILES_G1 + RoadCrewTachoVuProgress.FILES_G2,
-        val choices: List<RoadCrewTachoBleChoice.Candidate> = emptyList(),
         val error: String? = null,
         val file: RoadCrewTachoBluetoothStore.Stored? = null,
     ) {
-        val busy: Boolean get() = step in setOf(Step.SEARCHING, Step.PAIRING, Step.CONNECTING,
-            Step.READING_CARD, Step.RECEIVING, Step.SAVING)
+        val busy: Boolean get() = step in setOf(Step.CONNECTING, Step.READING_CARD, Step.RECEIVING, Step.SAVING)
+    }
+
+    /** The tachograph "Свали картата" reaches: the nearest paired one heard, or the one the driver picked. */
+    data class Nearby(
+        val scanning: Boolean = false,
+        /** The phone's paired tachographs, the heard ones first (RoadCrewTachoBleChoice.pairedWithSignal). */
+        val paired: List<RoadCrewTachoBleChoice.Candidate> = emptyList(),
+        val selected: RoadCrewTachoBleChoice.Candidate? = null,
+        val error: String? = null,
+    ) {
+        val selectedHeard: Boolean get() = selected != null && RoadCrewTachoBleChoice.heard(selected)
     }
 
     val state = MutableLiveData(State())
+    val nearby = MutableLiveData(Nearby())
+    private val main = Handler(Looper.getMainLooper())
     private var worker: Thread? = null
+    private var scanner: Thread? = null
     @Volatile private var transport: RoadCrewTachoBleTransport? = null
     @Volatile private var cancelled = false
     /** Address and name of the tachograph this run reached, for "Опитай пак". */
     @Volatile private var chosen: Pair<String, String>? = null
 
-    /** Find the tachograph near the phone, pair it if it is new, and download. */
-    @Synchronized fun start() = launch { search() }
-
-    /** The driver picked a tachograph from the list (Step.CHOOSING): a new one is paired first. */
-    @Synchronized fun startWith(address: String) = launch {
-        val adapter = adapter() ?: throw java.io.IOException("Bluetooth is off")
-        prepareAndDownload(adapter.getRemoteDevice(address))
+    /**
+     * Opening the Bluetooth side, or Bluetooth just turned on: which paired tachographs are near the
+     * phone. The nearest heard is picked by itself; one the driver picked stays while it is paired.
+     */
+    @Synchronized fun findNearby() {
+        if (worker?.isAlive == true || scanner?.isAlive == true) return
+        nearby.value = (nearby.value ?: Nearby()).copy(scanning = true, error = null)
+        scanner = Thread({
+            var paired = emptyList<RoadCrewTachoBleChoice.Candidate>()
+            var near = emptyList<RoadCrewTachoBleChoice.Candidate>()
+            var error: String? = null
+            try {
+                val adapter = adapter()
+                if (adapter == null || !adapter.isEnabled) throw java.io.IOException("Bluetooth is off")
+                val bonded = RoadCrewTachoBleFinder.bonded(adapter)
+                val heard = RoadCrewTachoBleFinder.scan(adapter, bonded)
+                paired = RoadCrewTachoBleChoice.pairedWithSignal(bonded, heard)
+                near = RoadCrewTachoBleChoice.nearbyPaired(bonded, heard)
+            } catch (e: Exception) {
+                error = e.message ?: e.javaClass.simpleName
+            }
+            // Merged on the main thread with the pick as it is then: the driver may have picked one in
+            // the "Тахограф" section while this scan was still listening.
+            main.post {
+                val now = nearby.value ?: Nearby()
+                val kept = now.selected?.let { s -> paired.firstOrNull { it.address.equals(s.address, ignoreCase = true) } }
+                val picked = near.firstOrNull()?.let { n -> paired.firstOrNull { it.address.equals(n.address, ignoreCase = true) } }
+                nearby.value = if (error != null) Nearby(selected = now.selected, error = error)
+                    else Nearby(paired = paired, selected = kept ?: picked)
+            }
+        }, "RoadCrewTachoNearby").apply { start() }
     }
 
-    /** "Опитай пак": the tachograph chosen before, straight away and without a new search. */
+    /** The driver picked one in the "Тахограф" section, or its wizard paired a new one. */
+    @Synchronized fun select(address: String, name: String, rssi: Int) {
+        val now = nearby.value ?: Nearby()
+        nearby.value = now.copy(selected = RoadCrewTachoBleChoice.Candidate(address, name, true, rssi))
+    }
+
+    /** "Свали картата": the tachograph shown on the screen. Pairing is only in the "Тахограф" section. */
+    @Synchronized fun downloadFrom(address: String) = launch {
+        val adapter = adapter() ?: throw java.io.IOException("Bluetooth is off")
+        val device = adapter.getRemoteDevice(address)
+        val name = device.name ?: address
+        chosen = address to name
+        if (device.bondState != BluetoothDevice.BOND_BONDED) throw java.io.IOException("Pair the tachograph first")
+        download(device, name)
+    }
+
+    /** "Опитай пак": the tachograph tried before, straight away and without a new search. */
     @Synchronized fun retry() {
-        val address = state.value?.address
-        if (address != null) startWith(address) else start()
+        val address = state.value?.address ?: nearby.value?.selected?.address
+        if (address != null) downloadFrom(address)
     }
 
     @Synchronized fun reset() {
@@ -67,13 +123,13 @@ class RoadCrewTachoBluetoothModel(app: Application) : AndroidViewModel(app) {
         worker?.interrupt()
     }
 
-    override fun onCleared() { cancel() }
+    override fun onCleared() { cancel(); scanner?.interrupt() }
 
     private fun launch(job: () -> Unit) {
-        if (worker?.isAlive == true) return
+        if (worker?.isAlive == true || scanner?.isAlive == true) return
         cancelled = false
         chosen = null
-        state.value = State(Step.SEARCHING)
+        state.value = State(Step.CONNECTING)
         worker = Thread({
             try {
                 job()
@@ -86,29 +142,6 @@ class RoadCrewTachoBluetoothModel(app: Application) : AndroidViewModel(app) {
     }
 
     private fun adapter() = getApplication<Application>().getSystemService(BluetoothManager::class.java)?.adapter
-
-    private fun search() {
-        val adapter = adapter()
-        if (adapter == null || !adapter.isEnabled) throw java.io.IOException("Bluetooth is off")
-        val bonded = RoadCrewTachoBleFinder.bonded(adapter)
-        val heard = RoadCrewTachoBleFinder.scan(adapter, bonded)
-        val decision = RoadCrewTachoBleChoice.decide(bonded, heard)
-        when (decision.kind) {
-            RoadCrewTachoBleChoice.Kind.USE -> prepareAndDownload(adapter.getRemoteDevice(decision.candidates[0].address))
-            RoadCrewTachoBleChoice.Kind.ASK -> state.postValue(State(Step.CHOOSING, choices = decision.candidates))
-            RoadCrewTachoBleChoice.Kind.NONE -> throw java.io.IOException("No tachograph nearby")
-        }
-    }
-
-    private fun prepareAndDownload(device: BluetoothDevice) {
-        val name = device.name ?: device.address
-        chosen = device.address to name
-        if (device.bondState != BluetoothDevice.BOND_BONDED) {
-            state.postValue(State(Step.PAIRING, device = name))
-            RoadCrewTachoBleFinder.pair(getApplication(), device)
-        }
-        download(device, name)
-    }
 
     private fun download(device: BluetoothDevice, name: String) {
         var attempt = 1

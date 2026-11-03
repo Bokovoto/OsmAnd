@@ -55,6 +55,11 @@
             android:name="net.osmand.plus.roadcrew.tacho.RoadCrewTachoDayActivity"
             android:exported="false"
             android:label="@string/roadcrew_tacho_analysis_title" />
+        <!-- "Тахограф": the paired tachographs and the wizard for a new one (ROADMAP 439). -->
+        <activity
+            android:name="net.osmand.plus.roadcrew.tacho.RoadCrewTachoTachographActivity"
+            android:exported="false"
+            android:label="@string/roadcrew_tacho_tachograph" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

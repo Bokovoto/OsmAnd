@@ -96,10 +96,13 @@
 				android:orientation="vertical"
 				android:padding="16dp">
 
+				<!-- On Bluetooth a tap opens the "Тахограф" section (ROADMAP 439). -->
 				<LinearLayout
+					android:id="@+id/roadcrewTachoReaderRow"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:gravity="center_vertical"
+					android:minHeight="48dp"
 					android:orientation="horizontal">
 
 					<ImageView
@@ -153,6 +156,14 @@
 							android:textColor="@color/roadcrew_tacho_secondary"
 							android:textSize="13sp" />
 					</LinearLayout>
+
+					<ImageView
+						android:id="@+id/roadcrewTachoReaderChevron"
+						android:layout_width="24dp"
+						android:layout_height="24dp"
+						android:importantForAccessibility="no"
+						android:src="@drawable/roadcrew_tacho_ic_chevron"
+						android:visibility="gone" />
 				</LinearLayout>
 
 				<View

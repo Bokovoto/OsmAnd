@@ -1,9 +1,7 @@
 package net.osmand.plus.roadcrew.tacho;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
@@ -113,6 +111,7 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 	private static final String KEY_SOURCE = "source";
 	private static final int REQUEST_BLUETOOTH = 4082;
 	private static final int REQUEST_BLUETOOTH_ON = 4083;
+	private static final int REQUEST_TACHOGRAPH = 4084;
 
 
 	/** A DDD file in Downloads/RoadCrew that the driver can send. */
@@ -202,8 +201,16 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 	private RoadCrewTachoBluetoothModel ble;
 	@Nullable private RoadCrewTachoBluetoothModel.State bleState;
 	@Nullable private String bleLocalError;
-	/** "Свали картата" asked Android to turn Bluetooth on; the download goes on once it is on. */
-	private boolean bleStartWhenOn;
+	/** The "Тахограф" row asked Android to turn Bluetooth on; once it is on, the tachographs nearby are looked for. */
+	private boolean bleScanWhenOn;
+	/** Opening the Bluetooth side asks for the permission by itself only once per screen. */
+	private boolean blePermissionAsked;
+	/** The permission was asked from the "Тахограф" row: its section opens once it is given. */
+	private boolean bleSectionAfterPermission;
+	/** Which tachograph "Свали картата" reaches (ROADMAP 439). */
+	@Nullable private RoadCrewTachoBluetoothModel.Nearby nearbyState;
+	private View readerRow;
+	private ImageView readerChevron;
 	private View sourceBox;
 	private Button sourceUsb;
 	private Button sourceBluetooth;
@@ -217,9 +224,9 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
-			if (state == BluetoothAdapter.STATE_ON && bleStartWhenOn) {
-				bleStartWhenOn = false;
-				launchBluetooth();
+			if (state == BluetoothAdapter.STATE_ON && source == Source.BLUETOOTH) {
+				bleScanWhenOn = false;
+				lookForTachographs();
 			}
 			render();
 		}
@@ -259,6 +266,10 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 				? Source.BLUETOOTH : Source.USB;
 		ble = new ViewModelProvider(this).get(RoadCrewTachoBluetoothModel.class);
 		ble.getState().observe(this, this::bleChanged);
+		ble.getNearby().observe(this, nearby -> {
+			nearbyState = nearby;
+			render();
+		});
 
 		IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
 		filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
@@ -306,6 +317,9 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		Intent intent = getIntent();
 		findReader(intent == null ? null : intent.getParcelableExtra(UsbManager.EXTRA_DEVICE));
 		loadHistory();
+		if (source == Source.BLUETOOTH) {
+			lookForTachographs();
+		}
 	}
 
 	@Override
@@ -922,6 +936,11 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		readerDetail = findViewById(R.id.roadcrewTachoReaderDetail);
 		readerIcon = findViewById(R.id.roadcrewTachoReaderIcon);
 		readerMark = findViewById(R.id.roadcrewTachoReaderMark);
+		readerRow = findViewById(R.id.roadcrewTachoReaderRow);
+		readerRow.setOnClickListener(v -> onTachographRow());
+		readerRow.setClickable(false);
+		readerChevron = findViewById(R.id.roadcrewTachoReaderChevron);
+		readerChevron.setColorFilter(color(R.color.roadcrew_tacho_secondary));
 		cardStateView = findViewById(R.id.roadcrewTachoCardState);
 		cardDetail = findViewById(R.id.roadcrewTachoCardDetail);
 		cardIcon = findViewById(R.id.roadcrewTachoCardIcon);
@@ -1021,6 +1040,8 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		}
 		readerLabel.setText(R.string.roadcrew_tacho_reader);
 		readerIcon.setImageResource(R.drawable.roadcrew_tacho_ic_usb);
+		readerRow.setClickable(false);
+		readerChevron.setVisibility(View.GONE);
 		keepCardText.setText(R.string.roadcrew_tacho_keep_card);
 		partBar.setVisibility(View.GONE);
 		cancelButton.setVisibility(View.GONE);
@@ -1087,6 +1108,9 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		getSharedPreferences(PREFS, MODE_PRIVATE).edit()
 				.putString(KEY_SOURCE, chosen == Source.BLUETOOTH ? "bluetooth" : "usb").apply();
 		render();
+		if (chosen == Source.BLUETOOTH) {
+			lookForTachographs();
+		}
 	}
 
 	private void renderSource() {
@@ -1102,42 +1126,100 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		button.setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
 	}
 
-	/** One button: the model finds the tachograph, pairs it through Android if new, and downloads. */
+	/**
+	 * "Свали картата": from the tachograph shown above, or "Опитай пак" to the one just tried. Pairing
+	 * is only in the "Тахограф" section (Galin, 03.11.2026) - no failed attempts here.
+	 */
 	private void startBluetooth() {
+		List<String> missing = missingBluetoothPermissions();
+		if (!missing.isEmpty()) {
+			requestPermissions(missing.toArray(new String[0]), REQUEST_BLUETOOTH);
+			return;
+		}
+		bleLocalError = null;
+		if (bleState != null && bleState.getStep() == RoadCrewTachoBluetoothModel.Step.FAILED) {
+			ble.retry();
+			return;
+		}
+		RoadCrewTachoBleChoice.Candidate selected = nearby().getSelected();
+		if (selected != null) {
+			ble.downloadFrom(selected.address);
+		}
+	}
+
+	/**
+	 * The Bluetooth side opens, Bluetooth comes on, the permission is given: which paired tachographs
+	 * are near the phone - the nearest is picked by itself (Galin, 03.11.2026).
+	 */
+	private void lookForTachographs() {
+		BluetoothAdapter adapter = bluetoothAdapter();
+		if (adapter == null || !adapter.isEnabled() || (bleState != null && bleState.getBusy())) {
+			return;
+		}
+		List<String> missing = missingBluetoothPermissions();
+		if (!missing.isEmpty()) {
+			if (!blePermissionAsked) {
+				blePermissionAsked = true;
+				requestPermissions(missing.toArray(new String[0]), REQUEST_BLUETOOTH);
+			}
+			return;
+		}
+		ble.findNearby();
+	}
+
+	/** The "Тахограф" row: Bluetooth allowed and on first, then the section with the paired tachographs and "Нов тахограф". */
+	private void onTachographRow() {
+		if (source != Source.BLUETOOTH || busy || (bleState != null && bleState.getBusy())) {
+			return;
+		}
+		BluetoothAdapter adapter = bluetoothAdapter();
+		if (adapter == null) {
+			return;
+		}
+		List<String> missing = missingBluetoothPermissions();
+		if (!missing.isEmpty()) {
+			bleSectionAfterPermission = true;
+			requestPermissions(missing.toArray(new String[0]), REQUEST_BLUETOOTH);
+			return;
+		}
+		if (!adapter.isEnabled()) {
+			askBluetoothOn();
+			return;
+		}
+		Intent intent = new Intent(this, RoadCrewTachoTachographActivity.class);
+		RoadCrewTachoBleChoice.Candidate selected = nearby().getSelected();
+		if (selected != null) {
+			intent.putExtra(RoadCrewTachoTachographActivity.EXTRA_SELECTED, selected.address);
+		}
+		startActivityForResult(intent, REQUEST_TACHOGRAPH);
+	}
+
+	/** Android's own question: Bluetooth goes on only when the driver says yes (Galin, 03.11.2026). */
+	private void askBluetoothOn() {
+		try {
+			bleScanWhenOn = true;
+			startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), REQUEST_BLUETOOTH_ON);
+		} catch (RuntimeException e) {
+			bleScanWhenOn = false;
+			bleLocalError = getString(R.string.roadcrew_tacho_ble_off);
+			render();
+		}
+	}
+
+	@NonNull
+	private List<String> missingBluetoothPermissions() {
 		List<String> missing = new ArrayList<>();
 		for (String permission : bluetoothPermissions()) {
 			if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
 				missing.add(permission);
 			}
 		}
-		if (!missing.isEmpty()) {
-			requestPermissions(missing.toArray(new String[0]), REQUEST_BLUETOOTH);
-			return;
-		}
-		bleLocalError = null;
-		launchBluetooth();
+		return missing;
 	}
 
-	/** "Свали картата", or "Опитай пак" after a failure: the same tachograph again when one was chosen. */
-	private void launchBluetooth() {
-		BluetoothAdapter adapter = bluetoothAdapter();
-		if (adapter != null && !adapter.isEnabled()) {
-			// Android's own question: Bluetooth goes on only when the driver says yes (Galin, 03.11.2026).
-			try {
-				bleStartWhenOn = true;
-				startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), REQUEST_BLUETOOTH_ON);
-			} catch (RuntimeException e) {
-				bleStartWhenOn = false;
-				bleLocalError = getString(R.string.roadcrew_tacho_ble_off);
-				render();
-			}
-			return;
-		}
-		if (bleState != null && bleState.getStep() == RoadCrewTachoBluetoothModel.Step.FAILED) {
-			ble.retry();
-		} else {
-			ble.start();
-		}
+	@NonNull
+	private RoadCrewTachoBluetoothModel.Nearby nearby() {
+		return nearbyState == null ? new RoadCrewTachoBluetoothModel.Nearby() : nearbyState;
 	}
 
 	private static String[] bluetoothPermissions() {
@@ -1157,9 +1239,16 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		for (int result : grantResults) {
 			granted &= result == PackageManager.PERMISSION_GRANTED;
 		}
+		boolean section = bleSectionAfterPermission;
+		bleSectionAfterPermission = false;
 		if (granted) {
 			bleLocalError = null;
-			launchBluetooth();
+			if (section) {
+				onTachographRow();
+			} else {
+				lookForTachographs();
+			}
+			render();
 		} else {
 			bleLocalError = getString(R.string.roadcrew_tacho_ble_permission);
 			render();
@@ -1178,29 +1267,7 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		if (step == RoadCrewTachoBluetoothModel.Step.DONE && before != step) {
 			loadHistory();
 		}
-		if (step == RoadCrewTachoBluetoothModel.Step.CHOOSING && before != step) {
-			chooseTachograph(state.getChoices());
-		}
 		render();
-	}
-
-	/** A new tachograph, or more than one in range (Galin, 03.11.2026): nearest first, the paired ones marked. */
-	private void chooseTachograph(List<RoadCrewTachoBleChoice.Candidate> choices) {
-		String[] labels = new String[choices.size()];
-		for (int i = 0; i < labels.length; i++) {
-			String name = choices.get(i).name;
-			labels[i] = choices.get(i).bonded ? getString(R.string.roadcrew_tacho_ble_choice_paired, name) : name;
-			// Nearest first: the cab the phone is in is usually the strongest signal.
-			if (i == 0) {
-				labels[i] = getString(R.string.roadcrew_tacho_ble_nearest, labels[i]);
-			}
-		}
-		new AlertDialog.Builder(this)
-				.setTitle(R.string.roadcrew_tacho_ble_which)
-				.setItems(labels, (dialog, which) -> ble.startWith(choices.get(which).address))
-				.setNegativeButton(R.string.roadcrew_tacho_ble_cancel, (dialog, which) -> ble.reset())
-				.setOnCancelListener(dialog -> ble.reset())
-				.show();
 	}
 
 	@Nullable
@@ -1247,9 +1314,12 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		downloadButton.setText(failed ? R.string.roadcrew_tacho_ble_retry_button : R.string.roadcrew_tacho_download);
 		hint.setVisibility(idle ? View.VISIBLE : View.GONE);
 		BluetoothAdapter adapter = bluetoothAdapter();
-		hint.setText(pairedAreVdo(adapter) ? R.string.roadcrew_tacho_ble_hint_vdo : R.string.roadcrew_tacho_ble_hint);
-		// With Bluetooth off the button stays: it asks Android to turn it on (launchBluetooth).
-		boolean ready = adapter != null && !bleBusy && !busy;
+		RoadCrewTachoBluetoothModel.Nearby n = nearby();
+		// "Свали картата" reaches the tachograph shown above; "Опитай пак" the one just tried.
+		String target = failed && s.getAddress() != null ? s.getAddress()
+				: n.getSelected() == null ? null : n.getSelected().address;
+		hint.setText(target == null ? R.string.roadcrew_tacho_ble_hint_pick : R.string.roadcrew_tacho_ble_hint);
+		boolean ready = target != null && adapter != null && adapter.isEnabled() && !n.getScanning() && !bleBusy && !busy;
 		downloadButton.setEnabled(ready);
 		downloadButton.setBackground(shape(ready ? R.color.roadcrew_tacho_accent : R.color.roadcrew_tacho_off_bg, 0, 14, false));
 		int buttonText = ready ? Color.WHITE : color(R.color.roadcrew_tacho_disabled_text);
@@ -1272,17 +1342,9 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 
 	private void renderTachograph(RoadCrewTachoBluetoothModel.State s) {
 		String device = s.getDevice() == null ? "" : s.getDevice();
+		readerRow.setClickable(false);
+		readerChevron.setVisibility(View.GONE);
 		switch (s.getStep()) {
-			case SEARCHING:
-				statusIcon(readerIcon, readerMark, readerState, false);
-				readerState.setText(R.string.roadcrew_tacho_ble_searching_state);
-				readerDetail.setText("");
-				return;
-			case PAIRING:
-				statusIcon(readerIcon, readerMark, readerState, false);
-				readerState.setText(R.string.roadcrew_tacho_ble_pairing_state);
-				readerDetail.setText(getString(R.string.roadcrew_tacho_ble_chosen, device));
-				return;
 			case CONNECTING:
 				statusIcon(readerIcon, readerMark, readerState, true);
 				readerState.setText(R.string.roadcrew_tacho_ble_connecting_state);
@@ -1298,52 +1360,38 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 			default:
 				break;
 		}
+		// Idle, done or failed: the tachograph "Свали картата" reaches, found when the Bluetooth side
+		// opened; a tap opens the "Тахограф" section (Galin, 03.11.2026).
+		readerRow.setClickable(true);
+		readerChevron.setVisibility(View.VISIBLE);
 		BluetoothAdapter adapter = bluetoothAdapter();
+		RoadCrewTachoBluetoothModel.Nearby n = nearby();
+		RoadCrewTachoBleChoice.Candidate selected = n.getSelected();
 		if (adapter == null || !adapter.isEnabled()) {
 			statusIcon(readerIcon, readerMark, readerState, false);
 			readerState.setText(R.string.roadcrew_tacho_ble_off);
 			readerDetail.setText(R.string.roadcrew_tacho_ble_off_detail);
-			return;
-		}
-		List<String> paired = pairedTachographs(adapter);
-		if (paired == null) {
-			// Android does not let us read the paired list yet: the button asks for that.
+		} else if (!missingBluetoothPermissions().isEmpty()) {
 			statusIcon(readerIcon, readerMark, readerState, false);
-			readerState.setText(R.string.roadcrew_tacho_source_bluetooth);
-			readerDetail.setText(R.string.roadcrew_tacho_ble_not_paired_detail);
-		} else if (paired.size() == 1) {
+			readerState.setText(R.string.roadcrew_tacho_ble_permission);
+			readerDetail.setText(R.string.roadcrew_tacho_ble_permission_detail);
+		} else if (n.getScanning()) {
+			statusIcon(readerIcon, readerMark, readerState, false);
+			readerState.setText(R.string.roadcrew_tacho_ble_searching_state);
+			readerDetail.setText(selected == null ? "" : selected.name);
+		} else if (selected != null && n.getSelectedHeard()) {
 			statusIcon(readerIcon, readerMark, readerState, true);
-			readerState.setText(R.string.roadcrew_tacho_ble_paired);
-			readerDetail.setText(paired.get(0));
-		} else if (paired.size() > 1) {
-			statusIcon(readerIcon, readerMark, readerState, true);
-			readerState.setText(getString(R.string.roadcrew_tacho_ble_paired_several, paired.size()));
-			readerDetail.setText(R.string.roadcrew_tacho_ble_paired_several_detail);
+			readerState.setText(R.string.roadcrew_tacho_ble_nearby);
+			readerDetail.setText(selected.name);
+		} else if (selected != null) {
+			statusIcon(readerIcon, readerMark, readerState, false);
+			readerState.setText(R.string.roadcrew_tacho_ble_selected);
+			readerDetail.setText(getString(R.string.roadcrew_tacho_ble_selected_not_heard, selected.name));
 		} else {
 			statusIcon(readerIcon, readerMark, readerState, false);
-			readerState.setText(R.string.roadcrew_tacho_ble_not_paired);
-			readerDetail.setText(R.string.roadcrew_tacho_ble_not_paired_detail);
+			readerState.setText(R.string.roadcrew_tacho_ble_none_nearby);
+			readerDetail.setText(R.string.roadcrew_tacho_ble_none_nearby_detail);
 		}
-	}
-
-	/** Paired tachographs by name; null while Android does not let us read the list. */
-	@Nullable
-	private List<String> pairedTachographs(BluetoothAdapter adapter) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-				&& checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-			return null;
-		}
-		List<String> names = new ArrayList<>();
-		try {
-			for (BluetoothDevice device : adapter.getBondedDevices()) {
-				if (RoadCrewTachoBleChoice.isTachograph(device.getName())) {
-					names.add(device.getName());
-				}
-			}
-		} catch (SecurityException e) {
-			return null;
-		}
-		return names;
 	}
 
 	private void renderBleCard(RoadCrewTachoBluetoothModel.State s) {
@@ -1371,14 +1419,6 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		String percent = "";
 		int bar = 0;
 		switch (s.getStep()) {
-			case SEARCHING:
-				title = getString(R.string.roadcrew_tacho_ble_searching);
-				break;
-			case PAIRING:
-				title = getString(R.string.roadcrew_tacho_ble_pairing, s.getDevice());
-				line = getString(vdo(s.getDevice())
-						? R.string.roadcrew_tacho_ble_pairing_body_vdo : R.string.roadcrew_tacho_ble_pairing_body);
-				break;
 			case CONNECTING:
 				title = getString(R.string.roadcrew_tacho_ble_connecting);
 				if (s.getRetrying()) {
@@ -1431,11 +1471,8 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		if (e.contains("Bluetooth is off")) {
 			return getString(R.string.roadcrew_tacho_ble_off);
 		}
-		if (e.contains("No tachograph nearby")) {
-			return getString(R.string.roadcrew_tacho_ble_none_found);
-		}
-		if (e.startsWith("Pairing")) {
-			return getString(R.string.roadcrew_tacho_ble_pairing_failed);
+		if (e.contains("Pair the tachograph first")) {
+			return getString(R.string.roadcrew_tacho_ble_unpaired_title);
 		}
 		if (refused(e)) {
 			return getString(R.string.roadcrew_tacho_ble_refused_title);
@@ -1448,12 +1485,9 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 		if (e.contains("Bluetooth is off")) {
 			return getString(R.string.roadcrew_tacho_ble_off_body);
 		}
-		if (e.contains("No tachograph nearby")) {
-			return getString(R.string.roadcrew_tacho_ble_none_found_body);
-		}
-		if (e.startsWith("Pairing")) {
-			return getString(vdo(device)
-					? R.string.roadcrew_tacho_ble_pairing_failed_body_vdo : R.string.roadcrew_tacho_ble_pairing_failed_body);
+		// The pairing was removed in the phone's settings since: pairing is only in "Тахограф".
+		if (e.contains("Pair the tachograph first")) {
+			return getString(R.string.roadcrew_tacho_ble_unpaired_body);
 		}
 		if (refused(e)) {
 			return getString(vdo(device)
@@ -1473,21 +1507,6 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 	/** VDO's menu paths are shown only for a VDO (DTCO-<serial>); a Stoneridge's menu is not known. */
 	private static boolean vdo(@Nullable String name) {
 		return name != null && name.startsWith("DTCO-");
-	}
-
-	/** Before a download the maker is known only from the paired tachographs, and only when all are VDO. */
-	private boolean pairedAreVdo(@Nullable BluetoothAdapter adapter) {
-		// As renderTachograph: the paired list is read only with Bluetooth on.
-		List<String> paired = adapter == null || !adapter.isEnabled() ? null : pairedTachographs(adapter);
-		if (paired == null || paired.isEmpty()) {
-			return false;
-		}
-		for (String name : paired) {
-			if (!vdo(name)) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	// ---- How much is left (ROADMAP 408) ----------------------------------------------------------
@@ -1517,13 +1536,28 @@ public final class RoadCrewTachoCardActivity extends ComponentActivity {
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_BLUETOOTH_ON) {
-			// "Да": the download goes on, here or when the switch reports it on; "Не": nothing more.
+			// "Да": the tachographs nearby are looked for, here or when the switch reports it on; "Не": nothing more.
 			BluetoothAdapter adapter = bluetoothAdapter();
 			if (resultCode != RESULT_OK) {
-				bleStartWhenOn = false;
-			} else if (bleStartWhenOn && adapter != null && adapter.isEnabled()) {
-				bleStartWhenOn = false;
-				launchBluetooth();
+				bleScanWhenOn = false;
+			} else if (bleScanWhenOn && adapter != null && adapter.isEnabled()) {
+				bleScanWhenOn = false;
+				lookForTachographs();
+			}
+			render();
+			return;
+		}
+		if (requestCode == REQUEST_TACHOGRAPH) {
+			// The "Тахограф" section: one picked, or a new one paired; closed without one - look again.
+			String address = data == null ? null : data.getStringExtra(RoadCrewTachoTachographActivity.EXTRA_ADDRESS);
+			if (resultCode == RESULT_OK && address != null) {
+				String name = data.getStringExtra(RoadCrewTachoTachographActivity.EXTRA_NAME);
+				ble.select(address, name == null ? address : name,
+						data.getIntExtra(RoadCrewTachoTachographActivity.EXTRA_RSSI, Integer.MIN_VALUE));
+				bleLocalError = null;
+				ble.reset();
+			} else {
+				lookForTachographs();
 			}
 			render();
 			return;
