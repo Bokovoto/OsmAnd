@@ -114,15 +114,67 @@ test('after a failure "Опитай пак" goes to the same tachograph, without
   assert.match(screen, /getString\(R\.string\.roadcrew_tacho_ble_nearest, /);
 });
 
-test('pairing texts give the tachograph menu with Водач 1, and no other app by name', () => {
-  const value = (xml, key) => (xml.match(new RegExp(`name="${key}">([^<]*)<`)) || [])[1] || '';
-  const bg = read('res/values-bg/roadcrew_tacho_strings.xml');
-  const en = read('res/values/roadcrew_tacho_strings.xml');
+const value = (xml, key) => (xml.match(new RegExp(`name="${key}">([^<]*)<`)) || [])[1] || '';
+const bg = read('res/values-bg/roadcrew_tacho_strings.xml');
+const en = read('res/values/roadcrew_tacho_strings.xml');
+
+// Galin, 03.11.2026: the menu path is VDO's, so only a VDO (DTCO-) is shown it; with the maker
+// not known yet, or a Stoneridge, the text names no menu.
+test('pairing texts give the VDO menu with Водач 1 only for a VDO, and no other app by name', () => {
+  for (const key of ['ble_hint', 'ble_pairing_body', 'ble_pairing_failed_body']) {
+    assert.ok(value(bg, `roadcrew_tacho_${key}_vdo`).includes('Меню → Водач 1 → Bluetooth → Свързване'), key);
+    assert.ok(value(en, `roadcrew_tacho_${key}_vdo`).includes('Menu → Driver 1 → Bluetooth → Connect'), key);
+  }
   for (const key of ['ble_hint', 'ble_not_paired_detail', 'ble_pairing_body', 'ble_pairing_failed_body']) {
-    assert.ok(value(bg, `roadcrew_tacho_${key}`).includes('Меню → Водач 1 → Bluetooth → Свързване'), key);
-    assert.ok(value(en, `roadcrew_tacho_${key}`).includes('Menu → Driver 1 → Bluetooth → Connect'), key);
+    assert.ok(value(bg, `roadcrew_tacho_${key}`).includes('Bluetooth'), key);
+    assert.doesNotMatch(value(bg, `roadcrew_tacho_${key}`), /Водач 1|Меню/, key);
+    assert.doesNotMatch(value(en, `roadcrew_tacho_${key}`), /Driver 1|Menu/, key);
+  }
+  assert.match(screen, /name != null && name\.startsWith\("DTCO-"\)/);
+  for (const key of ['ble_hint_vdo', 'ble_pairing_body_vdo', 'ble_pairing_failed_body_vdo']) {
+    assert.ok(screen.includes(`R.string.roadcrew_tacho_${key}`), key);
   }
   for (const xml of [bg, en]) {
     assert.doesNotMatch(xml, /Tacho Manager/);
   }
+});
+
+// Galin, 03.11.2026: "Bluetooth descriptor failed (133)" after a good pairing is a VDO with
+// "Данни от VDO" or "ИТС издаване" not set to "Да".
+test('code 133 after pairing: a VDO is shown both settings, any other tachograph no VDO menu', () => {
+  assert.ok(screen.includes('"descriptor failed (133)"'));
+  assert.ok(screen.includes('R.string.roadcrew_tacho_ble_refused_title'));
+  assert.ok(screen.includes('R.string.roadcrew_tacho_ble_refused_body_vdo'));
+  assert.ok(screen.includes('R.string.roadcrew_tacho_ble_refused_body)'));
+  const vdo = value(bg, 'roadcrew_tacho_ble_refused_body_vdo');
+  assert.ok(vdo.includes('Меню → Водач 1 → Настройки → Данни от VDO → Да'));
+  assert.ok(vdo.includes('Меню → Водач 1 → Настройки → ИТС издаване → Да'));
+  assert.ok(vdo.includes('Опитай пак') && vdo.includes('133'));
+  const other = value(bg, 'roadcrew_tacho_ble_refused_body');
+  assert.doesNotMatch(other, /VDO|Водач 1|ИТС/);
+  assert.ok(other.includes('Опитай пак') && other.includes('133'));
+  assert.equal(value(bg, 'roadcrew_tacho_ble_refused_title'), 'Тахографът не даде данните');
+  for (const key of ['ble_refused_title', 'ble_refused_body_vdo', 'ble_refused_body']) {
+    assert.ok(value(en, `roadcrew_tacho_${key}`), key);
+  }
+});
+
+// Galin, 03.11.2026: several tachographs in range are the driver's choice, the paired ones marked.
+test('the list of tachographs marks the paired ones', () => {
+  assert.match(screen, /choices\.get\(i\)\.bonded \? getString\(R\.string\.roadcrew_tacho_ble_choice_paired/);
+  assert.ok(value(bg, 'roadcrew_tacho_ble_choice_paired').includes('сдвоен'));
+  assert.ok(value(en, 'roadcrew_tacho_ble_choice_paired'));
+  // The scan listens to the end: stopping at the first paired one would hide a second truck.
+  assert.doesNotMatch(finder, /in pairedTachographs\) enough\.countDown\(\)/);
+  assert.match(finder, /onScanFailed[\s\S]*?enough\.countDown\(\)/);
+});
+
+// Galin, 03.11.2026: the screen follows the Bluetooth switch, and with it off the button asks
+// Android to turn it on - the driver answers Android's own question, nothing is switched silently.
+test('Bluetooth off: the screen follows the switch and the button asks Android to turn it on', () => {
+  assert.ok(screen.includes('BluetoothAdapter.ACTION_STATE_CHANGED'));
+  assert.ok(screen.includes('new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)'));
+  assert.doesNotMatch(screen + model, /adapter\(?\)?\.enable\(\)|\.enable\(\);/);
+  assert.doesNotMatch(screen, /boolean ready = adapter != null && adapter\.isEnabled\(\)/);
+  assert.match(screen, /unregisterReceiver\(bluetoothReceiver\)/);
 });

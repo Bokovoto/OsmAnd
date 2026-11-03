@@ -45,7 +45,7 @@ class RoadCrewTachoBluetoothModel(app: Application) : AndroidViewModel(app) {
     /** Find the tachograph near the phone, pair it if it is new, and download. */
     @Synchronized fun start() = launch { search() }
 
-    /** The driver picked one of several unpaired tachographs (Step.CHOOSING). */
+    /** The driver picked a tachograph from the list (Step.CHOOSING): a new one is paired first. */
     @Synchronized fun startWith(address: String) = launch {
         val adapter = adapter() ?: throw java.io.IOException("Bluetooth is off")
         prepareAndDownload(adapter.getRemoteDevice(address))

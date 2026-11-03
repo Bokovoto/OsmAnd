@@ -25,7 +25,10 @@ import java.util.concurrent.TimeUnit
  */
 @SuppressLint("MissingPermission")
 object RoadCrewTachoBleFinder {
-    /** Tacho Manager scanned 6 s on 11.10.2026; a paired tachograph heard ends it sooner. */
+    /**
+     * Tacho Manager scanned 6 s on 11.10.2026. Listened to the end even once a paired tachograph is
+     * heard, so a second one in range goes on the list too (Galin, 03.11.2026).
+     */
     private const val SCAN_MILLIS = 5000L
     private const val PAIR_MILLIS = 120_000L
 
@@ -47,7 +50,6 @@ object RoadCrewTachoBleFinder {
                 if (!RoadCrewTachoBleChoice.isTachograph(name)) return
                 val address = result.device.address.uppercase()
                 heard[address] = RoadCrewTachoBleChoice.Candidate(address, name, address in pairedTachographs, result.rssi)
-                if (address in pairedTachographs) enough.countDown()
             }
 
             override fun onScanFailed(errorCode: Int) {

@@ -2,7 +2,6 @@ package net.osmand.plus.roadcrew.tacho;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -10,6 +9,8 @@ import java.util.List;
  * again (ROADMAP 411). Galin, 11.10.2026: no "paired tachograph" / "first pairing" buttons - a
  * paired tachograph is found by itself; a new one is always picked from the list, even when it is
  * the only one in range, so a truck parked nearby is never paired without the driver choosing it.
+ * Galin, 03.11.2026: with more than one tachograph in range the driver picks, paired or not - the
+ * strongest signal is not always the truck he drives now.
  */
 public final class RoadCrewTachoBleChoice {
 
@@ -64,26 +65,19 @@ public final class RoadCrewTachoBleChoice {
 				pairedTachographs.add(candidate);
 			}
 		}
-		List<Candidate> heardPaired = new ArrayList<>();
-		List<Candidate> heardNew = new ArrayList<>();
+		List<Candidate> heard = new ArrayList<>();
 		for (Candidate candidate : seen) {
-			if (!isTachograph(candidate.name)) {
-				continue;
-			}
-			if (contains(pairedTachographs, candidate.address)) {
-				heardPaired.add(candidate);
-			} else {
-				heardNew.add(candidate);
+			if (isTachograph(candidate.name)) {
+				heard.add(candidate);
 			}
 		}
-		Comparator<Candidate> nearestFirst = (a, b) -> Integer.compare(b.rssi, a.rssi);
-		if (!heardPaired.isEmpty()) {
-			heardPaired.sort(nearestFirst);
-			return new Decision(Kind.USE, Collections.singletonList(heardPaired.get(0)));
+		// One tachograph in range and it is paired: straight to it. Anything else is the driver's pick.
+		if (heard.size() == 1 && contains(pairedTachographs, heard.get(0).address)) {
+			return new Decision(Kind.USE, heard);
 		}
-		if (!heardNew.isEmpty()) {
-			heardNew.sort(nearestFirst);
-			return new Decision(Kind.ASK, heardNew);
+		if (!heard.isEmpty()) {
+			heard.sort((a, b) -> Integer.compare(b.rssi, a.rssi));
+			return new Decision(Kind.ASK, heard);
 		}
 		if (pairedTachographs.size() == 1) {
 			return new Decision(Kind.USE, pairedTachographs);
