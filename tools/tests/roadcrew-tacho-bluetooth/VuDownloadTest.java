@@ -67,6 +67,22 @@ public class VuDownloadTest {
     return out.toByteArray();
   }
   public static void main(String[] args) throws Exception {
+    // GATT capability combinations, independently for FIFO and credits (ROADMAP 422).
+    // Keep VDO's no-response writes when available, accept acknowledged writes otherwise.
+    for (int bits = 0; bits < 16; bits++) {
+      boolean indications = (bits & 1) != 0, cccd = (bits & 2) != 0;
+      boolean withoutResponse = (bits & 4) != 0, withResponse = (bits & 8) != 0;
+      if (indications && cccd && (withoutResponse || withResponse)) {
+        check(RoadCrewTachoVuDownload.useWriteWithoutResponse(indications, cccd,
+            withoutResponse, withResponse) == withoutResponse);
+      } else {
+        fails(() -> RoadCrewTachoVuDownload.useWriteWithoutResponse(indications, cccd,
+            withoutResponse, withResponse));
+      }
+    }
+    check(RoadCrewTachoVuDownload.useWriteWithoutResponse(true, true, true, false));
+    check(!RoadCrewTachoVuDownload.useWriteWithoutResponse(true, true, false, true));
+
     Wire w = new Wire();
     w.replies.add(reply(0x7f, 0x36, 0x78));
     int[] full = new int[255]; full[0] = 0x76; full[1] = 6; full[3] = 1;

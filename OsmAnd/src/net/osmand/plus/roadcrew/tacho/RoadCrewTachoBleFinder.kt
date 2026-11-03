@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * Finds the tachograph and pairs it the way Tacho Manager does (ROADMAP 411): a short scan
- * that hears only DTCO-<serial>, and Android's own pairing - the system shows the code and the
+ * that accepts DTCO-<serial> and SE5000-<serial>, and Android's own pairing - the system shows the code and the
  * driver confirms it on the phone and on the tachograph. Nothing here sets a PIN or confirms
  * for the driver.
  */

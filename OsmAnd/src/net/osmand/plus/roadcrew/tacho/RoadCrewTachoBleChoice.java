@@ -48,9 +48,9 @@ public final class RoadCrewTachoBleChoice {
 	private RoadCrewTachoBleChoice() {
 	}
 
-	/** VDO's DTCO 4.1 names itself DTCO-<serial> (ROADMAP 407); that pipe is the one we speak. */
+	/** Documented device names: VDO DTCO-<serial> and Stoneridge SE5000-<serial> (ROADMAP 422). */
 	public static boolean isTachograph(String name) {
-		return name != null && name.startsWith("DTCO-");
+		return name != null && (name.startsWith("DTCO-") || name.startsWith("SE5000-"));
 	}
 
 	/**

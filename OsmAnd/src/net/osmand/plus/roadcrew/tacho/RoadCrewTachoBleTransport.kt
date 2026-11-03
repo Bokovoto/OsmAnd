@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothGattDescriptor
 import android.bluetooth.BluetoothProfile
 import android.content.Context
+import net.osmand.PlatformUtil
 import java.io.Closeable
 import java.io.IOException
 import java.util.ArrayDeque
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit
 @Suppress("DEPRECATION")
 class RoadCrewTachoBleTransport : RoadCrewTachoVuDownload.Channel, Closeable {
     companion object {
-        // UUIDs from the phone's GATT cache, correlated with its successful DTCO 4.1 download.
+        // Shared ITS download UUIDs; also published in Stoneridge's Smart 2 transport specification.
         val SERVICE: UUID = UUID.fromString("eef90782-55dd-4388-b80b-695aba7a69b5")
         val DATA: UUID = UUID.fromString("29d3a479-1592-47df-80a4-afa742d369bb")
         val CREDIT: UUID = UUID.fromString("db9c4128-bff3-41fe-a306-fb6f9a8aeb2d")
@@ -67,7 +68,7 @@ class RoadCrewTachoBleTransport : RoadCrewTachoVuDownload.Channel, Closeable {
     @Throws(IOException::class)
     fun connect(context: Context, device: BluetoothDevice) {
         checkOpen()
-        // Pairing is performed by Android and confirmed by the driver on the DTCO, never bypassed.
+        // Pairing is performed by Android and confirmed by the driver on the tachograph, never bypassed.
         if (device.bondState != BluetoothDevice.BOND_BONDED) throw IOException("Pair the tachograph first")
         val connected = device.connectGatt(context.applicationContext, false, callback, BluetoothDevice.TRANSPORT_LE)
             ?: throw IOException("Could not open Bluetooth")
@@ -83,9 +84,7 @@ class RoadCrewTachoBleTransport : RoadCrewTachoVuDownload.Channel, Closeable {
             data = service.getCharacteristic(DATA) ?: throw IOException("Download characteristic missing")
             credit = service.getCharacteristic(CREDIT) ?: throw IOException("Credit characteristic missing")
             for (c in listOf(data, credit)) {
-                val required = BluetoothGattCharacteristic.PROPERTY_INDICATE or BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE
-                if (c.properties and required != required || c.getDescriptor(CCCD) == null)
-                    throw IOException("Unsupported download characteristic properties")
+                configureCharacteristic(c)
             }
             if (!connected.requestMtu(240)) throw IOException("Could not negotiate Bluetooth MTU")
             mtu = await("mtu", null, 10_000).number
@@ -146,9 +145,28 @@ class RoadCrewTachoBleTransport : RoadCrewTachoVuDownload.Channel, Closeable {
         write(credit, byteArrayOf(RoadCrewTachoVuDownload.Credits.WINDOW.toByte()))
     }
 
+    private fun configureCharacteristic(c: BluetoothGattCharacteristic) {
+        val properties = c.properties
+        val hasCccd = c.getDescriptor(CCCD) != null
+        val role = if (c.uuid == DATA) "FIFO" else "credits"
+        // Capabilities only: no device address, name or card data in the diagnostic.
+        val details = "$role properties=0x${Integer.toHexString(properties)} cccd=$hasCccd"
+        PlatformUtil.getLog(RoadCrewTachoBleTransport::class.java).info("Tachograph GATT $details")
+        val withoutResponse = try {
+            RoadCrewTachoVuDownload.useWriteWithoutResponse(
+                properties and BluetoothGattCharacteristic.PROPERTY_INDICATE != 0,
+                hasCccd,
+                properties and BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE != 0,
+                properties and BluetoothGattCharacteristic.PROPERTY_WRITE != 0)
+        } catch (e: IOException) {
+            throw IOException("${e.message} ($details)", e)
+        }
+        c.writeType = if (withoutResponse) BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
+            else BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
+    }
+
     private fun write(c: BluetoothGattCharacteristic, bytes: ByteArray) {
         checkOpen()
-        c.writeType = BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
         c.value = bytes
         if (gatt?.writeCharacteristic(c) != true) throw IOException("Bluetooth write could not start")
         await("write", c.uuid, 10_000)

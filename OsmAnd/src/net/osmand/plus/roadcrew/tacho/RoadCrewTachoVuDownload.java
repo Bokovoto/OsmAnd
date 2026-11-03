@@ -32,6 +32,15 @@ public final class RoadCrewTachoVuDownload {
 	private static final long PENDING_MILLIS = 3 * 60 * 1000L;
 	private RoadCrewTachoVuDownload() { }
 
+	/** Shared ITS profile: both write modes are valid; prefer the mode already used for VDO. */
+	public static boolean useWriteWithoutResponse(boolean indications, boolean cccd,
+			boolean withoutResponse, boolean withResponse) throws IOException {
+		if (!indications) throw new IOException("Unsupported download indications");
+		if (!cccd) throw new IOException("Unsupported download CCCD missing");
+		if (!withoutResponse && !withResponse) throw new IOException("Unsupported download write properties");
+		return withoutResponse;
+	}
+
 	public static byte[] download(Channel channel, Progress progress) throws IOException {
 		channel.send(new byte[] {(byte) 0x81, (byte) 0xee, (byte) 0xf0, (byte) 0x81, (byte) 0xe0});
 		expect(channel, 0x81, new int[] {0xc1, 0xea, 0x8f});

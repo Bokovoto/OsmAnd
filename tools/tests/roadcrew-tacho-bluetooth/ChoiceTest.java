@@ -54,6 +54,23 @@ public class ChoiceTest {
     check(!RoadCrewTachoBleChoice.again(1, false, "Download cancelled"));
     check(!RoadCrewTachoBleChoice.again(1, false, "Unsupported tachograph Bluetooth profile"));
     check(RoadCrewTachoBleChoice.ATTEMPTS == 3);
+
+    // Both documented name prefixes use the same selection rules (ROADMAP 422).
+    Candidate stoneridge = c("12:34:56:00:00:01", "SE5000-1234567890", true, -60);
+    Candidate newStoneridge = c("12:34:56:00:00:02", "SE5000-0987654321", false, -70);
+    check(RoadCrewTachoBleChoice.isTachograph(stoneridge.name));
+    check(!RoadCrewTachoBleChoice.isTachograph("HEADSET-SE5000-123"));
+    check(!RoadCrewTachoBleChoice.isTachograph("SE500-123"));
+    check(!RoadCrewTachoBleChoice.isTachograph("SE5000"));
+    d = RoadCrewTachoBleChoice.decide(List.of(stoneridge, bmw), List.of());
+    check(d.kind == Kind.USE && d.candidates.get(0) == stoneridge);
+    d = RoadCrewTachoBleChoice.decide(List.of(oldTruck, stoneridge), List.of(stoneridge));
+    check(d.kind == Kind.USE && d.candidates.get(0) == stoneridge);
+    d = RoadCrewTachoBleChoice.decide(List.of(bmw), List.of(newStoneridge, bmw));
+    check(d.kind == Kind.ASK && d.candidates.size() == 1 && d.candidates.get(0) == newStoneridge);
+    d = RoadCrewTachoBleChoice.decide(List.of(), List.of(next, newStoneridge));
+    check(d.kind == Kind.ASK && d.candidates.size() == 2 && d.candidates.get(0) == newStoneridge);
+    check(RoadCrewTachoBleChoice.decide(List.of(truck, stoneridge), List.of()).kind == Kind.NONE);
     System.out.println(checks + " Bluetooth choice checks passed");
   }
 }

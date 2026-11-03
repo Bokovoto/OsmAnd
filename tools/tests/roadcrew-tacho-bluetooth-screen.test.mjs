@@ -81,6 +81,20 @@ test('progress names the part from the stream; structure and read-back before vi
   assert.ok(model.indexOf('RoadCrewTachoReminder.remember') > model.indexOf('RoadCrewTachoBluetoothStore.save'));
 });
 
+test('each GATT characteristic uses its supported write type and still waits for completion', () => {
+  assert.match(transport, /for \(c in listOf\(data, credit\)\) \{\s*configureCharacteristic\(c\)/);
+  assert.match(transport, /RoadCrewTachoVuDownload\.useWriteWithoutResponse\(/);
+  for (const property of ['PROPERTY_INDICATE', 'PROPERTY_WRITE_NO_RESPONSE', 'PROPERTY_WRITE']) {
+    assert.ok(transport.includes(`BluetoothGattCharacteristic.${property} != 0`));
+  }
+  assert.match(transport, /c\.writeType = if \(withoutResponse\) BluetoothGattCharacteristic\.WRITE_TYPE_NO_RESPONSE\s*else BluetoothGattCharacteristic\.WRITE_TYPE_DEFAULT/);
+  const write = transport.slice(transport.indexOf('private fun write('), transport.indexOf('private fun await('));
+  assert.doesNotMatch(write, /writeType\s*=/);
+  assert.match(write, /await\("write", c\.uuid, 10_000\)/);
+  assert.match(transport, /properties=0x/);
+  assert.match(transport, /cccd=\$hasCccd/);
+});
+
 test('Bluetooth strings are localized, not hard-coded status labels', () => {
   const keys = [...new Set([...screen.matchAll(/R\.string\.(roadcrew_tacho_(?:ble|source|tachograph)[a-z0-9_]*)/g)].map(m => m[1]))];
   assert.ok(keys.length >= 25);
