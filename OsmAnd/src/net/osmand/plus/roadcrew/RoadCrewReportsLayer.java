@@ -137,6 +137,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private AlertDialog activeHelpOpenDialog;
 	@Nullable
 	private RoadCrewTruckRestrictionsProvider truckRestrictionsProvider;
+	private RoadCrewOfficialController officialController;
 	@Nullable
 	private RoadCrewMapObservationCoordinator mapObservationCoordinator;
 	@Nullable
@@ -208,6 +209,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			truckRestrictionsProvider.shutdown();
 		}
 		truckRestrictionsProvider = new RoadCrewTruckRestrictionsProvider(getApplication());
+		if (officialController != null) { officialController.close(); }
+		officialController = new RoadCrewOfficialController(getApplication(), this::getMapActivity,
+				() -> getMapView().refreshMap());
 		RoadCrewMapObservationCoordinator.ensureStarted(getApplication());
 		RoadCrewMapObservationCoordinator.onMapActivityAvailable(getApplication());
 		RoadCrewShadowRouteDiagnostics.ensureStarted(getApplication());
@@ -225,6 +229,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	@Override
 	public void destroyLayer() {
+		if (officialController != null) { officialController.close(); officialController = null; }
 		dismissActiveHelpOpenDialog();
 		if (validationController != null) { validationController.close(); validationController = null; }
 		super.destroyLayer();
@@ -551,6 +556,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			return;
 		}
 		drawTruckRestrictions(canvas, tileBox);
+		if (officialController != null) { officialController.draw(canvas, tileBox); }
 		if (placesController != null) {
 			placesController.draw(canvas, tileBox);
 		}
@@ -1083,6 +1089,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		RoadCrewWeighStations.Station station = report == null ? findTappedWeighStation(point, tileBox) : null;
 		RoadCrewCameras.Camera camera = report == null && station == null ? findTappedCamera(point, tileBox) : null;
 		MapActivity mapActivity = getMapActivity();
+		if (report == null && station == null && camera == null && officialController != null) {
+			return officialController.tap(point, tileBox);
+		}
 		if (mapActivity == null || (report == null && station == null && camera == null)) {
 			return false;
 		}

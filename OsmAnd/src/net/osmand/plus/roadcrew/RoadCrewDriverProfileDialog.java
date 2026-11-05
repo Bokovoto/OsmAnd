@@ -94,6 +94,13 @@ final class RoadCrewDriverProfileDialog {
 					mapActivity.getString(R.string.roadcrew_profile_show_truck_restrictions_body));
 		}
 
+		CheckBox showOfficial = setupMode ? null : new CheckBox(mapActivity);
+		if (showOfficial != null) {
+			showOfficial.setText(R.string.roadcrew_official_layer);
+			showOfficial.setTextColor(RoadCrewUi.TEXT);
+			showOfficial.setChecked(RoadCrewSettings.showOfficial(app).get());
+			content.addView(showOfficial);
+		}
 		AlertDialog dialog = RoadCrewUi.createDialog(mapActivity, content);
 		boolean[] openingSettings = {false};
 		Runnable saveProfile = () -> {
@@ -106,6 +113,10 @@ final class RoadCrewDriverProfileDialog {
 					plateAlertsEnabled.isChecked());
 			if (showTruckRestrictions != null) {
 				showTruckRestrictionsPreference.set(showTruckRestrictions.isChecked());
+			}
+			if (showOfficial != null) {
+				restrictionsChanged |= RoadCrewSettings.showOfficial(app).get() != showOfficial.isChecked();
+				RoadCrewSettings.showOfficial(app).set(showOfficial.isChecked());
 			}
 			RoadCrewReportsSync.syncNow(app);
 			if (restrictionsChanged) {

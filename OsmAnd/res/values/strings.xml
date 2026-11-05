@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
+    <string name="roadcrew_official_layer">Restrictions and detours - RIA</string>
+    <string name="roadcrew_official_stale">RIA data has not been updated. Conditions may have changed.</string>
+    <string name="roadcrew_official_source_time">Source updated: %1$s</string>
+    <string name="roadcrew_official_until">Valid until: %1$s</string>
+    <string name="roadcrew_official_detour">Official detour</string>
+    <string name="roadcrew_official_restriction">Official restriction</string>
+    <string name="roadcrew_official_source">RIA source</string>
     <string name="roadcrew_tacho_ble_title">Download card via Bluetooth</string>
     <string name="roadcrew_tacho_ble_ready">No tachograph connected</string>
     <string name="roadcrew_tacho_ble_choose">Select paired tachograph</string>

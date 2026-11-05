@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="roadcrew_official_layer">Ограничения и обходи - АПИ</string>
+    <string name="roadcrew_official_stale">Данните на АПИ не са обновени. Обстановката може да е променена.</string>
+    <string name="roadcrew_official_source_time">Данни от източника: %1$s</string>
+    <string name="roadcrew_official_until">Валидно до: %1$s</string>
+    <string name="roadcrew_official_detour">Официален обход</string>
+    <string name="roadcrew_official_restriction">Официално ограничение</string>
+    <string name="roadcrew_official_source">Източник АПИ</string>
+</resources>

@@ -85,6 +85,9 @@ android {
 	//}
 
 	sourceSets {
+		test {
+			java.srcDirs = ["unitTest"]
+		}
 		debug {
 			manifest.srcFile "AndroidManifest-debug.xml"
 		}
@@ -246,6 +249,8 @@ tasks.register('copyOsmAndCoreWithJNI') {
 }
 
 dependencies {
+	testImplementation 'junit:junit:4.13.2'
+	testImplementation 'org.json:json:20240303'
 	openglImplementation fileTree(include:  ['QtAndroid.jar', 'QtAndroidBearer.jar', 'QtAndroidNetwork.jar'], dir: 'libs')
 	opengldebugImplementation fileTree(include:  ['QtAndroid.jar', 'QtAndroidBearer.jar', 'QtAndroidNetwork.jar'], dir: 'libs')
 

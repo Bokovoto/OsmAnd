@@ -27,4 +27,9 @@ final class RoadCrewSettings {
 	static boolean shouldShowTruckRestrictions(@NonNull OsmandApplication app) {
 		return showTruckRestrictions(app).get();
 	}
+
+	static CommonPreference<Boolean> showOfficial(@NonNull OsmandApplication app) {
+		return app.getSettings().registerBooleanPreference("roadcrew_show_official_ria", true)
+				.makeGlobal().cache();
+	}
 }
