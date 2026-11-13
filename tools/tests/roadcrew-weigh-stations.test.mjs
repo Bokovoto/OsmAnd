@@ -57,3 +57,14 @@ test('the voice warning and the texts, in Bulgarian and English', () => {
   assert.ok(bg.includes('>Стационарен кантар · %1$s<'));
   assert.ok(bg.includes('Национално тол управление (BG TOLL)'));
 });
+
+test('stationary map icons are half-size while keeping the existing finger target', () => {
+  const layer = source('RoadCrewReportsLayer.java');
+  const size = Number(layer.match(/WIM_SIGN_SIZE_DP = ([\d.]+);/)[1]);
+  assert.equal(size, 36 / 2);
+  assert.match(layer, /drawWimSign\(canvas,[\s\S]*?dp\(WIM_SIGN_SIZE_DP\)\)/);
+  assert.match(layer, /float u = size \/ 44f;/);
+  assert.match(layer, /WIM_TOUCH_RADIUS_DP = 26;/);
+  assert.match(layer, /float touchRadius = dp\(WIM_TOUCH_RADIUS_DP\);/);
+  assert.match(layer, /drawWeighStationWarning\(canvas, tileBox, stationAhead\)/);
+});

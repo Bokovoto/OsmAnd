@@ -68,9 +68,9 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private static final float MARKER_TOUCH_RADIUS_DP = 36;
 	private static final float MARKER_CENTER_OFFSET_DP = 8;
 	private static final float MARKER_IMAGE_SIZE_DP = 54;
-	private static final float MARKER_LABEL_OFFSET_DP = 31;
 	/** The stationary weigh station's sign, drawn on the road point itself. */
-	private static final float WIM_SIGN_SIZE_DP = 36;
+	private static final float WIM_SIGN_SIZE_DP = 18;
+	private static final float WIM_TOUCH_RADIUS_DP = 26;
 	/** "Стационарен кантар · 500 м" below the truck, where the report labels sit. */
 	private static final float WIM_WARNING_OFFSET_DP = 56;
 	private static final int WIM_ORANGE = Color.rgb(245, 166, 35);
@@ -95,9 +95,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private final Paint markerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint markerIconPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
 	private final Paint inactiveMarkerIconPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
-	private final Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint labelBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-	private final Paint labelStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint directionBadgePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint directionBadgeStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint directionArrowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -114,8 +112,6 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	private final Path restrictionTruckPath = new Path();
 	private final Path directionArrowPath = new Path();
 	private final RectF markerIconRect = new RectF();
-	private final RectF labelRect = new RectF();
-	private final RectF touchLabelRect = new RectF();
 	private final Set<String> promptedReportIds = new HashSet<>();
 	private final Set<String> shownNotificationIds = new HashSet<>();
 	private final Set<String> openHelpReportIds = new HashSet<>();
@@ -404,17 +400,10 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		inactiveMarkerIconPaint.setAlpha(150);
 		loadMarkerIcons();
 
-		textPaint.setColor(Color.WHITE);
-		textPaint.setTextAlign(Paint.Align.CENTER);
-		textPaint.setFakeBoldText(true);
-		textPaint.setTextSize(sp(12));
 
 		labelBackgroundPaint.setStyle(Paint.Style.FILL);
 		labelBackgroundPaint.setColor(Color.argb(230, 11, 31, 42));
 
-		labelStrokePaint.setStyle(Paint.Style.STROKE);
-		labelStrokePaint.setStrokeWidth(dp(1));
-		labelStrokePaint.setColor(Color.argb(210, 255, 255, 255));
 
 		wimFillPaint.setStyle(Paint.Style.FILL);
 		wimFillPaint.setColor(Color.rgb(26, 31, 36));
@@ -798,7 +787,7 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 	}
 
 	/**
-	 * A pill under the truck, where the report labels sit - above it when the
+	 * A pill under the truck - above it when the
 	 * truck is too low on the screen. Row 1 sits under row 0: a weigh station
 	 * and a camera ahead at once.
 	 */
@@ -829,7 +818,8 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 
 	@Nullable
 	private RoadCrewWeighStations.Station findTappedWeighStation(@NonNull PointF point, @NonNull RotatedTileBox tileBox) {
-		float touchRadius = dp(WIM_SIGN_SIZE_DP) / 2f + dp(8);
+		// Keep the existing finger target despite the smaller map sign.
+		float touchRadius = dp(WIM_TOUCH_RADIUS_DP);
 		RoadCrewWeighStations.Station nearest = null;
 		double nearestDistance = touchRadius;
 		for (RoadCrewWeighStations.Station station : RoadCrewWeighStationsStore.get(getApplication())) {
@@ -1209,8 +1199,6 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			canvas.drawCircle(x, markerCenterY, dp(14), markerPaint);
 		}
 		drawDirectionBadge(canvas, tileBox, report, x, markerCenterY);
-
-		drawLabel(canvas, report, x, markerCenterY - dp(MARKER_LABEL_OFFSET_DP));
 	}
 
 	private void drawDirectionBadge(@NonNull Canvas canvas, @NonNull RotatedTileBox tileBox,
@@ -1255,14 +1243,6 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 		canvas.drawPath(directionArrowPath, directionArrowPaint);
 		canvas.restore();
-	}
-
-	private void drawLabel(@NonNull Canvas canvas, @NonNull RoadCrewReport report, float x, float y) {
-		LabelLayout layout = calculateLabelLayout(report, x, y, canvas.getWidth(), labelRect);
-		float cornerRadius = dp(6);
-		canvas.drawRoundRect(labelRect, cornerRadius, cornerRadius, labelBackgroundPaint);
-		canvas.drawRoundRect(labelRect, cornerRadius, cornerRadius, labelStrokePaint);
-		canvas.drawText(layout.label, layout.centerX, layout.textBaseline, textPaint);
 	}
 
 	private void checkNearbyReports(@NonNull List<RoadCrewReport> reports) {
@@ -1320,11 +1300,6 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			float x = tileBox.getPixXFromLatLon(latLon.getLatitude(), latLon.getLongitude());
 			float markerCenterY = tileBox.getPixYFromLatLon(latLon.getLatitude(), latLon.getLongitude())
 					- dp(MARKER_CENTER_OFFSET_DP);
-			float labelY = markerCenterY - dp(MARKER_LABEL_OFFSET_DP);
-			calculateLabelLayout(report, x, labelY, tileBox.getPixWidth(), touchLabelRect);
-			if (touchLabelRect.contains(point.x, point.y)) {
-				return report;
-			}
 			double distance = Math.hypot(point.x - x, point.y - markerCenterY);
 			if (distance <= nearestDistance) {
 				nearestDistance = distance;
@@ -1332,29 +1307,6 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 			}
 		}
 		return nearestReport;
-	}
-
-	@NonNull
-	private LabelLayout calculateLabelLayout(@NonNull RoadCrewReport report, float x, float y, float canvasWidth,
-			@NonNull RectF outRect) {
-		String label = report.getType().getTitle(getApplication()) + " - " + formatAgeSince(
-				RoadCrewReportLifetime.lastSeenAt(report.getCreatedAtMillis(), report.getExpiresAtMillis()));
-		float paddingX = dp(8);
-		float paddingY = dp(4);
-		float textWidth = textPaint.measureText(label);
-		Paint.FontMetrics metrics = textPaint.getFontMetrics();
-		float textHeight = metrics.descent - metrics.ascent;
-		float labelHalfWidth = textWidth / 2f + paddingX;
-		float edgePadding = dp(4);
-		float centerX = Math.max(labelHalfWidth + edgePadding,
-				Math.min(x, canvasWidth - labelHalfWidth - edgePadding));
-		outRect.set(
-				centerX - labelHalfWidth,
-				y - textHeight - paddingY,
-				centerX + labelHalfWidth,
-				y + paddingY
-		);
-		return new LabelLayout(label, centerX, y - textHeight / 2f - metrics.ascent / 2f);
 	}
 
 	private void showReportDetailsDialog(@NonNull MapActivity mapActivity, @NonNull RoadCrewReport report) {
@@ -2337,16 +2289,4 @@ public class RoadCrewReportsLayer extends OsmandMapLayer implements IContextMenu
 		}
 	}
 
-	private static final class LabelLayout {
-		@NonNull
-		private final String label;
-		private final float centerX;
-		private final float textBaseline;
-
-		private LabelLayout(@NonNull String label, float centerX, float textBaseline) {
-			this.label = label;
-			this.centerX = centerX;
-			this.textBaseline = textBaseline;
-		}
-	}
 }

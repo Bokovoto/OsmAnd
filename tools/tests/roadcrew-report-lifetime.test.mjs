@@ -70,15 +70,16 @@ test('an old marked post is one nobody has seen for a while - plain Java', () =>
   console.log(result.trim());
 });
 
-// Galin, 11.10.2026, asked whether the minutes on a report's map label
-// ("Полиция - 132 мин") should count from the last "още е там": "да". The
-// details ("Подаден: преди 132 мин") keep the posting - that is what they say.
-test('the map label counts its minutes from the last sighting', () => {
+// Galin, 05.11.2026: remove overhead labels, not reports or their details.
+test('reports have no overhead labels or invisible label hit targets; details keep the posting time', () => {
   const layer = read('RoadCrewReportsLayer.java');
-  const start = layer.indexOf('private LabelLayout calculateLabelLayout(');
-  assert.notEqual(start, -1);
-  const label = layer.slice(start, layer.indexOf('\n\t}\n', start));
-  assert.match(label, /RoadCrewReportLifetime\.lastSeenAt\(report\.getCreatedAtMillis\(\), report\.getExpiresAtMillis\(\)\)/);
+  assert.doesNotMatch(layer, /drawLabel\(|calculateLabelLayout\(|touchLabelRect|MARKER_LABEL_OFFSET_DP|class LabelLayout/);
+  const start = layer.indexOf('private void drawReport(');
+  const marker = layer.slice(start, layer.indexOf('\n\t}\n', start));
+  assert.match(marker, /canvas\.drawBitmap\(icon/);
+  assert.match(marker, /drawDirectionBadge\(/);
+  assert.match(layer, /Math\.hypot\(point\.x - x, point\.y - markerCenterY\)/);
+  assert.match(layer, /showReportDetailsDialog\(mapActivity, report\)/);
   const details = layer.slice(layer.indexOf('private String createReportDetailsMessage('));
   assert.match(details.slice(0, details.indexOf('\n\t}\n')), /roadcrew_report_details_reported, formatReportedAge\(report\)/,
     'the details still say when it was posted');
