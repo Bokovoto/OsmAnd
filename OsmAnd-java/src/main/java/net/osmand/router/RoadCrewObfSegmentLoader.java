@@ -28,6 +28,41 @@ public final class RoadCrewObfSegmentLoader {
 	private RoadCrewObfSegmentLoader() {
 	}
 
+	/** Metadata only: safe to call on a shallow reader before opening a private one. */
+	public static boolean containsRouteDataNear(BinaryMapIndexReader reader, double latitude,
+			double longitude, double radiusMeters) {
+		validate(latitude, longitude, radiusMeters, 1);
+		Bounds31 bounds = Bounds31.around(latitude, longitude, radiusMeters);
+		return containsRouteDataInBounds(reader, bounds.left, bounds.top, bounds.right, bounds.bottom);
+	}
+
+	public static boolean containsRouteDataInBounds(BinaryMapIndexReader reader,
+			int left, int top, int right, int bottom) {
+		if (reader == null) {
+			return false;
+		}
+		// Do not exclude coverage when a query wraps around the date line.
+		if (left > right) {
+			return reader.containsRouteData();
+		}
+		for (RouteRegion region : reader.getRoutingIndexes()) {
+			if (intersects(region.getSubregions(), left, top, right, bottom)
+					|| intersects(region.getBaseSubregions(), left, top, right, bottom)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean intersects(List<RouteSubregion> regions, int left, int top, int right, int bottom) {
+		for (RouteSubregion region : regions) {
+			if (right >= region.left && left <= region.right && top <= region.bottom && bottom >= region.top) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static ShadowSnapshot analyze(BinaryMapIndexReader[] readers, double latitude, double longitude,
 			double radiusMeters, int maxObjects, Cancellable cancellable) throws IOException {
 		LoadResult loaded = load(readers, latitude, longitude, radiusMeters, maxObjects, cancellable);

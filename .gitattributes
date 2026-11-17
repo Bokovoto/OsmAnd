@@ -1,3 +1,4 @@
 * text=auto
 # Shell scripts run in WSL/Linux (tools/build-native-core-wsl.sh, old-ndk-build.sh): LF only.
 *.sh text eol=lf
+tools/native-patches/*.patch text eol=lf

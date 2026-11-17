@@ -15,6 +15,7 @@ import net.osmand.data.RotatedTileBox;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.resources.BinaryMapReaderResource;
 import net.osmand.plus.resources.ResourceManager.BinaryMapReaderResourceType;
+import net.osmand.router.RoadCrewObfSegmentLoader;
 import net.osmand.util.Algorithms;
 import net.osmand.util.MapUtils;
 
@@ -81,14 +82,18 @@ final class RoadCrewTruckRestrictionsProvider {
 		try {
 			List<TruckRestriction> result = new ArrayList<>();
 			Map<String, TruckRestriction> unique = new LinkedHashMap<>();
+			int left = MapUtils.get31TileNumberX(bounds.left);
+			int right = MapUtils.get31TileNumberX(bounds.right);
+			int top = MapUtils.get31TileNumberY(bounds.top);
+			int bottom = MapUtils.get31TileNumberY(bounds.bottom);
 			BinaryMapIndexReader.SearchRequest<RouteDataObject> request = BinaryMapIndexReader.buildSearchRouteRequest(
-					MapUtils.get31TileNumberX(bounds.left),
-					MapUtils.get31TileNumberX(bounds.right),
-					MapUtils.get31TileNumberY(bounds.top),
-					MapUtils.get31TileNumberY(bounds.bottom),
-					null);
+					left, right, top, bottom, null);
 			for (BinaryMapReaderResource resource : app.getResourceManager().getFileReaders()) {
 				if (!resource.isUseForRouting()) {
+					continue;
+				}
+				BinaryMapIndexReader shallow = resource.getShallowReader();
+				if (!RoadCrewObfSegmentLoader.containsRouteDataInBounds(shallow, left, top, right, bottom)) {
 					continue;
 				}
 				BinaryMapIndexReader reader = resource.getReader(

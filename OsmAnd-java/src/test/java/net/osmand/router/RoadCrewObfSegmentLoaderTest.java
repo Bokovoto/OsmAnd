@@ -1,6 +1,9 @@
 package net.osmand.router;
 
 import net.osmand.binary.BinaryMapIndexReader;
+import net.osmand.binary.BinaryMapRouteReaderAdapter.RouteRegion;
+import net.osmand.binary.BinaryMapRouteReaderAdapter.RouteSubregion;
+import net.osmand.util.MapUtils;
 
 import org.junit.Assert;
 import org.junit.Assume;
@@ -9,6 +12,32 @@ import org.junit.Test;
 import java.io.File;
 import java.io.RandomAccessFile;
 public class RoadCrewObfSegmentLoaderTest {
+	@Test public void metadataFilterRetainsNearbyBorderAndBaseRoadsWithoutReadingTheFile() throws Exception {
+		File file = File.createTempFile("roadcrew-coverage", ".obf");
+		try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
+			BinaryMapIndexReader reader = new BinaryMapIndexReader(raf, file, false);
+			RouteRegion region = new RouteRegion();
+			reader.getRoutingIndexes().add(region);
+			RouteSubregion subregion = new RouteSubregion(region);
+			subregion.left = MapUtils.get31TileNumberX(27.9);
+			subregion.right = MapUtils.get31TileNumberX(28);
+			subregion.top = MapUtils.get31TileNumberY(43.3);
+			subregion.bottom = MapUtils.get31TileNumberY(43.2);
+			region.getSubregions().add(subregion);
+			Assert.assertTrue(RoadCrewObfSegmentLoader.containsRouteDataNear(reader, 43.25, 27.95, 900));
+			Assert.assertFalse(RoadCrewObfSegmentLoader.containsRouteDataNear(reader, 42.7, 23.3, 900));
+			Assert.assertTrue(RoadCrewObfSegmentLoader.containsRouteDataInBounds(reader,
+					subregion.right, subregion.top, subregion.right + 1, subregion.bottom));
+			region.getSubregions().clear();
+			region.getBaseSubregions().add(subregion);
+			Assert.assertTrue(RoadCrewObfSegmentLoader.containsRouteDataNear(reader, 43.25, 27.95, 900));
+			Assert.assertTrue(RoadCrewObfSegmentLoader.containsRouteDataInBounds(reader, 200, 0, 100, 100));
+			Assert.assertFalse(RoadCrewObfSegmentLoader.containsRouteDataNear(null, 43.25, 27.95, 900));
+			Assert.assertEquals("metadata must not seek or read the OBF", 0, raf.getFilePointer());
+		} finally {
+			Assert.assertTrue(file.delete());
+		}
+	}
 
 	@Test
 	public void returnsEmptyShadowSnapshotWithoutMapReaders() throws Exception {

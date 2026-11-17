@@ -115,14 +115,35 @@ if ! git -C "$WORK/core-legacy" cat-file -e "$CORE_LEGACY_COMMIT^{commit}" 2>/de
 	git -C "$WORK/core-legacy" fetch -q origin
 fi
 git -C "$WORK/core-legacy" checkout -q "$CORE_LEGACY_COMMIT"
-rm -rf "$WORK/build" "$WORK/android/OsmAnd/jni"
-cp -r "$PROJECT_ROOT/build" "$WORK/build"
-mkdir -p "$WORK/android/OsmAnd"
-cp -r "$ANDROID_ROOT/OsmAnd/jni" "$WORK/android/OsmAnd/jni"
-cp "$ANDROID_ROOT/OsmAnd/old-ndk-build.sh" "$WORK/android/OsmAnd/"
-find "$WORK/android" "$WORK/build" -type f \
+# Keep the fork's JNI base; apply only reviewed, versioned backports. An
+# already-patched work tree is valid, but a partial/conflicting patch is not.
+for patch in "$HERE"/native-patches/*.patch; do
+	[ -f "$patch" ] || continue
+	if git -C "$WORK/core-legacy" apply --reverse --check "$patch" 2>/dev/null; then
+		echo "== Already applied: $(basename "$patch")"
+	else
+		git -C "$WORK/core-legacy" apply --check "$patch"
+		git -C "$WORK/core-legacy" apply "$patch"
+	fi
+done
+# Normalize in staging, then copy only changed content. Recreating every
+# makefile made ndk-build recompile all externals even for a one-line fix.
+command -v rsync >/dev/null || { echo "rsync is required" >&2; exit 1; }
+SYNC_DIR=$(mktemp -d "$WORK/build-inputs.XXXXXX")
+trap 'rm -rf "$SYNC_DIR"' EXIT
+cp -r "$PROJECT_ROOT/build" "$SYNC_DIR/build"
+mkdir -p "$SYNC_DIR/android"
+cp -r "$ANDROID_ROOT/OsmAnd/jni" "$SYNC_DIR/android/jni"
+cp "$ANDROID_ROOT/OsmAnd/old-ndk-build.sh" "$SYNC_DIR/android/"
+find "$SYNC_DIR" -type f \
 	\( -name '*.sh' -o -name '*.mk' -o -name '*.cmake' -o -name 'CMakeLists.txt' \) \
 	-exec sed -i 's/\r$//' {} +
+mkdir -p "$WORK/build" "$WORK/android/OsmAnd/jni"
+rsync -rc --delete "$SYNC_DIR/build/" "$WORK/build/"
+rsync -rc --delete "$SYNC_DIR/android/jni/" "$WORK/android/OsmAnd/jni/"
+rsync -rc "$SYNC_DIR/android/old-ndk-build.sh" "$WORK/android/OsmAnd/"
+rm -rf "$SYNC_DIR"
+trap - EXIT
 
 # 4. Externals (downloaded and patched once, then kept) and the core itself.
 export ANDROID_NDK_ROOT="$NDK" ANDROID_NDK="$NDK" ANDROID_SDK_ROOT="$WORK" BUILD_ONLY_OLD_LIB=1

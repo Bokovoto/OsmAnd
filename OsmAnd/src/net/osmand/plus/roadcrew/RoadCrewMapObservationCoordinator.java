@@ -634,8 +634,11 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	@NonNull
 	private String currentMapVersion() {
 		try {
-			for (BinaryMapIndexReader reader : getRoutingReaders()) {
-				String name = reader.getFile() == null ? null : reader.getFile().getName();
+			for (BinaryMapReaderResource resource : app.getResourceManager().getFileReaders()) {
+				if (!resource.isUseForRouting()) {
+					continue;
+				}
+				String name = resource.getFileName();
 				if (name != null && !name.isEmpty()) {
 					return name.length() > 64 ? name.substring(0, 64) : name;
 				}
@@ -681,7 +684,8 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	private boolean reloadRoads(@NonNull RoadCrewObservationPipeline currentPipeline,
 			@NonNull LocationSample sample) throws IOException {
 		RoadCrewObfSegmentLoader.LoadResult loaded = RoadCrewObfSegmentLoader.load(
-				getRoutingReaders(), sample.latitude, sample.longitude, LOAD_RADIUS_METERS,
+				getRoutingReaders(sample.latitude, sample.longitude, LOAD_RADIUS_METERS),
+				sample.latitude, sample.longitude, LOAD_RADIUS_METERS,
 				MAX_ROUTE_OBJECTS, () -> cancelled.get() || !enabled || Thread.currentThread().isInterrupted());
 		if (loaded.isCancelled() || loaded.isTruncated()) {
 			// The suspected cause of the missing coverage: in a dense network the
@@ -716,7 +720,7 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	private List<RouteDataObject> loadRoadsAround(double latitude, double longitude,
 			double radiusMeters) throws IOException {
 		RoadCrewObfSegmentLoader.LoadResult loaded = RoadCrewObfSegmentLoader.load(
-				getRoutingReaders(), latitude, longitude, radiusMeters, MAX_ROUTE_OBJECTS,
+				getRoutingReaders(latitude, longitude, radiusMeters), latitude, longitude, radiusMeters, MAX_ROUTE_OBJECTS,
 				() -> cancelled.get() || !enabled || Thread.currentThread().isInterrupted());
 		if (loaded.isTruncated() || loaded.isCancelled()) {
 			// Some roads are missing, so a branch could be too: this proves nothing.
@@ -728,10 +732,15 @@ public final class RoadCrewMapObservationCoordinator implements OsmAndLocationLi
 	}
 
 	@NonNull
-	private BinaryMapIndexReader[] getRoutingReaders() {
+	private BinaryMapIndexReader[] getRoutingReaders(double latitude, double longitude, double radiusMeters) {
 		List<BinaryMapIndexReader> readers = new ArrayList<>();
 		for (BinaryMapReaderResource resource : app.getResourceManager().getFileReaders()) {
 			if (!resource.isUseForRouting()) {
+				continue;
+			}
+			// The shallow reader already has bounds; do not parse every installed map.
+			if (!RoadCrewObfSegmentLoader.containsRouteDataNear(resource.getShallowReader(),
+					latitude, longitude, radiusMeters)) {
 				continue;
 			}
 			BinaryMapIndexReader reader = resource.getReader(
